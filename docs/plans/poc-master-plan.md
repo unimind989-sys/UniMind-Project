@@ -73,7 +73,7 @@ The PoC codebase is the first production version. It must use:
 - Strict authorization and Row Level Security.
 - Durable, idempotent background jobs.
 - Provider adapters so vendors can be changed without rewriting product logic.
-- Environment separation for development, preview, and beta production.
+- Environment separation for hosted development database/Auth, isolated hosted CI, preview, and beta production.
 - Automated tests, deployment checks, telemetry, backups, and incident controls.
 - Stateless web instances and horizontally scalable workers where possible.
 - Configuration-driven catalog and terminology.
@@ -303,12 +303,16 @@ Admins do not manually perform routine extraction, transcription, deletion, chun
 - **Read paths:** authenticated Server Components or server-only data services.
 - **Mutations:** Server Actions for normal mutations; Route Handlers for streaming chat, uploads, provider callbacks, and webhooks.
 - **Runtime:** Node.js for provider SDKs, streaming, and processing interfaces.
-- **Database/Auth:** Supabase Auth and PostgreSQL.
+- **Database/Auth:** externally hosted Supabase Auth and PostgreSQL in every database-backed environment.
 - **Authorization:** Row Level Security on exposed tables, explicit grants, server-side checks, and narrowly scoped functions.
 - **Storage:** provider-agnostic private object storage with temporary-raw and durable-processed namespaces.
 - **Background processing:** durable queue and independently scalable workers.
-- **Deployment:** separate development, preview, and beta-production environments.
+- **Deployment:** workstation application development, externally hosted synthetic development database/Auth, isolated externally hosted CI database/Auth, externally hosted preview, and externally hosted beta-production environments.
 - **Observability:** structured logs, correlation IDs, job events, provider usage, health checks, error reporting, and cost dashboards.
+
+Ahmed's and Ziad's computers are development workstations only, never PoC infrastructure targets. They may run editors, the Next.js development process, browser/test tools, and deterministic in-process mocks. No database, Auth service, object storage, queue, required worker, scheduler, monitoring service, notification service, optional orchestrator such as n8n, or shared preview/beta component may run from or depend on either founder computer. Every database-backed or shared/runtime component must use approved external infrastructure and remain operable when both computers are off.
+
+A future Telegram bot may run on a founder computer only as noncritical development/test tooling. The PoC must not depend on it, it must not process real student data or private source material, and it cannot satisfy a preview, beta, operations, or release gate. An operational UniMind Telegram bot must use approved external hosting.
 
 The web tier must remain stateless. Long extraction, transcription, embedding, and artifact generation must not rely on a short-lived browser or web request.
 
@@ -453,7 +457,7 @@ Exit gate: cohorts, source paths, rights, deletion rules, cost caps, evaluation 
 **Estimated effort:** 2 weeks
 
 - Next.js/TypeScript repository with lint, types, tests, CI, and environment validation.
-- Development, preview, and beta environments.
+- Hosted synthetic development database/Auth, isolated hosted CI, preview, and beta environments; workstation application development requires no local infrastructure service.
 - Versioned Supabase migrations, backups, auth, roles, audit, catalog, memberships, release/publication, and RLS.
 - Bilingual shell, subject workspace, admin shell, and Batch Leader shell.
 - Mock providers and structured telemetry.
@@ -630,12 +634,13 @@ Video adds a processor behind the existing pipeline; it must not create a separa
 | D-12 | Catalog abstraction | Stage -> institution/system -> program -> level -> term -> cohort -> unit | Ahmed + Ziad | Approved direction |
 | D-13 | PoC capacity | At least 100 students on minimum practical resources | Ahmed + Ziad | Approved direction |
 | D-14 | Citations | Internal provenance mandatory; exact locator optional when reliable | Ahmed + Ziad | Approved direction |
-| D-15 | Automation | Always-on durable jobs/workers; no founder-machine dependency | Ahmed + Ziad | Approved direction |
+| D-15 | Automation | Founder computers run development processes only; every database-backed/shared runtime is externally hosted and durable; a PC-hosted Telegram bot is noncritical test tooling only | Ahmed + Ziad | Approved direction |
 | D-16 | Video | Deferred processor using existing ingestion/pool contracts | Ahmed + Ziad | Approved direction |
-| D-17 | Queue transport and worker host | Database job table plus in-process test dispatcher until selected | Ahmed + Ziad | Open |
+| D-17 | Queue transport and worker host | Database job table plus in-process test dispatcher until selected; founder computers are excluded as hosts | Ahmed + Ziad | Open |
 | D-18 | Raw and processed object storage provider | Filesystem/in-memory test adapter with synthetic data until selected | Security/data owner (unassigned) | Open |
 | D-19 | Retention periods and deletion deadlines | Short synthetic-test values until exact periods are approved | Security/data owner (unassigned) | Open |
-| D-20 | Notification and incident channels | Local test sink until operational channels are approved | Ahmed + Ziad | Open |
+| D-20 | Notification and incident channels | In-process deterministic test sink until operational channels are approved | Ahmed + Ziad | Open |
+| D-21 | Development/test infrastructure | Hosted Supabase development database/Auth plus isolated hosted CI; no local infrastructure services | Ahmed | Approved direction |
 
 ## 16. Immediate actions
 
@@ -649,7 +654,7 @@ Video adds a processor behind the existing pipeline; it must not create a separa
 8. Select native PDFs, scanned PDFs, mixed-language audio, and professor voice notes for benchmarks.
 9. Create 100 Human Medicine tutor cases covering missing/partial evidence, conflicts, hints, academic cases, and real-patient boundaries.
 10. Create Studio evaluation cases for every artifact type.
-11. Create the repository and production-shaped environments with mocked providers first.
+11. Create the repository and production-shaped hosted environments with mocked providers first.
 12. Implement the execution runbook in dependency order.
 
 ## 17. Working rules

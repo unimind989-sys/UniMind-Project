@@ -16,7 +16,7 @@
 
 ## Execution contract
 
-**Dependencies:** WP01-T04 reviewed PASS for resettable local PostgreSQL/Supabase; WP01-T05 for Auth/security seams; WP01-T06 PASS for deterministic provider mocks.
+**Dependencies:** WP01-T04 reviewed PASS for an isolated resettable hosted development/CI PostgreSQL/Supabase target; WP01-T05 for Auth/security seams; WP01-T06 PASS for deterministic provider mocks.
 
 **Inputs:** Runbook WP01-T07; existing test directories/scripts; synthetic fixtures only; frozen evaluation/load schemas.
 
@@ -30,7 +30,7 @@
 
 **Rollback:** Revert the future WP01-T07 candidate; no real user, source, provider, deployment, or shared environment may be involved.
 
-**Hard stop:** Do not claim integration/security coverage without a twice-reset local stack and synthetic Auth/data, point load tests at beta, call paid providers, or hide hangs with unbounded timeouts.
+**Hard stop:** Do not claim integration/security coverage without a twice-reset isolated hosted target and synthetic Auth/data, point development/CI/load tests at preview or beta, call paid providers, or hide hangs with unbounded timeouts.
 
 ## Steps
 
@@ -44,10 +44,10 @@
 
 **Changed:** No test-layer implementation started; existing unit/provider/environment checks continue to run through `pnpm verify`.
 
-**Commands:** NOT RUN for integration/security/E2E because the resettable local database and Auth seam do not exist. Current unit suite passes 136 tests.
+**Commands:** NOT RUN for integration/security/E2E because the resettable hosted development/CI database and Auth seam do not exist. Current unit-suite result must be refreshed after the D-21 change.
 
 **Remaining:** Entire WP01-T07 outcome after WP01-T04/T05 PASS.
 
-**Next safe action:** Restore the local container prerequisite, complete WP01-T04/T05, then implement all test layers as one verified contract.
+**Next safe action:** Provision and verify the approved hosted development/CI targets, complete WP01-T04/T05, then implement all test layers as one verified contract.
 
 **Reviewer action:** Assign after dependencies pass; database/security layer claims require independent review where RLS/grants become involved.

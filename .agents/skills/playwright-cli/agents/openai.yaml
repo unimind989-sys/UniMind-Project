@@ -1,0 +1,7 @@
+interface:
+  display_name: "Playwright CLI"
+  short_description: "Explore and verify rendered web behavior"
+  default_prompt: "Use $playwright-cli to inspect and verify this rendered web flow."
+
+policy:
+  allow_implicit_invocation: true

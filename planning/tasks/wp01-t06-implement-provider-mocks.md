@@ -48,6 +48,6 @@
 
 **Remaining:** NONE for WP01-T06.
 
-**Next safe action:** Keep database-dependent WP01-T07/T08 blocked until WP01-T04 passes; resume the confirmed Docker/WSL setup path or select another explicitly dependency-free task.
+**Next safe action:** Keep database-dependent WP01-T07/T08 blocked until hosted WP01-T04 passes; obtain approved development/CI provisioning or select another explicitly dependency-free task.
 
 **Reviewer action:** PASS — interface depth, normalized metadata, full typed failure coverage, deterministic fixtures, zero-network proof, complete live gate, candidate diff, and fresh-agent handoff reviewed.

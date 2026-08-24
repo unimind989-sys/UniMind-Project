@@ -263,7 +263,7 @@ if (Test-Path -LiteralPath $decisionRegisterPath -PathType Leaf) {
   $decisionRows = [regex]::Matches($decisionRegister, '(?m)^\| (D-\d{2}) \| ([^|]+) \| ([^|]+) \| ([^|]+) \| (Open|Proposed|Approved direction) \| ([^|]+) \| ([^|]+) \| ([^|]+) \| ([^|]+) \|$')
   $decisionIds = @($decisionRows | ForEach-Object { $_.Groups[1].Value })
 
-  foreach ($expectedNumber in 1..20) {
+  foreach ($expectedNumber in 1..21) {
     $expectedId = 'D-{0:D2}' -f $expectedNumber
     if ($decisionIds -notcontains $expectedId) {
       Add-Failure "Decision register is missing $expectedId."
@@ -312,8 +312,11 @@ if (Test-Path -LiteralPath $decisionRegisterPath -PathType Leaf) {
         $recordStatusMatch = [regex]::Match($recordContent, '(?m)^\*\*Status:\*\*\s*(OPEN|PROPOSED|APPROVED|REJECTED|SUPERSEDED)$')
         if (-not $recordStatusMatch.Success) {
           Add-Failure "Decision record has no valid explicit status: $($recordPathMatch.Groups['path'].Value)"
-        } elseif ($recordStatusMatch.Groups[1].Value -cne $status.ToUpperInvariant()) {
+        } else {
+          $expectedRecordStatus = if ($status -eq 'Approved direction') { 'APPROVED' } else { $status.ToUpperInvariant() }
+          if ($recordStatusMatch.Groups[1].Value -cne $expectedRecordStatus) {
           Add-Failure "Decision status differs between register and record for $($row.Groups[1].Value)."
+          }
         }
       }
     }

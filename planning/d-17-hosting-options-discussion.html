@@ -1,0 +1,861 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UniMind D-17 — Hosting and n8n discussion</title>
+    <link rel="icon" href="data:," />
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #182321;
+        --muted: #52605d;
+        --paper: #f5f7f5;
+        --surface: #ffffff;
+        --line: #d7dfdc;
+        --accent: #176b5b;
+        --accent-soft: #e5f3ef;
+        --warning: #825b13;
+        --warning-soft: #fff4d8;
+        --danger: #8b3333;
+        --danger-soft: #fdecec;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        scrollbar-color: var(--accent) var(--paper);
+      }
+
+      ::selection {
+        background: #bce4d9;
+        color: #0c332b;
+      }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        font-size: 16px;
+        line-height: 1.65;
+      }
+
+      a {
+        color: var(--accent);
+        text-underline-offset: 0.18em;
+      }
+
+      a:hover {
+        text-decoration-thickness: 2px;
+      }
+
+      a:focus-visible {
+        outline: 3px solid #d09a2b;
+        outline-offset: 4px;
+        border-radius: 3px;
+      }
+
+      .page {
+        width: min(1120px, calc(100% - 32px));
+        margin: 28px auto 64px;
+      }
+
+      header,
+      section,
+      footer {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+      }
+
+      header {
+        padding: clamp(28px, 5vw, 56px);
+        background:
+          linear-gradient(135deg, rgb(229 243 239 / 94%), rgb(255 255 255 / 98%)),
+          var(--surface);
+      }
+
+      section,
+      footer {
+        margin-top: 20px;
+        padding: clamp(24px, 4vw, 42px);
+      }
+
+      h1,
+      h2,
+      h3 {
+        line-height: 1.2;
+        letter-spacing: -0.025em;
+      }
+
+      h1 {
+        max-width: 850px;
+        margin: 16px 0;
+        font-size: clamp(2rem, 5vw, 4.25rem);
+      }
+
+      h2 {
+        margin: 0 0 18px;
+        font-size: clamp(1.5rem, 3vw, 2.35rem);
+      }
+
+      h3 {
+        margin: 0 0 8px;
+        font-size: 1.12rem;
+      }
+
+      p {
+        max-width: 72ch;
+        margin: 0 0 16px;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 750;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .badge {
+        padding: 6px 10px;
+        background: var(--warning-soft);
+        color: var(--warning);
+      }
+
+      .lede {
+        max-width: 760px;
+        color: var(--muted);
+        font-size: clamp(1.05rem, 2vw, 1.28rem);
+      }
+
+      .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 24px;
+        margin-top: 28px;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .callout p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .key-points {
+        margin: 10px 0 0;
+      }
+
+      .key-points > div {
+        display: grid;
+        grid-template-columns: minmax(180px, 0.36fr) 1fr;
+        gap: 20px;
+        padding: 18px 0;
+        border-top: 1px solid var(--line);
+      }
+
+      .key-points dt {
+        font-weight: 800;
+      }
+
+      .key-points dd {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .callout {
+        margin: 20px 0;
+        padding: 20px;
+        border: 1px solid var(--accent);
+        border-radius: 10px;
+        background: var(--accent-soft);
+      }
+
+      .callout.warning {
+        border: 1px solid var(--warning);
+        background: var(--warning-soft);
+      }
+
+      .callout.danger {
+        border: 1px solid var(--danger);
+        background: var(--danger-soft);
+      }
+
+      .use-list {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 24px;
+        margin: 22px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .use-list li {
+        margin: 0;
+        padding-top: 14px;
+        border-top: 1px solid var(--accent);
+        color: var(--muted);
+      }
+
+      .use-list strong {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--ink);
+      }
+
+      ul,
+      ol {
+        margin: 14px 0 0;
+        padding-left: 1.35rem;
+      }
+
+      li + li {
+        margin-top: 8px;
+      }
+
+      .diagram {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr auto 1fr;
+        align-items: stretch;
+        gap: 10px;
+        margin: 24px 0;
+      }
+
+      .diagram .node {
+        display: grid;
+        place-items: center;
+        min-height: 112px;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: #fbfcfb;
+        text-align: center;
+      }
+
+      .diagram .node strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .arrow {
+        display: grid;
+        place-items: center;
+        color: var(--accent);
+        font-size: 1.7rem;
+        font-weight: 800;
+      }
+
+      .optional {
+        border-style: dashed !important;
+        background: var(--warning-soft) !important;
+      }
+
+      .table-wrap {
+        margin-top: 18px;
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+      }
+
+      table {
+        width: 100%;
+        min-width: 760px;
+        border-collapse: collapse;
+        background: var(--surface);
+      }
+
+      th,
+      td {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        background: #eef2f0;
+        font-size: 0.84rem;
+        letter-spacing: 0.025em;
+        text-transform: uppercase;
+      }
+
+      tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .status {
+        display: inline-block;
+        border-radius: 999px;
+        padding: 3px 9px;
+        white-space: nowrap;
+        font-size: 0.78rem;
+        font-weight: 750;
+      }
+
+      .good {
+        background: var(--accent-soft);
+        color: var(--accent);
+      }
+
+      .limited {
+        background: var(--warning-soft);
+        color: var(--warning);
+      }
+
+      .reject {
+        background: var(--danger-soft);
+        color: var(--danger);
+      }
+
+      .choice {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 12px;
+        align-items: start;
+        padding: 18px 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .choice:last-child {
+        border-bottom: 0;
+      }
+
+      .choice-letter {
+        display: grid;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: var(--accent);
+        color: white;
+        font-weight: 800;
+      }
+
+      .arabic {
+        direction: rtl;
+        font-family: Tahoma, Arial, sans-serif;
+        text-align: right;
+      }
+
+      .arabic p,
+      .arabic li {
+        max-width: none;
+      }
+
+      .sources {
+        columns: 2 320px;
+        column-gap: 36px;
+      }
+
+      .sources li {
+        break-inside: avoid;
+      }
+
+      footer {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      footer p:last-child {
+        margin-bottom: 0;
+      }
+
+      @media (max-width: 780px) {
+        .key-points > div,
+        .use-list {
+          grid-template-columns: 1fr;
+        }
+
+        .diagram {
+          grid-template-columns: 1fr;
+        }
+
+        .arrow {
+          transform: rotate(90deg);
+        }
+      }
+
+      @media print {
+        body {
+          background: white;
+          font-size: 11pt;
+        }
+
+        .page {
+          width: 100%;
+          margin: 0;
+        }
+
+        header,
+        section,
+        footer {
+          break-inside: avoid;
+        }
+
+        a {
+          color: inherit;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header>
+        <span class="badge">Discussion draft — not an approval</span>
+        <h1>Where should UniMind run, and should we use n8n?</h1>
+        <p class="lede">
+          A simple explanation for Ahmed and Ziad. The short answer is that n8n
+          can help with small automation tasks, but it should not be UniMind's
+          main worker, queue authority, or source-processing engine.
+        </p>
+        <div class="meta">
+          <span><strong>Prepared:</strong> 24 August 2026</span>
+          <span><strong>Scope:</strong> Phase 1 hosting and D-17</span>
+          <span><strong>Priority:</strong> external hosting at preferably $0</span>
+        </div>
+      </header>
+
+      <section aria-labelledby="answer-title">
+        <h2 id="answer-title">The answer in one minute</h2>
+        <dl class="key-points">
+          <div>
+            <dt>n8n is a conductor</dt>
+            <dd>
+              It is good at telling other systems when to act. It is not the
+              best place to perform heavy PDF, OCR, audio, embedding, or AI work.
+            </dd>
+          </div>
+          <div>
+            <dt>Hosted n8n costs money</dt>
+            <dd>
+              n8n Cloud starts at €20 per month when billed annually. Its free
+              trial is not a permanent zero-budget host.
+            </dd>
+          </div>
+          <div>
+            <dt>Free n8n still needs a server</dt>
+            <dd>
+              Community Edition is free software, but we must host and maintain
+              it on an external VM. It does not remove the hosting decision.
+            </dd>
+          </div>
+        </dl>
+
+        <div class="callout">
+          <p>
+            <strong>Recommended direction:</strong> keep durable job state in
+            PostgreSQL and run a normal Node.js worker on external compute. Add
+            n8n later only if it makes notifications or simple integrations
+            easier.
+          </p>
+        </div>
+      </section>
+
+      <section aria-labelledby="needs-title">
+        <h2 id="needs-title">What UniMind actually needs</h2>
+        <p>
+          When a student or admin starts work, UniMind must accept the request
+          once and finish it even if a process crashes. It must also prevent
+          duplicate provider charges and preserve audit evidence.
+        </p>
+
+        <div class="diagram" aria-label="Recommended job flow">
+          <div class="node">
+            <div><strong>Next.js application</strong>Accepts the request</div>
+          </div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="node">
+            <div><strong>PostgreSQL jobs</strong>Owns state, leases and audit</div>
+          </div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="node">
+            <div><strong>Node.js worker</strong>Performs and verifies the work</div>
+          </div>
+        </div>
+
+        <div class="diagram" aria-label="Optional n8n role">
+          <div class="node">
+            <div><strong>PostgreSQL event</strong>Contains a safe job ID</div>
+          </div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="node optional">
+            <div><strong>Optional n8n</strong>Routes a simple automation</div>
+          </div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="node">
+            <div><strong>Notification</strong>Email, chat alert or ticket</div>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="why-title">
+        <h2 id="why-title">Why n8n should not be the main engine</h2>
+        <ol>
+          <li>
+            <strong>It does not give us a free external server.</strong> n8n
+            Cloud is hosted but paid. Community Edition is free but needs a VM
+            that we operate.
+          </li>
+          <li>
+            <strong>Production scaling adds more infrastructure.</strong> n8n
+            queue mode normally needs a main n8n process, worker processes,
+            Redis and PostgreSQL. UniMind already needs PostgreSQL and its own
+            workers, so n8n can duplicate the queue and execution layers.
+          </li>
+          <li>
+            <strong>Heavy source processing is a poor fit.</strong> n8n Cloud
+            does not provide the Execute Command node used for native tools.
+            Scaled queue mode also cannot use ordinary filesystem binary storage;
+            n8n's supported S3 external binary storage is an Enterprise feature.
+          </li>
+          <li>
+            <strong>Cloud control is limited.</strong> n8n Cloud does not let
+            us configure queue mode, worker count, worker concurrency, execution
+            timeouts, database backend, or custom node availability.
+          </li>
+          <li>
+            <strong>UniMind still needs its own reliability rules.</strong>
+            n8n retries do not replace job idempotency, leases, heartbeats,
+            budget reservations, deletion verification, provenance or audit.
+          </li>
+          <li>
+            <strong>It can create two sources of truth.</strong> If both n8n and
+            PostgreSQL decide whether a job succeeded, recovery becomes harder.
+            UniMind requires PostgreSQL to be authoritative.
+          </li>
+          <li>
+            <strong>It increases the security surface.</strong> n8n would hold
+            credentials, webhooks and execution records. Its own security audit
+            warns about unprotected webhooks, risky nodes, credentials and
+            outdated instances. This is manageable, but only worth accepting
+            when n8n provides clear value.
+          </li>
+        </ol>
+
+        <div class="callout warning">
+          <p>
+            This does not mean n8n is unreliable or badly designed. It means its
+            main strength—connecting applications through visual workflows—is
+            not UniMind's main technical problem.
+          </p>
+        </div>
+      </section>
+
+      <section aria-labelledby="comparison-title">
+        <h2 id="comparison-title">Direct worker compared with n8n</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Question</th>
+                <th>PostgreSQL + Node worker</th>
+                <th>n8n as the main engine</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Who owns job state?</td>
+                <td>PostgreSQL, matching the approved architecture</td>
+                <td>Can split state between n8n executions and UniMind jobs</td>
+              </tr>
+              <tr>
+                <td>Extra infrastructure</td>
+                <td>Database plus worker host</td>
+                <td>n8n main, n8n workers, Redis, database and worker host</td>
+              </tr>
+              <tr>
+                <td>PDF/audio/native tools</td>
+                <td>Normal container with controlled tools and resources</td>
+                <td>Cloud restrictions or a custom self-hosted image</td>
+              </tr>
+              <tr>
+                <td>Testing</td>
+                <td>TypeScript contracts and behavior tests at one seam</td>
+                <td>Application tests plus exported workflow/version testing</td>
+              </tr>
+              <tr>
+                <td>Migration</td>
+                <td>Move the same worker container to another host</td>
+                <td>Move n8n, Redis, workflows, credentials and workers</td>
+              </tr>
+              <tr>
+                <td>Best use</td>
+                <td>Core product processing and reliability</td>
+                <td>Simple integration, routing and notification workflows</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section aria-labelledby="good-use-title">
+        <h2 id="good-use-title">Where n8n could help later</h2>
+        <ul class="use-list">
+          <li><strong>Notifications</strong>Send an email or team alert when a job fails or needs review.</li>
+          <li><strong>Operational tickets</strong>Create a task from a safe incident event without source content.</li>
+          <li><strong>Simple schedules</strong>Call a reconciliation endpoint by job ID; PostgreSQL still decides the result.</li>
+        </ul>
+        <ul>
+          <li>Pass identifiers and status metadata, not private source text.</li>
+          <li>Give n8n narrowly scoped credentials.</li>
+          <li>Make every call safe to repeat.</li>
+          <li>Allow UniMind to keep operating if n8n is unavailable.</li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="hosting-title">
+        <h2 id="hosting-title">External hosting options considered</h2>
+        <p>
+          “Free” can mean a permanent allowance, a temporary trial, or a service
+          that sleeps. These options are not equal.
+        </p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Option</th>
+                <th>Zero-budget status</th>
+                <th>Simple conclusion</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>OCI Always Free VM</td>
+                <td><span class="status good">Best candidate</span></td>
+                <td>Full Node containers and the strongest free compute, but we manage the server and must test idle recovery.</td>
+              </tr>
+              <tr>
+                <td>Google Cloud Run/Jobs</td>
+                <td><span class="status good">Strong managed option</span></td>
+                <td>Scales to zero and supports containers; billing, egress and wake-up design require care.</td>
+              </tr>
+              <tr>
+                <td>Netlify Background Functions</td>
+                <td><span class="status limited">Light jobs only</span></td>
+                <td>Easy Next.js hosting and 15-minute tasks, but the free account has a shared 300-credit hard limit.</td>
+              </tr>
+              <tr>
+                <td>Trigger.dev</td>
+                <td><span class="status limited">Good prototype</span></td>
+                <td>Managed background tasks with monthly free credits; execution pauses when credit is exhausted.</td>
+              </tr>
+              <tr>
+                <td>AWS Lambda + SQS</td>
+                <td><span class="status limited">Short jobs</span></td>
+                <td>Useful free allowances, but 15-minute and ephemeral-compute limits complicate large files.</td>
+              </tr>
+              <tr>
+                <td>Northflank Sandbox</td>
+                <td><span class="status limited">Phase 1 only</span></td>
+                <td>Always-on sandbox services, but the vendor says the free tier should not be used for production.</td>
+              </tr>
+              <tr>
+                <td>Cloudflare Workers + Queues</td>
+                <td><span class="status limited">Dispatcher only</span></td>
+                <td>Good for small messages and wake-ups; the free Worker CPU limit is too small for source processing.</td>
+              </tr>
+              <tr>
+                <td>Supabase Edge Functions</td>
+                <td><span class="status limited">Dispatcher only</span></td>
+                <td>Convenient near the database but limited to 150 seconds, 2 CPU seconds and 256 MB on Free.</td>
+              </tr>
+              <tr>
+                <td>Supabase Queues / pgmq</td>
+                <td><span class="status limited">Transport only</span></td>
+                <td>A useful Postgres-native queue, but it does not run worker code and may be unnecessary at first.</td>
+              </tr>
+              <tr>
+                <td>Upstash QStash</td>
+                <td><span class="status limited">Transport only</span></td>
+                <td>Delivers HTTP messages but still needs an external worker endpoint.</td>
+              </tr>
+              <tr>
+                <td>Inngest</td>
+                <td><span class="status limited">Orchestration</span></td>
+                <td>Good durable workflow features, but introduces another execution model and still needs deployed compute.</td>
+              </tr>
+              <tr>
+                <td>Vercel Hobby</td>
+                <td><span class="status limited">Web/light jobs</span></td>
+                <td>Excellent Next.js host, but not a heavy worker and Hobby has personal-use constraints.</td>
+              </tr>
+              <tr>
+                <td>Render or Koyeb Free</td>
+                <td><span class="status reject">Not suitable</span></td>
+                <td>Free services sleep, and their free tiers do not provide a dependable background worker.</td>
+              </tr>
+              <tr>
+                <td>Railway or Fly.io free offers</td>
+                <td><span class="status reject">Trial/tiny credit</span></td>
+                <td>Not enough permanent free capacity for UniMind's worker.</td>
+              </tr>
+              <tr>
+                <td>GitHub Actions</td>
+                <td><span class="status reject">CI only</span></td>
+                <td>Useful for tests and deployments; scheduled work can be delayed or dropped.</td>
+              </tr>
+              <tr>
+                <td>Founder computer</td>
+                <td><span class="status reject">Rejected</span></td>
+                <td>Stops when the computer or connection is off and violates the approved architecture.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section aria-labelledby="proposal-title">
+        <h2 id="proposal-title">Proposed zero-budget starting point</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Part</th>
+                <th>Candidate</th>
+                <th>Reason</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Database and Auth</td>
+                <td>Two Supabase Free projects</td>
+                <td>One isolated project for preview and one for beta</td>
+              </tr>
+              <tr>
+                <td>Durable queue authority</td>
+                <td>PostgreSQL jobs table</td>
+                <td>No extra vendor; matches UniMind's approved state model</td>
+              </tr>
+              <tr>
+                <td>Preview worker</td>
+                <td>OCI A1 VM, 1 OCPU / 6 GB</td>
+                <td>Full Node.js container with useful memory at $0</td>
+              </tr>
+              <tr>
+                <td>Beta worker</td>
+                <td>Separate OCI A1 VM, 1 OCPU / 6 GB</td>
+                <td>Environment isolation and no founder-computer dependency</td>
+              </tr>
+              <tr>
+                <td>Web tier</td>
+                <td>OCI AMD micro VMs or a measured free web host</td>
+                <td>Keep worker memory for processing and preserve two environments</td>
+              </tr>
+              <tr>
+                <td>n8n</td>
+                <td>Not installed in Phase 1</td>
+                <td>Add only when a real notification/integration need justifies it</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout danger">
+          <p>
+            This is a candidate, not a promise that the beta can run at $0. OCI
+            capacity, idle reclamation, ARM64 compatibility, backups, recovery
+            and the frozen 100-student workload must pass before approval.
+          </p>
+        </div>
+      </section>
+
+      <section aria-labelledby="choices-title">
+        <h2 id="choices-title">Choices for Ahmed and Ziad</h2>
+        <div class="choice">
+          <div class="choice-letter">A</div>
+          <div>
+            <h3>OCI candidate without n8n — recommended</h3>
+            <p>Lowest cash cost and least duplicated infrastructure. More server work for the team.</p>
+          </div>
+        </div>
+        <div class="choice">
+          <div class="choice-letter">B</div>
+          <div>
+            <h3>OCI worker, then optional n8n</h3>
+            <p>Build the core worker first. Add n8n in Phase 8 only for alerts or integrations that clearly save work.</p>
+          </div>
+        </div>
+        <div class="choice">
+          <div class="choice-letter">C</div>
+          <div>
+            <h3>Managed hosting with a small budget</h3>
+            <p>Pay for convenience and lower operational effort if the free candidate fails reliability or load testing.</p>
+          </div>
+        </div>
+
+        <h3>Questions to settle together</h3>
+        <ol>
+          <li>Are both owners willing to maintain external Linux VMs to keep the cash cost near zero?</li>
+          <li>Can both owners accept that a free host may be interrupted and require automated recovery?</li>
+          <li>Who will own security updates, alerts, backups and recovery?</li>
+          <li>What small monthly amount becomes acceptable if the $0 candidate fails the load gate?</li>
+          <li>Is there a specific notification or integration that already justifies adding n8n?</li>
+        </ol>
+      </section>
+
+      <section class="arabic" lang="ar" aria-labelledby="arabic-title">
+        <h2 id="arabic-title">الخلاصة بالمصري</h2>
+        <p>
+          n8n مش وحش، بس هو أنسب كمنسّق بين خدمات مختلفة، مش كالسيرفر الأساسي
+          اللي هيشغّل معالجة ملفات الـ PDF والصوت والـ OCR والـ AI.
+        </p>
+        <ul>
+          <li>n8n Cloud مدفوع، فمش هيحقق هدف ميزانية صفر.</li>
+          <li>النسخة المجانية محتاجة سيرفر خارجي برضه، يعني مشكلة الاستضافة لسه موجودة.</li>
+          <li>علشان n8n يشتغل بشكل قابل للتوسع هنحتاج n8n رئيسي وworkers وRedis وPostgreSQL.</li>
+          <li>UniMind محتاج PostgreSQL يفضل هو المصدر الأساسي لحالة كل job والتكلفة والـ audit.</li>
+          <li>الأفضل نعمل Node.js worker مباشر، ونضيف n8n بعدين لو احتجناه للإشعارات أو ربط خدمات بسيطة.</li>
+        </ul>
+        <p>
+          الاختيار المقترح للنقاش: نجرب OCI Always Free كاستضافة خارجية، من غير
+          الاعتماد على أجهزة أحمد أو زياد، ونوافق عليه نهائيًا بس بعد اختبارات
+          التحمل والاسترجاع وتشغيل الجهازين وهما مقفولين.
+        </p>
+      </section>
+
+      <section aria-labelledby="sources-title">
+        <h2 id="sources-title">Sources checked</h2>
+        <ul class="sources">
+          <li><a href="https://n8n.io/pricing/">n8n plans and pricing</a></li>
+          <li><a href="https://support.n8n.io/article/n-8-n-cloud-subscription-features-per-tier">n8n Cloud configuration limits</a></li>
+          <li><a href="https://docs.n8n.io/hosting/scaling/queue-mode/">n8n queue mode architecture</a></li>
+          <li><a href="https://docs.n8n.io/hosting/scaling/external-storage/">n8n external binary storage</a></li>
+          <li><a href="https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.executecommand/">n8n Execute Command availability and security</a></li>
+          <li><a href="https://docs.n8n.io/hosting/securing/security-audit/">n8n security audit</a></li>
+          <li><a href="https://docs.oracle.com/en-us/iaas/Content/FreeTier/freetier_topic-Always_Free_Resources.htm">OCI Always Free resources</a></li>
+          <li><a href="https://supabase.com/pricing">Supabase pricing and Free limits</a></li>
+          <li><a href="https://supabase.com/docs/guides/queues">Supabase Queues</a></li>
+          <li><a href="https://docs.cloud.google.com/free/docs/free-cloud-features">Google Cloud Free Tier</a></li>
+          <li><a href="https://www.netlify.com/pricing/">Netlify pricing</a></li>
+          <li><a href="https://trigger.dev/pricing">Trigger.dev pricing</a></li>
+          <li><a href="https://aws.amazon.com/lambda/pricing/">AWS Lambda pricing</a></li>
+          <li><a href="https://developers.cloudflare.com/workers/platform/pricing/">Cloudflare Workers pricing</a></li>
+          <li><a href="https://northflank.com/docs/v1/application/billing/pricing-on-northflank">Northflank free tier</a></li>
+        </ul>
+      </section>
+
+      <footer>
+        <p>
+          This report supports discussion. It does not approve D-17, provision
+          infrastructure, enable a provider, process real data, or authorize
+          spending.
+        </p>
+        <p>
+          Project authorities:
+          <a href="../docs/plans/poc-master-plan.md">PoC master plan</a> ·
+          <a href="../docs/decisions/d-17-queue-worker-host.md">D-17 decision record</a> ·
+          <a href="../docs/runbooks/poc-execution-runbook.md">execution runbook</a>
+        </p>
+      </footer>
+    </main>
+  </body>
+</html>

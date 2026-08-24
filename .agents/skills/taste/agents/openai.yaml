@@ -1,0 +1,7 @@
+interface:
+  display_name: "Taste"
+  short_description: "Direct visitor-facing marketing UI"
+  default_prompt: "Use $taste to design this visitor-facing marketing surface."
+
+policy:
+  allow_implicit_invocation: false

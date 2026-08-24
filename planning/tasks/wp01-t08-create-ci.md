@@ -16,7 +16,7 @@
 
 ## Execution contract
 
-**Dependencies:** WP01-T04 through WP01-T07 reviewed PASS; approved repository/branch-protection authority for external GitHub settings.
+**Dependencies:** WP01-T04 through WP01-T07 reviewed PASS, including hosted CI isolation; approved repository/branch-protection authority for external GitHub settings.
 
 **Inputs:** Runbook WP01-T08; exact package manager/runtime; versioned migrations/seed/types; all test-layer scripts; synthetic environment profile.
 
@@ -30,7 +30,7 @@
 
 **Rollback:** Disable/revert the future workflow and preserve required branch protections unless an authorized owner changes them.
 
-**Hard stop:** Do not publish an unverified workflow, grant write permissions by default, cache secrets/private data, invent action SHAs, alter branch protection without authority, or claim the database security gate before WP01-T04/T07 pass.
+**Hard stop:** Do not publish an unverified workflow, grant write permissions by default, cache secrets/private data, reset development/preview/beta from CI, invent action SHAs, alter branch protection without authority, or claim the database security gate before WP01-T04/T07 pass.
 
 ## Steps
 
@@ -44,10 +44,10 @@
 
 **Changed:** No workflow authored; its exact dependency and external review boundaries are recorded.
 
-**Commands:** NOT RUN because the versioned local database, Auth, and complete test-layer commands are blocked upstream.
+**Commands:** NOT RUN because the versioned hosted CI database/Auth isolation and complete test-layer commands are blocked upstream.
 
 **Remaining:** Entire WP01-T08 implementation after WP01-T07 PASS plus an authorized external run.
 
-**Next safe action:** Complete the local database/Auth/test chain; then author CI from the proven command contract.
+**Next safe action:** Complete the hosted development/CI database/Auth/test chain; then author CI from the proven guarded command contract.
 
 **Reviewer action:** Assign before external publication; migration/RLS/security changes retain independent review.

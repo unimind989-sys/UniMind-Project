@@ -9,6 +9,7 @@ This directory holds structured work in progress. It is durable coordination sta
 - `cohort-selection-review.md` — the exact human inputs and scoring contract needed to finish D-01, D-02, and D-03.
 - `raw-data-policy-review.md` — the exact human inputs needed to approve D-10, D-19, and real-data lifecycle values.
 - `provider-budget-review.md` — the exact human inputs needed to approve D-04/D-05 and any paid-provider profile.
+- `d-17-hosting-options-discussion.html` — a bilingual discussion brief comparing n8n and external queue/worker-host candidates; it does not approve D-17.
 - `agent-operability-audit.md` — current proof and remaining gaps against the agent-first repository goal.
 - Controlled CSV/YAML inputs copied from `docs/templates/`; their owning task replaces placeholders with reviewed values.
 

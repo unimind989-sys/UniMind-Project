@@ -1,0 +1,7 @@
+interface:
+  display_name: "Image to Code"
+  short_description: "Implement a selected visual reference faithfully"
+  default_prompt: "Use $image-to-code to implement this selected screenshot or mockup and verify the rendered match."
+
+policy:
+  allow_implicit_invocation: true

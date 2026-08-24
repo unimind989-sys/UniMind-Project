@@ -1,0 +1,7 @@
+interface:
+  display_name: "Awesome DESIGN.md"
+  short_description: "Consult pinned brand design references"
+  default_prompt: "Use $awesome-design-md to compare a selected brand reference with this UI direction."
+
+policy:
+  allow_implicit_invocation: false

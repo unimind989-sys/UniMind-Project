@@ -79,3 +79,33 @@ This log records evidence-based changes to repo-scoped skills. It is not a recor
 - **Change:** Vendored the rules at a fixed commit, removed runtime fetching, made the standalone skill manual-only, and integrated the same snapshot into Impeccable's web audit.
 - **Validation:** Manual invocation policy, local rules reference, no runtime URL fetch, and duplicate-report avoidance case in `EVALS.md`.
 - **Upstream:** Vercel Web Interface Guidelines commit `e3d624baaf29dc1fc645aff3e38f03e564d2d6b1`.
+
+## 2026-08-24 — Visual reference and browser toolchain
+
+### `taste`
+
+- **Evidence:** Ahmed explicitly requested Taste integration, while the upstream skill excludes dashboards and multi-step product UI and UniMind already routes those surfaces through Impeccable.
+- **Change:** Vendored the full pinned skill, made invocation manual-only, limited it to visitor-facing marketing surfaces, and kept project authority plus rendered standards verification above aesthetic defaults.
+- **Validation:** Manual invocation policy, product-screen non-trigger case, source license, and repository skill validation.
+- **Upstream:** Taste Skill commit `72e299530e2eb31ed8da06181bc19f6c18a00821`.
+
+### `awesome-design-md`
+
+- **Evidence:** Ahmed requested the reference library, but automatically copying another brand's design system would invent UniMind decisions and conflict with the root `DESIGN.md` lifecycle.
+- **Change:** Vendored the complete pinned library behind a manual skill that requires a selected reference, reads only that branch, separates transferable principles from brand identity, and records only confirmed UniMind decisions.
+- **Validation:** Manual invocation policy, all 74 reference directories present, local references, source license, and repository skill validation.
+- **Upstream:** Awesome DESIGN.md commit `8147538b4226ae41e2487a9179e3bcc1f68e8554`.
+
+### `image-to-code`
+
+- **Evidence:** A faithful screenshot workflow needs a selected image and rendered comparison, while Agency OS assumes sibling image-generation skills and a website-only workflow that UniMind does not install.
+- **Change:** Kept the compact analysis/build/verification workflow, required an unambiguous selected image, routed written briefs to Impeccable, preserved UniMind product boundaries, and made project-pinned browser comparison part of completion.
+- **Validation:** Selected-image trigger and missing-image stop cases, checklist link resolution, source license, and repository skill validation.
+- **Upstream:** Agency OS commit `87d202e56939ad9889960a96796fc33bb76c5de0`.
+
+### `playwright-cli`
+
+- **Evidence:** Playwright Test was already pinned for repeatable E2E tests, but Ahmed requested Microsoft's separate agent CLI for interactive browser work.
+- **Change:** Added exact package `@playwright/cli@0.1.18` and its byte-compatible skill/references. Always-on project rules require the local `pnpm browser:cli` wrapper, isolate credential-bearing artifacts under ignored `.playwright-cli/`, and keep Playwright Test as the automated gate without breaking the CLI's built-in skill drift check. The wrapper disables the mutable update notifier because upgrades are reviewed and pinned.
+- **Validation:** Local CLI version/help, automatic browser-task trigger, storage-state safety boundary, source license, and repository skill validation.
+- **Upstream:** Playwright CLI commit `2f85a94b7b885dbf4a5d34462f253a8746a690c9`.

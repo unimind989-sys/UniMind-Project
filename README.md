@@ -37,7 +37,7 @@ This repository contains the source-of-truth plan, executable delivery runbook, 
 ├── scripts/          # Zero-cost repository checks and local automation.
 ├── src/              # Next.js routes plus domain/application/adapter modules.
 ├── workers/          # Durable worker composition roots.
-├── supabase/         # Versioned local database configuration and migrations.
+├── supabase/         # Versioned hosted Supabase configuration and migrations.
 ├── tests/            # Unit, integration, security, E2E, load, and synthetic fixtures.
 ├── package.json      # Exact toolchain, commands, and dependency contract.
 ├── CONTRIBUTING.md   # Human/agent setup, operation, troubleshooting, and handoff.

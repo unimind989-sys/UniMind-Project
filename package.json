@@ -20,12 +20,13 @@
     "test:integration": "vitest run tests/integration --passWithNoTests",
     "test:security": "vitest run tests/security --passWithNoTests",
     "test:e2e": "playwright test",
+    "browser:cli": "node scripts/run-playwright-cli.mjs",
     "test:eval": "vitest run evals --passWithNoTests",
     "test:load": "vitest run tests/load --passWithNoTests",
-    "db:start": "supabase start",
-    "db:stop": "supabase stop",
-    "db:reset": "supabase db reset",
-    "db:types": "supabase gen types typescript --local --schema public > src/types/database.generated.ts",
+    "db:reset": "tsx scripts/run-hosted-supabase.ts reset",
+    "db:migrations": "tsx scripts/run-hosted-supabase.ts migrations",
+    "db:push:dry-run": "tsx scripts/run-hosted-supabase.ts push-dry-run",
+    "db:types": "tsx scripts/run-hosted-supabase.ts types",
     "db:types:check": "git diff --exit-code -- src/types/database.generated.ts",
     "test:env-build": "tsx scripts/build-with-safe-env.ts",
     "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm check:boundaries && pnpm test:unit && pnpm test:env-build"
@@ -40,6 +41,7 @@
     "zod": "4.4.3"
   },
   "devDependencies": {
+    "@playwright/cli": "0.1.18",
     "@playwright/test": "1.62.1",
     "@types/node": "24.13.3",
     "@types/react": "19.2.18",

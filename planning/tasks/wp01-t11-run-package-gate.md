@@ -44,10 +44,10 @@
 
 **Changed:** No gate started; the complete prerequisite and evidence contract is recorded.
 
-**Commands:** NOT RUN because WP01-T04/T05/T07/T08/T09/T10 remain blocked on the local container and downstream external prerequisites.
+**Commands:** NOT RUN because WP01-T04/T05/T07/T08/T09/T10 remain blocked on hosted development/CI provisioning and downstream external prerequisites.
 
 **Remaining:** Entire package gate after every upstream task passes.
 
-**Next safe action:** Resume WP01-T04 after Ahmed confirms the BIOS/WSL2/Docker setup stages; do not advance to WP02.
+**Next safe action:** Resume WP01-T04 after Ahmed supplies or authorizes the approved hosted development and isolated CI targets; do not advance to WP02.
 
 **Reviewer action:** Assign independent reviewers before database/security/preview evidence is evaluated.

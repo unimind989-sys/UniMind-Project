@@ -4,6 +4,8 @@
 
 This is the complete human-input list for D-04/D-05. Agents own validation, calculations, configuration, tests, and evidence after these inputs exist.
 
+**Recorded partial owner guidance (Ahmed, 2026-08-23):** Prefer free tiers and minimize total PoC cost, but zero spend is not a hard requirement. Propose paid capacity only when its benefit to required correctness, safety, reliability, or usability is clear. This does not supply or approve any cap below.
+
 | Input | Required form |
 | --- | --- |
 | Decision deadlines | `YYYY-MM-DD` for D-04 and D-05 |

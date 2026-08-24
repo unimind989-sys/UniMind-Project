@@ -16,6 +16,8 @@ Codex can use a repository skill in two ways:
 | `$wait-what` | The previous assistant message did not make sense or skipped context. | `$wait-what` |
 | `$blast-radius` | A change is ready or nearly ready and you want proof of what it could break outside the diff. Include a branch, commit, or fixed point. | `$blast-radius Review this branch against main and prove whether the RLS change is safe.` |
 | `$web-design-guidelines` | You want a separate Vercel-only review of selected UI files. Impeccable already uses these rules during its normal web audit. | `$web-design-guidelines Review app/(student)/studio/page.tsx and its components.` |
+| `$taste` | You explicitly want a stronger direction for a visitor-facing marketing or landing page. It is excluded from UniMind app screens. | `$taste Design the public beta waitlist page for prospective students.` |
+| `$awesome-design-md` | You want to consult one named brand reference before confirming a visual direction. | `$awesome-design-md Compare the Linear and Notion references for this student workspace; do not adopt either yet.` |
 
 ## Skills that normally activate automatically
 
@@ -32,6 +34,8 @@ Codex can use a repository skill in two ways:
 | `writing-for-agents` | A skill, `AGENTS.md`, or another agent-facing instruction is being edited. | `$writing-for-agents Tighten these code-review instructions.` |
 | `skill-maintainer` | Your feedback or a demonstrated workflow failure exposes a repeatable problem in a repo skill. It announces itself before editing. | `$skill-maintainer The TDD skill keeps asking me to confirm obvious seams. Adapt it based on our last two tasks.` |
 | `impeccable` | You ask to design, redesign, critique, audit, or visually refine a frontend surface. | `$impeccable shape the student curriculum-unit workspace.` |
+| `image-to-code` | You provide or select a screenshot, mockup, or generated visual and ask for a faithful implementation. | `$image-to-code Implement this selected desktop mockup and verify it at the matching viewport plus mobile.` |
+| `playwright-cli` | A web task needs interactive exploration, rendered inspection, screenshots, traces, locator discovery, or Playwright test debugging. | `$playwright-cli Verify the curriculum-unit flow and capture any console or request failures.` |
 
 ## Common flows
 
@@ -68,10 +72,13 @@ Use the smallest useful flow. Do not invoke every skill for every task.
 ### UI design
 
 1. Run `$impeccable init` once when UI work begins. It reads the repository first, then asks only for missing durable product facts and creates `PRODUCT.md`.
-2. Use `$impeccable shape <surface>` when the workflow or visual direction needs a decision before implementation. Use a normal build request when the brief is already clear.
-3. Let Impeccable choose the surface mode. UniMind app screens normally use **Operate**; a marketing page uses **Persuade**; documentation uses **Read**.
-4. After real visual decisions or code exist, use `$impeccable document` to create or refresh root `DESIGN.md`. Do not create fake tokens before that point.
-5. Use `$impeccable audit <target>` for the integrated technical review. It includes the pinned Vercel guidelines. Call `$web-design-guidelines <target>` only for a separate Vercel-only report.
+2. Use `$awesome-design-md` only when you want to inspect one named reference before deciding. A library file is inspiration, not UniMind's root design authority.
+3. Use `$impeccable shape <surface>` when the workflow or visual direction needs a decision before implementation. Use `$taste` only for an explicitly requested visitor-facing marketing surface.
+4. When a screenshot, mockup, or generated reference is selected, `image-to-code` measures and implements it without inventing missing product behavior.
+5. Let Impeccable choose the surface mode. UniMind app screens normally use **Operate**; a marketing page uses **Persuade**; documentation uses **Read**.
+6. After real visual decisions or code exist, use `$impeccable document` to create or refresh root `DESIGN.md`. Do not create fake tokens before that point.
+7. Use the project-pinned Playwright CLI for rendered interaction and visual checks; keep `pnpm test:e2e` as the repeatable E2E gate.
+8. Use `$impeccable audit <target>` for the integrated technical review. It includes the pinned Vercel guidelines. Call `$web-design-guidelines <target>` only for a separate Vercel-only report.
 
 The deterministic Impeccable edit hook is not enabled during planning. Without the hook, Impeccable runs its detector explicitly during its finish workflow. Add the hook later only after reviewing it and approving it through Codex's `/hooks` screen.
 

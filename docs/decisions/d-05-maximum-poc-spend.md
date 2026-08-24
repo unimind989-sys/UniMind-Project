@@ -10,11 +10,15 @@
 
 **Last reviewed:** NOT RECORDED
 
+**Owner guidance recorded:** Ahmed, 2026-08-23 — minimize total PoC cost, but do not treat zero spend as a hard requirement.
+
 **Blocks:** WP04-T05 (paid), WP04-T06 (paid), WP04-T10 (paid), WP06-T05 (paid), WP07-T03 (paid), WP09-T01, WP09-T03, WP11-T01
 
 ## Context
 
 PostgreSQL is authoritative for budgets, reservations, provider attempts, usage, and settlement. Exact nonzero caps, canonical currency, conversion evidence, enablement approvers, and alert recipients are not approved. The safe profile therefore has zero paid capacity.
+
+Ahmed's current cost direction is to prefer free tiers and the lowest practical cost while preserving the required correctness, safety, reliability, and usability. A paid service may be proposed when it has a clear benefit over the free alternative. This direction is not an approved amount, provider, purchase, or live-enablement decision; the exact caps and two-person approvals below remain open.
 
 ## Non-negotiable requirements
 

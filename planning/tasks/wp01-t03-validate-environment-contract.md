@@ -48,6 +48,6 @@
 
 **Remaining:** NONE for WP01-T03.
 
-**Next safe action:** Claim WP01-T04 and start the versioned local Supabase foundation after confirming Docker and the pinned CLI are healthy.
+**Next safe action:** Claim WP01-T04 after approved hosted development/CI resources and scoped access are available; use the pinned CLI and guarded hosted commands.
 
 **Reviewer action:** PASS — classification, fail-closed provider authorization, non-disclosing errors, synthetic production build, ignored local secrets, candidate diff, and fresh-agent handoff reviewed.

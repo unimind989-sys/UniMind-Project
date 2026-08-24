@@ -6,11 +6,12 @@ import { parseServerEnvironment } from "../src/lib/config/env.schema";
 const syntheticCredential = ["synthetic", "ci", "credential", "only"].join("-");
 const safeEnvironment = {
   NODE_ENV: "production",
-  NEXT_PUBLIC_SUPABASE_URL: "http://127.0.0.1:54321",
+  NEXT_PUBLIC_SUPABASE_URL: "https://synthetic.supabase.invalid",
   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: syntheticCredential,
   NEXT_PUBLIC_RELEASE_ID: "ci-verification",
   NEXT_PUBLIC_TELEMETRY_ENABLED: "false",
-  DATABASE_URL: "postgresql://synthetic:synthetic@127.0.0.1:54322/synthetic_ci",
+  DATABASE_URL:
+    "postgresql://synthetic:synthetic@db.synthetic.invalid:5432/synthetic_ci",
   SUPABASE_SERVICE_ROLE_KEY: syntheticCredential,
   RAW_STORAGE_CREDENTIAL: syntheticCredential,
   PROCESSED_STORAGE_CREDENTIAL: syntheticCredential,

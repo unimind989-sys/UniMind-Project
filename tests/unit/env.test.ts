@@ -11,11 +11,12 @@ const syntheticCredential = ["synthetic", "test", "credential"].join("-");
 
 function validEnvironment(): Record<string, string> {
   return {
-    NEXT_PUBLIC_SUPABASE_URL: "http://127.0.0.1:54321",
+    NEXT_PUBLIC_SUPABASE_URL: "https://synthetic.supabase.invalid",
     NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: syntheticCredential,
     NEXT_PUBLIC_RELEASE_ID: "unit-test",
     NEXT_PUBLIC_TELEMETRY_ENABLED: "false",
-    DATABASE_URL: "postgresql://synthetic:synthetic@127.0.0.1:54322/test",
+    DATABASE_URL:
+      "postgresql://synthetic:synthetic@db.synthetic.invalid:5432/test",
     SUPABASE_SERVICE_ROLE_KEY: syntheticCredential,
     RAW_STORAGE_CREDENTIAL: syntheticCredential,
     PROCESSED_STORAGE_CREDENTIAL: syntheticCredential,
@@ -45,7 +46,7 @@ describe("environment contract", () => {
 
   it("parses the browser-safe subset", () => {
     expect(parseClientEnvironment(validEnvironment())).toEqual({
-      NEXT_PUBLIC_SUPABASE_URL: "http://127.0.0.1:54321",
+      NEXT_PUBLIC_SUPABASE_URL: "https://synthetic.supabase.invalid",
       NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: syntheticCredential,
       NEXT_PUBLIC_RELEASE_ID: "unit-test",
       NEXT_PUBLIC_TELEMETRY_ENABLED: false,

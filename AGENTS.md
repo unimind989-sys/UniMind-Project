@@ -37,7 +37,9 @@
 
 ## UI design and product experience
 
+- Follow `docs/agents/ui-design-stack.md` to route UI direction, selected visual references, image-to-code work, rendered browser verification, and standards review without overlapping roles.
 - Use the repo-scoped `impeccable` skill for new UI, redesigns, design critique, and visual refinement. Treat application surfaces as **Operate** mode unless the requested surface has a different visitor goal.
+- Run Playwright CLI through the project pin with `pnpm browser:cli <command>`; use synthetic state, keep browser artifacts under ignored `.playwright-cli/` unless sanitizing named evidence, and treat saved storage state as credentials. Playwright Test remains the repeatable E2E gate.
 - Read root `DESIGN.md` before UI work once it exists. Until real visual decisions exist, do not invent design tokens, brand claims, colors, typefaces, or component rules merely to fill a template.
 - `PRODUCT.md` is a compact design-workflow record used by Impeccable. It may summarize and link to confirmed facts, but `docs/plans/poc-master-plan.md`, the execution runbook, `CONTEXT.md`, and approved decisions remain authoritative.
 - Impeccable's web audit includes the repository's pinned Vercel Web Interface Guidelines. Use `$web-design-guidelines` only when the user wants a separate Vercel-only review.

@@ -12,7 +12,7 @@
 
 **Branch:** `main` (no delivery branch requested)
 
-**Updated (UTC):** 2026-08-20
+**Updated (UTC):** 2026-08-23
 
 ## Execution contract
 
@@ -36,17 +36,18 @@
 
 - [~] Create truthful OPEN D-04/D-05 records and the zero-cost-by-default contract; ready for review.
 - [~] Define reservation, settlement, thresholds, kill-switch, and zero-cost smoke behavior; ready for review.
+- [~] Record Ahmed's partial cost direction: minimize cost, but do not treat zero spend as a hard requirement; exact caps remain open.
 - [?] Receive canonical currency, every nonzero cap, approvers/reviewer, alert channels, and live confirmation profile.
 - [?] Benchmark rights-approved provider candidates against frozen evaluation data.
 - [?] Approve D-04/D-05 and create candidate-SHA evidence with independent budget review.
 
 ## Handoff
 
-**Changed:** Added fail-closed provider gates, zero-cost mocks, budget state-machine rules, D-04/D-05 records, and one owner-input packet.
+**Changed:** Added fail-closed provider gates, zero-cost mocks, budget state-machine rules, D-04/D-05 records, one owner-input packet, and Ahmed's partial direction to minimize cost without making zero spend mandatory.
 
-**Commands:** Work-state recommends WP00-T07. Readiness passed with 53 governed names, 26 local links, 20 synchronized decisions, and 102 task contracts. The isolated committed-snapshot handoff reproduced WP00-T07 with five durable active records; `git diff --check` passed.
+**Commands:** Agent readiness passed with 79 governed names, 31 local links, 20 synchronized decisions, and 102 task contracts. The isolated committed-snapshot handoff passed with 13 durable active records; `git diff --check` passed, and the three changed Markdown files contained no secret-like value.
 
-**Remaining:** Human budget/provider values, benchmark evidence, implementation, two-person review, and commit-specific evidence.
+**Remaining:** Exact human budget/provider values, benchmark evidence, implementation, two-person review, and commit-specific evidence. The cost preference is recorded but is not a numeric cap or paid-enablement approval.
 
 **Next safe action:** Owners can fill `planning/provider-budget-review.md`; an agent can advance the next selector-recommended task without enabling paid work.
 

@@ -6,7 +6,7 @@
 
 **Outcome:** Browser and server Supabase clients refresh authenticated sessions safely while privileged keys remain server-only and forged state fails.
 
-**Owner:** Codex `/root` after WP01-T04 PASS
+**Owner:** Codex `/root` after hosted WP01-T04 PASS
 
 **Reviewer:** UNASSIGNED — GATE BLOCKED
 
@@ -16,7 +16,7 @@
 
 ## Execution contract
 
-**Dependencies:** WP01-T04 reviewed PASS with a resettable local Auth/database stack and stable generated types.
+**Dependencies:** WP01-T04 reviewed PASS with an isolated resettable hosted development Auth/database target and stable generated types.
 
 **Inputs:** Runbook WP01-T05; environment contract; current Supabase SSR cookie API; synthetic users only.
 
@@ -30,7 +30,7 @@
 
 **Rollback:** Revert the future WP01-T05 candidate and disable its auth refresh seam; no real account or shared environment may be used.
 
-**Hard stop:** Do not implement against guessed local behavior, use a real student/account, expose a service-role key, weaken cookie verification, or claim integration behavior before WP01-T04 passes.
+**Hard stop:** Do not implement against guessed hosted behavior, use a real student/account, expose a service-role key, target preview/beta, weaken cookie verification, or claim integration behavior before WP01-T04 passes.
 
 ## Steps
 
@@ -44,10 +44,10 @@
 
 **Changed:** No Auth/client implementation started; the exact upstream machine/database dependency is recorded.
 
-**Commands:** NOT RUN for WP01-T05 because WP01-T04 is blocked before local Auth exists.
+**Commands:** NOT RUN for WP01-T05 because WP01-T04 is blocked before approved hosted development Auth exists.
 
 **Remaining:** Entire implementation after WP01-T04 PASS.
 
-**Next safe action:** Keep WP01-T05 blocked and select WP01-T06, which can use pure deterministic provider interfaces without Docker or a database.
+**Next safe action:** Keep WP01-T05 blocked until hosted WP01-T04 passes; credential-free deterministic provider-interface work may continue independently.
 
 **Reviewer action:** Assign after WP01-T04 PASS; Auth/security evidence must include client-bundle leakage and forged-state denial.

@@ -72,7 +72,7 @@ A task may be marked complete only when all applicable statements are true:
 
 - [ ] The implementation is committed on a reviewable branch with no unrelated changes.
 - [ ] Lint, type checking, relevant unit/integration/security tests, and the production build pass.
-- [ ] A migration resets successfully from an empty local database and upgrades a populated fixture database.
+- [ ] When database behavior is affected, migrations reset an isolated hosted development/CI target from empty and upgrade a populated synthetic fixture target.
 - [ ] Authorization was tested as an allowed role and at least one forbidden role.
 - [ ] Retryable work was replayed with the same idempotency key and created no duplicate state or charge.
 - [ ] Logs contain the correlation ID and safe diagnostics, but no secret, raw private content, or ordinary chat content.
@@ -137,6 +137,7 @@ The following baseline is authoritative because it is already approved by the ma
 | Business state | PostgreSQL is authoritative for jobs, reservations, budgets, release state, provenance, and audit. |
 | Storage | Private temporary-raw and durable-processed namespaces behind an adapter. |
 | Processing | Independently deployable durable workers with leases, heartbeats, retries, and reconciliation. |
+| Environment hosting | Workstations run development processes and deterministic mocks only; database/Auth for development and CI is hosted and isolated; preview/beta is externally hosted. |
 | AI boundary | Approved uploaded material only; no web-search or outside-answer branch. |
 | Beta | Free controlled beta; no payment receipt or manual payment workflow. |
 
@@ -146,11 +147,11 @@ These are deliberately unresolved and must be closed in work package 0 before th
 | --- | --- | --- |
 | D-01/D-02/D-03 — Exact Human and Veterinary cohorts/institutions | Synthetic catalog fixtures. | Blocks real source processing and invitation. |
 | D-04 — Generation, embedding, OCR, and transcription providers/models | Deterministic mocks. | Blocks paid calls and final embedding schema dimensions. |
-| D-17 — Queue transport and worker host | Database job table plus in-process test dispatcher. | Blocks always-on deployment, not domain implementation. |
+| D-17 — Queue transport and worker host | Database job table plus in-process test dispatcher; founder computers are excluded as worker hosts. | Blocks always-on deployment, not domain implementation. |
 | D-18 — Raw and processed object-storage provider | Filesystem/in-memory test adapter using synthetic data only. | Blocks private source upload. |
 | D-05 — Total/weekly/action budgets | Zero-paid-work feature flags. | Blocks paid provider enablement. |
 | D-08/D-09/D-19 — Retention periods and deletion deadlines | Short synthetic-test values only. | Blocks real user/source data. |
-| D-20 — Notification and incident channels | Local test sink. | Blocks beta go-live. |
+| D-20 — Notification and incident channels | In-process deterministic test sink. | Blocks beta go-live. |
 
 Do not hide one of these choices inside source code. Close it using `docs/templates/decision-record.md`, update the master-plan decision log, and record the configuration key used by the adapter.
 
@@ -160,7 +161,7 @@ Verify these again on the day the foundation is created or upgraded:
 
 - Use Node.js 24 LTS for the initial baseline and pin an exact supported patch in `.nvmrc` and `package.json#engines`. Node.js 20 is end-of-life; do not copy older Next.js tutorials that still select it.
 - Next.js currently requires Node.js 20.9 or newer. Use App Router and the project-local package manager lockfile.
-- Install the Supabase CLI as a pinned development dependency and invoke it as `pnpm supabase`; do not assume a globally installed CLI.
+- Install the Supabase CLI as a pinned development dependency and invoke it as `pnpm supabase`; do not assume a globally installed CLI. D-21 prohibits the CLI's local container stack for this project.
 - New Supabase projects may not expose newly created `public` tables to the Data API automatically. RLS and SQL `GRANT` are separate requirements; test both.
 - Do not pin a version in `CREATE EXTENSION`; Supabase ignores/deprecates explicit extension versions. Record the installed version in evidence instead.
 - Use `@supabase/ssr` for Next.js cookie-based sessions. A publishable key may be public; secret/service-role keys are server-only.
@@ -171,8 +172,8 @@ Authoritative references:
 
 - [Node.js release status](https://nodejs.org/en/about/previous-releases)
 - [Next.js installation and system requirements](https://nextjs.org/docs/app/getting-started/installation)
-- [Supabase CLI local development](https://supabase.com/docs/guides/local-development/cli/getting-started)
-- [Supabase local development workflow](https://supabase.com/docs/guides/local-development/cli-workflows)
+- [Supabase CLI reference](https://supabase.com/docs/reference/cli/introduction)
+- [Supabase deployment and database migrations](https://supabase.com/docs/guides/deployment/database-migrations)
 - [Supabase RLS guidance](https://supabase.com/docs/guides/database/postgres/row-level-security)
 - [Supabase server package selection](https://supabase.com/docs/guides/auth/choosing-a-server-package)
 - [Supabase vector indexes](https://supabase.com/docs/guides/ai/vector-indexes)
@@ -186,7 +187,7 @@ Run these commands from the repository root. Do not continue until every check i
 git --version
 node --version
 corepack --version
-docker version
+corepack pnpm supabase --version
 git status --short
 ```
 
@@ -195,10 +196,10 @@ Expected result:
 - Git is installed.
 - Node begins with `v24.` and is the exact patch recorded in `.nvmrc` once that file exists.
 - Corepack is available.
-- A Docker-compatible engine can run Linux containers for the local Supabase stack.
+- The pinned Supabase CLI is available. Database-backed work additionally requires an approved hosted `development` or `ci` target, network access, and scoped credentials supplied outside version control.
 - `git status --short` is empty or every existing change has a known owner and is outside the intended work.
 
-If Node is missing or wrong, install the approved Node 24 LTS patch using the team's chosen Windows version manager, reopen PowerShell, and repeat the check. If Docker is unavailable, foundation work may continue only on docs/UI mocks; database migrations and RLS tasks remain blocked.
+If Node is missing or wrong, install the approved Node 24 LTS patch using the team's chosen Windows version manager, reopen PowerShell, and repeat the check. Do not install Docker, WSL2, or another local database runtime for UniMind. If an approved hosted synthetic database target or its scoped credentials are unavailable, database migrations, Auth integration, and RLS tasks remain blocked while credential-free unit/UI/mock work may continue.
 
 Then prepare the pinned package manager after `package.json` exists:
 
@@ -219,16 +220,15 @@ For every independently reviewable slice:
 3. Copy the applicable gate template to the evidence folder and leave its status `IN PROGRESS`.
 4. Implement the smallest end-to-end slice, including migration, service, UI, test, and telemetry where applicable.
 5. Run the focused test after each meaningful change.
-6. Before review, run the full local gate:
+6. Before review, run the credential-free merge gate, then the hosted database gate when the slice affects database/Auth behavior:
 
 ```powershell
-pnpm format:check
-pnpm lint
-pnpm typecheck
-pnpm test:unit
+pnpm verify
+pnpm db:reset
+pnpm db:migrations
 pnpm test:integration
 pnpm test:security
-pnpm supabase db reset
+pnpm db:types
 pnpm db:types:check
 pnpm build
 ```
@@ -248,7 +248,7 @@ git diff
 11. The independent reviewer re-runs the security/raw-deletion/release gates where applicable.
 12. Merge only when required checks are green. Never repair preview or beta manually after merge; add a migration/configuration change and redeploy.
 
-If any command above does not exist yet, creating that script is part of work package 1. Before package 1 is complete, `pnpm verify` must run the complete local gate in the correct order.
+`pnpm verify` must remain credential-free, mock-only, and zero paid-provider cost. Hosted database commands require the guarded `development` or `ci` profile and are recorded separately in evidence. If any command above does not exist yet, creating it is part of work package 1.
 
 ### 0.10 Required task record format
 
@@ -593,7 +593,7 @@ Define the reproducible 100-student scenario with exact durations and arrival ra
 
 ## 4. Work package 1: Repository, environments, and delivery controls
 
-**Outcome:** any developer can clone the repository onto a supported workstation, start a deterministic local stack, run mocked end-to-end behavior, reset the database, and pass one verification command. Preview and beta are isolated and deploy from version control.
+**Outcome:** any developer can clone the repository onto a supported workstation, run deterministic local application/mocks, target an approved synthetic hosted development database/Auth environment, reset it safely, and pass the required verification commands. Hosted CI, preview, and beta targets are isolated and deploy from version control.
 
 **Primary artifacts:** root configuration, `src/`, `workers/`, `supabase/`, `.github/workflows/`, `.env.example`, `docs/adr/`, and `evidence/wp01-foundation/`.
 
@@ -626,7 +626,7 @@ pnpm add -D typescript @types/node @types/react @types/react-dom eslint eslint-c
 ```
 
 - [x] After installation, replace `latest` resolution with the exact versions written to `package.json`; every direct dependency is exact.
-- [x] Add `dev`, `build`, `start`, `lint`, `typecheck`, `format`, `format:check`, `test:unit`, `test:integration`, `test:security`, `test:e2e`, `test:eval`, `test:load`, `db:start`, `db:stop`, `db:reset`, `db:types`, `db:types:check`, and `verify` scripts.
+- [x] Add `dev`, `build`, `start`, `lint`, `typecheck`, `format`, `format:check`, `test:unit`, `test:integration`, `test:security`, `test:e2e`, `test:eval`, `test:load`, guarded `db:reset`, `db:migrations`, `db:push:dry-run`, `db:types`, `db:types:check`, and `verify` scripts.
 - [x] Create strict `tsconfig.json`, `next.config.ts`, `eslint.config.mjs`, `.prettierrc.json`, `.prettierignore`, and `next-env.d.ts` using current framework conventions.
 - [x] Set `typescript.strict = true`; build and lint errors remain fatal.
 - [x] Add a minimal `src/app/layout.tsx`, `src/app/page.tsx`, `src/app/loading.tsx`, `src/app/not-found.tsx`, `src/app/global-error.tsx`, and `src/app/globals.css`.
@@ -667,44 +667,45 @@ pnpm build
 - [x] Define `PROVIDER_MODE=mock` as the default and require both a provider-specific enable flag and a nonzero approved budget before a real adapter initializes.
 - [x] Add maximum message length, upload bytes, audio duration, output tokens, request timeout, provider concurrency, retry count, and quota variables with numeric bounds.
 - [x] Add a test that builds with safe CI placeholders and a test that fails on missing, malformed, or accidentally public secret variables.
-- [x] Create `.env.local` manually for local secrets and confirm it is ignored before entering any value.
+- [x] Create `.env.local` manually for workstation application credentials and confirm it is ignored before entering any value. Supply hosted database CLI credentials through the current terminal or approved CI secret store because standalone scripts do not load `.env.local`.
 
 **Pass:** `pnpm test:unit -- env` proves valid, missing, malformed, and forbidden-public cases; `pnpm build` succeeds with safe CI placeholders.
 
-#### WP01-T04 — Start versioned Supabase local development
+#### WP01-T04 — Provision versioned hosted Supabase development and CI
 
-- [?] Confirm Docker is healthy and discover the installed CLI rather than relying on remembered syntax. Blocked by disabled firmware virtualization plus missing WSL2/Docker Desktop; see `planning/tasks/wp01-t04-start-local-supabase.md`.
+- [?] Obtain explicit provisioning authority and signed-in access for a synthetic-only hosted Supabase development target plus a separate hosted CI project or disposable branch. D-21 removes Docker/WSL2/virtualization from the dependency chain; see `planning/tasks/wp01-t04-provision-hosted-supabase.md`.
 
 ```powershell
 pnpm supabase --version
 pnpm supabase --help
 pnpm supabase init
-pnpm supabase start
+pnpm db:push:dry-run
 ```
 
-- [ ] Commit `supabase/config.toml`; keep local generated state and secrets ignored.
-- [ ] Treat the local stack as development-only: do not expose it to the network or place real student/source data in it.
+- [ ] Commit `supabase/config.toml`; keep linked-project state, credentials, connection strings, and generated CLI state ignored.
+- [ ] Record safe project fingerprints and owners in the environment matrix without committing credentials. Development and CI contain synthetic data only and cannot share a target with preview or beta.
 - [ ] Create migrations using `pnpm supabase migration new <descriptive_name>`; do not invent timestamp filenames.
 - [ ] Enable required extensions without an explicit version clause. Begin with `vector`, `pgcrypto`, and only the text-search helper extensions actually used by the selected design.
 - [ ] Keep custom tables/functions out of `auth`, `storage`, and `realtime` schemas.
 - [ ] Add `supabase/seed.sql` containing only synthetic catalog/users/source text and leakage canaries.
-- [ ] Create a reset script that starts the stack if needed, resets migrations/seed, runs database tests, generates types, and reports failure.
-- [ ] Record installed PostgreSQL and extension versions in the foundation evidence.
+- [ ] Use the guarded hosted command wrapper. It accepts only `development` or `ci`, rejects preview/beta, and requires `reset:<environment>:<project-ref>` before a destructive reset.
+- [ ] Create reset automation that applies migrations/seed to the selected isolated hosted target, runs database tests, generates types, and reports failure without printing credentials or connection strings.
+- [ ] Record hosted PostgreSQL and extension versions plus the safe target fingerprint in foundation evidence.
 
 **Verify:**
 
 ```powershell
-pnpm supabase db reset
-pnpm supabase migration list --local
+pnpm db:reset
+pnpm db:migrations
 pnpm db:types
 git diff --exit-code -- src/types/database.generated.ts
 ```
 
-**Pass:** reset works twice in succession; generated types are stable; no dashboard-only schema change is required.
+**Pass:** an isolated hosted development/CI target resets twice in succession; generated types are stable; target guards reject local/preview/beta names; no dashboard-only schema change is required.
 
 #### WP01-T05 — Implement safe Supabase clients and auth refresh
 
-- [?] Create `src/lib/db/supabase/browser.ts` using the publishable key only. Blocked on the reproducible local Auth/database stack in WP01-T04; see `planning/tasks/wp01-t05-implement-safe-supabase-clients.md`.
+- [?] Create `src/lib/db/supabase/browser.ts` using the publishable key only. Blocked on reproducible hosted development Auth/database evidence from WP01-T04; see `planning/tasks/wp01-t05-implement-safe-supabase-clients.md`.
 - [ ] Create `src/lib/db/supabase/server.ts` using `@supabase/ssr` and the current Next.js cookie API.
 - [ ] Create `src/lib/db/supabase/admin.ts` as server-only; expose narrow privileged functions instead of exporting the raw service client widely.
 - [ ] Implement the current Supabase SSR session-refresh pattern in the current Next.js request interception convention. In Next.js 16+, follow the `proxy.ts` convention rather than copying old `middleware.ts` tutorials.
@@ -729,7 +730,7 @@ git diff --exit-code -- src/types/database.generated.ts
 #### WP01-T07 — Create the test layers
 
 - [ ] Unit tests cover pure business rules and validators.
-- [?] Integration tests run against the reset local PostgreSQL/Supabase stack and mock providers. Blocked on WP01-T04; see `planning/tasks/wp01-t07-create-test-layers.md`.
+- [?] Integration tests run against an isolated reset hosted Supabase development/CI target and mock providers. Blocked on WP01-T04; see `planning/tasks/wp01-t07-create-test-layers.md`.
 - [ ] Security tests assume multiple users, cohorts, roles, and source states and assert allowed plus forbidden operations.
 - [ ] End-to-end tests use Playwright with isolated synthetic accounts and deterministic data.
 - [ ] Evaluation tests consume versioned JSONL and emit machine-readable plus Markdown reports.
@@ -745,7 +746,7 @@ git diff --exit-code -- src/types/database.generated.ts
 - [ ] Pin action revisions to immutable commit SHAs or an approved dependency policy.
 - [ ] Use `pnpm install --frozen-lockfile`.
 - [ ] Cache only safe package/build data; never cache `.env`, Supabase credentials, test-user tokens, or private fixtures.
-- [?] Start the local Supabase stack, reset migrations, seed synthetic data, run database/security tests, generate types, and fail on a type diff. Blocked on WP01-T04/T07; see `planning/tasks/wp01-t08-create-ci.md`.
+- [?] Provision or select the isolated hosted CI target, reset migrations, seed synthetic data, run database/security tests, generate types, and fail on a type diff. The workflow must serialize a reusable target or create/dispose an isolated branch per run and must never reset development, preview, or beta. Blocked on WP01-T04/T07; see `planning/tasks/wp01-t08-create-ci.md`.
 - [ ] Run format check, lint, type check, unit/integration/security tests, production build, and a small Playwright smoke suite.
 - [ ] Upload sanitized test/evaluation reports even when a test fails.
 - [ ] Add a secret scan and dependency review appropriate to the repository.
@@ -755,8 +756,9 @@ git diff --exit-code -- src/types/database.generated.ts
 
 #### WP01-T09 — Provision isolated environments
 
-- [ ] Create an environment matrix containing `local`, `preview`, and `beta`; list database project, storage namespaces, worker/queue namespace, callback base URL, secret scope, data classification, and owner.
-- [?] Use separate Supabase projects for preview and beta. A branch schema inside beta is not sufficient isolation for private pilot data. Blocked on the local database/Auth/CI gates and external project provisioning; see `planning/tasks/wp01-t09-provision-isolated-environments.md`.
+- [ ] Create an environment matrix containing workstation development process, hosted `development`, hosted `ci`, hosted `preview`, and hosted `beta`; list database project/branch, storage namespaces, worker/queue namespace, callback base URL, secret scope, data classification, reset permission, and owner.
+- [ ] Prove every database/Auth and preview/beta runtime component is externally hosted and remains operable when Ahmed's and Ziad's computers are off. The optional PC-hosted Telegram bot is noncritical development/test tooling only and is absent from every gate topology.
+- [?] Use separate Supabase projects for preview and beta. A branch schema inside beta is not sufficient isolation for private pilot data. Blocked on the hosted development database/Auth/CI gates and external project provisioning; see `planning/tasks/wp01-t09-provision-isolated-environments.md`.
 - [ ] Use synthetic seed data in preview and rights-approved pilot data only in beta.
 - [ ] Configure unique callback signing secrets and provider budget scopes per environment.
 - [ ] Make preview deployment automatic from pull requests and beta deployment an approved promotion of an already-tested commit.
@@ -764,17 +766,16 @@ git diff --exit-code -- src/types/database.generated.ts
 - [ ] Add a post-deploy smoke that verifies health, login page, one authorized route, one forbidden route, and mock-provider mode in preview.
 - [ ] Document rollback to the prior web/worker deployment and forward-only database recovery.
 
-**Pass:** data, keys, callbacks, jobs, and budgets cannot cross preview/beta; the same commit and migrations can reproduce both.
+**Pass:** data, keys, callbacks, jobs, budgets, and reset permissions cannot cross development/CI/preview/beta; the same commit and migrations can reproduce all hosted targets; no database/Auth, shared environment, or runtime component depends on a founder computer.
 
 #### WP01-T10 — Write the repository operation tutorial
 
-- [x] Add `CONTRIBUTING.md` containing workstation setup, clone, install, local stack, environment, reset, test, branch, PR, migration, and troubleshooting instructions for human and agent executors.
+- [x] Add `CONTRIBUTING.md` containing workstation setup, clone, install, hosted development/CI targeting, environment, guarded reset, test, branch, PR, migration, and troubleshooting instructions for human and agent executors.
 - [x] Add a command table with purpose, paid-call behavior, required services, and expected duration class.
 - [x] Include the normal daily loop:
 
 ```powershell
 pnpm install --frozen-lockfile
-pnpm db:start
 pnpm db:reset
 pnpm dev
 ```
@@ -785,13 +786,12 @@ pnpm dev
 pnpm verify
 git diff --check
 git status --short
-pnpm db:stop
 ```
 
-- [x] Include recovery for occupied ports, stopped Docker, stale generated types, migration drift, invalid env, and a leaked local token.
-- [?] Have a fresh agent follow `CONTRIBUTING.md` on a clean clone without chat history or verbal help; have the reviewer record every ambiguity. Structural rehearsal is ready, but the database/app journey is blocked on WP01-T04; see `planning/tasks/wp01-t10-write-operation-tutorial.md`.
+- [x] Include recovery for unavailable hosted targets, rejected reset guards, network failure, stale generated types, migration drift, invalid env, and a leaked workstation/CI token.
+- [?] Have a fresh agent follow `CONTRIBUTING.md` on a clean clone without chat history or verbal help; have the reviewer record every ambiguity. Structural rehearsal is ready, but the hosted database/app journey is blocked on WP01-T04; see `planning/tasks/wp01-t10-write-operation-tutorial.md`.
 
-**Pass:** the clean-clone rehearsal reaches the app, local database, tests, and build using repository instructions alone, and the fresh agent produces a complete task handoff.
+**Pass:** the clean-clone rehearsal reaches the app, approved hosted development database, tests, and build using repository instructions alone, and the fresh agent produces a complete task handoff.
 
 #### WP01-T11 — Run the package gate
 
@@ -846,11 +846,13 @@ Business rules must live in testable modules, not React components, visual workf
 
 Create separate:
 
-- Local development with mocks and local database where practical.
-- Preview environment with non-production data.
-- Beta-production environment for real pilot sources/students.
+- Workstation application development with deterministic in-process mocks and no local infrastructure service.
+- Externally hosted development database/Auth with synthetic data only.
+- Externally hosted isolated CI database/Auth using a dedicated project or disposable branch and synthetic data only.
+- Externally hosted preview environment with non-production data.
+- Externally hosted beta-production environment for rights-approved real pilot sources/students.
 
-Use different database projects, storage namespaces, secrets, webhook endpoints, and provider budget scopes. Never copy real student chats or private raw sources into preview.
+Use different database projects/branches, storage namespaces, secrets, webhook endpoints, reset permissions, and provider budget scopes. Never point development or CI automation at preview/beta, and never copy real student chats or private raw sources into development, CI, or preview.
 
 ### 4.4 Environment variables
 
@@ -1243,7 +1245,7 @@ If a `SECURITY DEFINER` function is unavoidable, place it outside exposed schema
 
 #### WP03-T08 — Run the product-shell gate
 
-- [ ] Reset/seed a clean local stack.
+- [ ] Reset/seed an isolated hosted development/CI target through the guarded command.
 - [ ] Run the full role matrix in Playwright.
 - [ ] Demonstrate Human `Modules` and Veterinary `Subjects` from configuration.
 - [ ] Lock/deactivate/revoke access during an active browser session and confirm the next server operation fails safely.
@@ -1976,7 +1978,7 @@ When a source version is deactivated/replaced:
 
 - [ ] Create `docs/operations/topology.md` naming web, ingestion worker, generation worker, reconciliation scheduler, database, queue, raw/processed storage, monitoring, and notification boundaries.
 - [ ] Record deployment artifact, region, runtime/size, concurrency, health endpoint, scaling control, secret scope, log destination, and owner for each component.
-- [ ] Prove workers/scheduler remain running when Ahmed's and Ziad's computers are off.
+- [ ] Prove the complete preview/beta topology remains running when Ahmed's and Ziad's computers are off; neither computer may host or be required by any listed component.
 - [ ] Keep PostgreSQL as workflow authority even if an external queue/orchestrator is used.
 
 #### WP08-T02 — Deploy health, metrics, logs, and traces
@@ -2043,7 +2045,7 @@ Deploy:
 - Scheduled reconciliation worker.
 - Monitoring/error reporting.
 
-Do not run a required worker or scheduler only on Ahmed's or Ziad's computer. If n8n is introduced, host it as an always-on optional orchestrator and keep state/business logic in PostgreSQL and tested workers.
+Do not host any database/Auth or shared preview/beta component on Ahmed's or Ziad's computer. This prohibition includes the web application, API, database/Auth, object storage, queue, workers, schedulers, monitoring, notifications, and optional orchestration. If n8n is introduced, host it on approved external infrastructure as an always-on optional orchestrator and keep state/business logic in PostgreSQL and tested workers. A PC-hosted Telegram bot is allowed only as noncritical development/test tooling with synthetic data and cannot appear in this runtime topology or satisfy any gate.
 
 ### 11.2 Reconciliation schedules
 
@@ -2513,7 +2515,7 @@ The first session is a control session, not a race to call an AI provider. Timeb
 
 ### 17.2 Establish decisions and safe fixtures
 
-- [ ] Create the decision register and copy D-01 through D-16.
+- [ ] Create the decision register and synchronize D-01 through D-21.
 - [ ] Fill at least two realistic candidates for each program in the cohort-candidate template.
 - [ ] Enter representative native PDF, scanned PDF, normal audio, and professor voice-note rows in the rights inventory without uploading their files.
 - [ ] Draft exact raw/temporary/processed retention values and flag every unapproved value.
@@ -2526,7 +2528,7 @@ The first session is a control session, not a race to call an AI provider. Timeb
 - [ ] Initialize the root Next.js application in place; do not replace planning documents.
 - [ ] Add strict TypeScript, formatting, lint, environment validation, and all script names defined in WP01-T01.
 - [ ] Create domain boundaries and deterministic mock provider contracts.
-- [ ] Initialize/start local Supabase and create the first migration using the pinned CLI.
+- [ ] Provision approved hosted development and isolated CI Supabase targets, initialize versioned configuration, and create the first migration using the pinned CLI.
 - [ ] Add synthetic seed data only.
 - [ ] Add CI for frozen install, format, lint, types, tests, database reset, generated-type diff, build, and smoke.
 - [ ] Write the non-throwaway/strict-RAG/free-beta/always-on architecture ADR and link the master plan.
@@ -2534,12 +2536,12 @@ The first session is a control session, not a race to call an AI provider. Timeb
 ### 17.4 Verify and close
 
 - [ ] Run every currently implemented zero-cost check.
-- [ ] Reset the local database twice.
+- [ ] Reset the guarded isolated hosted development/CI target twice.
 - [ ] Search repository/build/log output for secret-like values.
 - [ ] Record incomplete commands as named WP01 tasks rather than claiming the foundation gate passed.
 - [ ] Review the diff and commit only a coherent, non-secret slice.
 - [ ] Update the decision register and gate report.
-- [ ] Stop the local stack if it is no longer needed.
+- [ ] Revoke temporary hosted database credentials and dispose an ephemeral CI branch when the approved workflow requires it.
 
 **Hard stop:** Do not enable a paid generation, embedding, OCR, or transcription provider; process real private source material; delete any raw source; or invite students until the corresponding rights, budget, evaluation data, durable job path, verification checks, and kill switch are approved.
 
@@ -2549,23 +2551,23 @@ The final `package.json` must expose these stable project commands even if under
 
 | Command | Purpose | External/paid calls allowed? | Passing result |
 | --- | --- | --- | --- |
-| `pnpm dev` | Run the local Next.js app. | Mocks only by default. | App starts and readiness explains missing local dependencies. |
+| `pnpm dev` | Run the workstation Next.js development process. | Mocks only by default. | App starts and readiness explains missing hosted dependencies without requiring local infrastructure. |
 | `pnpm build` | Create production web build. | No. | Exit 0 with no ignored type/lint failure. |
 | `pnpm lint` | Static code checks. | No. | Exit 0. |
 | `pnpm typecheck` | Strict TypeScript check without emit. | No. | Exit 0. |
 | `pnpm format:check` | Verify formatting. | No. | Exit 0 and no file rewrites. |
 | `pnpm test:unit` | Pure domain/config/provider-mock tests. | No. | Exit 0. |
-| `pnpm test:integration` | Database/services with local stack. | No. | Exit 0 against reset synthetic data. |
-| `pnpm test:security` | RLS/grant/scope/secret tests. | No. | Zero unexpected allow/leakage. |
+| `pnpm test:integration` | Database/services with guarded hosted development/CI target. | Hosted Supabase only; no paid AI provider. | Exit 0 against isolated reset synthetic data. |
+| `pnpm test:security` | RLS/grant/scope/secret tests. | Approved hosted synthetic Supabase only; no paid AI provider. | Zero unexpected allow/leakage. |
 | `pnpm test:e2e` | Role-based browser flows. | Mocks unless explicitly named suite. | All critical journeys and forbidden paths pass. |
 | `pnpm test:eval` | Frozen retrieval/chat/Studio evaluation. | Only an explicitly approved real-provider profile; default mocks. | Dataset hashes valid and thresholds reported. |
 | `pnpm test:load` | Frozen load profile. | Never beta by default; approved target only. | Threshold report and reconciliation complete. |
-| `pnpm db:start` | Start local Supabase. | No. | Services healthy. |
-| `pnpm db:stop` | Stop local Supabase without deleting state. | No. | Services stopped cleanly. |
-| `pnpm db:reset` | Rebuild schema/seed from version control. | No. | All migrations/seed/tests succeed. |
-| `pnpm db:types` | Generate database TypeScript types. | No. | Output updates deterministically. |
+| `pnpm db:reset` | Rebuild an explicitly confirmed hosted development/CI schema and synthetic seed from version control. | Approved hosted Supabase target only; no paid AI provider. | Target guard passes and all migrations/seed succeed. |
+| `pnpm db:migrations` | Compare versioned and hosted development/CI migration history. | Approved hosted Supabase target only. | Migration history matches the selected target. |
+| `pnpm db:push:dry-run` | Preview unapplied migrations for the selected hosted development/CI target. | Approved hosted Supabase target only. | Dry-run exits 0 without applying changes. |
+| `pnpm db:types` | Generate database TypeScript types from the selected hosted development/CI target. | Approved hosted Supabase target only. | Output updates deterministically. |
 | `pnpm db:types:check` | Fail when committed types are stale. | No. | Generation causes no Git diff. |
-| `pnpm verify` | Complete zero-paid local merge gate. | No. | Every required subcommand exits 0. |
+| `pnpm verify` | Complete credential-free, zero-paid merge gate. | No external infrastructure or paid provider. | Every required subcommand exits 0. |
 
 If a command needs secrets or a paid provider, its name must say so, for example `test:eval:live-approved`; it must require an explicit environment profile, preflight budget, and confirmation guard. Never make `pnpm verify` spend money.
 
@@ -2578,18 +2580,19 @@ If a command needs secrets or a paid provider, its name must say so, for example
 3. Delete/reinstall only generated dependency directories, never user source files.
 4. If the lockfile is invalid, repair dependencies on a separate branch and review the exact manifest/lock diff.
 
-### 19.2 Local Supabase does not start
+### 19.2 Hosted Supabase target is unavailable or rejected
 
-1. Run `docker version` and confirm the engine, disk, memory, and Linux-container mode.
-2. Run `pnpm supabase --help` and use the pinned CLI's diagnostic/status commands; do not guess flags from an old tutorial.
-3. Check port conflicts without killing unknown processes automatically.
-4. Preserve local migration files; stopping/restarting containers must not become a schema fix.
-5. If the local stack remains unavailable, mark migration/RLS tasks blocked and continue only with pure unit/UI mock tasks.
+1. Confirm `UNIMIND_DB_ENVIRONMENT` is exactly `development` or `ci`; local, preview, beta, and production are deliberately rejected.
+2. Confirm the safe project reference matches the approved environment matrix without printing access tokens, passwords, or connection strings.
+3. Run `pnpm supabase --help` and the guarded `pnpm db:migrations`; use the pinned CLI's current flags rather than an old tutorial.
+4. Confirm network availability and that `SUPABASE_ACCESS_TOKEN` plus `SUPABASE_DB_PASSWORD` exist in the approved terminal/CI secret scope.
+5. Preserve versioned migrations. Never bypass the guard, relabel preview/beta as development, or repair schema through the dashboard.
+6. If the hosted target remains unavailable, mark migration/Auth/RLS tasks blocked and continue only with credential-free unit/UI/mock tasks.
 
 ### 19.3 Migration reset fails
 
 1. Identify the first failing migration and exact SQL error.
-2. Reproduce from a clean reset; do not patch the local database manually.
+2. Reproduce from a guarded clean reset of an isolated hosted development/CI target; do not patch any hosted database manually.
 3. Fix the unshared migration. If it has reached preview/beta, add a forward repair migration instead of rewriting history.
 4. Run populated-upgrade plus clean-reset paths.
 5. Regenerate types and inspect grants/RLS/advisors.
