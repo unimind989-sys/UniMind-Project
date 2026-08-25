@@ -18,6 +18,7 @@ Codex can use a repository skill in two ways:
 | `$web-design-guidelines` | You want a separate Vercel-only review of selected UI files. Impeccable already uses these rules during its normal web audit. | `$web-design-guidelines Review app/(student)/studio/page.tsx and its components.` |
 | `$taste` | You explicitly want a stronger direction for a visitor-facing marketing or landing page. It is excluded from UniMind app screens. | `$taste Design the public beta waitlist page for prospective students.` |
 | `$awesome-design-md` | You want to consult one named brand reference before confirming a visual direction. | `$awesome-design-md Compare the Linear and Notion references for this student workspace; do not adopt either yet.` |
+| `$wizard` | You explicitly want an interactive PowerShell walkthrough for manual setup, credentials, signed-in dashboards, or irreversible approval steps. | `$wizard Create a PowerShell wizard for configuring the preview Supabase project and GitHub secrets.` |
 
 ## Skills that normally activate automatically
 
@@ -30,7 +31,6 @@ Codex can use a repository skill in two ways:
 | `codebase-design` | A module boundary, public interface, seam, dependency direction, or testability decision is being designed. | `$codebase-design Design a deep module for derived availability.` |
 | `tdd` | You explicitly request test-first implementation, red-green work, or integration tests. It does not force TDD onto every task. | `$tdd Implement the availability rule one vertical slice at a time.` |
 | `diagnosing-bugs` | You report a hard failure, regression, exception, or performance problem. | `$diagnosing-bugs The same ingestion job sometimes charges twice after a timeout.` |
-| `wizard` | Setup reaches steps only you can perform in a signed-in dashboard, credential screen, or irreversible approval flow. It generates a PowerShell guide; it does not run the manual steps. | `$wizard Create a PowerShell wizard for configuring the preview Supabase project and GitHub secrets.` |
 | `writing-for-agents` | A skill, `AGENTS.md`, or another agent-facing instruction is being edited. | `$writing-for-agents Tighten these code-review instructions.` |
 | `skill-maintainer` | Your feedback or a demonstrated workflow failure exposes a repeatable problem in a repo skill. It announces itself before editing. | `$skill-maintainer The TDD skill keeps asking me to confirm obvious seams. Adapt it based on our last two tasks.` |
 | `impeccable` | You ask to design, redesign, critique, audit, or visually refine a frontend surface. | `$impeccable shape the student curriculum-unit workspace.` |
@@ -60,7 +60,7 @@ Use the smallest useful flow. Do not invoke every skill for every task.
 
 ### Human-only service setup
 
-1. `wizard` creates a PowerShell walkthrough for dashboard and credential steps.
+1. Invoke `$wizard` when you want a PowerShell walkthrough for dashboard and credential steps.
 2. Run the generated script yourself. The agent does not complete consent, payment, or secret-reveal steps on your behalf.
 
 ### Writing and communication

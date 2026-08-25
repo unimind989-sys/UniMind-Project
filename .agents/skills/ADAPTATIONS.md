@@ -2,6 +2,15 @@
 
 This log records evidence-based changes to repo-scoped skills. It is not a record of ordinary task corrections.
 
+## 2026-08-25 — Explicit Wizard invocation
+
+### `wizard`
+
+- **Evidence:** Ahmed requested that the Wizard skill run only when the user asks. The skill metadata and routing docs currently classified human-only setup as an automatic trigger, so ordinary setup work could generate an interactive script without an explicit request.
+- **Change:** Made Wizard user-invoked in Codex metadata, narrowed its description and entry condition to explicit requests, and synchronized the skill inventory, guide, agent workflow, and trigger/non-trigger evaluations.
+- **Validation:** Repository skill validation, explicit `$wizard` trigger case, and nearby manual-setup non-trigger case.
+- **Upstream:** Local UniMind adaptation of Matt Pocock skills commit `885e2ca4d842d139e9aef4e48d366c63cb1b8013`; no upstream source change.
+
 ## 2026-08-20 — Initial UniMind fit
 
 ### `unslop`

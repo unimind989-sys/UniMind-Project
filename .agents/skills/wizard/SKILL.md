@@ -1,9 +1,11 @@
 ---
 name: wizard
-description: Generate an interactive PowerShell wizard for manual setup steps only, such as provisioning services, collecting credentials, configuring GitHub secrets, or following a third-party dashboard. Use when the human must perform steps the agent cannot perform directly.
+description: User-invoked only. Generate an interactive PowerShell wizard when the user explicitly asks for the Wizard skill or a PowerShell setup wizard.
 ---
 
 # Wizard
+
+Run this workflow only when the user explicitly requests the Wizard skill or an interactive PowerShell wizard.
 
 Create a PowerShell script that walks a human through a manual procedure one stage at a time. A wizard may open exact documentation or dashboard URLs, explain what to click, capture public or secret values, update a local `.env`, set required GitHub Actions secrets or variables, and confirm irreversible actions.
 

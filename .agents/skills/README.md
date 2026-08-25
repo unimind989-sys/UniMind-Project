@@ -36,7 +36,7 @@ Third-party skills are copied into the repository at fixed commits. Review upstr
 | `codebase-design` | Matt Pocock | Automatic | Design deep modules and stable seams. |
 | `tdd` | Matt Pocock | Automatic | Guide requested test-first vertical slices. |
 | `diagnosing-bugs` | Matt Pocock | Automatic | Diagnose hard bugs through a reproducible loop. |
-| `wizard` | Matt Pocock, adapted | Automatic | Generate Windows/PowerShell manual-setup walkthroughs. |
+| `wizard` | Matt Pocock, adapted | Manual | Generate Windows/PowerShell manual-setup walkthroughs when explicitly requested. |
 | `writing-for-agents` | Matt Pocock | Automatic | Improve skills and agent-facing instructions. |
 | `skill-maintainer` | UniMind | Automatic | Adapt skills from demonstrated project feedback. |
 | `impeccable` | Paul Bakaus, adapted | Automatic | Design, critique, and audit distinctive production UI. |

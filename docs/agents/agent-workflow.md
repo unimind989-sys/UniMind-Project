@@ -28,7 +28,7 @@ After reviewed WP00-T08 `PASS`, the work-state command may use the runbook's **W
 1. Implement the smallest end-to-end outcome that satisfies the task rather than a disconnected layer.
 2. Keep business rules in domain/application modules and external systems behind adapters. Follow the file conventions and per-module contracts in [module-boundaries.md](module-boundaries.md); `pnpm check:boundaries` enforces the main forbidden directions.
 3. Use synthetic fixtures and deterministic mocks unless the task records approved real-data and paid-call gates.
-4. Encode repeatable work in repository scripts, tests, migrations, or runbooks. Route unavoidable signed-in, consent, credential, payment, or approval steps through the `wizard` workflow.
+4. Encode repeatable work in repository scripts, tests, migrations, or runbooks. Document unavoidable signed-in, consent, credential, payment, or approval steps in the handoff; route them through `$wizard` only after an explicit user request.
 5. Run the narrowest relevant check after each meaningful change and record any deviation immediately.
 
 **Complete when:** the observable outcome works through its public seam, failure and forbidden paths are covered where applicable, and another agent can reproduce the result from version control.
