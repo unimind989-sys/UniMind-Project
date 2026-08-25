@@ -27,6 +27,7 @@
     "db:migrations": "tsx scripts/run-hosted-supabase.ts migrations",
     "db:push:dry-run": "tsx scripts/run-hosted-supabase.ts push-dry-run",
     "db:types": "tsx scripts/run-hosted-supabase.ts types",
+    "db:metadata": "tsx scripts/read-hosted-supabase-metadata.ts",
     "db:types:check": "git diff --exit-code -- src/types/database.generated.ts",
     "test:env-build": "tsx scripts/build-with-safe-env.ts",
     "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm check:boundaries && pnpm test:unit && pnpm test:env-build"

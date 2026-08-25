@@ -86,18 +86,16 @@ corepack pnpm verify
 
 `verify` formats nothing, makes no paid/provider call, runs the complete unit and architecture checks, and builds with synthetic CI configuration.
 
-The database-backed daily loop below becomes executable only after `scripts/show-work-state.ps1` reports WP01-T04 complete and the current terminal has approved hosted-development credentials. Never print those values:
+The database-backed daily loop below becomes executable only after `scripts/show-work-state.ps1` reports WP01-T04 complete and `.local/supabase/development.env` contains the approved hosted-development profile. The profile is ignored by Git; never print its values:
 
 ```powershell
 corepack pnpm install --frozen-lockfile
-$env:UNIMIND_DB_ENVIRONMENT = 'development'
-$env:UNIMIND_SUPABASE_PROJECT_REF = '<approved-development-project-ref>'
-$env:UNIMIND_DB_RESET_CONFIRMATION = "reset:$($env:UNIMIND_DB_ENVIRONMENT):$($env:UNIMIND_SUPABASE_PROJECT_REF)"
-corepack pnpm db:reset
+corepack pnpm db:reset --environment development
+corepack pnpm db:metadata --environment development
 corepack pnpm dev
 ```
 
-`SUPABASE_ACCESS_TOKEN` and `SUPABASE_DB_PASSWORD` must come from the approved ignored/session or CI secret store; do not put them in the command, documentation, evidence, or Git. Keep the Next.js development server on the workstation and do not expose it to an external network.
+`SUPABASE_ACCESS_TOKEN` and `SUPABASE_DB_PASSWORD` must come from the approved ignored profile or CI secret store; do not put them in the command, documentation, evidence, or Git. Use `.local/supabase/ci.env` only with `--environment ci`. Keep the Next.js development server on the workstation and do not expose it to an external network.
 
 ## 6. End-of-session loop
 
@@ -141,6 +139,7 @@ Duration classes are workstation estimates: **instant** is normally under 10 sec
 | `pnpm db:migrations`                 | Compare repository and selected hosted migration history                  | Approved hosted synthetic Supabase only                                 | Target variables and scoped CLI credentials                                             | Short           |
 | `pnpm db:push:dry-run`               | Preview unapplied migrations without applying them                        | Approved hosted synthetic Supabase only                                 | Target variables and scoped CLI credentials                                             | Short           |
 | `pnpm db:types`                      | Generate TypeScript from the selected hosted public schema                | Approved hosted synthetic Supabase only                                 | Target variables and scoped access token                                                | Short           |
+| `pnpm db:metadata`                   | Read sanitized PostgreSQL/extension/fixture/isolation metadata            | Approved hosted synthetic Supabase Management API only                  | Selected ignored profile or scoped CI secrets                                           | Short           |
 | `pnpm db:types:check`                | Reject a stale committed generated-type file                              | None                                                                    | Types generated first                                                                   | Instant         |
 | `pnpm verify`                        | Run the complete credential-free, zero-paid merge gate                    | None                                                                    | None for the currently implemented gate                                                 | Short           |
 
@@ -171,11 +170,12 @@ Use this only after WP01-T04 passes and the approved hosted development target i
 
 ```powershell
 corepack pnpm supabase migration new descriptive_outcome
-corepack pnpm db:push:dry-run
-corepack pnpm db:reset
-corepack pnpm db:reset
-corepack pnpm db:migrations
-corepack pnpm db:types
+corepack pnpm db:push:dry-run --environment development
+corepack pnpm db:reset --environment development
+corepack pnpm db:reset --environment development
+corepack pnpm db:migrations --environment development
+corepack pnpm db:types --environment development
+corepack pnpm db:metadata --environment development
 corepack pnpm db:types:check
 ```
 
@@ -223,8 +223,8 @@ Identify the owning process before changing configuration. Do not terminate an u
 Reset the approved isolated hosted target, regenerate types, and inspect the diff:
 
 ```powershell
-corepack pnpm db:reset
-corepack pnpm db:types
+corepack pnpm db:reset --environment development
+corepack pnpm db:types --environment development
 git diff -- src/types/database.generated.ts
 ```
 
@@ -233,8 +233,8 @@ If the diff is expected, include it with the migration. If no migration explains
 ### Migration state differs from version control
 
 ```powershell
-corepack pnpm db:migrations
-corepack pnpm db:reset
+corepack pnpm db:migrations --environment development
+corepack pnpm db:reset --environment development
 ```
 
 Fix the first versioned migration failure. Never patch a hosted dashboard as the repair. For an already-shared migration, add a forward repair migration.
@@ -247,7 +247,7 @@ Use the variable names in the error to compare `.env.local` with `.env.example`.
 
 1. Stop the command or release action that exposed it.
 2. Revoke or rotate the value at its authoritative source; deleting the local text is not sufficient.
-3. Replace it only in the ignored `.env.local` or approved external secret store.
+3. Replace it only in the ignored `.env.local`, `.local/supabase/<environment>.env`, or approved external secret store.
 4. Search the candidate diff, logs, evidence, and Git history for the value without printing it.
 5. If it entered a commit or external system, record a security incident and obtain security-owner review before continuing.
 

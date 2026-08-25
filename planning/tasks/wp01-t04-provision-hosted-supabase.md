@@ -2,11 +2,11 @@
 
 **Task ID:** WP01-T04
 
-**Status:** [?]
+**Status:** [~]
 
 **Outcome:** Approved synthetic-only hosted Supabase development and isolated CI targets reset twice from versioned migrations/seed and generate stable database types without dashboard state or local infrastructure.
 
-**Owner:** Codex `/root` after provisioning authority and scoped access are available
+**Owner:** Codex `/root`; Ahmed controls signed-in provisioning and local credential entry
 
 **Reviewer:** Codex `/root` for the ordinary foundation slice; independent review remains required for later RLS/grant changes
 
@@ -34,21 +34,24 @@
 
 ## Steps
 
-- [?] Obtain approval for the exact hosted development/CI resources, owners, region/capacity, and signed-in provisioning path.
+- [x] Ahmed authorized two separate hosted Supabase projects, the nearest available region to Cairo, zero-charge provisioning only, synthetic data only, and the signed-in setup path on 2026-08-25.
+- [x] Create the zero-charge synthetic development project in Central EU (Frankfurt); its safe project reference is recorded locally, and the project is connected to the shared GitHub repository pending integration review.
+- [x] Rotate the development database password before any hosted command because the initial password was exposed in chat; update only the ignored local credential file and never send the replacement through chat.
+- [x] Complete the equivalent manual signed-in path for the separate zero-charge CI project and local credential files; leave CI GitHub integration unselected until WP01-T08.
 - [x] Replace the Docker/local runtime contract with approved D-21 and guarded hosted database commands.
-- [ ] Initialize versioned Supabase configuration and the first CLI-named migration against the approved development target.
-- [ ] Add required extensions and synthetic seed data.
-- [ ] Configure isolated CI targeting and secret scope without committing linked state or credentials.
-- [ ] Prove two guarded hosted resets, migration parity, database/Auth/security tests, stable types, full verification, and ordinary review.
+- [x] Initialize versioned Supabase configuration and the first CLI-named migration against the approved development target.
+- [x] Add required extensions and synthetic seed data.
+- [x] Configure isolated CI targeting and secret scope without committing linked state or credentials.
+- [~] Prove two guarded hosted resets, migration parity, synthetic fixture/private-schema checks, stable types, full verification, and ordinary review. All executor checks pass; commit-specific evidence and Ahmed's review remain.
 
 ## Handoff
 
-**Changed:** Approved D-21 and synchronized the plan/runbook/tooling around externally hosted synthetic development and isolated hosted CI. Added a target guard that accepts only `development` or `ci` and requires exact reset confirmation. No external resource was provisioned and no hosted database was changed.
+**Changed:** Provisioned separate zero-charge synthetic development and CI Supabase projects in Central EU (Frankfurt), rotated the initially exposed development password before any hosted command, and stored credentials only in ignored per-environment profiles. Added versioned Supabase configuration, a CLI-named foundation migration, private synthetic fixtures/canaries, generated public types, safe hashed environment fingerprints, guarded profile loading, read-only metadata evidence, and regression tests. Development remains connected to GitHub pending integration review; CI has no GitHub connection. The temporary provisioning wizard was removed after the recorded manual path succeeded so it cannot create duplicate projects.
 
-**Commands:** Pinned Supabase CLI 2.115.0 help confirmed remote `--project-ref` reset/migration/type commands. Hosted-target guard unit coverage passed inside the 144-test unit suite. `pnpm db:reset` with target variables removed exited 1 as expected before any network call. `pnpm typecheck`, `pnpm verify`, `scripts/verify-agent-readiness.ps1` (85 names, 31 links, 21 decisions, 102 task contracts), `scripts/show-work-state.ps1`, and the isolated committed-snapshot agent handoff rehearsal passed. Hosted reset, migration, Auth, RLS, and type-generation commands were NOT RUN because no approved project reference or scoped credentials were supplied.
+**Commands:** Both profiles passed `db:migrations` and `db:push:dry-run`. The first development reset exposed the pinned CLI requirement for `--linked`; no database change occurred, the wrapper was fixed, and a regression test locks the exact command. Development and CI then each passed two consecutive guarded resets, migration/seed application, migration parity, and stable type generation. Both produced type hash `sha256:abb811213bde78031b8fc3731a5041c9118f3f5898fd9e759cc29656b5985f22`. `db:metadata` reports PostgreSQL 17.6, vector 0.8.2, pgcrypto 1.3, three fixtures, three canaries, and denied private-schema usage for `anon`/`authenticated` on both safe target fingerprints. `pnpm verify` passed formatting, lint, strict types, boundaries, 159 unit tests, and the synthetic production build; agent readiness and isolated handoff passed. Auth/RLS integration tests remain WP01-T05/T07 work after this foundation review.
 
-**Remaining:** External development/CI provisioning, versioned Supabase configuration/migration/seed, two hosted resets, generated types, database/Auth/security evidence, and review.
+**Remaining:** Create commit-specific sanitized evidence, complete ordinary review of this foundation slice, add the CI publishable key locally before WP01-T05/T07 needs it, and review the development GitHub connection before any automated schema deployment.
 
-**Next safe action:** Ahmed supplies or authorizes creation of the exact synthetic hosted development target and isolated CI target/branch through the approved credentialed setup path; then Codex executes the guarded WP01-T04 verification.
+**Next safe action:** Freeze the candidate SHA, create sanitized WP01-T04 evidence, and have Ahmed review the migration, profile isolation, development GitHub connection, reset/type/metadata results, and credential scan before marking WP01-T04 complete.
 
 **Reviewer action:** Confirm D-21/environment isolation and target-guard behavior now; after provisioning, independently inspect project separation, versioned migrations/seed, extension versions, two resets, generated types, and credential-free evidence.

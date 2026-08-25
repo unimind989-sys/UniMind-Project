@@ -45,3 +45,6 @@ supabase/.temp/
 # Local tool caches
 .turbo/
 .vercel/
+
+# Local UniMind setup state and credentials
+/.local/

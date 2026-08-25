@@ -673,7 +673,8 @@ pnpm build
 
 #### WP01-T04 — Provision versioned hosted Supabase development and CI
 
-- [?] Obtain explicit provisioning authority and signed-in access for a synthetic-only hosted Supabase development target plus a separate hosted CI project or disposable branch. D-21 removes Docker/WSL2/virtualization from the dependency chain; see `planning/tasks/wp01-t04-provision-hosted-supabase.md`.
+- [x] Obtain explicit provisioning authority for two separate, synthetic-only, zero-charge hosted Supabase development and CI projects in the nearest available region to Cairo. Ahmed authorized this scope on 2026-08-25; D-21 removes Docker/WSL2/virtualization from the dependency chain.
+- [x] Complete the recorded manual signed-in setup journey and keep all captured credentials under the ignored `.local/supabase/` directory; see `planning/tasks/wp01-t04-provision-hosted-supabase.md`.
 
 ```powershell
 pnpm supabase --version
@@ -682,15 +683,15 @@ pnpm supabase init
 pnpm db:push:dry-run
 ```
 
-- [ ] Commit `supabase/config.toml`; keep linked-project state, credentials, connection strings, and generated CLI state ignored.
-- [ ] Record safe project fingerprints and owners in the environment matrix without committing credentials. Development and CI contain synthetic data only and cannot share a target with preview or beta.
-- [ ] Create migrations using `pnpm supabase migration new <descriptive_name>`; do not invent timestamp filenames.
-- [ ] Enable required extensions without an explicit version clause. Begin with `vector`, `pgcrypto`, and only the text-search helper extensions actually used by the selected design.
-- [ ] Keep custom tables/functions out of `auth`, `storage`, and `realtime` schemas.
-- [ ] Add `supabase/seed.sql` containing only synthetic catalog/users/source text and leakage canaries.
-- [ ] Use the guarded hosted command wrapper. It accepts only `development` or `ci`, rejects preview/beta, and requires `reset:<environment>:<project-ref>` before a destructive reset.
-- [ ] Create reset automation that applies migrations/seed to the selected isolated hosted target, runs database tests, generates types, and reports failure without printing credentials or connection strings.
-- [ ] Record hosted PostgreSQL and extension versions plus the safe target fingerprint in foundation evidence.
+- [x] Commit `supabase/config.toml`; keep linked-project state, credentials, connection strings, and generated CLI state ignored.
+- [x] Record safe project fingerprints and owners in the environment matrix without committing credentials. Development and CI contain synthetic data only and cannot share a target with preview or beta.
+- [x] Create migrations using `pnpm supabase migration new <descriptive_name>`; do not invent timestamp filenames.
+- [x] Enable required extensions without an explicit version clause. Begin with `vector`, `pgcrypto`, and only the text-search helper extensions actually used by the selected design.
+- [x] Keep custom tables/functions out of `auth`, `storage`, and `realtime` schemas.
+- [x] Add `supabase/seed.sql` containing only synthetic catalog/users/source text and leakage canaries.
+- [x] Use the guarded hosted command wrapper. It accepts only `development` or `ci`, rejects preview/beta, and requires `reset:<environment>:<project-ref>` before a destructive reset.
+- [x] Create reset automation that applies migrations/seed to the selected isolated hosted target, runs database tests, generates types, and reports failure without printing credentials or connection strings.
+- [x] Record hosted PostgreSQL and extension versions plus the safe target fingerprint in foundation evidence.
 
 **Verify:**
 
