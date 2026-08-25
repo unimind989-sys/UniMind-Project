@@ -34,7 +34,7 @@
 
 ## Steps
 
-- [?] Wait for WP01-T04 through WP01-T07 reviewed PASS.
+- [?] Wait for WP01-T05 through WP01-T07 reviewed PASS; WP01-T04 passed on 2026-08-25.
 - [ ] Author least-privilege workflow with immutable pins and safe concurrency/cache behavior.
 - [ ] Reproduce every database/application/security/smoke command on a clean runner.
 - [ ] Add secret/dependency review and sanitized always-upload reports.
@@ -44,7 +44,7 @@
 
 **Changed:** No workflow authored; its exact dependency and external review boundaries are recorded.
 
-**Commands:** NOT RUN because the versioned hosted CI database/Auth isolation and complete test-layer commands are blocked upstream.
+**Commands:** NOT RUN for WP01-T08. The versioned hosted CI database isolation is reviewed; Auth and complete test-layer commands remain blocked upstream.
 
 **Remaining:** Entire WP01-T08 implementation after WP01-T07 PASS plus an authorized external run.
 

@@ -6,7 +6,7 @@
 
 **Outcome:** Unit, integration, security, end-to-end, evaluation, and load suites have explicit boundaries, safe defaults, actionable timeouts, and stable machine-readable outputs.
 
-**Owner:** Codex `/root` after WP01-T04 PASS
+**Owner:** Codex `/root` after WP01-T05 PASS
 
 **Reviewer:** UNASSIGNED — GATE BLOCKED
 
@@ -34,7 +34,7 @@
 
 ## Steps
 
-- [?] Wait for WP01-T04 and WP01-T05 reviewed PASS.
+- [?] Wait for WP01-T05 reviewed PASS; WP01-T04 passed on 2026-08-25.
 - [ ] Configure explicit unit/integration/security/E2E/eval/load projects and timeouts.
 - [ ] Add synthetic layer fixtures and deliberately failing seam checks.
 - [ ] Add stable machine-readable and Markdown reports where required.
@@ -44,10 +44,10 @@
 
 **Changed:** No test-layer implementation started; existing unit/provider/environment checks continue to run through `pnpm verify`.
 
-**Commands:** NOT RUN for integration/security/E2E because the resettable hosted development/CI database and Auth seam do not exist. Current unit-suite result must be refreshed after the D-21 change.
+**Commands:** NOT RUN for WP01-T07. The resettable hosted development/CI database now exists and is reviewed; the WP01-T05 Auth/security seam does not yet exist.
 
-**Remaining:** Entire WP01-T07 outcome after WP01-T04/T05 PASS.
+**Remaining:** Entire WP01-T07 outcome after WP01-T05 PASS.
 
-**Next safe action:** Provision and verify the approved hosted development/CI targets, complete WP01-T04/T05, then implement all test layers as one verified contract.
+**Next safe action:** Complete WP01-T05, then implement all test layers as one verified contract against the reviewed hosted targets.
 
 **Reviewer action:** Assign after dependencies pass; database/security layer claims require independent review where RLS/grants become involved.

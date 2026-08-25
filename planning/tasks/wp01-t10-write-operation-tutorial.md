@@ -8,7 +8,7 @@
 
 **Owner:** Codex `/root`
 
-**Reviewer:** Codex `/root` for documentation candidate; final hosted database rehearsal blocked on WP01-T04
+**Reviewer:** Codex `/root` for documentation candidate; final hosted database/Auth/app rehearsal blocked on WP01-T05/T07/T08/T09
 
 **Branch:** main (no delivery branch requested)
 
@@ -22,7 +22,7 @@
 
 **Files:** `CONTRIBUTING.md`, root README link, task/runbook state, and eventual WP01 foundation evidence.
 
-**Verify:** Link/name/readiness checks; command-table parity with `package.json`; isolated clean-snapshot discovery and credential-free commands; full hosted development database daily/end-session walkthrough after WP01-T04 passes.
+**Verify:** Link/name/readiness checks; command-table parity with `package.json`; isolated clean-snapshot discovery and credential-free commands; full hosted development database/Auth/app daily/end-session walkthrough after WP01-T05/T07/T08/T09 pass.
 
 **Pass:** A clean agent reaches the app, approved hosted development database, tests, build, and complete handoff from the tutorial alone, with every ambiguity recorded and corrected.
 
@@ -38,7 +38,7 @@
 - [x] Write the setup, daily operation, branch/PR/migration, verification, troubleshooting, and handoff tutorial.
 - [x] Add the paid-call/service/duration command table and root navigation link.
 - [x] Rehearse clean-snapshot discovery and every currently executable command; record ambiguities.
-- [?] Rehearse the full guarded hosted development database/app journey after WP01-T04 and close review.
+- [?] Rehearse the full guarded hosted development database/Auth/app journey after WP01-T05/T07/T08/T09 and close review; WP01-T04 passed on 2026-08-25.
 
 ## Handoff
 
@@ -46,8 +46,8 @@
 
 **Commands:** Agent readiness passes with 78 names, 31 links, 20 synchronized decisions, and 102 task contracts; all 21 package scripts are documented; placeholder/TODO scan found only the controlled evidence-filename pattern; `git diff --check` passes. The first `pnpm verify` found CONTRIBUTING formatting, then the formatted rerun passed format, lint, strict types, boundaries, 136 unit tests, and the synthetic production build. Candidate `9ab8e2c` passed `git show --check` and the isolated committed-snapshot rehearsal with a clean worktree and no structural ambiguity.
 
-**Remaining:** Final hosted database/app tutorial rehearsal and review after WP01-T04.
+**Remaining:** Final hosted database/Auth/app tutorial rehearsal and review after WP01-T05/T07/T08/T09.
 
-**Next safe action:** Keep this task blocked until approved hosted Supabase development/CI resources enable the complete clean-clone database/app walkthrough.
+**Next safe action:** Complete WP01-T05/T07/T08/T09, then run the complete clean-clone database/Auth/app walkthrough against the reviewed hosted targets.
 
-**Reviewer action:** Review command parity, safety, clarity, links, recovery paths, and clean-snapshot ambiguity report; defer PASS until WP01-T04 enables the complete walkthrough.
+**Reviewer action:** Review command parity, safety, clarity, links, recovery paths, and clean-snapshot ambiguity report; defer PASS until WP01-T05/T07/T08/T09 enable the complete walkthrough.

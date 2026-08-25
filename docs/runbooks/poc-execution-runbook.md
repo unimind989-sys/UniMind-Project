@@ -692,7 +692,7 @@ pnpm db:push:dry-run
 - [x] Use the guarded hosted command wrapper. It accepts only `development` or `ci`, rejects preview/beta, and requires `reset:<environment>:<project-ref>` before a destructive reset.
 - [x] Create reset automation that applies migrations/seed to the selected isolated hosted target, runs database tests, generates types, and reports failure without printing credentials or connection strings.
 - [x] Record hosted PostgreSQL and extension versions plus the safe target fingerprint in foundation evidence.
-- [?] Obtain Ahmed's independent review of the migration grant revocations, target isolation, credential hygiene, reset/type/metadata evidence, and development GitHub integration boundary.
+- [x] Ahmed independently reviewed the migration grant revocations, target isolation, credential hygiene, reset/type/metadata evidence, and development GitHub integration boundary and recorded PASS on 2026-08-25.
 
 **Verify:**
 
@@ -707,7 +707,7 @@ git diff --exit-code -- src/types/database.generated.ts
 
 #### WP01-T05 — Implement safe Supabase clients and auth refresh
 
-- [?] Create `src/lib/db/supabase/browser.ts` using the publishable key only. Blocked on reproducible hosted development Auth/database evidence from WP01-T04; see `planning/tasks/wp01-t05-implement-safe-supabase-clients.md`.
+- [ ] Create `src/lib/db/supabase/browser.ts` using the publishable key only; WP01-T04 has reviewed PASS evidence at `evidence/wp01-foundation/2026-08-25_hosted-supabase_development-ci_b444a5d.md`.
 - [ ] Create `src/lib/db/supabase/server.ts` using `@supabase/ssr` and the current Next.js cookie API.
 - [ ] Create `src/lib/db/supabase/admin.ts` as server-only; expose narrow privileged functions instead of exporting the raw service client widely.
 - [ ] Implement the current Supabase SSR session-refresh pattern in the current Next.js request interception convention. In Next.js 16+, follow the `proxy.ts` convention rather than copying old `middleware.ts` tutorials.
@@ -732,7 +732,7 @@ git diff --exit-code -- src/types/database.generated.ts
 #### WP01-T07 — Create the test layers
 
 - [ ] Unit tests cover pure business rules and validators.
-- [?] Integration tests run against an isolated reset hosted Supabase development/CI target and mock providers. Blocked on WP01-T04; see `planning/tasks/wp01-t07-create-test-layers.md`.
+- [?] Integration tests run against an isolated reset hosted Supabase development/CI target and mock providers. The hosted targets are reviewed; this remains blocked on WP01-T05 Auth/security seams. See `planning/tasks/wp01-t07-create-test-layers.md`.
 - [ ] Security tests assume multiple users, cohorts, roles, and source states and assert allowed plus forbidden operations.
 - [ ] End-to-end tests use Playwright with isolated synthetic accounts and deterministic data.
 - [ ] Evaluation tests consume versioned JSONL and emit machine-readable plus Markdown reports.
@@ -748,7 +748,7 @@ git diff --exit-code -- src/types/database.generated.ts
 - [ ] Pin action revisions to immutable commit SHAs or an approved dependency policy.
 - [ ] Use `pnpm install --frozen-lockfile`.
 - [ ] Cache only safe package/build data; never cache `.env`, Supabase credentials, test-user tokens, or private fixtures.
-- [?] Provision or select the isolated hosted CI target, reset migrations, seed synthetic data, run database/security tests, generate types, and fail on a type diff. The workflow must serialize a reusable target or create/dispose an isolated branch per run and must never reset development, preview, or beta. Blocked on WP01-T04/T07; see `planning/tasks/wp01-t08-create-ci.md`.
+- [?] Provision or select the isolated hosted CI target, reset migrations, seed synthetic data, run database/security tests, generate types, and fail on a type diff. The workflow must serialize a reusable target or create/dispose an isolated branch per run and must never reset development, preview, or beta. The hosted CI target is reviewed; this remains blocked on WP01-T05/T07. See `planning/tasks/wp01-t08-create-ci.md`.
 - [ ] Run format check, lint, type check, unit/integration/security tests, production build, and a small Playwright smoke suite.
 - [ ] Upload sanitized test/evaluation reports even when a test fails.
 - [ ] Add a secret scan and dependency review appropriate to the repository.
@@ -791,13 +791,13 @@ git status --short
 ```
 
 - [x] Include recovery for unavailable hosted targets, rejected reset guards, network failure, stale generated types, migration drift, invalid env, and a leaked workstation/CI token.
-- [?] Have a fresh agent follow `CONTRIBUTING.md` on a clean clone without chat history or verbal help; have the reviewer record every ambiguity. Structural rehearsal is ready, but the hosted database/app journey is blocked on WP01-T04; see `planning/tasks/wp01-t10-write-operation-tutorial.md`.
+- [?] Have a fresh agent follow `CONTRIBUTING.md` on a clean clone without chat history or verbal help; have the reviewer record every ambiguity. Structural rehearsal is ready and the hosted foundation is reviewed; the complete database/Auth/app journey remains blocked on WP01-T05/T07/T08/T09. See `planning/tasks/wp01-t10-write-operation-tutorial.md`.
 
 **Pass:** the clean-clone rehearsal reaches the app, approved hosted development database, tests, and build using repository instructions alone, and the fresh agent produces a complete task handoff.
 
 #### WP01-T11 — Run the package gate
 
-- [?] Copy the gate template to `evidence/wp01-foundation`. The package gate is blocked on WP01-T04/T05/T07/T08/T09/T10; see `planning/tasks/wp01-t11-run-package-gate.md`.
+- [?] Copy the gate template to `evidence/wp01-foundation`. WP01-T04 passed; the package gate remains blocked on WP01-T05/T07/T08/T09/T10. See `planning/tasks/wp01-t11-run-package-gate.md`.
 - [ ] Run `pnpm verify` from a clean clone with network access blocked for provider endpoints.
 - [ ] Reset the database twice and compare generated types.
 - [ ] Deploy preview from the candidate SHA and run smoke tests.

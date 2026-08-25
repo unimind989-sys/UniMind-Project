@@ -2,17 +2,17 @@
 
 **Task ID:** WP01-T05
 
-**Status:** [?]
+**Status:** [ ]
 
 **Outcome:** Browser and server Supabase clients refresh authenticated sessions safely while privileged keys remain server-only and forged state fails.
 
-**Owner:** Codex `/root` after hosted WP01-T04 PASS
+**Owner:** Unclaimed; Codex `/root` may claim after task selection
 
 **Reviewer:** UNASSIGNED — GATE BLOCKED
 
 **Branch:** main (no delivery branch requested)
 
-**Updated (UTC):** 2026-08-20T17:31:00Z
+**Updated (UTC):** 2026-08-25
 
 ## Execution contract
 
@@ -34,7 +34,6 @@
 
 ## Steps
 
-- [?] Wait for WP01-T04 reviewed PASS.
 - [ ] Implement the publishable-key browser client and cookie-aware server client.
 - [ ] Add privileged admin access behind an explicit server-only import boundary.
 - [ ] Add refresh, forged-state, and bundle-leak tests with synthetic identities.
@@ -42,12 +41,12 @@
 
 ## Handoff
 
-**Changed:** No Auth/client implementation started; the exact upstream machine/database dependency is recorded.
+**Changed:** No Auth/client implementation started. WP01-T04 now has reviewed PASS evidence, so this task is unblocked and ready for selection.
 
-**Commands:** NOT RUN for WP01-T05 because WP01-T04 is blocked before approved hosted development Auth exists.
+**Commands:** NOT RUN for WP01-T05. Its hosted development Auth/database dependency now exists and has reviewed PASS evidence.
 
-**Remaining:** Entire implementation after WP01-T04 PASS.
+**Remaining:** Entire WP01-T05 implementation.
 
-**Next safe action:** Keep WP01-T05 blocked until hosted WP01-T04 passes; credential-free deterministic provider-interface work may continue independently.
+**Next safe action:** Select and claim WP01-T05, then implement the smallest authenticated browser/server seam with synthetic identities and focused secret-leak/forged-state tests.
 
-**Reviewer action:** Assign after WP01-T04 PASS; Auth/security evidence must include client-bundle leakage and forged-state denial.
+**Reviewer action:** Assign when WP01-T05 is claimed; Auth/security evidence must include client-bundle leakage and forged-state denial.

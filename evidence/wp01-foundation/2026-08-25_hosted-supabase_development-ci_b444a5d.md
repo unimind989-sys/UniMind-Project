@@ -1,6 +1,6 @@
 # Gate report: WP01-T04 hosted Supabase foundation
 
-**Status:** IN PROGRESS — EXECUTOR CHECKS PASS; INDEPENDENT REVIEW PENDING
+**Status:** PASS
 
 **Environment:** Separate hosted Supabase development and CI projects; synthetic data only
 
@@ -14,7 +14,7 @@
 
 **Executor:** Codex `/root`
 
-**Independent reviewer:** Ahmed — PENDING
+**Independent reviewer:** Ahmed — PASS (2026-08-25)
 
 **Started/finished (UTC):** 2026-08-24T23:55:49Z / executor verification finished 2026-08-25T00:13:41Z
 
@@ -31,7 +31,7 @@
 | Fixture/isolation check | Three fixtures/canaries; private schema unavailable to exposed roles | 3 fixtures; 3 canaries; `anon` and `authenticated` usage denied on both targets | PASS | Read-only metadata query |
 | Credential hygiene | No credential, full project ref, shared email, JWT, or connection string committed | Scan found no real match; full references and secrets remain under ignored `.local/` | PASS | `git check-ignore`; candidate scan; `git show --check` |
 | Repository gate | Credential-free full gate passes | Format, lint, types, boundaries, 159 unit tests, and production build pass | PASS | `pnpm verify` |
-| Independent review | Ahmed reviews migration, grants, isolation, and GitHub integration | Not yet recorded | PENDING | Reviewer decision below |
+| Independent review | Ahmed reviews migration, grants, isolation, and GitHub integration | PASS recorded; development repository integration disconnected and CI publishable key stored locally | PASS | Reviewer decision below |
 
 ## Commands executed
 
@@ -70,8 +70,8 @@
 | --- | --- | --- | --- | --- | --- |
 | WP01-T04-D01 | Resolved | Initial reset wrapper omitted the pinned CLI's required `--linked`; attempt failed before database change | Codex | Resolved in candidate | No |
 | WP01-T04-D02 | Resolved | Initial development database password was exposed in chat; Ahmed rotated it before any hosted command and updated only the ignored local file | Ahmed | Resolved before reset | No; old value remains compromised and must never be reused |
-| WP01-T04-D03 | Medium | Development project is connected to GitHub before WP01-T08; automated schema deployment must remain disabled/unrelied upon until reviewed | Ahmed + Codex | Before WP01-T08 | Blocks automated GitHub/Supabase deployment claims |
-| WP01-T04-D04 | Low | CI publishable key remains a local placeholder; database reset/type/metadata commands do not use it | Ahmed | Before WP01-T05/T07 Auth integration | Blocks CI Auth/browser integration only |
+| WP01-T04-D03 | Resolved | Development project repository integration was disconnected before review PASS; GitHub sign-in identity is unaffected | Ahmed | Resolved 2026-08-25 | No |
+| WP01-T04-D04 | Resolved | CI publishable key was stored in the ignored local profile before review PASS | Ahmed | Resolved 2026-08-25 | No |
 
 ## Security and privacy review
 
@@ -79,7 +79,7 @@
 - [x] Allowed and forbidden roles/scopes were tested where applicable.
 - [x] Logs and command output were inspected; only safe fingerprints and version/count facts are retained.
 - [x] The exposed development password was rotated before hosted access and is absent from the candidate.
-- [ ] Independent reviewer confirms the private-schema grant revocations and development GitHub integration boundary.
+- [x] Independent reviewer confirms the private-schema grant revocations and development GitHub integration boundary.
 
 ## Rollback/disable procedure
 
@@ -87,9 +87,9 @@ Revoke the affected local access token and database password, stop hosted comman
 
 ## Decision
 
-Executor checks satisfy the WP01-T04 hosted foundation contract. The report remains IN PROGRESS because the migration revokes role grants and the development GitHub connection needs independent review. WP01-T05 remains blocked until Ahmed records the review decision.
+Executor checks and Ahmed's independent review satisfy the WP01-T04 hosted foundation contract. Development and CI remain separate, synthetic-only, zero-charge targets; the development repository integration is disconnected, and WP01-T05 may proceed.
 
 | Name | Role | Decision | Date |
 | --- | --- | --- | --- |
 | Codex `/root` | Executor | READY FOR REVIEW | 2026-08-25 |
-| Ahmed | Reviewer | PENDING | — |
+| Ahmed | Reviewer | PASS | 2026-08-25 |

@@ -2,13 +2,13 @@
 
 **Task ID:** WP01-T04
 
-**Status:** [?]
+**Status:** [x]
 
 **Outcome:** Approved synthetic-only hosted Supabase development and isolated CI targets reset twice from versioned migrations/seed and generate stable database types without dashboard state or local infrastructure.
 
 **Owner:** Codex `/root`; Ahmed controls signed-in provisioning and local credential entry
 
-**Reviewer:** Ahmed — PENDING; independent review is required because the foundation migration revokes exposed-role grants
+**Reviewer:** Ahmed — PASS (2026-08-25)
 
 **Branch:** main (user requested direct commit/push)
 
@@ -42,7 +42,7 @@
 - [x] Initialize versioned Supabase configuration and the first CLI-named migration against the approved development target.
 - [x] Add required extensions and synthetic seed data.
 - [x] Configure isolated CI targeting and secret scope without committing linked state or credentials.
-- [~] Prove two guarded hosted resets, migration parity, synthetic fixture/private-schema checks, stable types, full verification, and ordinary review. All executor checks pass; commit-specific evidence and Ahmed's review remain.
+- [x] Prove two guarded hosted resets, migration parity, synthetic fixture/private-schema checks, stable types, full verification, and ordinary review. Ahmed reviewed the candidate evidence and recorded PASS on 2026-08-25.
 
 ## Handoff
 
@@ -50,8 +50,8 @@
 
 **Commands:** Both profiles passed `db:migrations` and `db:push:dry-run`. The first development reset exposed the pinned CLI requirement for `--linked`; no database change occurred, the wrapper was fixed, and a regression test locks the exact command. Development and CI then each passed two consecutive guarded resets, migration/seed application, migration parity, and stable type generation. Both produced type hash `sha256:abb811213bde78031b8fc3731a5041c9118f3f5898fd9e759cc29656b5985f22`. `db:metadata` reports PostgreSQL 17.6, vector 0.8.2, pgcrypto 1.3, three fixtures, three canaries, and denied private-schema usage for `anon`/`authenticated` on both safe target fingerprints. `pnpm verify` passed formatting, lint, strict types, boundaries, 159 unit tests, and the synthetic production build; agent readiness and isolated handoff passed. Auth/RLS integration tests remain WP01-T05/T07 work after this foundation review.
 
-**Remaining:** Create commit-specific sanitized evidence, complete ordinary review of this foundation slice, add the CI publishable key locally before WP01-T05/T07 needs it, and review the development GitHub connection before any automated schema deployment.
+**Remaining:** None for WP01-T04. Ahmed disconnected the development repository integration and stored the CI publishable key locally before recording PASS.
 
-**Next safe action:** Freeze the candidate SHA, create sanitized WP01-T04 evidence, and have Ahmed review the migration, profile isolation, development GitHub connection, reset/type/metadata results, and credential scan before marking WP01-T04 complete.
+**Next safe action:** Select and claim WP01-T05 to implement safe Supabase browser/server/admin clients and authenticated session refresh against the reviewed hosted development target.
 
-**Reviewer action:** Confirm D-21/environment isolation and target-guard behavior now; after provisioning, independently inspect project separation, versioned migrations/seed, extension versions, two resets, generated types, and credential-free evidence.
+**Reviewer action:** PASS — confirmed separate zero-charge synthetic targets, password rotation, versioned migration/seed, extension versions, two resets per target, stable types, private-schema denial, credential hygiene, development GitHub disconnection, and local CI publishable-key completion.
