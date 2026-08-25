@@ -52,6 +52,21 @@ describe("module boundary checker", () => {
     ).toContain("client-imports-server");
   });
 
+  it("allows only the explicit browser Supabase seam into Client Components", () => {
+    expect(
+      codes(
+        "src/components/auth.tsx",
+        '"use client"; import { createBrowserSupabaseClient } from "@/lib/db/supabase/browser";',
+      ),
+    ).toEqual([]);
+    expect(
+      codes(
+        "src/components/auth.tsx",
+        '"use client"; import { createServerSupabaseClient } from "@/lib/db/supabase/server";',
+      ),
+    ).toContain("client-imports-server");
+  });
+
   it("allows provider SDKs inside adapter modules", () => {
     expect(
       codes(

@@ -707,13 +707,13 @@ git diff --exit-code -- src/types/database.generated.ts
 
 #### WP01-T05 — Implement safe Supabase clients and auth refresh
 
-- [ ] Create `src/lib/db/supabase/browser.ts` using the publishable key only; WP01-T04 has reviewed PASS evidence at `evidence/wp01-foundation/2026-08-25_hosted-supabase_development-ci_b444a5d.md`.
-- [ ] Create `src/lib/db/supabase/server.ts` using `@supabase/ssr` and the current Next.js cookie API.
-- [ ] Create `src/lib/db/supabase/admin.ts` as server-only; expose narrow privileged functions instead of exporting the raw service client widely.
-- [ ] Implement the current Supabase SSR session-refresh pattern in the current Next.js request interception convention. In Next.js 16+, follow the `proxy.ts` convention rather than copying old `middleware.ts` tutorials.
-- [ ] Protect server mutations with verified user identity and database authorization; do not trust `getSession()` or client-supplied role/cohort values as authorization proof.
-- [ ] Never authorize from user-editable `user_metadata`. Store role/membership truth in protected database rows or safe app metadata with freshness considerations.
-- [ ] Add tests that inspect browser bundles and serialized props for secret/service-role values.
+- [~] Create `src/lib/db/supabase/browser.ts` using the publishable key only; WP01-T04 has reviewed PASS evidence at `evidence/wp01-foundation/2026-08-25_hosted-supabase_development-ci_b444a5d.md`. Owner: Codex `/root`; branch: `main`.
+- [~] Create `src/lib/db/supabase/server.ts` using `@supabase/ssr` and the current Next.js cookie API. Owner: Codex `/root`; branch: `main`.
+- [~] Create `src/lib/db/supabase/admin.ts` as server-only; the raw service client remains private and only marker-protected synthetic Auth fixture creation/deletion is exposed. Owner: Codex `/root`; hosted synthetic create/delete proof passed; independent review pending.
+- [~] Implement the current Supabase SSR session-refresh pattern in `src/proxy.ts`; refreshed request/response cookies and cache headers are locally tested. Owner: Codex `/root`; hosted sign-in/refresh proof passed; independent review pending.
+- [~] Protect server mutations with `requireVerifiedIdentity()`, verified `getClaims()` identity, request-scoped clients, and database RLS; no business mutation exists yet in this foundation scope. Forged-state denial passed locally and against hosted development; independent review pending.
+- [~] Never authorize from user-editable `user_metadata`; the verified identity seam returns only the validated token subject and discards client-editable role/cohort claims. Independent review pending.
+- [~] Inspect browser bundles and serialized output for secret/service-role canaries after every safe production build. The local scanner, its negative tests, and the production artifact scan pass; independent review pending.
 
 **Pass:** sign-in state reaches Server Components and authenticated mutations, a forged cookie/role fails, and no privileged key is present in client output.
 

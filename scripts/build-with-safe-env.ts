@@ -2,20 +2,33 @@ import { spawnSync } from "node:child_process";
 import path from "node:path";
 
 import { parseServerEnvironment } from "../src/lib/config/env.schema";
+import { assertClientArtifactsExcludeValues } from "./lib/client-artifact-secrets";
 
-const syntheticCredential = ["synthetic", "ci", "credential", "only"].join("-");
+const syntheticPublicCredential = [
+  "synthetic",
+  "public",
+  "credential",
+  "only",
+].join("-");
+const syntheticServerCredential = [
+  "synthetic",
+  "server",
+  "credential",
+  "only",
+].join("-");
+const serviceRoleCanary = "SYNTHETIC_SERVICE_ROLE_CANARY_73D9";
 const safeEnvironment = {
   NODE_ENV: "production",
   NEXT_PUBLIC_SUPABASE_URL: "https://synthetic.supabase.invalid",
-  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: syntheticCredential,
+  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: syntheticPublicCredential,
   NEXT_PUBLIC_RELEASE_ID: "ci-verification",
   NEXT_PUBLIC_TELEMETRY_ENABLED: "false",
   DATABASE_URL:
     "postgresql://synthetic:synthetic@db.synthetic.invalid:5432/synthetic_ci",
-  SUPABASE_SERVICE_ROLE_KEY: syntheticCredential,
-  RAW_STORAGE_CREDENTIAL: syntheticCredential,
-  PROCESSED_STORAGE_CREDENTIAL: syntheticCredential,
-  QUEUE_SIGNING_SECRET: syntheticCredential,
+  SUPABASE_SERVICE_ROLE_KEY: serviceRoleCanary,
+  RAW_STORAGE_CREDENTIAL: syntheticServerCredential,
+  PROCESSED_STORAGE_CREDENTIAL: syntheticServerCredential,
+  QUEUE_SIGNING_SECRET: syntheticServerCredential,
   PROVIDER_MODE: "mock",
   APPROVED_PROVIDER_BUDGET_MINOR: "0",
   GENERATION_PROVIDER_ENABLED: "false",
@@ -50,3 +63,11 @@ if (result.status !== 0) {
     `Safe-environment build failed with status ${String(result.status)}.`,
   );
 }
+
+await assertClientArtifactsExcludeValues(path.resolve(".next"), [
+  {
+    label: "service-role",
+    value: serviceRoleCanary,
+  },
+]);
+console.log("Client artifact secret scan passed.");

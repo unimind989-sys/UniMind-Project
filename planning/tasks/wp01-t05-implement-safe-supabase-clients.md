@@ -2,17 +2,17 @@
 
 **Task ID:** WP01-T05
 
-**Status:** [ ]
+**Status:** [~]
 
 **Outcome:** Browser and server Supabase clients refresh authenticated sessions safely while privileged keys remain server-only and forged state fails.
 
-**Owner:** Unclaimed; Codex `/root` may claim after task selection
+**Owner:** Codex `/root`
 
-**Reviewer:** UNASSIGNED — GATE BLOCKED
+**Reviewer:** UNASSIGNED — INDEPENDENT REVIEW GATE BLOCKED
 
 **Branch:** main (no delivery branch requested)
 
-**Updated (UTC):** 2026-08-25
+**Updated (UTC):** 2026-08-26
 
 ## Execution contract
 
@@ -26,7 +26,7 @@
 
 **Pass:** Authenticated state reaches Server Components and mutations; forged state fails; no privileged key enters client output.
 
-**Evidence:** `evidence/wp01-foundation/YYYY-MM-DD_supabase-auth_<environment>_<short-sha>.md`
+**Evidence:** `evidence/wp01-foundation/2026-08-26_supabase-auth_development_fb75527.md` — executor report; rebind to the final candidate SHA before review.
 
 **Rollback:** Revert the future WP01-T05 candidate and disable its auth refresh seam; no real account or shared environment may be used.
 
@@ -34,19 +34,19 @@
 
 ## Steps
 
-- [ ] Implement the publishable-key browser client and cookie-aware server client.
-- [ ] Add privileged admin access behind an explicit server-only import boundary.
-- [ ] Add refresh, forged-state, and bundle-leak tests with synthetic identities.
-- [ ] Run full verification and required review.
+- [~] Implement the publishable-key browser client and cookie-aware server client; both factories and their unit/boundary tests are implemented and locally verified on `main`.
+- [~] Add privileged admin access behind an explicit server-only import boundary; only marker-protected synthetic fixture create/delete operations are exported, and hosted create/delete cleanup passed; review pending.
+- [~] Add refresh, forged-state, and bundle-leak tests with synthetic identities; local tests, hosted Auth lifecycle, and the safe production artifact scan pass; review pending.
+- [~] Run full verification and required review; local format/lint/type/unit/security/boundary/build gates and hosted development Auth pass, while independent review remains required.
 
 ## Handoff
 
-**Changed:** No Auth/client implementation started. WP01-T04 now has reviewed PASS evidence, so this task is unblocked and ready for selection.
+**Changed:** Implemented typed browser/server Supabase factories, a private server-only admin client with narrow synthetic-fixture operations, a Next.js 16 `src/proxy.ts` refresh seam, and `getClaims()`-verified identity helpers. Added forged-cookie/role denial, cookie/header refresh, admin-boundary, non-disclosing Management API parsing, a CLI-to-HTTPS API-key fallback that sends the access token through stdin, a guarded hosted synthetic Auth lifecycle, and client-artifact secret-canary tests. The hosted child uses Node's system CA support instead of disabling TLS.
 
-**Commands:** NOT RUN for WP01-T05. Its hosted development Auth/database dependency now exists and has reviewed PASS evidence.
+**Commands:** Full Prettier, ESLint, strict TypeScript, and module-boundary checks passed. Full unit Vitest passed 13 files/185 tests; security Vitest passed 1 file/3 tests; the hosted-only integration remains skipped by default. The guarded hosted-development Auth lifecycle passed 1/1: synthetic create, sign-in, verified identity, refresh, forged-cookie denial, and marker-protected deletion. The synthetic Next.js 16.3.1 production build passed and reported `Client artifact secret scan passed.` Agent readiness and isolated handoff rehearsal passed. The literal `pnpm verify` wrapper still cannot start because Corepack is absent and the bundled pnpm wrapper refuses an automatic non-TTY reinstall; exact installed tools ran directly without dependency changes.
 
-**Remaining:** Entire WP01-T05 implementation.
+**Remaining:** Rebind the executor evidence to the final candidate commit and assign an independent security reviewer. Actual future business mutations must continue through `requireVerifiedIdentity()`, a request-scoped client, and reviewed RLS.
 
-**Next safe action:** Select and claim WP01-T05, then implement the smallest authenticated browser/server seam with synthetic identities and focused secret-leak/forged-state tests.
+**Next safe action:** Create the candidate commit only when requested, rebind the evidence filename/SHA, and have an independent reviewer reproduce the hosted-development Auth lifecycle and secret-leak/forgery gates.
 
-**Reviewer action:** Assign when WP01-T05 is claimed; Auth/security evidence must include client-bundle leakage and forged-state denial.
+**Reviewer action:** Review service-role isolation and synthetic-user cleanup, verify `getClaims()` fail-closed behavior and metadata rejection, inspect proxy cookie/cache handling, confirm the HTTPS fallback never places the access token in process arguments or output, confirm system CA use does not disable TLS, inspect client-artifact scan coverage, and reproduce the hosted-development evidence before approving.

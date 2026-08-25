@@ -18,6 +18,7 @@
     "format:check": "prettier . --check",
     "test:unit": "vitest run tests/unit --passWithNoTests",
     "test:integration": "vitest run tests/integration --passWithNoTests",
+    "test:auth:hosted": "tsx scripts/run-hosted-auth-integration.ts --environment development",
     "test:security": "vitest run tests/security --passWithNoTests",
     "test:e2e": "playwright test",
     "browser:cli": "node scripts/run-playwright-cli.mjs",

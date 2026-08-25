@@ -125,6 +125,10 @@ function resolveInternalImport(
 }
 
 function isServerOnlyPath(filePath: string): boolean {
+  if (/^src\/lib\/db\/supabase\/browser(?:\.[cm]?[jt]s)?$/.test(filePath)) {
+    return false;
+  }
+
   return (
     /(^|\/)server(\/|$)/.test(filePath) ||
     /\.server(?:\.[cm]?[jt]sx?)?$/.test(filePath) ||
