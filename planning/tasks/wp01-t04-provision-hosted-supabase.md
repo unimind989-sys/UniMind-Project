@@ -2,13 +2,13 @@
 
 **Task ID:** WP01-T04
 
-**Status:** [~]
+**Status:** [?]
 
 **Outcome:** Approved synthetic-only hosted Supabase development and isolated CI targets reset twice from versioned migrations/seed and generate stable database types without dashboard state or local infrastructure.
 
 **Owner:** Codex `/root`; Ahmed controls signed-in provisioning and local credential entry
 
-**Reviewer:** Codex `/root` for the ordinary foundation slice; independent review remains required for later RLS/grant changes
+**Reviewer:** Ahmed — PENDING; independent review is required because the foundation migration revokes exposed-role grants
 
 **Branch:** main (user requested direct commit/push)
 
@@ -26,7 +26,7 @@
 
 **Pass:** approved development/CI target isolation is documented; two hosted resets pass; local/preview/beta target names are rejected; `vector` and `pgcrypto` versions are recorded; only synthetic seed data exists; generated types are stable.
 
-**Evidence:** `evidence/wp01-foundation/YYYY-MM-DD_hosted-supabase_<environment>_<short-sha>.md`
+**Evidence:** `evidence/wp01-foundation/2026-08-25_hosted-supabase_development-ci_b444a5d.md`
 
 **Rollback:** Revoke the affected development/CI credentials, dispose an ephemeral CI branch when applicable, preserve versioned migrations, and provision/replay into a new isolated hosted target. Never point development or CI at preview/beta to recover.
 

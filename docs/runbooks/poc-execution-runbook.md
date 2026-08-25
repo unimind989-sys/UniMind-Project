@@ -692,6 +692,7 @@ pnpm db:push:dry-run
 - [x] Use the guarded hosted command wrapper. It accepts only `development` or `ci`, rejects preview/beta, and requires `reset:<environment>:<project-ref>` before a destructive reset.
 - [x] Create reset automation that applies migrations/seed to the selected isolated hosted target, runs database tests, generates types, and reports failure without printing credentials or connection strings.
 - [x] Record hosted PostgreSQL and extension versions plus the safe target fingerprint in foundation evidence.
+- [?] Obtain Ahmed's independent review of the migration grant revocations, target isolation, credential hygiene, reset/type/metadata evidence, and development GitHub integration boundary.
 
 **Verify:**
 
