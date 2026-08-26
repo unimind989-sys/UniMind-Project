@@ -8,11 +8,11 @@ import { scanFilesForRepositorySecrets } from "../../scripts/lib/repository-secr
 
 describe("repository secret scan", () => {
   it("reports a credential rule without copying the matched value", async () => {
-    const workspace = await mkdtemp(path.join(tmpdir(), "unimind-secret-scan-"));
-    await mkdir(path.join(workspace, "src"));
-    const secret = ["sb", "secret", "actualcredentialmaterial123456"].join(
-      "_",
+    const workspace = await mkdtemp(
+      path.join(tmpdir(), "unimind-secret-scan-"),
     );
+    await mkdir(path.join(workspace, "src"));
+    const secret = ["sb", "secret", "actualcredentialmaterial123456"].join("_");
     await writeFile(
       path.join(workspace, "src", "unsafe.ts"),
       `export const leaked = "${secret}";\n`,
@@ -30,7 +30,9 @@ describe("repository secret scan", () => {
   });
 
   it("allows explicit synthetic and invalid-domain fixtures", async () => {
-    const workspace = await mkdtemp(path.join(tmpdir(), "unimind-secret-scan-"));
+    const workspace = await mkdtemp(
+      path.join(tmpdir(), "unimind-secret-scan-"),
+    );
     await writeFile(
       path.join(workspace, "safe.txt"),
       [

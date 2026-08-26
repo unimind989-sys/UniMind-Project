@@ -19,12 +19,10 @@ describe("hosted Supabase profile parser", () => {
       readHostedSupabaseEnvironmentProfile("ci", {
         UNIMIND_DB_ENVIRONMENT: "ci",
         UNIMIND_SUPABASE_PROJECT_REF: "abcdefghijklmnopqrst",
-        UNIMIND_DB_RESET_CONFIRMATION:
-          "reset:ci:abcdefghijklmnopqrst",
+        UNIMIND_DB_RESET_CONFIRMATION: "reset:ci:abcdefghijklmnopqrst",
         SUPABASE_ACCESS_TOKEN: "synthetic-access-token",
         SUPABASE_DB_PASSWORD: "synthetic-password",
-        NEXT_PUBLIC_SUPABASE_URL:
-          "https://abcdefghijklmnopqrst.supabase.co",
+        NEXT_PUBLIC_SUPABASE_URL: "https://abcdefghijklmnopqrst.supabase.co",
         NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: "synthetic-publishable-key",
       }),
     ).toMatchObject({

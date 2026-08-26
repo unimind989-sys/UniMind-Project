@@ -139,9 +139,7 @@ export function auditCiWorkflow(source: string): string[] {
   }
 
   const jobs = isRecord(workflow.jobs) ? workflow.jobs : {};
-  const application = isRecord(jobs.application)
-    ? jobs.application
-    : undefined;
+  const application = isRecord(jobs.application) ? jobs.application : undefined;
   if (!hasApplicationConcurrency(application)) {
     violations.push("APPLICATION_CONCURRENCY_MISSING");
   }
@@ -149,9 +147,7 @@ export function auditCiWorkflow(source: string): string[] {
     violations.push("APPLICATION_REPORT_UPLOAD_MISSING");
   }
 
-  const hosted = isRecord(jobs["hosted-ci"])
-    ? jobs["hosted-ci"]
-    : undefined;
+  const hosted = isRecord(jobs["hosted-ci"]) ? jobs["hosted-ci"] : undefined;
   if (hosted === undefined) {
     violations.push("HOSTED_JOB_MISSING");
     return violations;

@@ -4,9 +4,10 @@ import { parseHostedAuthCommand } from "../../scripts/lib/hosted-auth-command";
 
 describe("hosted Auth command guard", () => {
   it("uses the ignored file profile for local development by default", () => {
-    expect(
-      parseHostedAuthCommand(["--environment", "development"]),
-    ).toEqual({ environment: "development", profileSource: "file" });
+    expect(parseHostedAuthCommand(["--environment", "development"])).toEqual({
+      environment: "development",
+      profileSource: "file",
+    });
   });
 
   it("accepts an explicit environment-backed CI profile", () => {
@@ -30,8 +31,8 @@ describe("hosted Auth command guard", () => {
       ]),
     ).toThrow("Environment profile source is restricted to ci");
 
-    expect(() =>
-      parseHostedAuthCommand(["--environment", "preview"]),
-    ).toThrow("development or ci");
+    expect(() => parseHostedAuthCommand(["--environment", "preview"])).toThrow(
+      "development or ci",
+    );
   });
 });
