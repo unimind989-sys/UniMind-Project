@@ -76,3 +76,13 @@
 - When user feedback or a demonstrated workflow failure exposes a repeatable skill defect, use `skill-maintainer`. Announce the adaptation, make the narrowest evidence-backed change, validate it, and record it in `.agents/skills/ADAPTATIONS.md`.
 - Do not alter skills speculatively, learn from secrets/private content, or edit away permission, security, evidence, review, or paid-call guardrails.
 - Skills refine a workflow; they do not override this file, the master plan, approved decisions, security boundaries, or user instructions.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

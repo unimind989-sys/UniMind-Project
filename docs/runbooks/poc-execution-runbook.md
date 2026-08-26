@@ -732,7 +732,7 @@ git diff --exit-code -- src/types/database.generated.ts
 
 #### WP01-T07 — Create the test layers
 
-- [ ] Unit tests cover pure business rules and validators.
+- [~] Unit tests cover pure business rules and validators. Owner: Codex `/root`; branch: `main`; WP01-T07 is in progress.
 - [ ] Integration tests run against an isolated reset hosted Supabase development/CI target and mock providers. The hosted targets and WP01-T05 Auth/security seams are reviewed; WP01-T07 is ready to claim. See `planning/tasks/wp01-t07-create-test-layers.md`.
 - [ ] Security tests assume multiple users, cohorts, roles, and source states and assert allowed plus forbidden operations.
 - [ ] End-to-end tests use Playwright with isolated synthetic accounts and deterministic data.
@@ -2560,11 +2560,12 @@ The final `package.json` must expose these stable project commands even if under
 | `pnpm typecheck` | Strict TypeScript check without emit. | No. | Exit 0. |
 | `pnpm format:check` | Verify formatting. | No. | Exit 0 and no file rewrites. |
 | `pnpm test:unit` | Pure domain/config/provider-mock tests. | No. | Exit 0. |
-| `pnpm test:integration` | Database/services with guarded hosted development/CI target. | Hosted Supabase only; no paid AI provider. | Exit 0 against isolated reset synthetic data. |
-| `pnpm test:security` | RLS/grant/scope/secret tests. | Approved hosted synthetic Supabase only; no paid AI provider. | Zero unexpected allow/leakage. |
-| `pnpm test:e2e` | Role-based browser flows. | Mocks unless explicitly named suite. | All critical journeys and forbidden paths pass. |
-| `pnpm test:eval` | Frozen retrieval/chat/Studio evaluation. | Only an explicitly approved real-provider profile; default mocks. | Dataset hashes valid and thresholds reported. |
-| `pnpm test:load` | Frozen load profile. | Never beta by default; approved target only. | Threshold report and reconciliation complete. |
+| `pnpm test:integration` | Credential-free application/mock integration seams; guarded hosted cases skip. | No external calls or paid provider. | Local seams pass and hosted cases are visibly skipped. |
+| `pnpm test:integration:hosted` | Reviewed synthetic hosted Auth seam. | Guarded development Supabase only; no paid AI provider. | Synthetic create/sign-in/refresh/forgery denial/cleanup pass. |
+| `pnpm test:security` | Current identity/availability denial matrices; later RLS/grant suites join with migrations. | No external calls in the foundation command. | Zero unexpected allow/leakage at implemented seams. |
+| `pnpm test:e2e` | Browser flows against a local synthetic app profile. | Local app and mocks only; external browser requests blocked. | Implemented critical and forbidden paths pass. |
+| `pnpm test:eval` | Versioned evaluation runner and current approved/synthetic fixtures. | Only an explicitly approved live profile may use real providers; foundation default is mock-only. | Dataset hashes are valid and JSON/Markdown results report the exact scope. |
+| `pnpm test:load` | Guarded load-profile validation; execution is added in WP09. | Default rejects preview/beta/production, real providers, and nonzero cost. | A `NOT_EXECUTED` JSON/Markdown report is produced without claiming thresholds. |
 | `pnpm db:reset` | Rebuild an explicitly confirmed hosted development/CI schema and synthetic seed from version control. | Approved hosted Supabase target only; no paid AI provider. | Target guard passes and all migrations/seed succeed. |
 | `pnpm db:migrations` | Compare versioned and hosted development/CI migration history. | Approved hosted Supabase target only. | Migration history matches the selected target. |
 | `pnpm db:push:dry-run` | Preview unapplied migrations for the selected hosted development/CI target. | Approved hosted Supabase target only. | Dry-run exits 0 without applying changes. |

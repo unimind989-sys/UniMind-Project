@@ -139,12 +139,7 @@ const childEnvironment: NodeJS.ProcessEnv = {
 const vitestBinary = path.resolve("node_modules/vitest/vitest.mjs");
 const result = spawnSync(
   process.execPath,
-  [
-    vitestBinary,
-    "run",
-    "tests/integration/supabase-auth-hosted.test.ts",
-    "--passWithNoTests",
-  ],
+  [vitestBinary, "run", "--project", "integration"],
   {
     cwd: process.cwd(),
     env: childEnvironment,

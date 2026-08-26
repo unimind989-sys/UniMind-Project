@@ -16,14 +16,15 @@
     "typecheck": "tsc --noEmit",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
-    "test:unit": "vitest run tests/unit --passWithNoTests",
-    "test:integration": "vitest run tests/integration --passWithNoTests",
+    "test:unit": "tsx scripts/run-vitest-layer.ts unit",
+    "test:integration": "tsx scripts/run-vitest-layer.ts integration",
+    "test:integration:hosted": "tsx scripts/run-hosted-auth-integration.ts --environment development",
     "test:auth:hosted": "tsx scripts/run-hosted-auth-integration.ts --environment development",
-    "test:security": "vitest run tests/security --passWithNoTests",
+    "test:security": "tsx scripts/run-vitest-layer.ts security",
     "test:e2e": "playwright test",
     "browser:cli": "node scripts/run-playwright-cli.mjs",
-    "test:eval": "vitest run evals --passWithNoTests",
-    "test:load": "vitest run tests/load --passWithNoTests",
+    "test:eval": "tsx scripts/run-vitest-layer.ts evaluation && tsx scripts/run-foundation-evaluation.ts",
+    "test:load": "tsx scripts/run-vitest-layer.ts load && tsx scripts/run-load-suite.ts",
     "db:reset": "tsx scripts/run-hosted-supabase.ts reset",
     "db:migrations": "tsx scripts/run-hosted-supabase.ts migrations",
     "db:push:dry-run": "tsx scripts/run-hosted-supabase.ts push-dry-run",
@@ -31,7 +32,7 @@
     "db:metadata": "tsx scripts/read-hosted-supabase-metadata.ts",
     "db:types:check": "git diff --exit-code -- src/types/database.generated.ts",
     "test:env-build": "tsx scripts/build-with-safe-env.ts",
-    "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm check:boundaries && pnpm test:unit && pnpm test:env-build"
+    "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm check:boundaries && pnpm test:unit && pnpm test:integration && pnpm test:security && pnpm test:eval && pnpm test:load && pnpm test:e2e && pnpm test:env-build"
   },
   "dependencies": {
     "@supabase/ssr": "0.12.4",
@@ -58,6 +59,7 @@
     "supabase": "2.115.0",
     "tsx": "4.23.12",
     "typescript": "6.0.3",
-    "vitest": "4.1.11"
+    "vitest": "4.1.11",
+    "yaml": "2.9.0"
   }
 }

@@ -2,13 +2,13 @@
 
 **Task ID:** WP01-T07
 
-**Status:** [ ]
+**Status:** [~]
 
 **Outcome:** Unit, integration, security, end-to-end, evaluation, and load suites have explicit boundaries, safe defaults, actionable timeouts, and stable machine-readable outputs.
 
-**Owner:** UNASSIGNED — READY TO CLAIM
+**Owner:** Codex `/root`
 
-**Reviewer:** UNASSIGNED — ASSIGN WITH TASK
+**Reviewer:** UNASSIGNED — GATE BLOCKED
 
 **Branch:** main (no delivery branch requested)
 
@@ -35,19 +35,19 @@
 ## Steps
 
 - [x] WP01-T04 and WP01-T05 have reviewed PASS evidence; the test-layer implementation is unblocked.
-- [ ] Configure explicit unit/integration/security/E2E/eval/load projects and timeouts.
+- [~] Configure explicit unit/integration/security/E2E/eval/load projects and timeouts. Owner: Codex `/root`; branch: `main`.
 - [ ] Add synthetic layer fixtures and deliberately failing seam checks.
 - [ ] Add stable machine-readable and Markdown reports where required.
 - [ ] Run the full gate and complete review.
 
 ## Handoff
 
-**Changed:** No test-layer implementation started. WP01-T05 now has reviewed PASS evidence, so the test-layer contract is ready to claim; existing unit/provider/environment checks continue to run through `pnpm verify`.
+**Changed:** Claimed by Codex `/root`; implementation is in progress. WP01-T05 has reviewed PASS evidence, so the test-layer contract is ready; existing unit/provider/environment checks continue to run through `pnpm verify`.
 
 **Commands:** NOT RUN for WP01-T07. The resettable hosted development/CI database and WP01-T05 Auth/security seam now have reviewed PASS evidence.
 
-**Remaining:** Claim and implement the entire WP01-T07 outcome.
+**Remaining:** Implement and verify the entire WP01-T07 outcome, then obtain independent review.
 
-**Next safe action:** Assign the executor/reviewer, mark WP01-T07 in progress, and implement all test layers as one verified contract against the reviewed hosted targets.
+**Next safe action:** Continue the red-to-green implementation of every test layer against synthetic fixtures and the reviewed hosted targets.
 
-**Reviewer action:** Assign after dependencies pass; database/security layer claims require independent review where RLS/grants become involved.
+**Reviewer action:** Assign an independent reviewer before gate completion; database/security layer claims require independent review where RLS/grants become involved.
