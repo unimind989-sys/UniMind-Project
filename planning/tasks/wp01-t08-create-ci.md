@@ -8,11 +8,11 @@
 
 **Owner:** Codex `/root`
 
-**Reviewer:** UNASSIGNED — GATE BLOCKED
+**Reviewer:** Ahmed via `aboayman-oss` approved PR #2; final hosted-gate review remains pending
 
-**Branch:** main (no delivery branch requested)
+**Branch:** merged to `main` as `06b6a76`; continuation evidence branch `wp01/ci-external-evidence`
 
-**Updated (UTC):** 2026-08-26
+**Updated (UTC):** 2026-08-26 (external checkpoint recorded 2026-08-27 Cairo)
 
 ## Execution contract
 
@@ -51,3 +51,12 @@
 **Next safe action:** Review `evidence/wp01-foundation/2026-08-26_ci-security-review_local_ce7750b.md`, name the reviewer, and obtain explicit authorization for GitHub authentication, push, `ci` environment configuration, first workflow run, and branch protection. Do not start WP01-T09 until that external evidence is reviewed PASS.
 
 **Reviewer action:** Inspect `ce7750b` plus the original candidate series, verify the protected trigger/step-scoped secrets/approved fingerprint and immutable pins, then independently inspect the first external run, artifacts, environment policy, and branch rules. Future migration/RLS changes retain the two-person rule.
+
+## 2026-08-27 external continuation checkpoint
+
+- Repository owner is `unimind989-sys`; `aboayman-oss` is a collaborator and the configured `ci` environment reviewer.
+- PR #2 merged to `main` as `06b6a76f2a4f3c9ea402ea0564616cdb35a93501` after Ahmed approved head `a1c7edb3269a594758f6879616fe9502c98a8c67`.
+- GitHub dependency review is a paid Code Security feature for private repositories. It was replaced by the pinned zero-cost `corepack pnpm audit --audit-level high --prod` job plus policy regressions preventing reintroduction of the unsupported action.
+- PR CI run `33020995316` passed `dependency-audit` and `application`; main run `33021371273` passed `application` and uploaded local artifact `9626663618` with digest `sha256:ba69e50f339bad9c751fbb551ad6f6191dfad9bdc349483622e50c68511f2b1b`.
+- Main run `33021371273`, hosted job `98352561534`, is waiting for approval of protected environment `ci`. Approval will release secrets and reset the isolated synthetic CI Supabase database, so obtain explicit action-time confirmation for fingerprint `sha256:6ad364ad022a` before approving.
+- Durable resume instructions and remaining branch-protection/evidence work are in `evidence/wp01-foundation/2026-08-27_ci-clean-database_github_06b6a76.md`.
