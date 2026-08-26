@@ -2,11 +2,11 @@
 
 **Task ID:** WP01-T08
 
-**Status:** [?]
+**Status:** [~]
 
 **Outcome:** A least-privilege clean runner reproduces install, database reset, security tests, generated types, application checks, smoke tests, secret scan, and sanitized failure reports.
 
-**Owner:** Codex `/root` after WP01-T07 PASS
+**Owner:** Codex `/root`
 
 **Reviewer:** UNASSIGNED — GATE BLOCKED
 
@@ -34,20 +34,20 @@
 
 ## Steps
 
-- [?] Wait for WP01-T07 reviewed PASS; WP01-T04, WP01-T05, and WP01-T06 have reviewed PASS evidence.
-- [ ] Author least-privilege workflow with immutable pins and safe concurrency/cache behavior.
+- [x] WP01-T04 through WP01-T07 have reviewed PASS evidence.
+- [~] Author least-privilege workflow with immutable pins and safe concurrency/cache behavior. Owner: Codex `/root`; branch: `main`.
 - [ ] Reproduce every database/application/security/smoke command on a clean runner.
 - [ ] Add secret/dependency review and sanitized always-upload reports.
 - [ ] Obtain authorized external CI run and branch-protection review.
 
 ## Handoff
 
-**Changed:** No workflow authored; its exact dependency and external review boundaries are recorded.
+**Changed:** WP01-T07 now has reviewed PASS evidence, so Codex `/root` claimed local workflow authoring. External publication, GitHub secret entry, workflow execution, and branch-protection mutation remain unauthorized hard stops.
 
-**Commands:** NOT RUN for WP01-T08. The versioned hosted CI database isolation is reviewed; Auth and complete test-layer commands remain blocked upstream.
+**Commands:** NOT RUN yet for WP01-T08. The versioned hosted CI database isolation, Auth seam, and complete test-layer commands now have reviewed PASS evidence.
 
-**Remaining:** Entire WP01-T08 implementation after WP01-T07 PASS plus an authorized external run.
+**Remaining:** Author and locally audit the workflow/CI command contract, then obtain explicit authorization for the external GitHub run and branch-protection review.
 
-**Next safe action:** Complete the hosted development/CI database/Auth/test chain; then author CI from the proven guarded command contract.
+**Next safe action:** Implement the least-privilege workflow and prove its guarded local equivalent without changing GitHub state.
 
 **Reviewer action:** Assign before external publication; migration/RLS/security changes retain independent review.

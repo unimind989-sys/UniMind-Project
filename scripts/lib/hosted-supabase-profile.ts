@@ -11,7 +11,46 @@ const requiredProfileKeys = [
   "SUPABASE_DB_PASSWORD",
 ] as const;
 
+const optionalProfileKeys = [
+  "NEXT_PUBLIC_SUPABASE_URL",
+  "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY",
+] as const;
+
+const supportedProfileKeys = [
+  ...requiredProfileKeys,
+  ...optionalProfileKeys,
+] as const;
+
 type HostedProfile = Record<string, string>;
+
+type EnvironmentInput = Readonly<Record<string, string | undefined>>;
+
+function validateHostedSupabaseProfile(profile: HostedProfile): HostedProfile {
+  for (const key of requiredProfileKeys) {
+    const value = profile[key];
+    if (
+      value === undefined ||
+      value.length === 0 ||
+      value === "deleted" ||
+      /^<.*>$/u.test(value)
+    ) {
+      throw new Error(`Missing hosted Supabase profile value: ${key}.`);
+    }
+  }
+  return profile;
+}
+
+function assertProfileEnvironment(
+  profile: HostedProfile,
+  environment: HostedDatabaseEnvironment,
+): HostedProfile {
+  if (profile.UNIMIND_DB_ENVIRONMENT !== environment) {
+    throw new Error(
+      "Hosted Supabase profile environment does not match the requested environment.",
+    );
+  }
+  return profile;
+}
 
 export function parseHostedSupabaseProfile(contents: string): HostedProfile {
   const profile: HostedProfile = {};
@@ -42,19 +81,7 @@ export function parseHostedSupabaseProfile(contents: string): HostedProfile {
     profile[key] = value;
   });
 
-  for (const key of requiredProfileKeys) {
-    const value = profile[key];
-    if (
-      value === undefined ||
-      value.length === 0 ||
-      value === "deleted" ||
-      /^<.*>$/u.test(value)
-    ) {
-      throw new Error(`Missing hosted Supabase profile value: ${key}.`);
-    }
-  }
-
-  return profile;
+  return validateHostedSupabaseProfile(profile);
 }
 
 export function readHostedSupabaseProfile(
@@ -67,12 +94,24 @@ export function readHostedSupabaseProfile(
     "supabase",
     `${environment}.env`,
   );
-  const profile = parseHostedSupabaseProfile(readFileSync(profilePath, "utf8"));
+  return assertProfileEnvironment(
+    parseHostedSupabaseProfile(readFileSync(profilePath, "utf8")),
+    environment,
+  );
+}
 
-  if (profile.UNIMIND_DB_ENVIRONMENT !== environment) {
-    throw new Error(
-      "Hosted Supabase profile environment does not match the requested environment.",
-    );
-  }
-  return profile;
+export function readHostedSupabaseEnvironmentProfile(
+  environment: HostedDatabaseEnvironment,
+  input: EnvironmentInput = process.env,
+): HostedProfile {
+  const profile = Object.fromEntries(
+    supportedProfileKeys.flatMap((key) => {
+      const value = input[key];
+      return value === undefined ? [] : [[key, value]];
+    }),
+  );
+  return assertProfileEnvironment(
+    validateHostedSupabaseProfile(profile),
+    environment,
+  );
 }

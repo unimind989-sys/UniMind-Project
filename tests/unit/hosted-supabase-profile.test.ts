@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { parseHostedSupabaseProfile } from "../../scripts/lib/hosted-supabase-profile";
+import {
+  parseHostedSupabaseProfile,
+  readHostedSupabaseEnvironmentProfile,
+} from "../../scripts/lib/hosted-supabase-profile";
 
 const validProfile = [
   "UNIMIND_DB_ENVIRONMENT=development",
@@ -11,6 +14,25 @@ const validProfile = [
 ].join("\n");
 
 describe("hosted Supabase profile parser", () => {
+  it("reads a complete CI profile from explicit environment input", () => {
+    expect(
+      readHostedSupabaseEnvironmentProfile("ci", {
+        UNIMIND_DB_ENVIRONMENT: "ci",
+        UNIMIND_SUPABASE_PROJECT_REF: "abcdefghijklmnopqrst",
+        UNIMIND_DB_RESET_CONFIRMATION:
+          "reset:ci:abcdefghijklmnopqrst",
+        SUPABASE_ACCESS_TOKEN: "synthetic-access-token",
+        SUPABASE_DB_PASSWORD: "synthetic-password",
+        NEXT_PUBLIC_SUPABASE_URL:
+          "https://abcdefghijklmnopqrst.supabase.co",
+        NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: "synthetic-publishable-key",
+      }),
+    ).toMatchObject({
+      UNIMIND_DB_ENVIRONMENT: "ci",
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: "synthetic-publishable-key",
+    });
+  });
+
   it("loads required values without truncating embedded equals signs", () => {
     expect(parseHostedSupabaseProfile(validProfile)).toMatchObject({
       UNIMIND_DB_ENVIRONMENT: "development",

@@ -13,12 +13,15 @@
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
     "check:boundaries": "tsx scripts/check-module-boundaries.ts",
+    "scan:secrets": "tsx scripts/scan-repository-secrets.ts",
+    "verify:ci-workflow": "tsx scripts/verify-ci-workflow.ts",
     "typecheck": "tsc --noEmit",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
     "test:unit": "tsx scripts/run-vitest-layer.ts unit",
     "test:integration": "tsx scripts/run-vitest-layer.ts integration",
     "test:integration:hosted": "tsx scripts/run-hosted-auth-integration.ts --environment development",
+    "test:integration:hosted:ci": "tsx scripts/run-hosted-auth-integration.ts --environment ci --profile-source environment",
     "test:auth:hosted": "tsx scripts/run-hosted-auth-integration.ts --environment development",
     "test:security": "tsx scripts/run-vitest-layer.ts security",
     "test:e2e": "playwright test",
@@ -32,7 +35,7 @@
     "db:metadata": "tsx scripts/read-hosted-supabase-metadata.ts",
     "db:types:check": "git diff --exit-code -- src/types/database.generated.ts",
     "test:env-build": "tsx scripts/build-with-safe-env.ts",
-    "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm check:boundaries && pnpm test:unit && pnpm test:integration && pnpm test:security && pnpm test:eval && pnpm test:load && pnpm test:e2e && pnpm test:env-build"
+    "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm check:boundaries && pnpm verify:ci-workflow && pnpm scan:secrets && pnpm test:unit && pnpm test:integration && pnpm test:security && pnpm test:eval && pnpm test:load && pnpm test:e2e && pnpm test:env-build"
   },
   "dependencies": {
     "@supabase/ssr": "0.12.4",

@@ -745,11 +745,11 @@ git diff --exit-code -- src/types/database.generated.ts
 
 #### WP01-T08 — Create CI with a clean-database security gate
 
-- [ ] Create `.github/workflows/ci.yml` with least-privilege permissions and concurrency cancellation for superseded branch runs.
+- [~] Create `.github/workflows/ci.yml` with least-privilege permissions and concurrency cancellation for superseded branch runs. Owner: Codex `/root`; branch: `main`; external publication remains unauthorized.
 - [ ] Pin action revisions to immutable commit SHAs or an approved dependency policy.
 - [ ] Use `pnpm install --frozen-lockfile`.
 - [ ] Cache only safe package/build data; never cache `.env`, Supabase credentials, test-user tokens, or private fixtures.
-- [?] Provision or select the isolated hosted CI target, reset migrations, seed synthetic data, run database/security tests, generate types, and fail on a type diff. The workflow must serialize a reusable target or create/dispose an isolated branch per run and must never reset development, preview, or beta. The hosted CI target and WP01-T05 are reviewed; this remains blocked on WP01-T07. See `planning/tasks/wp01-t08-create-ci.md`.
+- [~] Use the reviewed isolated hosted CI target to reset migrations, seed synthetic data, run database/security tests, generate types, and fail on a type diff. The workflow must serialize the reusable target and must never reset development, preview, or beta. WP01-T04 through WP01-T07 are reviewed; local workflow authoring is in progress while external execution remains authorization-gated. See `planning/tasks/wp01-t08-create-ci.md`.
 - [ ] Run format check, lint, type check, unit/integration/security tests, production build, and a small Playwright smoke suite.
 - [ ] Upload sanitized test/evaluation reports even when a test fails.
 - [ ] Add a secret scan and dependency review appropriate to the repository.

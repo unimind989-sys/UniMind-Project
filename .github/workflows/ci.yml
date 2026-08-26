@@ -1,0 +1,107 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-review:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out the candidate without persisting credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Review dependency changes
+        uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
+
+  application:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    concurrency:
+      group: application-${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+    steps:
+      - name: Check out the candidate without persisting credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Use the repository Node version
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+      - name: Install from the immutable lockfile
+        run: corepack pnpm install --frozen-lockfile
+      - name: Install the pinned Chromium runtime
+        run: corepack pnpm exec playwright install --with-deps chromium
+      - name: Run the credential-free zero-paid gate
+        env:
+          PLAYWRIGHT_HTML_OPEN: never
+        run: corepack pnpm verify
+      - name: Upload sanitized local reports
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: local-test-reports-${{ github.run_id }}-${{ github.run_attempt }}
+          path: test-results/
+          if-no-files-found: warn
+          retention-days: 7
+
+  hosted-ci:
+    needs: application
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    environment: ci
+    concurrency:
+      group: unimind-hosted-ci-database
+      cancel-in-progress: false
+    env:
+      CI: "true"
+      UNIMIND_DB_ENVIRONMENT: ci
+      UNIMIND_SUPABASE_PROJECT_REF: ${{ secrets.UNIMIND_CI_SUPABASE_PROJECT_REF }}
+      UNIMIND_DB_RESET_CONFIRMATION: ${{ secrets.UNIMIND_CI_DB_RESET_CONFIRMATION }}
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.UNIMIND_CI_SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.UNIMIND_CI_SUPABASE_DB_PASSWORD }}
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.UNIMIND_CI_SUPABASE_URL }}
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.UNIMIND_CI_SUPABASE_PUBLISHABLE_KEY }}
+    steps:
+      - name: Check out the candidate without persisting credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Use the repository Node version
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+      - name: Install from the immutable lockfile
+        run: corepack pnpm install --frozen-lockfile
+      - name: Prove the selected target before reset
+        run: corepack pnpm db:push:dry-run
+      - name: Reset migrations and synthetic seed on the guarded CI target
+        run: corepack pnpm db:reset
+      - name: Verify migration history
+        run: corepack pnpm db:migrations
+      - name: Generate and compare database types
+        run: corepack pnpm db:types
+      - name: Reject generated type drift
+        run: corepack pnpm db:types:check
+      - name: Run hosted synthetic Auth integration
+        run: corepack pnpm test:integration:hosted:ci
+      - name: Run the implemented security project
+        run: corepack pnpm test:security
+      - name: Upload sanitized hosted reports
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: hosted-ci-test-reports-${{ github.run_id }}-${{ github.run_attempt }}
+          path: test-results/
+          if-no-files-found: warn
+          retention-days: 7

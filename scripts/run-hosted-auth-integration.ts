@@ -1,7 +1,11 @@
 import { spawnSync } from "node:child_process";
 import path from "node:path";
 
-import { readHostedSupabaseProfile } from "./lib/hosted-supabase-profile";
+import { parseHostedAuthCommand } from "./lib/hosted-auth-command";
+import {
+  readHostedSupabaseEnvironmentProfile,
+  readHostedSupabaseProfile,
+} from "./lib/hosted-supabase-profile";
 import {
   assertApprovedHostedSupabaseTarget,
   readHostedSupabaseTarget,
@@ -11,23 +15,14 @@ import {
   parseProjectServiceRoleKeyJson,
 } from "./lib/supabase-management-api";
 
-if (
-  process.argv.length !== 4 ||
-  process.argv[2] !== "--environment" ||
-  process.argv[3] !== "development"
-) {
-  throw new Error(
-    "Hosted Auth integration requires --environment development.",
-  );
-}
-
-const profile = readHostedSupabaseProfile("development");
+const command = parseHostedAuthCommand(process.argv.slice(2));
+const profile =
+  command.profileSource === "environment"
+    ? readHostedSupabaseEnvironmentProfile(command.environment)
+    : readHostedSupabaseProfile(command.environment);
 const target = readHostedSupabaseTarget(profile, {
   requireResetConfirmation: true,
 });
-if (target.environment !== "development") {
-  throw new Error("Hosted Auth integration is restricted to development.");
-}
 assertApprovedHostedSupabaseTarget(target);
 
 const projectUrl = profile.NEXT_PUBLIC_SUPABASE_URL;
@@ -38,7 +33,7 @@ if (
   publishableKey === undefined ||
   accessToken === undefined
 ) {
-  throw new Error("Hosted development Auth profile is incomplete.");
+  throw new Error(`Hosted ${target.environment} Auth profile is incomplete.`);
 }
 if (new URL(projectUrl).hostname !== `${target.projectRef}.supabase.co`) {
   throw new Error("Hosted Auth URL does not match the guarded project target.");
@@ -121,7 +116,7 @@ const childEnvironment: NodeJS.ProcessEnv = {
   NODE_OPTIONS: "--use-system-ca --dns-result-order=ipv4first",
   NEXT_PUBLIC_SUPABASE_URL: projectUrl,
   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: publishableKey,
-  NEXT_PUBLIC_RELEASE_ID: "hosted-auth-integration",
+  NEXT_PUBLIC_RELEASE_ID: `hosted-auth-${target.environment}-integration`,
   NEXT_PUBLIC_TELEMETRY_ENABLED: "false",
   DATABASE_URL:
     "postgresql://synthetic:synthetic@db.synthetic.invalid:5432/auth_test",

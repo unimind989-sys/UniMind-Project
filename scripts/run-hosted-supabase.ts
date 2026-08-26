@@ -7,6 +7,7 @@ import {
   supportedHostedSupabaseActions,
   type HostedSupabaseAction,
 } from "./lib/hosted-supabase-command";
+import { formatGeneratedDatabaseTypes } from "./lib/generated-database-types";
 import { readHostedSupabaseProfile } from "./lib/hosted-supabase-profile";
 import { readHostedSupabaseTarget } from "./lib/hosted-supabase-target";
 
@@ -65,9 +66,10 @@ if (result.status !== 0) {
 }
 
 if (capturesTypes) {
+  const typesPath = path.resolve("src/types/database.generated.ts");
   writeFileSync(
-    path.resolve("src/types/database.generated.ts"),
-    String(result.stdout),
+    typesPath,
+    await formatGeneratedDatabaseTypes(String(result.stdout)),
     "utf8",
   );
 }
