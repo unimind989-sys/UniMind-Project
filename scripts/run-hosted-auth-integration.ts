@@ -2,8 +2,14 @@ import { spawnSync } from "node:child_process";
 import path from "node:path";
 
 import { readHostedSupabaseProfile } from "./lib/hosted-supabase-profile";
-import { readHostedSupabaseTarget } from "./lib/hosted-supabase-target";
-import { parseProjectServiceRoleKeyJson } from "./lib/supabase-management-api";
+import {
+  assertApprovedHostedSupabaseTarget,
+  readHostedSupabaseTarget,
+} from "./lib/hosted-supabase-target";
+import {
+  createProjectApiKeysCurlRequest,
+  parseProjectServiceRoleKeyJson,
+} from "./lib/supabase-management-api";
 
 if (
   process.argv.length !== 4 ||
@@ -16,10 +22,13 @@ if (
 }
 
 const profile = readHostedSupabaseProfile("development");
-const target = readHostedSupabaseTarget(profile);
+const target = readHostedSupabaseTarget(profile, {
+  requireResetConfirmation: true,
+});
 if (target.environment !== "development") {
   throw new Error("Hosted Auth integration is restricted to development.");
 }
+assertApprovedHostedSupabaseTarget(target);
 
 const projectUrl = profile.NEXT_PUBLIC_SUPABASE_URL;
 const publishableKey = profile.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
@@ -33,10 +42,6 @@ if (
 }
 if (new URL(projectUrl).hostname !== `${target.projectRef}.supabase.co`) {
   throw new Error("Hosted Auth URL does not match the guarded project target.");
-}
-
-if (/[\r\n"\\]/u.test(accessToken)) {
-  throw new Error("Supabase access token contains unsupported characters.");
 }
 
 const supabaseCli = path.resolve("node_modules/supabase/dist/supabase.js");
@@ -71,23 +76,15 @@ if (apiKeyResult.error === undefined && apiKeyResult.status === 0) {
   serviceRoleKey = parseProjectServiceRoleKeyJson(String(apiKeyResult.stdout));
 } else {
   const curlExecutable = process.platform === "win32" ? "curl.exe" : "curl";
-  const managementUrl =
-    "https://api.supabase.com/v1/projects/" +
-    encodeURIComponent(target.projectRef) +
-    "/api-keys?reveal=true";
-  const curlConfig = [
-    'url = "' + managementUrl + '"',
-    'header = "Authorization: Bearer ' + accessToken + '"',
-    'header = "Accept: application/json"',
-    "silent",
-    "show-error",
-    "fail-with-body",
-  ].join("\n");
-  const curlResult = spawnSync(curlExecutable, ["--config", "-"], {
+  const curlRequest = createProjectApiKeysCurlRequest(
+    target.projectRef,
+    accessToken,
+  );
+  const curlResult = spawnSync(curlExecutable, curlRequest.arguments, {
     cwd: process.cwd(),
     encoding: "utf8",
     env: process.env,
-    input: curlConfig,
+    input: curlRequest.stdin,
     stdio: ["pipe", "pipe", "pipe"],
     windowsHide: true,
   });

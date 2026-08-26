@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import { readHostedSupabaseTarget } from "../../scripts/lib/hosted-supabase-target";
+import {
+  assertApprovedHostedSupabaseTarget,
+  createHostedProjectFingerprint,
+  readHostedSupabaseTarget,
+} from "../../scripts/lib/hosted-supabase-target";
 
 const projectRef = "abcdefghijklmnopqrst";
 
@@ -56,5 +60,20 @@ describe("hosted Supabase target guard", () => {
         { requireResetConfirmation: true },
       ),
     ).toEqual({ environment: "development", projectRef });
+  });
+
+  it("creates a bounded non-secret project fingerprint", () => {
+    expect(createHostedProjectFingerprint(projectRef)).toMatch(
+      /^sha256:[a-f0-9]{12}$/u,
+    );
+  });
+
+  it("rejects a project reference outside the approved environment mapping", () => {
+    expect(() =>
+      assertApprovedHostedSupabaseTarget({
+        environment: "development",
+        projectRef,
+      }),
+    ).toThrow("approved environment fingerprint");
   });
 });

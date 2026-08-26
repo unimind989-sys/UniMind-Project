@@ -1,7 +1,16 @@
 import { randomUUID } from "node:crypto";
 
 import { createBrowserClient, type CookieOptions } from "@supabase/ssr";
-import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { NextRequest } from "next/server";
+import {
+  afterAll,
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 
 type StoredCookie = Readonly<{
   value: string;
@@ -33,6 +42,10 @@ hostedDescribe("hosted synthetic Supabase Auth", () => {
 
   beforeEach(() => {
     cookieJar.clear();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   afterAll(async () => {
@@ -100,8 +113,45 @@ hostedDescribe("hosted synthetic Supabase Auth", () => {
       userId: created.userId,
     });
 
-    const refresh = await browser.auth.refreshSession();
-    expect(refresh.error).toBeNull();
+    const expiresAt = signIn.data.session?.expires_at;
+    if (expiresAt === undefined) {
+      throw new Error("Hosted Auth session is missing its expiry timestamp.");
+    }
+    const originalCookieValues = new Map(
+      [...cookieJar].map(([name, cookie]) => [name, cookie.value]),
+    );
+    const request = new NextRequest(
+      "https://app.unimind.invalid/auth-refresh-proof",
+      {
+        headers: {
+          cookie: [...cookieJar]
+            .map(([name, cookie]) => `${name}=${cookie.value}`)
+            .join("; "),
+        },
+      },
+    );
+
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date((expiresAt - 30) * 1_000));
+    const { refreshSupabaseSession } =
+      await import("../../src/lib/auth/refresh-session.server");
+    const response = await refreshSupabaseSession(request);
+    vi.useRealTimers();
+
+    expect(response.headers.get("cache-control")).toContain("private");
+    expect(response.headers.get("cache-control")).toContain("no-store");
+    expect(response.headers.get("pragma")).toBe("no-cache");
+    expect(response.cookies.getAll().length).toBeGreaterThan(0);
+    expect(
+      request.cookies
+        .getAll()
+        .some(({ name, value }) => originalCookieValues.get(name) !== value),
+    ).toBe(true);
+
+    cookieJar.clear();
+    for (const { name, value } of request.cookies.getAll()) {
+      cookieJar.set(name, { value, options: {} });
+    }
     await expect(requireVerifiedIdentity()).resolves.toEqual({
       userId: created.userId,
     });

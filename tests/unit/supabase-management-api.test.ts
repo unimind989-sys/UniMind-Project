@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  createProjectApiKeysCurlRequest,
   parseProjectServiceRoleKey,
   parseProjectServiceRoleKeyJson,
   SupabaseManagementApiError,
@@ -9,6 +10,28 @@ import {
 const serviceRoleKey = "synthetic-service-role-key";
 
 describe("Supabase Management API key parser", () => {
+  it("builds a curl fallback that disables ambient config and keeps the token off argv", () => {
+    const accessToken = "synthetic-access-token";
+    const request = createProjectApiKeysCurlRequest(
+      "abcdefghijklmnopqrst",
+      accessToken,
+    );
+
+    expect(request.arguments).toEqual(["-q", "--config", "-"]);
+    expect(request.arguments.join(" ")).not.toContain(accessToken);
+    expect(request.stdin).toContain(`Authorization: Bearer ${accessToken}`);
+  });
+
+  it.each([
+    ["preview-project", "synthetic-access-token"],
+    ["abcdefghijklmnopqrst", 'synthetic-"token"'],
+    ["abcdefghijklmnopqrst", "synthetic\ntoken"],
+  ])("rejects unsafe curl fallback input", (projectRef, accessToken) => {
+    expect(() =>
+      createProjectApiKeysCurlRequest(projectRef, accessToken),
+    ).toThrow(SupabaseManagementApiError);
+  });
+
   it("returns only the service-role key from captured CLI JSON", () => {
     expect(
       parseProjectServiceRoleKey([

@@ -29,7 +29,10 @@ type CookieToSet = Readonly<{
 
 type CookieAdapter = Readonly<{
   getAll: () => unknown;
-  setAll: (cookiesToSet: readonly CookieToSet[]) => void;
+  setAll: (
+    cookiesToSet: readonly CookieToSet[],
+    responseHeaders?: Readonly<Record<string, string>>,
+  ) => void;
 }>;
 
 function stubPublicEnvironment(): void {
@@ -126,6 +129,50 @@ describe("Supabase client factories", () => {
       cookie.value,
       cookie.options,
     );
+  });
+
+  it("propagates Supabase response headers alongside writable Auth cookies", async () => {
+    const applyResponseHeaders = vi.fn();
+    const { createServerSupabaseClient } =
+      await import("../../src/lib/db/supabase/server");
+    await createServerSupabaseClient({ applyResponseHeaders });
+
+    const responseHeaders = {
+      "Cache-Control": "private, no-store",
+      Pragma: "no-cache",
+    };
+    capturedCookieAdapter().setAll(
+      [
+        {
+          name: "synthetic-session",
+          value: "updated-cookie",
+          options: { httpOnly: true },
+        },
+      ],
+      responseHeaders,
+    );
+
+    expect(applyResponseHeaders).toHaveBeenCalledWith(responseHeaders);
+  });
+
+  it("refuses writable Auth cookie updates when response headers cannot be propagated", async () => {
+    const { createServerSupabaseClient, SupabaseResponseHeadersRequiredError } =
+      await import("../../src/lib/db/supabase/server");
+    await createServerSupabaseClient();
+
+    expect(() =>
+      capturedCookieAdapter().setAll(
+        [
+          {
+            name: "synthetic-session",
+            value: "updated-cookie",
+            options: { httpOnly: true },
+          },
+        ],
+        { "Cache-Control": "private, no-store" },
+      ),
+    ).toThrow(SupabaseResponseHeadersRequiredError);
+    expect(mocks.cookieSet).not.toHaveBeenCalled();
   });
 
   it("does not fail a Server Component when its cookie store is read-only", async () => {

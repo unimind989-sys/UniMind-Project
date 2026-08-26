@@ -1,4 +1,13 @@
+import { createHash } from "node:crypto";
+
 const allowedEnvironments = ["development", "ci"] as const;
+
+const approvedProjectFingerprints: Readonly<
+  Record<HostedDatabaseEnvironment, string>
+> = {
+  development: "sha256:5575d1c3d806",
+  ci: "sha256:6ad364ad022a",
+};
 
 export type HostedDatabaseEnvironment = (typeof allowedEnvironments)[number];
 
@@ -16,6 +25,23 @@ function requireValue(input: EnvironmentInput, name: string): string {
     throw new Error(`Missing required hosted database variable: ${name}`);
   }
   return value;
+}
+
+export function createHostedProjectFingerprint(projectRef: string): string {
+  return `sha256:${createHash("sha256").update(projectRef).digest("hex").slice(0, 12)}`;
+}
+
+export function assertApprovedHostedSupabaseTarget(
+  target: HostedSupabaseTarget,
+): void {
+  const actualFingerprint = createHostedProjectFingerprint(target.projectRef);
+  const approvedFingerprint = approvedProjectFingerprints[target.environment];
+
+  if (actualFingerprint !== approvedFingerprint) {
+    throw new Error(
+      "Hosted Supabase target does not match the approved environment fingerprint.",
+    );
+  }
 }
 
 export function readHostedSupabaseTarget(
