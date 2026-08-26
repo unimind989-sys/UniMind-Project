@@ -26,9 +26,9 @@
 
 **Pass:** Authenticated state reaches Server Components and mutations; forged state fails; no privileged key enters client output.
 
-**Evidence:** `evidence/wp01-foundation/2026-08-26_supabase-auth_development_fb75527.md` — executor report; rebind to the final candidate SHA before review.
+**Evidence:** `evidence/wp01-foundation/2026-08-26_supabase-auth_development_51be7f6.md` — commit-specific executor report; independent review pending.
 
-**Rollback:** Revert the future WP01-T05 candidate and disable its auth refresh seam; no real account or shared environment may be used.
+**Rollback:** Revert candidate hardening commit `51be7f6`, then initial implementation commit `40214e4`, and disable the auth refresh seam; no real account or shared environment may be used.
 
 **Hard stop:** Do not implement against guessed hosted behavior, use a real student/account, expose a service-role key, target preview/beta, weaken cookie verification, or claim integration behavior before WP01-T04 passes.
 
@@ -41,12 +41,12 @@
 
 ## Handoff
 
-**Changed:** Implemented typed browser/server Supabase factories, a private server-only admin client with narrow synthetic-fixture operations, a Next.js 16 `src/proxy.ts` refresh seam, and `getClaims()`-verified identity helpers. Added forged-cookie/role denial, cookie/header refresh, admin-boundary, non-disclosing Management API parsing, a CLI-to-HTTPS API-key fallback that sends the access token through stdin, a guarded hosted synthetic Auth lifecycle, and client-artifact secret-canary tests. The hosted child uses Node's system CA support instead of disabling TLS.
+**Changed:** Implemented typed browser/server Supabase factories, a private server-only admin client with narrow synthetic-fixture operations, a Next.js 16 `src/proxy.ts` refresh seam, and `getClaims()`-verified identity helpers. Added forged-cookie/role denial, response-aware Auth cookie/header writes, admin-boundary, non-disclosing Management API parsing, a CLI-to-HTTPS API-key fallback that disables ambient curl configuration and sends the access token through stdin, a confirmation- and fingerprint-guarded hosted synthetic Auth lifecycle through the real proxy, and client-artifact secret-canary tests. The hosted child uses Node's system CA support instead of disabling TLS.
 
-**Commands:** Full Prettier, ESLint, strict TypeScript, and module-boundary checks passed. Full unit Vitest passed 13 files/185 tests; security Vitest passed 1 file/3 tests; the hosted-only integration remains skipped by default. The guarded hosted-development Auth lifecycle passed 1/1: synthetic create, sign-in, verified identity, refresh, forged-cookie denial, and marker-protected deletion. The synthetic Next.js 16.3.1 production build passed and reported `Client artifact secret scan passed.` Agent readiness and isolated handoff rehearsal passed. The literal `pnpm verify` wrapper still cannot start because Corepack is absent and the bundled pnpm wrapper refuses an automatic non-TTY reinstall; exact installed tools ran directly without dependency changes.
+**Commands:** `corepack pnpm verify` passed Prettier, ESLint, strict TypeScript, module boundaries, 13 files/193 unit tests, the synthetic Next.js 16.3.1 production build, and `Client artifact secret scan passed.` Security Vitest passed 1 file/3 tests; the hosted-only integration remains skipped by default. The candidate's guarded hosted-development lifecycle passed 1/1: approved target fingerprint, synthetic create, sign-in, verified identity, real proxy near-expiry refresh with request/response cookies and private/no-store headers, forged-cookie denial, and marker-protected deletion. Earlier agent-readiness and isolated-handoff checks remain recorded in the evidence.
 
-**Remaining:** Rebind the executor evidence to the final candidate commit and assign an independent security reviewer. Actual future business mutations must continue through `requireVerifiedIdentity()`, a request-scoped client, and reviewed RLS.
+**Remaining:** Assign an independent security reviewer. Actual future business mutations must continue through `requireVerifiedIdentity()`, a request-scoped client, and reviewed RLS; Auth-cookie mutations must also propagate the response headers supplied by `@supabase/ssr`.
 
-**Next safe action:** Create the candidate commit only when requested, rebind the evidence filename/SHA, and have an independent reviewer reproduce the hosted-development Auth lifecycle and secret-leak/forgery gates.
+**Next safe action:** Have an independent reviewer reproduce candidate `51be7f6` through the hosted-development Auth lifecycle and secret-leak/forgery gates, then record PASS or defects without changing the candidate.
 
-**Reviewer action:** Review service-role isolation and synthetic-user cleanup, verify `getClaims()` fail-closed behavior and metadata rejection, inspect proxy cookie/cache handling, confirm the HTTPS fallback never places the access token in process arguments or output, confirm system CA use does not disable TLS, inspect client-artifact scan coverage, and reproduce the hosted-development evidence before approving.
+**Reviewer action:** Review service-role isolation and synthetic-user cleanup, verify the confirmation plus approved-fingerprint target guard, verify `getClaims()` fail-closed behavior and metadata rejection, inspect real proxy and response-aware server-client cookie/cache handling, confirm the HTTPS fallback disables ambient curl configuration and never places the access token in process arguments or output, confirm system CA use does not disable TLS, inspect client-artifact scan coverage, and reproduce the hosted-development evidence before approving.
