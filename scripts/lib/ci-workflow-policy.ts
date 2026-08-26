@@ -214,12 +214,26 @@ function hasAlwaysUpload(job: UnknownRecord): boolean {
   );
 }
 
-function hasDependencyReview(job: UnknownRecord | undefined): boolean {
+function hasDependencyAudit(job: UnknownRecord | undefined): boolean {
+  if (
+    job?.if !== "github.event_name == 'pull_request'" ||
+    !Array.isArray(job.steps)
+  ) {
+    return false;
+  }
+  const actions = collectStrings(job, "uses");
+  const runs = job.steps.map((step) =>
+    isRecord(step) && typeof step.run === "string" ? step.run.trim() : "",
+  );
+  const activationIndex = runs.indexOf("corepack enable");
+  const auditIndex = runs.indexOf(
+    "corepack pnpm audit --audit-level high --prod",
+  );
   return (
-    job?.if === "github.event_name == 'pull_request'" &&
-    collectStrings(job, "uses").some((value) =>
-      value.startsWith("actions/dependency-review-action@"),
-    )
+    actions.some((value) => value.startsWith("actions/checkout@")) &&
+    actions.some((value) => value.startsWith("actions/setup-node@")) &&
+    activationIndex >= 0 &&
+    auditIndex > activationIndex
   );
 }
 
@@ -257,11 +271,11 @@ export function auditCiWorkflow(source: string): string[] {
   }
 
   const jobs = isRecord(workflow.jobs) ? workflow.jobs : {};
-  const dependencyReview = isRecord(jobs["dependency-review"])
-    ? jobs["dependency-review"]
+  const dependencyAudit = isRecord(jobs["dependency-audit"])
+    ? jobs["dependency-audit"]
     : undefined;
-  if (!hasDependencyReview(dependencyReview)) {
-    violations.push("DEPENDENCY_REVIEW_MISSING");
+  if (!hasDependencyAudit(dependencyAudit)) {
+    violations.push("DEPENDENCY_AUDIT_MISSING");
   }
   const application = isRecord(jobs.application) ? jobs.application : undefined;
   if (!hasApplicationConcurrency(application)) {
