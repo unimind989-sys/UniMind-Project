@@ -745,17 +745,17 @@ git diff --exit-code -- src/types/database.generated.ts
 
 #### WP01-T08 — Create CI with a clean-database security gate
 
-- [~] Create `.github/workflows/ci.yml` with least-privilege permissions and concurrency cancellation for superseded branch runs. Owner: Codex `/root`; branch: `main`; external publication remains unauthorized.
-- [~] Pin action revisions to immutable commit SHAs or an approved dependency policy. Official action refs were resolved and the local workflow-policy audit rejects floating revisions; external review remains outstanding.
+- [~] Create `.github/workflows/ci.yml` with least-privilege permissions and concurrency cancellation for superseded branch runs. Revision `ce7750b` restricts the credentialed hosted job to `main` push/manual executions and step-scopes its secrets. Owner: Codex `/root`; branch: `main`; external publication remains authorization-gated.
+- [~] Pin action revisions to immutable commit SHAs or an approved dependency policy. Official action refs were re-resolved, and the expanded local policy audit rejects floating revisions, write permissions including `write-all`, unsafe triggers, and missing required jobs; external review remains outstanding.
 - [~] Use `pnpm install --frozen-lockfile`. The local command passes and both jobs declare it; a fresh GitHub runner has not been authorized.
 - [~] Cache only safe package/build data; never cache `.env`, Supabase credentials, test-user tokens, or private fixtures. The candidate intentionally configures no cache.
-- [~] Use the reviewed isolated hosted CI target to reset migrations, seed synthetic data, run database/security tests, generate types, and fail on a type diff. The serialized, environment-guarded local rehearsal passed twice-generated type stability and hosted synthetic Auth; the external run and future WP02 RLS-leak rejection remain blocked. See `planning/tasks/wp01-t08-create-ci.md`.
-- [~] Run format check, lint, type check, unit/integration/security tests, production build, and a small Playwright smoke suite. The complete local equivalent passes; clean-runner proof remains outstanding.
+- [~] Use the reviewed isolated hosted CI target to reset migrations, seed synthetic data, run database/security tests, generate types, and fail on a type diff. Every hosted adapter now enforces the committed approved-project fingerprint before access; the serialized local rehearsal passed metadata, dry-run, migrations, stable types, and hosted synthetic Auth. External clean-runner proof remains outstanding. See `planning/tasks/wp01-t08-create-ci.md`.
+- [~] Run format check, lint, type check, unit/integration/security tests, production build, and a small Playwright smoke suite. The exact Node 24.19.0 local equivalent passes with 212 unit tests; clean-runner proof remains outstanding.
 - [~] Upload sanitized test/evaluation reports even when a test fails. Both jobs use immutable `upload-artifact` with `if: always()` and a seven-day retention; external artifact inspection remains outstanding.
-- [~] Add a secret scan and dependency review appropriate to the repository. The 603-file redacting scan and pull-request dependency-review job are locally audited; external execution remains outstanding.
+- [~] Add a secret scan and dependency review appropriate to the repository. The hardened 605-file redacting scan rejects marker-based bypasses, and the pull-request dependency-review job is locally audited; external execution remains outstanding.
 - [ ] Protect `main` and require CI plus independent review for migration/RLS/deletion/usage changes. GitHub mutation is authorization-gated and the reviewer is unassigned; this remains pending while the local candidate is in progress.
 
-**Pass:** a fresh CI runner reproduces the build without manual dashboard state; a deliberately leaking RLS policy fails the pipeline.
+**Pass:** a fresh CI runner reproduces install, the credential-free application gate, and the guarded isolated database/Auth gate without manual dashboard state, paid calls, secret leakage, or access to a non-approved target. WP02-T04 adds the deliberate leaking-RLS-policy failure once the RLS matrix exists; it cannot block the CI foundation on which WP02 depends.
 
 #### WP01-T09 — Provision isolated environments
 
@@ -975,6 +975,7 @@ For each migration:
 - [ ] Mark each cell `ALLOW`, `DENY`, or `SERVER_ONLY`; include the predicate and test ID.
 - [ ] For every `ALLOW`, add a positive test. For every high-risk boundary, add a negative test using a different user, cohort, unit, role, state, and expired/revoked access where applicable.
 - [ ] Query `pg_class`, `pg_policies`, and grants in a meta-test so a newly exposed table without RLS/policy review fails CI.
+- [ ] Prove the hosted CI database/security gate fails when a test-only candidate policy deliberately leaks a cross-user or cross-cohort row; preserve the independent RLS review and remove/revert the unsafe policy fixture after the negative run.
 
 #### WP02-T05 — Implement availability as a derived contract
 
