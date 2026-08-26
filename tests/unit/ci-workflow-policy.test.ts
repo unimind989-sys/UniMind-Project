@@ -74,14 +74,24 @@ jobs:
     expect(auditCiWorkflow(unsafe)).toContain("WRITE_PERMISSION");
   });
 
-  it("requires pull-request dependency review", async () => {
+  it("requires a zero-cost pull-request dependency audit", async () => {
     const workflow = await readFile(".github/workflows/ci.yml", "utf8");
     const unsafe = workflow.replace(
-      /  dependency-review:[\s\S]*?\n  application:/u,
+      /  dependency-audit:[\s\S]*?\n  application:/u,
       "  application:",
     );
 
-    expect(auditCiWorkflow(unsafe)).toContain("DEPENDENCY_REVIEW_MISSING");
+    expect(auditCiWorkflow(unsafe)).toContain("DEPENDENCY_AUDIT_MISSING");
+  });
+
+  it("does not accept the paid private-repository dependency review action", async () => {
+    const workflow = await readFile(".github/workflows/ci.yml", "utf8");
+    const unsupported = workflow.replace(
+      "        run: corepack pnpm audit --audit-level high --prod",
+      "        uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294",
+    );
+
+    expect(auditCiWorkflow(unsupported)).toContain("DEPENDENCY_AUDIT_MISSING");
   });
 
   it("requires immutable-lockfile installation in both execution jobs", async () => {
@@ -92,6 +102,16 @@ jobs:
     );
 
     expect(auditCiWorkflow(unsafe)).toContain("FROZEN_INSTALL_MISSING");
+  });
+
+  it("requires Corepack shims before pnpm in both execution jobs", async () => {
+    const workflow = await readFile(".github/workflows/ci.yml", "utf8");
+    const unsafe = workflow.replaceAll(
+      "      - name: Activate the pinned package manager\n        run: corepack enable\n",
+      "",
+    );
+
+    expect(auditCiWorkflow(unsafe)).toContain("COREPACK_ENABLE_MISSING");
   });
 
   it("rejects dependency or build caching from the foundation workflow", async () => {
