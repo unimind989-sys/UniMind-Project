@@ -2,17 +2,17 @@
 
 **Task ID:** WP01-T07
 
-**Status:** [?]
+**Status:** [ ]
 
 **Outcome:** Unit, integration, security, end-to-end, evaluation, and load suites have explicit boundaries, safe defaults, actionable timeouts, and stable machine-readable outputs.
 
-**Owner:** Codex `/root` after WP01-T05 PASS
+**Owner:** UNASSIGNED — READY TO CLAIM
 
-**Reviewer:** UNASSIGNED — GATE BLOCKED
+**Reviewer:** UNASSIGNED — ASSIGN WITH TASK
 
 **Branch:** main (no delivery branch requested)
 
-**Updated (UTC):** 2026-08-20T17:48:00Z
+**Updated (UTC):** 2026-08-26
 
 ## Execution contract
 
@@ -34,7 +34,7 @@
 
 ## Steps
 
-- [?] Wait for WP01-T05 reviewed PASS; WP01-T04 passed on 2026-08-25.
+- [x] WP01-T04 and WP01-T05 have reviewed PASS evidence; the test-layer implementation is unblocked.
 - [ ] Configure explicit unit/integration/security/E2E/eval/load projects and timeouts.
 - [ ] Add synthetic layer fixtures and deliberately failing seam checks.
 - [ ] Add stable machine-readable and Markdown reports where required.
@@ -42,12 +42,12 @@
 
 ## Handoff
 
-**Changed:** No test-layer implementation started; existing unit/provider/environment checks continue to run through `pnpm verify`.
+**Changed:** No test-layer implementation started. WP01-T05 now has reviewed PASS evidence, so the test-layer contract is ready to claim; existing unit/provider/environment checks continue to run through `pnpm verify`.
 
-**Commands:** NOT RUN for WP01-T07. The resettable hosted development/CI database now exists and is reviewed; the WP01-T05 Auth/security seam does not yet exist.
+**Commands:** NOT RUN for WP01-T07. The resettable hosted development/CI database and WP01-T05 Auth/security seam now have reviewed PASS evidence.
 
-**Remaining:** Entire WP01-T07 outcome after WP01-T05 PASS.
+**Remaining:** Claim and implement the entire WP01-T07 outcome.
 
-**Next safe action:** Complete WP01-T05, then implement all test layers as one verified contract against the reviewed hosted targets.
+**Next safe action:** Assign the executor/reviewer, mark WP01-T07 in progress, and implement all test layers as one verified contract against the reviewed hosted targets.
 
 **Reviewer action:** Assign after dependencies pass; database/security layer claims require independent review where RLS/grants become involved.

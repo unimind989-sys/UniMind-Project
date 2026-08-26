@@ -12,7 +12,7 @@
 
 **Branch:** main (no delivery branch requested)
 
-**Updated (UTC):** 2026-08-20T17:48:00Z
+**Updated (UTC):** 2026-08-26
 
 ## Execution contract
 
@@ -34,7 +34,7 @@
 
 ## Steps
 
-- [?] Wait for WP01-T05 through WP01-T07 reviewed PASS; WP01-T04 passed on 2026-08-25.
+- [?] Wait for WP01-T07 reviewed PASS; WP01-T04, WP01-T05, and WP01-T06 have reviewed PASS evidence.
 - [ ] Author least-privilege workflow with immutable pins and safe concurrency/cache behavior.
 - [ ] Reproduce every database/application/security/smoke command on a clean runner.
 - [ ] Add secret/dependency review and sanitized always-upload reports.

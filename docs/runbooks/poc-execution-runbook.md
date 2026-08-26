@@ -707,13 +707,14 @@ git diff --exit-code -- src/types/database.generated.ts
 
 #### WP01-T05 — Implement safe Supabase clients and auth refresh
 
-- [~] Create `src/lib/db/supabase/browser.ts` using the publishable key only; WP01-T04 has reviewed PASS evidence at `evidence/wp01-foundation/2026-08-25_hosted-supabase_development-ci_b444a5d.md`. Owner: Codex `/root`; branch: `main`.
-- [~] Create `src/lib/db/supabase/server.ts` using `@supabase/ssr` and the current Next.js cookie API; Auth cookie writes fail closed without a response-header propagation sink. Owner: Codex `/root`; candidate: `51be7f6`; branch: `main`; independent review pending.
-- [~] Create `src/lib/db/supabase/admin.ts` as server-only; the raw service client remains private and only marker-protected synthetic Auth fixture creation/deletion is exposed. Owner: Codex `/root`; hosted synthetic create/delete proof passed; independent review pending.
-- [~] Implement the current Supabase SSR session-refresh pattern in `src/proxy.ts`; the confirmation- and approved-fingerprint-guarded hosted test passed a real near-expiry proxy refresh with updated request/response cookies and private/no-store headers. Owner: Codex `/root`; candidate: `51be7f6`; independent review pending.
-- [~] Protect server mutations with `requireVerifiedIdentity()`, verified `getClaims()` identity, request-scoped clients, and database RLS; no business mutation exists yet in this foundation scope. Forged-state denial passed locally and against hosted development; independent review pending.
-- [~] Never authorize from user-editable `user_metadata`; the verified identity seam returns only the validated token subject and discards client-editable role/cohort claims. Independent review pending.
-- [~] Inspect browser bundles and serialized output for secret/service-role canaries after every safe production build. The local scanner, its negative tests, and the production artifact scan pass; independent review pending.
+- [x] Create `src/lib/db/supabase/browser.ts` using the publishable key only; WP01-T04 has reviewed PASS evidence at `evidence/wp01-foundation/2026-08-25_hosted-supabase_development-ci_b444a5d.md`. Owner: Codex `/root`; candidate: `51be7f6`; branch: `main`.
+- [x] Create `src/lib/db/supabase/server.ts` using `@supabase/ssr` and the current Next.js cookie API; Auth cookie writes fail closed without a response-header propagation sink. Owner: Codex `/root`; candidate: `51be7f6`; branch: `main`.
+- [x] Create `src/lib/db/supabase/admin.ts` as server-only; the raw service client remains private and only marker-protected synthetic Auth fixture creation/deletion is exposed. Hosted synthetic create/delete and cleanup proof passed.
+- [x] Implement the current Supabase SSR session-refresh pattern in `src/proxy.ts`; the confirmation- and approved-fingerprint-guarded hosted test passed a real near-expiry proxy refresh with updated request/response cookies and private/no-store headers.
+- [x] Protect server mutations with `requireVerifiedIdentity()`, verified `getClaims()` identity, request-scoped clients, and database RLS; no business mutation exists yet in this foundation scope. Forged-state denial passed locally and against hosted development.
+- [x] Never authorize from user-editable `user_metadata`; the verified identity seam returns only the validated token subject and discards client-editable role/cohort claims.
+- [x] Inspect browser bundles and serialized output for secret/service-role canaries after every safe production build. The local scanner, its negative tests, and the production artifact scan pass.
+- [x] Ahmed independently reviewed candidate `51be7f6` and its commit-specific evidence and approved WP01-T05 on 2026-08-26.
 
 **Pass:** sign-in state reaches Server Components and authenticated mutations, a forged cookie/role fails, and no privileged key is present in client output.
 
@@ -732,7 +733,7 @@ git diff --exit-code -- src/types/database.generated.ts
 #### WP01-T07 — Create the test layers
 
 - [ ] Unit tests cover pure business rules and validators.
-- [?] Integration tests run against an isolated reset hosted Supabase development/CI target and mock providers. The hosted targets are reviewed; this remains blocked on WP01-T05 Auth/security seams. See `planning/tasks/wp01-t07-create-test-layers.md`.
+- [ ] Integration tests run against an isolated reset hosted Supabase development/CI target and mock providers. The hosted targets and WP01-T05 Auth/security seams are reviewed; WP01-T07 is ready to claim. See `planning/tasks/wp01-t07-create-test-layers.md`.
 - [ ] Security tests assume multiple users, cohorts, roles, and source states and assert allowed plus forbidden operations.
 - [ ] End-to-end tests use Playwright with isolated synthetic accounts and deterministic data.
 - [ ] Evaluation tests consume versioned JSONL and emit machine-readable plus Markdown reports.
@@ -748,7 +749,7 @@ git diff --exit-code -- src/types/database.generated.ts
 - [ ] Pin action revisions to immutable commit SHAs or an approved dependency policy.
 - [ ] Use `pnpm install --frozen-lockfile`.
 - [ ] Cache only safe package/build data; never cache `.env`, Supabase credentials, test-user tokens, or private fixtures.
-- [?] Provision or select the isolated hosted CI target, reset migrations, seed synthetic data, run database/security tests, generate types, and fail on a type diff. The workflow must serialize a reusable target or create/dispose an isolated branch per run and must never reset development, preview, or beta. The hosted CI target is reviewed; this remains blocked on WP01-T05/T07. See `planning/tasks/wp01-t08-create-ci.md`.
+- [?] Provision or select the isolated hosted CI target, reset migrations, seed synthetic data, run database/security tests, generate types, and fail on a type diff. The workflow must serialize a reusable target or create/dispose an isolated branch per run and must never reset development, preview, or beta. The hosted CI target and WP01-T05 are reviewed; this remains blocked on WP01-T07. See `planning/tasks/wp01-t08-create-ci.md`.
 - [ ] Run format check, lint, type check, unit/integration/security tests, production build, and a small Playwright smoke suite.
 - [ ] Upload sanitized test/evaluation reports even when a test fails.
 - [ ] Add a secret scan and dependency review appropriate to the repository.
@@ -791,13 +792,13 @@ git status --short
 ```
 
 - [x] Include recovery for unavailable hosted targets, rejected reset guards, network failure, stale generated types, migration drift, invalid env, and a leaked workstation/CI token.
-- [?] Have a fresh agent follow `CONTRIBUTING.md` on a clean clone without chat history or verbal help; have the reviewer record every ambiguity. Structural rehearsal is ready and the hosted foundation is reviewed; the complete database/Auth/app journey remains blocked on WP01-T05/T07/T08/T09. See `planning/tasks/wp01-t10-write-operation-tutorial.md`.
+- [?] Have a fresh agent follow `CONTRIBUTING.md` on a clean clone without chat history or verbal help; have the reviewer record every ambiguity. Structural rehearsal is ready and WP01-T05 is reviewed; the complete database/Auth/app journey remains blocked on WP01-T07/T08/T09. See `planning/tasks/wp01-t10-write-operation-tutorial.md`.
 
 **Pass:** the clean-clone rehearsal reaches the app, approved hosted development database, tests, and build using repository instructions alone, and the fresh agent produces a complete task handoff.
 
 #### WP01-T11 — Run the package gate
 
-- [?] Copy the gate template to `evidence/wp01-foundation`. WP01-T04 passed; the package gate remains blocked on WP01-T05/T07/T08/T09/T10. See `planning/tasks/wp01-t11-run-package-gate.md`.
+- [?] Copy the gate template to `evidence/wp01-foundation`. WP01-T04 and WP01-T05 passed; the package gate remains blocked on WP01-T07/T08/T09/T10. See `planning/tasks/wp01-t11-run-package-gate.md`.
 - [ ] Run `pnpm verify` from a clean clone with network access blocked for provider endpoints.
 - [ ] Reset the database twice and compare generated types.
 - [ ] Deploy preview from the candidate SHA and run smoke tests.

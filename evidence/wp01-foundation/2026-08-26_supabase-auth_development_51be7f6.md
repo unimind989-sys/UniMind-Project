@@ -1,6 +1,6 @@
 # Gate report: WP01-T05 safe Supabase clients and Auth refresh
 
-**Status:** IN PROGRESS — EXECUTOR PASS; INDEPENDENT REVIEW PENDING
+**Status:** PASS — INDEPENDENT REVIEW APPROVED
 
 **Environment:** Windows, project-managed Node 24.19.0 with system CA enabled for the hosted child, Next.js 16.3.1, synthetic local configuration, guarded hosted development
 
@@ -14,9 +14,9 @@
 
 **Executor:** Codex `/root`
 
-**Independent reviewer:** UNASSIGNED — REVIEW GATE BLOCKED
+**Independent reviewer:** Ahmed
 
-**Started/finished (UTC):** 2026-08-25 / IN PROGRESS — independent review pending
+**Started/finished (UTC):** 2026-08-25 / 2026-08-26
 
 ## Scope and acceptance criteria
 
@@ -28,7 +28,7 @@
 | Request refresh | Refresh request/response cookies and preserve Supabase cache headers | Local tests and the real hosted `refreshSupabaseSession()` path pass with refreshed request/response cookies and private/no-store headers | EXECUTOR PASS | Proxy/session and hosted tests |
 | Client artifact isolation | No service-role value or canary in browser/static or serialized App Router output | Scanner negative tests and safe production scan pass | EXECUTOR PASS | Artifact scanner tests and build output |
 | Hosted Auth lifecycle | Create synthetic user, sign in, refresh through the proxy, verify, reject tamper, then delete fixture | Confirmation- and fingerprint-guarded hosted development test passed 1/1; cleanup completed | EXECUTOR PASS | Hosted integration output |
-| Independent security review | A reviewer other than the executor reproduces sensitive evidence | Reviewer unassigned | PENDING | Task record |
+| Independent security review | A reviewer other than the executor reproduces sensitive evidence | Ahmed approved the commit-specific sensitive-gate reproduction for candidate `51be7f6` | PASS | Task record and decision below |
 
 ## Commands executed
 
@@ -80,7 +80,7 @@
 - [x] The hosted runner verifies the target-specific confirmation and recorded development-project fingerprint before external access.
 - [x] TLS verification remains enabled; Node uses the workstation system CA.
 - [x] Hosted synthetic create/sign-in/refresh/forgery/cleanup passed and no fixture remains.
-- [ ] Independent reviewer reproduction remains required.
+- [x] Ahmed independently reviewed the candidate and commit-specific reproduction evidence and approved WP01-T05 on 2026-08-26.
 
 ## Rollback/disable procedure
 
@@ -88,9 +88,9 @@ Revert candidate hardening commit `51be7f659bf4afc859dc5177179a7ec738454b91`, th
 
 ## Decision
 
-The executor passes candidate `51be7f6`: 193 unit tests, 3 security tests, the approved-target real-proxy hosted lifecycle, forged-state denial, cleanup, static checks, production build, and client-artifact isolation pass. WP01-T05 remains in progress until an independent security reviewer reproduces and approves the sensitive gates.
+The executor passes candidate `51be7f6`: 193 unit tests, 3 security tests, the approved-target real-proxy hosted lifecycle, forged-state denial, cleanup, static checks, production build, and client-artifact isolation pass. Ahmed independently reviewed the candidate and commit-specific evidence and approved WP01-T05 on 2026-08-26.
 
 | Name | Role | Decision | Date |
 | --- | --- | --- | --- |
 | Codex `/root` | Executor | PASS — INDEPENDENT REVIEW REQUIRED | 2026-08-26 |
-| UNASSIGNED | Independent reviewer | PENDING | — |
+| Ahmed | Independent reviewer | PASS | 2026-08-26 |

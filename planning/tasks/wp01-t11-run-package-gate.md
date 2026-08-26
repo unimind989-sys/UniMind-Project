@@ -12,7 +12,7 @@
 
 **Branch:** main (no delivery branch requested)
 
-**Updated (UTC):** 2026-08-20T17:58:00Z
+**Updated (UTC):** 2026-08-26
 
 ## Execution contract
 
@@ -44,10 +44,10 @@
 
 **Changed:** No gate started; the complete prerequisite and evidence contract is recorded.
 
-**Commands:** NOT RUN for WP01-T11. WP01-T04 passed on 2026-08-25; WP01-T05/T07/T08/T09/T10 remain incomplete or blocked on downstream prerequisites.
+**Commands:** NOT RUN for WP01-T11. WP01-T04 and WP01-T05 have reviewed PASS evidence; WP01-T07/T08/T09/T10 remain incomplete or blocked on downstream prerequisites.
 
 **Remaining:** Entire package gate after every upstream task passes.
 
-**Next safe action:** Select and complete WP01-T05, then follow the remaining WP01 dependency chain; do not advance to WP02.
+**Next safe action:** Select and complete WP01-T07, then follow the remaining WP01 dependency chain; do not advance to WP02.
 
 **Reviewer action:** Assign independent reviewers before database/security/preview evidence is evaluated.
