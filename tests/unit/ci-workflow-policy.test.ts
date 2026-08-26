@@ -94,6 +94,16 @@ jobs:
     expect(auditCiWorkflow(unsafe)).toContain("FROZEN_INSTALL_MISSING");
   });
 
+  it("requires Corepack shims before pnpm in both execution jobs", async () => {
+    const workflow = await readFile(".github/workflows/ci.yml", "utf8");
+    const unsafe = workflow.replaceAll(
+      "      - name: Activate the pinned package manager\n        run: corepack enable\n",
+      "",
+    );
+
+    expect(auditCiWorkflow(unsafe)).toContain("COREPACK_ENABLE_MISSING");
+  });
+
   it("rejects dependency or build caching from the foundation workflow", async () => {
     const workflow = await readFile(".github/workflows/ci.yml", "utf8");
     const unsafe = workflow.replace(

@@ -122,6 +122,24 @@ function hasFrozenInstall(job: UnknownRecord | undefined): boolean {
   );
 }
 
+function hasCorepackActivationBeforeInstall(
+  job: UnknownRecord | undefined,
+): boolean {
+  if (job === undefined || !Array.isArray(job.steps)) {
+    return false;
+  }
+  const runs = job.steps.map((step) =>
+    isRecord(step) && typeof step.run === "string" ? step.run : "",
+  );
+  const activationIndex = runs.findIndex(
+    (run) => run.trim() === "corepack enable",
+  );
+  const installIndex = runs.findIndex((run) =>
+    run.includes("corepack pnpm install --frozen-lockfile"),
+  );
+  return activationIndex >= 0 && installIndex > activationIndex;
+}
+
 function hasApplicationGate(job: UnknownRecord | undefined): boolean {
   return (
     job !== undefined &&
@@ -266,6 +284,12 @@ export function auditCiWorkflow(source: string): string[] {
   }
   if (!hasFrozenInstall(application) || !hasFrozenInstall(hosted)) {
     violations.push("FROZEN_INSTALL_MISSING");
+  }
+  if (
+    !hasCorepackActivationBeforeInstall(application) ||
+    !hasCorepackActivationBeforeInstall(hosted)
+  ) {
+    violations.push("COREPACK_ENABLE_MISSING");
   }
   if (!hasSerializedHostedConcurrency(hosted)) {
     violations.push("HOSTED_SERIALIZATION_MISSING");
