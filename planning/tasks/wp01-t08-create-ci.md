@@ -26,7 +26,7 @@
 
 **Pass:** A fresh runner needs no dashboard state, makes no paid call, leaks no secret, and rejects an intentionally unsafe RLS policy.
 
-**Evidence:** `evidence/wp01-foundation/YYYY-MM-DD_ci-clean-database_github_<short-sha>.md`
+**Evidence:** Local rehearsal draft at `evidence/wp01-foundation/2026-08-26_ci-clean-database_local_2919e42.md`; the final external proof remains `evidence/wp01-foundation/YYYY-MM-DD_ci-clean-database_github_<short-sha>.md`.
 
 **Rollback:** Disable/revert the future workflow and preserve required branch protections unless an authorized owner changes them.
 
@@ -36,18 +36,18 @@
 
 - [x] WP01-T04 through WP01-T07 have reviewed PASS evidence.
 - [~] Author least-privilege workflow with immutable pins and safe concurrency/cache behavior. Owner: Codex `/root`; branch: `main`.
-- [ ] Reproduce every database/application/security/smoke command on a clean runner.
-- [ ] Add secret/dependency review and sanitized always-upload reports.
-- [ ] Obtain authorized external CI run and branch-protection review.
+- [?] Reproduce every database/application/security/smoke command on a clean runner. The complete local equivalent and guarded hosted-CI rehearsal pass; an external clean runner remains authorization-gated.
+- [~] Add secret/dependency review and sanitized always-upload reports. Authored and locally audited; reviewer and external-run proof remain outstanding.
+- [?] Obtain authorized external CI run and branch-protection review.
 
 ## Handoff
 
-**Changed:** WP01-T07 now has reviewed PASS evidence, so Codex `/root` claimed local workflow authoring. External publication, GitHub secret entry, workflow execution, and branch-protection mutation remain unauthorized hard stops.
+**Changed:** Candidate commits `2c14cda`, `371717e`, and `2919e42` add the least-privilege workflow, immutable action pins, environment-backed CI profile adapter, guarded hosted Auth command, workflow-policy audit, repository secret scan, stable generated-type formatting, focused tests, and formatting normalization. The workflow uses no cache, serializes the hosted CI database, and uploads only `test-results/` with `if: always()`. External publication, GitHub secret entry, workflow execution, and branch-protection mutation remain unauthorized hard stops.
 
-**Commands:** NOT RUN yet for WP01-T08. The versioned hosted CI database isolation, Auth seam, and complete test-layer commands now have reviewed PASS evidence.
+**Commands:** `corepack pnpm db:metadata --environment ci`, `db:push:dry-run --environment ci`, `db:reset --environment ci`, `db:migrations --environment ci`, two runs of `db:types --environment ci`, `db:types:check`, and the environment-backed `test:integration:hosted:ci` passed against the reviewed isolated CI fingerprint. `corepack pnpm verify` passed after formatting four new files; 202 unit tests, the local integration seam, 8 security tests, 3 evaluation tests, 5 load-profile tests, one Chromium smoke, the production build, CI-policy audit, and 603-file repository/client-artifact secret scans passed. `corepack pnpm install --frozen-lockfile`, `git diff --check`, and generated-type no-diff checks passed. The sanitized command record is in the linked local evidence draft.
 
-**Remaining:** Author and locally audit the workflow/CI command contract, then obtain explicit authorization for the external GitHub run and branch-protection review.
+**Remaining:** Assign an independent reviewer; explicitly authorize workflow publication and CI-environment secret entry; run the candidate on a fresh GitHub runner; inspect sanitized artifacts; require CI and independent review in `main` branch protection. The deliberate leaking-RLS rejection cannot be claimed until WP02 introduces the database RLS matrix it is meant to test.
 
-**Next safe action:** Implement the least-privilege workflow and prove its guarded local equivalent without changing GitHub state.
+**Next safe action:** Review `evidence/wp01-foundation/2026-08-26_ci-clean-database_local_2919e42.md` and obtain explicit external authorization plus a named reviewer. Do not start WP01-T09 or publish/configure GitHub state from this task record alone.
 
-**Reviewer action:** Assign before external publication; migration/RLS/security changes retain independent review.
+**Reviewer action:** Inspect the three candidate commits and local evidence, verify the action pins and report scope, then independently review the first external run and branch rules. Migration/RLS/security changes retain the two-person rule.
