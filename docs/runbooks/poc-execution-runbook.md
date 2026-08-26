@@ -732,14 +732,14 @@ git diff --exit-code -- src/types/database.generated.ts
 
 #### WP01-T07 — Create the test layers
 
-- [~] Unit tests cover pure business rules and validators. Candidate `1783d7e`; executor evidence passes; independent review pending.
-- [~] Integration tests run against an isolated reset hosted Supabase development/CI target and mock providers. Local mock plus explicit hosted development Auth checks pass against the reviewed WP01-T04/T05 seams; independent review pending. See `planning/tasks/wp01-t07-create-test-layers.md`.
-- [~] Security tests assume multiple users, cohorts, roles, and source states and assert allowed plus forbidden operations. WP01 identity/availability coverage passes; WP02 RLS remains an explicit non-claim; independent review pending.
-- [~] End-to-end tests use Playwright with isolated synthetic accounts and deterministic data. The local synthetic/mock Chromium seam passes; independent review pending.
-- [~] Evaluation tests consume versioned JSONL and emit machine-readable plus Markdown reports. The synthetic foundation runner passes without claiming WP00 academic evaluation; independent review pending.
-- [~] Load tests use a dedicated tool/script and never point at beta by default. The guarded profile report is explicitly `NOT_EXECUTED`; independent review pending.
-- [~] Name slow/paid suites explicitly; `pnpm verify` must remain zero-paid-call. Hosted Auth is explicit; no paid suite exists; independent review pending.
-- [~] Configure test timeouts to reveal hanging code, not hide it with very large defaults. Bounded 2–30 second Vitest and 15-second Playwright tests pass; independent review pending.
+- [x] Unit tests cover pure business rules and validators. Candidate `1783d7e`; Ahmed approved 2026-08-26.
+- [x] Integration tests run against an isolated reset hosted Supabase development/CI target and mock providers. Local mock plus explicit hosted development Auth checks passed against the reviewed WP01-T04/T05 seams; Ahmed approved 2026-08-26. See `planning/tasks/wp01-t07-create-test-layers.md`.
+- [x] Security tests assume multiple users, cohorts, roles, and source states and assert allowed plus forbidden operations. WP01 identity/availability coverage passed while WP02 RLS remains an explicit non-claim; Ahmed approved 2026-08-26.
+- [x] End-to-end tests use Playwright with isolated synthetic accounts and deterministic data. The local synthetic/mock Chromium seam passed; Ahmed approved 2026-08-26.
+- [x] Evaluation tests consume versioned JSONL and emit machine-readable plus Markdown reports. The synthetic foundation runner passed without claiming WP00 academic evaluation; Ahmed approved 2026-08-26.
+- [x] Load tests use a dedicated tool/script and never point at beta by default. The guarded profile report is explicitly `NOT_EXECUTED`; Ahmed approved 2026-08-26.
+- [x] Name slow/paid suites explicitly; `pnpm verify` must remain zero-paid-call. Hosted Auth is explicit and no paid suite exists; Ahmed approved 2026-08-26.
+- [x] Configure test timeouts to reveal hanging code, not hide it with very large defaults. Bounded 2–30 second Vitest and 15-second Playwright tests passed; Ahmed approved 2026-08-26.
 
 **Pass:** intentionally breaking one boundary causes the correct layer to fail with an actionable message.
 
