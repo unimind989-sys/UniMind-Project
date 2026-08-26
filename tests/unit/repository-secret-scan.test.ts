@@ -15,7 +15,7 @@ describe("repository secret scan", () => {
     const secret = ["sb", "secret", "actualcredentialmaterial123456"].join("_");
     await writeFile(
       path.join(workspace, "src", "unsafe.ts"),
-      `export const leaked = "${secret}";\n`,
+      `export const leaked = "${secret}"; // synthetic example label must not suppress detection\n`,
       "utf8",
     );
 
@@ -45,5 +45,27 @@ describe("repository secret scan", () => {
     await expect(
       scanFilesForRepositorySecrets(workspace, ["safe.txt"]),
     ).resolves.toEqual([]);
+  });
+
+  it("does not let prose labels suppress a database credential", async () => {
+    const workspace = await mkdtemp(
+      path.join(tmpdir(), "unimind-secret-scan-"),
+    );
+    const credential = [
+      "postgresql",
+      "//synthetic",
+      "synthetic@db.live-host.test:5432/app",
+    ].join(":");
+    await writeFile(
+      path.join(workspace, "unsafe.txt"),
+      `${credential} # example connection\n`,
+      "utf8",
+    );
+
+    await expect(
+      scanFilesForRepositorySecrets(workspace, ["unsafe.txt"]),
+    ).resolves.toEqual([
+      { path: "unsafe.txt", line: 1, code: "DATABASE_CREDENTIAL" },
+    ]);
   });
 });

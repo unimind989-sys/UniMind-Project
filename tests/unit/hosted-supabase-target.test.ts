@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   assertApprovedHostedSupabaseTarget,
   createHostedProjectFingerprint,
+  readApprovedHostedSupabaseTarget,
   readHostedSupabaseTarget,
 } from "../../scripts/lib/hosted-supabase-target";
 
@@ -74,6 +75,19 @@ describe("hosted Supabase target guard", () => {
         environment: "development",
         projectRef,
       }),
+    ).toThrow("approved environment fingerprint");
+  });
+
+  it("never returns an unapproved target to a hosted command adapter", () => {
+    expect(() =>
+      readApprovedHostedSupabaseTarget(
+        {
+          UNIMIND_DB_ENVIRONMENT: "ci",
+          UNIMIND_SUPABASE_PROJECT_REF: projectRef,
+          UNIMIND_DB_RESET_CONFIRMATION: `reset:ci:${projectRef}`,
+        },
+        { requireResetConfirmation: true },
+      ),
     ).toThrow("approved environment fingerprint");
   });
 });

@@ -5,7 +5,7 @@ import {
   parseHostedSupabaseMetadata,
 } from "./lib/hosted-supabase-metadata";
 import { readHostedSupabaseProfile } from "./lib/hosted-supabase-profile";
-import { readHostedSupabaseTarget } from "./lib/hosted-supabase-target";
+import { readApprovedHostedSupabaseTarget } from "./lib/hosted-supabase-target";
 
 const wrapperArguments = process.argv.slice(2);
 if (
@@ -18,7 +18,7 @@ if (
 
 const environment = wrapperArguments[1] as "development" | "ci";
 const profile = readHostedSupabaseProfile(environment);
-const target = readHostedSupabaseTarget(profile);
+const target = readApprovedHostedSupabaseTarget(profile);
 const accessToken = profile.SUPABASE_ACCESS_TOKEN;
 if (accessToken === undefined) {
   throw new Error("Missing hosted Supabase access token.");

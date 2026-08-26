@@ -77,3 +77,12 @@ export function readHostedSupabaseTarget(
     projectRef,
   };
 }
+
+export function readApprovedHostedSupabaseTarget(
+  input: EnvironmentInput,
+  options: { requireResetConfirmation?: boolean } = {},
+): HostedSupabaseTarget {
+  const target = readHostedSupabaseTarget(input, options);
+  assertApprovedHostedSupabaseTarget(target);
+  return target;
+}

@@ -6,10 +6,7 @@ import {
   readHostedSupabaseEnvironmentProfile,
   readHostedSupabaseProfile,
 } from "./lib/hosted-supabase-profile";
-import {
-  assertApprovedHostedSupabaseTarget,
-  readHostedSupabaseTarget,
-} from "./lib/hosted-supabase-target";
+import { readApprovedHostedSupabaseTarget } from "./lib/hosted-supabase-target";
 import {
   createProjectApiKeysCurlRequest,
   parseProjectServiceRoleKeyJson,
@@ -20,10 +17,9 @@ const profile =
   command.profileSource === "environment"
     ? readHostedSupabaseEnvironmentProfile(command.environment)
     : readHostedSupabaseProfile(command.environment);
-const target = readHostedSupabaseTarget(profile, {
+const target = readApprovedHostedSupabaseTarget(profile, {
   requireResetConfirmation: true,
 });
-assertApprovedHostedSupabaseTarget(target);
 
 const projectUrl = profile.NEXT_PUBLIC_SUPABASE_URL;
 const publishableKey = profile.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;

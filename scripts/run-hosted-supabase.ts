@@ -9,7 +9,7 @@ import {
 } from "./lib/hosted-supabase-command";
 import { formatGeneratedDatabaseTypes } from "./lib/generated-database-types";
 import { readHostedSupabaseProfile } from "./lib/hosted-supabase-profile";
-import { readHostedSupabaseTarget } from "./lib/hosted-supabase-target";
+import { readApprovedHostedSupabaseTarget } from "./lib/hosted-supabase-target";
 
 const requestedAction = process.argv[2];
 
@@ -41,7 +41,7 @@ if (wrapperArguments.length > 0) {
   );
 }
 
-const target = readHostedSupabaseTarget(process.env, {
+const target = readApprovedHostedSupabaseTarget(process.env, {
   requireResetConfirmation: action === "reset",
 });
 const supabaseCli = path.resolve("node_modules/supabase/dist/supabase.js");

@@ -36,24 +36,19 @@ const detectors = [
   },
 ] as const;
 
-const safeFixtureMarkers = [
-  "synthetic",
-  ".invalid",
-  "<token>",
-  "example",
-  "deleted",
-] as const;
-
-function isSafeFixtureLine(line: string): boolean {
-  const normalized = line.toLowerCase();
-  return safeFixtureMarkers.some((marker) => normalized.includes(marker));
-}
-
 function containsPrivateDatabaseUrl(line: string): boolean {
-  if (isSafeFixtureLine(line)) {
+  const match = line.match(
+    /postgres(?:ql)?:\/\/[^:\s]+:[^@\s]+@[^\s/]+(?:\/[^\s]*)?/u,
+  );
+  if (match === null) {
     return false;
   }
-  return /postgres(?:ql)?:\/\/[^:\s]+:[^@\s]+@[^\s/]+/u.test(line);
+  try {
+    const candidate = new URL(match[0]);
+    return !candidate.hostname.endsWith(".invalid");
+  } catch {
+    return true;
+  }
 }
 
 export async function scanFilesForRepositorySecrets(
@@ -69,15 +64,13 @@ export async function scanFilesForRepositorySecrets(
     }
     const lines = contents.toString("utf8").split(/\r?\n/u);
     lines.forEach((line, index) => {
-      if (!isSafeFixtureLine(line)) {
-        for (const detector of detectors) {
-          if (detector.pattern.test(line)) {
-            violations.push({
-              path: relativePath.replaceAll("\\", "/"),
-              line: index + 1,
-              code: detector.code,
-            });
-          }
+      for (const detector of detectors) {
+        if (detector.pattern.test(line)) {
+          violations.push({
+            path: relativePath.replaceAll("\\", "/"),
+            line: index + 1,
+            code: detector.code,
+          });
         }
       }
       if (containsPrivateDatabaseUrl(line)) {
