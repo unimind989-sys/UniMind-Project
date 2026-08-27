@@ -751,10 +751,10 @@ git diff --exit-code -- src/types/database.generated.ts
 #### WP01-T08 — Create zero-cost CI with a disposable database security gate
 
 - [x] Preserve the reviewed least-privilege application, dependency-audit, immutable-pin, frozen-install, sanitized-artifact, secret-scan, and branch-protection controls proven by the 2026-08-27 CI evidence.
-- [~] Replace the credentialed persistent hosted-CI job with a complete disposable Supabase stack created on a standard GitHub-hosted Ubuntu runner. The earlier hosted job remains historical evidence, not completion evidence for revised D-21.
-- [ ] Pin and record the runner image, Supabase CLI, Docker/runtime, PostgreSQL, and extension versions needed for reproducibility.
-- [ ] Start the stack from version control, reset twice, apply synthetic seed data, run Auth/database/security tests, generate types, fail on a type diff, and prove the stack is isolated and removed with the job.
-- [ ] Remove the persistent hosted-CI secrets and protected-environment dependency only after the disposable job passes. Keep the current hosted CI project unchanged until that proof exists.
+- [x] Replace the credentialed persistent hosted-CI workflow job with a candidate complete disposable Supabase stack on `ubuntu-24.04`. The earlier hosted job remains historical evidence, not completion evidence for revised D-21.
+- [~] Pin and record the runner image and Supabase CLI in version control; capture actual Docker/runtime, PostgreSQL, PostgREST, and extension versions from the external run.
+- [~] Start the stack from version control, reset twice, apply synthetic seed data, run Auth/database/security tests, generate types, fail on a type diff, and remove the stack/volumes under `if: always()`. Local policy/unit proof passes; external container execution is pending.
+- [~] Remove workflow references to persistent hosted-CI secrets and the protected environment. Keep the actual GitHub secrets/environment and current hosted CI project unchanged until the disposable job passes, then remove the obsolete external settings.
 - [ ] Re-run the complete clean CI path and preserve sanitized evidence. WP02-T04 later adds the deliberate leaking-RLS-policy regression after the RLS matrix exists.
 
 **Pass:** a fresh standard GitHub-hosted runner reproduces install, credential-free application checks, and a complete disposable Supabase database/Auth gate without persistent database credentials, manual dashboard state, paid calls, secret leakage, Preview/Beta access, or a founder-computer dependency.
@@ -2562,15 +2562,21 @@ The final `package.json` must expose these stable project commands even if under
 | `pnpm format:check` | Verify formatting. | No. | Exit 0 and no file rewrites. |
 | `pnpm test:unit` | Pure domain/config/provider-mock tests. | No. | Exit 0. |
 | `pnpm test:integration` | Credential-free application/mock integration seams; guarded hosted cases skip. | No external calls or paid provider. | Local seams pass and hosted cases are visibly skipped. |
-| `pnpm test:integration:hosted` | Transitional reviewed synthetic hosted Auth seam; WP01-T08 replaces it with the disposable CI stack and renames/removes the legacy profile as appropriate. | Transitional hosted target only until migration; no Preview/Beta or paid provider. | Historical seam remains guarded; revised CI must pass without persistent credentials. |
+| `pnpm test:integration:database` | Synthetic Auth seam against the disposable runner-local stack. | Runner loopback only; no persistent credentials or paid provider. | Synthetic create/sign-in/refresh/forgery denial/cleanup pass. |
+| `pnpm test:integration:hosted` | Transitional reviewed synthetic hosted Auth seam retained until external WP01-T08 proof. | Transitional hosted development target only; no Preview/Beta or paid provider. | Historical seam remains guarded and is retired only after replacement proof. |
 | `pnpm test:security` | Current identity/availability denial matrices; later RLS/grant suites join with migrations. | No external calls in the foundation command. | Zero unexpected allow/leakage at implemented seams. |
 | `pnpm test:e2e` | Browser flows against a local synthetic app profile. | Local app and mocks only; external browser requests blocked. | Implemented critical and forbidden paths pass. |
 | `pnpm test:eval` | Versioned evaluation runner and current approved/synthetic fixtures. | Only an explicitly approved live profile may use real providers; foundation default is mock-only. | Dataset hashes are valid and JSON/Markdown results report the exact scope. |
 | `pnpm test:load` | Guarded load-profile validation; execution is added in WP09. | Default rejects preview/beta/production, real providers, and nonzero cost. | A `NOT_EXECUTED` JSON/Markdown report is produced without claiming thresholds. |
-| `pnpm db:reset` | Rebuild the disposable CI schema and synthetic seed from version control after WP01-T08 migration. | Runner-local disposable Supabase stack only; never Preview/Beta. | All migrations/seed succeed from empty. |
-| `pnpm db:migrations` | Compare versioned migration history with the disposable CI stack. | Runner-local disposable Supabase stack only. | Migration history matches version control. |
+| `pnpm db:ci:start` | Start the disposable runner-local Supabase stack and apply migrations/seed. | GitHub-hosted Linux runner-local containers only. | Health checks pass without external credentials. |
+| `pnpm db:ci:reset` | Rebuild the disposable CI schema and synthetic seed from version control. | GitHub-hosted Linux runner-local containers only; never Preview/Beta. | All migrations/seed succeed from empty. |
+| `pnpm db:ci:migrations` | Compare versioned migration history with the disposable CI stack. | GitHub-hosted Linux runner-local containers only. | Migration history matches version control. |
+| `pnpm db:ci:types` | Generate database TypeScript types from the disposable CI stack. | GitHub-hosted Linux runner-local containers only. | Output updates deterministically. |
+| `pnpm db:ci:stop` | Remove the disposable stack and its data volumes. | GitHub-hosted Linux runner-local containers only. | Cleanup runs under `if: always()` and exits 0. |
+| `pnpm db:reset` | Transitional hosted reset retained until external WP01-T08 proof. | Approved historical development/CI target only; never Preview/Beta. | Legacy guard remains fail-closed. |
+| `pnpm db:migrations` | Transitional hosted migration comparison retained until external WP01-T08 proof. | Approved historical development/CI target only. | Legacy guard remains fail-closed. |
 | `pnpm db:push:dry-run` | Preview unapplied migrations for a guarded persistent target when the promotion workflow explicitly allows it. | Preview/Beta scope only under its non-destructive promotion guard. | Dry-run exits 0 without applying changes. |
-| `pnpm db:types` | Generate database TypeScript types from the disposable CI stack. | Runner-local disposable Supabase stack only. | Output updates deterministically. |
+| `pnpm db:types` | Transitional hosted type generation retained until external WP01-T08 proof. | Approved historical development/CI target only. | Legacy guard remains fail-closed. |
 | `pnpm db:types:check` | Fail when committed types are stale. | No. | Generation causes no Git diff. |
 | `pnpm verify` | Complete credential-free, zero-paid merge gate. | No external infrastructure or paid provider. | Every required subcommand exits 0. |
 
@@ -2589,7 +2595,7 @@ If a command needs secrets or a paid provider, its name must say so, for example
 
 1. Confirm the job is a standard GitHub-hosted Ubuntu runner and is not using Preview/Beta credentials or a founder-hosted runner.
 2. Confirm the pinned Supabase CLI and container runtime versions, runner capacity, and downloaded image state without printing tokens or internal connection strings.
-3. Run `pnpm supabase --help` and the WP01-T08 guarded stack-start diagnostic; use the pinned CLI's current flags rather than an old tutorial.
+3. Run `pnpm supabase --help` and inspect the `db:ci:start` failure status; use the pinned CLI's current flags rather than an old tutorial. Never print `supabase status -o env` output.
 4. Until WP01-T08 migration is complete, treat the existing hosted commands as transitional and never repurpose either project.
 5. Preserve versioned migrations. Never bypass the guard, relabel Preview/Beta as a test environment, or repair schema through the dashboard.
 6. If the disposable stack remains unavailable, mark migration/Auth/RLS tasks blocked and continue only with credential-free unit/UI/mock tasks.

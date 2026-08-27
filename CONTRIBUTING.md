@@ -2,7 +2,7 @@
 
 This is the operating tutorial for both human contributors and coding agents. Use repository state—not chat history—as the handoff authority.
 
-> **Architecture transition (2026-08-27):** Revised D-21 replaces persistent hosted development/CI with mock-only workstation development and a disposable full Supabase stack on standard GitHub-hosted CI. The two existing Supabase Free projects are reserved for separate Preview and locked Beta only after WP01-T08 passes. Database commands and the current hosted CI workflow are transitional implementation, not the target operating model; do not repurpose either project yet.
+> **Architecture transition (2026-08-27):** Revised D-21 replaces persistent hosted development/CI with mock-only workstation development and a disposable full Supabase stack on standard GitHub-hosted CI. The candidate workflow is implemented but WP01-T08 remains open until a real GitHub run passes. The two existing Supabase Free projects are reserved for separate Preview and locked Beta only afterward; do not repurpose either project yet.
 
 ## 1. Read and select before editing
 
@@ -31,7 +31,7 @@ Required tools:
 - Git.
 - PowerShell 7 (`pwsh`).
 - Corepack. The repository pins Node 24.19.0 and pnpm 10.34.5; invoke pnpm through Corepack so a global pnpm cannot override the contract.
-- Network access for package installation and repository operations. The future database/Auth gate runs on a standard GitHub-hosted CI runner, not the workstation.
+- Network access for package installation and repository operations. The database/Auth gate runs on a standard GitHub-hosted CI runner, not the workstation.
 
 Check the machine without changing it:
 
@@ -42,7 +42,7 @@ corepack pnpm --version
 corepack pnpm supabase --version
 ```
 
-Expected repository versions are also recorded in `.nvmrc`, `package.json`, and `pnpm-lock.yaml`. Do not install Docker, WSL2, or a local database runtime for UniMind. Workstation work stays mock-only. Until WP01-T08 implements disposable database/Auth CI, do not treat transitional hosted commands as the approved future workflow.
+Expected repository versions are also recorded in `.nvmrc`, `package.json`, and `pnpm-lock.yaml`. Do not install Docker, WSL2, or a local database runtime for UniMind. Workstation work stays mock-only. Until the external WP01-T08 run passes, do not retire the transitional hosted gate or repurpose either project.
 
 ## 3. Clone and install
 
@@ -109,7 +109,7 @@ corepack pnpm install --frozen-lockfile
 corepack pnpm dev
 ```
 
-Keep the Next.js development server on the workstation and do not expose it to an external network. Database/Auth verification runs in disposable GitHub-hosted CI after WP01-T08 implementation. Preview is only for approved synthetic smoke/promotion checks and Beta is never a development target.
+Keep the Next.js development server on the workstation and do not expose it to an external network. Database/Auth verification runs in disposable GitHub-hosted CI. Preview is only for approved synthetic smoke/promotion checks and Beta is never a development target.
 
 ## 6. End-of-session loop
 
@@ -128,36 +128,42 @@ Before handoff, inspect the full diff, scan changed files for credentials/privat
 
 Duration classes are workstation estimates: **instant** is normally under 10 seconds, **short** under one minute, **medium** one to five minutes, and **long** more than five minutes. CI and a cold install may be slower.
 
-| Command                              | Purpose                                                                   | Paid/external calls                                                     | Required services                                                         | Duration        |
-| ------------------------------------ | ------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------- | --------------- |
-| `scripts/show-work-state.ps1`        | Select the next executable task and list blockers                         | None                                                                    | None                                                                      | Instant         |
-| `scripts/verify-agent-readiness.ps1` | Check entry points, links, names, decisions, and task records             | None                                                                    | None                                                                      | Instant         |
-| `scripts/test-agent-handoff.ps1`     | Rehearse discovery from an isolated committed snapshot                    | None                                                                    | Git                                                                       | Short           |
-| `pnpm install --frozen-lockfile`     | Reproduce the exact dependency graph                                      | Package-registry download only when cache is cold; never paid providers | Network when cache is cold                                                | Medium          |
-| `pnpm dev`                           | Run the workstation Next.js development server                            | Mocks only by default                                                   | Valid mock application environment                                        | Long-running    |
-| `pnpm start`                         | Serve an already-created production build                                 | None                                                                    | Valid environment and `.next` build output                                | Long-running    |
-| `pnpm build`                         | Build with the caller's validated environment                             | None                                                                    | Valid environment                                                         | Short           |
-| `pnpm test:env-build`                | Build with committed synthetic CI placeholders                            | None                                                                    | None                                                                      | Short           |
-| `pnpm lint`                          | Run fatal static checks                                                   | None                                                                    | None                                                                      | Short           |
-| `pnpm typecheck`                     | Run strict TypeScript without emit                                        | None                                                                    | None                                                                      | Short           |
-| `pnpm format:check`                  | Check formatting without rewriting                                        | None                                                                    | None                                                                      | Instant         |
-| `pnpm format`                        | Rewrite supported files to repository format                              | None                                                                    | None                                                                      | Instant         |
-| `pnpm check:boundaries`              | Enforce UI/application/domain/adapter/server import directions            | None                                                                    | None                                                                      | Instant         |
-| `pnpm test:unit`                     | Run pure rules, configuration, and deterministic provider contracts       | None                                                                    | None                                                                      | Short           |
-| `pnpm test:integration`              | Run credential-free application/mock integration tests; hosted Auth skips | None                                                                    | None                                                                      | Short           |
-| `pnpm test:integration:hosted`       | Transitional synthetic hosted Auth seam; replaced during WP01-T08         | Legacy guarded target only; never Preview/Beta                          | Existing approved transitional profile; do not distribute                 | Medium          |
-| `pnpm test:security`                 | Run foundation identity/availability denial matrices                      | None; hosted RLS suites are added with their migrations                 | None                                                                      | Short           |
-| `pnpm test:e2e`                      | Run the local synthetic browser journey in pinned Chromium                | Local app only; external browser requests blocked; providers mocked     | Installed Playwright Chromium                                             | Medium          |
-| `pnpm test:eval`                     | Validate versioned synthetic JSONL and emit JSON/Markdown reports         | None; a future live suite must say `live-approved`                      | Versioned foundation fixture                                              | Short           |
-| `pnpm test:load`                     | Validate the load profile and emit a `NOT_EXECUTED` dry-run report        | None; preview/beta/production and real providers are rejected           | Versioned synthetic YAML profile                                          | Short           |
-| `pnpm smoke:deployment`              | Check health, write denial, app identity, and synthetic/mock-only mode    | GET/POST requests only to the explicitly supplied local or Preview URL  | `--base-url` and `--target local\|preview`; Preview requires remote HTTPS | Instant         |
-| `pnpm db:reset`                      | Transitional hosted reset; WP01-T08 must retarget it to disposable CI     | Never Preview/Beta; no paid provider                                    | Current guarded legacy profile until implementation changes               | Short to medium |
-| `pnpm db:migrations`                 | Transitional migration comparison; WP01-T08 must retarget it              | Never Preview/Beta in destructive test mode                             | Current guarded legacy profile until implementation changes               | Short           |
-| `pnpm db:push:dry-run`               | Preview unapplied migrations without applying them                        | Only an explicitly approved guarded environment                         | Current guarded legacy profile until promotion commands are revised       | Short           |
-| `pnpm db:types`                      | Transitional type generation; WP01-T08 must use disposable CI             | Never Beta; no paid provider                                            | Current guarded legacy profile until implementation changes               | Short           |
-| `pnpm db:metadata`                   | Read sanitized PostgreSQL/extension/fixture/isolation metadata            | Transitional hosted target or future approved scope only                | Selected ignored profile or scoped CI state                               | Short           |
-| `pnpm db:types:check`                | Reject a stale committed generated-type file                              | None                                                                    | Types generated first                                                     | Instant         |
-| `pnpm verify`                        | Run the complete credential-free, zero-paid merge gate                    | None                                                                    | Installed Playwright Chromium                                             | Medium          |
+| Command                              | Purpose                                                                     | Paid/external calls                                                     | Required services                                                         | Duration        |
+| ------------------------------------ | --------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------- | --------------- |
+| `scripts/show-work-state.ps1`        | Select the next executable task and list blockers                           | None                                                                    | None                                                                      | Instant         |
+| `scripts/verify-agent-readiness.ps1` | Check entry points, links, names, decisions, and task records               | None                                                                    | None                                                                      | Instant         |
+| `scripts/test-agent-handoff.ps1`     | Rehearse discovery from an isolated committed snapshot                      | None                                                                    | Git                                                                       | Short           |
+| `pnpm install --frozen-lockfile`     | Reproduce the exact dependency graph                                        | Package-registry download only when cache is cold; never paid providers | Network when cache is cold                                                | Medium          |
+| `pnpm dev`                           | Run the workstation Next.js development server                              | Mocks only by default                                                   | Valid mock application environment                                        | Long-running    |
+| `pnpm start`                         | Serve an already-created production build                                   | None                                                                    | Valid environment and `.next` build output                                | Long-running    |
+| `pnpm build`                         | Build with the caller's validated environment                               | None                                                                    | Valid environment                                                         | Short           |
+| `pnpm test:env-build`                | Build with committed synthetic CI placeholders                              | None                                                                    | None                                                                      | Short           |
+| `pnpm lint`                          | Run fatal static checks                                                     | None                                                                    | None                                                                      | Short           |
+| `pnpm typecheck`                     | Run strict TypeScript without emit                                          | None                                                                    | None                                                                      | Short           |
+| `pnpm format:check`                  | Check formatting without rewriting                                          | None                                                                    | None                                                                      | Instant         |
+| `pnpm format`                        | Rewrite supported files to repository format                                | None                                                                    | None                                                                      | Instant         |
+| `pnpm check:boundaries`              | Enforce UI/application/domain/adapter/server import directions              | None                                                                    | None                                                                      | Instant         |
+| `pnpm test:unit`                     | Run pure rules, configuration, and deterministic provider contracts         | None                                                                    | None                                                                      | Short           |
+| `pnpm test:integration`              | Run credential-free application/mock integration tests; database Auth skips | None                                                                    | None                                                                      | Short           |
+| `pnpm test:integration:database`     | Run synthetic Auth against the disposable runner-local stack                | Runner loopback only; no provider or persistent Supabase call           | Guarded GitHub-hosted Linux lifecycle                                     | Medium          |
+| `pnpm test:integration:hosted`       | Transitional synthetic hosted Auth seam pending external WP01-T08 proof     | Legacy guarded target only; never Preview/Beta                          | Existing approved transitional profile; do not distribute                 | Medium          |
+| `pnpm test:security`                 | Run foundation identity/availability denial matrices                        | None; hosted RLS suites are added with their migrations                 | None                                                                      | Short           |
+| `pnpm test:e2e`                      | Run the local synthetic browser journey in pinned Chromium                  | Local app only; external browser requests blocked; providers mocked     | Installed Playwright Chromium                                             | Medium          |
+| `pnpm test:eval`                     | Validate versioned synthetic JSONL and emit JSON/Markdown reports           | None; a future live suite must say `live-approved`                      | Versioned foundation fixture                                              | Short           |
+| `pnpm test:load`                     | Validate the load profile and emit a `NOT_EXECUTED` dry-run report          | None; preview/beta/production and real providers are rejected           | Versioned synthetic YAML profile                                          | Short           |
+| `pnpm smoke:deployment`              | Check health, write denial, app identity, and synthetic/mock-only mode      | GET/POST requests only to the explicitly supplied local or Preview URL  | `--base-url` and `--target local\|preview`; Preview requires remote HTTPS | Instant         |
+| `pnpm db:ci:start`                   | Start migrations/seed on a disposable runner-local Supabase stack           | Runner-local containers only                                            | Guarded GitHub-hosted Linux lifecycle                                     | Long            |
+| `pnpm db:ci:reset`                   | Destroy/rebuild the disposable database from migrations and synthetic seed  | Runner-local containers only; never Preview/Beta                        | Started disposable stack                                                  | Medium          |
+| `pnpm db:ci:migrations`              | Compare local migration files with disposable database history              | Runner-local containers only                                            | Started disposable stack                                                  | Short           |
+| `pnpm db:ci:types`                   | Generate committed database types from the disposable stack                 | Runner-local containers only                                            | Started disposable stack                                                  | Short           |
+| `pnpm db:ci:stop`                    | Remove the disposable stack and data volumes                                | Runner-local containers only                                            | Guarded GitHub-hosted Linux lifecycle                                     | Short           |
+| `pnpm db:reset`                      | Transitional hosted reset retained only until external WP01-T08 proof       | Never Preview/Beta; no paid provider                                    | Existing guarded legacy profile                                           | Short to medium |
+| `pnpm db:migrations`                 | Transitional hosted migration comparison                                    | Never Preview/Beta in destructive test mode                             | Existing guarded legacy profile                                           | Short           |
+| `pnpm db:push:dry-run`               | Preview unapplied migrations without applying them                          | Only an explicitly approved guarded environment                         | Current guarded legacy profile until promotion commands are revised       | Short           |
+| `pnpm db:types`                      | Transitional hosted type generation pending external WP01-T08 proof         | Never Beta; no paid provider                                            | Existing guarded legacy profile                                           | Short           |
+| `pnpm db:metadata`                   | Read sanitized PostgreSQL/extension/fixture/isolation metadata              | Transitional hosted target or future approved scope only                | Selected ignored profile or scoped CI state                               | Short           |
+| `pnpm db:types:check`                | Reject a stale committed generated-type file                                | None                                                                    | Types generated first                                                     | Instant         |
+| `pnpm verify`                        | Run the complete credential-free, zero-paid merge gate                      | None                                                                    | Installed Playwright Chromium                                             | Medium          |
 
 In shell examples, invoke package commands as `corepack pnpm ...`. The shorter `pnpm ...` spelling in tables and the execution runbook refers to the same pinned project command.
 
@@ -223,7 +229,7 @@ Run `corepack pnpm --version` and compare it with `package.json#packageManager`.
 
 ### Disposable Supabase CI is unavailable
 
-Confirm the workflow uses a standard GitHub-hosted Ubuntu runner, the repository-pinned Supabase CLI, the expected container runtime, and no Preview/Beta credentials. Follow `planning/tasks/wp01-t08-create-ci.md`. Do not switch to a founder-hosted runner, bypass guards, or use a persistent Preview/Beta project as a destructive test target. Existing hosted development/CI commands are transitional until WP01-T08 passes.
+Confirm the workflow uses `ubuntu-24.04`, the repository-pinned Supabase CLI, the expected container runtime, and no Preview/Beta credentials. Follow `planning/tasks/wp01-t08-create-ci.md`. Do not switch to a founder-hosted runner, fake the runner guard, bypass cleanup, or use a persistent Preview/Beta project as a destructive test target. Existing hosted development/CI commands remain transitional until the external WP01-T08 run passes.
 
 ### A port is occupied
 
@@ -234,7 +240,7 @@ $portNumber = 54321
 Get-NetTCPConnection -LocalPort $portNumber -ErrorAction SilentlyContinue
 ```
 
-Identify the owning process before changing configuration. Do not terminate an unknown process automatically. This applies to workstation Next.js/browser tooling only; the future disposable Supabase stack runs in GitHub-hosted CI.
+Identify the owning process before changing configuration. Do not terminate an unknown process automatically. This applies to workstation Next.js/browser tooling only; the disposable Supabase stack runs in GitHub-hosted CI.
 
 ### Generated database types are stale
 

@@ -7,7 +7,7 @@ This matrix records safe environment identities and isolation rules. Full projec
 | Environment | Runtime/data plane | Data classification | Destructive reset | External scope | Owner | Target state |
 | --- | --- | --- | --- | --- | --- | --- |
 | Workstation development | Next.js process and deterministic in-process mocks; no database service | Synthetic only | N/A | Repository checkout only | Ahmed / Ziad | Available; never shared infrastructure |
-| Database/Auth CI | Complete disposable Supabase stack on a standard GitHub-hosted Ubuntu runner | Synthetic only | Yes, inside the disposable runner only | Per-run GitHub Actions job; no persistent Supabase project or long-lived database secret | Ahmed / Ziad; agent executor | WP01-T08 migration required |
+| Database/Auth CI | Complete disposable Supabase stack on a GitHub-hosted `ubuntu-24.04` runner | Synthetic only | Yes, inside the disposable runner only | Per-run GitHub Actions job; no persistent Supabase project or long-lived database secret | Ahmed / Ziad; agent executor | Candidate implemented; external WP01-T08 run required |
 | Preview | Existing Supabase Free project currently labeled development, repurposed only after ephemeral CI passes | Synthetic only; mock providers | No development/CI reset command; forward migrations only | Separate Supabase project and separate Vercel Hobby project/scope | Ahmed / Ziad | WP01-T09 repurposing pending |
 | Beta | Existing Supabase Free project currently labeled CI, repurposed only after ephemeral CI passes | Empty until backup, rights, security, release, and go-live gates; then rights-approved pilot data only | No development/CI reset command; guarded forward migrations only | Separate Supabase project and separate Vercel Hobby project/scope | Ahmed / Ziad | WP01-T09 repurposing pending; locked |
 
@@ -46,7 +46,7 @@ Official constraints were rechecked on 2026-08-27: [Supabase pricing](https://su
 ## Isolation rules
 
 - Workstations use mocks. Database/Auth CI uses a disposable runner-local stack. Neither may borrow Preview or Beta credentials.
-- The transitional `.local/supabase/development.env` and `.local/supabase/ci.env` profiles remain credentials and must not be committed. They are retired and removed from workflow use during WP01-T08/T09 migration.
+- The transitional `.local/supabase/development.env` and `.local/supabase/ci.env` profiles remain credentials and must not be committed. The candidate workflow no longer reads them; retire the external GitHub secret/environment settings only after the disposable job passes, and retire workstation profiles during the guarded WP01-T09 repurposing.
 - `pnpm verify` remains credential-free, mock-only, and zero paid-provider cost.
 - Preview and Beta references are forbidden in destructive development/CI commands and cannot be relabeled to bypass a guard.
 - Preview receives synthetic data and mock providers only. Beta remains locked and empty until its protected gates pass.

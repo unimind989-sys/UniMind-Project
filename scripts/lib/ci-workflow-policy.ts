@@ -81,126 +81,48 @@ function hasCacheConfiguration(workflow: UnknownRecord): boolean {
   );
 }
 
-function hasApplicationConcurrency(job: UnknownRecord | undefined): boolean {
-  const concurrency = job?.concurrency;
-  return (
-    isRecord(concurrency) &&
-    typeof concurrency.group === "string" &&
-    concurrency.group.includes("github.ref") &&
-    concurrency["cancel-in-progress"] === true
+function runs(job: UnknownRecord | undefined): string[] {
+  if (job === undefined || !Array.isArray(job.steps)) {
+    return [];
+  }
+  return job.steps.flatMap((step) =>
+    isRecord(step) && typeof step.run === "string" ? [step.run] : [],
   );
 }
 
-function hasSerializedHostedConcurrency(
-  job: UnknownRecord | undefined,
-): boolean {
-  const concurrency = job?.concurrency;
-  return (
-    isRecord(concurrency) &&
-    concurrency.group === "unimind-hosted-ci-database" &&
-    concurrency["cancel-in-progress"] === false
-  );
+function hasCommand(job: UnknownRecord | undefined, command: string): boolean {
+  return runs(job).some((run) => run.includes(command));
 }
 
-function hasProtectedHostedTrigger(job: UnknownRecord | undefined): boolean {
-  return (
-    job?.if ===
-    "github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')"
-  );
-}
-
-function hasHostedCommand(job: UnknownRecord, command: string): boolean {
-  return collectStrings(job, "run").some((run) => run.includes(command));
+function commandCount(job: UnknownRecord | undefined, command: string): number {
+  return runs(job).reduce((count, run) => {
+    let offset = 0;
+    let matches = 0;
+    while ((offset = run.indexOf(command, offset)) >= 0) {
+      matches += 1;
+      offset += command.length;
+    }
+    return count + matches;
+  }, 0);
 }
 
 function hasFrozenInstall(job: UnknownRecord | undefined): boolean {
-  return (
-    job !== undefined &&
-    collectStrings(job, "run").some((run) =>
-      run.includes("corepack pnpm install --frozen-lockfile"),
-    )
-  );
+  return hasCommand(job, "corepack pnpm install --frozen-lockfile");
 }
 
 function hasCorepackActivationBeforeInstall(
   job: UnknownRecord | undefined,
 ): boolean {
-  if (job === undefined || !Array.isArray(job.steps)) {
-    return false;
-  }
-  const runs = job.steps.map((step) =>
-    isRecord(step) && typeof step.run === "string" ? step.run : "",
-  );
-  const activationIndex = runs.findIndex(
-    (run) => run.trim() === "corepack enable",
-  );
-  const installIndex = runs.findIndex((run) =>
+  const jobRuns = runs(job).map((run) => run.trim());
+  const activationIndex = jobRuns.indexOf("corepack enable");
+  const installIndex = jobRuns.findIndex((run) =>
     run.includes("corepack pnpm install --frozen-lockfile"),
   );
   return activationIndex >= 0 && installIndex > activationIndex;
 }
 
-function hasApplicationGate(job: UnknownRecord | undefined): boolean {
-  return (
-    job !== undefined &&
-    collectStrings(job, "run").some((run) =>
-      run.includes("corepack pnpm verify"),
-    )
-  );
-}
-
-function hasChromiumInstall(job: UnknownRecord | undefined): boolean {
-  return (
-    job !== undefined &&
-    collectStrings(job, "run").some((run) =>
-      run.includes(
-        "corepack pnpm exec playwright install --with-deps chromium",
-      ),
-    )
-  );
-}
-
-function hasHostedTargetEnvironment(job: UnknownRecord): boolean {
-  const environment = job.env;
-  return isRecord(environment) && environment.UNIMIND_DB_ENVIRONMENT === "ci";
-}
-
-function hasScopedHostedSecrets(job: UnknownRecord): boolean {
-  if (containsSecretExpression(job.env) || !Array.isArray(job.steps)) {
-    return false;
-  }
-  const secretSteps = job.steps.filter(
-    (step) => isRecord(step) && containsSecretExpression(step.env),
-  );
-  if (secretSteps.length !== 1 || !isRecord(secretSteps[0])) {
-    return false;
-  }
-  const environment = secretSteps[0].env;
-  if (!isRecord(environment)) {
-    return false;
-  }
-  const expected = {
-    UNIMIND_SUPABASE_PROJECT_REF:
-      "${{ secrets.UNIMIND_CI_SUPABASE_PROJECT_REF }}",
-    UNIMIND_DB_RESET_CONFIRMATION:
-      "${{ secrets.UNIMIND_CI_DB_RESET_CONFIRMATION }}",
-    SUPABASE_ACCESS_TOKEN: "${{ secrets.UNIMIND_CI_SUPABASE_ACCESS_TOKEN }}",
-    SUPABASE_DB_PASSWORD: "${{ secrets.UNIMIND_CI_SUPABASE_DB_PASSWORD }}",
-    NEXT_PUBLIC_SUPABASE_URL: "${{ secrets.UNIMIND_CI_SUPABASE_URL }}",
-    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:
-      "${{ secrets.UNIMIND_CI_SUPABASE_PUBLISHABLE_KEY }}",
-  } as const;
-  const secretEntries = Object.entries(environment).filter(([, value]) =>
-    containsSecretExpression(value),
-  );
-  return (
-    secretEntries.length === Object.keys(expected).length &&
-    Object.entries(expected).every(([key, value]) => environment[key] === value)
-  );
-}
-
-function hasAlwaysUpload(job: UnknownRecord): boolean {
-  if (!Array.isArray(job.steps)) {
+function hasAlwaysUpload(job: UnknownRecord | undefined): boolean {
+  if (job === undefined || !Array.isArray(job.steps)) {
     return false;
   }
   return job.steps.some(
@@ -222,11 +144,9 @@ function hasDependencyAudit(job: UnknownRecord | undefined): boolean {
     return false;
   }
   const actions = collectStrings(job, "uses");
-  const runs = job.steps.map((step) =>
-    isRecord(step) && typeof step.run === "string" ? step.run.trim() : "",
-  );
-  const activationIndex = runs.indexOf("corepack enable");
-  const auditIndex = runs.indexOf(
+  const jobRuns = runs(job).map((run) => run.trim());
+  const activationIndex = jobRuns.indexOf("corepack enable");
+  const auditIndex = jobRuns.indexOf(
     "corepack pnpm audit --audit-level high --prod",
   );
   return (
@@ -235,6 +155,42 @@ function hasDependencyAudit(job: UnknownRecord | undefined): boolean {
     activationIndex >= 0 &&
     auditIndex > activationIndex
   );
+}
+
+function hasApplicationConcurrency(job: UnknownRecord | undefined): boolean {
+  const concurrency = job?.concurrency;
+  return (
+    isRecord(concurrency) &&
+    typeof concurrency.group === "string" &&
+    concurrency.group.includes("github.ref") &&
+    concurrency["cancel-in-progress"] === true
+  );
+}
+
+function hasDatabaseCiConcurrency(job: UnknownRecord | undefined): boolean {
+  const concurrency = job?.concurrency;
+  return (
+    isRecord(concurrency) &&
+    concurrency.group ===
+      "database-ci-${{ github.workflow }}-${{ github.ref }}" &&
+    concurrency["cancel-in-progress"] === true
+  );
+}
+
+function hasCleanup(job: UnknownRecord | undefined): boolean {
+  if (job === undefined || !Array.isArray(job.steps)) {
+    return false;
+  }
+  return job.steps.some(
+    (step) =>
+      isRecord(step) &&
+      step.if === "always()" &&
+      step.run === "corepack pnpm db:ci:stop",
+  );
+}
+
+function hasExactRunner(job: UnknownRecord | undefined): boolean {
+  return job?.["runs-on"] === "ubuntu-24.04";
 }
 
 export function auditCiWorkflow(source: string): string[] {
@@ -249,18 +205,11 @@ export function auditCiWorkflow(source: string): string[] {
   }
 
   const violations: string[] = [];
-  if (hasForbiddenTrigger(workflow.on)) {
-    violations.push("FORBIDDEN_TRIGGER");
-  }
-  if (hasWritePermission(workflow)) {
-    violations.push("WRITE_PERMISSION");
-  }
-  if (!hasPinnedActions(workflow)) {
-    violations.push("UNPINNED_ACTION");
-  }
-  if (hasCacheConfiguration(workflow)) {
-    violations.push("CACHE_CONFIGURED");
-  }
+  if (hasForbiddenTrigger(workflow.on)) violations.push("FORBIDDEN_TRIGGER");
+  if (hasWritePermission(workflow)) violations.push("WRITE_PERMISSION");
+  if (!hasPinnedActions(workflow)) violations.push("UNPINNED_ACTION");
+  if (hasCacheConfiguration(workflow)) violations.push("CACHE_CONFIGURED");
+
   const permissions = workflow.permissions;
   if (
     !isRecord(permissions) ||
@@ -274,64 +223,88 @@ export function auditCiWorkflow(source: string): string[] {
   const dependencyAudit = isRecord(jobs["dependency-audit"])
     ? jobs["dependency-audit"]
     : undefined;
+  const application = isRecord(jobs.application) ? jobs.application : undefined;
+  const databaseCi = isRecord(jobs["database-ci"])
+    ? jobs["database-ci"]
+    : undefined;
+
   if (!hasDependencyAudit(dependencyAudit)) {
     violations.push("DEPENDENCY_AUDIT_MISSING");
   }
-  const application = isRecord(jobs.application) ? jobs.application : undefined;
   if (!hasApplicationConcurrency(application)) {
     violations.push("APPLICATION_CONCURRENCY_MISSING");
   }
-  if (!hasApplicationGate(application)) {
+  if (!hasCommand(application, "corepack pnpm verify")) {
     violations.push("APPLICATION_GATE_MISSING");
   }
-  if (!hasChromiumInstall(application)) {
+  if (
+    !hasCommand(
+      application,
+      "corepack pnpm exec playwright install --with-deps chromium",
+    )
+  ) {
     violations.push("CHROMIUM_INSTALL_MISSING");
   }
-  if (application === undefined || !hasAlwaysUpload(application)) {
+  if (!hasAlwaysUpload(application)) {
     violations.push("APPLICATION_REPORT_UPLOAD_MISSING");
   }
+  if (!hasExactRunner(application)) {
+    violations.push("APPLICATION_RUNNER_UNPINNED");
+  }
 
-  const hosted = isRecord(jobs["hosted-ci"]) ? jobs["hosted-ci"] : undefined;
-  if (hosted === undefined) {
-    violations.push("HOSTED_JOB_MISSING");
+  if (databaseCi === undefined) {
+    violations.push("DATABASE_CI_JOB_MISSING");
     return violations;
   }
-  if (!hasFrozenInstall(application) || !hasFrozenInstall(hosted)) {
+  if (databaseCi.if !== undefined) {
+    violations.push("DATABASE_CI_TRIGGER_UNSAFE");
+  }
+  if (!hasExactRunner(databaseCi)) {
+    violations.push("DATABASE_CI_RUNNER_UNSAFE");
+  }
+  if (databaseCi.needs !== "application") {
+    violations.push("DATABASE_CI_DEPENDENCY_MISSING");
+  }
+  if (!hasDatabaseCiConcurrency(databaseCi)) {
+    violations.push("DATABASE_CI_CONCURRENCY_MISSING");
+  }
+  if (Object.hasOwn(databaseCi, "environment")) {
+    violations.push("DATABASE_CI_ENVIRONMENT_PRESENT");
+  }
+  if (containsSecretExpression(databaseCi)) {
+    violations.push("DATABASE_CI_SECRET_PRESENT");
+  }
+  if (!hasFrozenInstall(application) || !hasFrozenInstall(databaseCi)) {
     violations.push("FROZEN_INSTALL_MISSING");
   }
   if (
     !hasCorepackActivationBeforeInstall(application) ||
-    !hasCorepackActivationBeforeInstall(hosted)
+    !hasCorepackActivationBeforeInstall(databaseCi)
   ) {
     violations.push("COREPACK_ENABLE_MISSING");
   }
-  if (!hasSerializedHostedConcurrency(hosted)) {
-    violations.push("HOSTED_SERIALIZATION_MISSING");
-  }
-  if (!hasProtectedHostedTrigger(hosted)) {
-    violations.push("HOSTED_TRIGGER_SCOPE_MISSING");
-  }
-  if (hosted.environment !== "ci" || !hasHostedTargetEnvironment(hosted)) {
-    violations.push("HOSTED_TARGET_GUARD_MISSING");
-  }
-  if (!hasScopedHostedSecrets(hosted)) {
-    violations.push("HOSTED_SECRET_SCOPE_UNSAFE");
-  }
+
   for (const command of [
-    "db:push:dry-run",
-    "db:reset",
-    "db:migrations",
-    "db:types",
+    "db:ci:start",
+    "db:ci:migrations",
+    "db:ci:types",
     "db:types:check",
-    "test:integration:hosted:ci",
+    "test:integration:database",
     "test:security",
   ]) {
-    if (!hasHostedCommand(hosted, command)) {
-      violations.push(`HOSTED_COMMAND_MISSING:${command}`);
+    if (!hasCommand(databaseCi, command)) {
+      violations.push(`DATABASE_CI_COMMAND_MISSING:${command}`);
     }
   }
-  if (!hasAlwaysUpload(hosted)) {
-    violations.push("HOSTED_REPORT_UPLOAD_MISSING");
+  if (commandCount(databaseCi, "db:ci:reset") !== 2) {
+    violations.push("DATABASE_CI_RESET_COUNT_UNSAFE");
   }
+  if (!hasCleanup(databaseCi)) {
+    violations.push("DATABASE_CI_CLEANUP_MISSING");
+  }
+  if (!hasAlwaysUpload(databaseCi)) {
+    violations.push("DATABASE_CI_REPORT_UPLOAD_MISSING");
+  }
+
   return violations;
 }

@@ -1,4 +1,4 @@
-# Hosted Supabase project contract
+# Supabase project contract
 
 - **Interface:** Versioned configuration, migrations, synthetic seed data, and database tests/types for the disposable CI Supabase stack plus forward-only Preview/Beta promotion.
 - **Allowed dependencies:** SQL migrations, explicit grants/RLS, synthetic fixtures, and generated types.

@@ -10,9 +10,9 @@
 
 **Reviewer:** Ahmed — ordinary human checkpoint. The prior hosted-CI implementation and evidence remain historically approved; revised D-21 reopened this task for a new disposable-CI review.
 
-**Branch:** `wp01/environment-provisioning-authorization` for the architecture revision; implementation branch to follow the runbook convention
+**Branch:** `wp01/environment-provisioning-authorization`
 
-**Updated (UTC):** 2026-08-27
+**Updated (UTC):** 2026-08-28
 
 ## Execution contract
 
@@ -39,9 +39,10 @@
 - [x] Reproduce every implemented database/application/security/smoke command on a fresh runner. Corrective PR CI #7 and protected main CI #8 passed.
 - [x] Add secret scan, zero-cost production dependency audit, and sanitized always-upload reports. Both main artifacts were inspected by name and digest.
 - [x] Obtain authorized external CI run and branch-protection review. `main` requires a PR, one human approval, and `application` plus `dependency-audit`; force pushes and deletion are disabled.
-- [~] Replace the historical persistent hosted-CI job with a pinned complete Supabase stack on a standard GitHub-hosted Ubuntu runner.
-- [ ] Prove two clean resets, stable types, Auth/database/security checks, target isolation, cleanup, and absence of persistent hosted credentials.
-- [ ] Remove the obsolete hosted CI secrets/environment dependency only after the new job passes, then hand WP01-T09 the current CI project for guarded Beta repurposing.
+- [x] Replace the historical persistent hosted-CI workflow job with a pinned complete Supabase lifecycle on `ubuntu-24.04`, without a secret expression or protected environment.
+- [x] Add a fail-closed runner guard, explicit local-only CLI actions, two-reset workflow policy, local-status parser, runner-local Auth seam, deterministic type generation, always cleanup, and sanitized reports.
+- [~] Prove two clean resets, stable types, Auth/database/security checks, target isolation, cleanup, and absence of persistent hosted credentials in a real GitHub run.
+- [ ] After the external run passes, remove the obsolete GitHub hosted-CI secrets/environment dependency, then hand WP01-T09 the current CI project for guarded Beta repurposing.
 
 ## Handoff
 
@@ -49,9 +50,11 @@
 
 **Commands:** Exact-runtime `corepack pnpm verify` passed on Node 24.19.0/pnpm 10.34.5 with format, lint, typecheck, boundary/workflow audits, a 606-file secret scan, 214 unit tests, integration, 8 security, 3 evaluation, 5 load-profile, one Chromium smoke, production build, and client-artifact scan. `db:types:check`, agent readiness, and isolated handoff rehearsal also passed. GitHub CI #7 passed the protected pull-request checks. CI #8 application passed in 1m 17s and hosted CI passed in 33s after the approved isolated reset.
 
-**Remaining:** Implement and externally prove disposable full-stack Supabase CI, then remove the persistent hosted-CI dependency. WP02-T04 still owns the deliberate RLS-leak regression after the RLS matrix exists.
+**2026-08-28 candidate commands:** The policy tests first failed against the old hosted job, then passed after implementation. `corepack pnpm verify` passed formatting, lint, strict types, boundaries, the revised CI policy, a 623-file secret scan, 225 unit tests, credential-free integration, 8 security tests, 3 evaluation cases, 5 load-profile checks, two Playwright checks, the production build, and client-artifact scan. `corepack pnpm db:ci:start` failed closed on the workstation before invoking Supabase with `Disposable Supabase commands require a GitHub-hosted Linux runner.` A real container lifecycle was not run locally and remains the required external checkpoint.
 
-**Next safe action:** Implement the smallest reviewable WP01-T08 workflow slice. Keep both existing Supabase projects in their current roles until the new runner job passes.
+**Remaining:** Run the candidate on GitHub, correct any runner/image drift, capture sanitized versions and two-reset/Auth/type/cleanup proof, then remove the obsolete external hosted-CI secret/environment settings. WP02-T04 still owns the deliberate RLS-leak regression after the RLS matrix exists.
+
+**Next safe action:** Finish local verification and prepare the candidate commit. Keep both existing Supabase projects and external CI secrets/environment in their current state until the new GitHub job passes.
 
 **Reviewer action:** Review the new runner evidence, isolation, cleanup, version pins, and secret removal. Future migration/RLS changes retain the two-person rule.
 
