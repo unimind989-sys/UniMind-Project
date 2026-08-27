@@ -26,7 +26,7 @@
 
 **Pass:** A fresh runner needs no Supabase dashboard state or persistent database credential, makes no paid call, cannot reach Preview/Beta, removes its database stack with the job, leaks no secret, and fails closed at every security seam implemented in WP01.
 
-**Evidence:** Final external proof at `evidence/wp01-foundation/2026-08-27_ci-clean-database_github_06b6a76.md`; supporting revision at `evidence/wp01-foundation/2026-08-26_ci-security-review_local_ce7750b.md`; original rehearsal at `evidence/wp01-foundation/2026-08-26_ci-clean-database_local_2919e42.md`.
+**Evidence:** Disposable candidate: `evidence/wp01-foundation/2026-08-28_ci-disposable-database_local_82d6be8.md`; historical hosted proof: `evidence/wp01-foundation/2026-08-27_ci-clean-database_github_06b6a76.md`; supporting revision: `evidence/wp01-foundation/2026-08-26_ci-security-review_local_ce7750b.md`; original rehearsal: `evidence/wp01-foundation/2026-08-26_ci-clean-database_local_2919e42.md`.
 
 **Rollback:** Keep the transitional hosted CI project and its protected secret scope unchanged until disposable CI passes. Revert only the candidate workflow if it fails; preserve required branch protections.
 
