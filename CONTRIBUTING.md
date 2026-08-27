@@ -45,13 +45,29 @@ Expected repository versions are also recorded in `.nvmrc`, `package.json`, and 
 ## 3. Clone and install
 
 ```powershell
-git clone https://github.com/aboayman-oss/UniMind-Project.git
+git clone https://github.com/unimind989-sys/UniMind-Project.git
 Set-Location UniMind-Project
 corepack pnpm install --frozen-lockfile
 pwsh -NoProfile -File scripts/verify-agent-readiness.ps1
 ```
 
 Do not replace the committed lockfile, relax engine checks, or use an unpinned global package manager to “fix” installation. If installation fails, first compare `corepack pnpm --version` with `package.json#packageManager`.
+
+### Ziad workstation parity checklist
+
+Ziad should use his own GitHub account and receive repository access before cloning. To match the project runtime and Ahmed's approved development setup:
+
+1. Install Git, PowerShell 7, and exactly Node 24.19.0. Do not install Docker, WSL2, Supabase locally, or a global pnpm for this repository.
+2. Set Git's `user.name` and `user.email` to Ziad's own identity, clone `https://github.com/unimind989-sys/UniMind-Project.git`, and work from an up-to-date `main` before creating a task branch.
+3. Run `corepack enable`, confirm `node --version` is `v24.19.0`, and confirm `corepack pnpm --version` is `10.34.5`.
+4. Run `corepack pnpm install --frozen-lockfile` and `corepack pnpm exec playwright install chromium`. The Supabase CLI is already pinned as a project dependency; do not install another copy.
+5. Create the ignored `.env.local` from `.env.example`. Keep mock mode enabled, every real-provider flag false, and the provider budget at zero. Transfer any real local values through the approved private channel, never Git or chat.
+6. Obtain the ignored `.local/supabase/development.env` profile through the approved private channel. It must define `UNIMIND_DB_ENVIRONMENT`, `UNIMIND_SUPABASE_PROJECT_REF`, `UNIMIND_DB_RESET_CONFIRMATION`, `SUPABASE_ACCESS_TOKEN`, `SUPABASE_DB_PASSWORD`, `NEXT_PUBLIC_SUPABASE_URL`, and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`. Do not copy or use the protected CI profile on a workstation.
+7. Confirm `git status --short` shows neither local environment file, then run `corepack pnpm db:metadata --environment development` and verify the sanitized development fingerprint matches the approved evidence. Stop if it differs.
+8. After explicit approval for the destructive development reset, run `corepack pnpm db:push:dry-run --environment development`, `corepack pnpm db:reset --environment development`, `corepack pnpm db:migrations --environment development`, `corepack pnpm db:types --environment development`, and `corepack pnpm db:types:check`. The reset applies the committed migrations and synthetic seed; no separate seed command or manual dashboard edit is needed.
+9. Run `corepack pnpm test:integration:hosted` and `corepack pnpm verify`. Both must pass before Ziad begins a work-package task.
+
+Do not send credential values, profile files, or `.env.local` through a pull request, issue, evidence report, terminal transcript, or chat. If Ziad does not have the approved development credentials, database/Auth work remains blocked while the credential-free mock gate may still run.
 
 ## 4. Configure local environment safely
 
