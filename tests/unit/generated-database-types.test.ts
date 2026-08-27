@@ -12,4 +12,21 @@ describe("generated database types", () => {
       "export type SyntheticRow = { id: string; active: boolean };\n",
     );
   });
+
+  it("removes environment-specific PostgREST generator metadata", async () => {
+    await expect(
+      formatGeneratedDatabaseTypes(`export type Database = {
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "14.17"
+  }
+  public: { Tables: {} }
+}
+`),
+    ).resolves.toBe(`export type Database = {
+  public: { Tables: {} };
+};
+`);
+  });
 });
