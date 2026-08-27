@@ -26,7 +26,7 @@
 
 **Pass:** Preview and Beta use the two separate Supabase Free projects and separate Vercel Hobby project scopes; CI is disposable and cannot reach them; Preview is synthetic/mock-only; Beta is locked/empty with real data blocked on backup and protected gates; an exact tested commit promotes and rolls back without manual schema repair; all runtime components remain operable when both founder computers are off; no paid plan or billable resource is enabled.
 
-**Evidence:** Historical local conditional slice: `evidence/wp01-foundation/2026-08-27_environment-isolation_local_a7c9d6b.md`; revised external proof: `evidence/wp01-foundation/YYYY-MM-DD_environment-isolation_<preview-or-beta>_<short-sha>.md`
+**Evidence:** Docs-first topology proof: `evidence/wp01-foundation/2026-08-28_environment-topology_local_5a7e706.md`; historical local conditional slice: `evidence/wp01-foundation/2026-08-27_environment-isolation_local_a7c9d6b.md`; revised external proof: `evidence/wp01-foundation/YYYY-MM-DD_environment-isolation_<preview-or-beta>_<short-sha>.md`
 
 **Rollback:** Before repurposing, leave both projects in their transitional roles. After repurposing, lock/disable the affected deployment, rotate credentials, preserve evidence and versioned migrations, and use forward-only recovery; never point Preview at Beta or Beta at Preview.
 
@@ -54,7 +54,7 @@
 
 **Changed:** Replaced the blocked four-persistent-project paid proposal with the approved two-project zero-cost topology across the governing records. Preserved the existing health/smoke implementation and historical evidence without treating them as proof of the revised external topology.
 
-**Commands:** `scripts/verify-agent-readiness.ps1` passed with 119 names, 37 local links, 22 synchronized decisions, and 102 task contracts. `scripts/show-work-state.ps1` selects reopened WP01-T08. `corepack pnpm verify` passed formatting, lint, strict types, boundaries, CI policy, the 619-file secret scan, 221 unit tests, integration/security/evaluation/load checks, two Playwright checks, the production build, and client-artifact scan. `git diff --check` passed. No CI workflow, Supabase/Vercel project, secret, deployment, trial, payment method, paid resource, or external smoke command was changed or run.
+**Commands:** `scripts/verify-agent-readiness.ps1` passed with 119 names, 37 local links, 22 synchronized decisions, and 102 task contracts. `scripts/show-work-state.ps1` selects reopened WP01-T08. `corepack pnpm verify` passed formatting, lint, strict types, boundaries, CI policy, the 619-file secret scan, 221 unit tests, integration/security/evaluation/load checks, two Playwright checks, the production build, and client-artifact scan. After commit, `scripts/test-agent-handoff.ps1` passed from a clean isolated snapshot and selected WP01-T08. `git show --check` passed. No CI workflow, Supabase/Vercel project, secret, deployment, trial, payment method, paid resource, or external smoke command was changed or run.
 
 **Remaining:** First complete WP01-T08 disposable CI. Then remove obsolete hosted-CI secrets, rotate and repurpose the existing development project as Preview and CI project as locked Beta, configure separate Vercel Hobby scopes, run Preview smoke, prove Beta lock/isolation, and record the backup/restore gate state.
 
