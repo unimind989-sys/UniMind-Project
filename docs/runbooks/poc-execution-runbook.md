@@ -768,9 +768,9 @@ git diff --exit-code -- src/types/database.generated.ts
 - [ ] Use synthetic seed data in preview and rights-approved pilot data only in beta.
 - [ ] Configure unique callback signing secrets and provider budget scopes per environment.
 - [ ] Make preview deployment automatic from pull requests and beta deployment an approved promotion of an already-tested commit.
-- [ ] Add `/api/health/live` for process liveness and `/api/health/ready` for dependency readiness without disclosing secrets or internal topology.
-- [ ] Add a post-deploy smoke that verifies health, login page, one authorized route, one forbidden route, and mock-provider mode in preview.
-- [ ] Document rollback to the prior web/worker deployment and forward-only database recovery.
+- [~] Add `/api/health/live` for process liveness and `/api/health/ready` for dependency readiness without disclosing secrets or internal topology. The local routes, Auth-proxy exclusion, write denial, and guarded local/Preview smoke command pass; external Preview evidence remains pending on provisioning.
+- [~] Add a post-deploy smoke that verifies health, login page, one authorized route, one forbidden route, and mock-provider mode in preview. The guarded command verifies health, write denial, application identity, and synthetic/mock-only mode locally; login/role routes and external Preview proof remain pending.
+- [~] Document rollback to the prior web/worker deployment and forward-only database recovery. The provider-neutral exact-commit and locked-Beta procedure is in `docs/runbooks/environment-promotion.md`; provider configuration and rollback rehearsal remain pending.
 
 **Pass:** data, keys, callbacks, jobs, budgets, and reset permissions cannot cross development/CI/preview/beta; the same commit and migrations can reproduce all hosted targets; no database/Auth, shared environment, or runtime component depends on a founder computer.
 

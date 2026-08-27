@@ -28,6 +28,7 @@
     "browser:cli": "node scripts/run-playwright-cli.mjs",
     "test:eval": "tsx scripts/run-vitest-layer.ts evaluation && tsx scripts/run-foundation-evaluation.ts",
     "test:load": "tsx scripts/run-vitest-layer.ts load && tsx scripts/run-load-suite.ts",
+    "smoke:deployment": "tsx scripts/run-deployment-smoke.ts",
     "db:reset": "tsx scripts/run-hosted-supabase.ts reset",
     "db:migrations": "tsx scripts/run-hosted-supabase.ts migrations",
     "db:push:dry-run": "tsx scripts/run-hosted-supabase.ts push-dry-run",

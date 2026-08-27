@@ -152,6 +152,7 @@ Duration classes are workstation estimates: **instant** is normally under 10 sec
 | `pnpm test:e2e`                      | Run the local synthetic browser journey in pinned Chromium                | Local app only; external browser requests blocked; providers mocked     | Installed Playwright Chromium                                                           | Medium          |
 | `pnpm test:eval`                     | Validate versioned synthetic JSONL and emit JSON/Markdown reports         | None; a future live suite must say `live-approved`                      | Versioned foundation fixture                                                            | Short           |
 | `pnpm test:load`                     | Validate the load profile and emit a `NOT_EXECUTED` dry-run report        | None; preview/beta/production and real providers are rejected           | Versioned synthetic YAML profile                                                        | Short           |
+| `pnpm smoke:deployment`              | Check health, write denial, app identity, and synthetic/mock-only mode    | GET/POST requests only to the explicitly supplied local or Preview URL  | `--base-url` and `--target local\|preview`; Preview requires remote HTTPS               | Instant         |
 | `pnpm db:reset`                      | Recreate an explicitly confirmed development/CI schema and synthetic seed | Approved hosted synthetic Supabase only; no paid AI provider            | Target variables, exact reset confirmation, scoped CLI credentials                      | Short to medium |
 | `pnpm db:migrations`                 | Compare repository and selected hosted migration history                  | Approved hosted synthetic Supabase only                                 | Target variables and scoped CLI credentials                                             | Short           |
 | `pnpm db:push:dry-run`               | Preview unapplied migrations without applying them                        | Approved hosted synthetic Supabase only                                 | Target variables and scoped CLI credentials                                             | Short           |
@@ -161,6 +162,12 @@ Duration classes are workstation estimates: **instant** is normally under 10 sec
 | `pnpm verify`                        | Run the complete credential-free, zero-paid merge gate                    | None                                                                    | Installed Playwright Chromium                                                           | Medium          |
 
 In shell examples, invoke package commands as `corepack pnpm ...`. The shorter `pnpm ...` spelling in tables and the execution runbook refers to the same pinned project command.
+
+Run the deployment smoke only against an explicitly approved target. It rejects credentials, query strings, paths, non-loopback local targets, and non-HTTPS Preview targets:
+
+```powershell
+corepack pnpm smoke:deployment -- --base-url https://approved-preview.example --target preview
+```
 
 ## 8. Make a reviewable change
 
