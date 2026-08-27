@@ -55,7 +55,7 @@ export function createEphemeralSupabaseArguments(
     case "migrations":
       return ["migration", "list", "--local"];
     case "types":
-      return ["gen", "types", "typescript", "--local"];
+      return ["gen", "types", "typescript", "--local", "--schema", "public"];
     case "stop":
       return ["stop", "--no-backup"];
   }

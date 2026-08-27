@@ -9,6 +9,7 @@ import {
   parseEphemeralSupabaseStatus,
   type EphemeralSupabaseAction,
 } from "./lib/ephemeral-supabase";
+import { formatGeneratedDatabaseTypes } from "./lib/generated-database-types";
 
 assertGitHubHostedLinuxRunner(process.env);
 const action = parseEphemeralSupabaseAction(process.argv.slice(2));
@@ -100,7 +101,7 @@ function runAuthIntegration(): void {
   }
 }
 
-function execute(action_: EphemeralSupabaseAction): void {
+async function execute(action_: EphemeralSupabaseAction): Promise<void> {
   if (action_ === "auth") {
     runAuthIntegration();
     return;
@@ -109,11 +110,11 @@ function execute(action_: EphemeralSupabaseAction): void {
   if (action_ === "types") {
     writeFileSync(
       path.resolve("src/types/database.generated.ts"),
-      result.stdout,
+      await formatGeneratedDatabaseTypes(result.stdout),
       "utf8",
     );
   }
 }
 
-execute(action);
+await execute(action);
 process.stdout.write(`Disposable Supabase action passed: ${action}.\n`);

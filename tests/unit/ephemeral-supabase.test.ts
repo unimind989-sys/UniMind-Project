@@ -65,6 +65,8 @@ describe("ephemeral Supabase guard", () => {
       "types",
       "typescript",
       "--local",
+      "--schema",
+      "public",
     ]);
     expect(createEphemeralSupabaseArguments("stop")).toEqual([
       "stop",
