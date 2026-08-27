@@ -4,7 +4,7 @@
 
 **Status:** [~]
 
-**Outcome:** Local, preview, and beta environments are isolated by project, namespace, callback, secret scope, data classification, owner, health checks, promotion, and rollback procedure.
+**Outcome:** Mock workstation development, disposable database/Auth CI, synthetic Preview, and locked Beta are isolated by runtime, project, deployment scope, namespace, callback, secret, data class, reset authority, owner, health check, promotion, and rollback procedure.
 
 **Owner:** Codex `/root` — agent executor; Ahmed — signed-in human operator; Ahmed and Ziad — shared environment owners
 
@@ -16,49 +16,48 @@
 
 ## Execution contract
 
-**Dependencies:** WP01-T04 through WP01-T08 reviewed PASS. Ahmed explicitly authorized separate preview and beta Supabase/deployment resources, will perform signed-in operations, and will review the ordinary implementation; Ahmed and Ziad are the shared environment owners. Actual provisioning remains blocked by current free-capacity and Vercel Hobby commercial-use limits until the `$55/month` base proposal and its spend controls receive the required approval, or another compliant zero-cost path is approved; applicable data/provider decisions remain separate gates.
+**Dependencies:** Revised D-21 and ADR-0001 are approved. Historical WP01-T04 through WP01-T07 passed. WP01-T08 is reopened and must prove disposable full-stack Supabase CI before either existing project is repurposed. Ahmed approved the zero-cost-first plan and reports Vercel confirmation for current Hobby use; the eligibility triggers in D-21 must remain closed.
 
-**Inputs:** Runbook WP01-T09; approved D-21 and D-22; approved environment owners/scopes; versioned hosted development/database/Auth/CI contracts; synthetic preview and rights-approved beta data rules; confirmed founder-computers-are-development-process-only constraint.
+**Inputs:** Runbook WP01-T09; D-21, D-22, and ADR-0001; environment matrix transition plan; versioned migrations/seed/types; synthetic Preview and empty/locked Beta rules; founder-computers-are-development-only constraint.
 
-**Files:** Environment matrix, liveness/readiness routes, deployment/smoke/rollback automation, `docs/runbooks/environment-promotion.md`, task/runbook state, and evidence; external project identifiers only when safely public.
+**Files:** Environment matrix, liveness/readiness routes, deployment/smoke/rollback automation, `docs/runbooks/environment-promotion.md`, task/runbook state, and evidence; external identifiers only when safely public.
 
-**Verify:** Isolation review; preview deploy/smoke; forbidden-route and mock-mode checks; beta remains locked; secret and topology redaction review.
+**Verify:** WP01-T08 disposable CI PASS; old CI secret removal; credential rotation and safe project-role fingerprints; separate Vercel/Supabase scopes; Preview deploy/smoke and synthetic/mock-only checks; Beta locked and empty; backup gate explicit; secret/topology redaction review; no paid resource.
 
-**Pass:** Preview and beta use separate projects/scopes and approved external hosting; preview is synthetic/mock-only; an approved tested commit can promote and roll back without manual schema repair; all runtime components remain operable when both founder computers are off.
+**Pass:** Preview and Beta use the two separate Supabase Free projects and separate Vercel Hobby project scopes; CI is disposable and cannot reach them; Preview is synthetic/mock-only; Beta is locked/empty with real data blocked on backup and protected gates; an exact tested commit promotes and rolls back without manual schema repair; all runtime components remain operable when both founder computers are off; no paid plan or billable resource is enabled.
 
-**Evidence:** Local conditional slice: `evidence/wp01-foundation/2026-08-27_environment-isolation_local_a7c9d6b.md`; future external proof: `evidence/wp01-foundation/YYYY-MM-DD_environment-isolation_<preview-or-beta>_<short-sha>.md`
+**Evidence:** Historical local conditional slice: `evidence/wp01-foundation/2026-08-27_environment-isolation_local_a7c9d6b.md`; revised external proof: `evidence/wp01-foundation/YYYY-MM-DD_environment-isolation_<preview-or-beta>_<short-sha>.md`
 
-**Rollback:** Roll back the future web/worker release to its prior tested commit and use forward-only database recovery; never point preview at beta data to recover.
+**Rollback:** Before repurposing, leave both projects in their transitional roles. After repurposing, lock/disable the affected deployment, rotate credentials, preserve evidence and versioned migrations, and use forward-only recovery; never point Preview at Beta or Beta at Preview.
 
-**Hard stop:** Do not use a founder computer as a preview/beta host or dependency. The 2026-08-27 authorization covers separate preview/beta resource provisioning and ordinary isolation review only. It does not approve a paid plan, provider spend, real pilot data, beta unlock/go-live, or bypass of any two-person gate. Stop before any paid upgrade, trial, payment method, or billable resource until the exact budget and spend controls receive their required named approvals.
+**Hard stop:** Do not repurpose the current development or CI project until WP01-T08 disposable CI passes. Do not use a founder computer as infrastructure, share Preview/Beta resources, place real data in Beta, bypass the backup or two-person gates, or start a paid plan, trial, add-on, payment method, usage purchase, or billable resource. Stop deployment and recheck D-21 if Vercel eligibility becomes uncertain.
 
-## 2026-08-27 authorization, identity, and capacity checkpoint
+## 2026-08-27 approved revision
 
-- Ahmed authorized separate preview and beta Supabase/deployment resources and will perform and review this next task. Codex `/root` is the agent executor; Ahmed and Ziad are the shared environment owners; Ahmed supplies the ordinary human checkpoint.
-- D-22 approves one shared GitHub/Supabase/Google service identity and shared future service accounts, with Ahmed's separate GitHub contributor account as the exception. Account activity is not used to infer whether Ahmed or Ziad acted; the explicitly selected chat profile and task/evidence record provide the human attribution.
-- The authorization does not approve paid plans, provider spend, real pilot data, beta unlock/go-live, or bypassing the two-person gates for rights, deletion, budgets/kill switches, release/unlock, or beta go-live.
-- Supabase currently grants two active Free projects across organizations where a user is Owner or Administrator. The existing hosted development and hosted CI projects consume the available free allocation, so two additional active preview/beta projects cannot be provisioned within the approved zero-cost envelope.
-- The GitHub repository is public, so the previously recorded private-repository collaboration blocker is removed. Vercel Hobby is restricted to non-commercial personal use, so Vercel Pro is the compliant proposal for UniMind unless another approved deployment provider is selected.
-- The bounded proposal is `$35/month` for one Supabase Pro organization with two Micro projects plus `$20/month` for Vercel Pro: `$55/month` base before tax, with spend caps/management enabled, no on-demand overage, no add-ons, and no extra deploying seats. This is not approved spend.
-- Sources checked on 2026-08-27: [Supabase pricing](https://supabase.com/pricing), [Supabase compute pricing](https://supabase.com/docs/guides/platform/manage-your-usage/compute), [Supabase Billing FAQ](https://supabase.com/docs/guides/platform/billing-faq), [Vercel Hobby terms](https://vercel.com/docs/plans/hobby), and [Vercel Pro pricing](https://vercel.com/docs/plans/pro-plan).
-- No project, deployment, secret, callback, data, or paid resource was created by this checkpoint.
+- Ahmed approved the zero-cost-first topology: deterministic workstation mocks, a complete disposable Supabase stack on standard GitHub-hosted CI, and the two existing Supabase Free projects reserved for separate Preview and locked Beta.
+- Ahmed reports receiving Vercel confirmation for Hobby in the current project phase. The private confirmation was not inspected or committed. Eligibility must be rechecked before revenue, payments, advertising, donations, paid contributors, customer work, or another material scope/provider-policy change.
+- The earlier `$55/month` Supabase Pro plus Vercel Pro proposal is superseded and is not an active blocker or approved spend. Historical evidence mentioning it remains immutable evidence of the earlier checkpoint.
+- Supabase Free does not include automatic backups or branching and may pause inactive projects. Beta may be provisioned empty, but real pilot data and go-live remain blocked until an approved encrypted backup/restore procedure is implemented and rehearsed or later paid capacity is approved.
+- No project role, workflow, secret, deployment, callback, data, or paid resource was changed by this documentation checkpoint.
 
 ## Steps
 
-- [x] Confirm WP01-T04 through WP01-T08 reviewed PASS and record Ahmed's scoped provisioning authorization, signed-in operator role, shared owners, and same-founder ordinary human checkpoint.
-- [~] Record the complete workstation-development/hosted-development/hosted-CI/preview/beta isolation matrix, including reset permissions and the noncritical Telegram test-tool boundary. Authorization and capacity blockers are recorded; external identifiers, namespaces, callbacks, and secret scopes remain unassigned until the budget/provider block is resolved.
-- [~] Implement redacted liveness/readiness and post-deploy smoke seams. Local public-seam proof passes; external Preview proof remains pending.
-- [~] Configure Preview automation and approved Beta promotion/rollback. The provider-neutral exact-commit, scope-isolation, locked-Beta, and forward-only rollback procedure is recorded; provider configuration and rehearsal remain blocked on provisioning.
-- [ ] Prove separate projects, safe data profiles, and locked beta.
+- [x] Record Ahmed's zero-cost architecture approval, reported Vercel confirmation, shared-account model, provider eligibility triggers, and no-spend boundary.
+- [x] Record the target and transition environment matrix, including exact project repurposing order and the Beta backup blocker.
+- [~] Keep the existing redacted liveness/readiness routes and local/Preview smoke seam; external Preview proof remains pending.
+- [~] Keep the exact-commit Preview/Beta promotion and forward-only rollback procedure; external configuration and rehearsal remain pending.
+- [ ] Wait for WP01-T08 disposable CI PASS; then remove obsolete CI secrets and repurpose/rotate the current projects as Preview and locked Beta.
+- [ ] Configure separate Vercel Hobby project scopes and environment secrets without exposing Beta values to pull-request code.
+- [ ] Prove Preview synthetic/mock-only behavior, Beta locked/empty state, isolation, rollback, and zero paid-resource state.
 
 ## Handoff
 
-**Changed:** Recorded Ahmed's scoped authorization and shared-account model, then implemented minimal uncached liveness/readiness routes, excluded them from Auth refresh, added fail-closed configuration readiness, added public-seam E2E coverage, and added a guarded local/Preview deployment smoke command. Recorded the exact `$55/month` compliant Supabase Pro plus Vercel Pro base proposal without treating it as authorization.
+**Changed:** Replaced the blocked four-persistent-project paid proposal with the approved two-project zero-cost topology across the governing records. Preserved the existing health/smoke implementation and historical evidence without treating them as proof of the revised external topology.
 
-**Commands:** Prior authorization/governance checks remain recorded. `corepack pnpm smoke:deployment -- --base-url http://127.0.0.1:3101 --target local` passed six checks against an explicitly synthetic local process. `scripts/verify-agent-readiness.ps1` passed with 117 names, 32 local links, 22 synchronized decisions, and 102 task contracts. `corepack pnpm verify` passed formatting, lint, strict types, boundaries, CI policy, the 617-file secret scan, 221 unit tests, integration/security/evaluation/load checks, two Playwright tests, the production build, and the client-artifact secret scan. `git diff --check` passed. No provisioning, deployment, secret write, paid action, trial, or external smoke command ran.
+**Commands:** `scripts/verify-agent-readiness.ps1` passed with 119 names, 37 local links, 22 synchronized decisions, and 102 task contracts. `scripts/show-work-state.ps1` selects reopened WP01-T08. `corepack pnpm verify` passed formatting, lint, strict types, boundaries, CI policy, the 619-file secret scan, 221 unit tests, integration/security/evaluation/load checks, two Playwright checks, the production build, and client-artifact scan. `git diff --check` passed. No CI workflow, Supabase/Vercel project, secret, deployment, trial, payment method, paid resource, or external smoke command was changed or run.
 
-**Remaining:** Approve the exact `$55/month` base proposal and spend controls, or approve another compliant arrangement that still provides separate Preview/Beta projects and external runtime hosting. Then assign safe identifiers/namespaces/callbacks/secret scopes, provision the resources, configure Git preview automation and tested-artifact Beta promotion/rollback, run the new smoke command against Preview, prove isolation, and keep Beta locked with synthetic/no data until later rights and release gates pass.
+**Remaining:** First complete WP01-T08 disposable CI. Then remove obsolete hosted-CI secrets, rotate and repurpose the existing development project as Preview and CI project as locked Beta, configure separate Vercel Hobby scopes, run Preview smoke, prove Beta lock/isolation, and record the backup/restore gate state.
 
-**Next safe action:** Obtain explicit approval or rejection of the recorded `$55/month` base proposal and its no-overage controls. Do not click an upgrade, start a trial, add a payment method, create a billable resource, or provision Preview/Beta before that checkpoint.
+**Next safe action:** Continue with reopened WP01-T08. Do not repurpose either Supabase project yet.
 
-**Reviewer action:** Ahmed supplies the ordinary human checkpoint after inspecting the implementation and direct evidence; D-22 permits him to be the requester, signed-in operator, and reviewer for this task. Separate named confirmations from Ahmed and Ziad remain required for protected paid-budget, rights/deletion, release/unlock, and beta go-live gates.
+**Reviewer action:** Ahmed reviews the architecture/documentation checkpoint and later the ordinary implementation evidence. Separate confirmations from Ahmed and Ziad remain required for protected RLS, deletion, rights, budget/kill-switch, release/unlock, and beta go-live gates.

@@ -16,13 +16,13 @@
 
 ## Execution contract
 
-**Dependencies:** Every WP01-T01 through WP01-T10 task has reviewed PASS evidence; required founder human checkpoints are named for database/security/environment gates; preview provisioning is authorized; any protected sub-gate has both founders' confirmations.
+**Dependencies:** Every WP01-T01 through WP01-T10 task has reviewed PASS evidence under revised D-21; disposable database/Auth CI and isolated Preview/locked-Beta are proven; required founder checkpoints are named; any protected sub-gate has both founders' confirmations.
 
 **Inputs:** Gate template; clean candidate SHA; complete WP01 evidence; exact runtime/framework/database/extension versions; synthetic preview profile.
 
 **Files:** Final `evidence/wp01-foundation/YYYY-MM-DD_foundation-gate_<environment>_<short-sha>.md` plus only narrow corrections discovered by gate review.
 
-**Verify:** Clean frozen install; provider-network-blocked `pnpm verify`; two database resets; stable generated types; preview deploy/smoke; repository/build/log/evidence secret scan; Supabase breaking-change review; exact version inventory.
+**Verify:** Clean frozen install; provider-network-blocked `pnpm verify`; two disposable-CI database resets; stable generated types; Preview deploy/smoke; locked-Beta isolation and backup-blocker state; repository/build/log/evidence secret scan; Supabase breaking-change review; exact version inventory; no paid resource.
 
 **Pass:** The full package reproduces from a clean clone with no dashboard-only state, provider call, secret leak, unauthorized data path, or unresolved executable ambiguity.
 
@@ -30,7 +30,7 @@
 
 **Rollback:** Revert only a narrow gate correction or roll preview back to the prior tested commit; database repair remains forward-only.
 
-**Hard stop:** Do not start the gate with an incomplete upstream task, substitute mock database claims for reset/RLS evidence, deploy without authority, expose a secret, approve your own sensitive gate, or unlock WP02 from partial evidence.
+**Hard stop:** Do not start with an incomplete upstream task, substitute mocks for disposable database/RLS evidence, reset Preview/Beta, deploy without authority or confirmed Hobby eligibility, expose a secret, place real data in Beta without backup/protected gates, approve your own sensitive gate, or unlock WP02 from partial evidence.
 
 ## Steps
 
@@ -44,10 +44,10 @@
 
 **Changed:** No gate started; the complete prerequisite and evidence contract is recorded.
 
-**Commands:** NOT RUN for WP01-T11. WP01-T04 and WP01-T05 have reviewed PASS evidence; WP01-T07/T08/T09/T10 remain incomplete or blocked on downstream prerequisites.
+**Commands:** NOT RUN for WP01-T11. Historical WP01-T04/T05/T07 evidence remains valid; revised WP01-T08/T09/T10 remain incomplete.
 
 **Remaining:** Entire package gate after every upstream task passes.
 
-**Next safe action:** Select and complete WP01-T07, then follow the remaining WP01 dependency chain; do not advance to WP02.
+**Next safe action:** Complete reopened WP01-T08, then WP01-T09 and WP01-T10; do not advance to WP02.
 
 **Reviewer action:** Name Ahmed or Ziad for the ordinary package checkpoint and record both founders only for any protected sub-gate before evaluating its evidence.

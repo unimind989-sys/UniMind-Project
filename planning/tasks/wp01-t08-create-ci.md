@@ -2,35 +2,35 @@
 
 **Task ID:** WP01-T08
 
-**Status:** [x]
+**Status:** [~]
 
-**Outcome:** A least-privilege clean runner reproduces install, database reset, security tests, generated types, application checks, smoke tests, secret scan, and sanitized failure reports.
+**Outcome:** A least-privilege standard GitHub-hosted runner reproduces application checks and a complete disposable Supabase database/Auth gate without persistent database credentials or founder-computer infrastructure.
 
 **Owner:** Codex `/root`
 
-**Reviewer:** Ahmed via `unimind989-sys` approved corrective implementation PR #3. Completion evidence PR #4 passed all three checks and was merged by the repository owner with the documented administrator bypass after GitHub rejected repeated attempts to submit an additional approval.
+**Reviewer:** Ahmed — ordinary human checkpoint. The prior hosted-CI implementation and evidence remain historically approved; revised D-21 reopened this task for a new disposable-CI review.
 
-**Branch:** implementation merged to `main` as `ee18f702e99131f5307de50bdbf9a799b2d92120`; implementation branch deleted
+**Branch:** `wp01/environment-provisioning-authorization` for the architecture revision; implementation branch to follow the runbook convention
 
 **Updated (UTC):** 2026-08-27
 
 ## Execution contract
 
-**Dependencies:** WP01-T04 through WP01-T07 reviewed PASS, including hosted CI isolation; approved repository/branch-protection authority for external GitHub settings.
+**Dependencies:** WP01-T04 through WP01-T07 historical PASS; revised D-21 and ADR-0001 approved; repository is public; standard GitHub-hosted runner container support is available.
 
-**Inputs:** Runbook WP01-T08; exact package manager/runtime; versioned migrations/seed/types; all test-layer scripts; synthetic environment profile.
+**Inputs:** Runbook WP01-T08; D-21/ADR-0001; exact package manager/runtime; pinned Supabase CLI; versioned migrations/seed/types; all test-layer scripts; synthetic environment profile.
 
 **Files:** `.github/workflows/ci.yml`, immutable action pins, safe cache/report configuration, repository security/dependency checks, task/runbook state, and evidence.
 
-**Verify:** Local equivalent gate; workflow syntax/pin/permission/trigger/secret-scope audit; approved-target rejection; clean GitHub run when authorized. WP02-T04 owns the deliberate RLS-leak regression after the database RLS matrix exists.
+**Verify:** Workflow syntax/pin/permission/trigger audit; standard Ubuntu runner starts a complete disposable Supabase stack; two clean resets; stable generated types; Auth/database/security checks; Preview/Beta isolation; cleanup; no persistent Supabase secret; clean GitHub run. WP02-T04 owns the deliberate RLS-leak regression after the database RLS matrix exists.
 
-**Pass:** A fresh runner needs no dashboard state, makes no paid call, leaks no secret, and fails closed at every security seam implemented in WP01. The later database RLS matrix cannot be a prerequisite for the CI foundation that WP02 depends on; WP02-T04 must add and prove the deliberate leaking-policy failure before the WP02 gate.
+**Pass:** A fresh runner needs no Supabase dashboard state or persistent database credential, makes no paid call, cannot reach Preview/Beta, removes its database stack with the job, leaks no secret, and fails closed at every security seam implemented in WP01.
 
 **Evidence:** Final external proof at `evidence/wp01-foundation/2026-08-27_ci-clean-database_github_06b6a76.md`; supporting revision at `evidence/wp01-foundation/2026-08-26_ci-security-review_local_ce7750b.md`; original rehearsal at `evidence/wp01-foundation/2026-08-26_ci-clean-database_local_2919e42.md`.
 
-**Rollback:** Disable/revert the future workflow and preserve required branch protections unless an authorized owner changes them.
+**Rollback:** Keep the transitional hosted CI project and its protected secret scope unchanged until disposable CI passes. Revert only the candidate workflow if it fails; preserve required branch protections.
 
-**Hard stop:** Do not publish an unverified workflow, grant write permissions by default, cache secrets/private data, reset development/preview/beta from CI, invent action SHAs, alter branch protection without authority, or claim the database security gate before WP01-T04/T07 pass.
+**Hard stop:** Do not repurpose either existing Supabase project before disposable CI passes. Do not publish an unverified workflow, grant write permissions by default, cache secrets/private data, expose the container stack, reach/reset Preview or Beta from CI, invent action SHAs, use a founder-hosted runner, or alter branch protection without authority.
 
 ## Steps
 
@@ -39,6 +39,9 @@
 - [x] Reproduce every implemented database/application/security/smoke command on a fresh runner. Corrective PR CI #7 and protected main CI #8 passed.
 - [x] Add secret scan, zero-cost production dependency audit, and sanitized always-upload reports. Both main artifacts were inspected by name and digest.
 - [x] Obtain authorized external CI run and branch-protection review. `main` requires a PR, one human approval, and `application` plus `dependency-audit`; force pushes and deletion are disabled.
+- [~] Replace the historical persistent hosted-CI job with a pinned complete Supabase stack on a standard GitHub-hosted Ubuntu runner.
+- [ ] Prove two clean resets, stable types, Auth/database/security checks, target isolation, cleanup, and absence of persistent hosted credentials.
+- [ ] Remove the obsolete hosted CI secrets/environment dependency only after the new job passes, then hand WP01-T09 the current CI project for guarded Beta repurposing.
 
 ## Handoff
 
@@ -46,11 +49,18 @@
 
 **Commands:** Exact-runtime `corepack pnpm verify` passed on Node 24.19.0/pnpm 10.34.5 with format, lint, typecheck, boundary/workflow audits, a 606-file secret scan, 214 unit tests, integration, 8 security, 3 evaluation, 5 load-profile, one Chromium smoke, production build, and client-artifact scan. `db:types:check`, agent readiness, and isolated handoff rehearsal also passed. GitHub CI #7 passed the protected pull-request checks. CI #8 application passed in 1m 17s and hosted CI passed in 33s after the approved isolated reset.
 
-**Remaining:** None for WP01-T08. WP02-T04 still owns the deliberate RLS-leak regression after the RLS matrix exists. Critical RLS, deletion, rights, budget, release/unlock, and beta decisions continue to require the repository's two-person rule even though this ordinary CI implementation needed one human approval.
+**Remaining:** Implement and externally prove disposable full-stack Supabase CI, then remove the persistent hosted-CI dependency. WP02-T04 still owns the deliberate RLS-leak regression after the RLS matrix exists.
 
-**Next safe action:** Stop after merging this completion evidence. WP01-T09 is intentionally reserved for Ziad and must not be started in this task.
+**Next safe action:** Implement the smallest reviewable WP01-T08 workflow slice. Keep both existing Supabase projects in their current roles until the new runner job passes.
 
-**Reviewer action:** Confirm the final evidence identifiers match CI #8, then approve the completion PR. Future migration/RLS changes retain the two-person rule.
+**Reviewer action:** Review the new runner evidence, isolation, cleanup, version pins, and secret removal. Future migration/RLS changes retain the two-person rule.
+
+## 2026-08-27 architecture revision
+
+- Ahmed approved revised D-21: workstation mocks, disposable Supabase CI, and the two persistent Free projects reserved for separate Preview and locked Beta.
+- The earlier PASS proves the superseded persistent hosted-CI design at its recorded commits. Its evidence and historical sections below remain unchanged.
+- WP01-T08 is reopened because WP01-T09 may not repurpose the current CI project until the replacement CI path passes.
+- No CI workflow, secret, project role, or external resource was changed by the documentation revision.
 
 ## 2026-08-27 external continuation checkpoint
 

@@ -1,50 +1,54 @@
 # Environment matrix
 
-This matrix records safe environment identities and isolation rules. Full project references, passwords, access tokens, keys, and connection strings stay in ignored workstation files or approved CI secret stores.
+This matrix records safe environment identities and isolation rules. Full project references, passwords, access tokens, keys, connection strings, private provider correspondence, and backup material stay in approved restricted or ignored stores.
 
-| Environment | Runtime/data plane | Safe project fingerprint | Region | Data classification | Reset allowed | GitHub integration | Owner | Current state |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Workstation development | Next.js process and deterministic mocks only | N/A | Ahmed or Ziad workstation | Synthetic only | N/A | Repository checkout | Ahmed / Ziad | Available; never shared infrastructure |
-| Hosted development | Supabase Auth and PostgreSQL | `sha256:5575d1c3d806` | Central EU (Frankfurt), `eu-central-1` | Synthetic only | Yes, guarded `development` confirmation only | Connected; review before automated schema deployment | Ahmed; Ziad project awareness | Provisioned, zero charge |
-| Hosted CI | Separate Supabase Auth and PostgreSQL project | `sha256:6ad364ad022a` | Central EU (Frankfurt), `eu-central-1` | Synthetic only | Yes, guarded `ci` confirmation only | Protected GitHub Actions `ci` environment; `main`-only approval gate | Ahmed; Ziad project awareness | Provisioned, zero charge; WP01-T08 PASS |
-| Preview | Separate external Supabase project plus external deployment target | Not assigned | Not assigned | Synthetic only | No from development/CI commands | Vercel Pro proposed; target not configured | Ahmed / Ziad shared founder authority; Codex agent executor; Ahmed human operator/reviewer | Provisioning authorized; not provisioned — exact paid proposal awaiting approval |
-| Beta | Separate external Supabase project plus external deployment target | Not assigned | Not assigned | Rights-approved pilot data only after later rights/data gates; no real data authorized now | No from development/CI commands | Vercel Pro proposed; target not configured | Ahmed / Ziad shared founder authority; Codex agent executor; Ahmed human operator/reviewer | Provisioning authorized; not provisioned and locked — exact paid proposal awaiting approval |
+## Approved zero-cost target topology
 
-## WP01-T09 authorization and capacity checkpoint — 2026-08-27
+| Environment | Runtime/data plane | Data classification | Destructive reset | External scope | Owner | Target state |
+| --- | --- | --- | --- | --- | --- | --- |
+| Workstation development | Next.js process and deterministic in-process mocks; no database service | Synthetic only | N/A | Repository checkout only | Ahmed / Ziad | Available; never shared infrastructure |
+| Database/Auth CI | Complete disposable Supabase stack on a standard GitHub-hosted Ubuntu runner | Synthetic only | Yes, inside the disposable runner only | Per-run GitHub Actions job; no persistent Supabase project or long-lived database secret | Ahmed / Ziad; agent executor | WP01-T08 migration required |
+| Preview | Existing Supabase Free project currently labeled development, repurposed only after ephemeral CI passes | Synthetic only; mock providers | No development/CI reset command; forward migrations only | Separate Supabase project and separate Vercel Hobby project/scope | Ahmed / Ziad | WP01-T09 repurposing pending |
+| Beta | Existing Supabase Free project currently labeled CI, repurposed only after ephemeral CI passes | Empty until backup, rights, security, release, and go-live gates; then rights-approved pilot data only | No development/CI reset command; guarded forward migrations only | Separate Supabase project and separate Vercel Hobby project/scope | Ahmed / Ziad | WP01-T09 repurposing pending; locked |
 
-- Ahmed authorized separate preview and beta Supabase/deployment resources and will perform the required signed-in actions and ordinary human review. The current Codex task is the implementation executor; Ahmed and Ziad remain the shared environment owners.
-- D-22 records the approved shared service identity: Ahmed and Ziad use the same GitHub/Supabase/Google account and will share future service accounts; Ahmed's separate GitHub contributor account is the exception. The provider account does not identify the acting founder, so task/evidence records name the human checkpoint.
-- This authorization does not approve a paid plan, provider spend, real pilot data, beta unlock/go-live, or bypass of the two-person gates for rights, deletion, budgets/kill switches, release/unlock, and beta go-live.
-- Supabase documents an entitlement of two active Free projects across organizations where a user is Owner or Administrator. Hosted development and hosted CI already consume the available free allocation. [Official Supabase Billing FAQ](https://supabase.com/docs/guides/platform/billing-faq).
-- The GitHub repository is public, so the earlier private-repository collaboration blocker does not apply. Vercel Hobby is nevertheless restricted to non-commercial personal use. UniMind therefore treats Vercel Pro, not Hobby, as the compliant deployment proposal. [Official Vercel Hobby guidance](https://vercel.com/docs/plans/hobby) and [Pro pricing](https://vercel.com/docs/plans/pro-plan).
-- Preview and beta project fingerprints, regions, storage namespaces, worker/queue namespaces, callback bases, and secret scopes remain deliberately unassigned. No external resource or secret was created by this checkpoint.
-- Stop before an upgrade, trial, payment method, billable resource, or provider spend until the exact budget and spend controls receive their required named approvals.
+Preview and Beta must also receive separate storage namespaces, callback bases, queue/worker namespaces, environment secrets, and deployment authority as those adapters are selected. Unassigned future resources are not silently shared.
 
-## Bounded paid proposal — awaiting approval
+## Transition state — do not repurpose yet
 
-| Service | Proposed scope | Monthly base before tax | Required spend control |
-| --- | --- | ---: | --- |
-| Supabase Pro | One paid organization containing separate Preview and Beta projects, both on Micro compute | `$35` (`$25` plan + two `$10` Micro projects - one `$10` monthly compute credit) | Keep the Supabase spend cap enabled; no add-ons, branching compute, custom domains, PITR, or paid overage |
-| Vercel Pro | One team with the included deploying seat; Preview and Beta deployments from the same tested repository commit | `$20` platform fee | Configure Spend Management to stop additional usage at the approved limit; no paid add-ons or extra deploying seats |
-| **Combined** | Four environment topology remains isolated; existing hosted Development and CI stay on the current Free allocation | **`$55/month` base before tax** | No on-demand overage; any higher limit or add-on requires a new approval |
+| Current resource | Safe fingerprint | Region | Current role | Required transition |
+| --- | --- | --- | --- | --- |
+| Existing Supabase development project | `sha256:5575d1c3d806` | Central EU (Frankfurt), `eu-central-1` | Transitional synthetic hosted development target | After WP01-T08 passes: remove old automation/secrets, rotate credentials, clean and verify synthetic state, relabel and scope as Preview |
+| Existing Supabase CI project | `sha256:6ad364ad022a` | Central EU (Frankfurt), `eu-central-1` | Transitional protected hosted CI target | Keep active until ephemeral CI passes; then remove GitHub secrets/environment dependency, rotate credentials, clean and verify empty state, relabel and scope as locked Beta |
 
-Supabase documents that Pro starts at `$25/month`, Micro compute is about `$10/month` per project, and a paid organization receives `$10/month` in compute credit. Vercel documents a `$20/month` Pro platform fee with one deploying seat and `$20` usage credit. Prices were rechecked on 2026-08-27 against [Supabase pricing](https://supabase.com/pricing), [Supabase compute pricing](https://supabase.com/docs/guides/platform/manage-your-usage/compute), and [Vercel Pro pricing](https://vercel.com/docs/plans/pro-plan). This is a proposal, not authorization to spend.
+Historical WP01-T04/T05/T08 evidence remains valid proof of what those targets did at the recorded commits. It does not prove the revised topology complete. The earlier `$55/month` four-project proposal is superseded, not authorized, and no longer blocks the zero-cost implementation path.
 
-## Local health and smoke checkpoint — 2026-08-27
+## Approval and eligibility checkpoint — 2026-08-27
+
+- Ahmed approved the zero-cost-first D-21 revision and the two-project topology. Codex `/root` remains the agent executor; Ahmed and Ziad remain shared environment owners.
+- Ahmed reports receiving Vercel confirmation that Hobby may be used for the current UniMind phase. The private confirmation was not inspected or committed. Continued use requires the confirmation and provider terms to remain applicable.
+- Recheck Vercel eligibility before revenue, payments, advertising, donations, paid contributors, customer work, or another material scope/provider-policy change. Stop deployment if eligibility becomes uncertain.
+- No paid plan, trial, payment method, add-on, usage purchase, or billable resource is approved. Future spend requires a separate decision and the protected budget confirmations.
+- The repository is public. Standard GitHub-hosted runners are used for the proposed ephemeral CI path; no founder workstation becomes a runner or runtime dependency.
+- Supabase Free currently provides the two persistent project slots used by UniMind. Branching and automatic backups are not part of the Free plan, and inactive Free projects may pause.
+- Beta remains empty of real data until an approved encrypted backup/restore procedure is implemented and rehearsed, or later paid capacity is explicitly approved. This is a hard blocker for real pilot data and beta go-live, not for synthetic provisioning.
+- D-22 governs the shared service identity. Provider account activity does not identify the human actor; task and evidence records name the checkpoint.
+
+Official constraints were rechecked on 2026-08-27: [Supabase pricing](https://supabase.com/pricing), [Supabase CLI local/CI stack](https://supabase.com/docs/guides/local-development/cli/getting-started), [Supabase branching](https://supabase.com/docs/guides/deployment/branching), [GitHub Actions billing](https://docs.github.com/en/billing/concepts/product-billing/github-actions), [GitHub runner containers](https://docs.github.com/en/actions/how-tos/write-workflows/choose-where-workflows-run/run-jobs-in-a-container), and [Vercel fair-use guidance](https://vercel.com/docs/limits/fair-use-guidelines).
+
+## Existing local health and smoke checkpoint
 
 - `/api/health/live` reports process liveness without entering the Auth proxy or calling an external dependency.
 - `/api/health/ready` validates server configuration and returns only `ready` or `not_ready`; it exposes no failing variable name, secret, or topology detail.
 - Both routes are uncached and reject unsupported writes with `405`.
-- `pnpm smoke:deployment` accepts loopback local targets or remote HTTPS previews, rejects unsafe URLs, and verifies liveness, readiness, write denial, the application response, and synthetic/mock-only mode.
-- The command passed six checks against a live local Next.js process. External Preview proof remains blocked until the proposed resources and budget are approved and provisioned.
+- `pnpm smoke:deployment` accepts loopback local targets or remote HTTPS Preview targets, rejects unsafe URLs, and verifies liveness, readiness, write denial, application response, and synthetic/mock-only mode.
+- The command passed six checks against a live local Next.js process. External Preview proof remains pending on WP01-T09.
 
 ## Isolation rules
 
-- Development and CI use different hosted projects and different database passwords.
-- The full project references remain only in `.local/supabase/development.env` and `.local/supabase/ci.env` on an authorized workstation.
-- `pnpm verify` never loads either hosted profile and remains credential-free, mock-only, and zero-cost.
-- A hosted reset must select exactly `development` or `ci` and provide the matching target-specific confirmation value.
-- Preview and beta references are forbidden in the hosted command guard and cannot be relabeled as development or CI.
-- The development GitHub connection must not become a dashboard-only schema authority; migrations and seed data remain versioned in this repository.
-- Preview and beta must use separate projects, namespaces, callbacks, and secrets. Neither environment may borrow development/CI credentials or share a project with the other.
-- Preview remains synthetic and mock-only. Beta remains locked and contains no real pilot data until the separate rights/data and beta-release gates pass.
+- Workstations use mocks. Database/Auth CI uses a disposable runner-local stack. Neither may borrow Preview or Beta credentials.
+- The transitional `.local/supabase/development.env` and `.local/supabase/ci.env` profiles remain credentials and must not be committed. They are retired and removed from workflow use during WP01-T08/T09 migration.
+- `pnpm verify` remains credential-free, mock-only, and zero paid-provider cost.
+- Preview and Beta references are forbidden in destructive development/CI commands and cannot be relabeled to bypass a guard.
+- Preview receives synthetic data and mock providers only. Beta remains locked and empty until its protected gates pass.
+- Preview and Beta never share a Supabase project, Vercel project scope, secrets, callbacks, storage namespace, queue/worker namespace, or deployment authority.
+- Migrations and seed data remain versioned. Preview/Beta schema repair is forward-only; dashboard-only repair is prohibited.

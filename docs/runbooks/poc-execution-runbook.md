@@ -75,7 +75,7 @@ A task may be marked complete only when all applicable statements are true:
 
 - [ ] The implementation is committed on a reviewable branch with no unrelated changes.
 - [ ] Lint, type checking, relevant unit/integration/security tests, and the production build pass.
-- [ ] When database behavior is affected, migrations reset an isolated hosted development/CI target from empty and upgrade a populated synthetic fixture target.
+- [ ] When database behavior is affected, migrations reset a disposable CI Supabase stack from empty and upgrade a populated synthetic fixture target; Preview/Beta are never destructive-test targets.
 - [ ] Authorization was tested as an allowed role and at least one forbidden role.
 - [ ] Retryable work was replayed with the same idempotency key and created no duplicate state or charge.
 - [ ] Logs contain the correlation ID and safe diagnostics, but no secret, raw private content, or ordinary chat content.
@@ -164,7 +164,7 @@ Verify these again on the day the foundation is created or upgraded:
 
 - Use Node.js 24 LTS for the initial baseline and pin an exact supported patch in `.nvmrc` and `package.json#engines`. Node.js 20 is end-of-life; do not copy older Next.js tutorials that still select it.
 - Next.js currently requires Node.js 20.9 or newer. Use App Router and the project-local package manager lockfile.
-- Install the Supabase CLI as a pinned development dependency and invoke it as `pnpm supabase`; do not assume a globally installed CLI. D-21 prohibits the CLI's local container stack for this project.
+- Install the Supabase CLI as a pinned development dependency and invoke it as `pnpm supabase`; do not assume a globally installed CLI. D-21 prohibits workstation database infrastructure but requires the CLI's complete disposable stack on a standard GitHub-hosted Ubuntu CI runner.
 - New Supabase projects may not expose newly created `public` tables to the Data API automatically. RLS and SQL `GRANT` are separate requirements; test both.
 - Do not pin a version in `CREATE EXTENSION`; Supabase ignores/deprecates explicit extension versions. Record the installed version in evidence instead.
 - Use `@supabase/ssr` for Next.js cookie-based sessions. A publishable key may be public; secret/service-role keys are server-only.
@@ -596,7 +596,7 @@ Define the reproducible 100-student scenario with exact durations and arrival ra
 
 ## 4. Work package 1: Repository, environments, and delivery controls
 
-**Outcome:** any developer can clone the repository onto a supported workstation, run deterministic local application/mocks, target an approved synthetic hosted development database/Auth environment, reset it safely, and pass the required verification commands. Hosted CI, preview, and beta targets are isolated and deploy from version control.
+**Outcome:** any developer can clone the repository onto a supported workstation, run deterministic local application/mocks, and pass credential-free verification; a standard GitHub-hosted runner reproduces disposable database/Auth checks; separate synthetic Preview and locked Beta targets deploy from version control without paid infrastructure or founder-computer dependency.
 
 **Primary artifacts:** root configuration, `src/`, `workers/`, `supabase/`, `.github/workflows/`, `.env.example`, `docs/adr/`, and `evidence/wp01-foundation/`.
 
@@ -674,7 +674,7 @@ pnpm build
 
 **Pass:** `pnpm test:unit -- env` proves valid, missing, malformed, and forbidden-public cases; `pnpm build` succeeds with safe CI placeholders.
 
-#### WP01-T04 — Provision versioned hosted Supabase development and CI
+#### WP01-T04 — Provision versioned hosted Supabase development and CI (historical topology)
 
 - [x] Obtain explicit provisioning authority for two separate, synthetic-only, zero-charge hosted Supabase development and CI projects in the nearest available region to Cairo. Ahmed authorized this scope on 2026-08-25; D-21 removes Docker/WSL2/virtualization from the dependency chain.
 - [x] Complete the recorded manual signed-in setup journey and keep all captured credentials under the ignored `.local/supabase/` directory; see `planning/tasks/wp01-t04-provision-hosted-supabase.md`.
@@ -707,6 +707,8 @@ git diff --exit-code -- src/types/database.generated.ts
 ```
 
 **Pass:** an isolated hosted development/CI target resets twice in succession; generated types are stable; target guards reject local/preview/beta names; no dashboard-only schema change is required.
+
+**2026-08-27 revision:** this PASS remains historical proof for the recorded targets and commits. Revised D-21 retires persistent development/CI after WP01-T08 proves disposable CI. Do not repurpose either project early; WP01-T09 rotates and re-scopes them as Preview and locked Beta afterward.
 
 #### WP01-T05 — Implement safe Supabase clients and auth refresh
 
@@ -746,37 +748,33 @@ git diff --exit-code -- src/types/database.generated.ts
 
 **Pass:** intentionally breaking one boundary causes the correct layer to fail with an actionable message.
 
-#### WP01-T08 — Create CI with a clean-database security gate
+#### WP01-T08 — Create zero-cost CI with a disposable database security gate
 
-- [x] Create `.github/workflows/ci.yml` with least-privilege permissions and concurrency cancellation for superseded branch runs. The credentialed job is restricted to reviewed `main` code and six secrets scoped only to the guarded database/Auth step. Owner: Codex `/root`; implementation merged as `ee18f70`.
-- [x] Pin action revisions to immutable commit SHAs or an approved dependency policy. The workflow audit rejects floating revisions, write permissions including `write-all`, unsafe triggers, and missing required jobs; CI #7 and #8 passed.
-- [x] Use `pnpm install --frozen-lockfile`. Fresh GitHub runners reproduced the immutable install with Node 24.19.0 and pnpm 10.34.5.
-- [x] Cache only safe package/build data; never cache `.env`, Supabase credentials, test-user tokens, or private fixtures. The workflow intentionally configures no cache.
-- [x] Use the reviewed isolated hosted CI target to reset migrations, seed synthetic data, run database/security tests, generate types, and fail on a type diff. Attempt 1 failed closed on PostgREST version drift; the exact correction was reviewed, and CI #8 hosted job `98421571535` passed against fingerprint `sha256:6ad364ad022a`. See `planning/tasks/wp01-t08-create-ci.md`.
-- [x] Run format check, lint, type check, unit/integration/security tests, production build, and a small Playwright smoke suite. The final exact-runtime local gate and fresh-runner application job passed with 214 unit tests.
-- [x] Upload sanitized test/evaluation reports even when a test fails. Both jobs use immutable `upload-artifact` with `if: always()` and seven-day retention; CI #8 artifacts `9634668004` and `9634839025` were inspected by name and digest.
-- [x] Add a secret scan and dependency review appropriate to the repository. The redacting 606-file scan passed, and the repository used a pinned zero-cost high/critical production audit when paid Code Security was unavailable; the repository is now public.
-- [x] Protect `main` and require CI plus human review. Classic protection requires a pull request, one approval, `application`, and `dependency-audit`; force pushes and deletion are disabled. Project policy retains the two-person rule for migration/RLS/deletion/usage and other critical gates.
+- [x] Preserve the reviewed least-privilege application, dependency-audit, immutable-pin, frozen-install, sanitized-artifact, secret-scan, and branch-protection controls proven by the 2026-08-27 CI evidence.
+- [~] Replace the credentialed persistent hosted-CI job with a complete disposable Supabase stack created on a standard GitHub-hosted Ubuntu runner. The earlier hosted job remains historical evidence, not completion evidence for revised D-21.
+- [ ] Pin and record the runner image, Supabase CLI, Docker/runtime, PostgreSQL, and extension versions needed for reproducibility.
+- [ ] Start the stack from version control, reset twice, apply synthetic seed data, run Auth/database/security tests, generate types, fail on a type diff, and prove the stack is isolated and removed with the job.
+- [ ] Remove the persistent hosted-CI secrets and protected-environment dependency only after the disposable job passes. Keep the current hosted CI project unchanged until that proof exists.
+- [ ] Re-run the complete clean CI path and preserve sanitized evidence. WP02-T04 later adds the deliberate leaking-RLS-policy regression after the RLS matrix exists.
 
-**Pass:** a fresh CI runner reproduces install, the credential-free application gate, and the guarded isolated database/Auth gate without manual dashboard state, paid calls, secret leakage, or access to a non-approved target. WP02-T04 adds the deliberate leaking-RLS-policy failure once the RLS matrix exists; it cannot block the CI foundation on which WP02 depends.
+**Pass:** a fresh standard GitHub-hosted runner reproduces install, credential-free application checks, and a complete disposable Supabase database/Auth gate without persistent database credentials, manual dashboard state, paid calls, secret leakage, Preview/Beta access, or a founder-computer dependency.
 
-#### WP01-T09 — Provision isolated environments
+#### WP01-T09 — Provision isolated zero-cost Preview and Beta
 
-- [ ] Create an environment matrix containing workstation development process, hosted `development`, hosted `ci`, hosted `preview`, and hosted `beta`; list database project/branch, storage namespaces, worker/queue namespace, callback base URL, secret scope, data classification, reset permission, and owner.
-- [ ] Prove every database/Auth and preview/beta runtime component is externally hosted and remains operable when Ahmed's and Ziad's computers are off. The optional PC-hosted Telegram bot is noncritical development/test tooling only and is absent from every gate topology.
-- [~] Use separate Supabase projects for preview and beta. A branch schema inside beta is not sufficient isolation for private pilot data. Ahmed authorized separate resource provisioning, will perform the signed-in actions and ordinary human review, and named Ahmed/Ziad as shared owners; Codex `/root` is the agent executor. The two existing active projects exhaust the Supabase Free allocation, so stop before a paid upgrade until Ahmed approves an exact budget. See `planning/tasks/wp01-t09-provision-isolated-environments.md`.
-- [ ] Use synthetic seed data in preview and rights-approved pilot data only in beta.
-- [ ] Configure unique callback signing secrets and provider budget scopes per environment.
-- [ ] Make preview deployment automatic from pull requests and beta deployment an approved promotion of an already-tested commit.
-- [~] Add `/api/health/live` for process liveness and `/api/health/ready` for dependency readiness without disclosing secrets or internal topology. The local routes, Auth-proxy exclusion, write denial, and guarded local/Preview smoke command pass; external Preview evidence remains pending on provisioning.
-- [~] Add a post-deploy smoke that verifies health, login page, one authorized route, one forbidden route, and mock-provider mode in preview. The guarded command verifies health, write denial, application identity, and synthetic/mock-only mode locally; login/role routes and external Preview proof remain pending.
-- [~] Document rollback to the prior web/worker deployment and forward-only database recovery. The provider-neutral exact-commit and locked-Beta procedure is in `docs/runbooks/environment-promotion.md`; provider configuration and rollback rehearsal remain pending.
+- [x] Record the approved target and transition matrix: mock-only workstations, disposable Supabase CI, and the two existing Supabase Free projects reserved for separate Preview and locked Beta after WP01-T08 passes.
+- [ ] After WP01-T08 passes, retire hosted development/CI automation, remove obsolete CI secrets, rotate both projects' credentials, clean/verify state, and repurpose the current development project as Preview and current CI project as locked Beta.
+- [ ] Prove every Preview/Beta runtime component is externally hosted and remains operable when Ahmed's and Ziad's computers are off. The optional PC-hosted Telegram bot remains noncritical synthetic development/test tooling only.
+- [ ] Keep Preview synthetic/mock-only and Beta locked and empty. Beta real data remains blocked until an approved encrypted backup/restore procedure passes and the later rights/security/release gates pass.
+- [ ] Configure separate Vercel Hobby project scopes, Supabase projects, callbacks, secrets, storage, jobs, and future provider budget scopes. Ahmed reports provider confirmation for current Hobby use; recheck the eligibility triggers recorded in D-21 before deployment.
+- [ ] Make Preview deployment automatic from pull requests without Beta secrets and Beta deployment an approved promotion/rebuild of an already-tested exact commit.
+- [~] Keep `/api/health/live`, `/api/health/ready`, and `pnpm smoke:deployment` redacted and fail-closed. Local proof passes; external Preview proof remains pending.
+- [~] Rehearse Preview smoke, locked-Beta promotion, and rollback using `docs/runbooks/environment-promotion.md`.
 
-**Pass:** data, keys, callbacks, jobs, budgets, and reset permissions cannot cross development/CI/preview/beta; the same commit and migrations can reproduce all hosted targets; no database/Auth, shared environment, or runtime component depends on a founder computer.
+**Pass:** the disposable CI gate cannot access Preview/Beta; Preview and Beta have separate data, keys, callbacks, jobs, deployment scopes, and reset permissions; the same tested commit and forward migrations reproduce the hosted targets; Beta is locked/empty with its backup gate explicit; no component depends on a founder computer; no paid plan or billable resource was enabled.
 
 #### WP01-T10 — Write the repository operation tutorial
 
-- [x] Add `CONTRIBUTING.md` containing workstation setup, clone, install, hosted development/CI targeting, environment, guarded reset, test, branch, PR, migration, and troubleshooting instructions for human and agent executors.
+- [~] Update `CONTRIBUTING.md` from the historical hosted development/CI workflow to mock-only workstation development, disposable Supabase CI, and guarded Preview/Beta operations after WP01-T08/T09 implementation.
 - [x] Add a command table with purpose, paid-call behavior, required services, and expected duration class.
 - [x] Include the normal daily loop:
 
@@ -795,15 +793,15 @@ git status --short
 ```
 
 - [x] Include recovery for unavailable hosted targets, rejected reset guards, network failure, stale generated types, migration drift, invalid env, and a leaked workstation/CI token.
-- [?] Have a fresh agent follow `CONTRIBUTING.md` on a clean clone without chat history or verbal help; have the reviewer record every ambiguity. Structural rehearsal is ready and WP01-T05 is reviewed; the complete database/Auth/app journey remains blocked on WP01-T07/T08/T09. See `planning/tasks/wp01-t10-write-operation-tutorial.md`.
+- [?] Have a fresh agent follow `CONTRIBUTING.md` on a clean clone without chat history or verbal help; have the reviewer record every ambiguity. The final journey must include disposable database/Auth CI, synthetic Preview smoke, and locked-Beta boundaries after WP01-T08/T09.
 
-**Pass:** the clean-clone rehearsal reaches the app, approved hosted development database, tests, and build using repository instructions alone, and the fresh agent produces a complete task handoff.
+**Pass:** the clean-clone rehearsal reaches the mock application, tests, build, disposable database/Auth CI contract, and approved Preview/Beta operating boundaries using repository instructions alone, and the fresh agent produces a complete task handoff.
 
 #### WP01-T11 — Run the package gate
 
-- [?] Copy the gate template to `evidence/wp01-foundation`. WP01-T04 and WP01-T05 passed; the package gate remains blocked on WP01-T07/T08/T09/T10. See `planning/tasks/wp01-t11-run-package-gate.md`.
+- [?] Copy the gate template to `evidence/wp01-foundation`. Historical WP01-T04/T05 evidence remains valid, but revised WP01-T08/T09/T10 must pass before the package gate starts. See `planning/tasks/wp01-t11-run-package-gate.md`.
 - [ ] Run `pnpm verify` from a clean clone with network access blocked for provider endpoints.
-- [ ] Reset the database twice and compare generated types.
+- [ ] Reset the disposable CI database twice and compare generated types; do not reset Preview or Beta.
 - [ ] Deploy preview from the candidate SHA and run smoke tests.
 - [ ] Search the repository, build output, logs, and evidence for secret patterns.
 - [ ] Confirm the Supabase breaking-change feed was reviewed and relevant items recorded.
@@ -853,10 +851,9 @@ Business rules must live in testable modules, not React components, visual workf
 Create separate:
 
 - Workstation application development with deterministic in-process mocks and no local infrastructure service.
-- Externally hosted development database/Auth with synthetic data only.
-- Externally hosted isolated CI database/Auth using a dedicated project or disposable branch and synthetic data only.
-- Externally hosted preview environment with non-production data.
-- Externally hosted beta-production environment for rights-approved real pilot sources/students.
+- Disposable database/Auth CI using a complete Supabase stack on a standard GitHub-hosted Ubuntu runner and synthetic data only.
+- Externally hosted Preview using one persistent Supabase Free project and a separate Vercel Hobby project scope; synthetic data and mock providers only.
+- Externally hosted locked Beta using the other persistent Supabase Free project and a separate Vercel Hobby project scope; no real data until backup, rights, security, release, and go-live gates pass.
 
 Use different database projects/branches, storage namespaces, secrets, webhook endpoints, reset permissions, and provider budget scopes. Never point development or CI automation at preview/beta, and never copy real student chats or private raw sources into development, CI, or preview.
 
@@ -978,7 +975,7 @@ For each migration:
 - [ ] Mark each cell `ALLOW`, `DENY`, or `SERVER_ONLY`; include the predicate and test ID.
 - [ ] For every `ALLOW`, add a positive test. For every high-risk boundary, add a negative test using a different user, cohort, unit, role, state, and expired/revoked access where applicable.
 - [ ] Query `pg_class`, `pg_policies`, and grants in a meta-test so a newly exposed table without RLS/policy review fails CI.
-- [ ] Prove the hosted CI database/security gate fails when a test-only candidate policy deliberately leaks a cross-user or cross-cohort row; preserve the protected RLS confirmations from both founders and remove/revert the unsafe policy fixture after the negative run.
+- [ ] Prove the disposable CI database/security gate fails when a test-only candidate policy deliberately leaks a cross-user or cross-cohort row; preserve the protected RLS confirmations from both founders and remove/revert the unsafe policy fixture after the negative run.
 
 #### WP02-T05 — Implement availability as a derived contract
 
@@ -1252,7 +1249,7 @@ If a `SECURITY DEFINER` function is unavoidable, place it outside exposed schema
 
 #### WP03-T08 — Run the product-shell gate
 
-- [ ] Reset/seed an isolated hosted development/CI target through the guarded command.
+- [ ] Reset/seed an isolated disposable CI Supabase stack through the guarded command.
 - [ ] Run the full role matrix in Playwright.
 - [ ] Demonstrate Human `Modules` and Veterinary `Subjects` from configuration.
 - [ ] Lock/deactivate/revoke access during an active browser session and confirm the next server operation fails safely.
@@ -2535,7 +2532,7 @@ The first session is a control session, not a race to call an AI provider. Timeb
 - [ ] Initialize the root Next.js application in place; do not replace planning documents.
 - [ ] Add strict TypeScript, formatting, lint, environment validation, and all script names defined in WP01-T01.
 - [ ] Create domain boundaries and deterministic mock provider contracts.
-- [ ] Provision approved hosted development and isolated CI Supabase targets, initialize versioned configuration, and create the first migration using the pinned CLI.
+- [ ] Configure mock-only workstation development and disposable Supabase CI, reserve the two existing Free projects for separate Preview/locked Beta, initialize versioned configuration, and create the first migration using the pinned CLI.
 - [ ] Add synthetic seed data only.
 - [ ] Add CI for frozen install, format, lint, types, tests, database reset, generated-type diff, build, and smoke.
 - [ ] Write the non-throwaway/strict-RAG/free-beta/always-on architecture ADR and link the master plan.
@@ -2543,7 +2540,7 @@ The first session is a control session, not a race to call an AI provider. Timeb
 ### 17.4 Verify and close
 
 - [ ] Run every currently implemented zero-cost check.
-- [ ] Reset the guarded isolated hosted development/CI target twice.
+- [ ] Reset the guarded disposable CI Supabase stack twice.
 - [ ] Search repository/build/log output for secret-like values.
 - [ ] Record incomplete commands as named WP01 tasks rather than claiming the foundation gate passed.
 - [ ] Review the diff and commit only a coherent, non-secret slice.
@@ -2565,15 +2562,15 @@ The final `package.json` must expose these stable project commands even if under
 | `pnpm format:check` | Verify formatting. | No. | Exit 0 and no file rewrites. |
 | `pnpm test:unit` | Pure domain/config/provider-mock tests. | No. | Exit 0. |
 | `pnpm test:integration` | Credential-free application/mock integration seams; guarded hosted cases skip. | No external calls or paid provider. | Local seams pass and hosted cases are visibly skipped. |
-| `pnpm test:integration:hosted` | Reviewed synthetic hosted Auth seam. | Guarded development Supabase only; no paid AI provider. | Synthetic create/sign-in/refresh/forgery denial/cleanup pass. |
+| `pnpm test:integration:hosted` | Transitional reviewed synthetic hosted Auth seam; WP01-T08 replaces it with the disposable CI stack and renames/removes the legacy profile as appropriate. | Transitional hosted target only until migration; no Preview/Beta or paid provider. | Historical seam remains guarded; revised CI must pass without persistent credentials. |
 | `pnpm test:security` | Current identity/availability denial matrices; later RLS/grant suites join with migrations. | No external calls in the foundation command. | Zero unexpected allow/leakage at implemented seams. |
 | `pnpm test:e2e` | Browser flows against a local synthetic app profile. | Local app and mocks only; external browser requests blocked. | Implemented critical and forbidden paths pass. |
 | `pnpm test:eval` | Versioned evaluation runner and current approved/synthetic fixtures. | Only an explicitly approved live profile may use real providers; foundation default is mock-only. | Dataset hashes are valid and JSON/Markdown results report the exact scope. |
 | `pnpm test:load` | Guarded load-profile validation; execution is added in WP09. | Default rejects preview/beta/production, real providers, and nonzero cost. | A `NOT_EXECUTED` JSON/Markdown report is produced without claiming thresholds. |
-| `pnpm db:reset` | Rebuild an explicitly confirmed hosted development/CI schema and synthetic seed from version control. | Approved hosted Supabase target only; no paid AI provider. | Target guard passes and all migrations/seed succeed. |
-| `pnpm db:migrations` | Compare versioned and hosted development/CI migration history. | Approved hosted Supabase target only. | Migration history matches the selected target. |
-| `pnpm db:push:dry-run` | Preview unapplied migrations for the selected hosted development/CI target. | Approved hosted Supabase target only. | Dry-run exits 0 without applying changes. |
-| `pnpm db:types` | Generate database TypeScript types from the selected hosted development/CI target. | Approved hosted Supabase target only. | Output updates deterministically. |
+| `pnpm db:reset` | Rebuild the disposable CI schema and synthetic seed from version control after WP01-T08 migration. | Runner-local disposable Supabase stack only; never Preview/Beta. | All migrations/seed succeed from empty. |
+| `pnpm db:migrations` | Compare versioned migration history with the disposable CI stack. | Runner-local disposable Supabase stack only. | Migration history matches version control. |
+| `pnpm db:push:dry-run` | Preview unapplied migrations for a guarded persistent target when the promotion workflow explicitly allows it. | Preview/Beta scope only under its non-destructive promotion guard. | Dry-run exits 0 without applying changes. |
+| `pnpm db:types` | Generate database TypeScript types from the disposable CI stack. | Runner-local disposable Supabase stack only. | Output updates deterministically. |
 | `pnpm db:types:check` | Fail when committed types are stale. | No. | Generation causes no Git diff. |
 | `pnpm verify` | Complete credential-free, zero-paid merge gate. | No external infrastructure or paid provider. | Every required subcommand exits 0. |
 
@@ -2588,19 +2585,19 @@ If a command needs secrets or a paid provider, its name must say so, for example
 3. Delete/reinstall only generated dependency directories, never user source files.
 4. If the lockfile is invalid, repair dependencies on a separate branch and review the exact manifest/lock diff.
 
-### 19.2 Hosted Supabase target is unavailable or rejected
+### 19.2 Disposable Supabase CI stack is unavailable or rejected
 
-1. Confirm `UNIMIND_DB_ENVIRONMENT` is exactly `development` or `ci`; local, preview, beta, and production are deliberately rejected.
-2. Confirm the safe project reference matches the approved environment matrix without printing access tokens, passwords, or connection strings.
-3. Run `pnpm supabase --help` and the guarded `pnpm db:migrations`; use the pinned CLI's current flags rather than an old tutorial.
-4. Confirm network availability and that `SUPABASE_ACCESS_TOKEN` plus `SUPABASE_DB_PASSWORD` exist in the approved terminal/CI secret scope.
-5. Preserve versioned migrations. Never bypass the guard, relabel preview/beta as development, or repair schema through the dashboard.
-6. If the hosted target remains unavailable, mark migration/Auth/RLS tasks blocked and continue only with credential-free unit/UI/mock tasks.
+1. Confirm the job is a standard GitHub-hosted Ubuntu runner and is not using Preview/Beta credentials or a founder-hosted runner.
+2. Confirm the pinned Supabase CLI and container runtime versions, runner capacity, and downloaded image state without printing tokens or internal connection strings.
+3. Run `pnpm supabase --help` and the WP01-T08 guarded stack-start diagnostic; use the pinned CLI's current flags rather than an old tutorial.
+4. Until WP01-T08 migration is complete, treat the existing hosted commands as transitional and never repurpose either project.
+5. Preserve versioned migrations. Never bypass the guard, relabel Preview/Beta as a test environment, or repair schema through the dashboard.
+6. If the disposable stack remains unavailable, mark migration/Auth/RLS tasks blocked and continue only with credential-free unit/UI/mock tasks.
 
 ### 19.3 Migration reset fails
 
 1. Identify the first failing migration and exact SQL error.
-2. Reproduce from a guarded clean reset of an isolated hosted development/CI target; do not patch any hosted database manually.
+2. Reproduce from a clean reset of the disposable CI stack; do not patch Preview or Beta manually.
 3. Fix the unshared migration. If it has reached preview/beta, add a forward repair migration instead of rewriting history.
 4. Run populated-upgrade plus clean-reset paths.
 5. Regenerate types and inspect grants/RLS/advisors.

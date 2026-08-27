@@ -1,12 +1,14 @@
 # Preview and Beta environment promotion
 
-Use this procedure only for WP01-T09 after the environment matrix names separate external Preview and Beta resources. It does not authorize provisioning, spend, deployment, real data, Beta unlock, or provider enablement.
+Use this procedure only for WP01-T09 after WP01-T08 proves ephemeral database/Auth CI and the environment matrix names the two repurposed Supabase Free projects plus separate Vercel Hobby project scopes. It does not authorize spend, real data, Beta unlock, or paid-provider enablement.
 
 ## Preconditions
 
-- The exact monthly platform budget and spend controls are approved; no trial or unbounded on-demand billing is used as a substitute.
-- Preview and Beta have different database projects, storage namespaces, callback bases, queue/worker namespaces, and secrets. Development or CI credentials are absent from both.
+- D-21 and ADR-0001 remain applicable: Ahmed's reported Vercel confirmation covers the current phase, Hobby eligibility has no open trigger, and no paid plan, trial, add-on, or billable resource is used.
+- WP01-T08 ephemeral CI passes without a persistent Supabase CI project or long-lived database credentials.
+- Preview and Beta have different database projects, Vercel project scopes, storage namespaces, callback bases, queue/worker namespaces, and secrets. Transitional development/CI credentials are rotated and absent from both.
 - Preview contains synthetic data and uses mock providers. Beta remains locked and contains no real data until its later rights and release gates pass.
+- Before Beta receives real data, an approved encrypted backup/restore procedure has passed a rehearsal or separately approved paid backup capacity is active. Free-plan project pausing is included in the recovery procedure.
 - The deployment provider and CLI version are pinned before automation is committed. Provider IDs and tokens stay in the provider secret store or ignored local state.
 - The candidate commit has passed `pnpm verify`; schema changes have a versioned forward migration and a tested recovery path.
 
@@ -49,5 +51,6 @@ Deploying a locked Beta candidate is not Beta go-live. Unlock/release remains a 
 - Candidate and prior deployment IDs mapped to exact commits.
 - Preview six-check smoke result and synthetic/mock-only proof.
 - Locked Beta readiness, isolation, promotion, and rollback rehearsal.
-- Spend-control state, with no secret values or billing details beyond the approved bounded summary.
+- Zero-cost plan/entitlement state, Vercel eligibility checkpoint, and confirmation that no paid plan, trial, add-on, or billable resource was enabled.
+- Backup/restore gate state; synthetic provisioning may pass while real-data Beta remains blocked.
 - Named human checkpoint; later Beta unlock/go-live evidence separately names both Ahmed and Ziad.
