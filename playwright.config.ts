@@ -32,7 +32,7 @@ export default defineConfig({
     command: "corepack pnpm next dev --hostname 127.0.0.1 --port 3100",
     url: "http://127.0.0.1:3100",
     reuseExistingServer: false,
-    timeout: 60_000,
+    timeout: 120_000,
     env: {
       NODE_ENV: "development",
       NEXT_PUBLIC_SUPABASE_URL: "https://synthetic.supabase.invalid",
