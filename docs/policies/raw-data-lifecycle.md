@@ -4,7 +4,7 @@
 
 **Owner:** Security/data owner UNASSIGNED
 
-**Approvers:** Ahmed + Ziad; independent security/data reviewer UNASSIGNED
+**Approvers:** Ahmed + Ziad — protected raw-deletion gate; one founder must also be explicitly named as security/data owner
 
 **Version/effective date:** NOT EFFECTIVE FOR REAL DATA
 

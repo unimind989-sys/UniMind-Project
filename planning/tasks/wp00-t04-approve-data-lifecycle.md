@@ -8,7 +8,7 @@
 
 **Owner:** Codex `/root` for preparation; security/data owner UNASSIGNED for real policy
 
-**Reviewer:** UNASSIGNED — TWO-PERSON GATE BLOCKED
+**Reviewer:** Ahmed + Ziad — protected raw-deletion gate blocked pending both confirmations
 
 **Branch:** `main` (no delivery branch requested)
 
@@ -24,9 +24,9 @@
 
 **Verify:** Run readiness and isolated handoff checks; compare lifecycle terms with `CONTEXT.md`; validate exact synthetic durations/start events, production blockers, D-10/D-19 status agreement, data-flow locations, deletion preconditions, retry/incident rules, and rights/provider hard stops.
 
-**Pass:** Synthetic behavior is deterministic and production startup cannot use it; real profile values, thresholds, rights paths, provider verification, owner/reviewer, and approval are complete; an independent reviewer re-runs raw-deletion gates.
+**Pass:** Synthetic behavior is deterministic and production startup cannot use it; real profile values, thresholds, rights paths, provider verification, owner/reviewer, and approval are complete; both founders confirm the re-run raw-deletion gate.
 
-**Evidence:** Create `evidence/wp00-pilot/YYYY-MM-DD_data-lifecycle_local_<short-sha>.md` only after a candidate commit and required independent approval exist.
+**Evidence:** Create `evidence/wp00-pilot/YYYY-MM-DD_data-lifecycle_local_<short-sha>.md` only after a candidate commit and separate Ahmed/Ziad protected-gate confirmations exist.
 
 **Rollback:** Remove the unapproved real profile, disable real upload/provider/storage paths, and retain the synthetic fixtures and append-only decision history.
 
@@ -37,9 +37,9 @@
 - [~] Encode the approved D-09 direction and deterministic synthetic-only lifecycle; implementation is ready for review.
 - [~] Create the D-10 processed-format proposal and exact acceptance thresholds; approval remains open.
 - [~] Create the D-19 record and one concise owner-input packet; real values remain open.
-- [?] Receive security/data owner, independent reviewer, deadlines, real durations, hold authority, and incident recipients.
+- [?] Name Ahmed or Ziad as security/data owner and receive both founders' protected-gate confirmations, deadlines, real durations, hold authority, and incident recipients.
 - [?] Validate representative rights-approved fixtures and provider-specific absence semantics.
-- [?] Approve D-10/D-19 and create candidate-SHA evidence with independent raw-deletion review.
+- [?] Approve D-10/D-19 and create candidate-SHA evidence with separate Ahmed/Ziad raw-deletion confirmations.
 
 ## Handoff
 

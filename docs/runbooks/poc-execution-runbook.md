@@ -4,7 +4,7 @@
 
 **Owners:** Ahmed and Ziad
 
-**Last updated:** 16 August 2026
+**Last updated:** 27 August 2026
 
 **Rule:** Complete work in dependency order and attach the listed exit evidence before marking a package complete.
 
@@ -25,7 +25,7 @@ Use these markers in the working copy or project tracker:
 - `[!]` failed gate or release blocker; link the incident or defect.
 - `N/A` only when the master plan explicitly excludes the item and the gate reviewer records why.
 
-Never turn `[ ]` directly into `[x]`. The executor first marks `[~]`, performs the work and verification, attaches evidence, and then asks the gate reviewer to mark `[x]`.
+Never turn `[ ]` directly into `[x]`. The agent executor first marks `[~]`, performs the work and verification, attaches evidence, and then obtains the required human checkpoint before `[x]`. For ordinary work, the same founder may have requested, authorized, operated, and reviewed the task.
 
 Derive task status from its checklist: all `[ ]` means not started; any `[~]`, or a mixture of completed and incomplete items, means in progress; all applicable items `[x]` plus linked reviewed evidence means complete. `[?]` and `[!]` take precedence over those derived states.
 
@@ -38,21 +38,24 @@ When a request does not name a task, select exactly one using this order:
 
 **WP00 mock bridge:** a reviewed `PASS` for WP00-T08 may route selection to WP01 while unresolved real-choice tasks remain `[?]`, because WP01 uses their documented synthetic/mock interfaces. This bridge unlocks WP01 only. It never marks an open decision complete, enables a real adapter, or skips a dependency for WP02 or later.
 
-### 0.2 Roles and the two-person rule
+### 0.2 Agent execution, human checkpoints, and the two-person rule
 
-Assign both names before starting a package:
+Name the agent executor and the applicable human checkpoint before starting a package:
 
 | Role | Responsibility | May be the same person? |
 | --- | --- | --- |
-| Executor | Implements the task, runs the checks, and assembles evidence. | Yes, across ordinary tasks. |
-| Gate reviewer | Re-runs or inspects the gate and confirms that evidence is sufficient. | No for RLS, raw deletion, rights, budget kill switches, release/unlock, or beta go-live. |
+| Agent executor | Implements the task, runs the checks, and assembles evidence. | An agent may execute work requested by either founder. |
+| Human operator/authorizer | Supplies authorization and performs unavoidable signed-in actions that an agent cannot complete directly. | Ahmed or Ziad; may also review the same ordinary task. |
+| Human reviewer | Inspects the gate evidence and records the human checkpoint. | Ahmed or Ziad for ordinary work, including the same founder who requested or operated it. Protected gates require separate named confirmations from both. |
 | Product decision owner | Resolves scope, cohort, terminology, retention, and UX decisions. | Ahmed or Ziad as recorded in the decision log. |
-| Security/data owner | Approves access policy, rights, retention, takedown, and incident decisions. | Must be explicitly named. |
-| Academic reviewer | Judges source completeness, conflicts, grounding, and educational-case quality. | Must not be replaced by an automated score. |
+| Security/data owner | Approves access policy, rights, retention, takedown, and incident decisions. | Ahmed or Ziad must be explicitly named; protected gates require both. |
+| Academic reviewer | Judges source completeness, conflicts, grounding, and educational-case quality. | Ahmed or Ziad must be explicitly named; an automated score cannot replace the human judgment. |
 
-For every work session, write the executor, reviewer, work package, branch, intended evidence, and hard-stop conditions at the top of the session note.
+For every work session, write the agent executor, named human checkpoint, work package, branch, intended evidence, and hard-stop conditions at the top of the session note. If a founder performs signed-in actions, record that human-operator role separately.
 
-The default delivery model is agent-first: a coding agent acts as executor and performs repository implementation, tests, documentation, verification, and sanitized evidence preparation. Humans remain responsible for product and governance decisions, academic judgment, approvals that require a person, and independent gate review. A missing human reviewer blocks gate completion, not safe preparatory work.
+The default delivery model is agent-first: a coding agent acts as executor and performs repository implementation, tests, documentation, verification, and sanitized evidence preparation. Ahmed or Ziad supplies the ordinary human checkpoint and may also be the requester, authorizer, and signed-in operator. A missing human checkpoint blocks gate completion, not safe preparatory work.
+
+Ahmed and Ziad intentionally use one shared GitHub/Supabase/Google service identity and will share future service identities; Ahmed's separate GitHub contributor account is the current exception. Never infer the acting founder from a provider account. Record the explicitly selected chat speaker and named human checkpoint in the task/evidence record. For RLS, raw deletion, rights, budget kill switches, release/unlock, and beta go-live, record separate confirmations naming both Ahmed and Ziad even when the service account is shared.
 
 ### 0.3 Definition of ready for any task
 
@@ -77,8 +80,8 @@ A task may be marked complete only when all applicable statements are true:
 - [ ] Retryable work was replayed with the same idempotency key and created no duplicate state or charge.
 - [ ] Logs contain the correlation ID and safe diagnostics, but no secret, raw private content, or ordinary chat content.
 - [ ] Documentation, environment schema, fixtures, and generated database types were updated where affected.
-- [ ] The evidence bundle exists at the required path and identifies commit SHA, environment, executor, reviewer, time, commands, and outcome.
-- [ ] The reviewer inspected the evidence and the exit gate is green.
+- [ ] The evidence bundle exists at the required path and identifies commit SHA, environment, agent executor, required human checkpoint, time, commands, and outcome.
+- [ ] The named human inspected the evidence and the exit gate is green; protected gates include both founders' confirmations.
 
 ### 0.5 Evidence storage and naming
 
@@ -118,7 +121,7 @@ Name an evidence bundle `YYYY-MM-DD_<gate>_<environment>_<short-sha>.md`. Each b
 4. Commands executed and their exit codes.
 5. Summary metrics and links to raw machine-readable reports.
 6. Failures, deviations, and linked defects.
-7. Executor and independent reviewer sign-off.
+7. Agent executor and required human checkpoint; protected gates include both founders' named confirmations.
 8. Rollback/disable instruction.
 
 Never commit `.env*`, access tokens, private raw files, student exports, full chat transcripts, provider request payloads containing source content, or unredacted production logs.
@@ -245,7 +248,7 @@ git diff
 
 9. Commit using an outcome-oriented message such as `feat(catalog): enforce released unit availability`.
 10. Open a pull request that links the work-package task and evidence bundle.
-11. The independent reviewer re-runs the security/raw-deletion/release gates where applicable.
+11. The required humans re-run protected security/raw-deletion/release gates where applicable; ordinary review may be completed by the same founder who requested or operated the task.
 12. Merge only when required checks are green. Never repair preview or beta manually after merge; add a migration/configuration change and redeploy.
 
 `pnpm verify` must remain credential-free, mock-only, and zero paid-provider cost. Hosted database commands require the guarded `development` or `ci` profile and are recorded separately in evidence. If any command above does not exist yet, creating it is part of work package 1.
@@ -259,7 +262,7 @@ Task ID: WPXX-TYY
 Status: [ ] | [~] | [?] | [x] | [!]
 Outcome: Student A cannot read Student B's chat rows.
 Owner: <name>
-Reviewer: <name or UNASSIGNED — GATE BLOCKED>
+Reviewer: <Ahmed or Ziad for an ordinary human checkpoint; Ahmed + Ziad for a protected gate>
 Dependencies: <earlier task IDs>
 Inputs: migration names, fixture users, policy decision
 Files: exact expected files
@@ -285,7 +288,7 @@ At the end of every package:
 4. Run at least one negative/forbidden path and one retry/recovery path.
 5. Compare measured results with numeric thresholds; do not substitute “looks good.”
 6. Record every deviation as a defect, risk acceptance, or decision. Release blockers cannot be waived informally.
-7. Reviewer writes `PASS`, `FAIL`, or `CONDITIONAL PASS` with an expiry and linked follow-up.
+7. The named human reviewer writes `PASS`, `FAIL`, or `CONDITIONAL PASS` with an expiry and linked follow-up. A protected gate records separate decisions from Ahmed and Ziad.
 8. Mark package tasks `[x]` only after `PASS`. A conditional pass never permits a later dependent package that needs the missing behavior.
 
 ### 0.12 Global rollback hierarchy
@@ -351,13 +354,13 @@ Do not start Studio generation before retrieval and strict-RAG answer contracts 
 #### WP00-T00 — Establish agent-first delivery controls
 
 - [~] Define one short workflow from repository orientation through task selection, execution, verification, and handoff.
-- [~] Make coding agents the default executors while preserving human governance decisions and independent review.
+- [~] Make coding agents the default executors while preserving human governance decisions, ordinary human checkpoints, and protected two-person review.
 - [~] Add a controlled task-record template and a predictable `planning/tasks/` handoff location.
 - [~] Resolve documentation naming exceptions and give decision files one lowercase convention.
 - [~] Add and run a zero-cost check for required entry points, local links, names, task IDs, acceptance items, and task-record fields.
 - [~] Add a read-only work-state command that derives task status, separates decision resolution paths from blocked tasks, and recommends only an eligible task.
 - [~] Rehearse discovery, selection, readiness checks, and durable handoff from a clean isolated committed snapshot without copying chat state.
-- [?] Obtain independent review and commit-specific evidence; reviewer is unassigned.
+- [?] Obtain a founder human checkpoint and commit-specific evidence; Ahmed or Ziad may perform the ordinary review.
 
 **Pass:** a fresh agent can select and claim the next valid task, find every governing authority, identify human-only gates, run the readiness check successfully, and resume this task from repository state without prior chat.
 
@@ -384,7 +387,7 @@ Dataset schemas and manifests are implementation outputs of WP00-T05, not copies
 - [~] Copy D-01 through D-16 from the master plan. Keep approved directions approved; do not silently reopen them.
 - [~] Add the unresolved choices already documented in section 0.6 as D-17 onward and synchronize the master-plan decision log.
 - [~] Verify every `Open` or `Proposed` decision names the exact work-package tasks it blocks, including when only the real-data or paid-adapter portion is blocked.
-- [?] Obtain owner deadlines and independent review; unresolved due dates remain explicit rather than invented.
+- [?] Obtain owner deadlines and a founder human checkpoint; unresolved due dates remain explicit rather than invented.
 
 **Pass:** a reviewer can open one register and identify all open decisions, owners, deadlines, and blocked work.
 
@@ -400,7 +403,7 @@ Dataset schemas and manifests are implementation outputs of WP00-T05, not copies
 - [?] Reject a cohort regardless of total score if rights to provider processing/student use are denied, no accountable academic reviewer exists, or complete-enough source material is unavailable.
 - [~] Create OPEN records at `docs/decisions/d-01-human-medicine-cohort.md`, `d-02-veterinary-medicine-cohort.md`, and `d-03-pilot-institutions.md`; no option is proposed or approved.
 - [?] Assign stable catalog codes for institution, program, level, term, cohort, curriculum edition, and every unit after selection. Codes are ASCII `lower_snake_case`; labels may be Arabic/English.
-- [?] Obtain owner and reviewer sign-off; deadlines and reviewers are unassigned.
+- [?] Obtain owner and human-review sign-off; deadlines and the applicable Ahmed/Ziad review-role assignments remain open.
 
 **Pass:** each selected cohort has a reproducible score, mandatory fields, ordered unit list, named Batch Leader, named academic reviewer, and no blocking right.
 
@@ -449,7 +452,7 @@ Dataset schemas and manifests are implementation outputs of WP00-T05, not copies
 - [~] Stage the provider benchmark and create truthful OPEN D-04/D-05 records; implementation is ready for review.
 - [~] Define the currency/conversion evidence rule; canonical real currency and rate source remain owner inputs.
 - [?] Approve nonzero total, weekly, provider/action, source, per-user daily, and request caps.
-- [?] Name paid-enablement approvers, alert recipients, and the independent reviewer required to raise a cap.
+- [?] Name alert recipients and obtain separate Ahmed and Ziad confirmations before raising a cap.
 - [~] Define reservation, 50/75/90% alerts, 100% hard block, uncertain settlement, accepted-job treatment, and kill-switch behavior.
 - [~] Make the zero-cost profile authoritative: every real adapter flag is false and deterministic mocks are the only enabled providers.
 - [~] Define the zero-cost smoke story that must prove coherent behavior and a zero-valued cost ledger without provider network calls.
@@ -465,7 +468,7 @@ Dataset schemas and manifests are implementation outputs of WP00-T05, not copies
 - [~] Define success thresholds for HTTP success, first token, full response, queue age, job completion, database connections, reservations, duplicates, leakage, and zero cost.
 - [~] Define immediate abort thresholds for leakage, duplicate settlement, lost accepted work, cost, errors, queue age, database pressure, and environment health.
 - [~] Freeze the random seed and synthetic dataset/fixture contract version.
-- [?] Implement the WP09 load runner, execute this profile on an approved target, and obtain independent gate review.
+- [?] Implement the WP09 load runner, execute this profile on an approved target, and obtain an Ahmed-or-Ziad human checkpoint.
 
 **Pass:** another executor can reproduce the same scenario without asking what “100 concurrent students” means.
 
@@ -752,7 +755,7 @@ git diff --exit-code -- src/types/database.generated.ts
 - [x] Use the reviewed isolated hosted CI target to reset migrations, seed synthetic data, run database/security tests, generate types, and fail on a type diff. Attempt 1 failed closed on PostgREST version drift; the exact correction was reviewed, and CI #8 hosted job `98421571535` passed against fingerprint `sha256:6ad364ad022a`. See `planning/tasks/wp01-t08-create-ci.md`.
 - [x] Run format check, lint, type check, unit/integration/security tests, production build, and a small Playwright smoke suite. The final exact-runtime local gate and fresh-runner application job passed with 214 unit tests.
 - [x] Upload sanitized test/evaluation reports even when a test fails. Both jobs use immutable `upload-artifact` with `if: always()` and seven-day retention; CI #8 artifacts `9634668004` and `9634839025` were inspected by name and digest.
-- [x] Add a secret scan and dependency review appropriate to the repository. The redacting 606-file scan passed, and the private-repository gate uses a pinned zero-cost high/critical production audit rather than the unavailable paid Code Security feature.
+- [x] Add a secret scan and dependency review appropriate to the repository. The redacting 606-file scan passed, and the repository used a pinned zero-cost high/critical production audit when paid Code Security was unavailable; the repository is now public.
 - [x] Protect `main` and require CI plus human review. Classic protection requires a pull request, one approval, `application`, and `dependency-audit`; force pushes and deletion are disabled. Project policy retains the two-person rule for migration/RLS/deletion/usage and other critical gates.
 
 **Pass:** a fresh CI runner reproduces install, the credential-free application gate, and the guarded isolated database/Auth gate without manual dashboard state, paid calls, secret leakage, or access to a non-approved target. WP02-T04 adds the deliberate leaking-RLS-policy failure once the RLS matrix exists; it cannot block the CI foundation on which WP02 depends.
@@ -761,7 +764,7 @@ git diff --exit-code -- src/types/database.generated.ts
 
 - [ ] Create an environment matrix containing workstation development process, hosted `development`, hosted `ci`, hosted `preview`, and hosted `beta`; list database project/branch, storage namespaces, worker/queue namespace, callback base URL, secret scope, data classification, reset permission, and owner.
 - [ ] Prove every database/Auth and preview/beta runtime component is externally hosted and remains operable when Ahmed's and Ziad's computers are off. The optional PC-hosted Telegram bot is noncritical development/test tooling only and is absent from every gate topology.
-- [~] Use separate Supabase projects for preview and beta. A branch schema inside beta is not sufficient isolation for private pilot data. Ahmed authorized separate resource provisioning with Ziad as executor and Ahmed/Ziad as owners, but the two existing active projects exhaust the Supabase Free allocation; stop before a paid upgrade until Ahmed approves an exact budget. See `planning/tasks/wp01-t09-provision-isolated-environments.md`.
+- [~] Use separate Supabase projects for preview and beta. A branch schema inside beta is not sufficient isolation for private pilot data. Ahmed authorized separate resource provisioning, will perform the signed-in actions and ordinary human review, and named Ahmed/Ziad as shared owners; Codex `/root` is the agent executor. The two existing active projects exhaust the Supabase Free allocation, so stop before a paid upgrade until Ahmed approves an exact budget. See `planning/tasks/wp01-t09-provision-isolated-environments.md`.
 - [ ] Use synthetic seed data in preview and rights-approved pilot data only in beta.
 - [ ] Configure unique callback signing secrets and provider budget scopes per environment.
 - [ ] Make preview deployment automatic from pull requests and beta deployment an approved promotion of an already-tested commit.
@@ -975,7 +978,7 @@ For each migration:
 - [ ] Mark each cell `ALLOW`, `DENY`, or `SERVER_ONLY`; include the predicate and test ID.
 - [ ] For every `ALLOW`, add a positive test. For every high-risk boundary, add a negative test using a different user, cohort, unit, role, state, and expired/revoked access where applicable.
 - [ ] Query `pg_class`, `pg_policies`, and grants in a meta-test so a newly exposed table without RLS/policy review fails CI.
-- [ ] Prove the hosted CI database/security gate fails when a test-only candidate policy deliberately leaks a cross-user or cross-cohort row; preserve the independent RLS review and remove/revert the unsafe policy fixture after the negative run.
+- [ ] Prove the hosted CI database/security gate fails when a test-only candidate policy deliberately leaks a cross-user or cross-cohort row; preserve the protected RLS confirmations from both founders and remove/revert the unsafe policy fixture after the negative run.
 
 #### WP02-T05 — Implement availability as a derived contract
 
@@ -2184,7 +2187,7 @@ Run an unattended test window that includes valid PDF/audio submissions, a trans
 #### WP09-T06 — Approve the load/cost gate
 
 - [ ] Publish a report with exact scenario, versions, pass/fail against every threshold, cost totals/p95 action cost, limitations, and next capacity trigger.
-- [ ] Have security/data and cost owners independently review leakage/accounting and budget results.
+- [ ] Have Ahmed and Ziad separately confirm the protected leakage/accounting and budget results, with the security/data and cost roles recorded.
 - [ ] Do not average away a release-blocking single leakage or duplicate-charge event.
 
 ### 12.1 Benchmark providers
@@ -2511,7 +2514,7 @@ The first session is a control session, not a race to call an AI provider. Timeb
 
 ### 17.1 Start the session
 
-- [ ] Name executor, independent reviewer, branch, and session goal.
+- [ ] Name the agent executor, human checkpoint, branch, and session goal.
 - [ ] Run workstation preflight from section 0.8.
 - [ ] Record existing working-tree changes and owners; do not overwrite them.
 - [ ] Create the planning/evidence directories from WP00-T01.
@@ -2519,7 +2522,7 @@ The first session is a control session, not a race to call an AI provider. Timeb
 
 ### 17.2 Establish decisions and safe fixtures
 
-- [ ] Create the decision register and synchronize D-01 through D-21.
+- [ ] Create the decision register and synchronize D-01 through D-22.
 - [ ] Fill at least two realistic candidates for each program in the cohort-candidate template.
 - [ ] Enter representative native PDF, scanned PDF, normal audio, and professor voice-note rows in the rights inventory without uploading their files.
 - [ ] Draft exact raw/temporary/processed retention values and flag every unapproved value.
@@ -2641,7 +2644,7 @@ If a command needs secrets or a paid provider, its name must say so, for example
 2. Preserve correlation, policy/model/source/config versions and minimal authorized evidence.
 3. Determine whether failure is RLS, server authorization, retrieval filtering, cache authorization, prompt/generation, or validation.
 4. Add the failing case to the frozen regression set without exposing private content.
-5. Fix, run the full security/evaluation suite, and obtain independent review before re-enable.
+5. Fix, run the full security/evaluation suite, and obtain the required protected-gate confirmations from Ahmed and Ziad before re-enable.
 
 ## 20. Final release truth test
 

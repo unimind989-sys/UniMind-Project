@@ -4,7 +4,7 @@
 
 **Owner:** Security/data owner UNASSIGNED
 
-**Reviewers:** Ahmed + Ziad; independent security/data reviewer UNASSIGNED
+**Reviewers:** Ahmed + Ziad — protected raw-deletion gate; one founder must also be explicitly named for the security/data review role
 
 **Decision deadline:** UNSCHEDULED — OWNER INPUT REQUIRED
 

@@ -8,7 +8,7 @@
 
 **Owner:** Codex `/root` for preparation; Ahmed and Ziad for candidate facts and governance decisions
 
-**Reviewer:** UNASSIGNED — GATE BLOCKED
+**Reviewer:** Ahmed or Ziad — ordinary human checkpoint pending; task-specific dual scoring remains required
 
 **Branch:** `main` (no delivery branch requested)
 

@@ -12,7 +12,7 @@ Copy a template into the destination required by the execution runbook, rename i
 | `provider-benchmark.csv` | Compare real adapters on quality, rights fit, reliability, latency, and cost. |
 | `rls-matrix.csv` | Map actor/action/resource/state to allow/deny policy and automated test. |
 | `load-profile-100-students.yaml` | Freeze the reproducible load/failure scenario and abort/acceptance thresholds. |
-| `gate-report.md` | Record command results, metrics, failures, rollback, and independent package sign-off. |
+| `gate-report.md` | Record command results, metrics, failures, rollback, and the required founder human checkpoint. |
 | `incident-runbook.md` | Create and exercise a specific containment, repair, replay, and recovery procedure. |
 
 CSV files are UTF-8 with one header row. Do not paste multiline private content into them. YAML `FILL_ME` values are mandatory decisions; the load runner must reject a profile that still contains one.

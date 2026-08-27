@@ -4,7 +4,7 @@
 
 **Owner:** Ahmed
 
-**Reviewers:** Ziad (project awareness); database/security reviewer required for later RLS and grant gates
+**Reviewers:** Ziad (project awareness); later protected RLS and grant gates require separate Ahmed and Ziad confirmations
 
 **Decision deadline:** N/A — APPROVED 2026-08-25
 

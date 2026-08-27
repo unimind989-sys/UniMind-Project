@@ -8,7 +8,7 @@
 
 **Owner:** Codex `/root` after WP01-T04 through WP01-T10 PASS
 
-**Reviewer:** UNASSIGNED — GATE BLOCKED
+**Reviewer:** Ahmed or Ziad for the ordinary package checkpoint; Ahmed + Ziad for any protected sub-gate
 
 **Branch:** main (no delivery branch requested)
 
@@ -16,7 +16,7 @@
 
 ## Execution contract
 
-**Dependencies:** Every WP01-T01 through WP01-T10 task has reviewed PASS evidence; independent reviewers are assigned for database/security/environment gates; preview provisioning is authorized.
+**Dependencies:** Every WP01-T01 through WP01-T10 task has reviewed PASS evidence; required founder human checkpoints are named for database/security/environment gates; preview provisioning is authorized; any protected sub-gate has both founders' confirmations.
 
 **Inputs:** Gate template; clean candidate SHA; complete WP01 evidence; exact runtime/framework/database/extension versions; synthetic preview profile.
 
@@ -50,4 +50,4 @@
 
 **Next safe action:** Select and complete WP01-T07, then follow the remaining WP01 dependency chain; do not advance to WP02.
 
-**Reviewer action:** Assign independent reviewers before database/security/preview evidence is evaluated.
+**Reviewer action:** Name Ahmed or Ziad for the ordinary package checkpoint and record both founders only for any protected sub-gate before evaluating its evidence.

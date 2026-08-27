@@ -4,7 +4,7 @@
 
 **Owner:** Ziad
 
-**Reviewers:** Ahmed; academic reviewer UNASSIGNED
+**Reviewers:** Ahmed; academic-review role must be assigned to Ahmed or Ziad before approval
 
 **Decision deadline:** UNSCHEDULED — OWNER INPUT REQUIRED
 

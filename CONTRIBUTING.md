@@ -55,10 +55,10 @@ Do not replace the committed lockfile, relax engine checks, or use an unpinned g
 
 ### Ziad workstation parity checklist
 
-Ziad should use his own GitHub account and receive repository access before cloning. To match the project runtime and Ahmed's approved development setup:
+Ahmed and Ziad intentionally use the approved shared GitHub/Supabase/Google service identity; Ahmed may also contribute through his separate GitHub contributor account. Git or provider account identity does not establish which founder is acting, so the task record must name the explicitly identified chat speaker and human checkpoint. To match the project runtime and Ahmed's approved development setup:
 
 1. Install Git, PowerShell 7, and exactly Node 24.19.0. Do not install Docker, WSL2, Supabase locally, or a global pnpm for this repository.
-2. Set Git's `user.name` and `user.email` to Ziad's own identity, clone `https://github.com/unimind989-sys/UniMind-Project.git`, and work from an up-to-date `main` before creating a task branch.
+2. Use the approved shared GitHub identity, clone `https://github.com/unimind989-sys/UniMind-Project.git`, and work from an up-to-date `main` before creating a task branch. Ahmed's personal contributor identity is also approved. Treat Git authorship as service-account metadata, not proof of which founder supplied a decision.
 3. Run `corepack enable`, confirm `node --version` is `v24.19.0`, and confirm `corepack pnpm --version` is `10.34.5`.
 4. Run `corepack pnpm install --frozen-lockfile` and `corepack pnpm exec playwright install chromium`. The Supabase CLI is already pinned as a project dependency; do not install another copy.
 5. Create the ignored `.env.local` from `.env.example`. Keep mock mode enabled, every real-provider flag false, and the provider budget at zero. Transfer any real local values through the approved private channel, never Git or chat.
@@ -177,7 +177,7 @@ git switch -c wp01/provider-mocks
 6. Run the end-of-session loop and inspect the full diff.
 7. Commit the coherent candidate with an outcome-oriented message.
 8. Create sanitized evidence named `YYYY-MM-DD_<gate>_<environment>_<short-sha>.md` in the correct `evidence/wpNN-*` directory.
-9. Obtain the reviewer required by the runbook. RLS, grants, rights, raw deletion, budgets/kill switches, release/unlock, and beta go-live keep their two-person rule.
+9. Obtain the required human checkpoint. Ahmed or Ziad may request, authorize, operate, and review the same ordinary agent-executed task. RLS, grants, rights, raw deletion, budgets/kill switches, release/unlock, and beta go-live keep their two-person rule and require separate named confirmations from both founders.
 
 Do not push, open a pull request, merge, deploy, unlock, or enable a live provider unless the user explicitly authorizes that external action.
 
@@ -196,7 +196,7 @@ corepack pnpm db:metadata --environment development
 corepack pnpm db:types:check
 ```
 
-Edit only the CLI-created migration filename. Never invent a migration timestamp, repair a shared database in a dashboard, rewrite applied history, or add real seed data. RLS, grants, rights, deletion, release, and usage migrations require their documented independent review.
+Edit only the CLI-created migration filename. Never invent a migration timestamp, repair a shared database in a dashboard, rewrite applied history, or add real seed data. RLS, grants, rights, deletion, release, and usage migrations require the documented protected-gate confirmations from both founders.
 
 ## 10. Pull request handoff
 

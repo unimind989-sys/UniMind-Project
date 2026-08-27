@@ -8,7 +8,7 @@
 
 **Owner:** Codex `/root`
 
-**Reviewer:** Codex `/root` for documentation candidate; final hosted database/Auth/app rehearsal blocked on WP01-T07/T08/T09
+**Reviewer:** Ahmed or Ziad — ordinary human checkpoint after the final hosted database/Auth/app rehearsal; currently blocked on WP01-T09
 
 **Branch:** main (no delivery branch requested)
 

@@ -4,7 +4,7 @@
 
 **Status:** Updated implementation plan
 
-**Last updated:** 16 August 2026
+**Last updated:** 27 August 2026
 
 ## 1. Purpose and authority
 
@@ -92,6 +92,8 @@ The normal path from accepted upload to student-ready knowledge must require zer
 6. Retries, timeout recovery, stale-job recovery, usage accounting, cost limits, and routine notifications run automatically.
 
 Ahmed and Ziad retain explicit governance controls: they create campaigns, configure the catalog, publish or hide curriculum units, unlock or lock cohorts, manage rights, and intervene in exceptional failures. These deliberate governance decisions are not routine processing steps and do not weaken the zero-manual-operation requirement.
+
+UniMind uses shared founder authority and shared service identities. Coding agents are the implementation executors. Either Ahmed or Ziad may authorize, perform the necessary signed-in actions for, inspect, and approve an ordinary agent-executed task; this is one named human checkpoint and does not require a different reviewer. All project reviewer roles are filled by Ahmed or Ziad, with the applicable academic, security/data, cost, or operations role named when required. The founders intentionally share GitHub, Supabase, Google, and future service accounts, with Ahmed's separate GitHub contributor account as the current exception, so provider account identity is not proof of which founder acted. RLS, raw deletion, rights, budget kill switches, release/unlock, and beta go-live remain protected gates and require separate named confirmations from both Ahmed and Ziad.
 
 The PoC will be a free, controlled beta. Manual receipt verification and manual payment approval are removed from the PoC. Commercial payments are deferred until an automated payment provider and automated reconciliation flow are selected.
 
@@ -641,6 +643,7 @@ Video adds a processor behind the existing pipeline; it must not create a separa
 | D-19 | Retention periods and deletion deadlines | Short synthetic-test values until exact periods are approved | Security/data owner (unassigned) | Open |
 | D-20 | Notification and incident channels | In-process deterministic test sink until operational channels are approved | Ahmed + Ziad | Open |
 | D-21 | Development/test infrastructure | Hosted Supabase development database/Auth plus isolated hosted CI; no local infrastructure services | Ahmed | Approved direction |
+| D-22 | Founder authorization and shared service identity | Shared service accounts; either founder may satisfy an ordinary human checkpoint; protected gates still require both named confirmations | Ahmed + Ziad — shared founder authority | Approved direction |
 
 ## 16. Immediate actions
 

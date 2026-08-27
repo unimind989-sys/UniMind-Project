@@ -16,7 +16,7 @@ Use this workflow for every repository change. It is a routing document: product
 1. Run `pwsh -NoProfile -File scripts/show-work-state.ps1` to see active records, human-only blockers, and the earliest task not blocked by a decision or failed dependency.
 2. Map a user-named outcome to one work package and task; otherwise inspect the command's recommendation and apply the selection order in runbook section 0.1.
 3. Prove the definition of ready from runbook section 0.3. Treat missing or unreviewed evidence as incomplete; the work-state command is routing evidence, not proof of readiness.
-4. Copy `docs/templates/task-record.md` to `planning/tasks/wpNN-tyy-short-outcome.md` and fill every field. Use `UNASSIGNED — GATE BLOCKED` when safe execution can proceed but the reviewer is not yet named.
+4. Copy `docs/templates/task-record.md` to `planning/tasks/wpNN-tyy-short-outcome.md` and fill every field. For ordinary work, name Ahmed or Ziad as the human checkpoint; that founder may also be the requester, authorizer, and signed-in operator. Use `AHMED + ZIAD — TWO-PERSON GATE BLOCKED` only when a protected gate still lacks both named confirmations.
 5. Mark the selected checklist item `[~]`; mark a blocking item `[?]` with a linked decision or dependency.
 
 After reviewed WP00-T08 `PASS`, the work-state command may use the runbook's **WP00 mock bridge** to select WP01 while real-choice tasks remain blocked. Treat this as permission for synthetic data, deterministic mocks, local sinks, and zero paid capacity only.
@@ -47,7 +47,7 @@ After reviewed WP00-T08 `PASS`, the work-state command may use the runbook's **W
 
 1. Update the task record status and handoff section with changed files, commands/results, remaining work, and the next safe action.
 2. Link the evidence bundle and identify any restricted evidence without copying sensitive content.
-3. Leave reviewer-only gates unapproved. Name the exact review or decision still required.
+3. Leave protected gates unapproved until both founders' named confirmations exist. For ordinary work, record which founder inspected the evidence and the resulting decision.
 4. Summarize the outcome, verification, and open risks to the user without relying on earlier progress messages.
 
 **Complete when:** a fresh agent can resume safely from the task record, authorities, diff, and evidence without access to the prior chat.

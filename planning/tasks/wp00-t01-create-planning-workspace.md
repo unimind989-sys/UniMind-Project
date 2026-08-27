@@ -8,7 +8,7 @@
 
 **Owner:** Codex `/root`
 
-**Reviewer:** UNASSIGNED — GATE BLOCKED
+**Reviewer:** Ahmed or Ziad — ordinary human checkpoint pending
 
 **Branch:** `main` (no delivery branch requested)
 
@@ -22,7 +22,7 @@
 
 **Files:** `docs/decisions/README.md`, `docs/policies/README.md`, `docs/policies/raw-data-lifecycle.md`, `evals/`, `evidence/wp00-pilot/README.md`, the controlled files under `planning/`, `planning/decision-register.md`, `planning/agent-operability-audit.md`, `planning/d-17-hosting-options-discussion.html`, this task record, the synchronized master-plan/runbook entries, and the readiness verifier.
 
-**Verify:** `pwsh -NoProfile -File scripts/verify-agent-readiness.ps1`; compare staged inputs with their templates; verify D-01 through D-21 appear once in both the master plan and register; `git diff --check`; inspect the complete diff and scan changed files for credentials/private data.
+**Verify:** `pwsh -NoProfile -File scripts/verify-agent-readiness.ps1`; compare staged inputs with their templates; verify D-01 through D-22 appear once in both the master plan and register; `git diff --check`; inspect the complete diff and scan changed files for credentials/private data.
 
 **Pass:** One register exposes all decisions, owners, deadlines or explicit missing-deadline blockers, status, record location, resolution path, and exact blocked tasks; every staged input has one named template and owning task; all focused checks pass.
 
@@ -36,8 +36,8 @@
 
 - [~] Create durable scoped directories and exact template-routing instructions; implementation is ready for review.
 - [~] Stage the controlled cohort, rights, policy, provider, and load inputs; placeholders remain intentionally unresolved.
-- [~] Synchronize D-17 through D-21 and build the D-01 through D-21 register with exact task blockers.
-- [?] Obtain decision deadlines and independent review; owners/reviewer must supply these values.
+- [~] Synchronize D-17 through D-22 and build the D-01 through D-22 register with exact task blockers.
+- [?] Obtain decision deadlines and an Ahmed-or-Ziad human checkpoint; owners must supply the missing values.
 - [ ] Create commit-specific evidence after a candidate commit exists.
 
 ## Handoff
@@ -48,6 +48,6 @@
 
 **Remaining:** Obtain owner deadlines and reviewer assignment, then create commit-specific evidence after a candidate commit exists.
 
-**Next safe action:** An owner can provide decision deadlines while an independent reviewer inspects the workspace and blocker mappings.
+**Next safe action:** An owner can provide decision deadlines while Ahmed or Ziad inspects the workspace and blocker mappings.
 
 **Reviewer action:** Confirm D-17 through D-20 are true unresolved choices, validate each blocking-task mapping, and ensure no placeholder was mistaken for approval.

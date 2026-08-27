@@ -12,18 +12,19 @@
 ## Separate core execution from chat experience
 
 - At the first user message of each new chat, select the speaker profile. Select Ziad only when the user explicitly identifies himself as Ziad; otherwise select Ahmed. Do not infer identity from language, topic, writing style, or a previous chat. Keep the selected profile for the chat unless the user explicitly corrects the identity.
+- Ahmed and Ziad intentionally use one shared GitHub/Supabase/Google service identity and will use shared identities for future services. Ahmed also has a separate GitHub contributor account. Platform account identity therefore never proves which founder is speaking or acting; use the explicitly selected chat profile and record the named human in the task/evidence record.
 - Apply the selected profile from `docs/agents/communication-profiles.md` to conversation wording, explanation, and intent clarification only.
 - Keep one universal execution path for Ahmed and Ziad: use the same governing material, reasoning standards, skills, implementation steps, safety and permission boundaries, verification, evidence, and output-quality bar. The speaker profile never selects, rewrites, skips, or weakens a skill or project rule.
 
 ## Work from evidence, not assumptions
 
 - The repository is currently in planning and execution-readiness. Infer progress from committed artifacts and reviewed evidence; unchecked runbook items are not complete.
-- Agents are the default executors for implementation, tests, documentation, automation, and evidence preparation. Humans retain product, security/data, academic, and release decisions plus the independent reviews required by the two-person rule.
+- Agents are the default executors for implementation, tests, documentation, automation, and evidence preparation. Ahmed or Ziad supplies the human authorization, performs unavoidable signed-in actions, and reviews evidence. For an ordinary task, the same founder may request, authorize, operate, and review the agent's work; the purpose is a recorded human checkpoint, not identity separation.
 - Execute work packages in dependency order. Do not enable work blocked by an open decision; use the documented mock or interface until the decision is approved.
 - Before editing, inspect `git status` and preserve unrelated user changes.
 - Implement the smallest independently reviewable end-to-end slice. Keep the diff limited to the named work-package outcome.
 - Use the controlled templates under `docs/templates/` and the required task-record format in runbook section 0.10. Do not replace them with unstructured notes.
-- An executor may mark work in progress and assemble evidence. Only the required reviewer may mark a gate complete. Preserve the two-person rule for RLS, raw deletion, rights, budget kill switches, release/unlock, and beta go-live.
+- An agent executor may mark work in progress and assemble evidence. Ahmed or Ziad may mark an ordinary gate complete after inspecting its evidence, including when that founder also authorized or performed the signed-in actions. Preserve the two-person rule for RLS, raw deletion, rights, budget kill switches, release/unlock, and beta go-live: those protected gates require separate named confirmations from both Ahmed and Ziad even when they use the same service account.
 
 ## Protect the approved architecture
 

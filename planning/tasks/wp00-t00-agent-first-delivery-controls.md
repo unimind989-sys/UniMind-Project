@@ -8,7 +8,7 @@
 
 **Owner:** Codex `/root`
 
-**Reviewer:** UNASSIGNED — GATE BLOCKED
+**Reviewer:** Ahmed or Ziad — ordinary human checkpoint pending
 
 **Branch:** `main` (no delivery branch requested)
 
@@ -30,7 +30,7 @@
 
 **Rollback:** Revert this documentation-and-script slice; it changes no application, database, provider, environment, or external state.
 
-**Hard stop:** A reviewer must not mark the task or WP00 gate complete without independently inspecting the workflow, running the readiness script, and confirming that agent-first execution does not weaken human governance or the two-person rule.
+**Hard stop:** A human reviewer must not mark the task or WP00 gate complete without personally inspecting the workflow, running the readiness script, and confirming that agent-first execution does not weaken human governance or the protected two-person rule.
 
 ## Steps
 
@@ -41,7 +41,7 @@
 - [~] Add and machine-check the read-only work-state recommendation; implementation is ready for review.
 - [~] Rehearse the repository-only handoff in an isolated committed snapshot; implementation is ready for review.
 - [~] Pin and scope the requested visual reference, image-to-code, browser, and review toolchain; implementation is ready for review.
-- [?] Complete independent review and create commit-specific evidence; reviewer is unassigned.
+- [?] Obtain an Ahmed-or-Ziad human checkpoint and create commit-specific evidence.
 
 ## Handoff
 
@@ -49,8 +49,8 @@
 
 **Commands:** On 2026-08-24, the repository skill validator passed all 20 skills; Playwright CLI `0.1.18` passed version/help plus open/snapshot/close browser smoke; `pnpm verify` passed formatting, lint, strict type checking, module boundaries, 136 unit tests, and the safe production build; agent readiness passed 81 governed names, 31 local links, 20 decisions, and 102 task contracts; the isolated handoff rehearsal and text/JSON work-state checks passed; source comparisons, whitespace checks, `git diff --check`, and a credential-shape scan passed. The current recommendation remains computed from live decision and task records.
 
-**Remaining:** Create commit-specific evidence after a candidate commit exists and obtain independent review.
+**Remaining:** Create commit-specific evidence after a candidate commit exists and obtain an ordinary founder human checkpoint.
 
-**Next safe action:** An independent reviewer can verify this task while the executor advances WP00-T01, which does not depend on that review outcome.
+**Next safe action:** Ahmed or Ziad can verify this task while the agent executor advances WP00-T01, which does not depend on that review outcome.
 
 **Reviewer action:** Verify the fresh-agent flow from `README.md`, run the readiness script, inspect naming and authority boundaries, and confirm the human governance gates remain intact.
