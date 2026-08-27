@@ -1,5 +1,5 @@
 import { spawnSync } from "node:child_process";
-import { writeFileSync } from "node:fs";
+import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
 import {
@@ -9,6 +9,10 @@ import {
   parseEphemeralSupabaseStatus,
   type EphemeralSupabaseAction,
 } from "./lib/ephemeral-supabase";
+import {
+  findSupabaseContainer,
+  parsePostgresRuntimeMetadata,
+} from "./lib/ephemeral-supabase-metadata";
 import { formatGeneratedDatabaseTypes } from "./lib/generated-database-types";
 
 assertGitHubHostedLinuxRunner(process.env);
@@ -33,6 +37,82 @@ function runCli(arguments_: readonly string[]): CommandResult {
     );
   }
   return { stdout: String(result.stdout) };
+}
+
+function runProgram(
+  program: string,
+  arguments_: readonly string[],
+): CommandResult {
+  const result = spawnSync(program, arguments_, {
+    cwd: process.cwd(),
+    encoding: "utf8",
+    env: process.env,
+    maxBuffer: 16 * 1024 * 1024,
+    stdio: ["ignore", "pipe", "pipe"],
+  });
+  if (result.error !== undefined || result.status !== 0) {
+    throw new Error(
+      `Disposable runtime metadata command failed with status ${String(result.status)}.`,
+    );
+  }
+  return { stdout: String(result.stdout) };
+}
+
+function writeRuntimeMetadata(): void {
+  const inventory = runProgram("docker", [
+    "ps",
+    "--format",
+    "{{.Names}}\\t{{.Image}}",
+  ]).stdout;
+  const databaseContainer = findSupabaseContainer(inventory, "db");
+  const restContainer = findSupabaseContainer(inventory, "rest");
+  const postgres = parsePostgresRuntimeMetadata(
+    runProgram("docker", [
+      "exec",
+      databaseContainer.name,
+      "psql",
+      "--no-psqlrc",
+      "--username",
+      "postgres",
+      "--dbname",
+      "postgres",
+      "--tuples-only",
+      "--no-align",
+      "--command",
+      "select current_setting('server_version'); select extname || '=' || extversion from pg_extension order by extname;",
+    ]).stdout,
+  );
+  const report = {
+    schemaVersion: 1,
+    scope: "disposable-supabase-ci",
+    githubRunId: process.env.GITHUB_RUN_ID ?? "unknown",
+    runner: {
+      os: process.env.RUNNER_OS ?? "unknown",
+      architecture: process.env.RUNNER_ARCH ?? "unknown",
+      imageOs: process.env.ImageOS ?? "unknown",
+      imageVersion: process.env.ImageVersion ?? "unknown",
+    },
+    runtime: {
+      node: process.version,
+      dockerServer: runProgram("docker", [
+        "version",
+        "--format",
+        "{{.Server.Version}}",
+      ]).stdout.trim(),
+      supabaseCli: runCli(["--version"]).stdout.trim(),
+      postgres: postgres.version,
+      databaseImage: databaseContainer.image,
+      postgrestImage: restContainer.image,
+      extensions: postgres.extensions,
+    },
+  };
+
+  mkdirSync(path.resolve("test-results"), { recursive: true });
+  writeFileSync(
+    path.resolve("test-results/database-ci-runtime.json"),
+    `${JSON.stringify(report, null, 2)}\n`,
+    "utf8",
+  );
 }
 
 function readStatus() {
@@ -107,6 +187,9 @@ async function execute(action_: EphemeralSupabaseAction): Promise<void> {
     return;
   }
   const result = runCli(createEphemeralSupabaseArguments(action_));
+  if (action_ === "start") {
+    writeRuntimeMetadata();
+  }
   if (action_ === "types") {
     writeFileSync(
       path.resolve("src/types/database.generated.ts"),
