@@ -26,7 +26,7 @@
 
 **Pass:** Preview and beta use separate projects/scopes and approved external hosting; preview is synthetic/mock-only; an approved tested commit can promote and roll back without manual schema repair; all runtime components remain operable when both founder computers are off.
 
-**Evidence:** `evidence/wp01-foundation/YYYY-MM-DD_environment-isolation_<environment>_<short-sha>.md`
+**Evidence:** Local conditional slice: `evidence/wp01-foundation/2026-08-27_environment-isolation_local_a7c9d6b.md`; future external proof: `evidence/wp01-foundation/YYYY-MM-DD_environment-isolation_<preview-or-beta>_<short-sha>.md`
 
 **Rollback:** Roll back the future web/worker release to its prior tested commit and use forward-only database recovery; never point preview at beta data to recover.
 
