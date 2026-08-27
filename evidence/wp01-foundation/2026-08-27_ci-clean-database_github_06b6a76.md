@@ -1,34 +1,45 @@
 # Gate report: WP01-T08 clean-database CI
 
-**Status:** IN PROGRESS
+**Status:** PASS
 
 **Environment:** GitHub Actions plus protected isolated `ci` Supabase target
 
-**Commit SHA:** `06b6a76f2a4f3c9ea402ea0564616cdb35a93501`
+**Commit SHA:** `ee18f702e99131f5307de50bdbf9a799b2d92120`
 
 **Release/config fingerprint:** committed CI target fingerprint `sha256:6ad364ad022a`; GitHub environment `ci`; deployment branch restricted to `main`
 
-**Migrations:** committed `supabase/migrations/` sequence at the commit above; hosted attempt 1 reset, applied, seeded, and matched the sequence
+**Migrations:** committed `supabase/migrations/` sequence at the commit above; corrected hosted run reset, applied, seeded, and matched migration `20260824235549`
 
 **Dataset/fixture versions:** repository synthetic CI seed and versioned synthetic evaluation/load fixtures at the commit above
 
 **Executor:** Codex `/root`
 
-**Independent reviewer:** Ahmed via GitHub account `aboayman-oss` for this non-critical CI implementation review
+**Human reviewer:** Ahmed through GitHub account `unimind989-sys`; PR #3 approval review `5037570445`
 
-**Started/finished (UTC):** 2026-08-26 / IN PROGRESS
+**Started/finished (UTC):** 2026-08-26 / 2026-08-27
+
+## Governing-span revision
+
+The revision covered the repository authorities and committed evidence from the runbook start through WP01-T08, not only the corrective diff.
+
+| Span | Revision result | Status |
+| --- | --- | --- |
+| WP00 decisions and readiness | Reviewed artifacts remain truthful: unresolved product, academic, rights, privacy, and provider decisions remain blocked or mock-only; WP00-T08 remains the reviewed mock-only bridge. No blocked decision was silently treated as approved. | PASS |
+| WP01-T01 through WP01-T07 | Each task has reviewed PASS evidence. Repository/runtime pinning, strict TypeScript/Next.js foundation, boundary enforcement, hosted Supabase migration seam, safe Auth clients, provider contracts/mocks, and the layered test gate remain consistent. | PASS |
+| WP01-T08 ordering | Dependencies WP01-T04 through WP01-T07 were reviewed before the external CI gate. No WP01-T09 implementation was started. | PASS |
+| Repository hygiene and disclosure | Full changed-file review, `git diff --check`, repository secret scan, client-artifact scan, and branch inventory found no secret disclosure or unrelated scope. | PASS |
 
 ## Scope and acceptance criteria
 
 | Criterion | Threshold | Result | Status | Evidence |
 | --- | --- | --- | --- | --- |
-| Pull-request application gate | Fresh GitHub runner passes the complete zero-paid application gate | CI run `33020995316` (`CI #5`) passed; application 1m 9s | PASS | GitHub Actions run `33020995316` |
-| Private-repository dependency gate | No paid GitHub Code Security requirement; reject known high/critical production vulnerabilities | Pinned `pnpm audit --audit-level high --prod` passed in 9s | PASS | GitHub Actions run `33020995316`, job `98351041153` |
-| Human review | One human approval for this ordinary CI implementation | `aboayman-oss` approved PR #2 at head `a1c7edb3269a594758f6879616fe9502c98a8c67` | PASS | PR #2 review `5035718410` |
-| Merge to `main` | Reviewed green commit merged by repository owner | PR #2 merged as `06b6a76f2a4f3c9ea402ea0564616cdb35a93501` | PASS | PR #2 and `origin/main` |
-| Main application gate | Fresh runner passes before credentials are released | CI run `33021371273` (`CI #6`) application passed in 1m 9s; local report artifact produced | PASS | Job `98352279615`; artifact `9626663618`, digest `sha256:ba69e50f339bad9c751fbb551ad6f6191dfad9bdc349483622e50c68511f2b1b` |
-| Protected hosted database/Auth gate | Approved reviewer releases the `ci` job, which validates the approved target, resets only isolated synthetic CI data, runs migrations/types/security/Auth, and uploads sanitized reports | Attempt 1 reset and seeded the approved CI target and verified migration parity, then failed closed because generated PostgREST types changed from `14.15` to `14.17`; hosted Auth/security did not run | IN PROGRESS | GitHub Actions run `33021371273`, job `98352561534` |
-| `main` protection | Require PR review plus successful `application` and `dependency-audit` checks | Not configured yet | PENDING | Repository rules/branch settings |
+| Pull-request application gate | Fresh GitHub runner passes the complete zero-paid application gate | Corrective PR run `33042421895` passed; application and dependency gates were required before merge | PASS | GitHub CI #7, PR #3 |
+| Private-repository dependency gate | No paid GitHub Code Security requirement; reject known high/critical production vulnerabilities | Pinned `corepack pnpm audit --audit-level high --prod` passed | PASS | GitHub CI #7, `dependency-audit` |
+| Human review | One human approval for this ordinary CI implementation | `unimind989-sys` approved PR #3 at head `911e8a7` after reviewing the exact hosted type correction and bounded timeout fixes | PASS | PR #3 review `5037570445` |
+| Merge to `main` | Reviewed green commit merged by repository owner | PR #3 merged as `ee18f702e99131f5307de50bdbf9a799b2d92120` | PASS | PR #3 and `origin/main` |
+| Main application gate | Fresh runner passes before credentials are released | Run `33043240893` application passed in 1m 17s and uploaded local report artifact `9634668004` | PASS | Job `98421346149`; digest `sha256:1f6a75259746ff302e174c3d21e1f2b1951938d1426f2573d8c71318364f32d4` |
+| Protected hosted database/Auth gate | Approved reviewer releases only the isolated `ci` job; target guard, dry run, reset, migrations, types, hosted Auth, security, and sanitized report all pass | Run `33043240893` completed successfully. Hosted job passed in 33s after approval by `aboayman-oss`; the guarded database/Auth step passed in 21s, security in 1s, and artifact upload in 1s | PASS | Job `98421571535`; hosted artifact `9634839025`; digest `sha256:f81f692ed45bc15746020694d2b2e7adf03d92becb1df5a6f0327eb3ac599598` |
+| `main` protection | Require a pull request, one human approval, and successful `application` plus `dependency-audit`; prevent force pushes and deletion | Classic branch protection applies to `main` and was behaviorally verified on PR #3: merge remained blocked until approval and both required checks passed | PASS | Repository Settings → Branches; PR #3 |
 
 ## Commands executed
 
@@ -40,6 +51,12 @@
 | 2026-08-26 | GitHub CI #5, PR head `a1c7edb` | 0 | Two successful checks, one intentionally skipped hosted job, sanitized artifact uploaded |
 | 2026-08-26 | GitHub CI #6 application, merge `06b6a76` | 0 | Application passed; hosted job waiting for protected environment approval |
 | 2026-08-27 | GitHub CI #6 hosted attempt 1, job `98352561534` | 1 | Approved CI reset, migration, seed, history, and type generation passed; `db:types:check` rejected PostgREST `14.15` to `14.17` drift before hosted Auth/security |
+| 2026-08-27 | Exact-runtime `corepack pnpm install --frozen-lockfile` | 0 | Node 24.19.0 and pnpm 10.34.5 reproduced the immutable install |
+| 2026-08-27 | Final-candidate `corepack pnpm verify` | 0 | Format, lint, typecheck, boundaries/workflow policy, 606-file secret scan, 214 unit tests, local integration, 8 security, 3 evaluation, 5 load-profile, Chromium E2E, Next.js production build, and client-artifact scan passed |
+| 2026-08-27 | `corepack pnpm db:types:check` | 0 | Generated database types match the hosted PostgREST 14.17 output |
+| 2026-08-27 | Agent readiness and isolated handoff rehearsal | 0 | 113 task names, 31 links, 21 decisions, and 102 task contracts passed; clean-clone handoff rehearsal passed |
+| 2026-08-27 | GitHub CI #7, corrective PR head `911e8a7` | 0 | Required `application` and `dependency-audit` checks passed; hosted credentials remained unavailable on PR code |
+| 2026-08-27 | GitHub CI #8, merge `ee18f70` | 0 | Application passed; protected hosted database/Auth and security job passed after environment approval; both sanitized artifacts uploaded |
 
 ## Negative, retry, and recovery cases
 
@@ -49,43 +66,33 @@
 | GitHub dependency-review action on a private repository without paid Code Security | The gate must not require an unavailable paid feature | Earlier PR runs failed as unsupported; replaced with pinned zero-cost pnpm production audit and policy regression | PASS | CI #3/#4, then CI #5 |
 | Hosted job on pull-request code | Credentials and reset capability must remain unavailable | `hosted-ci` skipped on PR and becomes eligible only after the reviewed merge to `main` | PASS | CI #5 and workflow policy tests |
 | Hosted job before human environment approval | Secrets and reset must remain unavailable | CI #6 remained blocked until `aboayman-oss` approved environment `ci` | PASS | Job `98352561534` deployment review |
-| Hosted PostgREST version changes after provider maintenance | Generated type drift must fail closed before later hosted checks | Attempt 1 stopped at `db:types:check`; the one-line generated version change is carried by the corrective evidence branch | PASS | Job `98352561534`, lines 60-77 |
+| Hosted PostgREST version changes after provider maintenance | Generated type drift must fail closed before later hosted checks | Attempt 1 stopped at `db:types:check`; the exact one-line change was reviewed, and attempt 2 passed types, hosted Auth, security, and artifact upload | PASS | Jobs `98352561534` and `98421571535` |
+| Cold filesystem/runtime variance | Preserve bounded tests without hiding hangs | Unit cold-import timeout is 5s; Playwright assertions remain 15s while web-server startup is 120s; repeated regressions and full verification passed | PASS | PR #3 diff and local verification |
 
 ## Deviations and defects
 
 | ID | Severity | Description | Owner | Due | Blocks |
 | --- | --- | --- | --- | --- | --- |
-| WP01-T08-D1 | Gate | Hosted attempt 1 reset the approved CI target but stopped on generated PostgREST `14.17` drift; merge the exact type update and rerun only after a new explicit destructive-reset confirmation | Ahmed / Codex `/root` | Before continuing WP01-T09 | WP01-T08 PASS and WP01-T09 |
-| WP01-T08-D2 | Gate | `main` protection/rules still need required review and the final successful check names | Codex `/root` | After hosted CI proof | WP01-T08 PASS |
+| WP01-T08-D1 | Closed | Hosted PostgREST drift was reconciled exactly in `src/types/database.generated.ts`; the corrected protected run passed the full hosted gate | Ahmed / Codex `/root` | 2026-08-27 | NONE |
+| WP01-T08-D2 | Closed | `main` protection now requires PR review plus `application` and `dependency-audit`, with force pushes and deletion disabled | Codex `/root` | 2026-08-27 | NONE |
 
 ## Security and privacy review
 
 - [x] Evidence contains no secret, signed URL, private raw content, ordinary chat content, or unredacted personal data.
 - [x] Credential-free and credentialed scopes are separated; the hosted job is restricted to reviewed `main` code and protected environment secrets.
 - [x] Pull-request and main application logs plus artifact names/digests were inspected.
-- [~] Hosted attempt 1 logs were inspected: approved-target dry run, reset, synthetic seed, migration parity, and type generation passed; type drift stopped hosted Auth/security and no hosted artifact was produced.
+- [x] Corrected hosted logs were inspected through target validation, dry run, reset, migration/seed/parity, stable generated types, hosted Auth integration, implemented security project, and sanitized artifact upload.
+- [x] Branch protection behavior was verified using a real PR: approval and both required checks were necessary before merge.
 
 ## Rollback/disable procedure
 
-Cancel any future main run before environment approval to prevent another hosted mutation. Attempt 1 already reset the CI target and then failed closed on generated-type drift. To disable further runs, disable the workflow or revert merge commit `06b6a76f2a4f3c9ea402ea0564616cdb35a93501` through a reviewed PR. Preserve the `ci` environment protection and secrets while investigating; do not redirect the workflow to development, preview, or beta.
-
-## Resume point after a session or usage-limit interruption
-
-1. Read this report and `planning/tasks/wp01-t08-create-ci.md`.
-2. Confirm GitHub Actions run `33021371273`, hosted job `98352561534`, failed only because hosted generation changed `PostgrestVersion` from `14.15` to `14.17` after a successful reset/migration/seed/parity sequence.
-3. Verify the corrective branch contains that exact generated-type update plus the reviewed local test-orchestration fixes, then obtain green pull-request checks and merge it.
-4. Immediately before approving the new main run, obtain explicit confirmation that the job may reset the isolated synthetic `ci` Supabase database identified by the committed fingerprint `sha256:6ad364ad022a`. Never approve a different target.
-5. Switch GitHub to `aboayman-oss`, open the pending deployment review, verify only environment `ci` is selected, and approve. `unimind989-sys` must trigger the run so the configured prevent-self-review rule allows `aboayman-oss`.
-6. Monitor the hosted job through approved-target validation, dry run, reset, migrations, type generation/diff, hosted Auth integration, security tests, and sanitized artifact upload. Record exact results and artifact digest here.
-7. If any target/fingerprint/secret-scope check fails, do not retry blindly; preserve the log reference and diagnose before another reset.
-8. Configure `main` protection to require a pull request, one human approval, and successful `application` plus `dependency-audit` checks. Preserve the separate-person rule for later RLS, deletion, rights, budget, release/unlock, and beta gates.
-9. Update the WP01-T08 task record and runbook checklist, finish this report as PASS or FAIL, commit, push a reviewable evidence branch, and obtain review before starting WP01-T09.
+Cancel a future main run before environment approval to prevent a hosted mutation. To disable new runs, disable or revert `.github/workflows/ci.yml` through a reviewed PR. Preserve the `ci` environment protection and its environment-scoped secrets while investigating; never redirect this workflow to development, preview, or beta. Revert an application change through a new protected PR rather than rewriting `main`.
 
 ## Decision
 
-IN PROGRESS. The PR and merged application/dependency gates are green and reviewed. Hosted attempt 1 proved the destructive CI reset, synthetic seed, migration history, and fail-closed type drift behavior, but a corrected main run must still complete hosted Auth/security and artifact upload. WP01-T08 cannot pass until that protected hosted job succeeds, its sanitized output is inspected, and `main` protection is verified.
+PASS. A fresh GitHub runner reproduced the zero-paid application gate and, after explicit protected-environment approval, reset only the fingerprinted isolated synthetic `ci` target and completed migrations, stable type generation, hosted Auth integration, implemented security tests, and sanitized report upload. `main` now requires a pull request, one human approval, and both required checks. WP01-T08 is complete. WP01-T09 remains intentionally unstarted for Ziad.
 
 | Name | Role | Decision | Date |
 | --- | --- | --- | --- |
-| Codex `/root` | Executor | IN PROGRESS | 2026-08-27 |
-| Ahmed (`aboayman-oss`) | Reviewer | PR implementation approved; final gate decision pending hosted proof | 2026-08-27 |
+| Codex `/root` | Executor | PASS | 2026-08-27 |
+| Ahmed (`unimind989-sys`) | Human reviewer | PASS via PR #3 approval; final evidence review to be recorded on the completion PR | 2026-08-27 |

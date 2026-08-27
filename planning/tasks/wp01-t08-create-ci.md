@@ -2,17 +2,17 @@
 
 **Task ID:** WP01-T08
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** A least-privilege clean runner reproduces install, database reset, security tests, generated types, application checks, smoke tests, secret scan, and sanitized failure reports.
 
 **Owner:** Codex `/root`
 
-**Reviewer:** Ahmed via `aboayman-oss` approved PR #2; final hosted-gate review remains pending
+**Reviewer:** Ahmed via `unimind989-sys` approved corrective PR #3; completion evidence review is recorded through the protected completion PR
 
-**Branch:** merged to `main` as `06b6a76`; continuation evidence branch `wp01/ci-external-evidence`
+**Branch:** implementation merged to `main` as `ee18f702e99131f5307de50bdbf9a799b2d92120`; implementation branch deleted
 
-**Updated (UTC):** 2026-08-26 (external checkpoint recorded 2026-08-27 Cairo)
+**Updated (UTC):** 2026-08-27
 
 ## Execution contract
 
@@ -26,7 +26,7 @@
 
 **Pass:** A fresh runner needs no dashboard state, makes no paid call, leaks no secret, and fails closed at every security seam implemented in WP01. The later database RLS matrix cannot be a prerequisite for the CI foundation that WP02 depends on; WP02-T04 must add and prove the deliberate leaking-policy failure before the WP02 gate.
 
-**Evidence:** Security-revision draft at `evidence/wp01-foundation/2026-08-26_ci-security-review_local_ce7750b.md`; original rehearsal at `evidence/wp01-foundation/2026-08-26_ci-clean-database_local_2919e42.md`; the final external proof remains `evidence/wp01-foundation/YYYY-MM-DD_ci-clean-database_github_<short-sha>.md`.
+**Evidence:** Final external proof at `evidence/wp01-foundation/2026-08-27_ci-clean-database_github_06b6a76.md`; supporting revision at `evidence/wp01-foundation/2026-08-26_ci-security-review_local_ce7750b.md`; original rehearsal at `evidence/wp01-foundation/2026-08-26_ci-clean-database_local_2919e42.md`.
 
 **Rollback:** Disable/revert the future workflow and preserve required branch protections unless an authorized owner changes them.
 
@@ -35,22 +35,22 @@
 ## Steps
 
 - [x] WP01-T04 through WP01-T07 have reviewed PASS evidence.
-- [~] Author least-privilege workflow with immutable pins and safe concurrency/cache behavior. Owner: Codex `/root`; branch: `main`.
-- [?] Reproduce every database/application/security/smoke command on a clean runner. The complete local equivalent and guarded hosted-CI rehearsal pass; an external clean runner remains authorization-gated.
-- [~] Add secret/dependency review and sanitized always-upload reports. Authored and locally audited; reviewer and external-run proof remain outstanding.
-- [?] Obtain authorized external CI run and branch-protection review.
+- [x] Author least-privilege workflow with immutable pins, safe concurrency, no credential cache, and hosted secrets scoped only to the guarded step. Owner: Codex `/root`; merged to `main`.
+- [x] Reproduce every implemented database/application/security/smoke command on a fresh runner. Corrective PR CI #7 and protected main CI #8 passed.
+- [x] Add secret scan, zero-cost production dependency audit, and sanitized always-upload reports. Both main artifacts were inspected by name and digest.
+- [x] Obtain authorized external CI run and branch-protection review. `main` requires a PR, one human approval, and `application` plus `dependency-audit`; force pushes and deletion are disabled.
 
 ## Handoff
 
-**Changed:** Revision candidate `ce7750b` fixes three security defects found during review. Every hosted database/Auth/metadata adapter now consumes one approved-target interface that validates the committed environment fingerprint. The credentialed hosted job runs only for `main` push/manual executions, and its six CI secrets exist only on the database/Auth step—not checkout, install, security tests, or artifact upload. The workflow audit now locks trigger scope, secret mapping, `write-all` rejection, dependency review, frozen install, no cache, Chromium install, full application gate, action pins, concurrency, commands, and reports. The repository scanner no longer lets words such as `synthetic` or `example` suppress a token/database credential; only `.invalid` database hosts are exempt. The WP01/WP02 contract now assigns deliberate RLS-leak rejection to WP02-T04, where the RLS matrix actually exists. External publication, GitHub secret entry, workflow execution, and branch-protection mutation remain authorization-gated.
+**Changed:** The least-privilege workflow is live on protected `main`. The credential-free application job and production dependency audit run on pull requests; the credentialed hosted job can run only after reviewed `main` code reaches the protected `ci` environment. Six CI secrets remain step-scoped. The target guard validates the committed fingerprint before dry run or reset. The gate performs reset, migrations, synthetic seed, type stability, hosted Auth integration, implemented security tests, and sanitized report upload. The corrective revision reconciled exact hosted PostgREST 14.17 type output and kept runtime timeouts bounded.
 
-**Commands:** Focused red/green tests proved unapproved-target, pull-request secret exposure, job-level secret scope, `write-all`, missing dependency review/frozen install/application gate/Chromium, cache configuration, and scanner-bypass failures. The revised adapters passed `db:metadata`, `db:push:dry-run`, `db:migrations`, `db:types`, `db:types:check`, and environment-backed `test:integration:hosted:ci` against CI fingerprint `sha256:6ad364ad022a`; no additional reset was needed. Exact-runtime `pnpm verify` passed on Node 24.19.0 with 212 unit tests, local integration, 8 security, 3 evaluation, 5 load-profile, one Chromium smoke, production build, CI-policy audit, 604-file repository scan, and client-artifact scan. Immutable action tags were independently resolved to the committed SHAs. Full results are in the linked revision evidence.
+**Commands:** Exact-runtime `corepack pnpm verify` passed on Node 24.19.0/pnpm 10.34.5 with format, lint, typecheck, boundary/workflow audits, a 606-file secret scan, 214 unit tests, integration, 8 security, 3 evaluation, 5 load-profile, one Chromium smoke, production build, and client-artifact scan. `db:types:check`, agent readiness, and isolated handoff rehearsal also passed. GitHub CI #7 passed the protected pull-request checks. CI #8 application passed in 1m 17s and hosted CI passed in 33s after the approved isolated reset.
 
-**Remaining:** Assign an independent reviewer; authenticate an authorized GitHub session; explicitly authorize push/workflow publication and GitHub settings; configure the protected public-repository `ci` environment with the exact six secrets and `main`-only deployment policy; run the candidate on a fresh GitHub runner; inspect logs/artifacts; require the application/dependency checks and independent review in `main` branch protection. The deliberate RLS-leak test remains a named WP02-T04 requirement and does not block WP01-T08/WP01-T09 sequencing.
+**Remaining:** None for WP01-T08. WP02-T04 still owns the deliberate RLS-leak regression after the RLS matrix exists. Critical RLS, deletion, rights, budget, release/unlock, and beta decisions continue to require the repository's two-person rule even though this ordinary CI implementation needed one human approval.
 
-**Next safe action:** Review `evidence/wp01-foundation/2026-08-26_ci-security-review_local_ce7750b.md`, name the reviewer, and obtain explicit authorization for GitHub authentication, push, `ci` environment configuration, first workflow run, and branch protection. Do not start WP01-T09 until that external evidence is reviewed PASS.
+**Next safe action:** Stop after merging this completion evidence. WP01-T09 is intentionally reserved for Ziad and must not be started in this task.
 
-**Reviewer action:** Inspect `ce7750b` plus the original candidate series, verify the protected trigger/step-scoped secrets/approved fingerprint and immutable pins, then independently inspect the first external run, artifacts, environment policy, and branch rules. Future migration/RLS changes retain the two-person rule.
+**Reviewer action:** Confirm the final evidence identifiers match CI #8, then approve the completion PR. Future migration/RLS changes retain the two-person rule.
 
 ## 2026-08-27 external continuation checkpoint
 
@@ -66,4 +66,13 @@
 - `aboayman-oss` approved environment `ci`; job `98352561534` reset the isolated synthetic target, applied migration `20260824235549`, seeded it, and verified local/remote migration parity.
 - The job failed closed at `db:types:check` because hosted generation changed only `PostgrestVersion` from `14.15` to `14.17`. Hosted Auth, security, and the hosted artifact did not run.
 - The corrective evidence branch carries the exact generated-type update. Local review also found and fixed two test-orchestration flakes: the 2-second unit cold-import limit is now 5 seconds, and the slow-filesystem Next.js startup allowance is now 120 seconds while E2E assertions remain 15 seconds.
-- The new main run must receive a fresh explicit destructive-reset confirmation for fingerprint `sha256:6ad364ad022a`; do not rerun or approve a different target.
+- The corrected main run received a fresh explicit destructive-reset confirmation for fingerprint `sha256:6ad364ad022a`; no other target was approved.
+
+## 2026-08-27 final result
+
+- PR #3 passed required checks, received human approval through `unimind989-sys`, and merged as `ee18f702e99131f5307de50bdbf9a799b2d92120`; its local and remote implementation branches were deleted.
+- Main CI run `33043240893` passed. The credential-free application job passed in 1m 17s before the protected environment released credentials.
+- `aboayman-oss` approved only environment `ci` for committed fingerprint `sha256:6ad364ad022a`. Hosted job `98421571535` passed in 33s: guarded database/Auth 21s, security 1s, sanitized artifact upload 1s.
+- Hosted artifact `9634839025` has digest `sha256:f81f692ed45bc15746020694d2b2e7adf03d92becb1df5a6f0327eb3ac599598`; local artifact `9634668004` has digest `sha256:1f6a75259746ff302e174c3d21e1f2b1951938d1426f2573d8c71318364f32d4`.
+- Classic protection applies to `main`: require a pull request, one human approval, `application`, and `dependency-audit`; force pushes and branch deletion are disabled.
+- WP01-T08 is PASS. WP01-T09 remains unstarted for Ziad.
