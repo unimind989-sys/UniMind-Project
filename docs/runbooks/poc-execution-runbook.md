@@ -761,7 +761,7 @@ git diff --exit-code -- src/types/database.generated.ts
 
 - [ ] Create an environment matrix containing workstation development process, hosted `development`, hosted `ci`, hosted `preview`, and hosted `beta`; list database project/branch, storage namespaces, worker/queue namespace, callback base URL, secret scope, data classification, reset permission, and owner.
 - [ ] Prove every database/Auth and preview/beta runtime component is externally hosted and remains operable when Ahmed's and Ziad's computers are off. The optional PC-hosted Telegram bot is noncritical development/test tooling only and is absent from every gate topology.
-- [?] Use separate Supabase projects for preview and beta. A branch schema inside beta is not sufficient isolation for private pilot data. Blocked on the hosted development database/Auth/CI gates and external project provisioning; see `planning/tasks/wp01-t09-provision-isolated-environments.md`.
+- [~] Use separate Supabase projects for preview and beta. A branch schema inside beta is not sufficient isolation for private pilot data. Ahmed authorized separate resource provisioning with Ziad as executor and Ahmed/Ziad as owners, but the two existing active projects exhaust the Supabase Free allocation; stop before a paid upgrade until Ahmed approves an exact budget. See `planning/tasks/wp01-t09-provision-isolated-environments.md`.
 - [ ] Use synthetic seed data in preview and rights-approved pilot data only in beta.
 - [ ] Configure unique callback signing secrets and provider budget scopes per environment.
 - [ ] Make preview deployment automatic from pull requests and beta deployment an approved promotion of an already-tested commit.
