@@ -95,4 +95,4 @@ PASS. A fresh GitHub runner reproduced the zero-paid application gate and, after
 | Name | Role | Decision | Date |
 | --- | --- | --- | --- |
 | Codex `/root` | Executor | PASS | 2026-08-27 |
-| Ahmed (`unimind989-sys`) | Human reviewer | PASS via PR #3 approval; final evidence review to be recorded on the completion PR | 2026-08-27 |
+| Ahmed (`unimind989-sys`) | Human reviewer | PASS via implementation PR #3 approval. Completion evidence PR #4 passed three checks and used the permitted owner bypass after GitHub rejected repeated additional-approval submissions. | 2026-08-27 |
