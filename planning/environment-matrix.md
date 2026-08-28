@@ -7,7 +7,7 @@ This matrix records safe environment identities and isolation rules. Full projec
 | Environment | Runtime/data plane | Data classification | Destructive reset | External scope | Owner | Target state |
 | --- | --- | --- | --- | --- | --- | --- |
 | Workstation development | Next.js process and deterministic in-process mocks; no database service | Synthetic only | N/A | Repository checkout only | Ahmed / Ziad | Available; never shared infrastructure |
-| Database/Auth CI | Complete disposable Supabase stack on a GitHub-hosted `ubuntu-24.04` runner | Synthetic only | Yes, inside the disposable runner only | Per-run GitHub Actions job; no persistent Supabase project or long-lived database secret | Ahmed / Ziad; agent executor | External lifecycle passed at `c1428f2`; obsolete GitHub CI settings retirement pending |
+| Database/Auth CI | Complete disposable Supabase stack on a GitHub-hosted `ubuntu-24.04` runner | Synthetic only | Yes, inside the disposable runner only | Per-run GitHub Actions job; no persistent Supabase project or long-lived database secret | Ahmed / Ziad; agent executor | External lifecycle passed at `c1428f2`; obsolete GitHub environment/secrets retired and `database-ci` required on `main` |
 | Preview | Existing Supabase Free project currently labeled development, repurposed only after ephemeral CI passes | Synthetic only; mock providers | No development/CI reset command; forward migrations only | Separate Supabase project and separate Vercel Hobby project/scope | Ahmed / Ziad | WP01-T09 repurposing pending |
 | Beta | Existing Supabase Free project currently labeled CI, repurposed only after ephemeral CI passes | Empty until backup, rights, security, release, and go-live gates; then rights-approved pilot data only | No development/CI reset command; guarded forward migrations only | Separate Supabase project and separate Vercel Hobby project/scope | Ahmed / Ziad | WP01-T09 repurposing pending; locked |
 
@@ -24,6 +24,15 @@ Historical WP01-T04/T05/T08 evidence remains valid proof of what those targets d
 
 The 2026-08-28 read-only dashboard inventory corrected the historical CI-region label above. The project itself was not moved or changed; the earlier evidence remains accurate for its recorded commands and fingerprints but not for that descriptive region label.
 
+The same inventory found both Supabase projects healthy and empty except for the versioned foundation schema: no Auth users, public tables, Storage buckets, Edge Functions, backups, or data rows require deletion. WP01-T09 therefore performs no database reset or data deletion. It preserves the schema, creates replacement publishable/secret API keys, validates the new deployment scopes, disables the legacy `anon`/`service_role` API keys, rotates database passwords, revokes the retired management token, and then removes the two ignored transitional workstation profiles.
+
+The Vercel inventory found one empty `Unimind` Hobby workspace and no projects. One Hobby workspace can hold the two required isolated project scopes; a second Vercel subscription is not required. The approved binding is:
+
+- `unimind-preview`: connected to the public GitHub repository for reviewed pull-request deployments, with only Preview Supabase configuration and synthetic/mock-only settings.
+- `unimind-beta`: no Git integration; exact reviewed commits are deployed explicitly as Vercel preview deployments under Beta-only configuration. Vercel Authentication with Standard Protection keeps those preview/deployment URLs locked on Hobby. No production deployment or production domain is created during WP01-T09.
+
+The repository pins Vercel CLI `59.9.1`. Preview/Beta provider identifiers, keys, URLs that expose internal topology, and protection-bypass values remain outside Git.
+
 ## Approval and eligibility checkpoint — 2026-08-27
 
 - Ahmed approved the zero-cost-first D-21 revision and the two-project topology. Codex `/root` remains the agent executor; Ahmed and Ziad remain shared environment owners.
@@ -35,7 +44,7 @@ The 2026-08-28 read-only dashboard inventory corrected the historical CI-region 
 - Beta remains empty of real data until an approved encrypted backup/restore procedure is implemented and rehearsed, or later paid capacity is explicitly approved. This is a hard blocker for real pilot data and beta go-live, not for synthetic provisioning.
 - D-22 governs the shared service identity. Provider account activity does not identify the human actor; task and evidence records name the checkpoint.
 
-Official constraints were rechecked on 2026-08-27: [Supabase pricing](https://supabase.com/pricing), [Supabase CLI local/CI stack](https://supabase.com/docs/guides/local-development/cli/getting-started), [Supabase branching](https://supabase.com/docs/guides/deployment/branching), [GitHub Actions billing](https://docs.github.com/en/billing/concepts/product-billing/github-actions), [GitHub runner containers](https://docs.github.com/en/actions/how-tos/write-workflows/choose-where-workflows-run/run-jobs-in-a-container), and [Vercel fair-use guidance](https://vercel.com/docs/limits/fair-use-guidelines).
+Official constraints were rechecked on 2026-08-27 and the credential/protection details on 2026-08-28: [Supabase pricing](https://supabase.com/pricing), [Supabase CLI local/CI stack](https://supabase.com/docs/guides/local-development/cli/getting-started), [Supabase branching](https://supabase.com/docs/guides/deployment/branching), [Supabase API-key migration](https://supabase.com/docs/guides/getting-started/migrating-to-new-api-keys), [GitHub Actions billing](https://docs.github.com/en/billing/concepts/product-billing/github-actions), [GitHub runner containers](https://docs.github.com/en/actions/how-tos/write-workflows/choose-where-workflows-run/run-jobs-in-a-container), [Vercel Hobby](https://vercel.com/docs/plans/hobby), [Vercel deployment protection](https://vercel.com/docs/deployment-protection), and [Vercel fair-use guidance](https://vercel.com/docs/limits/fair-use-guidelines).
 
 ## Existing local health and smoke checkpoint
 

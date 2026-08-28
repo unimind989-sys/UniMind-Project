@@ -14,6 +14,15 @@ Use this procedure only for WP01-T09 after WP01-T08 proves ephemeral database/Au
 
 Stop if any precondition is unknown. Never point one environment at another environment's data to make a deployment pass.
 
+## Zero-cost Vercel binding
+
+- The Vercel workspace remains on Hobby with no trial, add-on, payment method, or paid resource enabled.
+- `unimind-preview` is the only project connected to GitHub. It receives Preview Supabase values in Vercel's Preview environment and may also receive them in its Production environment when `main` becomes the stable synthetic Preview target.
+- Public-repository pull-request deployments that require owner authorization remain blocked until the signed-in owner approves them. Do not disable that authorization safeguard.
+- `unimind-beta` has no Git integration. Deploy an exact reviewed commit through the pinned CLI as a Vercel preview deployment, never as production during WP01-T09.
+- Enable Vercel Authentication with Standard Protection on `unimind-beta`. Hobby Standard Protection covers preview/deployment URLs but not a production domain, so WP01-T09 creates no Beta production deployment or production domain.
+- Do not add a protection-bypass secret unless a later automated test explicitly requires it and the secret has an approved storage and rotation path.
+
 ## Preview candidate
 
 1. Let the approved Git integration deploy the pull-request commit to the Preview deployment target. Pull-request code must not receive Beta secrets.
@@ -29,8 +38,8 @@ Stop if any precondition is unknown. Never point one environment at another envi
 
 ## Locked Beta candidate
 
-1. Select the exact commit SHA that passed Preview. Do not build from an unreviewed branch tip or manually copy files between deployments.
-2. Deploy that commit under the Beta deployment target and Beta-scoped configuration. If a provider's artifact promotion would retain Preview-bound environment values, rebuild the same commit under Beta scope instead of promoting the unsafe artifact.
+1. Select the exact commit SHA that passed Preview. Check out a clean detached worktree at that SHA; do not build from an unreviewed branch tip or manually copy files between deployments.
+2. Link only that temporary worktree to `unimind-beta`, pull Beta-scoped configuration, and deploy it as a protected Vercel preview deployment with the pinned CLI. Never promote it to production during WP01-T09. Rebuild the same commit under Beta scope instead of reusing a Preview-bound artifact.
 3. Apply only versioned, forward-only migrations through the future Beta migration guard. Never repair Beta schema in a dashboard.
 4. Verify liveness and readiness while Beta remains inaccessible to students. Do not use the Preview smoke mode against Beta or claim Preview's synthetic-mode proof as Beta isolation evidence.
 5. Record the candidate deployment ID, commit SHA, migration list, configuration fingerprint, and prior known-good Beta deployment ID in restricted/sanitized evidence as appropriate.
@@ -40,7 +49,7 @@ Deploying a locked Beta candidate is not Beta go-live. Unlock/release remains a 
 ## Rollback
 
 1. Lock or keep Beta locked before changing the active deployment.
-2. Repoint the Beta deployment target to the recorded prior known-good deployment for its exact commit. Do not rebuild an approximate prior state.
+2. Mark the recorded prior protected deployment as the approved Beta candidate again, or rebuild its exact commit under Beta scope if the provider no longer retains it. Do not create a public alias or rebuild an approximate prior state.
 3. Use a forward repair migration when database compatibility requires it; never rewrite an applied migration or restore Preview data into Beta.
 4. Re-run liveness/readiness and the applicable authorization/security checks.
 5. Append the rollback result and reason to evidence. Preserve the failed deployment, logs, and audit trail unless retention policy requires sanitized disposal.
