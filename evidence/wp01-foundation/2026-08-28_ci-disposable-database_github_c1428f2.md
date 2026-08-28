@@ -1,6 +1,6 @@
 # Gate report: WP01-T08 disposable database CI external proof
 
-**Status:** PASS — implementation proof; external-settings retirement and human review remain follow-up checkpoints
+**Status:** PASS
 
 **Environment:** GitHub Actions PR #6, standard GitHub-hosted `ubuntu-24.04`
 
@@ -14,9 +14,9 @@
 
 **Agent executor:** Codex `/root`
 
-**Human reviewer:** Ahmed authorized the run and read-only provider inventory; final evidence review pending
+**Human reviewer:** Ahmed reviewed the green evidence and explicitly approved the branch-protection update and permanent obsolete-environment deletion on 2026-08-28
 
-**Started/finished (UTC):** 2026-08-27T22:29 / 2026-08-27T22:34
+**Started/finished (UTC):** 2026-08-27T22:29 / 2026-08-28T02:55
 
 ## Scope and acceptance criteria
 
@@ -28,6 +28,7 @@
 | Persistent-project isolation | Workflow contains no Supabase project secret, protected environment, project ref, or remote flag; runner guard and loopback parser remained active | PASS | Candidate source and passing job |
 | Sanitized version evidence | Runtime report contains only runner/runtime/image/extension versions and run ID | PASS | Artifact `9667211781` |
 | Cleanup and report durability | `db:ci:stop --no-backup` and report upload passed under `if: always()` | PASS | Job steps 7-8 |
+| External settings retirement | `main` requires `application`, `dependency-audit`, and `database-ci`; obsolete `ci` environment and its six secrets/two protection rules are absent | PASS | GitHub settings confirmation and post-change read-back, 2026-08-28 |
 
 ## Commands and results
 
@@ -76,10 +77,15 @@
 - The artifact contains no database URL, key, password, token, signed URL, private content, or ordinary chat content.
 - A read-only dashboard inventory confirmed the two existing Free projects remained unchanged during all runs.
 
-## Remaining external settings
+## External settings retirement
 
-The obsolete GitHub `ci` environment still contains six hosted-CI secrets and its historical reviewer/branch restrictions. They are no longer referenced by the candidate workflow. Delete them and retire the environment only after explicit action-time confirmation, then add `database-ci` to the protected `main` required checks. Do not repurpose or rotate either Supabase project before that checkpoint is recorded.
+- Ahmed explicitly approved adding `database-ci` to the protected `main` checks while preserving the pull-request requirement, one approval, `application`, and `dependency-audit`.
+- GitHub confirmed `Branch protection rule settings saved`; a fresh read-back showed all three required checks.
+- Ahmed explicitly approved permanent deletion of the obsolete `ci` environment, including its six unused secrets and two protection rules.
+- GitHub confirmed `Environment deleted`; a fresh read-back reported no repository environments.
+- CI run `33136695074` at documentation head `32e73ee` also passed all three jobs before the external cleanup.
+- Both Supabase Free projects remained unchanged throughout WP01-T08.
 
 ## Decision
 
-The disposable CI implementation satisfies its external behavior, isolation, cleanup, and evidence criteria at `c1428f2`. WP01-T08 remains administratively in progress until the obsolete external GitHub settings are retired, branch protection includes the new database gate, and Ahmed records the ordinary human review.
+PASS. The disposable CI implementation satisfies its behavior, isolation, cleanup, version-evidence, and zero-cost criteria at `c1428f2`; the final documentation head also passed all three jobs. The obsolete hosted-CI environment was removed, `database-ci` is required on `main`, Ahmed completed the ordinary human checkpoint, and WP01-T09 is unblocked.
