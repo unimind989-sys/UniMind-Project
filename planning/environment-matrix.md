@@ -8,17 +8,17 @@ This matrix records safe environment identities and isolation rules. Full projec
 | --- | --- | --- | --- | --- | --- | --- |
 | Workstation development | Next.js process and deterministic in-process mocks; no database service | Synthetic only | N/A | Repository checkout only | Ahmed / Ziad | Available; never shared infrastructure |
 | Database/Auth CI | Complete disposable Supabase stack on a GitHub-hosted `ubuntu-24.04` runner | Synthetic only | Yes, inside the disposable runner only | Per-run GitHub Actions job; no persistent Supabase project or long-lived database secret | Ahmed / Ziad; agent executor | External lifecycle passed at `c1428f2`; obsolete GitHub environment/secrets retired and `database-ci` required on `main` |
-| Preview | Existing Supabase Free project currently labeled development, repurposed only after ephemeral CI passes | Synthetic only; mock providers | No development/CI reset command; forward migrations only | Separate Supabase project and separate Vercel Hobby project/scope | Ahmed / Ziad | WP01-T09 repurposing pending |
-| Beta | Existing Supabase Free project currently labeled CI, repurposed only after ephemeral CI passes | Empty until backup, rights, security, release, and go-live gates; then rights-approved pilot data only | No development/CI reset command; guarded forward migrations only | Separate Supabase project and separate Vercel Hobby project/scope | Ahmed / Ziad | WP01-T09 repurposing pending; locked |
+| Preview | Repurposed Supabase Free project plus protected Vercel Hobby Preview deployment | Synthetic only; mock providers | No development/CI reset command; forward migrations only | Separate Supabase project and separate Vercel Hobby project/scope | Ahmed / Ziad | Provisioned; protected; remote health-command proof remains pending |
+| Beta | Repurposed Supabase Free project plus protected Vercel Hobby Preview deployment | Empty until backup, rights, security, release, and go-live gates; then rights-approved pilot data only | No development/CI reset command; guarded forward migrations only | Separate Supabase project and separate Vercel Hobby project/scope | Ahmed / Ziad | Provisioned, protected, empty, and locked |
 
 Preview and Beta must also receive separate storage namespaces, callback bases, queue/worker namespaces, environment secrets, and deployment authority as those adapters are selected. Unassigned future resources are not silently shared.
 
-## Transition state — do not repurpose yet
+## Transition result — 2026-08-28
 
 | Current resource | Safe fingerprint | Region | Current role | Required transition |
 | --- | --- | --- | --- | --- |
-| Existing Supabase development project | `sha256:5575d1c3d806` | Central EU (Frankfurt), `eu-central-1` | Transitional synthetic hosted development target | After WP01-T08 passes: remove old automation/secrets, rotate credentials, clean and verify synthetic state, relabel and scope as Preview |
-| Existing Supabase CI project | `sha256:6ad364ad022a` | West EU (Ireland), `eu-west-1` | Transitional protected hosted CI target | Disposable CI passed; next remove GitHub secrets/environment dependency, rotate credentials, clean and verify empty state, relabel and scope as locked Beta |
+| Existing Supabase development project | `sha256:5575d1c3d806` | Central EU (Frankfurt), `eu-central-1` | `unimind-preview`; synthetic/mock-only Preview | Repurposed without reset or schema/data deletion; replacement keys and database credential validated; legacy keys and workstation profile retired |
+| Existing Supabase CI project | `sha256:6ad364ad022a` | West EU (Ireland), `eu-west-1` | `unimind-beta`; protected and empty locked Beta | Repurposed without reset or schema/data deletion; replacement keys and database credential validated; legacy keys and workstation profile retired |
 
 Historical WP01-T04/T05/T08 evidence remains valid proof of what those targets did at the recorded commits. It does not prove the revised topology complete. The earlier `$55/month` four-project proposal is superseded, not authorized, and no longer blocks the zero-cost implementation path.
 
@@ -31,7 +31,7 @@ The Vercel inventory found one empty `Unimind` Hobby workspace and no projects. 
 - `unimind-preview`: connected to the public GitHub repository for reviewed pull-request deployments, with only Preview Supabase configuration and synthetic/mock-only settings.
 - `unimind-beta`: no Git integration; exact reviewed commits are deployed explicitly as Vercel preview deployments under Beta-only configuration. Vercel Authentication with Standard Protection keeps those preview/deployment URLs locked on Hobby. No production deployment or production domain is created during WP01-T09.
 
-The repository pins Vercel CLI `59.9.1`. Preview/Beta provider identifiers, keys, URLs that expose internal topology, and protection-bypass values remain outside Git.
+The repository pins Vercel CLI `59.9.1`. Both Vercel projects were rebuilt from commit `4021457` as Preview-targeted deployments after credential rotation. Preview remains the only Git-connected project; Beta remains Git-disconnected and protected. Provider identifiers, keys, URLs that expose internal topology, and protection-bypass values remain outside Git; no bypass remains active or retained.
 
 ## Approval and eligibility checkpoint — 2026-08-27
 
@@ -52,12 +52,12 @@ Official constraints were rechecked on 2026-08-27 and the credential/protection 
 - `/api/health/ready` validates server configuration and returns only `ready` or `not_ready`; it exposes no failing variable name, secret, or topology detail.
 - Both routes are uncached and reject unsupported writes with `405`.
 - `pnpm smoke:deployment` accepts loopback local targets or remote HTTPS Preview targets, rejects unsafe URLs, and verifies liveness, readiness, write denial, application response, and synthetic/mock-only mode.
-- The command passed six checks against a live local Next.js process. External Preview proof remains pending on WP01-T09.
+- The command passed six checks against a live local Next.js process. Authenticated browser inspection proves the external Preview identity and synthetic/mock-only release, while unauthenticated access redirects to Vercel Authentication. The exact remote health command remains pending because Standard Protection requires credentials or a bypass and WP01-T09 forbids creating a bypass secret.
 
 ## Isolation rules
 
 - Workstations use mocks. Database/Auth CI uses a disposable runner-local stack. Neither may borrow Preview or Beta credentials.
-- The transitional `.local/supabase/development.env` and `.local/supabase/ci.env` profiles remain credentials and must not be committed. The candidate workflow no longer reads them; retire the external GitHub secret/environment settings only after the disposable job passes, and retire workstation profiles during the guarded WP01-T09 repurposing.
+- The transitional `.local/supabase/development.env` and `.local/supabase/ci.env` profiles were deleted after the disposable job passed, both replacement key/database paths were validated, and the retired management token was revoked. They must not be recreated for Preview/Beta access.
 - `pnpm verify` remains credential-free, mock-only, and zero paid-provider cost.
 - Preview and Beta references are forbidden in destructive development/CI commands and cannot be relabeled to bypass a guard.
 - Preview receives synthetic data and mock providers only. Beta remains locked and empty until its protected gates pass.

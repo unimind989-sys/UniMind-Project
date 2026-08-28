@@ -762,11 +762,11 @@ git diff --exit-code -- src/types/database.generated.ts
 #### WP01-T09 — Provision isolated zero-cost Preview and Beta
 
 - [x] Record the approved target and transition matrix: mock-only workstations, disposable Supabase CI, and the two existing Supabase Free projects reserved for separate Preview and locked Beta after WP01-T08 passes.
-- [ ] After WP01-T08 passes, retire hosted development/CI automation, remove obsolete CI secrets, rotate both projects' credentials, clean/verify state, and repurpose the current development project as Preview and current CI project as locked Beta.
-- [ ] Prove every Preview/Beta runtime component is externally hosted and remains operable when Ahmed's and Ziad's computers are off. The optional PC-hosted Telegram bot remains noncritical synthetic development/test tooling only.
-- [ ] Keep Preview synthetic/mock-only and Beta locked and empty. Beta real data remains blocked until an approved encrypted backup/restore procedure passes and the later rights/security/release gates pass.
-- [ ] Configure separate Vercel Hobby project scopes, Supabase projects, callbacks, secrets, storage, jobs, and future provider budget scopes. Ahmed reports provider confirmation for current Hobby use; recheck the eligibility triggers recorded in D-21 before deployment.
-- [ ] Make Preview deployment automatic from pull requests without Beta secrets and Beta deployment an approved promotion/rebuild of an already-tested exact commit.
+- [x] After WP01-T08 passes, retire hosted development/CI automation, remove obsolete CI secrets, rotate both projects' credentials, clean/verify state, and repurpose the current development project as Preview and current CI project as locked Beta.
+- [x] Prove every Preview/Beta runtime component is externally hosted and remains operable when Ahmed's and Ziad's computers are off. The optional PC-hosted Telegram bot remains noncritical synthetic development/test tooling only.
+- [x] Keep Preview synthetic/mock-only and Beta locked and empty. Beta real data remains blocked until an approved encrypted backup/restore procedure passes and the later rights/security/release gates pass.
+- [x] Configure separate Vercel Hobby project scopes, Supabase projects, callbacks, secrets, storage, jobs, and future provider budget scopes. Ahmed reports provider confirmation for current Hobby use; recheck the eligibility triggers recorded in D-21 before deployment.
+- [x] Make Preview deployment automatic from pull requests without Beta secrets and Beta deployment an approved promotion/rebuild of an already-tested exact commit.
 - [~] Keep `/api/health/live`, `/api/health/ready`, and `pnpm smoke:deployment` redacted and fail-closed. Local proof passes; external Preview proof remains pending.
 - [~] Rehearse Preview smoke, locked-Beta promotion, and rollback using `docs/runbooks/environment-promotion.md`.
 
