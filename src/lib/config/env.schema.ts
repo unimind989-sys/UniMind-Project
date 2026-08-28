@@ -5,6 +5,10 @@ const allowedPublicNames = new Set([
   "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY",
   "NEXT_PUBLIC_RELEASE_ID",
   "NEXT_PUBLIC_TELEMETRY_ENABLED",
+  // Vercel injects this exact build-time value for its optional observability
+  // packages. UniMind does not consume it, and Zod strips it from our client
+  // configuration while every other unexpected NEXT_PUBLIC_ name stays denied.
+  "NEXT_PUBLIC_VERCEL_OBSERVABILITY_CLIENT_CONFIG",
 ]);
 
 const booleanString = z

@@ -53,6 +53,22 @@ describe("environment contract", () => {
     });
   });
 
+  it("accepts Vercel's exact injected observability config without exposing it", () => {
+    const environment = {
+      ...validEnvironment(),
+      NEXT_PUBLIC_VERCEL_OBSERVABILITY_CLIENT_CONFIG:
+        '{"speedInsights":{"scriptSrc":"/synthetic.js"}}',
+    };
+
+    expect(parseServerEnvironment(environment)).toBeDefined();
+    expect(parseClientEnvironment(environment)).toEqual({
+      NEXT_PUBLIC_SUPABASE_URL: "https://synthetic.supabase.invalid",
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: syntheticCredential,
+      NEXT_PUBLIC_RELEASE_ID: "unit-test",
+      NEXT_PUBLIC_TELEMETRY_ENABLED: false,
+    });
+  });
+
   it.each([
     ["missing", { DATABASE_URL: undefined }, "DATABASE_URL"],
     ["malformed", { MAX_OUTPUT_TOKENS: "unbounded" }, "MAX_OUTPUT_TOKENS"],
