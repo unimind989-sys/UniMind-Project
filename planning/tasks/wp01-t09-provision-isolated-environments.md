@@ -12,7 +12,7 @@
 
 **Branch:** `wp01/environment-provisioning-authorization`
 
-**Updated (UTC):** 2026-08-27
+**Updated (UTC):** 2026-08-28
 
 ## Execution contract
 
@@ -46,7 +46,7 @@
 - [x] Record the target and transition environment matrix, including exact project repurposing order and the Beta backup blocker.
 - [~] Keep the existing redacted liveness/readiness routes and local/Preview smoke seam; external Preview proof remains pending.
 - [~] Keep the exact-commit Preview/Beta promotion and forward-only rollback procedure; external configuration and rehearsal remain pending.
-- [ ] Wait for WP01-T08 disposable CI PASS; then remove obsolete CI secrets and repurpose/rotate the current projects as Preview and locked Beta.
+- [~] WP01-T08 disposable CI passed externally at `c1428f2`; the six obsolete GitHub `ci` secrets/environment and branch-protection update remain before project repurposing.
 - [ ] Configure separate Vercel Hobby project scopes and environment secrets without exposing Beta values to pull-request code.
 - [ ] Prove Preview synthetic/mock-only behavior, Beta locked/empty state, isolation, rollback, and zero paid-resource state.
 
@@ -56,8 +56,8 @@
 
 **Commands:** `scripts/verify-agent-readiness.ps1` passed with 119 names, 37 local links, 22 synchronized decisions, and 102 task contracts. `scripts/show-work-state.ps1` selects reopened WP01-T08. `corepack pnpm verify` passed formatting, lint, strict types, boundaries, CI policy, the 619-file secret scan, 221 unit tests, integration/security/evaluation/load checks, two Playwright checks, the production build, and client-artifact scan. After commit, `scripts/test-agent-handoff.ps1` passed from a clean isolated snapshot and selected WP01-T08. `git show --check` passed. No CI workflow, Supabase/Vercel project, secret, deployment, trial, payment method, paid resource, or external smoke command was changed or run.
 
-**Remaining:** First complete WP01-T08 disposable CI. Then remove obsolete hosted-CI secrets, rotate and repurpose the existing development project as Preview and CI project as locked Beta, configure separate Vercel Hobby scopes, run Preview smoke, prove Beta lock/isolation, and record the backup/restore gate state.
+**Remaining:** Retire the obsolete hosted-CI GitHub settings, rotate and repurpose the existing development project as Preview and CI project as locked Beta, configure separate Vercel Hobby scopes, run Preview smoke, prove Beta lock/isolation, and record the backup/restore gate state. The read-only dashboard inventory confirms both Free projects are active; development is in Frankfurt and CI is in Ireland.
 
-**Next safe action:** Continue with reopened WP01-T08. Do not repurpose either Supabase project yet.
+**Next safe action:** After explicit confirmation, delete only the obsolete GitHub `ci` environment secrets/environment and add `database-ci` to required checks. Then begin the guarded Supabase credential rotation and synthetic-state cleanup; do not place real data in Beta.
 
 **Reviewer action:** Ahmed reviews the architecture/documentation checkpoint and later the ordinary implementation evidence. Separate confirmations from Ahmed and Ziad remain required for protected RLS, deletion, rights, budget/kill-switch, release/unlock, and beta go-live gates.

@@ -7,7 +7,7 @@ This matrix records safe environment identities and isolation rules. Full projec
 | Environment | Runtime/data plane | Data classification | Destructive reset | External scope | Owner | Target state |
 | --- | --- | --- | --- | --- | --- | --- |
 | Workstation development | Next.js process and deterministic in-process mocks; no database service | Synthetic only | N/A | Repository checkout only | Ahmed / Ziad | Available; never shared infrastructure |
-| Database/Auth CI | Complete disposable Supabase stack on a GitHub-hosted `ubuntu-24.04` runner | Synthetic only | Yes, inside the disposable runner only | Per-run GitHub Actions job; no persistent Supabase project or long-lived database secret | Ahmed / Ziad; agent executor | Candidate implemented; external WP01-T08 run required |
+| Database/Auth CI | Complete disposable Supabase stack on a GitHub-hosted `ubuntu-24.04` runner | Synthetic only | Yes, inside the disposable runner only | Per-run GitHub Actions job; no persistent Supabase project or long-lived database secret | Ahmed / Ziad; agent executor | External lifecycle passed at `c1428f2`; obsolete GitHub CI settings retirement pending |
 | Preview | Existing Supabase Free project currently labeled development, repurposed only after ephemeral CI passes | Synthetic only; mock providers | No development/CI reset command; forward migrations only | Separate Supabase project and separate Vercel Hobby project/scope | Ahmed / Ziad | WP01-T09 repurposing pending |
 | Beta | Existing Supabase Free project currently labeled CI, repurposed only after ephemeral CI passes | Empty until backup, rights, security, release, and go-live gates; then rights-approved pilot data only | No development/CI reset command; guarded forward migrations only | Separate Supabase project and separate Vercel Hobby project/scope | Ahmed / Ziad | WP01-T09 repurposing pending; locked |
 
@@ -18,9 +18,11 @@ Preview and Beta must also receive separate storage namespaces, callback bases, 
 | Current resource | Safe fingerprint | Region | Current role | Required transition |
 | --- | --- | --- | --- | --- |
 | Existing Supabase development project | `sha256:5575d1c3d806` | Central EU (Frankfurt), `eu-central-1` | Transitional synthetic hosted development target | After WP01-T08 passes: remove old automation/secrets, rotate credentials, clean and verify synthetic state, relabel and scope as Preview |
-| Existing Supabase CI project | `sha256:6ad364ad022a` | Central EU (Frankfurt), `eu-central-1` | Transitional protected hosted CI target | Keep active until ephemeral CI passes; then remove GitHub secrets/environment dependency, rotate credentials, clean and verify empty state, relabel and scope as locked Beta |
+| Existing Supabase CI project | `sha256:6ad364ad022a` | West EU (Ireland), `eu-west-1` | Transitional protected hosted CI target | Disposable CI passed; next remove GitHub secrets/environment dependency, rotate credentials, clean and verify empty state, relabel and scope as locked Beta |
 
 Historical WP01-T04/T05/T08 evidence remains valid proof of what those targets did at the recorded commits. It does not prove the revised topology complete. The earlier `$55/month` four-project proposal is superseded, not authorized, and no longer blocks the zero-cost implementation path.
+
+The 2026-08-28 read-only dashboard inventory corrected the historical CI-region label above. The project itself was not moved or changed; the earlier evidence remains accurate for its recorded commands and fingerprints but not for that descriptive region label.
 
 ## Approval and eligibility checkpoint — 2026-08-27
 

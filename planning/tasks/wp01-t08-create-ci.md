@@ -26,7 +26,7 @@
 
 **Pass:** A fresh runner needs no Supabase dashboard state or persistent database credential, makes no paid call, cannot reach Preview/Beta, removes its database stack with the job, leaks no secret, and fails closed at every security seam implemented in WP01.
 
-**Evidence:** Disposable candidate: `evidence/wp01-foundation/2026-08-28_ci-disposable-database_local_82d6be8.md`; historical hosted proof: `evidence/wp01-foundation/2026-08-27_ci-clean-database_github_06b6a76.md`; supporting revision: `evidence/wp01-foundation/2026-08-26_ci-security-review_local_ce7750b.md`; original rehearsal: `evidence/wp01-foundation/2026-08-26_ci-clean-database_local_2919e42.md`.
+**Evidence:** External disposable proof: `evidence/wp01-foundation/2026-08-28_ci-disposable-database_github_c1428f2.md`; local candidate: `evidence/wp01-foundation/2026-08-28_ci-disposable-database_local_82d6be8.md`; historical hosted proof: `evidence/wp01-foundation/2026-08-27_ci-clean-database_github_06b6a76.md`; supporting revision: `evidence/wp01-foundation/2026-08-26_ci-security-review_local_ce7750b.md`; original rehearsal: `evidence/wp01-foundation/2026-08-26_ci-clean-database_local_2919e42.md`.
 
 **Rollback:** Keep the transitional hosted CI project and its protected secret scope unchanged until disposable CI passes. Revert only the candidate workflow if it fails; preserve required branch protections.
 
@@ -41,7 +41,7 @@
 - [x] Obtain authorized external CI run and branch-protection review. `main` requires a PR, one human approval, and `application` plus `dependency-audit`; force pushes and deletion are disabled.
 - [x] Replace the historical persistent hosted-CI workflow job with a pinned complete Supabase lifecycle on `ubuntu-24.04`, without a secret expression or protected environment.
 - [x] Add a fail-closed runner guard, explicit local-only CLI actions, two-reset workflow policy, local-status parser, runner-local Auth seam, deterministic type generation, always cleanup, and sanitized reports.
-- [~] Prove two clean resets, stable types, Auth/database/security checks, target isolation, cleanup, and absence of persistent hosted credentials in a real GitHub run.
+- [x] Prove two clean resets, stable types, Auth/database/security checks, target isolation, cleanup, and absence of persistent hosted credentials in a real GitHub run. PR run `33122706939` passed at `c1428f2`.
 - [ ] After the external run passes, remove the obsolete GitHub hosted-CI secrets/environment dependency, then hand WP01-T09 the current CI project for guarded Beta repurposing.
 
 ## Handoff
@@ -52,9 +52,11 @@
 
 **2026-08-28 candidate commands:** The policy tests first failed against the old hosted job, then passed after implementation. `corepack pnpm verify` passed formatting, lint, strict types, boundaries, the revised CI policy, a 623-file secret scan, 225 unit tests, credential-free integration, 8 security tests, 3 evaluation cases, 5 load-profile checks, two Playwright checks, the production build, and client-artifact scan. `corepack pnpm db:ci:start` failed closed on the workstation before invoking Supabase with `Disposable Supabase commands require a GitHub-hosted Linux runner.` A real container lifecycle was not run locally and remains the required external checkpoint.
 
-**Remaining:** Run the candidate on GitHub, correct any runner/image drift, capture sanitized versions and two-reset/Auth/type/cleanup proof, then remove the obsolete external hosted-CI secret/environment settings. WP02-T04 still owns the deliberate RLS-leak regression after the RLS matrix exists.
+**2026-08-28 external result:** PR #6 run `33122706939` passed `dependency-audit`, `application`, and `database-ci` at `c1428f2`. The database job started the complete runner-local stack, reset twice, checked migration parity and generated types, passed 2 Auth/database integration tests and 8 security tests, removed the stack, and uploaded artifact `9667211781` with digest `sha256:e32f9dc756f2bc5b7197180e71f0ca631bb7838be9fda327ab277af439a3e3db`. The artifact records Ubuntu 24 runner image `20260823.283.1`, Docker 28.0.4, Node 24.19.0, Supabase CLI 2.115.0, PostgreSQL 17.6, PostgREST 16.1, vector 0.8.2, and the remaining installed extension versions. Attempts `33120854376` and `33121576946` failed closed only on environment-dependent generated-type metadata; fixes `a0365c2` and `2ec7118` normalized the public schema output before the final pass.
 
-**Next safe action:** Finish local verification and prepare the candidate commit. Keep both existing Supabase projects and external CI secrets/environment in their current state until the new GitHub job passes.
+**Remaining:** With the disposable proof green, remove the six obsolete `ci` environment secrets and retire the obsolete GitHub `ci` environment after explicit deletion confirmation. Add `database-ci` to the required `main` checks with explicit branch-protection authority. WP02-T04 still owns the deliberate RLS-leak regression after the RLS matrix exists.
+
+**Next safe action:** Retire the inventoried GitHub hosted-CI settings after confirmation, then hand WP01-T09 the two unchanged projects for guarded Preview/Beta repurposing. Do not reset, rename, or rotate either project before that checkpoint.
 
 **Reviewer action:** Review the new runner evidence, isolation, cleanup, version pins, and secret removal. Future migration/RLS changes retain the two-person rule.
 

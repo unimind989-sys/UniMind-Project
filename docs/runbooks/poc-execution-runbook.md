@@ -752,10 +752,10 @@ git diff --exit-code -- src/types/database.generated.ts
 
 - [x] Preserve the reviewed least-privilege application, dependency-audit, immutable-pin, frozen-install, sanitized-artifact, secret-scan, and branch-protection controls proven by the 2026-08-27 CI evidence.
 - [x] Replace the credentialed persistent hosted-CI workflow job with a candidate complete disposable Supabase stack on `ubuntu-24.04`. The earlier hosted job remains historical evidence, not completion evidence for revised D-21.
-- [~] Pin and record the runner image and Supabase CLI in version control; capture actual Docker/runtime, PostgreSQL, PostgREST, and extension versions from the external run.
-- [~] Start the stack from version control, reset twice, apply synthetic seed data, run Auth/database/security tests, generate types, fail on a type diff, and remove the stack/volumes under `if: always()`. Local policy/unit proof passes; external container execution is pending.
+- [x] Pin and record the runner image and Supabase CLI in version control; external run `33122706939` captured Docker 28.0.4, PostgreSQL 17.6, PostgREST 16.1, and installed extension versions in sanitized artifact `9667211781`.
+- [x] Start the stack from version control, reset twice, apply synthetic seed data, run Auth/database/security tests, generate types, fail on a type diff, and remove the stack/volumes under `if: always()`. PR run `33122706939` passed the complete lifecycle and cleanup.
 - [~] Remove workflow references to persistent hosted-CI secrets and the protected environment. Keep the actual GitHub secrets/environment and current hosted CI project unchanged until the disposable job passes, then remove the obsolete external settings.
-- [ ] Re-run the complete clean CI path and preserve sanitized evidence. WP02-T04 later adds the deliberate leaking-RLS-policy regression after the RLS matrix exists.
+- [x] Re-run the complete clean CI path and preserve sanitized evidence. See `evidence/wp01-foundation/2026-08-28_ci-disposable-database_github_c1428f2.md`. WP02-T04 later adds the deliberate leaking-RLS-policy regression after the RLS matrix exists.
 
 **Pass:** a fresh standard GitHub-hosted runner reproduces install, credential-free application checks, and a complete disposable Supabase database/Auth gate without persistent database credentials, manual dashboard state, paid calls, secret leakage, Preview/Beta access, or a founder-computer dependency.
 
