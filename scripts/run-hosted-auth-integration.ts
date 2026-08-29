@@ -125,7 +125,7 @@ const childEnvironment: NodeJS.ProcessEnv = {
   GENERATION_PROVIDER_ENABLED: "false",
   EMBEDDING_PROVIDER_ENABLED: "false",
   TRANSCRIPTION_PROVIDER_ENABLED: "false",
-  UNIMIND_HOSTED_AUTH_TEST: "true",
+  UNIMIND_DATABASE_AUTH_TEST: "true",
 };
 const vitestBinary = path.resolve("node_modules/vitest/vitest.mjs");
 const result = spawnSync(

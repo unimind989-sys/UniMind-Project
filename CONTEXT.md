@@ -70,6 +70,18 @@ A PostgreSQL-authoritative unit of background work with an explicit state, idemp
 **Governance action**  
 A deliberate human decision such as approving rights, publishing a unit, unlocking a cohort, setting a budget, or resolving an exceptional failure. It is distinct from routine automated processing.
 
+**Shared founder authority**
+The project authority held by Ahmed and Ziad. Either founder may supply an ordinary human authorization or review; a protected gate requires separate named confirmations from both.
+
+**Shared service identity**
+The intentionally shared provider account used by Ahmed and Ziad. It does not identify which founder acted; Ahmed's separate GitHub contributor account is the sole current personal-account exception.
+
+**Human checkpoint**
+A named confirmation from Ahmed or Ziad that authorizes an agent action or accepts its evidence. The same founder may authorize, operate, and review an ordinary task.
+
+**Protected gate**
+A gate for RLS, raw deletion, rights, budget kill switches, release or unlock, or beta go-live that requires separate named confirmations from both Ahmed and Ziad.
+
 **Work package**  
 A dependency-ordered delivery stage in the execution runbook, abbreviated `WP00` through `WP12`.
 
@@ -77,7 +89,7 @@ A dependency-ordered delivery stage in the execution runbook, abbreviated `WP00`
 A reproducible pass/fail review for a work package. Code or a working screen alone is not a gate result.
 
 **Evidence bundle**  
-The sanitized record of scope, commit, environment, commands, results, deviations, rollback, executor, and reviewer that proves a gate outcome.
+The sanitized record of scope, commit, environment, commands, results, deviations, rollback, agent executor, and required human checkpoint that proves a gate outcome.
 
 ## Relationships
 
@@ -87,7 +99,7 @@ The sanitized record of scope, commit, environment, commands, results, deviation
 - Authorized active READY segments form the unified knowledge pool for a cohort and curriculum unit.
 - Chat answers and Studio artifacts consume evidence packets and retain exact evidence links.
 - Durable jobs automate ingestion, generation, retries, reconciliation, metering, and deletion; humans retain governance actions and exceptional review.
-- A work package is complete only after its tasks, verification, evidence bundle, and required independent gate review are complete.
+- A work package is complete only after its tasks, verification, evidence bundle, and required human checkpoint are complete; protected gates additionally require both founders' named confirmations.
 
 ## Ambiguities to avoid
 

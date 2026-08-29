@@ -4,7 +4,7 @@
 
 **Owner:** Ahmed + Ziad
 
-**Reviewers:** Independent cost reviewer UNASSIGNED; security/data reviewer UNASSIGNED
+**Reviewers:** Ahmed + Ziad — protected budget gate; one founder must also be explicitly named for the security/data review role
 
 **Decision deadline:** UNSCHEDULED — OWNER INPUT REQUIRED
 

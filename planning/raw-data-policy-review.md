@@ -8,7 +8,7 @@ This packet contains the only human inputs needed to move D-10 and D-19 from pro
 
 | Input | Required form | Why it cannot be inferred |
 | --- | --- | --- |
-| Security/data owner and independent reviewer | Named accountable roles | Hold, deletion, and release approval require accountable humans and the two-person rule. |
+| Security/data owner and protected-gate confirmations | Name Ahmed or Ziad as owner and record both founders' confirmations | Hold, deletion, and release approval require accountable humans and the two-person rule. |
 | Decision deadlines | One `YYYY-MM-DD` date for D-10 and D-19 | Agents must not invent governance deadlines. |
 | Real raw absolute cap | Number, unit, and start event | Rights, operations, and failure-recovery trade-offs require owner approval. |
 | Post-acceptance deletion deadline | Number, unit, and `processed_accepted_at` start | Defines the maximum uncertainty window for real deletion. |
@@ -24,7 +24,7 @@ This packet contains the only human inputs needed to move D-10 and D-19 from pro
 ## Agent completion after input
 
 1. Validate every duration has a numeric value, unit, and starting event and that the successful path enqueues deletion immediately.
-2. Validate D-10 thresholds against representative rights-approved fixtures; keep raw deletion disabled until they pass independent review.
+2. Validate D-10 thresholds against representative rights-approved fixtures; keep raw deletion disabled until Ahmed and Ziad separately confirm the protected gate.
 3. Create a production lifecycle profile that rejects missing values and cannot silently fall back to `SYNTHETIC_TEST`.
 4. Update D-10/D-19 and the lifecycle policy, preserving the proposal history and exact approval table.
 5. Run boundary, failure, replay, and release-profile tests and assemble sanitized commit-specific gate evidence.

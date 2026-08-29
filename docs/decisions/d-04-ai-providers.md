@@ -4,7 +4,7 @@
 
 **Owner:** Ahmed + Ziad
 
-**Reviewers:** Security/data reviewer UNASSIGNED; academic reviewer UNASSIGNED; cost reviewer UNASSIGNED
+**Reviewers:** Ahmed or Ziad — security/data, academic, and cost roles must be explicitly assigned; protected budget/live-enablement gates require both founders
 
 **Decision deadline:** UNSCHEDULED — OWNER INPUT REQUIRED
 

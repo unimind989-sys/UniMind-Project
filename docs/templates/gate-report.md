@@ -12,9 +12,9 @@
 
 **Dataset/fixture versions:** <values>
 
-**Executor:** <name>
+**Agent executor:** <agent/task name>
 
-**Independent reviewer:** <name>
+**Human reviewer(s):** <Ahmed or Ziad for ordinary work; Ahmed + Ziad for a protected gate>
 
 **Started/finished (UTC):** <timestamps>
 
@@ -58,6 +58,5 @@ Explain PASS/FAIL. A conditional pass must name the missing criterion, expiry, o
 
 | Name | Role | Decision | Date |
 | --- | --- | --- | --- |
-|  | Executor |  |  |
-|  | Reviewer |  |  |
-
+|  | Agent executor |  |  |
+|  | Human checkpoint |  |  |

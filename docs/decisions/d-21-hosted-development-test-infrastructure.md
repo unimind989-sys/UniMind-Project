@@ -1,76 +1,98 @@
-# Decision D-21: Hosted development and test infrastructure
+# Decision D-21: Zero-cost development, CI, Preview, and Beta infrastructure
 
 **Status:** APPROVED
 
 **Owner:** Ahmed
 
-**Reviewers:** Ziad (project awareness); database/security reviewer required for later RLS and grant gates
+**Reviewers:** Ziad (project awareness); later protected RLS, deletion, rights, budget, release/unlock, and beta go-live gates require separate Ahmed and Ziad confirmations
 
-**Decision deadline:** N/A — APPROVED 2026-08-25
+**Decision deadline:** N/A — revised direction APPROVED 2026-08-27
 
-**Last reviewed:** 2026-08-25
+**Last reviewed:** 2026-08-27
 
-**Blocks:** NONE — WP01-T04 and downstream tasks must conform
+**Blocks:** WP01-T08 through WP01-T11 must implement and verify the revised topology before WP02 starts
 
 ## Context
 
-The original WP01 workflow required Docker, WSL2, hardware virtualization, and a local Supabase stack. The approved workstations cannot provide that runtime, and founder computers must not become infrastructure dependencies. Supabase Auth and PostgreSQL remain the approved database architecture, so the development and CI database/Auth workflow needs an externally hosted replacement without weakening migration, reset, RLS, or isolation evidence.
+The workstations cannot run the Docker-based Supabase stack and must never become shared infrastructure dependencies. The first approved workaround used one hosted Supabase project for development and another for CI, with two additional projects proposed for Preview and Beta. That design is isolated but exceeds the two-project Supabase Free allowance.
 
-The computers may still run editors, the Next.js development process, unit tests, browser tests, and deterministic in-process mocks. A future Telegram bot may run on a founder computer only as noncritical development/test tooling: the PoC must not depend on it, it must not process real student or private source data, and it cannot satisfy a preview, beta, operations, or release gate.
+Ahmed approved a revised plan that remains at zero platform cost as far as possible. Ahmed also reports that he received confirmation from Vercel that the current UniMind phase may use Hobby. The repository does not claim to have inspected that private correspondence; its applicability must be rechecked if the project introduces revenue, payments, advertising, donations, paid contributors, customer work, or another material scope change.
+
+Supabase Auth and PostgreSQL remain the approved database architecture. The two existing Supabase Free projects are sufficient when database/Auth CI is made ephemeral and the persistent projects are reserved for Preview and locked Beta.
 
 ## Non-negotiable requirements
 
-- Development database/Auth uses an approved externally hosted Supabase target containing synthetic data only.
-- Database-backed CI uses an isolated hosted Supabase project or disposable branch that cannot reach development, preview, or beta data.
-- Destructive reset automation accepts only an explicitly named `development` or `ci` target and requires an exact target-specific confirmation value.
-- Preview and beta keep separate projects, secrets, callbacks, storage, jobs, budgets, and deployment controls.
-- No founder computer hosts a database, Auth service, storage service, queue, required worker, scheduler, monitoring service, or other shared/runtime dependency.
-- `pnpm verify` remains credential-free, mock-only, and zero paid-provider cost. Hosted database gates are named separately and run only when an approved synthetic target and secret scope are available.
-- Migrations, seed data, generated types, and database/security evidence remain reproducible from version control; dashboard-only schema repair is prohibited.
+- Workstation development runs the Next.js process and deterministic in-process mocks only. It requires no persistent database or infrastructure service.
+- Database/Auth CI creates a complete ephemeral Supabase stack on a standard GitHub-hosted Ubuntu runner, applies migrations and synthetic seed data, runs Auth/database/security checks, and destroys the stack with the runner.
+- CI does not depend on a founder computer, a persistent hosted database, Supabase branching, or long-lived Supabase credentials.
+- The two persistent Supabase Free projects become separate Preview and Beta projects only after ephemeral CI passes and the repurposing procedure rotates credentials and removes the former development/CI scopes.
+- Preview is synthetic/mock-only and receives forward migrations. Development/CI destructive reset commands must never target it.
+- Beta remains locked and empty of real pilot data until rights, backup/restore, security, release, and two-founder go-live gates pass.
+- Preview and Beta keep separate projects, secrets, callbacks, storage, jobs, budgets, and deployment controls. A shared project or branch is insufficient.
+- Vercel Hobby may be used only while Ahmed's reported provider confirmation and the plan's eligibility conditions remain applicable. No paid plan, trial, add-on, or billable resource is authorized by this decision.
+- `pnpm verify` remains credential-free, mock-only, and zero paid-provider cost.
+- Migrations, synthetic seed data, generated types, and security evidence remain reproducible from version control; dashboard-only schema repair is prohibited.
 
 ## Options evaluated
 
-| Option | Quality/fit | Security/rights | Reliability | Cost | Migration/lock-in | Evidence |
-| --- | --- | --- | --- | --- | --- | --- |
-| Docker-based local Supabase | Matches Supabase locally but is unavailable on the approved workstations | Synthetic-only when configured correctly | Blocked by machine virtualization/runtime constraints | No service charge; significant workstation setup burden | Low | WP01-T04 machine preflight |
-| Hosted Supabase development target plus isolated hosted CI target | Matches the approved Auth/PostgreSQL/RLS platform and removes workstation hosting | Synthetic-only targets with explicit environment isolation | Available independently of founder-computer runtime state | Must fit the approved hosting envelope | Low; migrations and adapters remain portable | Ahmed approval, 2026-08-25 |
-| Replace Supabase with another database/Auth platform | Could remove the local tooling constraint | Requires a new Auth, grants, RLS, migration, and security evaluation | Unknown | Unknown | High architecture change | Not justified by the hosting constraint |
+| Option | Quality and isolation | Zero-cost fit | Decision |
+| --- | --- | --- | --- |
+| Four persistent Supabase projects for development, CI, Preview, and Beta | Strong persistent isolation | Exceeds the current two-project Free allowance | Superseded |
+| Two persistent Free projects for Preview/Beta plus ephemeral Supabase CI | Preserves Preview/Beta isolation and exercises the real Supabase stack | Fits the current Free allowance and public-repository standard GitHub runner terms | Chosen |
+| Share one Supabase project between Preview and Beta | Weakens secrets, reset, data, and release isolation | Fits Free | Rejected |
+| Rotate one persistent project among development, CI, Preview, and Beta | Creates unsafe state transitions and unreliable evidence | Fits Free | Rejected |
+| Replace Supabase | Requires a new Auth, grants, RLS, migration, and security evaluation | Unknown | Not justified |
 
 ## Decision
 
-Use externally hosted Supabase infrastructure for development database/Auth and database-backed CI. Development uses a synthetic-only hosted target. CI uses a separate project or disposable branch with an isolated secret scope and reset lifecycle. Preview and beta remain separate externally hosted environments.
+Use the following zero-cost-first topology:
 
-Local infrastructure services are not part of the UniMind workflow. Workstations may run application development processes and deterministic mocks only. The optional future Telegram bot exception is development/test-only and must remain noncritical and free of real pilot data.
+1. **Workstation development:** local application process plus deterministic mocks; no database service.
+2. **Database/Auth CI:** disposable full Supabase stack on a standard GitHub-hosted Ubuntu runner for each gated run.
+3. **Preview:** one existing Supabase Free project, repurposed from the current development project after the CI migration is proven; synthetic data and mock providers only.
+4. **Beta:** the other existing Supabase Free project, repurposed from the current CI project after the CI migration is proven; locked and empty until later protected gates.
+5. **Web deployment:** separate Vercel Hobby projects or equivalently isolated Vercel project scopes for Preview and Beta, subject to the reported provider confirmation and continued eligibility.
+
+The current hosted development and hosted CI projects remain transitional and must not be repurposed until WP01-T08 proves the ephemeral runner path. ADR-0001 records the architecture consequences.
 
 ## Consequences
 
 ### Benefits
 
-- Removes Docker, WSL2, and firmware virtualization from the project prerequisite chain.
-- Exercises migrations, Auth, PostgreSQL, extensions, grants, and RLS against the hosted platform that the PoC will actually use.
-- Keeps every database/Auth environment available independently of either founder computer.
+- Keeps the platform plan at zero recurring cost under the currently documented allowances.
+- Preserves the essential Preview/Beta database and secret boundary.
+- Removes persistent development/CI databases and long-lived CI database credentials.
+- Keeps database tests independent of founder computers and exercises migrations, Auth, PostgreSQL, grants, and RLS against a complete Supabase stack.
 
 ### Costs and risks
 
-- Development and database-backed CI require network access, scoped credentials, and externally provisioned capacity.
-- A mistaken remote reset would be destructive; repository commands therefore deny preview/beta targets and require explicit target confirmation.
-- CI isolation may require a dedicated project, disposable branch, serialization, or approved capacity depending on the selected Supabase plan.
+- CI will be slower and more sensitive to runner image, Docker, and dependency-download reliability.
+- There is no persistent hosted development database; developers use mocks and diagnose database behavior through CI or a deliberately approved synthetic Preview check.
+- Supabase Free does not include branching or automatic backups and may pause inactive projects. Beta may not receive real data until an approved encrypted backup/restore procedure is implemented and rehearsed, or a later paid capacity decision is approved.
+- Repurposing the existing projects is a one-time sensitive transition requiring evidence, credential rotation, secret cleanup, and exact target verification.
+- Vercel eligibility is conditional. A commercial or organizational scope change triggers review before continued use or deployment.
 
 ## Implementation contract
 
-- Configuration keys: `UNIMIND_DB_ENVIRONMENT`, `UNIMIND_SUPABASE_PROJECT_REF`, `UNIMIND_DB_RESET_CONFIRMATION`, `SUPABASE_ACCESS_TOKEN`, and `SUPABASE_DB_PASSWORD`; secret values stay in approved ignored workstation-session or CI secret stores.
-- Adapter/interface: existing Supabase clients and PostgreSQL migrations remain authoritative; no provider-specific business logic enters domain modules.
-- Affected migrations/files: WP01-T04 through WP01-T11 contracts, environment matrix, contributor tutorial, database command wrapper, CI workflow, migrations, synthetic seed, generated types, and evidence.
-- Tests/evaluation required: target-guard unit tests, two clean hosted resets, populated upgrade, migration-list parity, stable generated types, Auth/RLS integration tests, forbidden-target tests, and CI isolation proof.
-- Observability required: environment name, safe project identity/fingerprint, migration version, reset/run identity, result, and correlation ID without credentials or connection strings.
-- Rollback/disable action: revoke the affected development/CI credentials, stop database-backed jobs, preserve versioned migrations, provision a clean isolated hosted target, replay migrations/seed, and regenerate types. Never recover by pointing development or CI at preview/beta.
+- WP01-T08 replaces the credentialed persistent hosted-CI job with a pinned ephemeral Supabase runner job and proves two clean resets, stable generated types, Auth/database/security checks, isolation, cleanup, and no hosted database secrets.
+- Only after WP01-T08 passes may WP01-T09 repurpose the current development project as Preview and the current CI project as locked Beta. Both projects require credential rotation, old secret removal, safe fingerprint recording, and new scope verification.
+- Preview uses forward-only migration automation and synthetic/mock-only smoke checks. Beta migration/promotion remains guarded and locked.
+- Vercel Preview and Beta configuration must keep environment variables, deployment authority, callbacks, and domains isolated. Pull-request code receives no Beta secrets.
+- The environment matrix records the transition state as well as the approved target state without exposing full identifiers or credentials.
+- Required evidence includes the runner image and pinned CLI versions, clean-run reproducibility, target cleanup, secret scan, project repurposing checklist, Preview smoke, locked-Beta readiness, and backup/restore blocker state.
+- Rollback before repurposing keeps the transitional hosted CI target active. Rollback after repurposing disables the affected deployment, rotates credentials, preserves migrations/evidence, and provisions a clean target only under a newly approved capacity decision; Preview and Beta are never pointed at each other's data.
 
 ## Revisit triggers
 
-- Supabase plan/capability change, hosted development or CI cost exceeding the approved envelope, inability to isolate/reset safely, repeated network unreliability, security review failure, or an approved replacement for the Supabase architecture.
+- Revenue, payments, advertising, donations, paid contributors, customer work, a Vercel policy/confirmation change, or any uncertainty about Hobby eligibility.
+- Supabase Free allowance, pausing, backup, branching, CI compatibility, or quota changes.
+- Runner unreliability, unacceptable CI duration, inability to test the hosted Supabase behavior faithfully, or a security review failure.
+- Beta needs real data before a free encrypted backup/restore path is implemented and rehearsed.
+- Approved spend or a replacement infrastructure decision makes a stronger topology available.
 
-## Approval
+## Approval and revision history
 
 | Name | Role | Decision | Date |
 | --- | --- | --- | --- |
-| Ahmed | Product/architecture owner | Approved hosted Supabase development and isolated hosted CI; rejected local infrastructure | 2026-08-25 |
+| Ahmed | Product/architecture owner | Approved hosted Supabase development and isolated hosted CI; rejected local workstation infrastructure | 2026-08-25 |
+| Ahmed | Product/architecture owner | Superseded the four-persistent-project direction with the zero-cost-first topology and reported Vercel confirmation for the current Hobby use | 2026-08-27 |

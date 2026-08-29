@@ -11,7 +11,7 @@ This is the complete human-input list for D-04/D-05. Agents own validation, calc
 | Decision deadlines | `YYYY-MM-DD` for D-04 and D-05 |
 | Canonical currency | One ISO 4217 code plus dated exchange-rate source/evidence rule |
 | Hard caps | Total PoC, weekly, each provider/action, source preflight, per-user daily, and single request; each with amount, currency, scope, and period/start event |
-| Paid-enablement authority | Two named accountable approvers and an independent budget/kill-switch reviewer |
+| Paid-enablement authority | Separate named confirmations from Ahmed and Ziad; one founder also records the budget/kill-switch review role |
 | Alert delivery | Approved D-20 recipients/channels for 50%, 75%, 90%, and 100% events |
 | Provider candidates | Provider/model/config/region per action, after rights and frozen evaluation data exist |
 | Confirmation guard | Exact approved live environment profile and deliberate command-time confirmation mechanism |

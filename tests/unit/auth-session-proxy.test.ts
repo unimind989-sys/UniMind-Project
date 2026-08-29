@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+import { unstable_doesMiddlewareMatch } from "next/experimental/testing/server.js";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const syntheticUrl = "https://synthetic.supabase.invalid";
@@ -60,6 +61,32 @@ beforeEach(() => {
 });
 
 describe("Supabase session proxy", () => {
+  it("keeps health probes independent from Auth refresh", async () => {
+    const { config } = await import("../../src/proxy");
+
+    expect(
+      unstable_doesMiddlewareMatch({
+        config,
+        nextConfig: {},
+        url: "/api/health/live",
+      }),
+    ).toBe(false);
+    expect(
+      unstable_doesMiddlewareMatch({
+        config,
+        nextConfig: {},
+        url: "/api/health/ready",
+      }),
+    ).toBe(false);
+    expect(
+      unstable_doesMiddlewareMatch({
+        config,
+        nextConfig: {},
+        url: "/dashboard",
+      }),
+    ).toBe(true);
+  });
+
   it("refreshes request and response cookies with private no-cache headers", async () => {
     mocks.getClaims.mockImplementation(async () => {
       capturedAdapter.setAll(

@@ -30,7 +30,7 @@ jobs:
         "WRITE_PERMISSION",
         "UNPINNED_ACTION",
         "APPLICATION_CONCURRENCY_MISSING",
-        "HOSTED_JOB_MISSING",
+        "DATABASE_CI_JOB_MISSING",
       ]),
     );
     expect(
@@ -40,38 +40,76 @@ jobs:
     ).toContain("FORBIDDEN_TRIGGER");
   });
 
-  it("rejects a hosted database job that can run pull-request code", async () => {
+  it("requires disposable database CI on pull requests", async () => {
     const workflow = await readFile(".github/workflows/ci.yml", "utf8");
     const unsafe = workflow.replace(
-      "if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')",
-      "if: github.event_name == 'pull_request'",
+      "    needs: application\n",
+      "    needs: application\n    if: github.ref == 'refs/heads/main'\n",
     );
 
-    expect(auditCiWorkflow(unsafe)).toContain("HOSTED_TRIGGER_SCOPE_MISSING");
+    expect(auditCiWorkflow(unsafe)).toContain("DATABASE_CI_TRIGGER_UNSAFE");
   });
 
-  it("rejects hosted credentials exposed to every job step", async () => {
+  it("rejects secrets and protected environments in disposable database CI", async () => {
     const workflow = await readFile(".github/workflows/ci.yml", "utf8");
-    const unsafe = workflow.replace(
-      "      UNIMIND_DB_ENVIRONMENT: ci\n",
+    const withSecret = workflow.replace(
+      "  database-ci:\n",
       [
-        "      UNIMIND_DB_ENVIRONMENT: ci",
-        "      LEAK_PROBE: ${{secrets.UNIMIND_CI_SUPABASE_ACCESS_TOKEN}}",
+        "  database-ci:",
+        "    env:",
+        "      LEAK_PROBE: ${{ secrets.UNIMIND_CI_SUPABASE_ACCESS_TOKEN }}",
         "",
       ].join("\n"),
     );
-
-    expect(auditCiWorkflow(unsafe)).toContain("HOSTED_SECRET_SCOPE_UNSAFE");
-  });
-
-  it("rejects the write-all shorthand at job scope", async () => {
-    const workflow = await readFile(".github/workflows/ci.yml", "utf8");
-    const unsafe = workflow.replace(
-      "  hosted-ci:\n",
-      "  hosted-ci:\n    permissions: write-all\n",
+    const withEnvironment = workflow.replace(
+      "  database-ci:\n",
+      "  database-ci:\n    environment: ci\n",
     );
 
-    expect(auditCiWorkflow(unsafe)).toContain("WRITE_PERMISSION");
+    expect(auditCiWorkflow(withSecret)).toContain("DATABASE_CI_SECRET_PRESENT");
+    expect(auditCiWorkflow(withEnvironment)).toContain(
+      "DATABASE_CI_ENVIRONMENT_PRESENT",
+    );
+  });
+
+  it("requires an explicit GitHub-hosted Ubuntu image and cancellable isolation", async () => {
+    const workflow = await readFile(".github/workflows/ci.yml", "utf8");
+
+    expect(
+      auditCiWorkflow(workflow.replaceAll("ubuntu-24.04", "self-hosted")),
+    ).toEqual(
+      expect.arrayContaining([
+        "DATABASE_CI_RUNNER_UNSAFE",
+        "APPLICATION_RUNNER_UNPINNED",
+      ]),
+    );
+    expect(
+      auditCiWorkflow(
+        workflow.replace(
+          "group: database-ci-${{ github.workflow }}-${{ github.ref }}",
+          "group: shared-database",
+        ),
+      ),
+    ).toContain("DATABASE_CI_CONCURRENCY_MISSING");
+  });
+
+  it("requires the full disposable lifecycle and two resets", async () => {
+    const workflow = await readFile(".github/workflows/ci.yml", "utf8");
+    const withoutSecondReset = workflow.replace(
+      "          corepack pnpm db:ci:reset\n          corepack pnpm db:ci:reset\n",
+      "          corepack pnpm db:ci:reset\n",
+    );
+    const withoutCleanup = workflow.replace(
+      "        if: always()\n        run: corepack pnpm db:ci:stop\n",
+      "        run: echo cleanup-removed\n",
+    );
+
+    expect(auditCiWorkflow(withoutSecondReset)).toContain(
+      "DATABASE_CI_RESET_COUNT_UNSAFE",
+    );
+    expect(auditCiWorkflow(withoutCleanup)).toContain(
+      "DATABASE_CI_CLEANUP_MISSING",
+    );
   });
 
   it("requires a zero-cost pull-request dependency audit", async () => {
@@ -84,7 +122,7 @@ jobs:
     expect(auditCiWorkflow(unsafe)).toContain("DEPENDENCY_AUDIT_MISSING");
   });
 
-  it("does not accept the paid private-repository dependency review action", async () => {
+  it("does not accept the paid dependency review action", async () => {
     const workflow = await readFile(".github/workflows/ci.yml", "utf8");
     const unsupported = workflow.replace(
       "        run: corepack pnpm audit --audit-level high --prod",
@@ -94,53 +132,72 @@ jobs:
     expect(auditCiWorkflow(unsupported)).toContain("DEPENDENCY_AUDIT_MISSING");
   });
 
-  it("requires immutable-lockfile installation in both execution jobs", async () => {
+  it("requires immutable-lockfile installation and Corepack in both execution jobs", async () => {
     const workflow = await readFile(".github/workflows/ci.yml", "utf8");
-    const unsafe = workflow.replaceAll(
-      "corepack pnpm install --frozen-lockfile",
-      "corepack pnpm install",
-    );
 
-    expect(auditCiWorkflow(unsafe)).toContain("FROZEN_INSTALL_MISSING");
+    expect(
+      auditCiWorkflow(
+        workflow.replaceAll(
+          "corepack pnpm install --frozen-lockfile",
+          "corepack pnpm install",
+        ),
+      ),
+    ).toContain("FROZEN_INSTALL_MISSING");
+    expect(
+      auditCiWorkflow(
+        workflow.replaceAll(
+          "      - name: Activate the pinned package manager\n        run: corepack enable\n",
+          "",
+        ),
+      ),
+    ).toContain("COREPACK_ENABLE_MISSING");
   });
 
-  it("requires Corepack shims before pnpm in both execution jobs", async () => {
+  it("rejects caching and incomplete application gates", async () => {
     const workflow = await readFile(".github/workflows/ci.yml", "utf8");
-    const unsafe = workflow.replaceAll(
-      "      - name: Activate the pinned package manager\n        run: corepack enable\n",
-      "",
-    );
 
-    expect(auditCiWorkflow(unsafe)).toContain("COREPACK_ENABLE_MISSING");
+    expect(
+      auditCiWorkflow(
+        workflow.replace(
+          "          node-version-file: .nvmrc\n",
+          "          node-version-file: .nvmrc\n          cache: pnpm\n",
+        ),
+      ),
+    ).toContain("CACHE_CONFIGURED");
+    expect(
+      auditCiWorkflow(
+        workflow.replace(
+          "        run: corepack pnpm verify\n",
+          "        run: corepack pnpm typecheck\n",
+        ),
+      ),
+    ).toContain("APPLICATION_GATE_MISSING");
   });
 
-  it("rejects dependency or build caching from the foundation workflow", async () => {
+  it("requires Chromium and sanitized always-upload reports", async () => {
     const workflow = await readFile(".github/workflows/ci.yml", "utf8");
-    const unsafe = workflow.replace(
-      "          node-version-file: .nvmrc\n",
-      "          node-version-file: .nvmrc\n          cache: pnpm\n",
+
+    expect(
+      auditCiWorkflow(
+        workflow.replace(
+          "        run: corepack pnpm exec playwright install --with-deps chromium\n",
+          "        run: echo browser-not-installed\n",
+        ),
+      ),
+    ).toContain("CHROMIUM_INSTALL_MISSING");
+    expect(
+      auditCiWorkflow(
+        workflow.replaceAll(
+          "        if: always()\n",
+          "        if: success()\n",
+        ),
+      ),
+    ).toEqual(
+      expect.arrayContaining([
+        "APPLICATION_REPORT_UPLOAD_MISSING",
+        "DATABASE_CI_REPORT_UPLOAD_MISSING",
+        "DATABASE_CI_CLEANUP_MISSING",
+      ]),
     );
-
-    expect(auditCiWorkflow(unsafe)).toContain("CACHE_CONFIGURED");
-  });
-
-  it("requires the complete credential-free application gate", async () => {
-    const workflow = await readFile(".github/workflows/ci.yml", "utf8");
-    const unsafe = workflow.replace(
-      "        run: corepack pnpm verify\n",
-      "        run: corepack pnpm typecheck\n",
-    );
-
-    expect(auditCiWorkflow(unsafe)).toContain("APPLICATION_GATE_MISSING");
-  });
-
-  it("requires the pinned Chromium runtime on the fresh runner", async () => {
-    const workflow = await readFile(".github/workflows/ci.yml", "utf8");
-    const unsafe = workflow.replace(
-      "        run: corepack pnpm exec playwright install --with-deps chromium\n",
-      "        run: echo browser-not-installed\n",
-    );
-
-    expect(auditCiWorkflow(unsafe)).toContain("CHROMIUM_INSTALL_MISSING");
   });
 });

@@ -10,6 +10,7 @@ This directory separates authoritative plans, executable procedures, and reusabl
 ## Runbooks
 
 - [PoC execution runbook](runbooks/poc-execution-runbook.md) — dependency-ordered build tutorial, atomic task list, verification gates, rollback guidance, troubleshooting, and final release checks.
+- [Environment promotion](runbooks/environment-promotion.md) — guarded Preview smoke, exact-commit locked Beta candidate, and forward-only rollback procedure.
 
 ## Agent guidance
 

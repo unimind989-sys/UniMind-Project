@@ -1,5 +1,24 @@
 import { expect, test } from "@playwright/test";
 
+test("health routes are minimal, uncached, and read-only", async ({
+  request,
+}) => {
+  for (const [path, status] of [
+    ["/api/health/live", "live"],
+    ["/api/health/ready", "ready"],
+  ] as const) {
+    const response = await request.get(path);
+
+    expect(response.status()).toBe(200);
+    expect(await response.json()).toEqual({ status });
+    expect(response.headers()["cache-control"]).toContain("no-store");
+    expect(response.headers()["pragma"]).toBe("no-cache");
+
+    const forbiddenWrite = await request.post(path);
+    expect(forbiddenWrite.status()).toBe(405);
+  }
+});
+
 test("foundation stays synthetic and mock-only in the browser", async ({
   page,
 }) => {

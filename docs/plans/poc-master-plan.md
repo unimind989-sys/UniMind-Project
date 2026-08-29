@@ -4,7 +4,7 @@
 
 **Status:** Updated implementation plan
 
-**Last updated:** 16 August 2026
+**Last updated:** 27 August 2026
 
 ## 1. Purpose and authority
 
@@ -73,7 +73,7 @@ The PoC codebase is the first production version. It must use:
 - Strict authorization and Row Level Security.
 - Durable, idempotent background jobs.
 - Provider adapters so vendors can be changed without rewriting product logic.
-- Environment separation for hosted development database/Auth, isolated hosted CI, preview, and beta production.
+- Environment separation for deterministic mock workstation development, ephemeral database/Auth CI, persistent synthetic Preview, and locked Beta production.
 - Automated tests, deployment checks, telemetry, backups, and incident controls.
 - Stateless web instances and horizontally scalable workers where possible.
 - Configuration-driven catalog and terminology.
@@ -92,6 +92,8 @@ The normal path from accepted upload to student-ready knowledge must require zer
 6. Retries, timeout recovery, stale-job recovery, usage accounting, cost limits, and routine notifications run automatically.
 
 Ahmed and Ziad retain explicit governance controls: they create campaigns, configure the catalog, publish or hide curriculum units, unlock or lock cohorts, manage rights, and intervene in exceptional failures. These deliberate governance decisions are not routine processing steps and do not weaken the zero-manual-operation requirement.
+
+UniMind uses shared founder authority and shared service identities. Coding agents are the implementation executors. Either Ahmed or Ziad may authorize, perform the necessary signed-in actions for, inspect, and approve an ordinary agent-executed task; this is one named human checkpoint and does not require a different reviewer. All project reviewer roles are filled by Ahmed or Ziad, with the applicable academic, security/data, cost, or operations role named when required. The founders intentionally share GitHub, Supabase, Google, and future service accounts, with Ahmed's separate GitHub contributor account as the current exception, so provider account identity is not proof of which founder acted. RLS, raw deletion, rights, budget kill switches, release/unlock, and beta go-live remain protected gates and require separate named confirmations from both Ahmed and Ziad.
 
 The PoC will be a free, controlled beta. Manual receipt verification and manual payment approval are removed from the PoC. Commercial payments are deferred until an automated payment provider and automated reconciliation flow are selected.
 
@@ -303,14 +305,14 @@ Admins do not manually perform routine extraction, transcription, deletion, chun
 - **Read paths:** authenticated Server Components or server-only data services.
 - **Mutations:** Server Actions for normal mutations; Route Handlers for streaming chat, uploads, provider callbacks, and webhooks.
 - **Runtime:** Node.js for provider SDKs, streaming, and processing interfaces.
-- **Database/Auth:** externally hosted Supabase Auth and PostgreSQL in every database-backed environment.
+- **Database/Auth:** Supabase Auth and PostgreSQL in every database-backed environment: disposable in CI and externally hosted in Preview/Beta.
 - **Authorization:** Row Level Security on exposed tables, explicit grants, server-side checks, and narrowly scoped functions.
 - **Storage:** provider-agnostic private object storage with temporary-raw and durable-processed namespaces.
 - **Background processing:** durable queue and independently scalable workers.
-- **Deployment:** workstation application development, externally hosted synthetic development database/Auth, isolated externally hosted CI database/Auth, externally hosted preview, and externally hosted beta-production environments.
+- **Deployment:** mock-only workstation application development, a disposable full Supabase stack on standard GitHub-hosted CI runners, and two persistent Supabase Free projects for separate externally hosted Preview and locked Beta environments. Preview and Beta use separate Vercel Hobby project scopes while the reported provider confirmation and eligibility conditions remain applicable.
 - **Observability:** structured logs, correlation IDs, job events, provider usage, health checks, error reporting, and cost dashboards.
 
-Ahmed's and Ziad's computers are development workstations only, never PoC infrastructure targets. They may run editors, the Next.js development process, browser/test tools, and deterministic in-process mocks. No database, Auth service, object storage, queue, required worker, scheduler, monitoring service, notification service, optional orchestrator such as n8n, or shared preview/beta component may run from or depend on either founder computer. Every database-backed or shared/runtime component must use approved external infrastructure and remain operable when both computers are off.
+Ahmed's and Ziad's computers are development workstations only, never PoC infrastructure targets. They may run editors, the Next.js development process, browser/test tools, and deterministic in-process mocks. No database, Auth service, object storage, queue, required worker, scheduler, monitoring service, notification service, optional orchestrator such as n8n, or shared preview/beta component may run from or depend on either founder computer. Disposable database/Auth CI runs on an external GitHub-hosted runner; every persistent shared/runtime component uses approved external infrastructure and remains operable when both computers are off.
 
 A future Telegram bot may run on a founder computer only as noncritical development/test tooling. The PoC must not depend on it, it must not process real student data or private source material, and it cannot satisfy a preview, beta, operations, or release gate. An operational UniMind Telegram bot must use approved external hosting.
 
@@ -457,7 +459,7 @@ Exit gate: cohorts, source paths, rights, deletion rules, cost caps, evaluation 
 **Estimated effort:** 2 weeks
 
 - Next.js/TypeScript repository with lint, types, tests, CI, and environment validation.
-- Hosted synthetic development database/Auth, isolated hosted CI, preview, and beta environments; workstation application development requires no local infrastructure service.
+- Deterministic mock workstation development, disposable full-stack Supabase CI, and two persistent Supabase Free projects for separate synthetic Preview and locked Beta; workstation development requires no local infrastructure service.
 - Versioned Supabase migrations, backups, auth, roles, audit, catalog, memberships, release/publication, and RLS.
 - Bilingual shell, subject workspace, admin shell, and Batch Leader shell.
 - Mock providers and structured telemetry.
@@ -640,7 +642,8 @@ Video adds a processor behind the existing pipeline; it must not create a separa
 | D-18 | Raw and processed object storage provider | Filesystem/in-memory test adapter with synthetic data until selected | Security/data owner (unassigned) | Open |
 | D-19 | Retention periods and deletion deadlines | Short synthetic-test values until exact periods are approved | Security/data owner (unassigned) | Open |
 | D-20 | Notification and incident channels | In-process deterministic test sink until operational channels are approved | Ahmed + Ziad | Open |
-| D-21 | Development/test infrastructure | Hosted Supabase development database/Auth plus isolated hosted CI; no local infrastructure services | Ahmed | Approved direction |
+| D-21 | Zero-cost development, CI, Preview, and Beta infrastructure | Workstation mocks, ephemeral Supabase CI, and two persistent Supabase Free projects for separate Preview/Beta; conditional Vercel Hobby use (revised 2026-08-27) | Ahmed | Approved direction |
+| D-22 | Founder authorization and shared service identity | Shared service accounts; either founder may satisfy an ordinary human checkpoint; protected gates still require both named confirmations | Ahmed + Ziad — shared founder authority | Approved direction |
 
 ## 16. Immediate actions
 

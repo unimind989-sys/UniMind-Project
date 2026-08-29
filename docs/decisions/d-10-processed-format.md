@@ -4,7 +4,7 @@
 
 **Owner:** Ahmed + Ziad
 
-**Reviewers:** Academic reviewer UNASSIGNED; security/data reviewer UNASSIGNED
+**Reviewers:** Ahmed or Ziad — academic and security/data roles must be explicitly assigned before approval
 
 **Decision deadline:** UNSCHEDULED — OWNER INPUT REQUIRED
 

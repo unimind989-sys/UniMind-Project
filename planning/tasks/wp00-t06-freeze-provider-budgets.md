@@ -8,7 +8,7 @@
 
 **Owner:** Codex `/root` for preparation; Ahmed + Ziad for D-04/D-05
 
-**Reviewer:** UNASSIGNED — TWO-PERSON BUDGET GATE BLOCKED
+**Reviewer:** Ahmed + Ziad — protected budget gate blocked pending both confirmations
 
 **Branch:** `main` (no delivery branch requested)
 
@@ -26,7 +26,7 @@
 
 **Pass:** A reviewer can trace reservation through settlement at every threshold; all real adapters fail closed until approved nonzero configuration and two-person evidence exist; zero-cost smoke produces no provider traffic and zero ledger cost.
 
-**Evidence:** Create `evidence/wp00-pilot/YYYY-MM-DD_provider-budget_local_<short-sha>.md` after a candidate commit and independent review exist.
+**Evidence:** Create `evidence/wp00-pilot/YYYY-MM-DD_provider-budget_local_<short-sha>.md` after a candidate commit and separate Ahmed/Ziad budget confirmations exist.
 
 **Rollback:** Set provider mode to mock, every real flag false, and all paid caps zero; preserve attempts, reservations, settlements, and governance history.
 
@@ -39,7 +39,7 @@
 - [~] Record Ahmed's partial cost direction: minimize cost, but do not treat zero spend as a hard requirement; exact caps remain open.
 - [?] Receive canonical currency, every nonzero cap, approvers/reviewer, alert channels, and live confirmation profile.
 - [?] Benchmark rights-approved provider candidates against frozen evaluation data.
-- [?] Approve D-04/D-05 and create candidate-SHA evidence with independent budget review.
+- [?] Approve D-04/D-05 and create candidate-SHA evidence with separate Ahmed/Ziad budget confirmations.
 
 ## Handoff
 

@@ -34,10 +34,10 @@ vi.mock("next/headers", () => ({
   }),
 }));
 
-const hostedDescribe =
-  process.env.UNIMIND_HOSTED_AUTH_TEST === "true" ? describe : describe.skip;
+const databaseDescribe =
+  process.env.UNIMIND_DATABASE_AUTH_TEST === "true" ? describe : describe.skip;
 
-hostedDescribe("hosted synthetic Supabase Auth", () => {
+databaseDescribe("synthetic Supabase Auth", () => {
   let createdUserId: string | undefined;
 
   beforeEach(() => {
@@ -60,7 +60,7 @@ hostedDescribe("hosted synthetic Supabase Auth", () => {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const publishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
     if (url === undefined || publishableKey === undefined) {
-      throw new Error("Hosted Auth public configuration is missing.");
+      throw new Error("Database Auth public configuration is missing.");
     }
 
     const nonce = randomUUID();
@@ -78,7 +78,7 @@ hostedDescribe("hosted synthetic Supabase Auth", () => {
           : "unknown";
         const diagnosticStatus = error.providerStatus ?? "unknown";
         throw new Error(
-          `Hosted synthetic Auth create-user failed with provider code/status: ${diagnosticCode}/${diagnosticStatus}.`,
+          `Synthetic Auth create-user failed with provider code/status: ${diagnosticCode}/${diagnosticStatus}.`,
         );
       }
       throw error;
@@ -115,7 +115,7 @@ hostedDescribe("hosted synthetic Supabase Auth", () => {
 
     const expiresAt = signIn.data.session?.expires_at;
     if (expiresAt === undefined) {
-      throw new Error("Hosted Auth session is missing its expiry timestamp.");
+      throw new Error("Auth session is missing its expiry timestamp.");
     }
     const originalCookieValues = new Map(
       [...cookieJar].map(([name, cookie]) => [name, cookie.value]),

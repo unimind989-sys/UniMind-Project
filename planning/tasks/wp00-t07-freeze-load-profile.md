@@ -8,7 +8,7 @@
 
 **Owner:** Codex `/root` for profile preparation
 
-**Reviewer:** UNASSIGNED — LOAD GATE BLOCKED
+**Reviewer:** Ahmed or Ziad — ordinary load-profile human checkpoint pending
 
 **Branch:** `main` (no delivery branch requested)
 
@@ -26,7 +26,7 @@
 
 **Pass:** A second executor reproduces the scenario and both runs meet every threshold with zero leakage, duplicates, lost work, unsettled reservations, and provider cost.
 
-**Evidence:** Create `evidence/wp00-pilot/YYYY-MM-DD_load-profile_<environment>_<short-sha>.md` only after the runner, candidate commit, two clean runs, and independent review exist.
+**Evidence:** Create `evidence/wp00-pilot/YYYY-MM-DD_load-profile_<environment>_<short-sha>.md` only after the runner, candidate commit, two clean runs, and an Ahmed-or-Ziad human checkpoint exist.
 
 **Rollback:** Keep provider mode mock, stop the load runner, reset synthetic state, and retain the failed report for comparison.
 
@@ -36,7 +36,7 @@
 
 - [~] Freeze exact synthetic population, phases, traffic, failures, payloads, canaries, thresholds, aborts, seed, and fixture version; ready for review.
 - [?] Implement schema validation and the load runner in WP09.
-- [?] Execute twice from reset state and obtain independent review/evidence.
+- [?] Execute twice from reset state and obtain an Ahmed-or-Ziad human checkpoint/evidence.
 
 ## Handoff
 
@@ -44,7 +44,7 @@
 
 **Commands:** Dependency-free structural validation passed through `scripts/verify-agent-readiness.ps1`: no placeholders, eight required phases/field sets, unique canaries, minimum action totals, mock-only mode, and zero-cost limits. The isolated committed-snapshot handoff passed with six durable active records and no eligible WP00 task. A full YAML parser was not available and remains a named WP01 validation dependency; `git diff --check` passed.
 
-**Remaining:** YAML parser validation, runner implementation, two reset-state executions, environment evidence, and independent review.
+**Remaining:** YAML parser validation, runner implementation, two reset-state executions, environment evidence, and an ordinary founder human checkpoint.
 
 **Next safe action:** Run WP00-T08 to verify this draft remains mock-only and that runner/execution/review blockers are explicit; the gate must not approve the load result itself.
 

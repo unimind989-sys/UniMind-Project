@@ -4,7 +4,7 @@
 
 **Owner:** Ahmed + Ziad
 
-**Reviewers:** Operations reviewer UNASSIGNED; security/data reviewer UNASSIGNED; cost reviewer UNASSIGNED
+**Reviewers:** Ahmed or Ziad — operations, security/data, and cost roles must be explicitly assigned; protected budget/release gates require both founders
 
 **Decision deadline:** UNSCHEDULED — OWNER INPUT REQUIRED
 
@@ -16,7 +16,7 @@
 
 ## Context
 
-UniMind needs durable background execution for ingestion, generation, retries, reconciliation, metering, and verified deletion. The queue transport and external worker host have not been selected. Workstation development and CI may use the database job table and in-process deterministic dispatcher, but no shared preview or beta component may run from or depend on Ahmed's or Ziad's computer. Database-backed development and CI follow approved D-21 hosted isolation.
+UniMind needs durable background execution for ingestion, generation, retries, reconciliation, metering, and verified deletion. The queue transport and external worker host have not been selected. Workstation development uses the in-process deterministic dispatcher; database-backed CI may exercise the database job table in its disposable Supabase stack. No shared Preview or Beta component may run from or depend on Ahmed's or Ziad's computer. Environment isolation follows revised D-21 and ADR-0001.
 
 ## Non-negotiable requirements
 
