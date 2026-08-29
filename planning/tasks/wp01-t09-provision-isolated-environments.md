@@ -2,7 +2,7 @@
 
 **Task ID:** WP01-T09
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** Mock workstation development, disposable database/Auth CI, synthetic Preview, and locked Beta are isolated by runtime, project, deployment scope, namespace, callback, secret, data class, reset authority, owner, health check, promotion, and rollback procedure.
 
@@ -12,7 +12,7 @@
 
 **Branch:** `wp01/environment-provisioning-authorization`
 
-**Updated (UTC):** 2026-08-28
+**Updated (UTC):** 2026-08-29
 
 ## Execution contract
 
@@ -26,7 +26,7 @@
 
 **Pass:** Preview and Beta use the two separate Supabase Free projects and separate Vercel Hobby project scopes; CI is disposable and cannot reach them; Preview is synthetic/mock-only; Beta is locked/empty with real data blocked on backup and protected gates; an exact tested commit promotes and rolls back without manual schema repair; all runtime components remain operable when both founder computers are off; no paid plan or billable resource is enabled.
 
-**Evidence:** Docs-first topology proof: `evidence/wp01-foundation/2026-08-28_environment-topology_local_5a7e706.md`; historical local conditional slice: `evidence/wp01-foundation/2026-08-27_environment-isolation_local_a7c9d6b.md`; revised external proof: `evidence/wp01-foundation/YYYY-MM-DD_environment-isolation_<preview-or-beta>_<short-sha>.md`
+**Evidence:** Docs-first topology proof: `evidence/wp01-foundation/2026-08-28_environment-topology_local_5a7e706.md`; historical local conditional slice: `evidence/wp01-foundation/2026-08-27_environment-isolation_local_a7c9d6b.md`; external conditional records dated 2026-08-28; final protected external PASS: `evidence/wp01-foundation/2026-08-29_environment-isolation_preview_4021457.md` and `evidence/wp01-foundation/2026-08-29_environment-isolation_beta_4021457.md`
 
 **Rollback:** Before repurposing, leave both projects in their transitional roles. After repurposing, lock/disable the affected deployment, rotate credentials, preserve evidence and versioned migrations, and use forward-only recovery; never point Preview at Beta or Beta at Preview.
 
@@ -58,20 +58,20 @@ This sequence is inert until Ahmed gives the action-time confirmation required b
 
 - [x] Record Ahmed's zero-cost architecture approval, reported Vercel confirmation, shared-account model, provider eligibility triggers, and no-spend boundary.
 - [x] Record the target and transition environment matrix, including exact project repurposing order and the Beta backup blocker.
-- [~] Keep the existing redacted liveness/readiness routes and local/Preview smoke seam; authenticated external page proof passes, but the protected remote health command remains pending because the approved no-bypass boundary prevents credential-free execution.
-- [~] Keep the exact-commit Preview/Beta promotion and forward-only rollback procedure; same-commit rebuild under separate scopes passes, while an actual rollback exercise remains pending.
+- [x] Keep the existing redacted liveness/readiness routes and local/Preview smoke seam; protected external health, write-denial, application, and mock-only checks pass with short-lived approved access revoked immediately afterward.
+- [x] Keep the exact-commit Preview/Beta promotion and forward-only rollback procedure; a Git-free archive of exact commit `4021457` rebuilt and passed the full recovery checks under both active scopes.
 - [x] WP01-T08 passed externally at `c1428f2`; CI run `33136695074` also passed at the final documentation head. After Ahmed's explicit approval, the obsolete GitHub `ci` environment and its six secrets/two protection rules were deleted, and `database-ci` was added to the protected `main` required checks.
 - [x] Configure separate Vercel Hobby project scopes and environment secrets without exposing Beta values to pull-request code.
-- [~] Prove Preview synthetic/mock-only behavior, Beta locked/empty state, isolation, rollback, and zero paid-resource state. Provisioning/isolation pass; protected remote health-command and rollback-exercise proof remain pending.
+- [x] Prove Preview synthetic/mock-only behavior, Beta locked/empty state, isolation, rollback, and zero paid-resource state.
 
 ## Handoff
 
-**Changed:** The approved zero-cost transition is implemented. The two Supabase Free projects are now separate Preview and locked Beta targets with separate replacement keys, database credentials, callbacks, and Vercel Preview-scoped secrets. Legacy API keys are disabled, the retired management token and two workstation profiles are gone, Preview is the only Git-connected Vercel project, and Beta remains Git-disconnected, protected, empty, and unreleased. Both Vercel projects were rebuilt from exact commit `4021457` after credential rotation.
+**Changed:** The approved zero-cost transition and its final external gates are complete. The two Supabase Free projects are separate Preview and locked Beta targets with separate replacement keys, database credentials, callbacks, and Vercel Preview-scoped secrets. Legacy API keys are disabled, the retired management token and workstation profiles are gone, Preview is the only Git-connected Vercel project, and Beta remains Git-disconnected, protected, empty, and unreleased. Both environments passed protected health/application checks and an exact-commit recovery rebuild from `4021457`.
 
-**Commands:** On 2026-08-28, the pinned Vercel CLI `59.9.1` created separate Preview-targeted deployments for exact commit `4021457`; both inspected as `READY`. Replacement Supabase keys returned HTTP 200 from their matching Auth seams, and the pinned Supabase CLI connected with both rotated database credentials. Final `corepack pnpm verify` passed formatting, lint, strict types, boundaries, CI policy, the 629-file secret scan, 230 unit tests, integration/security/evaluation/load checks, two Playwright checks, the production build, and client-artifact scan. `scripts/verify-agent-readiness.ps1` passed with 127 names, 37 local links, 22 synchronized decisions, and 102 task contracts.
+**Commands:** On 2026-08-28, the pinned Vercel CLI `59.9.1` created separate Preview-targeted deployments for exact commit `4021457`; both inspected as `READY`. Replacement Supabase keys returned HTTP 200 from their matching Auth seams, and the pinned Supabase CLI connected with both rotated database credentials. On 2026-08-29, protected Preview and Beta health/application checks passed, approved temporary bypasses were revoked back to zero, anonymous access returned to `302`, and a Git-free exact-commit recovery rebuild passed under both scopes. Final repository verification is recorded in the dated PASS evidence.
 
-**Remaining:** Run the protected external health smoke without weakening Standard Protection or creating an unapproved bypass, rehearse an actual rollback, complete the ordinary evidence review, and retain the explicit backup/restore blocker before any real Beta data. Beta unlock, production deployment/domain, real data, paid resources, and go-live remain outside this task.
+**Remaining:** No WP01-T09 implementation work remains. The explicit backup/restore blocker still applies before any real Beta data. Beta unlock, production deployment/domain, real data, paid resources, and go-live remain outside this task.
 
-**Next safe action:** Review the sanitized Preview/Beta evidence and choose a future protected-smoke mechanism that does not weaken the no-bypass boundary; otherwise leave WP01-T09 in progress and continue only work that does not depend on the missing remote health/rollback proof.
+**Next safe action:** Merge the reviewed WP01-T09 pull request after final checks, then start WP01-T10's clean-clone operation tutorial and rehearsal.
 
-**Reviewer action:** Ahmed reviews the architecture/documentation checkpoint and later the ordinary implementation evidence. Separate confirmations from Ahmed and Ziad remain required for protected RLS, deletion, rights, budget/kill-switch, release/unlock, and beta go-live gates.
+**Reviewer action:** Ahmed reported PR review complete and approved the remaining protected-smoke/rollback actions on 2026-08-29. Separate confirmations from Ahmed and Ziad remain required for protected RLS, deletion, rights, budget/kill-switch, release/unlock, and beta go-live gates.

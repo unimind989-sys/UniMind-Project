@@ -767,8 +767,8 @@ git diff --exit-code -- src/types/database.generated.ts
 - [x] Keep Preview synthetic/mock-only and Beta locked and empty. Beta real data remains blocked until an approved encrypted backup/restore procedure passes and the later rights/security/release gates pass.
 - [x] Configure separate Vercel Hobby project scopes, Supabase projects, callbacks, secrets, storage, jobs, and future provider budget scopes. Ahmed reports provider confirmation for current Hobby use; recheck the eligibility triggers recorded in D-21 before deployment.
 - [x] Make Preview deployment automatic from pull requests without Beta secrets and Beta deployment an approved promotion/rebuild of an already-tested exact commit.
-- [~] Keep `/api/health/live`, `/api/health/ready`, and `pnpm smoke:deployment` redacted and fail-closed. Local proof passes; external Preview proof remains pending.
-- [~] Rehearse Preview smoke, locked-Beta promotion, and rollback using `docs/runbooks/environment-promotion.md`.
+- [x] Keep `/api/health/live`, `/api/health/ready`, and `pnpm smoke:deployment` redacted and fail-closed. Local and protected external six-check proof pass.
+- [x] Rehearse Preview smoke, locked-Beta promotion, and exact-commit rebuild rollback using `docs/runbooks/environment-promotion.md`.
 
 **Pass:** the disposable CI gate cannot access Preview/Beta; Preview and Beta have separate data, keys, callbacks, jobs, deployment scopes, and reset permissions; the same tested commit and forward migrations reproduce the hosted targets; Beta is locked/empty with its backup gate explicit; no component depends on a founder computer; no paid plan or billable resource was enabled.
 

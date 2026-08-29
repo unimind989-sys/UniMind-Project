@@ -8,7 +8,7 @@ This matrix records safe environment identities and isolation rules. Full projec
 | --- | --- | --- | --- | --- | --- | --- |
 | Workstation development | Next.js process and deterministic in-process mocks; no database service | Synthetic only | N/A | Repository checkout only | Ahmed / Ziad | Available; never shared infrastructure |
 | Database/Auth CI | Complete disposable Supabase stack on a GitHub-hosted `ubuntu-24.04` runner | Synthetic only | Yes, inside the disposable runner only | Per-run GitHub Actions job; no persistent Supabase project or long-lived database secret | Ahmed / Ziad; agent executor | External lifecycle passed at `c1428f2`; obsolete GitHub environment/secrets retired and `database-ci` required on `main` |
-| Preview | Repurposed Supabase Free project plus protected Vercel Hobby Preview deployment | Synthetic only; mock providers | No development/CI reset command; forward migrations only | Separate Supabase project and separate Vercel Hobby project/scope | Ahmed / Ziad | Provisioned; protected; remote health-command proof remains pending |
+| Preview | Repurposed Supabase Free project plus protected Vercel Hobby Preview deployment | Synthetic only; mock providers | No development/CI reset command; forward migrations only | Separate Supabase project and separate Vercel Hobby project/scope | Ahmed / Ziad | Provisioned, protected, externally smoke-tested, and rollback-rehearsed |
 | Beta | Repurposed Supabase Free project plus protected Vercel Hobby Preview deployment | Empty until backup, rights, security, release, and go-live gates; then rights-approved pilot data only | No development/CI reset command; guarded forward migrations only | Separate Supabase project and separate Vercel Hobby project/scope | Ahmed / Ziad | Provisioned, protected, empty, and locked |
 
 Preview and Beta must also receive separate storage namespaces, callback bases, queue/worker namespaces, environment secrets, and deployment authority as those adapters are selected. Unassigned future resources are not silently shared.
@@ -52,7 +52,7 @@ Official constraints were rechecked on 2026-08-27 and the credential/protection 
 - `/api/health/ready` validates server configuration and returns only `ready` or `not_ready`; it exposes no failing variable name, secret, or topology detail.
 - Both routes are uncached and reject unsupported writes with `405`.
 - `pnpm smoke:deployment` accepts loopback local targets or remote HTTPS Preview targets, rejects unsafe URLs, and verifies liveness, readiness, write denial, application response, and synthetic/mock-only mode.
-- The command passed six checks against a live local Next.js process. Authenticated browser inspection proves the external Preview identity and synthetic/mock-only release, while unauthenticated access redirects to Vercel Authentication. The exact remote health command remains pending because Standard Protection requires credentials or a bypass and WP01-T09 forbids creating a bypass secret.
+- The command passed six checks against a live local Next.js process. On 2026-08-29, the same six outcomes passed against protected external Preview, and locked Beta passed the equivalent health/application checks. Ahmed approved short-lived automation bypass use; the pinned CLI generated it only for the checks, it was revoked immediately afterward, both projects returned to zero bypass entries, and anonymous access again redirected to Vercel Authentication.
 
 ## Isolation rules
 
