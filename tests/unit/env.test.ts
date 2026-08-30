@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+
 import { describe, expect, it, vi } from "vitest";
 
 import {
@@ -25,7 +27,34 @@ function validEnvironment(): Record<string, string> {
   };
 }
 
+function readExampleEnvironment(): Record<string, string> {
+  return Object.fromEntries(
+    readFileSync(".env.example", "utf8")
+      .split(/\r?\n/u)
+      .filter((line) => line !== "" && !line.startsWith("#"))
+      .map((line) => {
+        const separator = line.indexOf("=");
+        return [line.slice(0, separator), line.slice(separator + 1)];
+      }),
+  );
+}
+
 describe("environment contract", () => {
+  it("keeps the copied example ready for a synthetic mock workstation", () => {
+    const environment = readExampleEnvironment();
+
+    expect(parseServerEnvironment(environment)).toMatchObject({
+      NEXT_PUBLIC_RELEASE_ID: "workstation-mock",
+      PROVIDER_MODE: "mock",
+      APPROVED_PROVIDER_BUDGET_MINOR: 0,
+      GENERATION_PROVIDER_ENABLED: false,
+      EMBEDDING_PROVIDER_ENABLED: false,
+      TRANSCRIPTION_PROVIDER_ENABLED: false,
+    });
+    expect(environment).not.toHaveProperty("UNIMIND_DB_ENVIRONMENT");
+    expect(environment).not.toHaveProperty("SUPABASE_ACCESS_TOKEN");
+  });
+
   it("parses a valid mock configuration with bounded defaults", () => {
     const environment = parseServerEnvironment(validEnvironment());
 

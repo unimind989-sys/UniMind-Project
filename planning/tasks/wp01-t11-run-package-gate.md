@@ -2,17 +2,17 @@
 
 **Task ID:** WP01-T11
 
-**Status:** [?]
+**Status:** [ ]
 
 **Outcome:** A clean candidate proves the complete WP01 application, database, security, tests, preview, secret hygiene, versions, and agent handoff before WP02 starts.
 
-**Owner:** Codex `/root` after WP01-T04 through WP01-T10 PASS
+**Owner:** Unassigned; Codex `/root` may claim after pull request #7 merges
 
 **Reviewer:** Ahmed or Ziad for the ordinary package checkpoint; Ahmed + Ziad for any protected sub-gate
 
 **Branch:** main (no delivery branch requested)
 
-**Updated (UTC):** 2026-08-26
+**Updated (UTC):** 2026-08-30
 
 ## Execution contract
 
@@ -34,7 +34,7 @@
 
 ## Steps
 
-- [?] Wait for WP01-T04 through WP01-T10 reviewed PASS and required reviewer assignments.
+- [ ] Confirm WP01-T04 through WP01-T10 reviewed PASS and required reviewer assignments against updated `main` when claiming the gate.
 - [ ] Copy and fill the gate template against one candidate SHA.
 - [ ] Run clean install/build/test/database/type/secret/version checks.
 - [ ] Run the authorized preview smoke and review breaking changes.
@@ -42,12 +42,12 @@
 
 ## Handoff
 
-**Changed:** No gate started; the complete prerequisite and evidence contract is recorded.
+**Changed:** Synchronized the prerequisite state after reviewed WP01-T08, WP01-T09, and WP01-T10 passed; the package gate itself has not started.
 
-**Commands:** NOT RUN for WP01-T11. Historical WP01-T04/T05/T07 evidence remains valid; revised WP01-T08/T09/T10 remain incomplete.
+**Commands:** NOT RUN for WP01-T11. Historical WP01-T04/T05/T07 evidence and revised WP01-T08/T09/T10 evidence are available for the gate.
 
-**Remaining:** Entire package gate after every upstream task passes.
+**Remaining:** The entire WP01 package gate against one post-merge candidate SHA.
 
-**Next safe action:** Complete reopened WP01-T08, then WP01-T09 and WP01-T10; do not advance to WP02.
+**Next safe action:** After pull request #7 merges and local `main` is updated, claim WP01-T11, copy the gate template, and run the package gate; do not advance to WP02.
 
 **Reviewer action:** Name Ahmed or Ziad for the ordinary package checkpoint and record both founders only for any protected sub-gate before evaluating its evidence.
