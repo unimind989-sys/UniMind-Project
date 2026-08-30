@@ -52,6 +52,7 @@
 | 2026-08-30 | Post-merge GitHub CI run `33325532189` | 0 | Application and disposable database jobs passed; dependency audit skipped by its documented pull-request-only guard |
 | 2026-08-30 | Post-merge Vercel inventory | 0 | No deployment or commit entry for `b1f34d4` after CI completed; latest entries remained protected READY Previews `3da3497` and `d7997eb` |
 | 2026-08-30 | Agent readiness and isolated handoff | 0 | Readiness passed 131 names, 37 links, 22 decisions, and 102 task contracts; handoff passed with no eligible next task and six durable active WP00 records |
+| 2026-08-31 | Documentation closure and final suppression proof | 0 | PR #9 merged as `684d560`; post-merge run `33328863455` passed; refreshed signed-in Vercel inventory contained READY Preview `a93100f` and no deployment for `684d560` |
 
 ## Negative, retry, and recovery cases
 
