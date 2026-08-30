@@ -39,7 +39,6 @@ Check the machine without changing it:
 git --version
 pwsh --version
 corepack pnpm --version
-corepack pnpm supabase --version
 ```
 
 Expected repository versions are also recorded in `.nvmrc`, `package.json`, and `pnpm-lock.yaml`. Do not install Docker, WSL2, or a local database runtime for UniMind. Workstation work stays mock-only; database/Auth verification belongs to the guarded disposable GitHub Actions job.
@@ -50,6 +49,7 @@ Expected repository versions are also recorded in `.nvmrc`, `package.json`, and 
 git clone https://github.com/unimind989-sys/UniMind-Project.git
 Set-Location UniMind-Project
 corepack pnpm install --frozen-lockfile
+corepack pnpm supabase --version
 pwsh -NoProfile -File scripts/verify-agent-readiness.ps1
 ```
 
@@ -62,8 +62,8 @@ Ahmed and Ziad intentionally use the approved shared GitHub/Supabase/Google serv
 1. Install Git, PowerShell 7, and exactly Node 24.19.0. Do not install Docker, WSL2, Supabase locally, or a global pnpm for this repository.
 2. Use the approved shared GitHub identity, clone `https://github.com/unimind989-sys/UniMind-Project.git`, and work from an up-to-date `main` before creating a task branch. Ahmed's personal contributor identity is also approved. Treat Git authorship as service-account metadata, not proof of which founder supplied a decision.
 3. Run `corepack enable`, confirm `node --version` is `v24.19.0`, and confirm `corepack pnpm --version` is `10.34.5`.
-4. Run `corepack pnpm install --frozen-lockfile` and `corepack pnpm exec playwright install chromium`. The Supabase CLI is already pinned as a project dependency; do not install another copy.
-5. Create the ignored `.env.local` from `.env.example`. Keep mock mode enabled, every real-provider flag false, and the provider budget at zero. Transfer any real local values through the approved private channel, never Git or chat.
+4. Run `corepack pnpm install --frozen-lockfile`, confirm `corepack pnpm supabase --version` is `2.115.0`, and run `corepack pnpm exec playwright install chromium`. The Supabase CLI is a project dependency and is unavailable before installation; do not install another copy.
+5. Create the ignored `.env.local` from `.env.example`. The committed synthetic values are sufficient for the mock workstation app; do not replace them with Preview, Beta, or provider credentials.
 6. Do not obtain or use a persistent development/CI database profile for workstation work. The retired `.local/supabase/development.env` and `.local/supabase/ci.env` profiles must remain absent and must never be recreated or relabeled as Preview/Beta.
 7. Run `corepack pnpm verify`. Database/Auth changes are proved by the guarded disposable-CI job after a branch is pushed; do not reproduce that infrastructure on a founder computer.
 
@@ -85,6 +85,7 @@ Rules:
 
 - `.env.example` contains only blank or clearly synthetic examples and is committed.
 - `.env.local` is ignored and is the only normal local destination for credentials.
+- The copied template is a complete mock-workstation configuration. `/api/health/ready` must return `200` without any real credential.
 - Only the four documented `NEXT_PUBLIC_` values are browser-safe. Never add a public secret-shaped variable.
 - Keep `PROVIDER_MODE=mock`, every provider flag false, and the approved provider budget zero unless all documented live gates have approved evidence.
 - Do not paste environment values into chat, logs, issues, evidence, or command-line arguments.
@@ -109,6 +110,14 @@ corepack pnpm install --frozen-lockfile
 corepack pnpm dev
 ```
 
+With the development server still running, open a second terminal in the repository and prove the local application seam:
+
+```powershell
+corepack pnpm smoke:deployment -- --base-url http://127.0.0.1:3000 --target local
+```
+
+The smoke command must report six checks. It uses loopback GET/POST probes only and confirms liveness, readiness, write denial, application identity, and synthetic/mock-only mode.
+
 Keep the Next.js development server on the workstation and do not expose it to an external network. Database/Auth verification runs in disposable GitHub-hosted CI. Preview is only for approved synthetic smoke/promotion checks and Beta is never a development target.
 
 ### 5.1 Database/Auth changes
@@ -128,11 +137,15 @@ Run `smoke:deployment` only for an explicitly approved Preview URL and access wi
 Stop any development server, then run:
 
 ```powershell
+git clean -dfX -- .next/
+git restore --source=HEAD -- next-env.d.ts
 corepack pnpm verify
 git diff --check
 git diff --stat
 git status --short
 ```
+
+The first command removes only the ignored Next.js output directory named explicitly above. The second restores Next.js's tracked generated reference file after development mode changes it. These two cleanup steps prevent development-only route types from contaminating the production verification build; do not broaden either path.
 
 Before handoff, inspect the full diff, scan changed files for credentials/private data, update the task record, and link sanitized evidence to the candidate commit.
 
