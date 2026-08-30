@@ -774,13 +774,12 @@ git diff --exit-code -- src/types/database.generated.ts
 
 #### WP01-T10 — Write the repository operation tutorial
 
-- [~] Update `CONTRIBUTING.md` from the historical hosted development/CI workflow to mock-only workstation development, disposable Supabase CI, and guarded Preview/Beta operations after WP01-T08/T09 implementation.
+- [x] Update `CONTRIBUTING.md` from the historical hosted development/CI workflow to mock-only workstation development, disposable Supabase CI, and guarded Preview/Beta operations after WP01-T08/T09 implementation.
 - [x] Add a command table with purpose, paid-call behavior, required services, and expected duration class.
 - [x] Include the normal daily loop:
 
 ```powershell
 pnpm install --frozen-lockfile
-pnpm db:reset
 pnpm dev
 ```
 
@@ -793,7 +792,7 @@ git status --short
 ```
 
 - [x] Include recovery for unavailable hosted targets, rejected reset guards, network failure, stale generated types, migration drift, invalid env, and a leaked workstation/CI token.
-- [?] Have a fresh agent follow `CONTRIBUTING.md` on a clean clone without chat history or verbal help; have the reviewer record every ambiguity. The final journey must include disposable database/Auth CI, synthetic Preview smoke, and locked-Beta boundaries after WP01-T08/T09.
+- [~] Have a fresh agent follow `CONTRIBUTING.md` on a clean clone without chat history or verbal help; have the reviewer record every ambiguity. The final journey includes the reviewed disposable database/Auth CI evidence, synthetic Preview smoke, and locked-Beta boundaries from WP01-T08/T09.
 
 **Pass:** the clean-clone rehearsal reaches the mock application, tests, build, disposable database/Auth CI contract, and approved Preview/Beta operating boundaries using repository instructions alone, and the fresh agent produces a complete task handoff.
 
@@ -2563,7 +2562,7 @@ The final `package.json` must expose these stable project commands even if under
 | `pnpm test:unit` | Pure domain/config/provider-mock tests. | No. | Exit 0. |
 | `pnpm test:integration` | Credential-free application/mock integration seams; guarded hosted cases skip. | No external calls or paid provider. | Local seams pass and hosted cases are visibly skipped. |
 | `pnpm test:integration:database` | Synthetic Auth seam against the disposable runner-local stack. | Runner loopback only; no persistent credentials or paid provider. | Synthetic create/sign-in/refresh/forgery denial/cleanup pass. |
-| `pnpm test:integration:hosted` | Transitional reviewed synthetic hosted Auth seam retained until external WP01-T08 proof. | Transitional hosted development target only; no Preview/Beta or paid provider. | Historical seam remains guarded and is retired only after replacement proof. |
+| `pnpm test:integration:hosted` | Retired hosted Auth compatibility seam with no approved profile. | None; never provide Preview/Beta credentials. | Fails closed unless an obsolete profile is recreated; do not run. |
 | `pnpm test:security` | Current identity/availability denial matrices; later RLS/grant suites join with migrations. | No external calls in the foundation command. | Zero unexpected allow/leakage at implemented seams. |
 | `pnpm test:e2e` | Browser flows against a local synthetic app profile. | Local app and mocks only; external browser requests blocked. | Implemented critical and forbidden paths pass. |
 | `pnpm test:eval` | Versioned evaluation runner and current approved/synthetic fixtures. | Only an explicitly approved live profile may use real providers; foundation default is mock-only. | Dataset hashes are valid and JSON/Markdown results report the exact scope. |
@@ -2573,10 +2572,10 @@ The final `package.json` must expose these stable project commands even if under
 | `pnpm db:ci:migrations` | Compare versioned migration history with the disposable CI stack. | GitHub-hosted Linux runner-local containers only. | Migration history matches version control. |
 | `pnpm db:ci:types` | Generate database TypeScript types from the disposable CI stack. | GitHub-hosted Linux runner-local containers only. | Output updates deterministically. |
 | `pnpm db:ci:stop` | Remove the disposable stack and its data volumes. | GitHub-hosted Linux runner-local containers only. | Cleanup runs under `if: always()` and exits 0. |
-| `pnpm db:reset` | Transitional hosted reset retained until external WP01-T08 proof. | Approved historical development/CI target only; never Preview/Beta. | Legacy guard remains fail-closed. |
-| `pnpm db:migrations` | Transitional hosted migration comparison retained until external WP01-T08 proof. | Approved historical development/CI target only. | Legacy guard remains fail-closed. |
-| `pnpm db:push:dry-run` | Preview unapplied migrations for a guarded persistent target when the promotion workflow explicitly allows it. | Preview/Beta scope only under its non-destructive promotion guard. | Dry-run exits 0 without applying changes. |
-| `pnpm db:types` | Transitional hosted type generation retained until external WP01-T08 proof. | Approved historical development/CI target only. | Legacy guard remains fail-closed. |
+| `pnpm db:reset` | Retired hosted reset compatibility seam with no approved target. | None; never Preview/Beta. | Do not run; use the guarded disposable CI lifecycle. |
+| `pnpm db:migrations` | Retired hosted migration-comparison seam with no approved target. | None; never Preview/Beta. | Do not run; use `db:ci:migrations` in GitHub Actions. |
+| `pnpm db:push:dry-run` | Retired hosted dry-run seam; not a Preview/Beta promotion command. | None. | Do not run; follow the environment-promotion runbook. |
+| `pnpm db:types` | Retired hosted type-generation seam with no approved target. | None; never Preview/Beta. | Do not run; use `db:ci:types` in GitHub Actions. |
 | `pnpm db:types:check` | Fail when committed types are stale. | No. | Generation causes no Git diff. |
 | `pnpm verify` | Complete credential-free, zero-paid merge gate. | No external infrastructure or paid provider. | Every required subcommand exits 0. |
 
