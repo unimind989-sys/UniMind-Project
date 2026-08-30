@@ -53,6 +53,7 @@
 | 2026-08-30 | Post-merge Vercel inventory | 0 | No deployment or commit entry for `b1f34d4` after CI completed; latest entries remained protected READY Previews `3da3497` and `d7997eb` |
 | 2026-08-30 | Agent readiness and isolated handoff | 0 | Readiness passed 131 names, 37 links, 22 decisions, and 102 task contracts; handoff passed with no eligible next task and six durable active WP00 records |
 | 2026-08-31 | Documentation closure and final suppression proof | 0 | PR #9 merged as `684d560`; post-merge run `33328863455` passed; refreshed signed-in Vercel inventory contained READY Preview `a93100f` and no deployment for `684d560` |
+| 2026-08-31 | Fresh-founder WP02 routing rehearsal | 0 | Selector and isolated handoff recommend WP02-T01 through the reviewed WP01 foundation bridge; all six WP00 blocker records remain visible; full `pnpm verify` passed |
 
 ## Negative, retry, and recovery cases
 
@@ -108,7 +109,7 @@ Remove `git.deploymentEnabled.main=false` and reconsider automatic Production-do
 
 ## Decision
 
-PASS. Candidate-local, clean-clone, disposable database, protected Preview, secret, compatibility, version, review, merge, post-merge CI, Vercel suppression, and cleanup criteria all pass. The selector's post-gate `NONE` result is intentional: the reviewed WP00 mock bridge unlocks WP01 only, so WP02 remains behind unresolved WP00 owner inputs. Protected Beta/release gates remain locked and unchanged.
+PASS. Candidate-local, clean-clone, disposable database, protected Preview, secret, compatibility, version, review, merge, post-merge CI, Vercel suppression, and cleanup criteria all pass. The reviewed WP01 foundation bridge now recommends WP02-T01 with synthetic/generic fixtures while every open decision retains its exact consumer block. Protected RLS, Beta, release, rights, raw-deletion, budget, and live-provider gates remain locked and unchanged.
 
 | Name | Role | Decision | Date |
 | --- | --- | --- | --- |

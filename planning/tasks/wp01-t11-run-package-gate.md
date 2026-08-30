@@ -10,7 +10,7 @@
 
 **Reviewer:** Ahmed — ordinary package checkpoint authorized in chat on 2026-08-30; protected Beta/release sub-gates remain excluded
 
-**Branch:** `wp01/package-gate`; documentation closure `wp01/package-gate-close`; final handoff sync `wp01/package-gate-handoff-sync`
+**Branch:** `wp01/package-gate`; documentation closure `wp01/package-gate-close`; final handoff sync `wp01/package-gate-handoff-sync`; WP02 routing handoff `wp02/fresh-founder-handoff`
 
 **Updated (UTC):** 2026-08-31
 
@@ -44,10 +44,10 @@
 
 **Changed:** Completed the WP01 package gate after confirming WP01-T01 through WP01-T10 reviewed PASS; closed the stale WP01-T10 post-merge handoff; added the reviewable Vercel policy that disables deployments from `main`; disabled automatic Production-domain assignment; and passed clean-clone, disposable database, protected Preview, secret, version, compatibility, review, merge, post-merge CI, and cleanup checks.
 
-**Commands:** Source and exact clean-clone `pnpm verify` passed with 232 unit tests and every remaining zero-cost layer. PR runs `33323913701` and `33324392840` passed all required checks; owner identity `unimind989-sys` approved final head `3da3497`; PR #8 merged as `b1f34d4`. Post-merge run `33325532189` passed application and disposable database CI. PR #9 merged the gate closure as `684d560`; post-merge run `33328863455` passed and a fresh Codex-browser Vercel inventory showed no deployment for that merge. `scripts/verify-agent-readiness.ps1` passed 131 names, 37 links, 22 decisions, and 102 task contracts; `scripts/test-agent-handoff.ps1` passed from an isolated committed snapshot.
+**Commands:** Source and exact clean-clone `pnpm verify` passed with 232 unit tests and every remaining zero-cost layer. PR runs `33323913701` and `33324392840` passed all required checks; owner identity `unimind989-sys` approved final head `3da3497`; PR #8 merged as `b1f34d4`. Post-merge run `33325532189` passed application and disposable database CI. PR #9 merged the gate closure as `684d560`; post-merge run `33328863455` passed and a fresh Codex-browser Vercel inventory showed no deployment for that merge. The final WP02-routing rehearsal passed from an isolated committed snapshot with a `WP02-T01` recommendation, six durable WP00 blocker records, 131 governed names, 37 links, 22 decisions, and 102 task contracts; the complete `pnpm verify` gate passed again.
 
 **Remaining:** None for WP01-T11. Keep Preview protected/synthetic, Beta locked, and `main` deployment suppression in place until a separately approved promotion gate changes them.
 
-**Next safe action:** Keep the selector at its expected `NONE` dependency stop and obtain the earliest outstanding WP00 owner decision/review input. The reviewed WP00 mock bridge unlocked WP01 only; do not start WP02 until the selector reports an eligible task.
+**Next safe action:** Run the selector from updated `main`; it should recommend WP02-T01 under the reviewed WP01 foundation bridge. Create the WP02-T01 task record before editing, keep all fixtures synthetic, and preserve the protected two-founder RLS gate for WP02-T04.
 
-**Reviewer action:** Complete — Ahmed approved implementation head `3da3497` and closure head `a93100f` through owner identity `unimind989-sys`; no protected Beta unlock, release, raw deletion, rights, budget, or go-live sub-gate was included.
+**Reviewer action:** Complete — Ahmed approved implementation head `3da3497` and closure head `a93100f` through owner identity `unimind989-sys`, then authorized the synthetic/generic WP02 routing handoff on 2026-08-31; no protected RLS, Beta unlock, release, raw deletion, rights, budget, or go-live sub-gate was included.

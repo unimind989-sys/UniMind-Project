@@ -47,7 +47,7 @@ This repository contains the source-of-truth plan, executable delivery runbook, 
 
 ## Status
 
-The project has a reviewed mock-only WP00 constraints gate. Open real-world decisions retain exact downstream blocks, while the synthetic/mock WP01 foundation may proceed through the runbook's WP00 mock bridge. Follow later packages in dependency order; a package is complete only after its independent gate review passes.
+The project has a reviewed mock-only WP00 constraints gate and a reviewed WP01 foundation gate. Open real-world decisions retain their exact downstream blocks; the runbook's bridges now expose the earliest eligible WP02 database task without enabling real data, paid providers, or protected gates. Follow later packages in dependency order; a package is complete only after its independent gate review passes.
 
 For agent-led work, use the [agent workflow](docs/agents/agent-workflow.md). When a request does not name a task, it provides the rule for choosing the next executable task without guessing.
 
