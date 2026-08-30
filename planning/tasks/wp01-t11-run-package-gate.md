@@ -10,9 +10,9 @@
 
 **Reviewer:** Ahmed — ordinary package checkpoint authorized in chat on 2026-08-30; protected Beta/release sub-gates remain excluded
 
-**Branch:** `wp01/package-gate`; documentation closure `wp01/package-gate-close`
+**Branch:** `wp01/package-gate`; documentation closure `wp01/package-gate-close`; final handoff sync `wp01/package-gate-handoff-sync`
 
-**Updated (UTC):** 2026-08-30
+**Updated (UTC):** 2026-08-31
 
 ## Execution contract
 
@@ -44,10 +44,10 @@
 
 **Changed:** Completed the WP01 package gate after confirming WP01-T01 through WP01-T10 reviewed PASS; closed the stale WP01-T10 post-merge handoff; added the reviewable Vercel policy that disables deployments from `main`; disabled automatic Production-domain assignment; and passed clean-clone, disposable database, protected Preview, secret, version, compatibility, review, merge, post-merge CI, and cleanup checks.
 
-**Commands:** Source and exact clean-clone `pnpm verify` passed with 232 unit tests and every remaining zero-cost layer. PR runs `33323913701` and `33324392840` passed all required checks; owner identity `unimind989-sys` approved final head `3da3497`; PR #8 merged as `b1f34d4`. Post-merge run `33325532189` passed application and disposable database CI. Fresh Vercel inventory showed no deployment for `b1f34d4`, proving `main` suppression while protected Preview remained READY. `scripts/verify-agent-readiness.ps1` passed 131 names, 37 links, 22 decisions, and 102 task contracts; `scripts/test-agent-handoff.ps1` passed from an isolated committed snapshot.
+**Commands:** Source and exact clean-clone `pnpm verify` passed with 232 unit tests and every remaining zero-cost layer. PR runs `33323913701` and `33324392840` passed all required checks; owner identity `unimind989-sys` approved final head `3da3497`; PR #8 merged as `b1f34d4`. Post-merge run `33325532189` passed application and disposable database CI. PR #9 merged the gate closure as `684d560`; post-merge run `33328863455` passed and a fresh Codex-browser Vercel inventory showed no deployment for that merge. `scripts/verify-agent-readiness.ps1` passed 131 names, 37 links, 22 decisions, and 102 task contracts; `scripts/test-agent-handoff.ps1` passed from an isolated committed snapshot.
 
 **Remaining:** None for WP01-T11. Keep Preview protected/synthetic, Beta locked, and `main` deployment suppression in place until a separately approved promotion gate changes them.
 
-**Next safe action:** Merge the documentation-only closure and rerun the work-state selector from updated `main`. Its expected `NONE` result is now the correct dependency stop: the reviewed WP00 mock bridge unlocked WP01 only, so an owner must supply the earliest outstanding WP00 decision/review input before WP02 can start.
+**Next safe action:** Keep the selector at its expected `NONE` dependency stop and obtain the earliest outstanding WP00 owner decision/review input. The reviewed WP00 mock bridge unlocked WP01 only; do not start WP02 until the selector reports an eligible task.
 
-**Reviewer action:** Complete — Ahmed approved final head `3da3497` through owner identity `unimind989-sys`; no protected Beta unlock, release, raw deletion, rights, budget, or go-live sub-gate was included.
+**Reviewer action:** Complete — Ahmed approved implementation head `3da3497` and closure head `a93100f` through owner identity `unimind989-sys`; no protected Beta unlock, release, raw deletion, rights, budget, or go-live sub-gate was included.
