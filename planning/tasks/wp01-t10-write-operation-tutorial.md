@@ -2,13 +2,13 @@
 
 **Task ID:** WP01-T10
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** A human or fresh coding agent can set up, operate, verify, troubleshoot, and hand off UniMind using one repository tutorial without chat history.
 
 **Owner:** Codex `/root`
 
-**Reviewer:** Ahmed — ordinary human checkpoint authorized in chat on 2026-08-30; final review follows the clean-snapshot rehearsal
+**Reviewer:** Ahmed — ordinary human checkpoint authorized in chat and recorded through the approved GitHub contributor review on 2026-08-30
 
 **Branch:** `wp01/operation-tutorial`
 
@@ -26,7 +26,7 @@
 
 **Pass:** A clean agent reaches the mock app, tests, build, disposable database/Auth CI contract, Preview smoke, locked-Beta boundary, and complete handoff from the tutorial alone, with every ambiguity recorded and corrected.
 
-**Evidence:** `evidence/wp01-foundation/2026-08-30_repository-tutorial_local_348a360.md`
+**Evidence:** `evidence/wp01-foundation/2026-08-30_repository-tutorial_local_c9543ad.md`
 
 **Rollback:** Revert the tutorial/task-state commits; no application, database, provider, deployment, or external state changes.
 
@@ -39,16 +39,16 @@
 - [x] Add the paid-call/service/duration command table and root navigation link.
 - [x] Rehearse clean-snapshot discovery and every currently executable command; record ambiguities.
 - [x] Revise the historical hosted development/CI instructions to the completed D-21 target workflow; retired hosted commands are documented as fail-closed compatibility seams with no approved target.
-- [~] Rehearse the mock workstation, disposable database/Auth CI, Preview smoke, and locked-Beta journey from a clean committed snapshot and close review.
+- [x] Rehearse the mock workstation, disposable database/Auth CI, Preview smoke, and locked-Beta journey from a clean committed snapshot and close review.
 
 ## Handoff
 
-**Changed:** Updated the root tutorial and test-layer guidance for the completed zero-cost topology; removed stale WP01-T08/T09 blockers; documented all 34 package scripts; routed database/Auth changes through disposable GitHub CI; and kept Preview protected and Beta locked.
+**Changed:** Updated the root tutorial and test-layer guidance for the completed zero-cost topology; removed stale WP01-T08/T09 blockers; documented all 34 package scripts; made the copied environment a complete synthetic mock configuration; pinned development to loopback; added generated-state recovery; routed database/Auth changes through disposable GitHub CI; and kept Preview protected and Beta locked.
 
-**Commands:** Candidate `348a360` passed the source and clean-clone `pnpm verify` gates, including 230 unit tests, integration/security/evaluation/load layers, two Chromium tests, production build, and repository/client secret scans. Agent readiness passed with 129 names, 37 links, 22 synchronized decisions, and 102 task contracts. The no-chat handoff rehearsal selected WP01-T10 from a clean committed snapshot, the frozen install reproduced 649 packages, and all 34 package scripts matched the tutorial.
+**Commands:** Candidate `c9543ad` passed source and independent clean-clone gates. The final source `pnpm verify` included 231 unit tests, integration/security/evaluation/load layers, two Chromium tests, production build, and repository/client secret scans. Agent readiness passed with 130 names, 37 links, 22 synchronized decisions, and 102 task contracts. Frozen installation reproduced 649 packages; local smoke passed six checks; the listener was loopback-only; all 34 package scripts matched; and every disposable clone/toolchain root was deleted.
 
-**Remaining:** Obtain the separate fresh-agent walkthrough and Ahmed's review of candidate `348a360` plus its evidence. The GitHub pull request and external checks are not yet open because browser submission requires action-time confirmation.
+**Remaining:** Merge reviewed pull request #7 after the final documentation-only evidence commit is green, then rerun the selector from updated `main`. Do not start WP02 before WP01-T11 passes.
 
-**Next safe action:** Create the pull request, run its external checks, obtain the separate fresh-agent walkthrough, and present the completed evidence for Ahmed's checkpoint.
+**Next safe action:** Merge pull request #7, update local `main`, and let the selector expose WP01-T11 as the next package-gate task.
 
-**Reviewer action:** Review command parity, safety, clarity, links, recovery paths, and the clean-snapshot ambiguity report after the candidate evidence exists.
+**Reviewer action:** Complete — reviewed command parity, safety, clarity, recovery paths, green checks, and the closed clean-clone ambiguity report.

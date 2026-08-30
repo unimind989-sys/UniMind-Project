@@ -792,13 +792,13 @@ git status --short
 ```
 
 - [x] Include recovery for unavailable hosted targets, rejected reset guards, network failure, stale generated types, migration drift, invalid env, and a leaked workstation/CI token.
-- [~] Have a fresh agent follow `CONTRIBUTING.md` on a clean clone without chat history or verbal help; have the reviewer record every ambiguity. The final journey includes the reviewed disposable database/Auth CI evidence, synthetic Preview smoke, and locked-Beta boundaries from WP01-T08/T09.
+- [x] Have a fresh agent follow `CONTRIBUTING.md` on a clean clone without chat history or verbal help; have the reviewer record every ambiguity. The final journey includes the reviewed disposable database/Auth CI evidence, synthetic Preview smoke, and locked-Beta boundaries from WP01-T08/T09.
 
 **Pass:** the clean-clone rehearsal reaches the mock application, tests, build, disposable database/Auth CI contract, and approved Preview/Beta operating boundaries using repository instructions alone, and the fresh agent produces a complete task handoff.
 
 #### WP01-T11 — Run the package gate
 
-- [?] Copy the gate template to `evidence/wp01-foundation`. Historical WP01-T04/T05 evidence remains valid, but revised WP01-T08/T09/T10 must pass before the package gate starts. See `planning/tasks/wp01-t11-run-package-gate.md`.
+- [ ] Confirm historical WP01-T04/T05 evidence remains valid and revised WP01-T08/T09/T10 have passed before the package gate starts. See `planning/tasks/wp01-t11-run-package-gate.md`; copy the gate template only after claiming WP01-T11 against updated `main`.
 - [ ] Run `pnpm verify` from a clean clone with network access blocked for provider endpoints.
 - [ ] Reset the disposable CI database twice and compare generated types; do not reset Preview or Beta.
 - [ ] Deploy preview from the candidate SHA and run smoke tests.
