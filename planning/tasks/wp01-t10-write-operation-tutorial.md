@@ -47,8 +47,8 @@
 
 **Commands:** Candidate `c9543ad` passed source and independent clean-clone gates. The final source `pnpm verify` included 231 unit tests, integration/security/evaluation/load layers, two Chromium tests, production build, and repository/client secret scans. Agent readiness passed with 130 names, 37 links, 22 synchronized decisions, and 102 task contracts. Frozen installation reproduced 649 packages; local smoke passed six checks; the listener was loopback-only; all 34 package scripts matched; and every disposable clone/toolchain root was deleted.
 
-**Remaining:** Merge reviewed pull request #7 after the final documentation-only evidence commit is green, then rerun the selector from updated `main`. Do not start WP02 before WP01-T11 passes.
+**Remaining:** None for WP01-T10. Pull request #7 merged as `6db95f0`, the branch was removed, and the selector exposed WP01-T11. Do not start WP02 before WP01-T11 passes.
 
-**Next safe action:** Merge pull request #7, update local `main`, and let the selector expose WP01-T11 as the next package-gate task.
+**Next safe action:** Execute WP01-T11 from updated `main` and keep Preview synthetic/protected and Beta locked.
 
 **Reviewer action:** Complete — reviewed command parity, safety, clarity, recovery paths, green checks, and the closed clean-clone ambiguity report.

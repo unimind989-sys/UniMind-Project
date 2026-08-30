@@ -798,7 +798,7 @@ git status --short
 
 #### WP01-T11 — Run the package gate
 
-- [ ] Confirm historical WP01-T04/T05 evidence remains valid and revised WP01-T08/T09/T10 have passed before the package gate starts. See `planning/tasks/wp01-t11-run-package-gate.md`; copy the gate template only after claiming WP01-T11 against updated `main`.
+- [x] Confirm historical WP01-T04/T05 evidence remains valid and revised WP01-T08/T09/T10 have passed before the package gate starts. See `planning/tasks/wp01-t11-run-package-gate.md`; copy the gate template only after claiming WP01-T11 against updated `main`.
 - [ ] Run `pnpm verify` from a clean clone with network access blocked for provider endpoints.
 - [ ] Reset the disposable CI database twice and compare generated types; do not reset Preview or Beta.
 - [ ] Deploy preview from the candidate SHA and run smoke tests.
