@@ -2,7 +2,7 @@
 
 **Task ID:** WP01-T11
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** A clean candidate proves the complete WP01 application, database, security, tests, preview, secret hygiene, versions, and agent handoff before WP02 starts.
 
@@ -10,7 +10,7 @@
 
 **Reviewer:** Ahmed — ordinary package checkpoint authorized in chat on 2026-08-30; protected Beta/release sub-gates remain excluded
 
-**Branch:** `wp01/package-gate`
+**Branch:** `wp01/package-gate`; documentation closure `wp01/package-gate-close`
 
 **Updated (UTC):** 2026-08-30
 
@@ -38,16 +38,16 @@
 - [x] Copy and fill the gate template against one candidate SHA.
 - [x] Run clean install/build/test/database/type/secret/version checks.
 - [x] Run the authorized preview smoke and review breaking changes.
-- [ ] Obtain all required reviews and record PASS or exact blockers.
+- [x] Obtain all required reviews and record PASS or exact blockers.
 
 ## Handoff
 
-**Changed:** Claimed the package gate after confirming WP01-T01 through WP01-T10 reviewed PASS; closed the stale WP01-T10 post-merge handoff; added a reviewable Vercel Git policy that disables deployments from `main`; disabled automatic Production-domain assignment; and completed the clean-clone, disposable database, protected Preview, secret, version, compatibility, and cleanup checks against candidate `d7997eb`.
+**Changed:** Completed the WP01 package gate after confirming WP01-T01 through WP01-T10 reviewed PASS; closed the stale WP01-T10 post-merge handoff; added the reviewable Vercel policy that disables deployments from `main`; disabled automatic Production-domain assignment; and passed clean-clone, disposable database, protected Preview, secret, version, compatibility, review, merge, post-merge CI, and cleanup checks.
 
-**Commands:** Source and exact clean-clone `pnpm verify` passed with 232 unit tests and every remaining zero-cost layer. GitHub run `33323913701` passed dependency audit, application, and disposable database CI with two resets and cleanup. Protected Preview deployment `8cQQwEHwBicq4jCm6PqMcYpz1nBC` was READY and passed all six smoke checks. The sanitized runtime artifact recorded the exact pinned/runtime versions and was deleted locally after digest verification.
+**Commands:** Source and exact clean-clone `pnpm verify` passed with 232 unit tests and every remaining zero-cost layer. PR runs `33323913701` and `33324392840` passed all required checks; owner identity `unimind989-sys` approved final head `3da3497`; PR #8 merged as `b1f34d4`. Post-merge run `33325532189` passed application and disposable database CI. Fresh Vercel inventory showed no deployment for `b1f34d4`, proving `main` suppression while protected Preview remained READY. `scripts/verify-agent-readiness.ps1` passed 131 names, 37 links, 22 decisions, and 102 task contracts; `scripts/test-agent-handoff.ps1` passed from an isolated committed snapshot.
 
-**Remaining:** Obtain the required independent approval on the final pull-request head, merge the candidate, prove that the `main` event creates no Vercel Production deployment, and record the final ordinary package-gate decision.
+**Remaining:** None for WP01-T11. Keep Preview protected/synthetic, Beta locked, and `main` deployment suppression in place until a separately approved promotion gate changes them.
 
-**Next safe action:** Finalize candidate evidence, approve and merge pull request #8, verify `main` deployment suppression and green post-merge CI, then close WP01-T11 on a narrow documentation follow-up; do not advance to WP02 before that proof.
+**Next safe action:** Merge the documentation-only closure and rerun the work-state selector from updated `main`. Its expected `NONE` result is now the correct dependency stop: the reviewed WP00 mock bridge unlocked WP01 only, so an owner must supply the earliest outstanding WP00 decision/review input before WP02 can start.
 
-**Reviewer action:** Review and approve the final pull-request head for the ordinary package checkpoint. No protected Beta unlock, release, raw deletion, rights, budget, or go-live sub-gate is included.
+**Reviewer action:** Complete — Ahmed approved final head `3da3497` through owner identity `unimind989-sys`; no protected Beta unlock, release, raw deletion, rights, budget, or go-live sub-gate was included.
