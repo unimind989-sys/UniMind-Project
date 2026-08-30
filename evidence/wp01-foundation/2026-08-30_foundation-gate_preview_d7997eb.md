@@ -1,6 +1,6 @@
 # Gate report: WP01-T11 foundation package gate
 
-**Status:** IN PROGRESS
+**Status:** PASS
 
 **Environment:** Local clean candidate, disposable GitHub CI, protected synthetic Vercel Preview, and locked empty Beta
 
@@ -16,14 +16,14 @@
 
 **Human reviewer(s):** Ahmed — ordinary package checkpoint authorized in chat; no protected Beta unlock, release, or go-live action is in scope
 
-**Started/finished (UTC):** 2026-08-30 / in progress
+**Started/finished (UTC):** 2026-08-30 / 2026-08-30
 
 ## Scope and acceptance criteria
 
 | Criterion | Threshold | Result | Status | Evidence |
 | --- | --- | --- | --- | --- |
 | Upstream readiness | WP01-T01 through WP01-T10 have reviewed PASS evidence | All task records are complete and link evidence | PASS | `planning/tasks/wp01-*.md` |
-| Vercel target correctness | Reviewed commits deploy only as protected synthetic Preview until an explicit production promotion | Candidate deployed as protected Preview; repository policy disables `main` deployments; automatic Production-domain assignment is disabled; post-merge suppression proof remains | PENDING POST-MERGE | `vercel.json`; unit test; Vercel settings and deployment `8cQQwEHwBicq4jCm6PqMcYpz1nBC` |
+| Vercel target correctness | Reviewed commits deploy only as protected synthetic Preview until an explicit production promotion | Candidate deployed as protected Preview; repository policy disables `main`; automatic Production-domain assignment is disabled; fresh inventories after merge showed no deployment for `b1f34d4` | PASS | `vercel.json`; unit test; Vercel settings and deployments inventory |
 | Clean reproducibility | Frozen clean clone passes the complete credential-free gate with provider endpoints blocked | Exact candidate installed 649 locked packages and passed `pnpm verify` with outbound HTTP/HTTPS directed to a closed loopback port | PASS | Clean-clone transcript; provider mock rejects attempted fetch |
 | Disposable database repeatability | CI resets the disposable Supabase stack twice and generated types remain stable | Run `33323913701` passed both resets, migration parity, type drift, Auth/database integration, security, and cleanup | PASS | Job `99290748620`; artifact `9735729912` |
 | Protected Preview | Exact candidate deploys as Preview and passes six protected smoke checks | READY; live/ready GET `200` with `no-store`, both POSTs `405`, application identity and synthetic/mock-only markers present | PASS | Deployment `8cQQwEHwBicq4jCm6PqMcYpz1nBC`; signed-in browser and authenticated CLI smoke |
@@ -48,6 +48,10 @@
 | 2026-08-30 | Protected Preview deployment and smoke | 0 | Deployment `8cQQwEHwBicq4jCm6PqMcYpz1nBC` READY; six smoke checks passed against exact candidate |
 | 2026-08-30 | Sanitized database artifact verification | 0 | Artifact `9735729912`; SHA-256 `7d11e17f7da633ec4af2b9887d04181bef9dfcbcf055aa4cf4fa92a27f2e769b`; local ZIP deleted |
 | 2026-08-30 | Supabase breaking-change review | 0 | Reviewed current official feed and repository call sites; conclusions recorded below |
+| 2026-08-30 | Final-head review and merge | 0 | `unimind989-sys` approved `3da3497`; all five required checks passed; PR #8 merged as `b1f34d4` |
+| 2026-08-30 | Post-merge GitHub CI run `33325532189` | 0 | Application and disposable database jobs passed; dependency audit skipped by its documented pull-request-only guard |
+| 2026-08-30 | Post-merge Vercel inventory | 0 | No deployment or commit entry for `b1f34d4` after CI completed; latest entries remained protected READY Previews `3da3497` and `d7997eb` |
+| 2026-08-30 | Agent readiness and isolated handoff | 0 | Readiness passed 131 names, 37 links, 22 decisions, and 102 task contracts; handoff passed with no eligible next task and six durable active WP00 records |
 
 ## Negative, retry, and recovery cases
 
@@ -64,7 +68,7 @@
 
 | ID | Severity | Description | Owner | Due | Blocks |
 | --- | --- | --- | --- | --- | --- |
-| WP01-T11-VERCEL-TARGET | Gate blocker | Repository and dashboard corrections are complete; one merge event must prove `main` creates no Vercel Production deployment | Codex `/root` | Before package PASS | WP01-T11 and WP02 |
+| WP01-T11-VERCEL-TARGET | Closed | Repository and dashboard corrections are complete; merge `b1f34d4` produced no Vercel deployment | Codex `/root` | Closed 2026-08-30 | None |
 
 ## Recorded runtime
 
@@ -99,13 +103,13 @@ The workstation's ambient `node` command is `22.21.0`, but project commands invo
 
 ## Rollback/disable procedure
 
-Restore the prior Vercel Production-branch mapping only after an explicit production-promotion gate approves a protected target, required environment scopes, exact candidate, and domain behavior. Until then, retain Preview-only variables and Standard Protection; never point Preview at Beta or copy Beta credentials.
+Remove `git.deploymentEnabled.main=false` and reconsider automatic Production-domain assignment only after an explicit production-promotion gate approves a protected target, required environment scopes, exact candidate, and domain behavior. Until then, retain Preview-only variables and Standard Protection; never point Preview at Beta or copy Beta credentials.
 
 ## Decision
 
-Gate remains in progress only for independent review, merge, and post-merge proof that `main` creates no Vercel Production deployment. All candidate-local, clean-clone, disposable database, protected Preview, secret, compatibility, version, and cleanup criteria pass.
+PASS. Candidate-local, clean-clone, disposable database, protected Preview, secret, compatibility, version, review, merge, post-merge CI, Vercel suppression, and cleanup criteria all pass. The selector's post-gate `NONE` result is intentional: the reviewed WP00 mock bridge unlocks WP01 only, so WP02 remains behind unresolved WP00 owner inputs. Protected Beta/release gates remain locked and unchanged.
 
 | Name | Role | Decision | Date |
 | --- | --- | --- | --- |
-| Codex `/root` | Agent executor | IN PROGRESS | 2026-08-30 |
-| Ahmed | Human checkpoint | Authorized execution; final decision pending | 2026-08-30 |
+| Codex `/root` | Agent executor | PASS | 2026-08-30 |
+| Ahmed via `unimind989-sys` | Human checkpoint | APPROVED final head `3da3497` | 2026-08-30 |
