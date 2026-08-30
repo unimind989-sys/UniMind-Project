@@ -26,7 +26,7 @@
 
 **Pass:** A clean agent reaches the mock app, tests, build, disposable database/Auth CI contract, Preview smoke, locked-Beta boundary, and complete handoff from the tutorial alone, with every ambiguity recorded and corrected.
 
-**Evidence:** `evidence/wp01-foundation/YYYY-MM-DD_repository-tutorial_local_<short-sha>.md`
+**Evidence:** `evidence/wp01-foundation/2026-08-30_repository-tutorial_local_348a360.md`
 
 **Rollback:** Revert the tutorial/task-state commits; no application, database, provider, deployment, or external state changes.
 
@@ -43,12 +43,12 @@
 
 ## Handoff
 
-**Changed:** Added one root tutorial covering orientation, pinned setup, safe environment handling, current/daily/end-session loops, all 21 package commands, branch/PR/migration flow, handoff content, and every named recovery case; linked it from the repository map.
+**Changed:** Updated the root tutorial and test-layer guidance for the completed zero-cost topology; removed stale WP01-T08/T09 blockers; documented all 34 package scripts; routed database/Auth changes through disposable GitHub CI; and kept Preview protected and Beta locked.
 
-**Commands:** Agent readiness passes with 78 names, 31 links, 20 synchronized decisions, and 102 task contracts; all 21 package scripts are documented; placeholder/TODO scan found only the controlled evidence-filename pattern; `git diff --check` passes. The first `pnpm verify` found CONTRIBUTING formatting, then the formatted rerun passed format, lint, strict types, boundaries, 136 unit tests, and the synthetic production build. Candidate `9ab8e2c` passed `git show --check` and the isolated committed-snapshot rehearsal with a clean worktree and no structural ambiguity.
+**Commands:** Candidate `348a360` passed the source and clean-clone `pnpm verify` gates, including 230 unit tests, integration/security/evaluation/load layers, two Chromium tests, production build, and repository/client secret scans. Agent readiness passed with 129 names, 37 links, 22 synchronized decisions, and 102 task contracts. The no-chat handoff rehearsal selected WP01-T10 from a clean committed snapshot, the frozen install reproduced 649 packages, and all 34 package scripts matched the tutorial.
 
-**Remaining:** Complete the command-level tutorial migration and final mock/disposable-CI/Preview/Beta rehearsal from a clean committed snapshot.
+**Remaining:** Obtain the separate fresh-agent walkthrough and Ahmed's review of candidate `348a360` plus its evidence. The GitHub pull request and external checks are not yet open because browser submission requires action-time confirmation.
 
-**Next safe action:** Update commands and troubleshooting to match the completed implementation, then run the clean-snapshot walkthrough.
+**Next safe action:** Create the pull request, run its external checks, obtain the separate fresh-agent walkthrough, and present the completed evidence for Ahmed's checkpoint.
 
 **Reviewer action:** Review command parity, safety, clarity, links, recovery paths, and the clean-snapshot ambiguity report after the candidate evidence exists.
