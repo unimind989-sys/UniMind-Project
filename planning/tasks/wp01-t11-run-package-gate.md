@@ -26,7 +26,7 @@
 
 **Pass:** The full package reproduces from a clean clone with no dashboard-only state, provider call, secret leak, unauthorized data path, or unresolved executable ambiguity.
 
-**Evidence:** `evidence/wp01-foundation/2026-08-30_foundation-gate_preview_6db95f0.md`
+**Evidence:** `evidence/wp01-foundation/2026-08-30_foundation-gate_preview_d7997eb.md`
 
 **Rollback:** Revert only a narrow gate correction or roll preview back to the prior tested commit; database repair remains forward-only.
 
@@ -36,18 +36,18 @@
 
 - [x] Confirm WP01-T04 through WP01-T10 reviewed PASS and required reviewer assignments against updated `main` when claiming the gate.
 - [x] Copy and fill the gate template against one candidate SHA.
-- [ ] Run clean install/build/test/database/type/secret/version checks.
-- [ ] Run the authorized preview smoke and review breaking changes.
+- [x] Run clean install/build/test/database/type/secret/version checks.
+- [x] Run the authorized preview smoke and review breaking changes.
 - [ ] Obtain all required reviews and record PASS or exact blockers.
 
 ## Handoff
 
-**Changed:** Claimed the package gate after confirming WP01-T01 through WP01-T10 reviewed PASS. Live Vercel inspection found the protected Preview healthy and the merged `main` incorrectly routed to an unconfigured Production environment. Added a reviewable Vercel Git policy that disables deployments from `main` while preserving branch and pull-request Previews; correction verification and the full gate are in progress.
+**Changed:** Claimed the package gate after confirming WP01-T01 through WP01-T10 reviewed PASS; closed the stale WP01-T10 post-merge handoff; added a reviewable Vercel Git policy that disables deployments from `main`; disabled automatic Production-domain assignment; and completed the clean-clone, disposable database, protected Preview, secret, version, compatibility, and cleanup checks against candidate `d7997eb`.
 
-**Commands:** Live browser inspection confirmed Preview deployment `0a09653` READY with `GET /` status `200`; merged-main Production deployment `6db95f0` failed closed because required variables are scoped only to Preview while Vercel tracks `main` as Production.
+**Commands:** Source and exact clean-clone `pnpm verify` passed with 232 unit tests and every remaining zero-cost layer. GitHub run `33323913701` passed dependency audit, application, and disposable database CI with two resets and cleanup. Protected Preview deployment `8cQQwEHwBicq4jCm6PqMcYpz1nBC` was READY and passed all six smoke checks. The sanitized runtime artifact recorded the exact pinned/runtime versions and was deleted locally after digest verification.
 
-**Remaining:** Verify the Vercel Git policy and disable automatic Production-domain assignment without creating a Production target, then complete clean-clone, disposable database, Preview smoke, secret, version, compatibility-feed, review, and cleanup checks.
+**Remaining:** Obtain the required independent approval on the final pull-request head, merge the candidate, prove that the `main` event creates no Vercel Production deployment, and record the final ordinary package-gate decision.
 
-**Next safe action:** Keep variables Preview-scoped, deploy this branch as protected Preview, prove `main` deployment suppression after review, and execute the remaining package gate; do not advance to WP02.
+**Next safe action:** Finalize candidate evidence, approve and merge pull request #8, verify `main` deployment suppression and green post-merge CI, then close WP01-T11 on a narrow documentation follow-up; do not advance to WP02 before that proof.
 
-**Reviewer action:** Name Ahmed or Ziad for the ordinary package checkpoint and record both founders only for any protected sub-gate before evaluating its evidence.
+**Reviewer action:** Review and approve the final pull-request head for the ordinary package checkpoint. No protected Beta unlock, release, raw deletion, rights, budget, or go-live sub-gate is included.

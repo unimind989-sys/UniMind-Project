@@ -799,12 +799,12 @@ git status --short
 #### WP01-T11 — Run the package gate
 
 - [x] Confirm historical WP01-T04/T05 evidence remains valid and revised WP01-T08/T09/T10 have passed before the package gate starts. See `planning/tasks/wp01-t11-run-package-gate.md`; copy the gate template only after claiming WP01-T11 against updated `main`.
-- [ ] Run `pnpm verify` from a clean clone with network access blocked for provider endpoints.
-- [ ] Reset the disposable CI database twice and compare generated types; do not reset Preview or Beta.
-- [ ] Deploy preview from the candidate SHA and run smoke tests.
-- [ ] Search the repository, build output, logs, and evidence for secret patterns.
-- [ ] Confirm the Supabase breaking-change feed was reviewed and relevant items recorded.
-- [ ] Reviewer records the exact Node, pnpm, Next.js, Supabase CLI, PostgreSQL, and extension versions.
+- [x] Run `pnpm verify` from a clean clone with network access blocked for provider endpoints.
+- [x] Reset the disposable CI database twice and compare generated types; do not reset Preview or Beta.
+- [x] Deploy preview from the candidate SHA and run smoke tests.
+- [x] Search the repository, build output, logs, and evidence for secret patterns.
+- [x] Confirm the Supabase breaking-change feed was reviewed and relevant items recorded.
+- [x] Reviewer records the exact Node, pnpm, Next.js, Supabase CLI, PostgreSQL, and extension versions.
 
 ### 4.1 Create the codebase
 
