@@ -6,6 +6,9 @@ select ok(
   'fixture governance actions append audit events'
 );
 
+select set_config('unimind.actor_id', '10000000-0000-0000-0000-000000000001', true);
+select set_config('unimind.audit_reason', 'Create disabled synthetic feature', true);
+select set_config('unimind.correlation_id', '90000000-0000-0000-0000-000000000001', true);
 insert into unimind_private.system_feature_flags (
   id, key, enabled, changed_by, reason
 ) values (

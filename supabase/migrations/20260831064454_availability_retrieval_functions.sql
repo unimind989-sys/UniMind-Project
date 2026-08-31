@@ -179,9 +179,9 @@ begin
     segments.heading_path,
     segments.language,
     case config.distance_operator
-      when 'COSINE' then embeddings.embedding <=> query_embedding
-      when 'L2' then embeddings.embedding <-> query_embedding
-      when 'INNER_PRODUCT' then embeddings.embedding <#> query_embedding
+      when 'COSINE' then embeddings.embedding operator(extensions.<=>) query_embedding
+      when 'L2' then embeddings.embedding operator(extensions.<->) query_embedding
+      when 'INNER_PRODUCT' then embeddings.embedding operator(extensions.<#>) query_embedding
     end::double precision as distance
   from unimind_private.source_segments as segments
   join unimind_private.segment_embeddings as embeddings
@@ -203,9 +203,9 @@ begin
     and segments.curriculum_edition = cohorts.curriculum_edition
   order by
     case config.distance_operator
-      when 'COSINE' then embeddings.embedding <=> query_embedding
-      when 'L2' then embeddings.embedding <-> query_embedding
-      when 'INNER_PRODUCT' then embeddings.embedding <#> query_embedding
+      when 'COSINE' then embeddings.embedding operator(extensions.<=>) query_embedding
+      when 'L2' then embeddings.embedding operator(extensions.<->) query_embedding
+      when 'INNER_PRODUCT' then embeddings.embedding operator(extensions.<#>) query_embedding
     end asc,
     segments.id asc
   limit result_limit;
