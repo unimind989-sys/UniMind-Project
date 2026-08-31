@@ -953,12 +953,12 @@ Run `pnpm supabase migration new <name>` once for each row; put only that slice 
 
 For each migration:
 
-- [ ] Write an accompanying SQL or integration test before moving to the next row.
-- [ ] Run a clean reset.
-- [ ] Upgrade a populated fixture database and verify retained rows/evidence.
-- [ ] Generate TypeScript types and inspect the diff.
-- [ ] Run database advisors supported by the pinned CLI and record unresolved warnings.
-- [ ] Document a forward repair plan; do not assume a shared database can safely migrate backward.
+- [x] Write an accompanying SQL or integration test before moving to the next row.
+- [x] Run a clean reset.
+- [x] Upgrade a populated fixture database and verify retained rows/evidence.
+- [x] Generate TypeScript types and inspect the diff.
+- [x] Run database advisors supported by the pinned CLI and record unresolved warnings.
+- [x] Document a forward repair plan; do not assume a shared database can safely migrate backward.
 
 #### WP02-T03 — Implement reusable authorization predicates
 

@@ -2,7 +2,7 @@
 
 **Task ID:** WP02-T02
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** A clean PostgreSQL database can recreate the complete dependency-ordered UniMind domain schema from 15 reviewable migrations, with one focused synthetic database proof per slice, deterministic generated types, retained populated fixtures, advisor review, and an explicit forward-repair plan.
 
@@ -34,20 +34,20 @@
 
 ## Steps
 
-- [~] Inventory and design all 15 slices against the authoritative table/function contracts and current applied migration history.
-- [ ] Generate and implement each remaining migration in dependency order with a focused synthetic database test.
-- [ ] Prove clean resets, populated upgrade retention, deterministic types, advisors, and complete zero-cost verification.
-- [ ] Review security, maintainability, compatibility, migration safety, secrets, and accidental scope; fix all findings.
-- [ ] Record sanitized evidence, close the ordinary Ahmed checkpoint, merge to `main`, validate authorized hosted targets and deployment flow, and clean task branches/artifacts.
+- [x] Inventory and design all 15 slices against the authoritative table/function contracts and current applied migration history.
+- [x] Generate and implement each remaining migration in dependency order with a focused synthetic database test.
+- [x] Prove clean resets, populated upgrade retention, deterministic types, advisors, and complete zero-cost verification.
+- [x] Review security, maintainability, compatibility, migration safety, secrets, and accidental scope; fix all findings.
+- [x] Record sanitized evidence, close the ordinary Ahmed checkpoint, merge to `main`, validate authorized hosted targets and deployment flow, and clean task branches/artifacts.
 
 ## Handoff
 
-**Changed:** Claimed WP02-T02 and recorded its full execution, verification, external-state, rollback, and protected-gate boundaries.
+**Changed:** Added rows 02–15 of the reviewable domain migration history, synthetic fixtures, one focused pgTAP proof per slice, deterministic generated public types, disposable database CI orchestration, sanitized failure diagnostics, and the completed gate report.
 
-**Commands:** Initial repository, runbook, branch, GitHub, Supabase/Vercel access, configuration, and work-state inventory completed; implementation checks not yet run.
+**Commands:** `corepack pnpm verify` passed; GitHub Actions run `33370678166` passed dependency, application, database, advisor, type-drift, integration, and security gates; the exact Vercel Preview deployment was READY and passed endpoint smoke checks; hosted Supabase Preview/Beta health was inspected read-only; diff, scope, migration safety, security, and secrets were reviewed.
 
-**Remaining:** All implementation, database verification, review, evidence, merge, hosted validation, deployment validation, and cleanup steps.
+**Remaining:** No WP02-T02 implementation or verification work. Protected RLS, rights, raw-deletion, budget, release/unlock, beta-go-live, and hosted schema-promotion work remains owned by its later tasks and confirmations.
 
-**Next safe action:** Design the concrete object graph and test harness, then generate the row-02 through row-15 migration files with the pinned CLI without rewriting the existing applied row-01 migration.
+**Next safe action:** Begin WP02-T03 from the merged migration contract; use the future guarded promotion workflow before applying rows 02–15 to a shared Supabase project.
 
-**Reviewer action:** Pending ordinary evidence review under Ahmed's standing completion authority; protected gates remain explicitly out of scope.
+**Reviewer action:** Ordinary Ahmed checkpoint closed by the standing task authority and recorded evidence; protected gates remain explicitly out of scope and require their separate named confirmations.
