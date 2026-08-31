@@ -962,7 +962,7 @@ For each migration:
 
 #### WP02-T03 — Implement reusable authorization predicates
 
-- [ ] Create small stable helper functions only where they improve one source of truth: `is_admin`, `has_active_membership`, `has_campaign_assignment`, and `can_access_unit`.
+- [~] Create small stable helper functions only where they improve one source of truth: `is_admin`, `has_active_membership`, `has_campaign_assignment`, and `can_access_unit`.
 - [ ] Prefer `security invoker`. If `security definer` is unavoidable, place it in a non-exposed schema, set `search_path` explicitly, verify `auth.uid()`/caller authority inside, revoke `PUBLIC` execute, and grant only the intended role.
 - [ ] Use `(select auth.uid())` inside RLS predicates where appropriate to avoid repeated function evaluation.
 - [ ] Do not use `auth.role()` or `TO authenticated` alone as authorization.
