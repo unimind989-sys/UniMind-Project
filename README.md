@@ -68,6 +68,9 @@ corepack pnpm verify
 
 # Run only the UI/application/domain/adapter/server dependency check.
 corepack pnpm check:boundaries
+
+# Check every versioned SQL migration against the database conventions.
+corepack pnpm check:sql
 ```
 
 ## Notes
