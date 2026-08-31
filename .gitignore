@@ -48,3 +48,7 @@ supabase/.temp/
 
 # Local UniMind setup state and credentials
 /.local/
+
+# Vercel link state and environment pulls may contain credentials.
+/.vercel/
+/.env*

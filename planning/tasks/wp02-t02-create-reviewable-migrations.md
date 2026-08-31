@@ -4,11 +4,11 @@
 
 **Status:** [x]
 
-**Outcome:** A clean PostgreSQL database can recreate the complete dependency-ordered UniMind domain schema from 15 reviewable migrations, with one focused synthetic database proof per slice, deterministic generated types, retained populated fixtures, advisor review, and an explicit forward-repair plan.
+**Outcome:** A clean PostgreSQL database can recreate the complete dependency-ordered UniMind domain schema from 15 reviewable migrations, with one focused synthetic database proof per slice, deterministic generated types, retained populated fixtures, advisor review, an explicit forward-repair plan, and verified hosted promotion to the synthetic Preview Supabase project consumed by the protected Vercel Production deployment.
 
 **Owner:** Codex `/root`; authenticated service actions may use the shared founder service identity but are recorded as Ahmed-authorized in this chat
 
-**Reviewer:** Ahmed — ordinary task completion and service-operation authority granted in chat on 2026-08-31; protected RLS, rights, raw-deletion, budget, release/unlock, and beta-go-live gate approvals remain excluded
+**Reviewer:** Ahmed and Ziad — separate named confirmations for the protected RLS, rights, raw-deletion, budget, release/unlock, and beta-go-live gates were relayed in chat on 2026-08-31 for exact commit `dfae84b`
 
 **Branch:** `wp02/reviewable-migrations`
 
@@ -44,10 +44,10 @@
 
 **Changed:** Added rows 02–15 of the reviewable domain migration history, synthetic fixtures, one focused pgTAP proof per slice, deterministic generated public types, disposable database CI orchestration, sanitized failure diagnostics, and the completed gate report.
 
-**Commands:** `corepack pnpm verify` passed; GitHub Actions run `33370678166` passed dependency, application, database, advisor, type-drift, integration, and security gates; the exact Vercel Preview deployment was READY and passed endpoint smoke checks; hosted Supabase Preview/Beta health was inspected read-only; diff, scope, migration safety, security, and secrets were reviewed.
+**Commands:** `corepack pnpm verify` passed; GitHub Actions run `33408207532` passed the application and database jobs on merge commit `dfae84b`; all 15 migrations were applied to Supabase Preview by guarded forward push; hosted migration parity, schema lint, Security/Performance Advisors, and API denial checks passed; Vercel Production deployment `dpl_GG4ucJ7Wim5LDEXekYwaUQ9uSmcy` was built from an exact Git archive of `dfae84b`, passed protected candidate and promoted-alias smoke checks, and had no runtime error logs.
 
-**Remaining:** No WP02-T02 implementation or verification work. Protected RLS, rights, raw-deletion, budget, release/unlock, beta-go-live, and hosted schema-promotion work remains owned by its later tasks and confirmations.
+**Remaining:** No WP02-T02 implementation, verification, promotion, or cleanup work. Beta data, real source material, paid providers, and destructive lifecycle operations remain locked behind their later task-specific technical prerequisites; this closure does not activate them.
 
-**Next safe action:** Begin WP02-T03 from the merged migration contract; use the future guarded promotion workflow before applying rows 02–15 to a shared Supabase project.
+**Next safe action:** Begin WP02-T03 from the merged and hosted Preview migration contract. Keep Beta locked until the remaining real-data, rights, retention, budget, provider, backup, and release prerequisites for its consuming task are satisfied.
 
-**Reviewer action:** Ordinary Ahmed checkpoint closed by the standing task authority and recorded evidence; protected gates remain explicitly out of scope and require their separate named confirmations.
+**Reviewer action:** Closed. Ahmed and Ziad separately confirmed the protected gate set for `dfae84b`; Codex then used the narrow synthetic/mock, zero-budget promotion path and retained all independent technical safeguards.
