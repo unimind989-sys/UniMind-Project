@@ -199,5 +199,14 @@ jobs:
         "DATABASE_CI_CLEANUP_MISSING",
       ]),
     );
+
+    expect(
+      auditCiWorkflow(
+        workflow.replace(
+          "            src/types/database.generated.ts\n",
+          "            .env.local\n",
+        ),
+      ),
+    ).toContain("DATABASE_CI_REPORT_UPLOAD_MISSING");
   });
 });

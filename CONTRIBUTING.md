@@ -122,7 +122,7 @@ Keep the Next.js development server on the workstation and do not expose it to a
 
 ### 5.1 Database/Auth changes
 
-Push a review branch and let `.github/workflows/ci.yml` run the `application` gate before `database-ci`. The database job starts a runner-local Supabase stack, resets it twice from versioned migrations and synthetic seed data, checks migration history and generated types, runs Auth/security tests, and removes the stack and volumes under `if: always()`.
+Push a review branch and let `.github/workflows/ci.yml` run the `application` gate before `database-ci`. The database job starts a runner-local Supabase stack, upgrades the populated WP01 schema through every pending migration, resets the complete schema twice, runs the pgTAP migration contracts and pinned database advisor, checks migration history and generated types, runs Auth/security tests, and removes the stack and volumes under `if: always()`.
 
 The `db:ci:*` and `test:integration:database` commands fail closed outside the GitHub-hosted Linux lifecycle. A workstation run is not a substitute. Inspect the GitHub job result and its sanitized `database-ci-test-reports-*` artifact; the job must have no persistent database secret and no route to Preview or Beta.
 
@@ -183,8 +183,11 @@ Duration classes are workstation estimates: **instant** is normally under 10 sec
 | `pnpm test:load`                     | Validate the load profile and emit a `NOT_EXECUTED` dry-run report                    | None; preview/beta/production and real providers are rejected           | Versioned synthetic YAML profile                                          | Short        |
 | `pnpm smoke:deployment`              | Check health, write denial, app identity, and synthetic/mock-only mode                | GET/POST requests only to the explicitly supplied local or Preview URL  | `--base-url` and `--target local\|preview`; Preview requires remote HTTPS | Instant      |
 | `pnpm db:ci:start`                   | Start migrations/seed on a disposable runner-local Supabase stack                     | Runner-local containers only                                            | Guarded GitHub-hosted Linux lifecycle                                     | Long         |
+| `pnpm db:ci:upgrade`                 | Upgrade a populated WP01 fixture through pending migrations and verify retained rows  | Runner-local containers only; never Preview/Beta                        | Started disposable stack                                                  | Medium       |
 | `pnpm db:ci:reset`                   | Destroy/rebuild the disposable database from migrations and synthetic seed            | Runner-local containers only; never Preview/Beta                        | Started disposable stack                                                  | Medium       |
 | `pnpm db:ci:migrations`              | Compare local migration files with disposable database history                        | Runner-local containers only                                            | Started disposable stack                                                  | Short        |
+| `pnpm db:ci:test`                    | Run every dependency-slice pgTAP contract against the disposable database             | Runner-local containers only                                            | Started, fully migrated disposable stack                                  | Medium       |
+| `pnpm db:ci:advisors`                | Run the pinned database lint/advisor and fail on unresolved warnings                  | Runner-local containers only                                            | Started, fully migrated disposable stack                                  | Short        |
 | `pnpm db:ci:types`                   | Generate committed database types from the disposable stack                           | Runner-local containers only                                            | Started disposable stack                                                  | Short        |
 | `pnpm db:ci:stop`                    | Remove the disposable stack and data volumes                                          | Runner-local containers only                                            | Guarded GitHub-hosted Linux lifecycle                                     | Short        |
 | `pnpm db:reset`                      | Retired hosted reset seam; no approved target exists                                  | None; never Preview/Beta                                                | Do not run; use `database-ci` through GitHub Actions                      | N/A          |
@@ -231,7 +234,7 @@ corepack pnpm supabase migration new descriptive_outcome
 corepack pnpm verify
 ```
 
-Push the review branch and require the external `database-ci` job to prove two clean disposable resets and stable generated types. Inspect any generated-type diff on the branch before review. Do not claim the database gate from workstation mocks or invoke a retired hosted command with Preview/Beta credentials.
+Push the review branch and require the external `database-ci` job to prove the populated forward upgrade, two clean disposable resets, all migration contracts, a warning-free pinned advisor, and stable generated types. Inspect any generated-type diff on the branch before review. Do not claim the database gate from workstation mocks or invoke a retired hosted command with Preview/Beta credentials.
 
 Edit only the CLI-created migration filename. Never invent a migration timestamp, reset Preview/Beta, repair a shared database in a dashboard, rewrite applied history, or add real seed data. Preview/Beta receive reviewed forward migrations only. RLS, grants, rights, deletion, release, and usage migrations require the documented protected-gate confirmations from both founders.
 

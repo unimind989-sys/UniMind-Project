@@ -125,15 +125,30 @@ function hasAlwaysUpload(job: UnknownRecord | undefined): boolean {
   if (job === undefined || !Array.isArray(job.steps)) {
     return false;
   }
-  return job.steps.some(
-    (step) =>
-      isRecord(step) &&
-      typeof step.uses === "string" &&
-      step.uses.startsWith("actions/upload-artifact@") &&
-      step.if === "always()" &&
-      isRecord(step.with) &&
-      step.with.path === "test-results/",
-  );
+  return job.steps.some((step) => {
+    if (
+      !isRecord(step) ||
+      typeof step.uses !== "string" ||
+      !step.uses.startsWith("actions/upload-artifact@") ||
+      step.if !== "always()" ||
+      !isRecord(step.with) ||
+      typeof step.with.path !== "string"
+    ) {
+      return false;
+    }
+    const allowedPaths = new Set([
+      "test-results/",
+      "src/types/database.generated.ts",
+    ]);
+    const paths = step.with.path
+      .split(/\r?\n/u)
+      .map((path) => path.trim())
+      .filter((path) => path.length > 0);
+    return (
+      paths.includes("test-results/") &&
+      paths.every((path) => allowedPaths.has(path))
+    );
+  });
 }
 
 function hasDependencyAudit(job: UnknownRecord | undefined): boolean {
@@ -286,7 +301,10 @@ export function auditCiWorkflow(source: string): string[] {
 
   for (const command of [
     "db:ci:start",
+    "db:ci:upgrade",
     "db:ci:migrations",
+    "db:ci:test",
+    "db:ci:advisors",
     "db:ci:types",
     "db:types:check",
     "test:integration:database",

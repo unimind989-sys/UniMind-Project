@@ -54,11 +54,31 @@ describe("ephemeral Supabase guard", () => {
       "db",
       "reset",
       "--local",
+      "--sql-paths",
+      "./seed.sql",
+      "--sql-paths",
+      "./fixtures/wp02-synthetic.sql",
     ]);
     expect(createEphemeralSupabaseArguments("migrations")).toEqual([
       "migration",
       "list",
       "--local",
+    ]);
+    expect(createEphemeralSupabaseArguments("test")).toEqual([
+      "test",
+      "db",
+      "--local",
+    ]);
+    expect(createEphemeralSupabaseArguments("advisors")).toEqual([
+      "db",
+      "lint",
+      "--local",
+      "--schema",
+      "public,unimind_private",
+      "--level",
+      "warning",
+      "--fail-on",
+      "warning",
     ]);
     expect(createEphemeralSupabaseArguments("types")).toEqual([
       "gen",
