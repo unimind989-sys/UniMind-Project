@@ -23,6 +23,22 @@ type CommandResult = Readonly<{
   stdout: string;
 }>;
 
+function formatFailureOutput(stdout: unknown, stderr: unknown): string {
+  const combined = [String(stdout ?? ""), String(stderr ?? "")]
+    .filter((value) => value.trim().length > 0)
+    .join("\n")
+    .replace(
+      /eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+/g,
+      "[redacted-jwt]",
+    )
+    .replace(
+      /((?:access|api|publishable|secret|service_role)[_-]?(?:key|token)\s*[=:]\s*)\S+/gi,
+      "$1[redacted]",
+    );
+
+  return combined.length > 8_000 ? combined.slice(-8_000) : combined;
+}
+
 function runCli(arguments_: readonly string[]): CommandResult {
   const result = spawnSync(process.execPath, [supabaseCli, ...arguments_], {
     cwd: process.cwd(),
@@ -32,8 +48,11 @@ function runCli(arguments_: readonly string[]): CommandResult {
     stdio: ["ignore", "pipe", "pipe"],
   });
   if (result.error !== undefined || result.status !== 0) {
+    const diagnostic = formatFailureOutput(result.stdout, result.stderr);
     throw new Error(
-      `Disposable Supabase action failed with status ${String(result.status)}.`,
+      `Disposable Supabase action failed with status ${String(result.status)}.${
+        diagnostic.length > 0 ? `\n${diagnostic}` : ""
+      }`,
     );
   }
   return { stdout: String(result.stdout) };
