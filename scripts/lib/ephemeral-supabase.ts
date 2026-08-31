@@ -1,7 +1,10 @@
 export const ephemeralSupabaseActions = [
   "start",
+  "upgrade",
   "reset",
   "migrations",
+  "test",
+  "advisors",
   "types",
   "auth",
   "stop",
@@ -45,7 +48,7 @@ export function assertGitHubHostedLinuxRunner(input: EnvironmentInput): void {
 }
 
 export function createEphemeralSupabaseArguments(
-  action: Exclude<EphemeralSupabaseAction, "auth">,
+  action: Exclude<EphemeralSupabaseAction, "auth" | "upgrade">,
 ): readonly string[] {
   switch (action) {
     case "start":
@@ -54,6 +57,20 @@ export function createEphemeralSupabaseArguments(
       return ["db", "reset", "--local"];
     case "migrations":
       return ["migration", "list", "--local"];
+    case "test":
+      return ["test", "db", "--local"];
+    case "advisors":
+      return [
+        "db",
+        "lint",
+        "--local",
+        "--schema",
+        "public,unimind_private",
+        "--level",
+        "warning",
+        "--fail-on",
+        "warning",
+      ];
     case "types":
       return ["gen", "types", "typescript", "--local", "--schema", "public"];
     case "stop":

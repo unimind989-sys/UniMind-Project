@@ -86,9 +86,12 @@ jobs:
       - name: Start and verify the disposable database and Auth stack
         run: |
           corepack pnpm db:ci:start
+          corepack pnpm db:ci:upgrade
           corepack pnpm db:ci:reset
           corepack pnpm db:ci:reset
           corepack pnpm db:ci:migrations
+          corepack pnpm db:ci:test
+          corepack pnpm db:ci:advisors
           corepack pnpm db:ci:types
           corepack pnpm db:types:check
           corepack pnpm test:integration:database
@@ -101,6 +104,8 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: database-ci-test-reports-${{ github.run_id }}-${{ github.run_attempt }}
-          path: test-results/
+          path: |
+            test-results/
+            src/types/database.generated.ts
           if-no-files-found: warn
           retention-days: 7

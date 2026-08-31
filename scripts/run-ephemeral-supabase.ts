@@ -186,6 +186,17 @@ async function execute(action_: EphemeralSupabaseAction): Promise<void> {
     runAuthIntegration();
     return;
   }
+  if (action_ === "upgrade") {
+    runCli(["db", "reset", "--local", "--version", "20260824235549"]);
+    runCli(["db", "push", "--local", "--include-all"]);
+    runCli([
+      "test",
+      "db",
+      "--local",
+      "supabase/tests/00_populated_upgrade_retains_foundation.sql",
+    ]);
+    return;
+  }
   const result = runCli(createEphemeralSupabaseArguments(action_));
   if (action_ === "start") {
     writeRuntimeMetadata();

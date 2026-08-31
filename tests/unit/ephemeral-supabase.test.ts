@@ -60,6 +60,22 @@ describe("ephemeral Supabase guard", () => {
       "list",
       "--local",
     ]);
+    expect(createEphemeralSupabaseArguments("test")).toEqual([
+      "test",
+      "db",
+      "--local",
+    ]);
+    expect(createEphemeralSupabaseArguments("advisors")).toEqual([
+      "db",
+      "lint",
+      "--local",
+      "--schema",
+      "public,unimind_private",
+      "--level",
+      "warning",
+      "--fail-on",
+      "warning",
+    ]);
     expect(createEphemeralSupabaseArguments("types")).toEqual([
       "gen",
       "types",
