@@ -2,7 +2,7 @@
 
 **Task ID:** WP02-T01
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** Every versioned SQL migration is governed by one accepted database-boundary decision, a repeatable review checklist, and automated convention checks in the zero-cost verification gate.
 
@@ -26,7 +26,7 @@
 
 **Pass:** The current migration set passes; unsafe fixture migrations fail with stable violations; the ADR and checklist cover schema exposure, RLS/grants, identifiers, UTC timestamps, constraints, indexing, soft deactivation, append-only evidence, and forward-only repair.
 
-**Evidence:** `evidence/wp02-database/2026-08-31_database-conventions_local_<short-sha>.md`
+**Evidence:** `evidence/wp02-database/2026-08-31_database-conventions_local_de4ad49.md`
 
 **Rollback:** Revert the documentation, checker, test, and package-script changes. No shared database, deployment, provider, or external state is changed.
 
@@ -34,20 +34,20 @@
 
 ## Steps
 
-- [~] Confirm the task boundaries and record the accepted database convention trade-offs.
-- [ ] Write the database-boundary ADR and forward-migration review checklist.
-- [ ] Add failing convention cases, implement the SQL checker, and integrate it into `pnpm verify`.
-- [ ] Run focused and complete zero-cost verification plus repository handoff checks.
-- [ ] Record sanitized evidence and close the ordinary human checkpoint.
+- [x] Confirm the task boundaries and record the accepted database convention trade-offs.
+- [x] Write the database-boundary ADR and forward-migration review checklist.
+- [x] Add failing convention cases, implement the SQL checker, and integrate it into `pnpm verify`.
+- [x] Run focused and complete zero-cost verification plus repository handoff checks.
+- [x] Record sanitized evidence and close the ordinary human checkpoint.
 
 ## Handoff
 
-**Changed:** Task claimed; implementation not yet started.
+**Changed:** Accepted ADR-0002; added the database migration checklist; implemented the migration scanner and `check:sql`; covered safe and unsafe filename, schema, identity, timestamp, grant, comment/string, and privileged-function cases; wired the checker into the full zero-cost gate; synchronized command documentation and task state.
 
-**Commands:** `scripts/show-work-state.ps1` selected WP02-T01 from clean `main`; governing material and current migration/tooling were inspected; `git switch -c wp02/database-conventions` exited 0.
+**Commands:** Candidate `de4ad49` passed the final `pnpm verify` gate with 242 unit tests, credential-free integration, 8 security tests, 3 evaluation cases, 5 guarded load-profile tests, 2 Chromium tests, production build, and repository/client secret scans. The focused SQL suite passed 10 cases; `pnpm check:sql`, agent readiness, `git diff --check`, full 12-file diff review, and the isolated committed-snapshot handoff all passed.
 
-**Remaining:** All implementation, verification, evidence, and review criteria.
+**Remaining:** None for WP02-T01. Open pilot decisions and protected gates retain their exact downstream blocks.
 
-**Next safe action:** Write ADR-0002 and the migration checklist, then add the SQL-convention tests before the checker implementation.
+**Next safe action:** Run the selector from the closure commit; it should recommend WP02-T02. Claim exactly one reviewable migration slice and keep fixtures synthetic.
 
-**Reviewer action:** Ahmed authorized completion and ordinary review in chat on 2026-08-31. Inspect the final evidence before the task is marked complete.
+**Reviewer action:** Complete — Ahmed granted full ordinary completion and review authority in chat on 2026-08-31; the final evidence records PASS and explicitly excludes protected gates.

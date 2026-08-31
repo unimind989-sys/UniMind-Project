@@ -921,13 +921,13 @@ Every adapter returns normalized identifiers, units, latency, retries, cost, and
 
 #### WP02-T01 — Establish database conventions
 
-- [~] Add `docs/adr/0002-database-boundaries.md` covering exposed `public`, private internal schemas, RLS, stable IDs, timestamps, enums/checks, soft deactivation, append-only evidence, and forward migrations.
-- [~] Use `uuid` primary keys for externally referenced/domain entities and identity/sequence keys only for internal append-only rows where ordering/size benefits are measured.
-- [~] Use `timestamptz`, UTC storage, `created_at not null default now()`, and explicit actor/reason fields on governed transitions.
-- [~] Add `not null`, foreign keys, unique constraints, and transition checks at the database layer; TypeScript validation is additional, not a substitute.
-- [~] Index every foreign key used for joins/deletes and benchmarked authorization/filter columns. Do not add speculative indexes without a query.
-- [~] Revoke broad defaults first, then explicitly grant only required tables/functions to `anon`, `authenticated`, or worker roles. Remember that a grant exposes an object to a role while RLS controls rows; both must be correct.
-- [~] Create SQL lint/convention checks and a migration checklist.
+- [x] Add `docs/adr/0002-database-boundaries.md` covering exposed `public`, private internal schemas, RLS, stable IDs, timestamps, enums/checks, soft deactivation, append-only evidence, and forward migrations.
+- [x] Use `uuid` primary keys for externally referenced/domain entities and identity/sequence keys only for internal append-only rows where ordering/size benefits are measured.
+- [x] Use `timestamptz`, UTC storage, `created_at not null default now()`, and explicit actor/reason fields on governed transitions.
+- [x] Add `not null`, foreign keys, unique constraints, and transition checks at the database layer; TypeScript validation is additional, not a substitute.
+- [x] Index every foreign key used for joins/deletes and benchmarked authorization/filter columns. Do not add speculative indexes without a query.
+- [x] Revoke broad defaults first, then explicitly grant only required tables/functions to `anon`, `authenticated`, or worker roles. Remember that a grant exposes an object to a role while RLS controls rows; both must be correct.
+- [x] Create SQL lint/convention checks and a migration checklist.
 
 #### WP02-T02 — Create migrations in reviewable dependency order
 
