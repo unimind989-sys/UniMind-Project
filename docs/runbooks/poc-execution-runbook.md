@@ -36,7 +36,9 @@ When a request does not name a task, select exactly one using this order:
 3. If that task is blocked, mark the blocking item `[?]` and link the decision or dependency. Advance an executable prerequisite when one exists; for a human-only blocker, record the tasks it blocks and select the earliest task that does not depend on it. Never cross an actual dependency merely because later work is easier.
 4. Before editing, create or update the task record required by section 0.10. Selection is complete only when one task ID, owner, reviewer state, expected files, verification, evidence path, and hard stops are explicit.
 
-**WP00 mock bridge:** a reviewed `PASS` for WP00-T08 may route selection to WP01 while unresolved real-choice tasks remain `[?]`, because WP01 uses their documented synthetic/mock interfaces. This bridge unlocks WP01 only. It never marks an open decision complete, enables a real adapter, or skips a dependency for WP02 or later.
+**WP00 mock bridge:** a reviewed `PASS` for WP00-T08 may route selection to WP01 while unresolved real-choice tasks remain `[?]`, because WP01 uses their documented synthetic/mock interfaces. This bridge unlocks WP01 only and never marks an open decision complete or enables a real adapter.
+
+**WP01 foundation bridge:** after every WP01 task is complete and WP01-T11 has reviewed `PASS` evidence, selection may route to the earliest eligible WP02 task because the delivery table makes Package 1 its dependency. Open real-choice decisions retain their exact consumer blocks. Rights, RLS, raw deletion, budget, release, and live-provider gates retain their required confirmations; in particular, WP02-T04's protected RLS negative run requires separate Ahmed and Ziad confirmations.
 
 ### 0.2 Agent execution, human checkpoints, and the two-person rule
 

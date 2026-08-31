@@ -21,6 +21,8 @@ Use this workflow for every repository change. It is a routing document: product
 
 After reviewed WP00-T08 `PASS`, the work-state command may use the runbook's **WP00 mock bridge** to select WP01 while real-choice tasks remain blocked. Treat this as permission for synthetic data, deterministic mocks, local sinks, and zero paid capacity only.
 
+After every WP01 task and the reviewed WP01-T11 package gate pass, the command may use the **WP01 foundation bridge** to select the earliest eligible WP02 task. Preserve every open decision's exact consumer block and stop at protected rights, RLS, raw-deletion, budget, release, or live-provider gates until their named confirmations exist.
+
 **Complete when:** exactly one task is claimed and its dependencies, files, verification, evidence, rollback, and hard stops are explicit.
 
 ## 3. Execute a recoverable slice

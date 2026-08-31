@@ -168,8 +168,7 @@ if ($null -ne $currentWorkPackage) {
 
   # WP00 deliberately permits unresolved real choices when their mocks and
   # downstream blockers have passed the constraints-only gate. That reviewed
-  # gate unlocks only the mock-only WP01 foundation, never a later package or
-  # a real adapter.
+  # gate unlocks only the mock-only WP01 foundation, never a real adapter.
   if ($null -eq $recommendedTask -and $currentWorkPackage -eq 'WP00') {
     $wp00Gate = $runbookTasks | Where-Object taskId -eq 'WP00-T08' | Select-Object -First 1
     if ($null -ne $wp00Gate -and $wp00Gate.status -eq 'COMPLETE') {
@@ -196,6 +195,40 @@ if ($null -ne $currentWorkPackage) {
         $currentWorkPackage = 'WP01'
         $routingMode = 'reviewed-wp00-mock-bridge'
       }
+
+      # Once the whole WP01 foundation and its package gate are complete, the
+      # delivery table permits eligible WP02 database work. Open real-choice
+      # decisions and protected gates retain their task-level blocks.
+      if ($null -eq $recommendedTask) {
+        $unfinishedWp01Tasks = @($wp01Tasks | Where-Object status -ne 'COMPLETE')
+        $wp01Gate = $wp01Tasks | Where-Object taskId -eq 'WP01-T11' | Select-Object -First 1
+
+        if ($unfinishedWp01Tasks.Count -eq 0 -and $null -ne $wp01Gate -and $wp01Gate.status -eq 'COMPLETE') {
+          $wp02Tasks = @($runbookTasks | Where-Object workPackage -eq 'WP02')
+          $recommendedTask = $wp02Tasks |
+            Where-Object {
+              $_.status -eq 'IN_PROGRESS' -and
+              -not $blockedTaskIds.Contains($_.taskId) -and
+              -not $recordBlockedTaskIds.Contains($_.taskId)
+            } |
+            Select-Object -First 1
+
+          if ($null -eq $recommendedTask) {
+            $recommendedTask = $wp02Tasks |
+              Where-Object {
+                $_.status -eq 'NOT_STARTED' -and
+                -not $blockedTaskIds.Contains($_.taskId) -and
+                -not $recordBlockedTaskIds.Contains($_.taskId)
+              } |
+              Select-Object -First 1
+          }
+
+          if ($null -ne $recommendedTask) {
+            $currentWorkPackage = 'WP02'
+            $routingMode = 'reviewed-wp01-foundation-bridge'
+          }
+        }
+      }
     }
   }
 }
@@ -203,6 +236,8 @@ if ($null -ne $currentWorkPackage) {
 $recommendation = if ($null -ne $recommendedTask) {
   $reason = if ($routingMode -eq 'reviewed-wp00-mock-bridge') {
     'WP00-T08 passed the mock-only constraints gate; unresolved real choices remain blocked while the earliest eligible WP01 foundation task advances.'
+  } elseif ($routingMode -eq 'reviewed-wp01-foundation-bridge') {
+    'WP01-T11 passed the foundation package gate; unresolved real choices and protected gates retain their exact blocks while the earliest eligible WP02 database task advances.'
   } else {
     "Earliest executable task in $currentWorkPackage after excluding failed, completed, decision-blocked, and record-blocked tasks."
   }

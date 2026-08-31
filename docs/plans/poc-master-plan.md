@@ -662,6 +662,7 @@ Video adds a processor behind the existing pipeline; it must not create a separa
 
 ## 17. Working rules
 
+- After the reviewed WP01 foundation gate passes, begin eligible WP02 database work with synthetic/generic fixtures while open decisions retain their exact consumer blocks; protected rights, RLS, raw-deletion, budget, release, and live-provider gates still require their named confirmations.
 - Update this file when direction, scope, architecture, quality, capacity, or operating policy changes.
 - Do not complete a phase because its interface looks finished; exit evidence must exist.
 - Record unresolved decisions instead of hiding assumptions in code.
