@@ -93,7 +93,7 @@ create function unimind_private.assert_valid_transition(
 )
 returns void
 language plpgsql
-immutable
+stable
 set search_path = ''
 as $$
 begin
