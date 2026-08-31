@@ -1,4 +1,5 @@
--- Synthetic WP02 database contract fixture. Include inside a transaction and roll it back.
+-- Synthetic WP02 database contract fixture for disposable reset/test targets only.
+begin;
 select set_config('unimind.actor_id', '10000000-0000-0000-0000-000000000001', true);
 select set_config('unimind.audit_reason', 'WP02 synthetic fixture', true);
 select set_config('unimind.correlation_id', '90000000-0000-0000-0000-000000000001', true);
@@ -383,3 +384,5 @@ values (
   '70000000-0000-0000-0000-000000000001',
   '[0.1,0.2,0.3]'::extensions.vector
 );
+
+commit;

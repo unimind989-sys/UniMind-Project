@@ -54,6 +54,10 @@ describe("ephemeral Supabase guard", () => {
       "db",
       "reset",
       "--local",
+      "--sql-paths",
+      "./seed.sql",
+      "--sql-paths",
+      "./fixtures/wp02-synthetic.sql",
     ]);
     expect(createEphemeralSupabaseArguments("migrations")).toEqual([
       "migration",

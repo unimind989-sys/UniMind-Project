@@ -1,5 +1,4 @@
 begin;
-\ir ../fixtures/wp02-synthetic.sql
 select plan(5);
 
 select is(

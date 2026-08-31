@@ -1,5 +1,4 @@
 begin;
-\ir ../fixtures/wp02-synthetic.sql
 select plan(4);
 
 insert into public.studio_requests (

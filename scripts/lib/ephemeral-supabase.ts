@@ -54,7 +54,15 @@ export function createEphemeralSupabaseArguments(
     case "start":
       return ["start"];
     case "reset":
-      return ["db", "reset", "--local"];
+      return [
+        "db",
+        "reset",
+        "--local",
+        "--sql-paths",
+        "./seed.sql",
+        "--sql-paths",
+        "./fixtures/wp02-synthetic.sql",
+      ];
     case "migrations":
       return ["migration", "list", "--local"];
     case "test":
