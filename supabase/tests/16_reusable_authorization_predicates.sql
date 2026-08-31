@@ -1,5 +1,8 @@
 begin;
 select plan(34);
+set local unimind.actor_id = '10000000-0000-0000-0000-000000000001';
+set local unimind.audit_reason = 'WP02-T03 synthetic revocation proof';
+set local unimind.correlation_id = '90000000-0000-0000-0000-000000000003';
 
 select is(
   (
