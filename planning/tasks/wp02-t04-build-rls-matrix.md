@@ -2,7 +2,7 @@
 
 **Task ID:** WP02-T04
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** Every database table, view, and function has an explicit actor/action/resource decision, and automated database tests prove permitted operations, forbidden operations, cross-user/cohort/unit isolation, and immediate revocation from authoritative database state.
 
@@ -12,7 +12,7 @@
 
 **Branch:** `wp02/actor-action-resource-matrix`
 
-**Updated (UTC):** 2026-09-01T17:51:50Z
+**Updated (UTC):** 2026-09-01T18:07:16Z
 
 ## Execution contract
 
@@ -39,16 +39,16 @@
 - [x] Prove cross-user, cross-cohort, cross-unit, role/state, and immediate membership/assignment/role revocation boundaries.
 - [x] Run credential-free checks and the guarded disposable database gate; record exact results.
 - [x] Freeze the candidate SHA and obtain separate Ahmed and Ziad confirmations. Exact green implementation candidate: `6133a54c6a9b54bea954ea7f5947e26f9e240250`; Ziad confirmed it in this chat at `2026-09-01T14:36:30Z`, and Ziad separately relayed Ahmed's confirmation by name at `2026-09-01T17:51:50Z`, as permitted by D-22.
-- [ ] Run and revert the test-only leaking-policy regression, rerun the green database gate, and complete protected review evidence.
+- [x] Run and revert the test-only leaking-policy regression, rerun the green database gate, and complete protected review evidence. Test-only SHA `5aaaf515f6fefeeaa4244aad8b5ce0f23287cd92` made GitHub run `33540422972` fail in `database-ci`; revert SHA `4d3f1720a6dfaf7d94e38020ea757a5294bed166` removed the fixture and passed run `33541122562`.
 
 ## Handoff
 
 **Changed:** Added the controlled 1,470-row matrix for all 55 tables and 25 functions across six actors; added a 121-assertion pgTAP suite and a Vitest completeness/grant contract; added a forward migration that prevents invalid source metadata reads through a private, caller-scoped `auth.uid()` helper backed by authoritative role, membership, release, publication, rights, version, and curriculum-edition rows. The established authorization/availability separation remains intact: cohort members can read authorized catalog metadata while derived availability and source access enforce release/publication/source validity.
 
-**Commands:** Workstation preflight passed; `scripts/show-work-state.ps1` selected WP02-T04; local `corepack pnpm check:sql`, `corepack pnpm test:security`, `git diff --check`, and `corepack pnpm verify` passed. GitHub run `33514355193` passed dependency audit, the exact full application gate, populated upgrade, two resets, migration parity, all pgTAP tests including the 121-assertion T04 suite, advisors, type generation/parity, database Auth integration, and security tests on exact candidate `6133a54c6a9b54bea954ea7f5947e26f9e240250`.
+**Commands:** Workstation preflight passed; `scripts/show-work-state.ps1` selected WP02-T04; local `corepack pnpm check:sql`, `corepack pnpm test:security`, `git diff --check`, and `corepack pnpm verify` passed. GitHub run `33514355193` passed the original implementation gate. Authorized negative run `33540422972` passed dependency audit and application checks, then failed `database-ci` after the only schema delta replaced `chat_sessions_select_own` with a deliberate authenticated cross-user leak. The fixture was immediately reverted. Post-revert run `33541122562` passed dependency audit, `corepack pnpm verify`, populated upgrade, two resets, migration parity, all pgTAP tests including the 121-assertion T04 suite, advisors, type generation/parity, database Auth integration, security tests, cleanup, and artifact upload.
 
-**Remaining:** Run and revert the protected test-only leaking-policy regression, rerun the normal green database gate, and close protected review evidence.
+**Remaining:** No WP02-T04 implementation, verification, protected review, or cleanup work remains. The Draft PR is intentionally unmerged and no deployment or shared-database action occurred.
 
-**Next safe action:** Create a disposable test-only candidate that leaks a cross-user row, prove the database/security gate fails, then immediately revert the unsafe fixture and rerun the normal green gate.
+**Next safe action:** WP02-T05 is the next runbook task. Do not start WP03, deploy, launch beta, or enable real data/providers.
 
-**Reviewer action:** Both founders' protected confirmations are recorded. Inspect the negative-run and post-revert green evidence before protected gate completion.
+**Reviewer action:** Both founders' protected confirmations and the required negative/green evidence are recorded; WP02-T04 is complete.

@@ -2,13 +2,13 @@
 
 **Task:** WP02-T04
 
-**Status:** IN PROGRESS; implementation and normal green database verification are complete, both protected confirmations are recorded, and the deliberate-leak negative run is authorized but not yet executed
+**Status:** PASS; implementation, protected negative regression, immediate fixture removal, and post-revert green verification are complete
 
 **Environment:** Local zero-cost verification and GitHub-hosted disposable Supabase CI only; no shared Supabase target, deployment, beta launch, paid provider, or real data
 
 **Implementation candidate:** `6133a54c6a9b54bea954ea7f5947e26f9e240250`
 
-**Review surface:** Draft PR #17; GitHub Actions run `33514355193`; database artifact `database-ci-test-reports-33514355193-1` (`sha256:8ae3eb288bdb4a5f180834f5f1823366d5d2ab6f6b6d8bffb8d45146507f84bb`)
+**Review surface:** Draft PR #17; original green run `33514355193`; protected negative run `33540422972`; post-revert green run `33541122562`
 
 **Agent executor:** Codex `/root`
 
@@ -43,9 +43,13 @@
 | `corepack pnpm db:ci:advisors` | PASS | Disposable database advisors passed |
 | `corepack pnpm db:ci:types` and `corepack pnpm db:types:check` | PASS | Generated types matched the committed artifact |
 | `corepack pnpm test:integration:database` | PASS | 2 database/Auth integration tests passed and the guarded Auth action completed |
+| Protected deliberate-leak run | EXPECTED FAIL | Test-only SHA `5aaaf515f6fefeeaa4244aad8b5ce0f23287cd92` changed only `chat_sessions_select_own` to admit every authenticated caller. Run `33540422972` passed dependency audit and application, then `database-ci` job `99965543642` failed. Database artifact `database-ci-test-reports-33540422972-1` has digest `sha256:aa2b2b502a62a46db2bdcd0358978f5015d3464d72bd2fc765b27f899e4470f4`. |
+| Immediate leak removal | PASS | Revert SHA `4d3f1720a6dfaf7d94e38020ea757a5294bed166` deleted test migration `20260901175253_deliberate_test_only_chat_session_leak.sql`; it is absent from the branch and working tree. |
+| Post-revert complete CI | PASS | Run `33541122562` passed dependency audit, application, and database job `99967772505`; database artifact `database-ci-test-reports-33541122562-1` has digest `sha256:bc1d7c0facedba6e4a6344ee898cde19d25a4db7c64f7e5cf6ce5bf4bdcfa0e4`. |
 | `pwsh -NoProfile -File scripts/verify-agent-readiness.ps1` | PASS | Readiness passed before checkpoint documentation |
 | `pwsh -NoProfile -File scripts/test-agent-handoff.ps1` | PASS | Isolated committed-snapshot handoff selected WP02-T04 |
 | `git diff --check` | PASS | No whitespace errors on the implementation candidate |
+| Local disposable database command guard | PASS | A local Windows attempt refused before stack creation because `db:ci:*` is intentionally restricted to GitHub-hosted Linux. The exact commands passed in the post-revert GitHub database job; no unsupported bypass was used. |
 
 ## Closed failures
 
@@ -61,8 +65,10 @@ Ziad's separate confirmation is recorded from the current chat: `انا ك زي�
 
 Ahmed's separate confirmation is recorded from Ziad's D-22-permitted relay in the current chat: `احمد وافق`, given in direct response to the question about the remaining confirmation for that exact candidate at `2026-09-01T17:51:50Z`.
 
-The deliberate test-only leaking-policy regression is now authorized but not yet executed. Create only a disposable test candidate that leaks a cross-user or cross-cohort row, prove the database/security gate fails, revert the unsafe fixture, rerun the normal green gate, and update this report to a final PASS. Do not merge, promote, or start WP02-T05 before that sequence completes.
+After both confirmations, CLI-generated test migration `20260901175253_deliberate_test_only_chat_session_leak.sql` replaced the existing `chat_sessions_select_own` policy with a policy that admitted any non-null authenticated `auth.uid()`. This deliberately exposed Student A and Student B chat-session rows across users while retaining the reviewed policy name, so the database behavior gate rather than the static inventory contract had to reject it.
+
+GitHub run `33540422972` failed as required in `database-ci` after its application checks passed. Commit `4d3f1720a6dfaf7d94e38020ea757a5294bed166` immediately reverted and removed the unsafe migration. Post-revert run `33541122562` passed the complete application and disposable database sequence, including the two resets and all RLS tests. The unsafe fixture was never merged, promoted, deployed, or applied to a shared database.
 
 ## Gate decision
 
-IN PROGRESS. Normal implementation verification is green and both founders' separate confirmations are recorded, but WP02-T04 is not COMPLETE until the deliberate-leak negative run and its post-revert green rerun pass the documented contract. WP02-T05 and WP03 have not started.
+PASS. WP02-T04 is COMPLETE: the matrix and automated ALLOW/DENY coverage are green, both founders' protected confirmations are recorded, the deliberate cross-user leak failed disposable database CI, the fixture was immediately removed, and the post-revert full gate is green. WP02-T05 and WP03 have not started.
