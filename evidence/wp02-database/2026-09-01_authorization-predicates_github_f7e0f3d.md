@@ -12,7 +12,7 @@
 
 **Agent executor:** Codex `/root`
 
-**Human checkpoint:** PROTECTED RLS GATE PENDING — separate named Ahmed and Ziad confirmations are required for exact commit `f7e0f3d8c7920e987ddffa9bd1f44c1edaec716f` before merge or hosted migration promotion
+**Human checkpoint:** PROTECTED RLS GATE PASS — Ahmed and Ziad separately confirmed exact commit `f7e0f3d8c7920e987ddffa9bd1f44c1edaec716f` in the task chat on 2026-09-01 UTC
 
 ## Scope and acceptance evidence
 
@@ -27,8 +27,8 @@
 | Migration replay | Populated upgrade, two clean resets, migration listing, all 17 pgTAP files, advisors, generated types, database Auth integration, and security suites pass in disposable CI | PASS |
 | Application compatibility | Local and GitHub application gates pass formatting, lint, type checking, boundaries, SQL/CI policy, secret scan, 242 unit tests, integration/security/evaluation/load tests, Chromium E2E, production build, and client-artifact scan | PASS |
 | Protected preview | Exact Vercel deployment is READY; live and ready return 200 with `no-store`; POST returns 405; browser rendering is synthetic/mock-only; console and error-log checks are clean | PASS |
-| Hosted Supabase promotion | Supabase Preview was inspected as Healthy with no advisor issue and migration head `rls_grants_indexes`; the new protected migration was intentionally not applied | PENDING PROTECTED GATE |
-| Merge/production closure | PR #15 is open and technically green; merge, Supabase forward promotion, production deployment, and production flow validation wait for both named confirmations | PENDING PROTECTED GATE |
+| Hosted Supabase promotion | Supabase Preview was inspected as Healthy with no advisor issue and migration head `rls_grants_indexes`; the protected gate is now approved and guarded promotion remains to run | IN PROGRESS |
+| Merge/production closure | PR #15 is open and technically green; merge, production deployment, and production flow validation follow successful database promotion | IN PROGRESS |
 
 ## Commands and results
 
@@ -62,6 +62,11 @@
 
 Before hosted promotion, close PR #15 and delete the task branch if the change is rejected. After a shared database applies the migration, do not edit history or migrate backward: disable the consuming capability and apply a narrowly scoped reviewed forward-repair migration. If only the application deployment regresses, keep providers and budget disabled and move the Vercel production alias to the last reviewed deployment.
 
+## Protected confirmations
+
+- Ahmed: confirmed exact reviewed commit `f7e0f3d8c7920e987ddffa9bd1f44c1edaec716f` in the task chat on 2026-09-01 UTC.
+- Ziad: separately confirmed exact reviewed commit `f7e0f3d8c7920e987ddffa9bd1f44c1edaec716f` in the task chat on 2026-09-01 UTC.
+
 ## Gate decision
 
-TECHNICAL PASS; PROTECTED REVIEW PENDING. The implementation is ready for the separate named Ahmed and Ziad confirmations on exact commit `f7e0f3d8c7920e987ddffa9bd1f44c1edaec716f`. Until both confirmations are recorded, the migration must not be applied to hosted Supabase, PR #15 must not merge, and the production alias must not move.
+TECHNICAL PASS; PROTECTED REVIEW PASS. The exact implementation is authorized for guarded hosted Supabase promotion, PR merge, and production validation. Closure remains pending until those actions and cleanup pass.

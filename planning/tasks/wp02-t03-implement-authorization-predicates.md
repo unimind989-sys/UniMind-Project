@@ -2,13 +2,13 @@
 
 **Task ID:** WP02-T03
 
-**Status:** [?]
+**Status:** [~]
 
 **Outcome:** Authenticated database callers use four stable, caller-scoped authorization predicates backed by authoritative database rows, and affected RLS policies apply the same immediately revocable role, membership, campaign-assignment, and curriculum-unit rules.
 
 **Owner:** Codex `/root`; authenticated service actions may use the shared founder service identity but are recorded as Ahmed-authorized in this chat
 
-**Reviewer:** Ahmed + Ziad — protected RLS gate; separate named confirmations are required for the exact reviewed commit before hosted promotion or closure
+**Reviewer:** Ahmed + Ziad — protected RLS gate confirmed separately in the task chat for exact reviewed commit `f7e0f3d8c7920e987ddffa9bd1f44c1edaec716f` on 2026-09-01 UTC
 
 **Branch:** `wp02/reusable-authorization-predicates`
 
@@ -37,7 +37,8 @@
 - [x] Implement the four predicates and refactor only the affected RLS policies to consume them.
 - [x] Prove function metadata, grants, positive/negative authorization, stale-claim revocation, policy behavior, and update-policy completeness in the disposable database.
 - [x] Run generated-type, advisor, application, security, build, and full repository verification.
-- [?] Obtain separate named Ahmed and Ziad confirmations for exact commit `f7e0f3d8c7920e987ddffa9bd1f44c1edaec716f`, then merge, promote, validate production, and clean task artifacts.
+- [x] Obtain separate named Ahmed and Ziad confirmations for exact commit `f7e0f3d8c7920e987ddffa9bd1f44c1edaec716f`.
+- [~] Promote the guarded migration, merge, validate production, and clean task artifacts.
 
 ## Handoff
 
@@ -45,8 +46,8 @@
 
 **Commands:** `corepack pnpm verify` passed; GitHub Actions run `33446495666` passed dependency-audit, application, and disposable database jobs; populated upgrade, two resets, 17 pgTAP files, advisors, type parity, Auth integration, and security passed; protected Vercel Preview `dpl_4sB7Fyvayxknns7W9MGB4t8vN8xK` passed endpoint, browser, and error-log checks.
 
-**Remaining:** Separate named Ahmed and Ziad confirmations for the exact reviewed commit; guarded Supabase Preview forward promotion; PR merge; production deployment and end-to-end validation; task-branch cleanup.
+**Remaining:** Guarded Supabase Preview forward promotion; PR merge; production deployment and end-to-end validation; task-branch cleanup.
 
-**Next safe action:** Record both founders' separate confirmations for exact commit `f7e0f3d8c7920e987ddffa9bd1f44c1edaec716f`; do not mutate hosted Supabase or merge before that protected checkpoint.
+**Next safe action:** Dry-run the exact forward migration against Supabase Preview, apply it only if the remote history and dry run are clean, then validate the hosted database before merging.
 
-**Reviewer action:** Ahmed and Ziad must separately confirm the exact reviewed commit before the protected RLS gate can be promoted or closed.
+**Reviewer action:** SATISFIED — Ahmed confirmed `f7e0f3d8c7920e987ddffa9bd1f44c1edaec716f`; Ziad separately confirmed `f7e0f3d8c7920e987ddffa9bd1f44c1edaec716f` in the task chat on 2026-09-01 UTC.
