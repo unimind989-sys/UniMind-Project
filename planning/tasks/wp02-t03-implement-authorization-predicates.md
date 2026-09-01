@@ -12,7 +12,7 @@
 
 **Branch:** `wp02/reusable-authorization-predicates`
 
-**Updated (UTC):** 2026-08-31
+**Updated (UTC):** 2026-09-01
 
 ## Execution contract
 
@@ -44,10 +44,10 @@
 
 **Changed:** Added the forward authorization migration, four stable caller-scoped predicates, focused RLS policy reuse, a 34-assertion pgTAP security proof, and deterministic generated public types.
 
-**Commands:** `corepack pnpm verify` passed; GitHub Actions run `33446495666` passed dependency-audit, application, and disposable database jobs; populated upgrade, two resets, 17 pgTAP files, advisors, type parity, Auth integration, and security passed; protected Vercel Preview `dpl_4sB7Fyvayxknns7W9MGB4t8vN8xK` passed endpoint, browser, and error-log checks.
+**Commands:** `corepack pnpm verify` passed; final PR-head GitHub Actions run `33460679200` passed dependency-audit, application, and disposable database jobs; populated upgrade, two resets, 17 pgTAP files, advisors, type parity, Auth integration, and security passed; protected Vercel Preview passed endpoint, browser, and error-log checks; Supabase Preview atomically applied migration `20260831220554`, then passed ledger, helper metadata, grant, policy-reuse, caller-denial, and refreshed advisor checks.
 
-**Remaining:** Guarded Supabase Preview forward promotion; PR merge; production deployment and end-to-end validation; task-branch cleanup.
+**Remaining:** PR merge; main CI and production deployment; end-to-end production validation; closure evidence and task-branch cleanup.
 
-**Next safe action:** Dry-run the exact forward migration against Supabase Preview, apply it only if the remote history and dry run are clean, then validate the hosted database before merging.
+**Next safe action:** Merge the approved and green PR at its unchanged head, wait for main CI and production deployment, then validate the final hosted flow before closure and cleanup.
 
 **Reviewer action:** SATISFIED — Ahmed confirmed `f7e0f3d8c7920e987ddffa9bd1f44c1edaec716f`; Ziad separately confirmed `f7e0f3d8c7920e987ddffa9bd1f44c1edaec716f` in the task chat on 2026-09-01 UTC.
