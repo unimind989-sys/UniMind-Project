@@ -63,52 +63,6 @@ revoke all on function unimind_private.can_read_source_asset(uuid)
 grant execute on function unimind_private.can_read_source_asset(uuid)
   to authenticated;
 
-drop policy cohorts_select_member_or_admin on public.cohorts;
-create policy cohorts_select_member_or_admin
-on public.cohorts for select to authenticated
-using (
-  (select public.is_admin())
-  or (
-    public.has_active_membership(cohorts.id)
-    and exists (
-      select 1
-      from public.cohort_releases as releases
-      where releases.cohort_id = cohorts.id
-        and releases.release_status = 'UNLOCKED'
-    )
-  )
-);
-
-drop policy curriculum_units_select_member_or_admin
-  on public.curriculum_units;
-create policy curriculum_units_select_member_or_admin
-on public.curriculum_units for select to authenticated
-using (
-  (select public.is_admin())
-  or (
-    curriculum_units.publication_status = 'PUBLISHED'
-    and public.has_active_membership(curriculum_units.cohort_id)
-    and exists (
-      select 1
-      from public.cohort_releases as releases
-      where releases.cohort_id = curriculum_units.cohort_id
-        and releases.release_status = 'UNLOCKED'
-    )
-  )
-);
-
-drop policy cohort_releases_select_member_or_admin
-  on public.cohort_releases;
-create policy cohort_releases_select_member_or_admin
-on public.cohort_releases for select to authenticated
-using (
-  (select public.is_admin())
-  or (
-    cohort_releases.release_status = 'UNLOCKED'
-    and public.has_active_membership(cohort_releases.cohort_id)
-  )
-);
-
 drop policy source_assets_select_available_scope on public.source_assets;
 create policy source_assets_select_available_scope
 on public.source_assets for select to authenticated

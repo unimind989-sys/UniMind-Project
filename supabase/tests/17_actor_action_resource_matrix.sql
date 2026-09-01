@@ -417,11 +417,23 @@ select is(
     select count(*)
     from (
       (
-        select table_name, column_name, privilege_type
-        from information_schema.column_privileges
-        where grantee = 'authenticated'
-          and table_schema = 'public'
-          and privilege_type in ('INSERT', 'UPDATE', 'REFERENCES')
+        select
+          relations.relname::text as table_name,
+          attributes.attname::text as column_name,
+          privileges.privilege_type
+        from pg_catalog.pg_attribute as attributes
+        join pg_catalog.pg_class as relations
+          on relations.oid = attributes.attrelid
+        join pg_catalog.pg_namespace as namespaces
+          on namespaces.oid = relations.relnamespace
+        cross join lateral pg_catalog.aclexplode(attributes.attacl) as privileges
+        join pg_catalog.pg_roles as grantees
+          on grantees.oid = privileges.grantee
+        where grantees.rolname = 'authenticated'
+          and namespaces.nspname = 'public'
+          and attributes.attnum > 0
+          and not attributes.attisdropped
+          and privileges.privilege_type in ('INSERT', 'UPDATE', 'REFERENCES')
         except
         select table_name, column_name, privilege_type
         from reviewed_authenticated_column_grants
@@ -431,11 +443,23 @@ select is(
         select table_name, column_name, privilege_type
         from reviewed_authenticated_column_grants
         except
-        select table_name, column_name, privilege_type
-        from information_schema.column_privileges
-        where grantee = 'authenticated'
-          and table_schema = 'public'
-          and privilege_type in ('INSERT', 'UPDATE', 'REFERENCES')
+        select
+          relations.relname::text as table_name,
+          attributes.attname::text as column_name,
+          privileges.privilege_type
+        from pg_catalog.pg_attribute as attributes
+        join pg_catalog.pg_class as relations
+          on relations.oid = attributes.attrelid
+        join pg_catalog.pg_namespace as namespaces
+          on namespaces.oid = relations.relnamespace
+        cross join lateral pg_catalog.aclexplode(attributes.attacl) as privileges
+        join pg_catalog.pg_roles as grantees
+          on grantees.oid = privileges.grantee
+        where grantees.rolname = 'authenticated'
+          and namespaces.nspname = 'public'
+          and attributes.attnum > 0
+          and not attributes.attisdropped
+          and privileges.privilege_type in ('INSERT', 'UPDATE', 'REFERENCES')
       )
     ) as mismatches
   ),
@@ -994,21 +1018,19 @@ select throws_ok(
   '42501', null,
   'Student A cannot query the server-only usage ledger directly'
 );
+insert into public.chat_sessions (
+  id, user_id, cohort_id, curriculum_unit_id, language_mode, retention_mode
+)
+values (
+  '81000000-0000-0000-0000-000000000003',
+  '10000000-0000-0000-0000-000000000002',
+  '20000000-0000-0000-0000-000000000006',
+  '20000000-0000-0000-0000-000000000007', 'MIXED', 'MINIMAL'
+);
 select is(
   (
-    with inserted as (
-      insert into public.chat_sessions (
-        id, user_id, cohort_id, curriculum_unit_id, language_mode,
-        retention_mode
-      ) values (
-        '81000000-0000-0000-0000-000000000003',
-        '10000000-0000-0000-0000-000000000002',
-        '20000000-0000-0000-0000-000000000006',
-        '20000000-0000-0000-0000-000000000007', 'MIXED', 'MINIMAL'
-      )
-      returning id
-    )
-    select count(*) from inserted
+    select count(*) from public.chat_sessions
+    where id = '81000000-0000-0000-0000-000000000003'
   ),
   1::bigint,
   'Student A can create an own chat in an available unit'
@@ -1032,16 +1054,15 @@ select throws_ok(
   '42501', null,
   'Student A cannot create a chat owned by Student B'
 );
+update public.profiles
+set display_name = 'Synthetic Student A Updated',
+    updated_at = transaction_timestamp()
+where user_id = '10000000-0000-0000-0000-000000000002';
 select is(
   (
-    with changed as (
-      update public.profiles
-      set display_name = 'Synthetic Student A Updated',
-          updated_at = transaction_timestamp()
-      where user_id = '10000000-0000-0000-0000-000000000002'
-      returning user_id
-    )
-    select count(*) from changed
+    select count(*) from public.profiles
+    where user_id = '10000000-0000-0000-0000-000000000002'
+      and display_name = 'Synthetic Student A Updated'
   ),
   1::bigint,
   'Student A can update the reviewed columns on the own profile'
@@ -1051,16 +1072,15 @@ select is(
   'Synthetic Student A Updated',
   'Student A reads back the own-profile update'
 );
+update public.profiles
+set display_name = 'Cross-user mutation',
+    updated_at = transaction_timestamp()
+where user_id = '10000000-0000-0000-0000-000000000003';
 select is(
   (
-    with changed as (
-      update public.profiles
-      set display_name = 'Cross-user mutation',
-          updated_at = transaction_timestamp()
-      where user_id = '10000000-0000-0000-0000-000000000003'
-      returning user_id
-    )
-    select count(*) from changed
+    select count(*) from public.profiles
+    where user_id = '10000000-0000-0000-0000-000000000003'
+      and display_name = 'Cross-user mutation'
   ),
   0::bigint,
   'Student A update cannot move through Student B row scope'
@@ -1176,24 +1196,24 @@ select is(
     select count(*) from public.cohorts
     where id = '20000000-0000-0000-0000-000000000009'
   ),
-  0::bigint,
-  'a member cannot read a locked cohort directly'
+  1::bigint,
+  'a member can read authorized cohort metadata while availability remains locked'
 );
 select is(
   (
     select count(*) from public.cohort_releases
     where cohort_id = '20000000-0000-0000-0000-000000000009'
   ),
-  0::bigint,
-  'a member cannot read a locked cohort release row directly'
+  1::bigint,
+  'a member can read the authorized cohort release state'
 );
 select is(
   (
     select count(*) from public.curriculum_units
     where cohort_id = '20000000-0000-0000-0000-000000000009'
   ),
-  0::bigint,
-  'a member cannot read units through a locked cohort'
+  1::bigint,
+  'a member can read authorized unit metadata while availability remains locked'
 );
 select is(
   (select count(*) from public.available_curriculum_units()),
@@ -1239,21 +1259,20 @@ select is(
   0::bigint,
   'Student B cannot read Student A quiz attempt'
 );
+insert into public.feedback_reports (
+  id, reporter_id, entity_type, entity_id, category, description
+)
+values (
+  '84000000-0000-0000-0000-000000000001',
+  '10000000-0000-0000-0000-000000000003',
+  'CURRICULUM_UNIT',
+  '20000000-0000-0000-0000-000000000010',
+  'OTHER', 'Synthetic Student B own feedback'
+);
 select is(
   (
-    with inserted as (
-      insert into public.feedback_reports (
-        id, reporter_id, entity_type, entity_id, category, description
-      ) values (
-        '84000000-0000-0000-0000-000000000001',
-        '10000000-0000-0000-0000-000000000003',
-        'CURRICULUM_UNIT',
-        '20000000-0000-0000-0000-000000000010',
-        'OTHER', 'Synthetic Student B own feedback'
-      )
-      returning id
-    )
-    select count(*) from inserted
+    select count(*) from public.feedback_reports
+    where id = '84000000-0000-0000-0000-000000000001'
   ),
   1::bigint,
   'Student B can create own feedback'
@@ -1277,28 +1296,26 @@ select throws_ok(
   '42501', null,
   'Student B cannot create feedback owned by Student A'
 );
+update public.profiles
+set preferred_language = 'AR_EG', updated_at = transaction_timestamp()
+where user_id = '10000000-0000-0000-0000-000000000003';
 select is(
   (
-    with changed as (
-      update public.profiles
-      set preferred_language = 'AR_EG', updated_at = transaction_timestamp()
-      where user_id = '10000000-0000-0000-0000-000000000003'
-      returning user_id
-    )
-    select count(*) from changed
+    select count(*) from public.profiles
+    where user_id = '10000000-0000-0000-0000-000000000003'
+      and preferred_language = 'AR_EG'
   ),
   1::bigint,
   'Student B can update reviewed own-profile columns'
 );
+update public.profiles
+set preferred_language = 'AR_EG', updated_at = transaction_timestamp()
+where user_id = '10000000-0000-0000-0000-000000000002';
 select is(
   (
-    with changed as (
-      update public.profiles
-      set preferred_language = 'AR_EG', updated_at = transaction_timestamp()
-      where user_id = '10000000-0000-0000-0000-000000000002'
-      returning user_id
-    )
-    select count(*) from changed
+    select count(*) from public.profiles
+    where user_id = '10000000-0000-0000-0000-000000000002'
+      and preferred_language = 'AR_EG'
   ),
   0::bigint,
   'Student B cannot update Student A profile'
@@ -1356,24 +1373,23 @@ select is(
   0::bigint,
   'Batch Leader cannot read requested items from another campaign'
 );
+insert into public.source_submissions (
+  id, campaign_id, curriculum_unit_id, cohort_id, submitted_by,
+  client_idempotency_key, source_name, declared_format, declared_rights
+)
+values (
+  '32000000-0000-0000-0000-000000000004',
+  '30000000-0000-0000-0000-000000000001',
+  '20000000-0000-0000-0000-000000000007',
+  '20000000-0000-0000-0000-000000000006',
+  '10000000-0000-0000-0000-000000000002',
+  'synthetic-matrix-allow', 'Synthetic Matrix Allowed Source',
+  'application/pdf', 'DECLARED'
+);
 select is(
   (
-    with inserted as (
-      insert into public.source_submissions (
-        id, campaign_id, curriculum_unit_id, cohort_id, submitted_by,
-        client_idempotency_key, source_name, declared_format, declared_rights
-      ) values (
-        '32000000-0000-0000-0000-000000000004',
-        '30000000-0000-0000-0000-000000000001',
-        '20000000-0000-0000-0000-000000000007',
-        '20000000-0000-0000-0000-000000000006',
-        '10000000-0000-0000-0000-000000000002',
-        'synthetic-matrix-allow', 'Synthetic Matrix Allowed Source',
-        'application/pdf', 'DECLARED'
-      )
-      returning id
-    )
-    select count(*) from inserted
+    select count(*) from public.source_submissions
+    where id = '32000000-0000-0000-0000-000000000004'
   ),
   1::bigint,
   'Batch Leader can create a submission in the assigned campaign and unit'
@@ -1594,21 +1610,20 @@ select throws_ok(
 reset role;
 
 set local role service_role;
+insert into public.feedback_reports (
+  id, reporter_id, entity_type, entity_id, category, description
+)
+values (
+  '84000000-0000-0000-0000-000000000002',
+  '10000000-0000-0000-0000-000000000003',
+  'CURRICULUM_UNIT',
+  '20000000-0000-0000-0000-000000000010',
+  'OTHER', 'Synthetic server-only feedback write'
+);
 select is(
   (
-    with inserted as (
-      insert into public.feedback_reports (
-        id, reporter_id, entity_type, entity_id, category, description
-      ) values (
-        '84000000-0000-0000-0000-000000000002',
-        '10000000-0000-0000-0000-000000000003',
-        'CURRICULUM_UNIT',
-        '20000000-0000-0000-0000-000000000010',
-        'OTHER', 'Synthetic server-only feedback write'
-      )
-      returning id
-    )
-    select count(*) from inserted
+    select count(*) from public.feedback_reports
+    where id = '84000000-0000-0000-0000-000000000002'
   ),
   1::bigint,
   'service role can create a server-owned mutation'
@@ -1621,15 +1636,14 @@ select is(
   'Synthetic server-only feedback write',
   'service role reads back the created server-owned row'
 );
+update public.feedback_reports
+set status = 'TRIAGED'
+where id = '84000000-0000-0000-0000-000000000002';
 select is(
   (
-    with changed as (
-      update public.feedback_reports
-      set status = 'TRIAGED'
-      where id = '84000000-0000-0000-0000-000000000002'
-      returning id
-    )
-    select count(*) from changed
+    select count(*) from public.feedback_reports
+    where id = '84000000-0000-0000-0000-000000000002'
+      and status = 'TRIAGED'
   ),
   1::bigint,
   'service role can update a server-owned mutation'
@@ -1642,16 +1656,9 @@ select is(
   'TRIAGED',
   'service role reads back the updated server-owned row'
 );
-select is(
-  (
-    with deleted as (
-      delete from public.feedback_reports
-      where id = '84000000-0000-0000-0000-000000000002'
-      returning id
-    )
-    select count(*) from deleted
-  ),
-  1::bigint,
+select lives_ok(
+  $$delete from public.feedback_reports
+    where id = '84000000-0000-0000-0000-000000000002'$$,
   'service role can delete a server-owned mutation'
 );
 select is(
