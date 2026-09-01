@@ -2,7 +2,7 @@
 
 **Task ID:** WP02-T03
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** Authenticated database callers use four stable, caller-scoped authorization predicates backed by authoritative database rows, and affected RLS policies apply the same immediately revocable role, membership, campaign-assignment, and curriculum-unit rules.
 
@@ -10,7 +10,7 @@
 
 **Reviewer:** Ahmed + Ziad — protected RLS gate confirmed separately in the task chat for exact reviewed commit `f7e0f3d8c7920e987ddffa9bd1f44c1edaec716f` on 2026-09-01 UTC
 
-**Branch:** `wp02/reusable-authorization-predicates`
+**Branch:** `wp02/reusable-authorization-predicates` (merged and deleted after closure)
 
 **Updated (UTC):** 2026-09-01
 
@@ -38,16 +38,16 @@
 - [x] Prove function metadata, grants, positive/negative authorization, stale-claim revocation, policy behavior, and update-policy completeness in the disposable database.
 - [x] Run generated-type, advisor, application, security, build, and full repository verification.
 - [x] Obtain separate named Ahmed and Ziad confirmations for exact commit `f7e0f3d8c7920e987ddffa9bd1f44c1edaec716f`.
-- [~] Promote the guarded migration, merge, validate production, and clean task artifacts.
+- [x] Promote the guarded migration, merge, validate production, and clean task artifacts.
 
 ## Handoff
 
 **Changed:** Added the forward authorization migration, four stable caller-scoped predicates, focused RLS policy reuse, a 34-assertion pgTAP security proof, and deterministic generated public types.
 
-**Commands:** `corepack pnpm verify` passed; final PR-head GitHub Actions run `33460679200` passed dependency-audit, application, and disposable database jobs; populated upgrade, two resets, 17 pgTAP files, advisors, type parity, Auth integration, and security passed; protected Vercel Preview passed endpoint, browser, and error-log checks; Supabase Preview atomically applied migration `20260831220554`, then passed ledger, helper metadata, grant, policy-reuse, caller-denial, and refreshed advisor checks.
+**Commands:** `corepack pnpm verify` passed; approved final PR-head run `33461447713` and merged-main run `33461971714` passed every applicable job; populated upgrade, two resets, 17 pgTAP files, advisors, type parity, Auth integration, and security passed; Supabase Preview atomically applied migration `20260831220554`, then passed ledger, helper metadata, grants, policy reuse, caller denial, and refreshed advisor checks; Vercel Production deployment `dpl_6xYZD9ocbQMg7WCJgvmEuV8nBbZb` records exact merge SHA `5334fcaf6b99e93235a31a6edd8015f688f069f1`, is READY on the production alias, returns healthy live/ready responses, renders synthetic/mock-only state, rejects anonymous database access, and has no error-level runtime logs.
 
-**Remaining:** PR merge; main CI and production deployment; end-to-end production validation; closure evidence and task-branch cleanup.
+**Remaining:** No WP02-T03 implementation, review, migration, deployment, validation, or cleanup work. WP02-T04 and later capabilities remain unopened and retain their own protected prerequisites.
 
-**Next safe action:** Merge the approved and green PR at its unchanged head, wait for main CI and production deployment, then validate the final hosted flow before closure and cleanup.
+**Next safe action:** Begin WP02-T04 from the merged authorization-helper contract. Keep the existing synthetic-only, mock-only, zero-budget environment and all later protected gates intact.
 
-**Reviewer action:** SATISFIED — Ahmed confirmed `f7e0f3d8c7920e987ddffa9bd1f44c1edaec716f`; Ziad separately confirmed `f7e0f3d8c7920e987ddffa9bd1f44c1edaec716f` in the task chat on 2026-09-01 UTC.
+**Reviewer action:** Closed. Ahmed confirmed `f7e0f3d8c7920e987ddffa9bd1f44c1edaec716f`; Ziad separately confirmed the same exact commit; the PR then received a formal GitHub approval, merged unchanged, and passed main and production validation.
