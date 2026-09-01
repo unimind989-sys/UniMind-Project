@@ -962,12 +962,12 @@ For each migration:
 
 #### WP02-T03 — Implement reusable authorization predicates
 
-- [~] Create small stable helper functions only where they improve one source of truth: `is_admin`, `has_active_membership`, `has_campaign_assignment`, and `can_access_unit`. Technical evidence and both founders' separate protected confirmations for exact commit `f7e0f3d8c7920e987ddffa9bd1f44c1edaec716f` are recorded in `evidence/wp02-database/2026-09-01_authorization-predicates_github_f7e0f3d.md`; guarded hosted promotion, merge, and production closure are in progress.
-- [ ] Prefer `security invoker`. If `security definer` is unavoidable, place it in a non-exposed schema, set `search_path` explicitly, verify `auth.uid()`/caller authority inside, revoke `PUBLIC` execute, and grant only the intended role.
-- [ ] Use `(select auth.uid())` inside RLS predicates where appropriate to avoid repeated function evaluation.
-- [ ] Do not use `auth.role()` or `TO authenticated` alone as authorization.
-- [ ] Add both `USING` and `WITH CHECK` for update policies and add the SELECT policy required for update visibility.
-- [ ] Test JWT/app-metadata staleness or avoid relying on mutable claims for immediate revocation.
+- [x] Create small stable helper functions only where they improve one source of truth: `is_admin`, `has_active_membership`, `has_campaign_assignment`, and `can_access_unit`. Exact implementation commit `f7e0f3d8c7920e987ddffa9bd1f44c1edaec716f` received both founders' separate protected confirmations, merged through approved PR #15 as `5334fcaf6b99e93235a31a6edd8015f688f069f1`, passed main CI, and was promoted and validated across Supabase Preview and Vercel Production. Evidence: `evidence/wp02-database/2026-09-01_authorization-predicates_github_f7e0f3d.md`.
+- [x] Prefer `security invoker`. All four helpers use invoker rights, an empty `search_path`, caller-scoped `auth.uid()`, revoked default/anonymous execution, and authenticated-only grants.
+- [x] Use `(select auth.uid())` inside RLS predicates where appropriate to avoid repeated function evaluation.
+- [x] Do not use `auth.role()` or `TO authenticated` alone as authorization. Tests prove authoritative row checks and immediate revocation despite stale mutable claims.
+- [x] Add both `USING` and `WITH CHECK` for update policies and add the SELECT policy required for update visibility. Database meta-tests enforce this contract.
+- [x] Test JWT/app-metadata staleness or avoid relying on mutable claims for immediate revocation. The 34-assertion authorization suite covers stale claims and post-revocation denial.
 
 #### WP02-T04 — Build the actor/action/resource matrix first
 
