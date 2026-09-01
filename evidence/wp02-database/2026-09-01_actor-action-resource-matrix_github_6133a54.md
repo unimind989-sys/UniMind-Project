@@ -2,7 +2,7 @@
 
 **Task:** WP02-T04
 
-**Status:** BLOCKED at the protected human checkpoint; implementation and normal green database verification are complete, but the required deliberate-leak negative run has not been authorized or executed
+**Status:** IN PROGRESS; implementation and normal green database verification are complete, both protected confirmations are recorded, and the deliberate-leak negative run is authorized but not yet executed
 
 **Environment:** Local zero-cost verification and GitHub-hosted disposable Supabase CI only; no shared Supabase target, deployment, beta launch, paid provider, or real data
 
@@ -12,7 +12,7 @@
 
 **Agent executor:** Codex `/root`
 
-**Human checkpoint:** Ziad confirmed exact implementation candidate `6133a54c6a9b54bea954ea7f5947e26f9e240250` in this chat at `2026-09-01T14:36:30Z`; Ahmed's separate confirmation remains pending
+**Human checkpoint:** Ziad confirmed exact implementation candidate `6133a54c6a9b54bea954ea7f5947e26f9e240250` in this chat at `2026-09-01T14:36:30Z`; Ziad separately relayed Ahmed's confirmation by name at `2026-09-01T17:51:50Z`, as permitted by D-22
 
 ## Implemented scope
 
@@ -59,8 +59,10 @@
 
 Ziad's separate confirmation is recorded from the current chat: `انا ك زياد موافق`, given in direct response to the request to confirm exact candidate `6133a54c6a9b54bea954ea7f5947e26f9e240250` at `2026-09-01T14:36:30Z`.
 
-The deliberate test-only leaking-policy regression remains intentionally unexecuted. The runbook requires Ahmed's remaining separate named confirmation for that exact candidate. After Ahmed confirms, create only a disposable test candidate that leaks a cross-user or cross-cohort row, prove the database/security gate fails, revert the unsafe fixture, rerun the normal green gate, and update this report to a final PASS. Do not merge, promote, or start WP02-T05 before that sequence completes.
+Ahmed's separate confirmation is recorded from Ziad's D-22-permitted relay in the current chat: `احمد وافق`, given in direct response to the question about the remaining confirmation for that exact candidate at `2026-09-01T17:51:50Z`.
+
+The deliberate test-only leaking-policy regression is now authorized but not yet executed. Create only a disposable test candidate that leaks a cross-user or cross-cohort row, prove the database/security gate fails, revert the unsafe fixture, rerun the normal green gate, and update this report to a final PASS. Do not merge, promote, or start WP02-T05 before that sequence completes.
 
 ## Gate decision
 
-BLOCKED. Normal implementation verification is green and Ziad has confirmed the exact candidate, but WP02-T04 is not COMPLETE because Ahmed's separate confirmation, the deliberate-leak negative run, and its post-revert green rerun are still required. WP02-T05 and WP03 have not started.
+IN PROGRESS. Normal implementation verification is green and both founders' separate confirmations are recorded, but WP02-T04 is not COMPLETE until the deliberate-leak negative run and its post-revert green rerun pass the documented contract. WP02-T05 and WP03 have not started.

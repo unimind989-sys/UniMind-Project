@@ -976,7 +976,7 @@ For each migration:
 - [x] Mark each cell `ALLOW`, `DENY`, or `SERVER_ONLY`; include the predicate and test ID.
 - [x] For every `ALLOW`, add a positive test. For every high-risk boundary, add a negative test using a different user, cohort, unit, role, state, and expired/revoked access where applicable. The 121-assertion matrix suite passed in GitHub run `33514355193` at implementation candidate `6133a54c6a9b54bea954ea7f5947e26f9e240250`.
 - [x] Query `pg_class`, `pg_policies`, and grants in a meta-test so a newly exposed table without RLS/policy review fails CI. Evidence: `evidence/wp02-database/2026-09-01_actor-action-resource-matrix_github_6133a54.md`.
-- [?] Prove the disposable CI database/security gate fails when a test-only candidate policy deliberately leaks a cross-user or cross-cohort row; preserve the protected RLS confirmations from both founders and remove/revert the unsafe policy fixture after the negative run. Blocked pending separate Ahmed and Ziad confirmations for exact candidate `6133a54c6a9b54bea954ea7f5947e26f9e240250`.
+- [~] Prove the disposable CI database/security gate fails when a test-only candidate policy deliberately leaks a cross-user or cross-cohort row; preserve the protected RLS confirmations from both founders and remove/revert the unsafe policy fixture after the negative run. Ziad confirmed exact candidate `6133a54c6a9b54bea954ea7f5947e26f9e240250`, then separately relayed Ahmed's named confirmation as permitted by D-22; the negative run and post-revert green rerun remain.
 
 #### WP02-T05 — Implement availability as a derived contract
 
