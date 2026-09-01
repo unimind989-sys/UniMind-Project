@@ -971,11 +971,11 @@ For each migration:
 
 #### WP02-T04 — Build the actor/action/resource matrix first
 
-- [ ] Copy `docs/templates/rls-matrix.csv` to `docs/security/rls-matrix.csv`.
-- [ ] Add every table/view/function as a resource and every `anon`, student, Batch Leader, admin, worker, and service action as rows.
-- [ ] Mark each cell `ALLOW`, `DENY`, or `SERVER_ONLY`; include the predicate and test ID.
-- [ ] For every `ALLOW`, add a positive test. For every high-risk boundary, add a negative test using a different user, cohort, unit, role, state, and expired/revoked access where applicable.
-- [ ] Query `pg_class`, `pg_policies`, and grants in a meta-test so a newly exposed table without RLS/policy review fails CI.
+- [x] Copy `docs/templates/rls-matrix.csv` to `docs/security/rls-matrix.csv`. Owner: Codex `/root`; task record: `planning/tasks/wp02-t04-build-rls-matrix.md`.
+- [x] Add every table/view/function as a resource and every `anon`, student, Batch Leader, admin, worker, and service action as rows.
+- [x] Mark each cell `ALLOW`, `DENY`, or `SERVER_ONLY`; include the predicate and test ID.
+- [~] For every `ALLOW`, add a positive test. For every high-risk boundary, add a negative test using a different user, cohort, unit, role, state, and expired/revoked access where applicable.
+- [~] Query `pg_class`, `pg_policies`, and grants in a meta-test so a newly exposed table without RLS/policy review fails CI.
 - [ ] Prove the disposable CI database/security gate fails when a test-only candidate policy deliberately leaks a cross-user or cross-cohort row; preserve the protected RLS confirmations from both founders and remove/revert the unsafe policy fixture after the negative run.
 
 #### WP02-T05 — Implement availability as a derived contract
