@@ -1555,6 +1555,19 @@ export type Database = {
           unit_type: Database["public"]["Enums"]["curriculum_unit_type"];
         }[];
       };
+      can_access_unit: {
+        Args: { target_curriculum_unit_id: string };
+        Returns: boolean;
+      };
+      has_active_membership: {
+        Args: { target_cohort_id: string };
+        Returns: boolean;
+      };
+      has_campaign_assignment: {
+        Args: { target_campaign_id: string };
+        Returns: boolean;
+      };
+      is_admin: { Args: never; Returns: boolean };
     };
     Enums: {
       curriculum_unit_type: "MODULE" | "SUBJECT";
