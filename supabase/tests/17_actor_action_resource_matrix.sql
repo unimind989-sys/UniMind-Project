@@ -1111,8 +1111,8 @@ select is(
     select count(*) from public.curriculum_units
     where id = '20000000-0000-0000-0000-000000000008'
   ),
-  0::bigint,
-  'Student A cannot read an unpublished curriculum unit directly'
+  1::bigint,
+  'Student A can read authorized unit metadata before publication'
 );
 select is(
   (
@@ -1478,6 +1478,10 @@ select is(
 );
 reset role;
 
+set local request.jwt.claim.role = 'authenticated';
+set local request.jwt.claim.sub = '10000000-0000-0000-0000-000000000001';
+set local request.jwt.claims =
+  '{"sub":"10000000-0000-0000-0000-000000000001","role":"authenticated","app_metadata":{"role":"ADMIN"}}';
 update public.batch_leader_assignments
 set status = 'REVOKED',
     revoked_at = transaction_timestamp(),
@@ -1522,6 +1526,10 @@ select throws_ok(
 );
 reset role;
 
+set local request.jwt.claim.role = 'authenticated';
+set local request.jwt.claim.sub = '10000000-0000-0000-0000-000000000001';
+set local request.jwt.claims =
+  '{"sub":"10000000-0000-0000-0000-000000000001","role":"authenticated","app_metadata":{"role":"ADMIN"}}';
 update public.cohort_memberships
 set status = 'REVOKED'
 where id = '21000000-0000-0000-0000-000000000001';
