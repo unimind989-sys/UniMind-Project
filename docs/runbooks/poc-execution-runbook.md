@@ -971,12 +971,12 @@ For each migration:
 
 #### WP02-T04 — Build the actor/action/resource matrix first
 
-- [ ] Copy `docs/templates/rls-matrix.csv` to `docs/security/rls-matrix.csv`.
-- [ ] Add every table/view/function as a resource and every `anon`, student, Batch Leader, admin, worker, and service action as rows.
-- [ ] Mark each cell `ALLOW`, `DENY`, or `SERVER_ONLY`; include the predicate and test ID.
-- [ ] For every `ALLOW`, add a positive test. For every high-risk boundary, add a negative test using a different user, cohort, unit, role, state, and expired/revoked access where applicable.
-- [ ] Query `pg_class`, `pg_policies`, and grants in a meta-test so a newly exposed table without RLS/policy review fails CI.
-- [ ] Prove the disposable CI database/security gate fails when a test-only candidate policy deliberately leaks a cross-user or cross-cohort row; preserve the protected RLS confirmations from both founders and remove/revert the unsafe policy fixture after the negative run.
+- [x] Copy `docs/templates/rls-matrix.csv` to `docs/security/rls-matrix.csv`. Owner: Codex `/root`; task record: `planning/tasks/wp02-t04-build-rls-matrix.md`.
+- [x] Add every table/view/function as a resource and every `anon`, student, Batch Leader, admin, worker, and service action as rows.
+- [x] Mark each cell `ALLOW`, `DENY`, or `SERVER_ONLY`; include the predicate and test ID.
+- [x] For every `ALLOW`, add a positive test. For every high-risk boundary, add a negative test using a different user, cohort, unit, role, state, and expired/revoked access where applicable. The 121-assertion matrix suite passed in GitHub run `33514355193` at implementation candidate `6133a54c6a9b54bea954ea7f5947e26f9e240250`.
+- [x] Query `pg_class`, `pg_policies`, and grants in a meta-test so a newly exposed table without RLS/policy review fails CI. Evidence: `evidence/wp02-database/2026-09-01_actor-action-resource-matrix_github_6133a54.md`.
+- [x] Prove the disposable CI database/security gate fails when a test-only candidate policy deliberately leaks a cross-user or cross-cohort row; preserve the protected RLS confirmations from both founders and remove/revert the unsafe policy fixture after the negative run. After Ziad confirmed exact candidate `6133a54c6a9b54bea954ea7f5947e26f9e240250` and separately relayed Ahmed's named confirmation as permitted by D-22, test-only SHA `5aaaf515f6fefeeaa4244aad8b5ce0f23287cd92` failed database CI in run `33540422972`. Revert SHA `4d3f1720a6dfaf7d94e38020ea757a5294bed166` removed the fixture and passed full run `33541122562`.
 
 #### WP02-T05 — Implement availability as a derived contract
 
