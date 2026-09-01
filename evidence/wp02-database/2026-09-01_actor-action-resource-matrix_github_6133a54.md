@@ -12,7 +12,7 @@
 
 **Agent executor:** Codex `/root`
 
-**Human checkpoint:** Pending separate Ahmed and Ziad confirmations for exact implementation candidate `6133a54c6a9b54bea954ea7f5947e26f9e240250`
+**Human checkpoint:** Ziad confirmed exact implementation candidate `6133a54c6a9b54bea954ea7f5947e26f9e240250` in this chat at `2026-09-01T14:36:30Z`; Ahmed's separate confirmation remains pending
 
 ## Implemented scope
 
@@ -57,8 +57,10 @@
 
 ## Protected gate
 
-The deliberate test-only leaking-policy regression remains intentionally unexecuted. The runbook requires separate named confirmations from Ahmed and Ziad for exact candidate `6133a54c6a9b54bea954ea7f5947e26f9e240250`. After both confirmations, create only a disposable test candidate that leaks a cross-user or cross-cohort row, prove the database/security gate fails, revert the unsafe fixture, rerun the normal green gate, and update this report to a final PASS. Do not merge, promote, or start WP02-T05 before that sequence completes.
+Ziad's separate confirmation is recorded from the current chat: `انا ك زياد موافق`, given in direct response to the request to confirm exact candidate `6133a54c6a9b54bea954ea7f5947e26f9e240250` at `2026-09-01T14:36:30Z`.
+
+The deliberate test-only leaking-policy regression remains intentionally unexecuted. The runbook requires Ahmed's remaining separate named confirmation for that exact candidate. After Ahmed confirms, create only a disposable test candidate that leaks a cross-user or cross-cohort row, prove the database/security gate fails, revert the unsafe fixture, rerun the normal green gate, and update this report to a final PASS. Do not merge, promote, or start WP02-T05 before that sequence completes.
 
 ## Gate decision
 
-BLOCKED. Normal implementation verification is green, but WP02-T04 is not COMPLETE because the separately confirmed deliberate-leak negative run and its post-revert green rerun are still required. WP02-T05 and WP03 have not started.
+BLOCKED. Normal implementation verification is green and Ziad has confirmed the exact candidate, but WP02-T04 is not COMPLETE because Ahmed's separate confirmation, the deliberate-leak negative run, and its post-revert green rerun are still required. WP02-T05 and WP03 have not started.

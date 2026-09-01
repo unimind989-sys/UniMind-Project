@@ -8,11 +8,11 @@
 
 **Owner:** Codex `/root`; Ziad is the named requester in this chat
 
-**Reviewer:** Ahmed + Ziad - protected RLS gate pending separate confirmation for the exact frozen candidate commit
+**Reviewer:** Ahmed + Ziad - Ziad confirmed the exact frozen candidate in this chat; Ahmed's separate confirmation remains pending
 
 **Branch:** `wp02/actor-action-resource-matrix`
 
-**Updated (UTC):** 2026-09-01T14:15:24Z
+**Updated (UTC):** 2026-09-01T14:36:30Z
 
 ## Execution contract
 
@@ -38,7 +38,7 @@
 - [x] Add executable matrix completeness and ALLOW/DENY behavior tests.
 - [x] Prove cross-user, cross-cohort, cross-unit, role/state, and immediate membership/assignment/role revocation boundaries.
 - [x] Run credential-free checks and the guarded disposable database gate; record exact results.
-- [?] Freeze the candidate SHA and obtain separate Ahmed and Ziad confirmations. Exact green implementation candidate: `6133a54c6a9b54bea954ea7f5947e26f9e240250`; both named confirmations remain pending.
+- [?] Freeze the candidate SHA and obtain separate Ahmed and Ziad confirmations. Exact green implementation candidate: `6133a54c6a9b54bea954ea7f5947e26f9e240250`; Ziad confirmed it in this chat at `2026-09-01T14:36:30Z`, and Ahmed's separate confirmation remains pending.
 - [ ] Run and revert the test-only leaking-policy regression, rerun the green database gate, and complete protected review evidence.
 
 ## Handoff
@@ -47,8 +47,8 @@
 
 **Commands:** Workstation preflight passed; `scripts/show-work-state.ps1` selected WP02-T04; local `corepack pnpm check:sql`, `corepack pnpm test:security`, `git diff --check`, and `corepack pnpm verify` passed. GitHub run `33514355193` passed dependency audit, the exact full application gate, populated upgrade, two resets, migration parity, all pgTAP tests including the 121-assertion T04 suite, advisors, type generation/parity, database Auth integration, and security tests on exact candidate `6133a54c6a9b54bea954ea7f5947e26f9e240250`.
 
-**Remaining:** Obtain separate named Ahmed and Ziad confirmations for exact candidate `6133a54c6a9b54bea954ea7f5947e26f9e240250`; only then run and revert the protected test-only leaking-policy regression, rerun the normal green database gate, and close protected review evidence.
+**Remaining:** Obtain Ahmed's separate named confirmation for exact candidate `6133a54c6a9b54bea954ea7f5947e26f9e240250`; only then run and revert the protected test-only leaking-policy regression, rerun the normal green database gate, and close protected review evidence.
 
-**Next safe action:** Record Ziad's and Ahmed's separate exact-SHA confirmations. Do not run the deliberate-leak regression before both are present.
+**Next safe action:** Record Ahmed's separate exact-SHA confirmation. Do not run the deliberate-leak regression before it is present alongside Ziad's recorded confirmation.
 
-**Reviewer action:** Ahmed and Ziad must separately confirm the exact frozen candidate before the deliberate-leak run and protected gate completion.
+**Reviewer action:** Ahmed must separately confirm the exact frozen candidate before the deliberate-leak run and protected gate completion. Ziad's confirmation is recorded.
