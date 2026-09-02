@@ -980,7 +980,7 @@ For each migration:
 
 #### WP02-T05 — Implement availability as a derived contract
 
-- [ ] Create one caller-scoped security-invoker view/function for student catalog availability; do not store an editable `available` boolean.
+- [~] Create one caller-scoped security-invoker view/function for student catalog availability; do not store an editable `available` boolean. Owner: Codex `/root`; requester/reviewer: Ziad; branch: `wp02/derived-catalog-availability`; task record: `planning/tasks/wp02-t05-derived-catalog-availability.md`.
 - [ ] Implement every predicate from section 5.8 with explicit tests for each single failed predicate and combinations.
 - [ ] Return a safe reason code to authorized admin diagnostics, but only a generic empty/locked state to students when detail could expose private configuration.
 - [ ] Add indexes only after capturing `EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON)` on representative seeded data.

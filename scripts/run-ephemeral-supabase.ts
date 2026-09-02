@@ -1,5 +1,5 @@
 import { spawnSync } from "node:child_process";
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
 import {
@@ -14,6 +14,7 @@ import {
   parsePostgresRuntimeMetadata,
 } from "./lib/ephemeral-supabase-metadata";
 import { formatGeneratedDatabaseTypes } from "./lib/generated-database-types";
+import { assertReasonableAvailabilityPlan } from "./lib/availability-query-plan";
 
 assertGitHubHostedLinuxRunner(process.env);
 const action = parseEphemeralSupabaseAction(process.argv.slice(2));
@@ -75,6 +76,95 @@ function runProgram(
     );
   }
   return { stdout: String(result.stdout) };
+}
+
+function runProgramWithInput(
+  program: string,
+  arguments_: readonly string[],
+  input: string,
+): CommandResult {
+  const result = spawnSync(program, arguments_, {
+    cwd: process.cwd(),
+    encoding: "utf8",
+    env: process.env,
+    input,
+    maxBuffer: 16 * 1024 * 1024,
+    stdio: ["pipe", "pipe", "pipe"],
+  });
+  if (result.error !== undefined || result.status !== 0) {
+    const diagnostic = formatFailureOutput(result.stdout, result.stderr);
+    throw new Error(
+      `Disposable query-plan command failed with status ${String(result.status)}.${
+        diagnostic.length > 0 ? `\n${diagnostic}` : ""
+      }`,
+    );
+  }
+  return { stdout: String(result.stdout) };
+}
+
+function captureAvailabilityQueryPlan(): void {
+  const inventory = runProgram("docker", [
+    "ps",
+    "--format",
+    "{{.Names}}\t{{.Image}}",
+  ]).stdout;
+  const databaseContainer = findSupabaseContainer(inventory, "db");
+  const query = readFileSync(
+    path.resolve(
+      "supabase/fixtures/query-plans/student_catalog_availability.sql",
+    ),
+    "utf8",
+  );
+  const rawPlan = runProgramWithInput(
+    "docker",
+    [
+      "exec",
+      "-i",
+      databaseContainer.name,
+      "psql",
+      "--no-psqlrc",
+      "--quiet",
+      "--username",
+      "postgres",
+      "--dbname",
+      "postgres",
+      "--tuples-only",
+      "--no-align",
+      "--set",
+      "ON_ERROR_STOP=1",
+    ],
+    query,
+  ).stdout.trim();
+  const planParts = rawPlan.split("WP02_T05_BODY_PLAN");
+  if (planParts.length !== 2) {
+    throw new Error(
+      "Availability measurement must include invocation and SQL-body plans.",
+    );
+  }
+  const planDocument: unknown = JSON.parse(planParts[0]!);
+  const bodyPlanDocument: unknown = JSON.parse(planParts[1]!);
+  mkdirSync(path.resolve("test-results"), { recursive: true });
+  writeFileSync(
+    path.resolve("test-results/student-catalog-availability-query-plan.json"),
+    `${JSON.stringify(
+      {
+        schemaVersion: 2,
+        scope: "wp02-t05-representative-synthetic",
+        generatedUnits: 512,
+        statement:
+          "select id, cohort_id, availability_state from public.available_curriculum_units(false)",
+        plan: planDocument,
+        bodyPlanSource:
+          "Installed pg_proc.prosrc prepared with admin_preview=$1, same authenticated caller and empty search_path",
+        bodyPlan: bodyPlanDocument,
+      },
+      null,
+      2,
+    )}\n`,
+    "utf8",
+  );
+  // Preserve real measurement evidence even when the shape guard rejects it.
+  assertReasonableAvailabilityPlan(planDocument, bodyPlanDocument);
 }
 
 function writeRuntimeMetadata(): void {
@@ -226,6 +316,9 @@ async function execute(action_: EphemeralSupabaseAction): Promise<void> {
       await formatGeneratedDatabaseTypes(result.stdout),
       "utf8",
     );
+  }
+  if (action_ === "test") {
+    captureAvailabilityQueryPlan();
   }
 }
 
