@@ -250,6 +250,7 @@ set local request.jwt.claim.role = 'authenticated';
 set local request.jwt.claim.sub = '10000000-0000-0000-0000-000000000002';
 select is((select count(*) from public.available_curriculum_units()), 1::bigint, 'membership revocation precondition is available');
 reset role;
+set local request.jwt.claim.sub = '10000000-0000-0000-0000-000000000001';
 update public.cohort_memberships
 set status = 'REVOKED'
 where id = '21000000-0000-0000-0000-000000000001';
@@ -266,6 +267,7 @@ set local request.jwt.claim.role = 'authenticated';
 set local request.jwt.claim.sub = '10000000-0000-0000-0000-000000000002';
 select is((select count(*) from public.available_curriculum_units()), 1::bigint, 'source-state change precondition is available');
 reset role;
+set local request.jwt.claim.sub = '10000000-0000-0000-0000-000000000001';
 update public.source_versions
 set processing_status = 'NEEDS_REVIEW'
 where id = '41000000-0000-0000-0000-000000000001';
@@ -282,6 +284,8 @@ set local request.jwt.claim.role = 'authenticated';
 set local request.jwt.claim.sub = '10000000-0000-0000-0000-000000000002';
 select is((select count(*) from public.available_curriculum_units()), 1::bigint, 'unit-state change precondition is available');
 reset role;
+-- RESET ROLE preserves JWT settings; align the synthetic caller with the audit actor.
+set local request.jwt.claim.sub = '10000000-0000-0000-0000-000000000001';
 update public.curriculum_units
 set publication_status = 'WITHDRAWN'
 where id = '20000000-0000-0000-0000-000000000007';
