@@ -1,5 +1,5 @@
 begin;
-select plan(26);
+select plan(36);
 
 set local unimind.actor_id = '10000000-0000-0000-0000-000000000001';
 set local unimind.audit_reason = 'WP02-T05 synthetic availability proof';
@@ -55,6 +55,12 @@ select is(
 
 set local role authenticated;
 set local request.jwt.claim.role = 'authenticated';
+set local request.jwt.claim.sub = '';
+select is(
+  (select count(*) from public.available_curriculum_units()),
+  0::bigint,
+  'an authenticated role without caller identity cannot obtain availability'
+);
 set local request.jwt.claim.sub = '10000000-0000-0000-0000-000000000002';
 select is(
   (select count(*) from public.available_curriculum_units()),
@@ -151,6 +157,8 @@ select is(
   array['cohort_locked']::text[],
   'cohort unlocked predicate fails independently'
 );
+set local request.jwt.claim.sub = '10000000-0000-0000-0000-000000000002';
+select is((select count(*) from public.available_curriculum_units()), 0::bigint, 'student sees no catalog rows for an isolated cohort lock');
 reset role;
 rollback to savepoint cohort_locked_failure;
 
@@ -166,6 +174,8 @@ select is(
   array['unit_unpublished']::text[],
   'unit published predicate fails independently'
 );
+set local request.jwt.claim.sub = '10000000-0000-0000-0000-000000000002';
+select is((select count(*) from public.available_curriculum_units()), 0::bigint, 'student sees no catalog rows for an isolated unpublished unit');
 reset role;
 rollback to savepoint unit_unpublished_failure;
 
@@ -181,6 +191,8 @@ select is(
   array['ready_source_missing']::text[],
   'active READY source predicate fails independently'
 );
+set local request.jwt.claim.sub = '10000000-0000-0000-0000-000000000002';
+select is((select count(*) from public.available_curriculum_units()), 0::bigint, 'student sees no catalog rows without an active READY source');
 reset role;
 rollback to savepoint ready_source_failure;
 
@@ -196,8 +208,41 @@ select is(
   array['rights_invalid']::text[],
   'valid source-rights predicate fails independently'
 );
+set local request.jwt.claim.sub = '10000000-0000-0000-0000-000000000002';
+select is((select count(*) from public.available_curriculum_units()), 0::bigint, 'student sees no catalog rows for expired rights');
 reset role;
 rollback to savepoint source_rights_failure;
+
+savepoint source_rights_not_started;
+update public.source_versions
+set rights_valid_from = transaction_timestamp() + interval '1 day'
+where id = '41000000-0000-0000-0000-000000000001';
+set local role authenticated;
+set local request.jwt.claim.sub = '10000000-0000-0000-0000-000000000001';
+select is(
+  (select reason_codes from public.available_curriculum_units(true) where id = '20000000-0000-0000-0000-000000000007'),
+  array['rights_invalid']::text[],
+  'rights must already be effective, not merely unexpired'
+);
+set local request.jwt.claim.sub = '10000000-0000-0000-0000-000000000002';
+select is((select count(*) from public.available_curriculum_units()), 0::bigint, 'student sees no catalog rows before rights start');
+reset role;
+rollback to savepoint source_rights_not_started;
+
+savepoint missing_cohort_release;
+delete from public.cohort_releases
+where cohort_id = '20000000-0000-0000-0000-000000000006';
+set local role authenticated;
+set local request.jwt.claim.sub = '10000000-0000-0000-0000-000000000001';
+select is(
+  (select reason_codes from public.available_curriculum_units(true) where id = '20000000-0000-0000-0000-000000000007'),
+  array['cohort_locked']::text[],
+  'an absent cohort release fails closed'
+);
+set local request.jwt.claim.sub = '10000000-0000-0000-0000-000000000002';
+select is((select count(*) from public.available_curriculum_units()), 0::bigint, 'student sees no catalog rows when release configuration is absent');
+reset role;
+rollback to savepoint missing_cohort_release;
 
 savepoint curriculum_edition_failure;
 update public.cohorts
@@ -211,6 +256,8 @@ select is(
   array['curriculum_edition_mismatch']::text[],
   'matching curriculum-edition predicate fails independently'
 );
+set local request.jwt.claim.sub = '10000000-0000-0000-0000-000000000002';
+select is((select count(*) from public.available_curriculum_units()), 0::bigint, 'student sees no catalog rows for an isolated edition mismatch');
 reset role;
 rollback to savepoint curriculum_edition_failure;
 

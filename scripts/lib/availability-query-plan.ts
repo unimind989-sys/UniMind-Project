@@ -34,14 +34,21 @@ function numericField(node: QueryPlanNode, name: string): number {
   return value;
 }
 
-export function assertReasonableAvailabilityPlan(planDocument: unknown): void {
+function statementPlan(planDocument: unknown): QueryPlanNode {
   if (!Array.isArray(planDocument) || planDocument.length !== 1) {
     throw new Error(
       "Availability query plan must contain exactly one statement.",
     );
   }
   const statement = asPlanNode(planDocument[0]);
-  const root = asPlanNode(statement.Plan);
+  return asPlanNode(statement.Plan);
+}
+
+export function assertReasonableAvailabilityPlan(
+  planDocument: unknown,
+  bodyPlanDocument: unknown,
+): void {
+  const root = statementPlan(planDocument);
   const nodes = collectPlanNodes(root);
   const functionScan = nodes.find(
     (node) =>
@@ -63,7 +70,40 @@ export function assertReasonableAvailabilityPlan(planDocument: unknown): void {
       "Availability plan did not run against the representative synthetic fixture.",
     );
   }
-  for (const node of nodes) {
+  const bodyRoot = statementPlan(bodyPlanDocument);
+  const bodyNodes = collectPlanNodes(bodyRoot);
+  if (
+    numericField(bodyRoot, "Actual Rows") !==
+    numericField(functionScan, "Actual Rows")
+  ) {
+    throw new Error(
+      "Installed SQL-body plan must match the caller-scoped function row count.",
+    );
+  }
+  for (const relation of [
+    "curriculum_units",
+    "source_assets",
+    "source_versions",
+  ]) {
+    if (!bodyNodes.some((node) => node["Relation Name"] === relation)) {
+      throw new Error(`Installed SQL-body plan is missing ${relation}.`);
+    }
+  }
+  for (const node of [...nodes, ...bodyNodes]) {
+    if (
+      node["Node Type"] === "Seq Scan" &&
+      ["source_assets", "source_versions"].includes(
+        String(node["Relation Name"]),
+      ) &&
+      numericField(node, "Actual Loops") > 1 &&
+      numericField(node, "Actual Rows") +
+        Number(node["Rows Removed by Filter"] ?? 0) >=
+        500
+    ) {
+      throw new Error(
+        "Availability plan repeatedly scans a full synthetic source relation.",
+      );
+    }
     const tempRead = node["Temp Read Blocks"];
     const tempWritten = node["Temp Written Blocks"];
     if (

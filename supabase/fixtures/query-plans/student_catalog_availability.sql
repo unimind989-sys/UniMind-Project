@@ -123,5 +123,19 @@ explain (analyze, buffers, format json)
 select id, cohort_id, availability_state
 from public.available_curriculum_units(false);
 
+-- Explain the installed SQL body too: a Function Scan hides its internal joins.
+-- Extract it from pg_proc instead of maintaining a second availability query.
+\echo WP02_T05_BODY_PLAN
+set local search_path = '';
+select 'prepare t05_availability_body(boolean) as '
+  || replace(procedures.prosrc, 'admin_preview', '$1')
+from pg_catalog.pg_proc as procedures
+where procedures.oid = 'public.available_curriculum_units(boolean)'::regprocedure
+\gexec
+
+explain (analyze, buffers, format json)
+execute t05_availability_body(false);
+deallocate t05_availability_body;
+
 reset role;
 rollback;

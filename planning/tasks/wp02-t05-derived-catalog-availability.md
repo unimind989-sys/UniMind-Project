@@ -12,7 +12,7 @@
 
 **Branch:** `wp02/derived-catalog-availability`
 
-**Updated (UTC):** 2026-09-01T21:21:45Z
+**Updated (UTC):** 2026-09-02T04:29:00Z
 
 ## Execution contract
 
@@ -34,20 +34,20 @@
 
 ## Steps
 
-- [~] Inventory the current schema, RLS/grants, fixtures, types, and test harness; define the smallest single security-invoker availability interface.
-- [ ] Create the forward migration with caller-scoped student output and authorized safe admin reason codes.
-- [ ] Add isolated predicate failures, combined failures, immediate revocation/state-change tests, and diagnostic non-disclosure coverage.
-- [ ] Capture representative pre-index query plans, add an index only if measurement proves the need, and add stable plan-shape integration assertions.
-- [ ] Run the complete credential-free and disposable database gates, update types/evidence/task/runbook, and prepare the ordinary review checkpoint.
+- [x] Inventory the current schema, RLS/grants, fixtures, types, and test harness; define the smallest single security-invoker availability interface.
+- [x] Create the forward migration with caller-scoped student output and authorized safe admin reason codes.
+- [~] Add isolated predicate failures, combined failures, immediate revocation/state-change tests, and diagnostic non-disclosure coverage; the original 26-assertion suite passed, and the expanded 36-assertion suite awaits CI.
+- [~] Capture representative pre-index query plans, add an index only if measurement proves the need, and add stable plan-shape integration assertions; invocation baseline captured, installed-body measurement awaits CI.
+- [~] Run the complete credential-free and disposable database gates, update types/evidence/task/runbook, and prepare the ordinary review checkpoint.
 
 ## Handoff
 
-**Changed:** Task claimed on a clean branch after proving WP02-T04 complete and merged; implementation not yet started.
+**Changed:** Forward migration `20260901232104_derived_student_catalog_availability.sql` replaces the catalog function with one security-invoker interface, preserves execute grants, and reconnects the two existing consumer policies. Added predicate/diagnostic/revocation tests, representative synthetic measurement, and cost-independent plan-shape tests. No index added. Draft PR #18 is open; no merge or shared database promotion performed.
 
-**Commands:** `git status --short --branch`, T04 ancestry/history checks, `pwsh -NoProfile -File scripts/show-work-state.ps1`, and the section 0.8 workstation preflight all passed. No database or application test has run yet.
+**Commands:** Preflight, `check:sql`, focused tests, `pnpm build`, readiness, and handoff passed. `pnpm verify` passed on the initial candidate locally and in GitHub. Run `33571779725` exposed stale synthetic JWT audit context before the unit-state mutation; corrected in `7b746d8`, without changing any grant or policy. Run `33590554923` passed application, populated upgrade, two resets, migration parity, all 19 pgTAP files, advisors, generated types/parity, Auth integration, and security tests. The expanded local gate passed through unit/integration/security/eval/load but encountered a 15-second E2E timeout while successful local development chunks took about 11 seconds; its DOM assertions succeeded in the trace. Rerun and final candidate verification remain required.
 
-**Remaining:** All WP02-T05 implementation, measurement, verification, evidence, commit, and review work.
+**Remaining:** Validate the expanded tests and installed-body plan, review index need from that plan, complete final verification/evidence, and obtain Ziad's ordinary checkpoint on the frozen candidate.
 
-**Next safe action:** Inventory the merged schema/RLS/test seams and design the single caller-scoped security-invoker availability contract without starting WP02-T06.
+**Next safe action:** Finish WP02-T05 measurement and verification; do not start WP02-T06.
 
 **Reviewer action:** Ziad reviews the frozen candidate and evidence after all gates pass; no rights or release/unlock action is authorized by this task.

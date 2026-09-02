@@ -135,25 +135,36 @@ function captureAvailabilityQueryPlan(): void {
     ],
     query,
   ).stdout.trim();
-  const planDocument: unknown = JSON.parse(rawPlan);
-  assertReasonableAvailabilityPlan(planDocument);
+  const planParts = rawPlan.split("WP02_T05_BODY_PLAN");
+  if (planParts.length !== 2) {
+    throw new Error(
+      "Availability measurement must include invocation and SQL-body plans.",
+    );
+  }
+  const planDocument: unknown = JSON.parse(planParts[0]!);
+  const bodyPlanDocument: unknown = JSON.parse(planParts[1]!);
   mkdirSync(path.resolve("test-results"), { recursive: true });
   writeFileSync(
     path.resolve("test-results/student-catalog-availability-query-plan.json"),
     `${JSON.stringify(
       {
-        schemaVersion: 1,
+        schemaVersion: 2,
         scope: "wp02-t05-representative-synthetic",
         generatedUnits: 512,
         statement:
           "select id, cohort_id, availability_state from public.available_curriculum_units(false)",
         plan: planDocument,
+        bodyPlanSource:
+          "Installed pg_proc.prosrc prepared with admin_preview=$1, same authenticated caller and empty search_path",
+        bodyPlan: bodyPlanDocument,
       },
       null,
       2,
     )}\n`,
     "utf8",
   );
+  // Preserve real measurement evidence even when the shape guard rejects it.
+  assertReasonableAvailabilityPlan(planDocument, bodyPlanDocument);
 }
 
 function writeRuntimeMetadata(): void {
