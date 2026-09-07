@@ -8,7 +8,7 @@ Before review, run `pnpm check:sql` and complete the [database migration checkli
 
 The 15 WP02-T02 slices are intentionally separate: extensions/private schema; common types and transition checks; identity/terms; catalog; access/release; collection; source/rights/raw lifecycle; processing/jobs; processed knowledge and vectors; tutor/evidence; Studio/quizzes; usage/budgets; audit/incidents; availability/retrieval; then RLS/grants/indexes. Do not collapse or reorder them because each later slice relies on constraints established by the previous one.
 
-The original `extensions_and_schemas` migration was applied during WP01 and is immutable history. WP02 adds only forward migrations after it. Embeddings use the generic `extensions.vector` type and a write-time dimension check against `embedding_configs`; D-04 still blocks a production provider/model dimension and therefore also blocks a production HNSW operator-class/index choice.
+The original `extensions_and_schemas` migration was applied during WP01 and is immutable history. WP02 adds only forward migrations after it. Embeddings use the generic `extensions.vector` type and a write-time dimension check against `embedding_configs`. WP02-T06 gives the reviewed three-dimensional synthetic mock configuration a config-specific cosine HNSW expression index so the zero-cost retrieval seam can be tested end to end. D-04 still blocks a production provider/model dimension and therefore also blocks creating or enabling any production HNSW index; that future configuration requires its own measured, reviewed forward migration.
 
 ## Forward repair plan
 

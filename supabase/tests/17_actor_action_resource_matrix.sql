@@ -1111,8 +1111,8 @@ select is(
     select count(*) from public.curriculum_units
     where id = '20000000-0000-0000-0000-000000000008'
   ),
-  1::bigint,
-  'Student A can read authorized unit metadata before publication'
+  0::bigint,
+  'Student A cannot read unit metadata before publication'
 );
 select is(
   (
@@ -1196,24 +1196,24 @@ select is(
     select count(*) from public.cohorts
     where id = '20000000-0000-0000-0000-000000000009'
   ),
-  1::bigint,
-  'a member can read authorized cohort metadata while availability remains locked'
+  0::bigint,
+  'a member cannot read locked cohort metadata'
 );
 select is(
   (
     select count(*) from public.cohort_releases
     where cohort_id = '20000000-0000-0000-0000-000000000009'
   ),
-  1::bigint,
-  'a member can read the authorized cohort release state'
+  0::bigint,
+  'a member cannot read the locked cohort release or its reason'
 );
 select is(
   (
     select count(*) from public.curriculum_units
     where cohort_id = '20000000-0000-0000-0000-000000000009'
   ),
-  1::bigint,
-  'a member can read authorized unit metadata while availability remains locked'
+  0::bigint,
+  'a member cannot read unit metadata while the cohort is locked'
 );
 select is(
   (select count(*) from public.available_curriculum_units()),
