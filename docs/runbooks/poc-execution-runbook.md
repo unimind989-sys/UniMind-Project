@@ -978,7 +978,7 @@ For each migration:
 - [x] Query `pg_class`, `pg_policies`, and grants in a meta-test so a newly exposed table without RLS/policy review fails CI. Evidence: `evidence/wp02-database/2026-09-01_actor-action-resource-matrix_github_6133a54.md`.
 - [x] Prove the disposable CI database/security gate fails when a test-only candidate policy deliberately leaks a cross-user or cross-cohort row; preserve the protected RLS confirmations from both founders and remove/revert the unsafe policy fixture after the negative run. After Ziad confirmed exact candidate `6133a54c6a9b54bea954ea7f5947e26f9e240250` and separately relayed Ahmed's named confirmation as permitted by D-22, test-only SHA `5aaaf515f6fefeeaa4244aad8b5ce0f23287cd92` failed database CI in run `33540422972`. Revert SHA `4d3f1720a6dfaf7d94e38020ea757a5294bed166` removed the fixture and passed full run `33541122562`.
 
-- [ ] Close the 2026-09-07 review finding with a forward-only release-visibility repair, disposable database proof, and new exact-candidate Ahmed + Ziad confirmations before merge or promotion.
+- [x] Close the 2026-09-07 review finding with a forward-only release-visibility repair, disposable database proof, and new exact-candidate Ahmed + Ziad confirmations before merge or promotion. Candidate `12b50cd` passed GitHub run `34158635066`; evidence: `evidence/wp02-database/2026-09-07_server-only-retrieval-scope_github_12b50cd.md`.
 
 #### WP02-T05 — Implement availability as a derived contract
 
@@ -998,7 +998,7 @@ Owner: Codex `/root`; requester/reviewer: Ahmed; branch: `wp02/server-only-retri
 - [x] Filter by authorization/source state before ordering/limiting similarity results.
 - [x] Match HNSW operator class to the chosen distance operator and order by the distance expression directly.
 - [x] Add cross-cohort/program canary tests and revoked-source tests.
-- [ ] Pass disposable database CI, freeze exact-candidate evidence, and close the protected Ahmed + Ziad checkpoint for the included RLS repair.
+- [x] Pass disposable database CI, freeze exact-candidate evidence, and close the protected Ahmed + Ziad checkpoint for the included RLS repair. Green run `34158635066`; exact protected implementation candidate `12b50cd`; evidence: `evidence/wp02-database/2026-09-07_server-only-retrieval-scope_github_12b50cd.md`.
 
 #### WP02-T07 — Make jobs and usage state machines transactional
 

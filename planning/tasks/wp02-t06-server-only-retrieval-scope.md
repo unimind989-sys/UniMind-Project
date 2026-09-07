@@ -2,7 +2,7 @@
 
 **Task ID:** WP02-T06
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** One private server-only hybrid retrieval function binds every request to an authoritative user/cohort/unit/source scope before vector or full-text candidate ranking, while unrestricted segments and vectors remain unavailable to clients.
 
@@ -12,7 +12,7 @@
 
 **Branch:** `wp02/server-only-retrieval-scope`
 
-**Updated (UTC):** 2026-09-07T13:15:21Z
+**Updated (UTC):** 2026-09-07T20:21:31Z
 
 ## Execution contract
 
@@ -26,7 +26,7 @@
 
 **Pass:** Authenticated clients have neither table access nor function execution; the service role alone invokes the narrow vector/text interface; every call validates the active config and authoritative caller access; cohort/unit/release/source/rights/edition/segment filters precede both candidate limits; the synthetic HNSW operator class matches the direct cosine distance order; cross-unit, cross-cohort, cross-program, inactive-segment, revoked-source, inactive-config, invalid-vector/text/limit, and forged-user cases fail closed; student direct catalog reads expose no locked release reason or premature unit.
 
-**Evidence:** Local checkpoint `evidence/wp02-database/2026-09-07_server-only-retrieval-scope_local_a8800e5.md`; replace/supersede it with `2026-09-07_server-only-retrieval-scope_github_<short-sha>.md` after a green exact candidate exists.
+**Evidence:** `evidence/wp02-database/2026-09-07_server-only-retrieval-scope_github_12b50cd.md`; green GitHub run `34158635066` and the exact protected implementation candidate `12b50cdbf8bd3b93ecf994b2a8dde62105ceedf7` are frozen there.
 
 **Rollback:** Never rewrite applied migrations. Before promotion, revert the unshared forward migrations and dependent tests/docs. After promotion, disable the retrieval consumer and apply a new reviewed forward repair; never reset Preview/Beta or migrate a shared database backward.
 
@@ -39,17 +39,17 @@
 - [x] Replace the vector-only function with a private vector/text hybrid seam, exact authoritative filters, reciprocal-rank fusion output, and fail-closed config validation.
 - [x] Add the config-specific three-dimensional cosine HNSW index and full-text GIN index for the only approved synthetic configuration.
 - [x] Add credential-free contracts plus pgTAP coverage for direct grants, function shape, invalid inputs/state, immediate revocation, and same-program/cross-program canaries.
-- [ ] Execute the complete disposable database and repository gates; correct any failures and record exact results.
-- [ ] Freeze the exact candidate, obtain Ahmed + Ziad confirmations for the RLS repair, and create the sanitized gate evidence without promoting shared state.
+- [x] Execute the complete disposable database and repository gates; correct any failures and record exact results. Green run `34158635066` passed after two review-driven correction rounds.
+- [x] Freeze the exact candidate, obtain Ahmed + Ziad confirmations for the RLS repair, and create the sanitized gate evidence without promoting shared state. Ahmed confirmed the PR and separately relayed Ziad's named confirmation under D-22; the unchanged protected implementation candidate is `12b50cdbf8bd3b93ecf994b2a8dde62105ceedf7`.
 
 ## Handoff
 
-**Changed:** Local implementation is assembled on the isolated branch. No shared database, deployment, GitHub branch, PR, or production provider/configuration has been changed.
+**Changed:** PR `#19` contains the forward release-visibility repair, server-only hybrid retrieval seam, config-specific synthetic HNSW and full-text indexes, and isolation/grant/state tests. No shared Supabase database, production deployment, real embedding configuration, or provider was changed.
 
-**Commands:** `corepack pnpm verify` passed: formatting, lint, types, boundaries, 20-migration SQL conventions, CI policy, secret scan over 700 files, 242 unit tests, 7 credential-free integration tests with 1 guarded hosted skip, 19 security tests, 3 evaluation tests, 5 load-profile tests, 2 Playwright tests, production build, and client-artifact secret scan. Readiness and isolated handoff rehearsals pass. Hosted dry-run is unavailable because the required ignored local Supabase profile is absent; disposable database execution requires the repository's GitHub CI.
+**Commands:** Local `corepack pnpm verify` passed. GitHub run `34158635066` passed dependency audit, the complete application gate, populated database upgrade, two clean resets, 20-migration parity, 271 pgTAP assertions, advisors, generated types/parity, database Auth integration, cleanup, and sanitized artifact upload. Readiness and isolated handoff rehearsals also pass. Hosted dry-run remains intentionally unavailable because the ignored workstation Supabase profile is absent; GitHub disposable CI supplied the authoritative database proof.
 
-**Remaining:** Disposable database execution and generated-type parity; exact candidate/evidence; explicit publication authorization; new Ahmed + Ziad protected confirmations. The separately confirmed Vercel cleanup is complete: the August 31 automation bypass and retained `5aaaf51` deployment were deleted and verified absent without touching current Production or Beta.
+**Remaining:** No WP02-T06 technical or protected gate remains. Merge/branch/deployment cleanup is an authorized delivery operation, not unfinished task behavior. The separately confirmed Vercel cleanup removed and verified absence of the August 31 automation bypass and retained `5aaaf51` deployment without touching current Production or Beta.
 
-**Next safe action:** Finish credential-free verification locally, then—only with Ahmed's explicit authorization—push the review branch and open a Draft PR to run disposable database CI.
+**Next safe action:** Merge the unchanged green PR through protected `main`, verify main CI, remove temporary branch/preview state, and select WP02-T07.
 
-**Reviewer action:** Inspect the frozen diff and green evidence. Ahmed and Ziad must each confirm the exact RLS repair candidate before merge or migration promotion.
+**Reviewer action:** Completed for this gate. Ahmed confirmed the final PR scope and relayed Ziad's separate named confirmation as allowed by D-22. Shared Supabase promotion remains outside this task and was not performed.

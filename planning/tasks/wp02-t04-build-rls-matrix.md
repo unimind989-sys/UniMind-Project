@@ -2,17 +2,17 @@
 
 **Task ID:** WP02-T04
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** Every database table, view, and function has an explicit actor/action/resource decision, and automated database tests prove permitted operations, forbidden operations, cross-user/cohort/unit isolation, and immediate revocation from authoritative database state.
 
 **Owner:** Codex `/root`; Ziad is the named requester in this chat
 
-**Reviewer:** Ahmed + Ziad - the original candidate was confirmed; the 2026-09-07 forward RLS repair requires a new exact-candidate checkpoint from both founders
+**Reviewer:** Ahmed + Ziad - the original candidate and the 2026-09-07 forward repair are both confirmed; Ahmed relayed Ziad's named repair confirmation under D-22
 
 **Branch:** `wp02/actor-action-resource-matrix`
 
-**Updated (UTC):** 2026-09-07T13:02:44Z
+**Updated (UTC):** 2026-09-07T20:21:31Z
 
 ## Execution contract
 
@@ -40,7 +40,7 @@
 - [x] Run credential-free checks and the guarded disposable database gate; record exact results.
 - [x] Freeze the candidate SHA and obtain separate Ahmed and Ziad confirmations. Exact green implementation candidate: `6133a54c6a9b54bea954ea7f5947e26f9e240250`; Ziad confirmed it in this chat at `2026-09-01T14:36:30Z`, and Ziad separately relayed Ahmed's confirmation by name at `2026-09-01T17:51:50Z`, as permitted by D-22.
 - [x] Run and revert the test-only leaking-policy regression, rerun the green database gate, and complete protected review evidence. Test-only SHA `5aaaf515f6fefeeaa4244aad8b5ce0f23287cd92` made GitHub run `33540422972` fail in `database-ci`; revert SHA `4d3f1720a6dfaf7d94e38020ea757a5294bed166` removed the fixture and passed run `33541122562`.
-- [ ] Close the 2026-09-07 review finding: the original cohort, release, and curriculum-unit policies exposed locked release reasons and unpublished/empty unit metadata to active members. Validate the CLI-generated forward repair in disposable database CI and obtain new Ahmed + Ziad confirmations for the exact repair candidate before merge or promotion.
+- [x] Close the 2026-09-07 review finding: forward repair candidate `12b50cdbf8bd3b93ecf994b2a8dde62105ceedf7` hides locked release reasons and unavailable unit metadata, passed disposable database run `34158635066`, and has Ahmed's confirmation plus his named relay of Ziad's separate confirmation under D-22. Evidence: `evidence/wp02-database/2026-09-07_server-only-retrieval-scope_github_12b50cd.md`.
 
 ## Handoff
 
@@ -48,8 +48,8 @@
 
 **Commands:** Workstation preflight passed; `scripts/show-work-state.ps1` selected WP02-T04; local `corepack pnpm check:sql`, `corepack pnpm test:security`, `git diff --check`, and `corepack pnpm verify` passed. GitHub run `33514355193` passed the original implementation gate. Authorized negative run `33540422972` passed dependency audit and application checks, then failed `database-ci` after the only schema delta replaced `chat_sessions_select_own` with a deliberate authenticated cross-user leak. The fixture was immediately reverted. Post-revert run `33541122562` passed dependency audit, `corepack pnpm verify`, populated upgrade, two resets, migration parity, all pgTAP tests including the 121-assertion T04 suite, advisors, type generation/parity, database Auth integration, security tests, cleanup, and artifact upload.
 
-**Remaining:** The original candidate remains historically verified, but the later review found a release-visibility defect. Forward repair `20260907123954_restrict_student_release_metadata.sql`, corrected pgTAP expectations, disposable database proof, and a new exact-candidate Ahmed + Ziad checkpoint must close before T04 is complete again.
+**Remaining:** None for WP02-T04. The later release-visibility defect is closed by the forward-only repair and exact-candidate evidence above; no applied migration was rewritten and no shared database was promoted.
 
-**Next safe action:** Complete the forward RLS repair and WP02-T06 on the isolated review branch; do not start WP02-T07, deploy, promote migrations, launch beta, or enable real data/providers.
+**Next safe action:** Finish the authorized PR merge and cleanup for WP02-T06, then select WP02-T07. Shared database promotion, beta launch, and real data/providers remain separate gates.
 
-**Reviewer action:** After a green exact candidate is frozen, Ahmed and Ziad must each confirm the repaired RLS behavior separately before merge or promotion.
+**Reviewer action:** Completed for the unchanged repair candidate through Ahmed's confirmation and his named relay of Ziad's separate confirmation, as D-22 permits.
