@@ -20,7 +20,7 @@ select is(
 select is(
   (unimind_private.settle_usage(
     (select id from unimind_private.usage_reservations where idempotency_key = 'synthetic-reservation-key'),
-    80, transaction_timestamp()
+    80, transaction_timestamp(), 'synthetic-settlement-key'
   )).settled_units,
   80::bigint,
   'settlement locks and settles the reservation atomically'
@@ -28,7 +28,7 @@ select is(
 select is(
   (select count(*) from unimind_private.usage_ledger where idempotency_key in (
     'reserve:synthetic-reservation-key',
-    'settle:' || (select id::text from unimind_private.usage_reservations where idempotency_key = 'synthetic-reservation-key')
+    'synthetic-settlement-key'
   )),
   2::bigint,
   'reservation and settlement append distinct ledger evidence'

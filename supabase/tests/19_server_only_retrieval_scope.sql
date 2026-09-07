@@ -653,24 +653,25 @@ select throws_ok(
 rollback to savepoint revoked_source;
 
 savepoint inactive_segment;
+update public.source_versions
+set processing_status = 'NEEDS_REVIEW'
+where id = '41000000-0000-0000-0000-000000000001';
 update unimind_private.source_segments
 set active = false
 where id = '62000000-0000-0000-0000-000000000001';
-select is(
-  (
-    select count(*)
-    from unimind_private.retrieve_authorized_segments(
-      '10000000-0000-0000-0000-000000000002',
-      '20000000-0000-0000-0000-000000000006',
-      '20000000-0000-0000-0000-000000000007',
-      '70000000-0000-0000-0000-000000000001',
-      '[0.1,0.2,0.3]'::extensions.vector,
-      'Synthetic evidence',
-      5
-    )
-  ),
-  0::bigint,
-  'inactive segments are excluded before candidate ranking'
+select throws_ok(
+  $$select * from unimind_private.retrieve_authorized_segments(
+    '10000000-0000-0000-0000-000000000002',
+    '20000000-0000-0000-0000-000000000006',
+    '20000000-0000-0000-0000-000000000007',
+    '70000000-0000-0000-0000-000000000001',
+    '[0.1,0.2,0.3]'::extensions.vector,
+    'Synthetic evidence',
+    5
+  )$$,
+  '42501',
+  'requesting user cannot access the requested curriculum unit',
+  'a source removed from READY before final-segment deactivation is unavailable'
 );
 rollback to savepoint inactive_segment;
 
@@ -732,15 +733,20 @@ select throws_ok(
 );
 
 savepoint inactive_config;
-update unimind_private.embedding_configs
-set active = false
-where id = '70000000-0000-0000-0000-000000000001';
+insert into unimind_private.embedding_configs (
+  id, provider, model, dimensions, normalization, distance_operator, version, active
+)
+values (
+  '70000000-0000-0000-0000-000000000019',
+  'synthetic-provider', 'synthetic-inactive-model', 3, 'L2', 'COSINE',
+  'synthetic-inactive-v1', false
+);
 select throws_ok(
   $$select * from unimind_private.retrieve_authorized_segments(
     '10000000-0000-0000-0000-000000000002',
     '20000000-0000-0000-0000-000000000006',
     '20000000-0000-0000-0000-000000000007',
-    '70000000-0000-0000-0000-000000000001',
+    '70000000-0000-0000-0000-000000000019',
     '[0.1,0.2,0.3]'::extensions.vector,
     'Synthetic evidence',
     5

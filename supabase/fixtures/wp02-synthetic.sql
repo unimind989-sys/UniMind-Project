@@ -270,7 +270,7 @@ values
     'sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
     'application/pdf', 1024, 2, 'EN', 'synthetic-edition-2026',
     'VALID', transaction_timestamp() - interval '1 day',
-    transaction_timestamp() + interval '30 days', 'READY', 'ACTIVE',
+    transaction_timestamp() + interval '30 days', 'PROCESSING', 'ACTIVE',
     transaction_timestamp(), '10000000-0000-0000-0000-000000000001'
   ),
   (
@@ -280,7 +280,7 @@ values
     'sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
     'application/pdf', 1024, 2, 'EN', 'synthetic-edition-2026',
     'VALID', transaction_timestamp() - interval '1 day',
-    transaction_timestamp() + interval '30 days', 'READY', 'ACTIVE',
+    transaction_timestamp() + interval '30 days', 'PROCESSING', 'ACTIVE',
     transaction_timestamp(), '10000000-0000-0000-0000-000000000001'
   );
 
@@ -378,11 +378,42 @@ values (
 insert into unimind_private.segment_embeddings (
   id, source_segment_id, embedding_config_id, embedding
 )
-values (
-  '71000000-0000-0000-0000-000000000001',
-  '62000000-0000-0000-0000-000000000001',
-  '70000000-0000-0000-0000-000000000001',
-  '[0.1,0.2,0.3]'::extensions.vector
+values
+  (
+    '71000000-0000-0000-0000-000000000001',
+    '62000000-0000-0000-0000-000000000001',
+    '70000000-0000-0000-0000-000000000001',
+    '[0.1,0.2,0.3]'::extensions.vector
+  ),
+  (
+    '71000000-0000-0000-0000-000000000002',
+    '62000000-0000-0000-0000-000000000002',
+    '70000000-0000-0000-0000-000000000001',
+    '[0.3,0.2,0.1]'::extensions.vector
+  );
+
+insert into unimind_private.processing_quality_reports (
+  id, source_version_id, coverage_ratio, locator_coverage_ratio,
+  low_confidence_count, terminology_sample_result, duplicate_ratio,
+  raw_deletion_state, overall_result, report_json
+)
+values
+  (
+    '72000000-0000-0000-0000-000000000001',
+    '41000000-0000-0000-0000-000000000001', 1, 1, 0, 'PASS', 0,
+    'NOT_DUE', 'PASS', '{"fixture":"wp02-source-a"}'::jsonb
+  ),
+  (
+    '72000000-0000-0000-0000-000000000002',
+    '41000000-0000-0000-0000-000000000002', 1, 1, 0, 'PASS', 0,
+    'NOT_DUE', 'PASS', '{"fixture":"wp02-source-b"}'::jsonb
+  );
+
+update public.source_versions
+set processing_status = 'READY'
+where id in (
+  '41000000-0000-0000-0000-000000000001',
+  '41000000-0000-0000-0000-000000000002'
 );
 
 commit;
