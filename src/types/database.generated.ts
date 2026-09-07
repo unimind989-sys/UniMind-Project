@@ -1542,13 +1542,15 @@ export type Database = {
     };
     Functions: {
       available_curriculum_units: {
-        Args: never;
+        Args: { admin_preview?: boolean };
         Returns: {
+          availability_state: string;
           code: string;
           cohort_id: string;
           id: string;
           parent_unit_id: string;
           publication_status: string;
+          reason_codes: string[];
           sort_order: number;
           title_ar: string;
           title_en: string;
