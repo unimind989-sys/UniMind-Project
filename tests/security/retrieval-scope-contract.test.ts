@@ -82,7 +82,10 @@ describe("WP02-T06 server-only retrieval scope contract", () => {
       "or public.can_access_unit(curriculum_units.id)",
     );
     expect(migration).toContain(
-      "unimind_private.can_read_source_asset(assets.id)",
+      "from public.source_assets as assets where assets.curriculum_unit_id = target_curriculum_unit_id",
+    );
+    expect(migration).not.toContain(
+      "and unimind_private.can_read_source_asset(assets.id)",
     );
   });
 });

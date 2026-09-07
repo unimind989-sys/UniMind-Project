@@ -632,7 +632,9 @@ select is(
 
 savepoint revoked_source;
 update public.source_versions
-set rights_status = 'REVOKED', activation_status = 'DEACTIVATED'
+set rights_status = 'REVOKED',
+    processing_status = 'NEEDS_REVIEW',
+    activation_status = 'DEACTIVATED'
 where id = '41000000-0000-0000-0000-000000000001';
 select throws_ok(
   $$select * from unimind_private.retrieve_authorized_segments(

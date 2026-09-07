@@ -13,7 +13,6 @@ as $$
         select 1
         from public.source_assets as assets
         where assets.curriculum_unit_id = target_curriculum_unit_id
-          and unimind_private.can_read_source_asset(assets.id)
       )
     );
 $$;
