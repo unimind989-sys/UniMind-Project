@@ -12,7 +12,7 @@
 
 **Branch:** `wp02/derived-catalog-availability`
 
-**Updated (UTC):** 2026-09-02T04:29:00Z
+**Updated (UTC):** 2026-09-02T04:39:00Z
 
 ## Execution contract
 
@@ -26,7 +26,7 @@
 
 **Pass:** Every availability predicate has an isolated failing test plus multi-failure coverage; membership/source/unit state changes affect the next call immediately; students cannot obtain diagnostic details or private configuration; authorized admin diagnostics return only safe reason codes; the interface is security invoker and caller scoped; no editable availability boolean exists; indexes are added only if measured plans demonstrate need; plan-shape assertions avoid volatile costs; all exact application/database gates pass from clean and populated synthetic states.
 
-**Evidence:** `evidence/wp02-database/query-plans/` plus `evidence/wp02-database/<date>_catalog-availability_<environment>_<short-sha>.md` after the candidate SHA and verification environment exist.
+**Evidence:** `evidence/wp02-database/2026-09-02_catalog-availability_github_59ce324.md` and its two raw JSON measurements under `evidence/wp02-database/query-plans/`. Implementation candidate `59ce324b9648ffa1876b924238bfc78167b8ce0a`; full green CI run `33591109224`; Draft PR #18.
 
 **Rollback:** Never rewrite applied migration history. Before promotion, revert the unshared forward migration and dependent tests/docs. After any promotion, keep catalog consumption disabled if needed and apply a new reviewed forward repair migration; never reset Preview/Beta or migrate a shared database backward.
 
@@ -36,18 +36,18 @@
 
 - [x] Inventory the current schema, RLS/grants, fixtures, types, and test harness; define the smallest single security-invoker availability interface.
 - [x] Create the forward migration with caller-scoped student output and authorized safe admin reason codes.
-- [~] Add isolated predicate failures, combined failures, immediate revocation/state-change tests, and diagnostic non-disclosure coverage; the original 26-assertion suite passed, and the expanded 36-assertion suite awaits CI.
-- [~] Capture representative pre-index query plans, add an index only if measurement proves the need, and add stable plan-shape integration assertions; invocation baseline captured, installed-body measurement awaits CI.
-- [~] Run the complete credential-free and disposable database gates, update types/evidence/task/runbook, and prepare the ordinary review checkpoint.
+- [x] Add isolated predicate failures, combined failures, immediate revocation/state-change tests, and diagnostic non-disclosure coverage; all 36 assertions pass in CI.
+- [x] Capture representative pre-index invocation and installed-body query plans and add stable plan-shape integration assertions. Existing source indexes serve the measured probes; no additional index is justified or added.
+- [~] Complete credential-free and disposable database gates, types/evidence/task/runbook, and the ordinary review checkpoint. Technical gates and evidence are complete; only Ziad's checkpoint remains.
 
 ## Handoff
 
 **Changed:** Forward migration `20260901232104_derived_student_catalog_availability.sql` replaces the catalog function with one security-invoker interface, preserves execute grants, and reconnects the two existing consumer policies. Added predicate/diagnostic/revocation tests, representative synthetic measurement, and cost-independent plan-shape tests. No index added. Draft PR #18 is open; no merge or shared database promotion performed.
 
-**Commands:** Preflight, `check:sql`, focused tests, `pnpm build`, readiness, and handoff passed. `pnpm verify` passed on the initial candidate locally and in GitHub. Run `33571779725` exposed stale synthetic JWT audit context before the unit-state mutation; corrected in `7b746d8`, without changing any grant or policy. Run `33590554923` passed application, populated upgrade, two resets, migration parity, all 19 pgTAP files, advisors, generated types/parity, Auth integration, and security tests. The expanded local gate passed through unit/integration/security/eval/load but encountered a 15-second E2E timeout while successful local development chunks took about 11 seconds; its DOM assertions succeeded in the trace. Rerun and final candidate verification remain required.
+**Commands:** Preflight, `check:sql`, focused tests, `pnpm build`, readiness, and handoff passed. Full `pnpm verify` passed locally on `59ce324`; all GitHub jobs passed in run `33591109224`, including populated upgrade, two resets, migration parity, all 19 pgTAP files with the 36-assertion T05 suite, live invocation/body EXPLAIN validation, advisors, generated types/parity, 8 database/Auth integration tests, and 15 security tests. Earlier stale synthetic JWT audit context was corrected without altering grants/policies; a local development-chunk E2E timeout was diagnosed from its trace, then the unchanged focused E2E and complete local gate passed. See the gate report for exact commands and closed failures.
 
-**Remaining:** Validate the expanded tests and installed-body plan, review index need from that plan, complete final verification/evidence, and obtain Ziad's ordinary checkpoint on the frozen candidate.
+**Remaining:** Ziad's ordinary human checkpoint after inspecting the frozen implementation candidate and evidence. The agent has not marked the gate COMPLETE.
 
-**Next safe action:** Finish WP02-T05 measurement and verification; do not start WP02-T06.
+**Next safe action:** Ziad reviews and confirms the WP02-T05 checkpoint; do not start WP02-T06.
 
 **Reviewer action:** Ziad reviews the frozen candidate and evidence after all gates pass; no rights or release/unlock action is authorized by this task.
