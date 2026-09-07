@@ -26,7 +26,7 @@
 
 **Pass:** Authenticated clients have neither table access nor function execution; the service role alone invokes the narrow vector/text interface; every call validates the active config and authoritative caller access; cohort/unit/release/source/rights/edition/segment filters precede both candidate limits; the synthetic HNSW operator class matches the direct cosine distance order; cross-unit, cross-cohort, cross-program, inactive-segment, revoked-source, inactive-config, invalid-vector/text/limit, and forged-user cases fail closed; student direct catalog reads expose no locked release reason or premature unit.
 
-**Evidence:** `evidence/wp02-database/2026-09-07_server-only-retrieval-scope_github_<short-sha>.md` after a green exact candidate exists.
+**Evidence:** Local checkpoint `evidence/wp02-database/2026-09-07_server-only-retrieval-scope_local_a8800e5.md`; replace/supersede it with `2026-09-07_server-only-retrieval-scope_github_<short-sha>.md` after a green exact candidate exists.
 
 **Rollback:** Never rewrite applied migrations. Before promotion, revert the unshared forward migrations and dependent tests/docs. After promotion, disable the retrieval consumer and apply a new reviewed forward repair; never reset Preview/Beta or migrate a shared database backward.
 
