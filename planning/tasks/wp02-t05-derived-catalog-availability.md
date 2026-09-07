@@ -2,7 +2,7 @@
 
 **Task ID:** WP02-T05
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** One caller-scoped, security-invoker database interface derives Student Catalog Availability from current authoritative membership, release, publication, source readiness/activation/rights, and curriculum-edition state; students receive only a generic locked/unavailable state while authorized admins may receive safe reason codes.
 
@@ -12,7 +12,7 @@
 
 **Branch:** `wp02/derived-catalog-availability`
 
-**Updated (UTC):** 2026-09-02T04:39:00Z
+**Updated (UTC):** 2026-09-07T03:04:23Z
 
 ## Execution contract
 
@@ -38,7 +38,7 @@
 - [x] Create the forward migration with caller-scoped student output and authorized safe admin reason codes.
 - [x] Add isolated predicate failures, combined failures, immediate revocation/state-change tests, and diagnostic non-disclosure coverage; all 36 assertions pass in CI.
 - [x] Capture representative pre-index invocation and installed-body query plans and add stable plan-shape integration assertions. Existing source indexes serve the measured probes; no additional index is justified or added.
-- [~] Complete credential-free and disposable database gates, types/evidence/task/runbook, and the ordinary review checkpoint. Technical gates and evidence are complete; only Ziad's checkpoint remains.
+- [x] Complete credential-free and disposable database gates, types/evidence/task/runbook, and the ordinary review checkpoint. Ziad accepted the checkpoint in the task chat on 2026-09-07 after receiving the final implementation and evidence report.
 
 ## Handoff
 
@@ -46,8 +46,8 @@
 
 **Commands:** Preflight, `check:sql`, focused tests, `pnpm build`, readiness, and handoff passed. Full `pnpm verify` passed locally on `59ce324`; all GitHub jobs passed in run `33591109224`, including populated upgrade, two resets, migration parity, all 19 pgTAP files with the 36-assertion T05 suite, live invocation/body EXPLAIN validation, advisors, generated types/parity, 8 database/Auth integration tests, and 15 security tests. Earlier stale synthetic JWT audit context was corrected without altering grants/policies; a local development-chunk E2E timeout was diagnosed from its trace, then the unchanged focused E2E and complete local gate passed. See the gate report for exact commands and closed failures.
 
-**Remaining:** Ziad's ordinary human checkpoint after inspecting the frozen implementation candidate and evidence. The agent has not marked the gate COMPLETE.
+**Remaining:** None. WP02-T05 is COMPLETE; no merge or shared database promotion was performed by this task.
 
-**Next safe action:** Ziad reviews and confirms the WP02-T05 checkpoint; do not start WP02-T06.
+**Next safe action:** WP02-T06 may be opened only as a separate user-authorized task; it was not started here.
 
-**Reviewer action:** Ziad reviews the frozen candidate and evidence after all gates pass; no rights or release/unlock action is authorized by this task.
+**Reviewer action:** Ziad accepted the ordinary checkpoint in the task chat on 2026-09-07. No rights or release/unlock action was authorized by this task.

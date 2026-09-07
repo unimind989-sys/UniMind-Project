@@ -980,8 +980,8 @@ For each migration:
 
 #### WP02-T05 — Implement availability as a derived contract
 
-- [~] Create one caller-scoped security-invoker view/function for student catalog availability; do not store an editable `available` boolean. Owner: Codex `/root`; requester/reviewer: Ziad; branch: `wp02/derived-catalog-availability`; task record: `planning/tasks/wp02-t05-derived-catalog-availability.md`.
-- [x] Implement every predicate from section 5.8 with explicit tests for each single failed predicate and combinations. The 36-assertion T05 suite passes at `59ce324` in full green CI run `33591109224`; ordinary checkpoint from Ziad remains pending.
+- [x] Create one caller-scoped security-invoker view/function for student catalog availability; do not store an editable `available` boolean. Owner: Codex `/root`; requester/reviewer: Ziad; branch: `wp02/derived-catalog-availability`; task record: `planning/tasks/wp02-t05-derived-catalog-availability.md`. Technical gates passed and Ziad accepted the ordinary checkpoint on 2026-09-07.
+- [x] Implement every predicate from section 5.8 with explicit tests for each single failed predicate and combinations. The 36-assertion T05 suite passes at `59ce324` in full green CI run `33591109224`.
 - [x] Return a safe reason code to authorized admin diagnostics, but only a generic empty/locked state to students when detail could expose private configuration. Student denial and diagnostic non-disclosure tests pass independently and in combination.
 - [x] Add indexes only after capturing `EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON)` on representative seeded data. Invocation and installed-body plans on 512 generated synthetic units use existing source indexes; no new index is justified or added.
 - [x] Store the plan report in `evidence/wp02-database/query-plans/` and assert reasonable plan shape in integration tests without overfitting volatile cost numbers. Evidence: `evidence/wp02-database/2026-09-02_catalog-availability_github_59ce324.md`; six credential-free shape tests plus live CI validation pass.
