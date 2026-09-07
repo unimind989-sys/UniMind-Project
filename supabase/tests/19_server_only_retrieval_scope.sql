@@ -41,8 +41,8 @@ select is(
       on namespaces.oid = procedures.pronamespace
     where namespaces.nspname = 'unimind_private'
       and procedures.proname = 'retrieve_authorized_segments'
-      and pg_get_function_identity_arguments(procedures.oid) =
-        'requesting_user_id uuid, target_cohort_id uuid, target_curriculum_unit_id uuid, target_embedding_config_id uuid, query_embedding extensions.vector, query_text text, result_limit integer'
+      and procedures.oid =
+        'unimind_private.retrieve_authorized_segments(uuid,uuid,uuid,uuid,extensions.vector,text,integer)'::regprocedure
       and procedures.provolatile = 's'
       and procedures.prosecdef
       and array_to_string(procedures.proconfig, ',') like '%search_path=""%'
@@ -79,7 +79,7 @@ select ok(
   ) is not null
   and pg_get_indexdef(
     'unimind_private.segment_embeddings_synthetic_v1_cosine_hnsw_idx'::regclass
-  ) like '%USING hnsw ((embedding::extensions.vector(3)) extensions.vector_cosine_ops)%',
+  ) ~* 'USING hnsw .*embedding.*vector[(]3[)].*vector_cosine_ops',
   'the active synthetic config has a dimensioned cosine HNSW index'
 );
 select ok(

@@ -78,8 +78,8 @@ select is(
 );
 select is(
   public.can_access_unit('20000000-0000-0000-0000-000000000008'),
-  true,
-  'authorization remains separate from publication and availability state'
+  false,
+  'direct unit authorization fails closed for unpublished or unavailable metadata'
 );
 select is(
   public.can_access_unit('20000000-0000-0000-0000-000000000099'),
@@ -87,7 +87,7 @@ select is(
   'a nonexistent curriculum unit is never authorized'
 );
 select is((select count(*) from public.cohorts), 1::bigint, 'member policy exposes its cohort');
-select is((select count(*) from public.curriculum_units), 2::bigint, 'member policy exposes units in its cohort');
+select is((select count(*) from public.curriculum_units), 1::bigint, 'member policy exposes only fully available units in its cohort');
 select is((select count(*) from public.collection_campaigns), 1::bigint, 'assignment policy exposes its campaign');
 select is((select count(*) from public.source_assets), 1::bigint, 'source policy also enforces release and publication state');
 
