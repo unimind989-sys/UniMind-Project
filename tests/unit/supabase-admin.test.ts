@@ -4,6 +4,11 @@ const syntheticServiceRoleKey = "synthetic-service-role-key";
 const syntheticUserId = "5f6b38b2-1040-4bce-8d65-4db44d755b0c";
 const syntheticEmail = "wp01-t05@auth-fixture.unimind.invalid";
 const syntheticPassword = "Synthetic-auth-password-123";
+const privilegedContext = {
+  actorUserId: "10000000-0000-0000-0000-000000000001",
+  correlationId: "90000000-0000-0000-0000-000000000008",
+  reason: "WP02-T08 synthetic Auth unit proof",
+} as const;
 
 const mocks = vi.hoisted(() => ({
   createClient: vi.fn(),
@@ -11,6 +16,7 @@ const mocks = vi.hoisted(() => ({
   getUserById: vi.fn(),
   deleteUser: vi.fn(),
   getServerEnvironment: vi.fn(),
+  rpc: vi.fn(),
 }));
 
 vi.mock("server-only", () => ({}));
@@ -35,6 +41,11 @@ beforeEach(() => {
         deleteUser: mocks.deleteUser,
       },
     },
+    rpc: mocks.rpc,
+  });
+  mocks.rpc.mockResolvedValue({
+    data: syntheticUserId,
+    error: null,
   });
   mocks.createUser.mockResolvedValue({
     data: {
@@ -65,15 +76,31 @@ beforeEach(() => {
 });
 
 describe("narrow Supabase admin operations", () => {
-  it("creates only marked synthetic users with a non-persistent admin client", async () => {
-    const { createSyntheticAuthUser } =
-      await import("../../src/lib/db/supabase/admin");
+  it("rejects missing privileged context before constructing a service client", async () => {
+    const { createSyntheticAuthUser, InvalidPrivilegedAuthContextError } =
+      await import("../../src/lib/db/supabase/admin.server");
 
     await expect(
-      createSyntheticAuthUser({
-        email: syntheticEmail,
-        password: syntheticPassword,
-      }),
+      createSyntheticAuthUser(
+        { email: syntheticEmail, password: syntheticPassword },
+        { ...privilegedContext, reason: "" },
+      ),
+    ).rejects.toBeInstanceOf(InvalidPrivilegedAuthContextError);
+    expect(mocks.createClient).not.toHaveBeenCalled();
+  });
+
+  it("creates only marked synthetic users with a non-persistent admin client", async () => {
+    const { createSyntheticAuthUser } =
+      await import("../../src/lib/db/supabase/admin.server");
+
+    await expect(
+      createSyntheticAuthUser(
+        {
+          email: syntheticEmail,
+          password: syntheticPassword,
+        },
+        privilegedContext,
+      ),
     ).resolves.toEqual({
       userId: syntheticUserId,
       email: syntheticEmail,
@@ -101,30 +128,53 @@ describe("narrow Supabase admin operations", () => {
         synthetic_fixture: true,
       },
     });
+    expect(mocks.rpc).toHaveBeenCalledTimes(2);
+    expect(mocks.rpc).toHaveBeenLastCalledWith(
+      "record_privileged_auth_action",
+      expect.objectContaining({
+        p_action_name: "CREATE_SYNTHETIC_USER",
+        p_action_outcome: "SUCCEEDED",
+        p_actor_user_id: privilegedContext.actorUserId,
+        p_correlation_id: privilegedContext.correlationId,
+        p_target_user_id: syntheticUserId,
+      }),
+    );
   });
 
   it("rejects a real-looking email before invoking Supabase", async () => {
     const { createSyntheticAuthUser, InvalidSyntheticAuthUserError } =
-      await import("../../src/lib/db/supabase/admin");
+      await import("../../src/lib/db/supabase/admin.server");
 
     await expect(
-      createSyntheticAuthUser({
-        email: "student@example.com",
-        password: syntheticPassword,
-      }),
+      createSyntheticAuthUser(
+        {
+          email: "student@example.com",
+          password: syntheticPassword,
+        },
+        privilegedContext,
+      ),
     ).rejects.toBeInstanceOf(InvalidSyntheticAuthUserError);
     expect(mocks.createClient).not.toHaveBeenCalled();
   });
 
   it("deletes only users carrying both synthetic markers", async () => {
     const { deleteSyntheticAuthUser } =
-      await import("../../src/lib/db/supabase/admin");
+      await import("../../src/lib/db/supabase/admin.server");
 
     await expect(
-      deleteSyntheticAuthUser(syntheticUserId),
+      deleteSyntheticAuthUser(syntheticUserId, privilegedContext),
     ).resolves.toBeUndefined();
     expect(mocks.getUserById).toHaveBeenCalledWith(syntheticUserId);
     expect(mocks.deleteUser).toHaveBeenCalledWith(syntheticUserId);
+    expect(mocks.rpc).toHaveBeenCalledTimes(2);
+    expect(mocks.rpc).toHaveBeenLastCalledWith(
+      "record_privileged_auth_action",
+      expect.objectContaining({
+        p_action_name: "DELETE_SYNTHETIC_USER",
+        p_action_outcome: "SUCCEEDED",
+        p_target_user_id: syntheticUserId,
+      }),
+    );
   });
 
   it("refuses deletion when protected app metadata is missing", async () => {
@@ -140,10 +190,10 @@ describe("narrow Supabase admin operations", () => {
     });
 
     const { deleteSyntheticAuthUser, UnsafeSyntheticAuthDeletionError } =
-      await import("../../src/lib/db/supabase/admin");
+      await import("../../src/lib/db/supabase/admin.server");
 
     await expect(
-      deleteSyntheticAuthUser(syntheticUserId),
+      deleteSyntheticAuthUser(syntheticUserId, privilegedContext),
     ).rejects.toBeInstanceOf(UnsafeSyntheticAuthDeletionError);
     expect(mocks.deleteUser).not.toHaveBeenCalled();
   });
@@ -158,18 +208,49 @@ describe("narrow Supabase admin operations", () => {
     });
 
     const { createSyntheticAuthUser, SupabaseAdminOperationError } =
-      await import("../../src/lib/db/supabase/admin");
+      await import("../../src/lib/db/supabase/admin.server");
 
     await expect(
-      createSyntheticAuthUser({
-        email: syntheticEmail,
-        password: syntheticPassword,
-      }),
+      createSyntheticAuthUser(
+        {
+          email: syntheticEmail,
+          password: syntheticPassword,
+        },
+        privilegedContext,
+      ),
     ).rejects.toMatchObject({
       name: SupabaseAdminOperationError.name,
       operation: "create-user",
       providerCode: "unknown",
       providerStatus: 401,
     });
+    expect(mocks.rpc).toHaveBeenLastCalledWith(
+      "record_privileged_auth_action",
+      expect.objectContaining({
+        p_action_outcome: "FAILED",
+        p_provider_error_code: "unknown",
+      }),
+    );
+  });
+
+  it("fails closed before Auth when the STARTED audit event cannot be written", async () => {
+    mocks.rpc.mockResolvedValueOnce({
+      data: null,
+      error: { code: "audit_unavailable" },
+    });
+    const { createSyntheticAuthUser, SupabaseAdminOperationError } =
+      await import("../../src/lib/db/supabase/admin.server");
+
+    await expect(
+      createSyntheticAuthUser(
+        { email: syntheticEmail, password: syntheticPassword },
+        privilegedContext,
+      ),
+    ).rejects.toMatchObject({
+      name: SupabaseAdminOperationError.name,
+      operation: "audit-action",
+      providerCode: "audit_unavailable",
+    });
+    expect(mocks.createUser).not.toHaveBeenCalled();
   });
 });

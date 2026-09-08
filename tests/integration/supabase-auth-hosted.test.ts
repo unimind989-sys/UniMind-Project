@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 
 import { createBrowserClient, type CookieOptions } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
 import { NextRequest } from "next/server";
 import {
   afterAll,
@@ -18,6 +19,15 @@ type StoredCookie = Readonly<{
 }>;
 
 const cookieJar = vi.hoisted(() => new Map<string, StoredCookie>());
+const syntheticAdminId = "10000000-0000-0000-0000-000000000001";
+
+function privilegedContext(reason: string) {
+  return {
+    actorUserId: syntheticAdminId,
+    correlationId: randomUUID(),
+    reason,
+  };
+}
 
 vi.mock("server-only", () => ({}));
 vi.mock("next/headers", () => ({
@@ -38,7 +48,7 @@ const databaseDescribe =
   process.env.UNIMIND_DATABASE_AUTH_TEST === "true" ? describe : describe.skip;
 
 databaseDescribe("synthetic Supabase Auth", () => {
-  let createdUserId: string | undefined;
+  const createdUserIds = new Set<string>();
 
   beforeEach(() => {
     cookieJar.clear();
@@ -49,10 +59,15 @@ databaseDescribe("synthetic Supabase Auth", () => {
   });
 
   afterAll(async () => {
-    if (createdUserId !== undefined) {
+    if (createdUserIds.size > 0) {
       const { deleteSyntheticAuthUser } =
-        await import("../../src/lib/db/supabase/admin");
-      await deleteSyntheticAuthUser(createdUserId);
+        await import("../../src/lib/db/supabase/admin.server");
+      for (const userId of createdUserIds) {
+        await deleteSyntheticAuthUser(
+          userId,
+          privilegedContext("Disposable Auth integration cleanup"),
+        );
+      }
     }
   });
 
@@ -67,10 +82,13 @@ databaseDescribe("synthetic Supabase Auth", () => {
     const email = `wp01-t05-${nonce}@auth-fixture.unimind.invalid`;
     const password = `Synthetic-A1!${nonce}`;
     const { createSyntheticAuthUser, SupabaseAdminOperationError } =
-      await import("../../src/lib/db/supabase/admin");
+      await import("../../src/lib/db/supabase/admin.server");
     let created;
     try {
-      created = await createSyntheticAuthUser({ email, password });
+      created = await createSyntheticAuthUser(
+        { email, password },
+        privilegedContext("Create disposable Auth refresh fixture"),
+      );
     } catch (error) {
       if (error instanceof SupabaseAdminOperationError) {
         const diagnosticCode = /^[a-z0-9_]{1,64}$/u.test(error.providerCode)
@@ -83,7 +101,7 @@ databaseDescribe("synthetic Supabase Auth", () => {
       }
       throw error;
     }
-    createdUserId = created.userId;
+    createdUserIds.add(created.userId);
 
     const browser = createBrowserClient(url, publishableKey, {
       isSingleton: false,
@@ -163,5 +181,114 @@ databaseDescribe("synthetic Supabase Auth", () => {
       });
     }
     await expect(getVerifiedIdentity()).resolves.toBeNull();
+  });
+
+  it("uses caller-scoped RLS, denies Storage, and revokes deleted-user access", async () => {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const publishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+    if (url === undefined || publishableKey === undefined) {
+      throw new Error("Database Auth public configuration is missing.");
+    }
+
+    const nonce = randomUUID();
+    const email = `wp02-t08-${nonce}@auth-fixture.unimind.invalid`;
+    const password = `Synthetic-A1!${nonce}`;
+    const { createSyntheticAuthUser, deleteSyntheticAuthUser } =
+      await import("../../src/lib/db/supabase/admin.server");
+    const created = await createSyntheticAuthUser(
+      { email, password },
+      privilegedContext("Create WP02-T08 caller-scope fixture"),
+    );
+    createdUserIds.add(created.userId);
+
+    const caller = createBrowserClient(url, publishableKey, {
+      isSingleton: false,
+      cookies: {
+        getAll() {
+          return [...cookieJar].map(([name, cookie]) => ({
+            name,
+            value: cookie.value,
+          }));
+        },
+        setAll(cookiesToSet) {
+          for (const { name, value, options } of cookiesToSet) {
+            cookieJar.set(name, { value, options });
+          }
+        },
+      },
+    });
+    const signIn = await caller.auth.signInWithPassword({ email, password });
+    expect(signIn.error).toBeNull();
+    const session = signIn.data.session;
+    if (session === null) {
+      throw new Error("WP02-T08 Auth session is missing.");
+    }
+    expect(session.expires_in).toBeLessThanOrEqual(3_600);
+
+    const { getCurrentStudentProfile, listCurrentStudentAvailableUnits } =
+      await import("../../src/lib/db/supabase/student-access.server");
+    await expect(getCurrentStudentProfile()).resolves.toEqual({
+      displayName: "",
+      preferredLanguage: "EN",
+    });
+    await expect(listCurrentStudentAvailableUnits()).resolves.toEqual([]);
+
+    const crossUserProfiles = await caller
+      .from("profiles")
+      .select("user_id")
+      .neq("user_id", created.userId);
+    expect(crossUserProfiles.error).toBeNull();
+    expect(crossUserProfiles.data).toEqual([]);
+
+    const signedUpload = await caller.storage
+      .from("unimind-raw")
+      .createSignedUploadUrl(`synthetic/${nonce}.pdf`);
+    expect(signedUpload.error).not.toBeNull();
+    expect(signedUpload.data).toBeNull();
+
+    const upsert = await caller.storage
+      .from("unimind-raw")
+      .upload(
+        `synthetic/${nonce}.pdf`,
+        new TextEncoder().encode("synthetic WP02-T08 bytes"),
+        { contentType: "application/pdf", upsert: true },
+      );
+    expect(upsert.error).not.toBeNull();
+    expect(upsert.data).toBeNull();
+
+    await deleteSyntheticAuthUser(
+      created.userId,
+      privilegedContext("Delete WP02-T08 caller-scope fixture"),
+    );
+    createdUserIds.delete(created.userId);
+
+    const issuedTokenClient = createClient(url, publishableKey, {
+      auth: {
+        autoRefreshToken: false,
+        detectSessionInUrl: false,
+        persistSession: false,
+      },
+      global: {
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      },
+    });
+    const profileAfterDeletion = await issuedTokenClient
+      .from("profiles")
+      .select("user_id");
+    expect(profileAfterDeletion.error).toBeNull();
+    expect(profileAfterDeletion.data).toEqual([]);
+
+    const refreshClient = createClient(url, publishableKey, {
+      auth: {
+        autoRefreshToken: false,
+        detectSessionInUrl: false,
+        persistSession: false,
+      },
+    });
+    const refreshed = await refreshClient.auth.refreshSession({
+      refresh_token: session.refresh_token,
+    });
+    expect(refreshed.error).not.toBeNull();
+    expect(refreshed.data.session).toBeNull();
   });
 });

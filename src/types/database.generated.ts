@@ -1570,6 +1570,18 @@ export type Database = {
         Returns: boolean;
       };
       is_admin: { Args: never; Returns: boolean };
+      record_privileged_auth_action: {
+        Args: {
+          p_action_name: string;
+          p_action_outcome: string;
+          p_actor_user_id: string;
+          p_correlation_id: string;
+          p_provider_error_code?: string;
+          p_reason: string;
+          p_target_user_id?: string;
+        };
+        Returns: string;
+      };
     };
     Enums: {
       curriculum_unit_type: "MODULE" | "SUBJECT";

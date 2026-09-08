@@ -716,7 +716,7 @@ git diff --exit-code -- src/types/database.generated.ts
 
 - [x] Create `src/lib/db/supabase/browser.ts` using the publishable key only; WP01-T04 has reviewed PASS evidence at `evidence/wp01-foundation/2026-08-25_hosted-supabase_development-ci_b444a5d.md`. Owner: Codex `/root`; candidate: `51be7f6`; branch: `main`.
 - [x] Create `src/lib/db/supabase/server.ts` using `@supabase/ssr` and the current Next.js cookie API; Auth cookie writes fail closed without a response-header propagation sink. Owner: Codex `/root`; candidate: `51be7f6`; branch: `main`.
-- [x] Create `src/lib/db/supabase/admin.ts` as server-only; the raw service client remains private and only marker-protected synthetic Auth fixture creation/deletion is exposed. Hosted synthetic create/delete and cleanup proof passed.
+- [x] Create the server-only privileged client (renamed to `src/lib/db/supabase/admin.server.ts` by WP02-T08); the raw service client remains private and only marker-protected synthetic Auth fixture creation/deletion is exposed. Hosted synthetic create/delete and cleanup proof passed.
 - [x] Implement the current Supabase SSR session-refresh pattern in `src/proxy.ts`; the confirmation- and approved-fingerprint-guarded hosted test passed a real near-expiry proxy refresh with updated request/response cookies and private/no-store headers.
 - [x] Protect server mutations with `requireVerifiedIdentity()`, verified `getClaims()` identity, request-scoped clients, and database RLS; no business mutation exists yet in this foundation scope. Forged-state denial passed locally and against hosted development.
 - [x] Never authorize from user-editable `user_metadata`; the verified identity seam returns only the validated token subject and discards client-editable role/cohort claims.
