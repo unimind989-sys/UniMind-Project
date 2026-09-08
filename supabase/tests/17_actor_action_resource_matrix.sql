@@ -67,7 +67,7 @@ create temporary table reviewed_service_role_functions (
 
 insert into reviewed_service_role_functions (function_signature)
 values
-  ('record_privileged_auth_action(uuid,text,text,uuid,text,uuid,text)');
+  ('record_privileged_auth_action(uuid, text, text, uuid, text, uuid, text)');
 
 create temporary table reviewed_private_functions (
   function_name text primary key
