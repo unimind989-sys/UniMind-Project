@@ -428,7 +428,7 @@ values
     'VALID',
     transaction_timestamp() - interval '1 day',
     transaction_timestamp() + interval '30 days',
-    'READY',
+    'PROCESSING',
     'ACTIVE',
     transaction_timestamp(),
     '10000000-0000-0000-0000-000000000001'
@@ -447,7 +447,7 @@ values
     'VALID',
     transaction_timestamp() - interval '1 day',
     transaction_timestamp() + interval '30 days',
-    'READY',
+    'PROCESSING',
     'ACTIVE',
     transaction_timestamp(),
     '10000000-0000-0000-0000-000000000001'
@@ -570,6 +570,51 @@ values
     '70000000-0000-0000-0000-000000000001',
     '[0.1,0.2,0.3]'::extensions.vector
   );
+
+insert into unimind_private.processing_quality_reports (
+  id,
+  source_version_id,
+  coverage_ratio,
+  locator_coverage_ratio,
+  low_confidence_count,
+  terminology_sample_result,
+  duplicate_ratio,
+  raw_deletion_state,
+  overall_result,
+  report_json
+)
+values
+  (
+    '88000000-0000-0000-0000-000000000001',
+    '84000000-0000-0000-0000-000000000001',
+    1,
+    1,
+    0,
+    'PASS',
+    0,
+    'NOT_DUE',
+    'PASS',
+    '{"fixture":"retrieval-cross-cohort"}'::jsonb
+  ),
+  (
+    '88000000-0000-0000-0000-000000000002',
+    '84000000-0000-0000-0000-000000000002',
+    1,
+    1,
+    0,
+    'PASS',
+    0,
+    'NOT_DUE',
+    'PASS',
+    '{"fixture":"retrieval-cross-program"}'::jsonb
+  );
+
+update public.source_versions
+set processing_status = 'READY'
+where id in (
+  '84000000-0000-0000-0000-000000000001',
+  '84000000-0000-0000-0000-000000000002'
+);
 
 create temporary table retrieval_results on commit drop as
 select *
