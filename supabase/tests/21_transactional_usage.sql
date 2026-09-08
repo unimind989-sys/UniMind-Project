@@ -1,5 +1,5 @@
 begin;
-select plan(21);
+select plan(22);
 
 select is(
   (
@@ -106,6 +106,20 @@ select throws_ok(
   '23514',
   'only a reserved usage row can settle',
   'a second settlement key cannot double-settle a reservation'
+);
+
+select throws_ok(
+  $$select unimind_private.release_usage(
+    (
+      select id from unimind_private.usage_reservations
+      where idempotency_key = 'wp02-t07-usage-reserve'
+    ),
+    transaction_timestamp() + interval '6 minutes',
+    'wp02-t07-usage-settle:unused'
+  )$$,
+  '23505',
+  'idempotency key was reused with different usage transition input',
+  'unused settlement evidence cannot impersonate a direct release replay'
 );
 
 select is(

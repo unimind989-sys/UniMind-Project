@@ -703,6 +703,11 @@ begin
     select reservations.* into reservation
     from unimind_private.usage_reservations as reservations
     where reservations.id = reservation_id;
+    if not found or reservation.state <> 'SETTLED' then
+      raise exception using
+        errcode = '23505',
+        message = 'idempotency key was reused with different usage transition input';
+    end if;
     return reservation;
   end if;
 
@@ -801,6 +806,11 @@ begin
     select reservations.* into reservation
     from unimind_private.usage_reservations as reservations
     where reservations.id = reservation_id;
+    if not found or reservation.state <> 'RELEASED' then
+      raise exception using
+        errcode = '23505',
+        message = 'idempotency key was reused with different usage transition input';
+    end if;
     return reservation;
   end if;
 
@@ -883,6 +893,11 @@ begin
     select reservations.* into reservation
     from unimind_private.usage_reservations as reservations
     where reservations.id = reservation_id;
+    if not found or reservation.state <> 'EXPIRED' then
+      raise exception using
+        errcode = '23505',
+        message = 'idempotency key was reused with different usage transition input';
+    end if;
     return reservation;
   end if;
 
