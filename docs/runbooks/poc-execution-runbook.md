@@ -1002,10 +1002,11 @@ Owner: Codex `/root`; requester/reviewer: Ahmed; branch: `wp02/server-only-retri
 
 #### WP02-T07 — Make jobs and usage state machines transactional
 
-- [~] Create transition functions for job claim/heartbeat/success/retry/fail and usage reserve/settle/release/expire. Owner: Codex `/root`; requester/reviewer: Ahmed; branch: `wp02/transactional-jobs-usage`; task record: `planning/tasks/wp02-t07-transactional-jobs-usage.md`.
-- [~] Lock the relevant row, check the prior state and idempotency key, perform ledger/event writes in the same transaction, and return the canonical existing result on replay.
-- [~] Prevent negative settled units, double settlement, lease completion by another owner, and a READY source with missing prerequisites.
-- [~] Add concurrency tests with two claimers/settlers racing the same key.
+- [x] Create private, service-role-only transition functions for job claim/heartbeat/success/retry/fail and usage reserve/settle/release/expire. Owner: Codex `/root`; requester/reviewer: Ahmed; implementation PR `#20`; exact candidate `576f1d6`; task record: `planning/tasks/wp02-t07-transactional-jobs-usage.md`.
+- [x] Lock the relevant row and idempotency namespace, check prior state and caller input, write immutable ledger/events in the same transaction, and return the canonical existing result only for an identical replay.
+- [x] Reject negative or excessive settled units, double and cross-transition settlement, terminal job transitions by a stale/wrong lease owner, and READY sources with missing or later-invalidated prerequisites.
+- [x] Prove race behavior with two independent PostgreSQL sessions competing to claim one job, reserve one usage key, and settle one reservation; final PR run `34192310589` and merged-main run `34193197926` passed the complete disposable database/Auth gate.
+- [x] Merge, promote the guarded forward migration chain to synthetic Preview, deploy the exact reviewed build to Vercel Production, run rollback-only hosted state-machine smoke checks and the six-check public deployment smoke, and clean the task branch/PR state. Evidence: `evidence/wp02-database/2026-09-08_transactional-jobs-usage_github_576f1d6.md`.
 
 #### WP02-T08 — Prove RLS is not bypassed by application architecture
 
