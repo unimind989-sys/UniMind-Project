@@ -3,7 +3,9 @@ select plan(4);
 
 select is(
   (select count(*) from unimind_private.claim_processing_job(
-    'synthetic-worker', transaction_timestamp(), interval '2 minutes'
+    'synthetic-worker', transaction_timestamp(), interval '2 minutes',
+    'synthetic-job-claim-base',
+    '90000000-0000-0000-0000-000000000008'
   )),
   1::bigint,
   'one eligible job is claimed atomically'

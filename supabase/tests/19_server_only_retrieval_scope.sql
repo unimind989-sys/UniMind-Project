@@ -115,19 +115,6 @@ select ok(
   'the vector candidate query orders by the matching distance operator directly'
 );
 
-insert into unimind_private.segment_embeddings (
-  id,
-  source_segment_id,
-  embedding_config_id,
-  embedding
-)
-values (
-  '87000000-0000-0000-0000-000000000001',
-  '62000000-0000-0000-0000-000000000002',
-  '70000000-0000-0000-0000-000000000001',
-  '[0.1,0.2,0.3]'::extensions.vector
-);
-
 insert into public.cohorts (
   id,
   term_id,
@@ -441,7 +428,7 @@ values
     'VALID',
     transaction_timestamp() - interval '1 day',
     transaction_timestamp() + interval '30 days',
-    'READY',
+    'PROCESSING',
     'ACTIVE',
     transaction_timestamp(),
     '10000000-0000-0000-0000-000000000001'
@@ -460,7 +447,7 @@ values
     'VALID',
     transaction_timestamp() - interval '1 day',
     transaction_timestamp() + interval '30 days',
-    'READY',
+    'PROCESSING',
     'ACTIVE',
     transaction_timestamp(),
     '10000000-0000-0000-0000-000000000001'
@@ -584,6 +571,51 @@ values
     '[0.1,0.2,0.3]'::extensions.vector
   );
 
+insert into unimind_private.processing_quality_reports (
+  id,
+  source_version_id,
+  coverage_ratio,
+  locator_coverage_ratio,
+  low_confidence_count,
+  terminology_sample_result,
+  duplicate_ratio,
+  raw_deletion_state,
+  overall_result,
+  report_json
+)
+values
+  (
+    '88000000-0000-0000-0000-000000000001',
+    '84000000-0000-0000-0000-000000000001',
+    1,
+    1,
+    0,
+    'PASS',
+    0,
+    'NOT_DUE',
+    'PASS',
+    '{"fixture":"retrieval-cross-cohort"}'::jsonb
+  ),
+  (
+    '88000000-0000-0000-0000-000000000002',
+    '84000000-0000-0000-0000-000000000002',
+    1,
+    1,
+    0,
+    'PASS',
+    0,
+    'NOT_DUE',
+    'PASS',
+    '{"fixture":"retrieval-cross-program"}'::jsonb
+  );
+
+update public.source_versions
+set processing_status = 'READY'
+where id in (
+  '84000000-0000-0000-0000-000000000001',
+  '84000000-0000-0000-0000-000000000002'
+);
+
 create temporary table retrieval_results on commit drop as
 select *
 from unimind_private.retrieve_authorized_segments(
@@ -653,24 +685,25 @@ select throws_ok(
 rollback to savepoint revoked_source;
 
 savepoint inactive_segment;
+update public.source_versions
+set processing_status = 'NEEDS_REVIEW'
+where id = '41000000-0000-0000-0000-000000000001';
 update unimind_private.source_segments
 set active = false
 where id = '62000000-0000-0000-0000-000000000001';
-select is(
-  (
-    select count(*)
-    from unimind_private.retrieve_authorized_segments(
-      '10000000-0000-0000-0000-000000000002',
-      '20000000-0000-0000-0000-000000000006',
-      '20000000-0000-0000-0000-000000000007',
-      '70000000-0000-0000-0000-000000000001',
-      '[0.1,0.2,0.3]'::extensions.vector,
-      'Synthetic evidence',
-      5
-    )
-  ),
-  0::bigint,
-  'inactive segments are excluded before candidate ranking'
+select throws_ok(
+  $$select * from unimind_private.retrieve_authorized_segments(
+    '10000000-0000-0000-0000-000000000002',
+    '20000000-0000-0000-0000-000000000006',
+    '20000000-0000-0000-0000-000000000007',
+    '70000000-0000-0000-0000-000000000001',
+    '[0.1,0.2,0.3]'::extensions.vector,
+    'Synthetic evidence',
+    5
+  )$$,
+  '42501',
+  'requesting user cannot access the requested curriculum unit',
+  'a source removed from READY before final-segment deactivation is unavailable'
 );
 rollback to savepoint inactive_segment;
 
@@ -732,15 +765,20 @@ select throws_ok(
 );
 
 savepoint inactive_config;
-update unimind_private.embedding_configs
-set active = false
-where id = '70000000-0000-0000-0000-000000000001';
+insert into unimind_private.embedding_configs (
+  id, provider, model, dimensions, normalization, distance_operator, version, active
+)
+values (
+  '70000000-0000-0000-0000-000000000019',
+  'synthetic-provider', 'synthetic-inactive-model', 3, 'L2', 'COSINE',
+  'synthetic-inactive-v1', false
+);
 select throws_ok(
   $$select * from unimind_private.retrieve_authorized_segments(
     '10000000-0000-0000-0000-000000000002',
     '20000000-0000-0000-0000-000000000006',
     '20000000-0000-0000-0000-000000000007',
-    '70000000-0000-0000-0000-000000000001',
+    '70000000-0000-0000-0000-000000000019',
     '[0.1,0.2,0.3]'::extensions.vector,
     'Synthetic evidence',
     5

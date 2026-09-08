@@ -1002,10 +1002,10 @@ Owner: Codex `/root`; requester/reviewer: Ahmed; branch: `wp02/server-only-retri
 
 #### WP02-T07 — Make jobs and usage state machines transactional
 
-- [ ] Create transition functions for job claim/heartbeat/success/retry/fail and usage reserve/settle/release/expire.
-- [ ] Lock the relevant row, check the prior state and idempotency key, perform ledger/event writes in the same transaction, and return the canonical existing result on replay.
-- [ ] Prevent negative settled units, double settlement, lease completion by another owner, and a READY source with missing prerequisites.
-- [ ] Add concurrency tests with two claimers/settlers racing the same key.
+- [~] Create transition functions for job claim/heartbeat/success/retry/fail and usage reserve/settle/release/expire. Owner: Codex `/root`; requester/reviewer: Ahmed; branch: `wp02/transactional-jobs-usage`; task record: `planning/tasks/wp02-t07-transactional-jobs-usage.md`.
+- [~] Lock the relevant row, check the prior state and idempotency key, perform ledger/event writes in the same transaction, and return the canonical existing result on replay.
+- [~] Prevent negative settled units, double settlement, lease completion by another owner, and a READY source with missing prerequisites.
+- [~] Add concurrency tests with two claimers/settlers racing the same key.
 
 #### WP02-T08 — Prove RLS is not bypassed by application architecture
 

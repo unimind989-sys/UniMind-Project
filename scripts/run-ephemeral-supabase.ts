@@ -1,4 +1,5 @@
-import { spawnSync } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
+import { randomUUID } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
@@ -167,6 +168,258 @@ function captureAvailabilityQueryPlan(): void {
   assertReasonableAvailabilityPlan(planDocument, bodyPlanDocument);
 }
 
+function runPsqlConcurrently(
+  databaseContainerName: string,
+  queries: readonly string[],
+): Promise<readonly string[]> {
+  return Promise.all(
+    queries.map(
+      (query) =>
+        new Promise<string>((resolve, reject) => {
+          const child = spawn(
+            "docker",
+            [
+              "exec",
+              "-i",
+              databaseContainerName,
+              "psql",
+              "--no-psqlrc",
+              "--quiet",
+              "--username",
+              "postgres",
+              "--dbname",
+              "postgres",
+              "--tuples-only",
+              "--no-align",
+              "--set",
+              "ON_ERROR_STOP=1",
+            ],
+            {
+              cwd: process.cwd(),
+              env: process.env,
+              stdio: ["pipe", "pipe", "pipe"],
+            },
+          );
+          let stdout = "";
+          let stderr = "";
+          child.stdout.setEncoding("utf8");
+          child.stderr.setEncoding("utf8");
+          child.stdout.on("data", (chunk: string) => {
+            stdout += chunk;
+          });
+          child.stderr.on("data", (chunk: string) => {
+            stderr += chunk;
+          });
+          child.once("error", reject);
+          child.once("close", (code) => {
+            if (code !== 0) {
+              reject(
+                new Error(
+                  `Concurrent database session failed with status ${String(code)}.\n${formatFailureOutput(stdout, stderr)}`,
+                ),
+              );
+              return;
+            }
+            resolve(stdout.trim());
+          });
+          child.stdin.end(query);
+        }),
+    ),
+  );
+}
+
+async function runTransactionalConcurrencyTests(): Promise<void> {
+  const inventory = runProgram("docker", [
+    "ps",
+    "--format",
+    "{{.Names}}\t{{.Image}}",
+  ]).stdout;
+  const databaseContainer = findSupabaseContainer(inventory, "db");
+  const jobId = randomUUID();
+  const jobClaimKeyA = `race-claim-a-${randomUUID()}`;
+  const jobClaimKeyB = `race-claim-b-${randomUUID()}`;
+  const jobCorrelationA = randomUUID();
+  const jobCorrelationB = randomUUID();
+  const jobClock = Date.now();
+  const jobAvailableAt = new Date(jobClock - 60_000).toISOString();
+  const jobClaimedAt = new Date(jobClock + 60_000).toISOString();
+  const reservationKey = `race-reserve-${randomUUID()}`;
+  const settlementKey = `race-settle-${randomUUID()}`;
+  const usageStartedAt = Date.now();
+  const reservationExpiresAt = new Date(
+    usageStartedAt + 10 * 60_000,
+  ).toISOString();
+  const settlementAt = new Date(usageStartedAt + 5 * 60_000).toISOString();
+
+  runProgramWithInput(
+    "docker",
+    [
+      "exec",
+      "-i",
+      databaseContainer.name,
+      "psql",
+      "--no-psqlrc",
+      "--quiet",
+      "--username",
+      "postgres",
+      "--dbname",
+      "postgres",
+      "--set",
+      "ON_ERROR_STOP=1",
+    ],
+    `
+      update unimind_private.processing_jobs
+      set available_at = '2099-01-01T00:00:00Z'
+      where state in ('QUEUED', 'RETRYING');
+      insert into unimind_private.processing_jobs (
+        id, job_type, idempotency_key, priority, available_at
+      ) values (
+        '${jobId}', 'RECONCILE', 'race-job-${jobId}', 0,
+        '${jobAvailableAt}'
+      );
+    `,
+  );
+
+  const claimOutputs = await runPsqlConcurrently(databaseContainer.name, [
+    `select id from unimind_private.claim_processing_job(
+      'race-worker-a', '${jobClaimedAt}', interval '2 minutes',
+      '${jobClaimKeyA}', '${jobCorrelationA}'
+    );`,
+    `select id from unimind_private.claim_processing_job(
+      'race-worker-b', '${jobClaimedAt}', interval '2 minutes',
+      '${jobClaimKeyB}', '${jobCorrelationB}'
+    );`,
+  ]);
+  const claimWinners = claimOutputs.filter((output) => output === jobId);
+  const claimLosers = claimOutputs.filter((output) => output.length === 0);
+  if (claimWinners.length !== 1 || claimLosers.length !== 1) {
+    throw new Error(
+      `Concurrent job claim expected one winner and one empty result; received ${JSON.stringify(claimOutputs)}.`,
+    );
+  }
+
+  const jobEvidence = runProgramWithInput(
+    "docker",
+    [
+      "exec",
+      "-i",
+      databaseContainer.name,
+      "psql",
+      "--no-psqlrc",
+      "--quiet",
+      "--username",
+      "postgres",
+      "--dbname",
+      "postgres",
+      "--tuples-only",
+      "--no-align",
+      "--set",
+      "ON_ERROR_STOP=1",
+    ],
+    `select attempt_count || ':' ||
+      (select count(*) from unimind_private.job_attempts where job_id = '${jobId}') || ':' ||
+      (select count(*) from unimind_private.job_events where job_id = '${jobId}')
+      from unimind_private.processing_jobs where id = '${jobId}';`,
+  ).stdout.trim();
+  if (jobEvidence !== "1:1:1") {
+    throw new Error(
+      `Concurrent job claim created unexpected durable state: ${jobEvidence}.`,
+    );
+  }
+
+  const reserveQuery = `select id from unimind_private.reserve_usage(
+    '10000000-0000-0000-0000-000000000002', 'CHAT', 100,
+    '${reservationExpiresAt}', '${reservationKey}'
+  );`;
+  const reserveOutputs = await runPsqlConcurrently(databaseContainer.name, [
+    reserveQuery,
+    reserveQuery,
+  ]);
+  if (
+    reserveOutputs[0] === undefined ||
+    reserveOutputs[0].length === 0 ||
+    reserveOutputs[0] !== reserveOutputs[1]
+  ) {
+    throw new Error(
+      `Concurrent usage reserve did not return one canonical row: ${JSON.stringify(reserveOutputs)}.`,
+    );
+  }
+  const reservationId = reserveOutputs[0];
+
+  const settleQuery = `select id from unimind_private.settle_usage(
+    '${reservationId}', 80, '${settlementAt}', '${settlementKey}'
+  );`;
+  const settleOutputs = await runPsqlConcurrently(databaseContainer.name, [
+    settleQuery,
+    settleQuery,
+  ]);
+  if (
+    settleOutputs[0] !== reservationId ||
+    settleOutputs[1] !== reservationId
+  ) {
+    throw new Error(
+      `Concurrent usage settlement did not return one canonical row: ${JSON.stringify(settleOutputs)}.`,
+    );
+  }
+
+  const usageEvidence = runProgramWithInput(
+    "docker",
+    [
+      "exec",
+      "-i",
+      databaseContainer.name,
+      "psql",
+      "--no-psqlrc",
+      "--quiet",
+      "--username",
+      "postgres",
+      "--dbname",
+      "postgres",
+      "--tuples-only",
+      "--no-align",
+      "--set",
+      "ON_ERROR_STOP=1",
+    ],
+    `select state || ':' || settled_units || ':' ||
+      (select count(*) from unimind_private.usage_ledger
+       where related_entity_id = '${reservationId}'
+         and event_type = 'RESERVED') || ':' ||
+      (select count(*) from unimind_private.usage_ledger
+       where related_entity_id = '${reservationId}'
+         and event_type = 'SETTLED') || ':' ||
+      (select count(*) from unimind_private.usage_ledger
+       where related_entity_id = '${reservationId}'
+         and event_type = 'RELEASED')
+      from unimind_private.usage_reservations where id = '${reservationId}';`,
+  ).stdout.trim();
+  if (usageEvidence !== "SETTLED:80:1:1:1") {
+    throw new Error(
+      `Concurrent usage settlement created unexpected durable state: ${usageEvidence}.`,
+    );
+  }
+
+  mkdirSync(path.resolve("test-results"), { recursive: true });
+  writeFileSync(
+    path.resolve("test-results/transactional-concurrency.json"),
+    `${JSON.stringify(
+      {
+        schemaVersion: 1,
+        scope: "wp02-t07-disposable-database",
+        jobClaim: { winners: 1, attempts: 1, events: 1 },
+        usageReserve: { canonicalRows: 1, ledgerEvents: 1 },
+        usageSettle: {
+          canonicalRows: 1,
+          settledEvents: 1,
+          unusedReleaseEvents: 1,
+        },
+      },
+      null,
+      2,
+    )}\n`,
+    "utf8",
+  );
+}
+
 function writeRuntimeMetadata(): void {
   const inventory = runProgram("docker", [
     "ps",
@@ -318,6 +571,7 @@ async function execute(action_: EphemeralSupabaseAction): Promise<void> {
     );
   }
   if (action_ === "test") {
+    await runTransactionalConcurrencyTests();
     captureAvailabilityQueryPlan();
   }
 }
