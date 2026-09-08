@@ -61,6 +61,14 @@ values
   ('has_campaign_assignment(uuid)'),
   ('can_access_unit(uuid)');
 
+create temporary table reviewed_service_role_functions (
+  function_signature text primary key
+) on commit drop;
+
+insert into reviewed_service_role_functions (function_signature)
+values
+  ('record_privileged_auth_action(uuid,text,text,uuid,text,uuid,text)');
+
 create temporary table reviewed_private_functions (
   function_name text primary key
 ) on commit drop;
@@ -275,11 +283,21 @@ select is(
           on namespaces.oid = procedures.pronamespace
         where namespaces.nspname = 'public' and procedures.prokind = 'f'
         except
-        select function_signature from reviewed_public_functions
+        select function_signature
+        from (
+          select function_signature from reviewed_public_functions
+          union all
+          select function_signature from reviewed_service_role_functions
+        ) as reviewed_functions
       )
       union all
       (
-        select function_signature from reviewed_public_functions
+        select function_signature
+        from (
+          select function_signature from reviewed_public_functions
+          union all
+          select function_signature from reviewed_service_role_functions
+        ) as reviewed_functions
         except
         select
           procedures.proname || '(' || pg_catalog.oidvectortypes(procedures.proargtypes) || ')'
