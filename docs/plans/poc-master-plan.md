@@ -356,6 +356,7 @@ This result must be derived in a security-aware query or security-invoker view. 
 - Usage reservations and settlements are transactions, not editable counters.
 - Raw deletion is append-only audited and verified against storage.
 - Service-role credentials are server/worker secrets and never reach the browser.
+- User and session revocation follows the approved [Auth session revocation policy](../policies/auth-session-revocation.md): current database state removes access immediately, refresh is revoked immediately, and an already-issued access token is never trusted as durable authorization.
 
 ### 8.5 Content processing pipeline
 

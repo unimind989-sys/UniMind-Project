@@ -6,3 +6,5 @@
 - **Owner:** The current security task agent; protected policy results require separate Ahmed and Ziad confirmations.
 
 WP01 covers the verified-identity and derived-availability seams with multiple synthetic actors, cohorts, roles, and source states. Database grants/RLS matrices are added with WP02 migrations and retain protected confirmations from both founders; the foundation suite must not imply that later RLS coverage already exists.
+
+WP02-T08 adds an application-architecture contract: only one server-only module may construct a service-role client, student data services must retain the authenticated caller, exposed views must be security-invoker safe, and the approved session/Storage fail-closed policy is pinned to versioned configuration.
