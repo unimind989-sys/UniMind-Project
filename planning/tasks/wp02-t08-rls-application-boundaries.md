@@ -2,7 +2,7 @@
 
 **Task ID:** WP02-T08
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** Every application data path preserves caller-scoped RLS, while privileged Auth operations are isolated, durably audited, and unable to leak service credentials into student or browser code.
 
@@ -10,9 +10,9 @@
 
 **Reviewer:** Ahmed + Ziad for the protected RLS/grant candidate and its Preview promotion, under the standing authorization recorded in the initiating request
 
-**Branch:** `wp02/rls-application-boundaries`
+**Branch:** implementation merged from `wp02/rls-application-boundaries`; final state `main`
 
-**Updated (UTC):** 2026-09-08T12:16:28Z
+**Updated (UTC):** 2026-09-08T16:19:15Z
 
 ## Execution contract
 
@@ -26,7 +26,7 @@
 
 **Pass:** Student reads use the publishable-key authenticated session and cannot accept a caller ID or service client; the raw service client exists only in one `server-only` module whose marker-protected Auth mutations emit immutable audit events; every exposed view is `security_invoker`; authenticated Storage signed-upload and upsert paths remain denied while D-18 is open; deletion/revocation prevents refresh immediately, removes database access immediately, and permits already-issued JWT verification only until the configured one-hour expiry.
 
-**Evidence:** Expected at `evidence/wp02-database/2026-09-08_rls-application-boundaries_github_<short-sha>.md` after an exact reviewed candidate exists.
+**Evidence:** `evidence/wp02-database/2026-09-08_rls-application-boundaries_github_b624426.md`; exact implementation candidate `b624426ca5c30e7a8dd28f1676abd4e24beab9ba`; implementation merge `f015d3a68ec9ce74b05f01c8c6ff80dd5bba49e4`.
 
 **Rollback:** Before shared promotion, revert the unshared migration and application/tests. After Preview promotion, disable privileged callers, revert the application, and apply a reviewed forward migration that revokes the audit RPC; never rewrite the applied migration or reset Preview/Beta.
 
@@ -35,19 +35,19 @@
 ## Steps
 
 - [x] Establish the authoritative task contract and current GitHub, Supabase Preview, Vercel, branch, migration, client, Auth, Storage, and production state.
-- [~] Add failing public-seam and architecture tests, then implement the smallest caller-scoped and audited privileged boundaries.
-- [ ] Run focused and complete local/disposable checks, regenerate types, and resolve every finding.
-- [ ] Review the exact diff, freeze evidence, complete PR/check/review/merge delivery, and verify merged `main`.
-- [ ] Promote the forward migration to synthetic Preview, deploy the exact reviewed build to Vercel Production, production-smoke the GitHub→Supabase→Vercel path, and remove task-specific branches/PR leftovers.
+- [x] Add failing public-seam and architecture tests, then implement the smallest caller-scoped and audited privileged boundaries.
+- [x] Run focused and complete local/disposable checks, regenerate types, and resolve every finding.
+- [x] Review the exact diff, freeze evidence, complete PR/check/review/merge delivery, and verify merged `main`.
+- [x] Promote the forward migration to synthetic Preview, deploy the exact reviewed build to Vercel Production, production-smoke the GitHub→Supabase→Vercel path, and remove task-specific branches/PR leftovers.
 
 ## Handoff
 
-**Changed:** Task claimed after live-state inspection; implementation not yet complete.
+**Changed:** Student reads now use the authenticated publishable-key client; the raw service client is confined to one server-only synthetic Auth module with durable STARTED/terminal audit events; exposed-view, Storage-denial, and one-hour revocation contracts are executable. PR `#22` was approved at exact `b624426`, merged as `f015d3a`, promoted through Supabase migration `20260908122500`, and deployed to Vercel Production as `dpl_9qZPCzBoTUE2iCokboUCHPU8uFkc`.
 
-**Commands:** `git fetch --prune origin`; `scripts/show-work-state.ps1`; repository/client/migration/test inspection; authenticated GitHub Actions, Supabase Preview, and Vercel inventory. Current `main` CI run `34217210999` is green; Supabase Preview is healthy at migration `transactional_jobs_usage_state_machines` with no Storage activity/advisor issues; Vercel Production currently serves T07 candidate `576f1d6` at `project-xwrez.vercel.app`.
+**Commands:** Focused red/green unit/security checks; `corepack pnpm verify`; GitHub runs `34246359346` and `34247852416`; guarded Supabase Preview migration/invariant queries; rollback-only privileged-audit smoke; advisor inspection; Vercel environment, exact-Git metadata, promotion, six-check public smoke, browser, and deployment-log inspection; final diff/secret/scope checks.
 
-**Remaining:** Implementation, verification, protected exact-candidate review, merge, Preview promotion, production deploy/smoke, evidence, and cleanup.
+**Remaining:** None for WP02-T08. D-18 intentionally keeps real Storage unselected and fail-closed; later authorized provider work must add and separately test object policies before uploads are enabled.
 
-**Next safe action:** Add focused failing tests for caller-scoped reads, privileged-client containment/audit, view safety, Storage denial, and Auth deletion/revocation semantics.
+**Next safe action:** Continue with WP02-T09 using the merged T08 boundaries and evidence.
 
-**Reviewer action:** Ahmed and Ziad have supplied standing authorization; freeze their protected approval against the exact candidate only after the final diff and checks are complete.
+**Reviewer action:** Complete. Repository owner review `5144013891` approved exact candidate `b624426`; Ahmed and Ziad's standing authorization covered the protected Preview promotion. No Beta, raw deletion, rights, budget, or release/unlock action occurred.

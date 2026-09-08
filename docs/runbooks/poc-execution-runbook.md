@@ -1010,11 +1010,11 @@ Owner: Codex `/root`; requester/reviewer: Ahmed; branch: `wp02/server-only-retri
 
 #### WP02-T08 — Prove RLS is not bypassed by application architecture
 
-- [ ] Run student-path database queries with the user's authenticated client, not the service role.
-- [ ] Restrict admin/service clients to narrow server-only modules and log audited privileged actions.
-- [ ] Test views for `security_invoker = true` or keep them in an unexposed schema.
-- [ ] Test Storage object policies separately from table policies, including signed upload finalization and storage upsert's INSERT/SELECT/UPDATE requirements if upsert is allowed.
-- [ ] Test that deleting/revoking a user/session follows the approved token-expiry/revocation policy.
+- [x] Run student-path database queries with the user's authenticated client, not the service role; caller-scoped profile/catalog seams and cross-user denials passed.
+- [x] Restrict admin/service clients to narrow server-only modules and log audited privileged actions; exact candidate `b624426` uses one marker-protected module and immutable STARTED/terminal audit events.
+- [x] Test views for `security_invoker = true` or keep them in an unexposed schema; exhaustive pgTAP and hosted metadata checks passed.
+- [x] Test Storage object policies separately from table policies, including signed upload finalization and storage upsert's INSERT/SELECT/UPDATE requirements if upsert is allowed; D-18 remains fail-closed with zero buckets/policies and both API paths denied.
+- [x] Test that deleting/revoking a user/session follows the approved token-expiry/revocation policy; immediate database/refresh denial and one-hour JWT ceiling passed. Evidence: `evidence/wp02-database/2026-09-08_rls-application-boundaries_github_b624426.md`.
 
 #### WP02-T09 — Run the database gate
 
