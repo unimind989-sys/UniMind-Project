@@ -115,11 +115,6 @@ select ok(
   'the vector candidate query orders by the matching distance operator directly'
 );
 
-update unimind_private.segment_embeddings
-set embedding = '[0.1,0.2,0.3]'::extensions.vector
-where source_segment_id = '62000000-0000-0000-0000-000000000002'
-  and embedding_config_id = '70000000-0000-0000-0000-000000000001';
-
 insert into public.cohorts (
   id,
   term_id,

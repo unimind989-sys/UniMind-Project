@@ -389,7 +389,7 @@ values
     '71000000-0000-0000-0000-000000000002',
     '62000000-0000-0000-0000-000000000002',
     '70000000-0000-0000-0000-000000000001',
-    '[0.3,0.2,0.1]'::extensions.vector
+    '[0.1,0.2,0.3]'::extensions.vector
   );
 
 insert into unimind_private.processing_quality_reports (
