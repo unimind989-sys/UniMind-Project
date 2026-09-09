@@ -16,6 +16,7 @@ import {
 } from "./lib/ephemeral-supabase-metadata";
 import { formatGeneratedDatabaseTypes } from "./lib/generated-database-types";
 import { assertReasonableAvailabilityPlan } from "./lib/availability-query-plan";
+import { assertReasonableRetrievalPlan } from "./lib/retrieval-query-plan";
 
 assertGitHubHostedLinuxRunner(process.env);
 const action = parseEphemeralSupabaseAction(process.argv.slice(2));
@@ -166,6 +167,73 @@ function captureAvailabilityQueryPlan(): void {
   );
   // Preserve real measurement evidence even when the shape guard rejects it.
   assertReasonableAvailabilityPlan(planDocument, bodyPlanDocument);
+}
+
+function captureRetrievalQueryPlan(): void {
+  const inventory = runProgram("docker", [
+    "ps",
+    "--format",
+    "{{.Names}}\t{{.Image}}",
+  ]).stdout;
+  const databaseContainer = findSupabaseContainer(inventory, "db");
+  const query = readFileSync(
+    path.resolve(
+      "supabase/fixtures/query-plans/authorized_hybrid_retrieval.sql",
+    ),
+    "utf8",
+  );
+  const rawPlan = runProgramWithInput(
+    "docker",
+    [
+      "exec",
+      "-i",
+      databaseContainer.name,
+      "psql",
+      "--no-psqlrc",
+      "--quiet",
+      "--username",
+      "postgres",
+      "--dbname",
+      "postgres",
+      "--tuples-only",
+      "--no-align",
+      "--set",
+      "ON_ERROR_STOP=1",
+    ],
+    query,
+  ).stdout.trim();
+  const planParts = rawPlan.split("WP02_T09_RETRIEVAL_BODY_PLAN");
+  if (planParts.length !== 2) {
+    throw new Error(
+      "Retrieval measurement must include invocation and installed SQL-body plans.",
+    );
+  }
+  const planDocument: unknown = JSON.parse(planParts[0]!);
+  const bodyPlanDocument: unknown = JSON.parse(planParts[1]!);
+  mkdirSync(path.resolve("test-results"), { recursive: true });
+  writeFileSync(
+    path.resolve("test-results/authorized-hybrid-retrieval-query-plan.json"),
+    `${JSON.stringify(
+      {
+        schemaVersion: 1,
+        scope: "wp02-t09-representative-synthetic",
+        targetSegments: 513,
+        distractorSegments: 4_097,
+        resultLimit: 50,
+        statement:
+          "select * from unimind_private.retrieve_authorized_segments(<synthetic-scope>, '[1,0,0]', 'retrieval plan evidence', 50)",
+        plan: planDocument,
+        bodyPlanSource:
+          "Installed pg_proc.prosrc RETURN QUERY body with reviewed synthetic arguments, measured in the same rolled-back transaction",
+        bodyPlan: bodyPlanDocument,
+      },
+      null,
+      2,
+    )}\n`,
+    "utf8",
+  );
+  // Preserve real measurement evidence even when the shape guard rejects it.
+  assertReasonableRetrievalPlan(planDocument, bodyPlanDocument);
 }
 
 function runPsqlConcurrently(
@@ -573,6 +641,7 @@ async function execute(action_: EphemeralSupabaseAction): Promise<void> {
   if (action_ === "test") {
     await runTransactionalConcurrencyTests();
     captureAvailabilityQueryPlan();
+    captureRetrievalQueryPlan();
   }
 }
 
