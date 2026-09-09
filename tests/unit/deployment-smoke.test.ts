@@ -32,6 +32,13 @@ function passingFetch(
       ),
     );
   }
+  if (url.pathname === "/icon.svg") {
+    return Promise.resolve(
+      new Response("icon", {
+        headers: { "content-type": "image/svg+xml" },
+      }),
+    );
+  }
   return Promise.resolve(
     new Response("<h1>UniMind</h1><p>Synthetic only</p><p>Mock only</p>"),
   );
@@ -92,6 +99,7 @@ describe("deployment smoke contract", () => {
         "ready-write-denied",
         "application-response",
         "synthetic-mock-only",
+        "application-icon",
       ],
     });
   });

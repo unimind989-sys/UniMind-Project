@@ -198,7 +198,20 @@ export async function runDeploymentSmoke(
   ) {
     throw new DeploymentSmokeError("NON_SYNTHETIC_RUNTIME");
   }
-  checks.push("application-response", "synthetic-mock-only");
+
+  const icon = await request(fetcher, command.baseUrl, "/icon.svg", "GET");
+  if (
+    icon.status !== 200 ||
+    !icon.headers.get("content-type")?.startsWith("image/svg+xml")
+  ) {
+    throw new DeploymentSmokeError("APPLICATION_ICON_UNAVAILABLE");
+  }
+
+  checks.push(
+    "application-response",
+    "synthetic-mock-only",
+    "application-icon",
+  );
 
   return { target: command.target, checks };
 }

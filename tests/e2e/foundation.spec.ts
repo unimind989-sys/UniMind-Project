@@ -39,4 +39,8 @@ test("foundation stays synthetic and mock-only in the browser", async ({
   await expect(
     page.getByText("Approved real mode", { exact: true }),
   ).toHaveCount(0);
+
+  const icon = await page.request.get("/icon.svg");
+  expect(icon.status()).toBe(200);
+  expect(icon.headers()["content-type"]).toContain("image/svg+xml");
 });
