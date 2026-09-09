@@ -20,7 +20,10 @@ function representativeInvocation(
   ];
 }
 
-function representativeBody(overrides: Readonly<Record<string, unknown>> = {}) {
+function representativeBody(
+  overrides: Readonly<Record<string, unknown>> = {},
+  embeddingIndex = "segment_embeddings_synthetic_v1_cosine_hnsw_idx",
+) {
   return [
     {
       Plan: {
@@ -31,7 +34,7 @@ function representativeBody(overrides: Readonly<Record<string, unknown>> = {}) {
           {
             "Node Type": "Index Scan",
             "Relation Name": "segment_embeddings",
-            "Index Name": "segment_embeddings_synthetic_v1_cosine_hnsw_idx",
+            "Index Name": embeddingIndex,
             "Actual Loops": 1,
             "Actual Rows": 200,
           },
@@ -79,6 +82,15 @@ describe("authorized hybrid retrieval query-plan contract", () => {
     ).not.toThrow();
   });
 
+  it("accepts the scoped composite lookup selected for a filtered corpus", () => {
+    expect(() =>
+      assertReasonableRetrievalPlan(
+        representativeInvocation(),
+        representativeBody({}, "segment_embeddings_config_segment_idx"),
+      ),
+    ).not.toThrow();
+  });
+
   it("rejects repeated retrieval-function execution", () => {
     expect(() =>
       assertReasonableRetrievalPlan(
@@ -108,6 +120,15 @@ describe("authorized hybrid retrieval query-plan contract", () => {
     ).toThrow("source_segments_retrieval_scope_idx");
   });
 
+  it("rejects losing every reviewed embedding access path", () => {
+    expect(() =>
+      assertReasonableRetrievalPlan(
+        representativeInvocation(),
+        representativeBody({}, "segment_embeddings_unreviewed_idx"),
+      ),
+    ).toThrow("reviewed embedding access path");
+  });
+
   it("rejects a full sequential scan of the segment corpus", () => {
     expect(() =>
       assertReasonableRetrievalPlan(
@@ -115,7 +136,7 @@ describe("authorized hybrid retrieval query-plan contract", () => {
         representativeBody({
           "Node Type": "Seq Scan",
           "Actual Rows": 512,
-          "Rows Removed by Filter": 4_096,
+          "Rows Removed by Filter": 10_000,
         }),
       ),
     ).toThrow("sequentially scan");

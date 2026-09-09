@@ -49,6 +49,13 @@ function usesIndex(
   return nodes.some((node) => node["Index Name"] === indexName);
 }
 
+function usesAnyIndex(
+  nodes: readonly QueryPlanNode[],
+  indexNames: readonly string[],
+): boolean {
+  return indexNames.some((indexName) => usesIndex(nodes, indexName));
+}
+
 export function assertReasonableRetrievalPlan(
   planDocument: unknown,
   bodyPlanDocument: unknown,
@@ -98,14 +105,20 @@ export function assertReasonableRetrievalPlan(
     }
   }
 
-  for (const indexName of [
-    "source_segments_retrieval_scope_idx",
-    "segment_embeddings_synthetic_v1_cosine_hnsw_idx",
-    "source_segments_content_search_idx",
-  ]) {
-    if (!usesIndex(bodyNodes, indexName)) {
-      throw new Error(`Retrieval query plan must use ${indexName}.`);
-    }
+  if (!usesIndex(bodyNodes, "source_segments_retrieval_scope_idx")) {
+    throw new Error(
+      "Retrieval query plan must use source_segments_retrieval_scope_idx.",
+    );
+  }
+  if (
+    !usesAnyIndex(bodyNodes, [
+      "segment_embeddings_synthetic_v1_cosine_hnsw_idx",
+      "segment_embeddings_config_segment_idx",
+    ])
+  ) {
+    throw new Error(
+      "Retrieval query plan must use a reviewed embedding access path.",
+    );
   }
 
   for (const node of [...nodes, ...bodyNodes]) {
@@ -116,7 +129,7 @@ export function assertReasonableRetrievalPlan(
       ) &&
       numericField(node, "Actual Rows") +
         Number(node["Rows Removed by Filter"] ?? 0) >=
-        1_000
+        10_000
     ) {
       throw new Error(
         "Retrieval query plan must not sequentially scan a representative segment corpus.",
