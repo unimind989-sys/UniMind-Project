@@ -12,7 +12,7 @@
 
 **Branch:** `wp02/database-gate`
 
-**Updated (UTC):** 2026-09-09T03:05:02Z
+**Updated (UTC):** 2026-09-09T03:52:00Z
 
 ## Execution contract
 
@@ -35,19 +35,19 @@
 ## Steps
 
 - [x] Establish the authoritative task contract and current repository, GitHub, Supabase, Vercel, migration, CI, evidence, and production state.
-- [~] Add the missing representative filtered-retrieval plan capture and stable plan-shape regression contract.
-- [ ] Run focused and complete local/disposable gates, inspect every migration and advisor/plan result, and correct all findings.
+- [x] Add the missing representative filtered-retrieval plan capture and stable plan-shape regression contract.
+- [x] Run focused and complete local/disposable gates, inspect every migration and advisor/plan result, and correct all findings.
 - [ ] Freeze the exact candidate evidence, complete PR/check/review/merge delivery, and verify merged `main`.
 - [ ] Verify Supabase Preview parity and health, deploy the exact reviewed candidate to Vercel Production, run real production smoke/browser/log checks, and remove task-specific branches/PR leftovers.
 
 ## Handoff
 
-**Changed:** In progress. The repository already contains the full clean-reset, populated-upgrade, RLS/grant, race/idempotency, advisor, type-stability, and availability-plan harness. The gate review identified filtered-retrieval plan capture as the one missing executable WP02-T09 criterion.
+**Changed:** Exact implementation candidate `dd9ece4700de5aa149dfcf01deac17f14eef1f3a` adds rollback-only filtered-retrieval plan capture from both the service-only function invocation and its installed `pg_proc` SQL body. The stable guard requires the bounded 50-row result, complete authorization joins, the cohort/unit scope index, a reviewed embedding access path, and no large sequential scan or disk spill. CI's high/critical audit also required and verified Next.js `16.3.4`, `eslint-config-next` `16.3.4`, `@types/react-dom` `19.2.7`, and transitive Sharp `0.35.4`.
 
-**Commands:** Work-state selector, repository/remote/branch inventories, package-script and database-harness inspection, and authenticated GitHub/Vercel connector discovery completed. No database mutation or paid call has occurred.
+**Commands:** `corepack pnpm verify` passed locally; focused plan tests passed 8/8; production dependency audit reported no known vulnerability. GitHub run `34308323932` passed dependency, application, and disposable database/Auth jobs: populated upgrade, two resets, 22-migration parity, 24 pgTAP files, races, both plans, advisors, generated-type zero diff, 17 database/Auth integration tests, 22 security tests, and cleanup. Supabase Preview is Healthy at unchanged migration head `20260908122500` with no advisor issue. No database mutation, real data, paid call, provider enablement, nonzero budget, release, rights, deletion, or Beta action occurred.
 
-**Remaining:** Implement retrieval-plan proof; run and review all gates; freeze evidence; review/merge; verify shared Preview and Production; clean up.
+**Remaining:** Commit the exact-candidate plan/evidence index, rerun the final docs-inclusive PR head, record technical review and merge, verify merged `main`, promote and test Vercel Production, then commit and merge the closure evidence and remove task branches.
 
-**Next safe action:** Add a rollback-only synthetic filtered-retrieval plan fixture and assert its stable authorization/filter/index shape in the disposable database job.
+**Next safe action:** Review the frozen candidate and evidence artifacts, then merge only after the docs-inclusive PR head is green.
 
 **Reviewer action:** Ahmed and Ziad's standing authorization covers the exact protected gate candidate once frozen; record the candidate SHA and technical findings before marking complete.
