@@ -1018,14 +1018,14 @@ Owner: Codex `/root`; requester/reviewer: Ahmed; branch: `wp02/server-only-retri
 
 #### WP02-T09 — Run the database gate
 
-- [ ] Reset from empty twice.
-- [ ] Upgrade the previous tagged schema with populated fixtures.
-- [ ] Run the complete RLS/grant matrix.
-- [ ] Run race/idempotency tests.
-- [ ] Generate types and require zero diff.
-- [ ] Run database advisors and review every warning.
-- [ ] Capture representative availability and retrieval plans.
-- [ ] Reviewer inspects migrations for unsafe definer functions, broad grants, missing `WITH CHECK`, unindexed foreign keys, destructive statements, and accidental Data API exposure.
+- [x] Reset from empty twice. Exact candidate `dd9ece4` passed both clean resets in GitHub run `34308323932`.
+- [x] Upgrade the previous tagged schema with populated fixtures. The tagged WP01 fixture upgraded through all 22 migrations without loss.
+- [x] Run the complete RLS/grant matrix. All 24 pgTAP files plus 22 security tests passed.
+- [x] Run race/idempotency tests. Two-session job claim, usage reserve, and usage settle/release races each produced one canonical result.
+- [x] Generate types and require zero diff. The generated database type artifact matched `src/types/database.generated.ts` byte-for-byte.
+- [x] Run database advisors and review every warning. Disposable lint passed; Supabase Preview reported zero security, performance, or health issues.
+- [x] Capture representative availability and retrieval plans. Sanitized exact-candidate plans are committed under `evidence/wp02-database/query-plans/`.
+- [x] Reviewer inspected all 22 migrations and the exhaustive catalog tests for unsafe definer functions, broad grants, missing `WITH CHECK`, unindexed foreign keys, destructive statements, and accidental Data API exposure; no unresolved finding remained. Evidence: `evidence/wp02-database/2026-09-09_database-gate_github_dd9ece4.md`.
 
 ### 5.1 Migration order
 
