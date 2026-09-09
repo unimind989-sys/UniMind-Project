@@ -2,7 +2,7 @@
 
 **Task ID:** WP02-T09
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** One exact reviewed candidate proves the complete WP02 schema, authorization, transactional, query-plan, advisor, upgrade, and clean-reset contracts, then closes the package across merged `main`, synthetic Supabase Preview, and Vercel Production.
 
@@ -10,9 +10,9 @@
 
 **Reviewer:** Ahmed + Ziad for the protected WP02 RLS/grant package gate and shared Preview verification, under the standing authorization recorded in the initiating request
 
-**Branch:** `wp02/database-gate`
+**Branches:** implementation `wp02/database-gate`; runtime correction `wp02/database-gate-closure`; evidence `wp02/database-gate-evidence` (all removed after merge)
 
-**Updated (UTC):** 2026-09-09T03:52:00Z
+**Updated (UTC):** 2026-09-09T09:35:00Z
 
 ## Execution contract
 
@@ -37,17 +37,17 @@
 - [x] Establish the authoritative task contract and current repository, GitHub, Supabase, Vercel, migration, CI, evidence, and production state.
 - [x] Add the missing representative filtered-retrieval plan capture and stable plan-shape regression contract.
 - [x] Run focused and complete local/disposable gates, inspect every migration and advisor/plan result, and correct all findings.
-- [ ] Freeze the exact candidate evidence, complete PR/check/review/merge delivery, and verify merged `main`.
-- [ ] Verify Supabase Preview parity and health, deploy the exact reviewed candidate to Vercel Production, run real production smoke/browser/log checks, and remove task-specific branches/PR leftovers.
+- [x] Freeze the exact candidate evidence, complete PR/check/review/merge delivery, and verify merged `main`.
+- [x] Verify Supabase Preview parity and health, deploy the exact reviewed candidate to Vercel Production, run real production smoke/browser/log checks, and remove task-specific branches/PR leftovers.
 
 ## Handoff
 
-**Changed:** Exact implementation candidate `dd9ece4700de5aa149dfcf01deac17f14eef1f3a` adds rollback-only filtered-retrieval plan capture from both the service-only function invocation and its installed `pg_proc` SQL body. The stable guard requires the bounded 50-row result, complete authorization joins, the cohort/unit scope index, a reviewed embedding access path, and no large sequential scan or disk spill. CI's high/critical audit also required and verified Next.js `16.3.4`, `eslint-config-next` `16.3.4`, `@types/react-dom` `19.2.7`, and transitive Sharp `0.35.4`.
+**Changed:** Database candidate `dd9ece4700de5aa149dfcf01deac17f14eef1f3a` adds rollback-only filtered-retrieval plan capture from both the service-only function invocation and its installed `pg_proc` SQL body. The stable guard requires the bounded 50-row result, complete authorization joins, the cohort/unit scope index, a reviewed embedding access path, and no large sequential scan or disk spill. CI's high/critical audit also required and verified Next.js `16.3.4`, `eslint-config-next` `16.3.4`, `@types/react-dom` `19.2.7`, and transitive Sharp `0.35.4`. Production correction `20230aee43fd7091284f955aab37f14f87d27d42` adds a static application icon and promotes icon availability into the deployment-smoke contract after real-browser verification found the only remaining console error.
 
-**Commands:** `corepack pnpm verify` passed locally; focused plan tests passed 8/8; production dependency audit reported no known vulnerability. GitHub run `34308323932` passed dependency, application, and disposable database/Auth jobs: populated upgrade, two resets, 22-migration parity, 24 pgTAP files, races, both plans, advisors, generated-type zero diff, 17 database/Auth integration tests, 22 security tests, and cleanup. Supabase Preview is Healthy at unchanged migration head `20260908122500` with no advisor issue. No database mutation, real data, paid call, provider enablement, nonzero budget, release, rights, deletion, or Beta action occurred.
+**Commands:** `corepack pnpm verify` passed on the final candidate; focused plan tests passed 8/8; production dependency audit reported no known vulnerability. GitHub runs `34308323932`, `34309033624`, `34309701287`, `34333582621`, and merged-main run `34334699027` passed the applicable dependency, application, and disposable database/Auth jobs. Supabase Preview is Healthy at unchanged 22-migration head `20260908122500` with no security, performance, or health advisor issue. Vercel Production deployment `dpl_4TNkwabju7ga95WcATF6Fm6V4ox3` serves release `wp02-t09-20230ae-preview` at `https://project-xwrez.vercel.app`; seven-check smoke and fresh Chromium verification passed with zero console errors/warnings, and runtime error/warning scans were empty. No database mutation, real data, paid call, provider enablement, nonzero budget, release, rights, deletion, or Beta action occurred.
 
-**Remaining:** Commit the exact-candidate plan/evidence index, rerun the final docs-inclusive PR head, record technical review and merge, verify merged `main`, promote and test Vercel Production, then commit and merge the closure evidence and remove task branches.
+**Remaining:** None for WP02-T09.
 
-**Next safe action:** Review the frozen candidate and evidence artifacts, then merge only after the docs-inclusive PR head is green.
+**Next safe action:** Begin the next dependency-approved work package from clean `main`.
 
-**Reviewer action:** Ahmed and Ziad's standing authorization covers the exact protected gate candidate once frozen; record the candidate SHA and technical findings before marking complete.
+**Reviewer action:** Complete. Ahmed and Ziad's protected-gate authorization is recorded; `unimind989-sys` approved the exact runtime-correction head in GitHub review `5152297872` before merge.
