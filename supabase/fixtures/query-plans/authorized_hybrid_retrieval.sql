@@ -101,6 +101,13 @@ select
 from generate_series(1, 4096) as generated(series);
 
 update public.source_versions
+set processing_status = 'PROCESSING'
+where id in (
+  '41000000-0000-0000-0000-000000000001',
+  '41000000-0000-0000-0000-000000000002'
+);
+
+update public.source_versions
 set processing_status = 'READY'
 where id in (
   '41000000-0000-0000-0000-000000000001',
