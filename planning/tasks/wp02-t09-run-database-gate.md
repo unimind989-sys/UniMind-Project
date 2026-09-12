@@ -10,7 +10,7 @@
 
 **Reviewer:** Ahmed + Ziad for the protected WP02 RLS/grant package gate and shared Preview verification, under the standing authorization recorded in the initiating request
 
-**Branches:** implementation `wp02/database-gate`; runtime correction `wp02/database-gate-closure`; evidence `wp02/database-gate-evidence` (all removed after merge)
+**Branch:** implementation `wp02/database-gate`; runtime correction `wp02/database-gate-closure`; evidence `wp02/database-gate-evidence` (all removed after merge)
 
 **Updated (UTC):** 2026-09-09T09:35:00Z
 

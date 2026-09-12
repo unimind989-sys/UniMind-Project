@@ -4,7 +4,7 @@ export default function HomePage() {
   const environment = getServerEnvironment();
 
   return (
-    <main>
+    <main className="foundation-page">
       <h1>UniMind</h1>
       <p>
         The application foundation is running. Product workflows remain behind

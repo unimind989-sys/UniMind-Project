@@ -1,0 +1,167 @@
+{
+  "title": "Choose UniMind's visual world",
+  "question": "Choose the visual system that should carry the bilingual student, Batch Leader, and admin experience.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "The Study Route",
+      "kicker": "THE ROLL",
+      "lineage": "Egyptian campus wayfinding, route diagrams, and timetable boards",
+      "thesis": "The authorized curriculum path becomes a route students can read at a glance and enter without losing context.",
+      "palette": ["#F6F7F3", "#17324D", "#2463D4", "#E45D43", "#2E7D6B"],
+      "materials": [
+        "satin route-map paper",
+        "enamel wayfinding plates",
+        "precise route bands"
+      ],
+      "viewport": "A continuous catalog route crosses the first viewport; the authorized unit opens directly into an evidence-aware study workspace rather than a dashboard card grid.",
+      "risk": "It becomes a transit theme if route logic stops doing real navigation work.",
+      "raised": [
+        {
+          "from": "Readiness Horizon",
+          "raise": "Availability transitions use explicit named phases, not vague disabled styling."
+        },
+        {
+          "from": "Curriculum Grid",
+          "raise": "Every state combines wording, shape, and iconography so color is never the only signal."
+        },
+        {
+          "from": "Evidence Signal Bench",
+          "raise": "Source, quota, and readiness indicators behave like calibrated readouts."
+        },
+        {
+          "from": "Study J-Card",
+          "raise": "Mobile folding and capacity limits stay explicit instead of disappearing into overflow."
+        }
+      ],
+      "comp": ".impeccable/mocks/decision/wp03-study-route-pair.webp"
+    },
+    {
+      "id": "model-pick",
+      "label": "The Annotated Atlas",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "scientific atlas plates, tracing overlays, and numbered marginalia",
+      "thesis": "UniMind reveals one curriculum unit as a living evidence plate whose sources and states can always be traced.",
+      "palette": ["#F8F8F4", "#20292D", "#0D6F69", "#C74A3E", "#2A4FA3"],
+      "materials": [
+        "bright vellum",
+        "graphite callouts",
+        "transparent annotation layers"
+      ],
+      "viewport": "A full-canvas unit atlas owns the screen, with the catalog path in the margin and evidence/status callouts attached to the exact workspace regions they explain.",
+      "risk": "Its strongest association is medical publishing, so later programs require disciplined non-clinical content.",
+      "comp": ".impeccable/mocks/decision/wp03-annotated-atlas-pair.webp"
+    },
+    {
+      "id": "challenger-sneaker-wall",
+      "label": "The Unit Case Wall",
+      "verdict": "competitive",
+      "lineage": "sneaker archive walls and indexed box-end labels",
+      "thesis": "Curriculum units become clearly indexed cases that open to reveal their current material and study workspace.",
+      "palette": ["#C95A2B", "#171717", "#FAF7EF", "#2E6F63"],
+      "materials": [
+        "burnt-orange board",
+        "tissue-white interiors",
+        "inked end labels"
+      ],
+      "viewport": "A structured wall of bilingual unit labels fills the view; the selected case slides open and exposes source readiness and the primary study action.",
+      "case": "Strong student-cultural familiarity and excellent dense indexing; weaker than The Study Route at explaining hierarchical authorization.",
+      "risk": "The product can feel collectible or retail-oriented if the cases become decorative cards.",
+      "comp": ".impeccable/mocks/decision/wp03-unit-case-wall.webp",
+      "hero": "https://impeccable.style/worlds/cards/textiles-weave-drape-fashion-sneaker-box-stacks-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/textiles-weave-drape-fashion-sneaker-box-stacks.webp"
+    },
+    {
+      "id": "challenger-streaming-wall",
+      "label": "The Study Shelf",
+      "verdict": "competitive",
+      "lineage": "streaming catalog walls and focus-expanding title rails",
+      "thesis": "Authorized study choices stay visually immediate while the focused unit expands into its safe status and next action.",
+      "palette": ["#10151D", "#F5F7FA", "#4D7CFE", "#48A58D"],
+      "materials": [
+        "deep neutral field",
+        "full-bleed subject tiles",
+        "focused-edge light"
+      ],
+      "viewport": "Bilingual curriculum rails cross the screen; one focused unit expands with readiness, source count, and an unmistakable enter-workspace action.",
+      "case": "Extremely familiar browsing on phone and desktop; weaker than The Study Route for deep hierarchy, long labels, and sustained task focus.",
+      "risk": "It can make serious study feel like entertainment browsing and horizontal rails demand careful accessibility work.",
+      "comp": ".impeccable/mocks/decision/wp03-study-shelf.webp",
+      "hero": "https://impeccable.style/worlds/cards/pop-culture-shelf-streaming-title-card-wall-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/pop-culture-shelf-streaming-title-card-wall.webp"
+    },
+    {
+      "id": "challenger-cyclorama",
+      "label": "Readiness Horizon",
+      "verdict": "declined",
+      "lineage": "stage cyclorama lighting cues",
+      "thesis": "The workspace changes atmosphere as material moves from unavailable to study-ready.",
+      "palette": ["#090D18", "#2447B8", "#C35C78", "#F4F5F0"],
+      "materials": ["continuous light field", "named cue bands"],
+      "viewport": "Availability phases form broad horizon bands behind the active unit.",
+      "case": "Beautiful state storytelling, but atmosphere obscures catalog hierarchy and ordinary controls.",
+      "kept": "Named availability phases remain explicit in the selected direction.",
+      "risk": "State can become mood instead of precise operational information.",
+      "hero": "https://impeccable.style/worlds/cards/stagecraft-theater-lighting-cyclorama-dawn-hero.webp"
+    },
+    {
+      "id": "challenger-arcade",
+      "label": "Curriculum Grid",
+      "verdict": "declined",
+      "lineage": "pixel-art arcade playfields",
+      "thesis": "Every unit and state occupies a strict, readable grid cell with unmistakable feedback.",
+      "palette": ["#11131A", "#F5D547", "#39B86B", "#F4F5F7"],
+      "materials": ["crisp tile grid", "limited state palette"],
+      "viewport": "A whole-tile curriculum map exposes current position and allowed moves.",
+      "case": "The state grammar is clear, but the game association conflicts with UniMind's anti-gamification boundary.",
+      "kept": "Status remains redundant across text, icon, and shape rather than depending on color.",
+      "risk": "The visual language promises play and scoring instead of dependable study.",
+      "hero": "https://impeccable.style/worlds/cards/medium-native-crt-arcade-pixel-glow-hero.webp"
+    },
+    {
+      "id": "challenger-oscilloscope",
+      "label": "Evidence Signal Bench",
+      "verdict": "declined",
+      "lineage": "oscilloscope graticules and calibrated instrument readouts",
+      "thesis": "UniMind separates supported study signals from unavailable or conflicting material with calibrated precision.",
+      "palette": ["#0A1112", "#58D68D", "#E6A23C", "#A9B7BB"],
+      "materials": ["etched graticule", "phosphor trace", "detented controls"],
+      "viewport": "One measured field overlays source status, evidence, and unit scope.",
+      "case": "Excellent evidence metaphor, but it overfits technical subjects and risks hospital-system sterility.",
+      "kept": "Readiness, source, and quota values behave as calibrated readouts.",
+      "risk": "The interface can become intimidating and instrument-like for ordinary navigation.",
+      "hero": "https://impeccable.style/worlds/cards/scientific-notation-oscilloscope-signal-bench-hero.webp"
+    },
+    {
+      "id": "challenger-cassette",
+      "label": "Study J-Card",
+      "verdict": "declined",
+      "lineage": "hand-ruled cassette j-cards and timed track lists",
+      "thesis": "A unit unfolds into a finite, personally legible study plan with visible capacity.",
+      "palette": ["#F8F7F2", "#244C8A", "#B33A31", "#55585B"],
+      "materials": [
+        "lined inlay stock",
+        "ballpoint annotation",
+        "folded spine"
+      ],
+      "viewport": "The selected unit unfolds from a compact spine into bilingual content and status columns.",
+      "case": "The personal-study feel resonates, but an audio-first artifact distorts UniMind's source-neutral model.",
+      "kept": "Capacity and mobile folding remain visible and intentional.",
+      "risk": "Nostalgia may dominate the product and make non-audio sources feel secondary.",
+      "hero": "https://impeccable.style/worlds/cards/vernacular-ephemera-cassette-j-card-hero.webp"
+    }
+  ],
+  "reroll": { "registers": ["safer", "bolder"] },
+  "buildPath": { "value": "comp", "toggle": true },
+  "canon": true,
+  "canonCard": {
+    "label": "The category standard",
+    "thesis": "A highly polished learning workspace with familiar navigation, filters, and content panels.",
+    "palette": ["#FFFFFF", "#162033", "#2563EB", "#EEF2F7"],
+    "materials": ["clean grid", "quiet panels", "standard controls"],
+    "viewport": "A sidebar, breadcrumb, filter row, and central workspace use the arrangement students already expect from modern learning software.",
+    "risk": "It is immediately usable but deliberately indistinguishable from other learning platforms.",
+    "comp": ".impeccable/mocks/decision/wp03-category-standard.webp"
+  },
+  "steer": true
+}

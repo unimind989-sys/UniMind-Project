@@ -1,0 +1,12 @@
+Use case: scientific-educational
+Asset type: a 2-by-2 production atlas of four independent subject-image plates for the approved UniMind Study Shelf interface
+Primary request: create four clean reusable medical-study images matching the restrained, low-key academic visual language of the supplied approved interface reference
+Input image: use the supplied UniMind interface only as a visual reference for palette, lighting, realism level, and image treatment; do not reproduce any UI
+Scene/backdrop: each quadrant is a separate edge-to-edge image plate on a deep neutral navy environment with no gutters, no rounded corners, no borders, and no text
+Subjects, reading order: upper left cardiovascular anatomy with heart and major vessels; upper right respiratory anatomy with lungs and bronchial tree; lower left cell biology microscopy with one luminous cell; lower right clinical medicine still life with a stethoscope
+Style/medium: polished scientific educational illustration and restrained clinical photography, realistic but clearly synthetic, consistent across all four plates
+Composition/framing: strict equal 2-by-2 grid; each subject centered with safe crop room; quadrant boundaries exactly at the horizontal and vertical midpoint
+Lighting/mood: calm, quiet, high-detail, dark-field studio lighting
+Color palette: deep navy, slate blue, muted anatomical red, pale blue-white highlights
+Constraints: no people, no patient data, no labels, no letters, no numbers, no logos, no watermarks, no UI chrome, no card shadows, no rounded clipping, no gutters
+Avoid: entertainment poster styling, neon glow, gradients, hospital software chrome, gamification, gore, diagnostic claims
