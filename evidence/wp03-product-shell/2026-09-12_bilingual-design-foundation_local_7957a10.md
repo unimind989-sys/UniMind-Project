@@ -4,7 +4,7 @@
 
 **Environment:** Windows PowerShell, local synthetic-only Playwright and production-safe build
 
-**Commit SHA:** `7957a1061cde2d2b4fecd1cc237bcc6df0128b9e` is the pre-delivery base commit identified by this evidence filename; this report covers the complete approved worktree delivered directly to `main`
+**Commit SHA:** `7957a1061cde2d2b4fecd1cc237bcc6df0128b9e` is the pre-delivery base commit identified by this evidence filename; candidate commit `79561c0` contains the complete approved worktree and is delivered from `wp03/approved-study-shelf` through the required pull-request path to protected `main`
 
 **Release/config fingerprint:** `node=24.19.0; pnpm=10.34.5; next=16.3.4; provider-mode=mock; provider-budget-minor=0; generation=false; embedding=false; transcription=false`
 
@@ -59,6 +59,7 @@
 | 2026-09-12 | Post-feedback `corepack pnpm verify` | 0 | Full zero-cost repository gate passed after the language, RTL search, and mobile navigation corrections: formatting, lint, strict typing, boundaries, SQL and CI policy, secret scan, 252 unit, 15 local integration, 22 security, 3 evaluation plus 3 synthetic evaluation, 5 load-contract, 5 E2E cases, and the production-safe build/client scan. |
 | 2026-09-12 | Post-approval `scripts/verify-agent-readiness.ps1` | 0 | 166 names, 46 local links, 22 synchronized decisions, and 102 task contracts passed. |
 | 2026-09-12 | Post-approval `scripts/test-agent-handoff.ps1` | 0 | Isolated committed-snapshot rehearsal passed with a clean reconstructed worktree and truthful blocked-work routing. |
+| 2026-09-12 | `git push origin main` | 1 | GitHub rejected the direct update with protected-branch rule GH006: changes must use a pull request and three required checks. No remote branch changed; delivery moved to `wp03/approved-study-shelf`. |
 
 ## Negative, retry, and recovery cases
 
@@ -81,6 +82,7 @@
 | WP03-T01-D01 | Process | The worktree already contained unrelated founder planning edits, so no branch or commit was created. The evidence filename uses the current base SHA and explicitly scopes the uncommitted WP03 files. | Ahmed / next delivery agent | Before review commit | Task completion record, not technical review |
 | WP03-T01-D02 | Framework | Next.js inserts a hidden metadata node before the first authored body child. The required direction contract remains the first authored child and is present in production server output under seed `30b1cf13`. | Codex | Closed with evidence | None |
 | WP03-T01-D03 | Intentional boundary | `/learn` uses deterministic synthetic fixture state and a disabled workspace action because WP03-T03 does not yet provide an authorized catalog destination. | WP03-T03 owner | WP03-T03 | Live catalog behavior only |
+| WP03-T01-D04 | Delivery control | GitHub branch protection rejected the explicitly requested direct push to `main`; the same approved commit must pass through a pull request and three required status checks. | Codex / GitHub checks | Before merge | Direct delivery only; technical task remains PASS |
 
 ## Security and privacy review
 

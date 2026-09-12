@@ -10,9 +10,9 @@
 
 **Reviewer:** Ahmed for the ordinary visual-direction and task-completion checkpoints
 
-**Branch:** `main`; Ahmed explicitly authorized committing and pushing the complete current worktree to `main` after approval
+**Branch:** `wp03/approved-study-shelf`, targeting protected `main`; Ahmed explicitly authorized committing and pushing the complete current worktree to `main` after approval, and GitHub requires the delivery to pass through a pull request
 
-**Updated (UTC):** 2026-09-12T14:55:41Z
+**Updated (UTC):** 2026-09-12T15:05:03Z
 
 ## Execution contract
 
@@ -58,8 +58,8 @@
 
 **Commands:** The terminology unit slice was observed red before implementation and now passes 6/6 tests. The post-feedback `corepack pnpm verify` passes the zero-cost full suite: formatting, lint, strict typing, boundaries, SQL conventions, CI policy, secret scan, 252 unit tests, 15 local integration tests with 2 hosted tests skipped by contract, 22 security tests, 3 evaluation tests plus 3 synthetic cases, 5 load-contract tests, 5 Playwright tests, and a production-safe Next 16.3.4 build with client secret scan. The one Impeccable detector pass returned `[]`. Focused typecheck, lint, JSON validation, diff check, and 3/3 Study Shelf Playwright tests pass against the retained synthetic preview. In-app browser inspection confirms Arabic search icon-to-input spacing of 12 px, zero English headings in Arabic mode, zero Arabic headings/navigation labels in English mode, six equal mobile tab columns of about 60.7 px, zero icon-center offset, and no page overflow at 390×844. Production Playwright captures at 1536×1024 and 390×844 have no console warnings, no development overlay, and no page overflow; the focused mobile unit measures x=10.8 px and width=368 px in a 390 px viewport. The independent finish reviewer scored all six initial requested fixes resolved and returned `disposition: ship`; Ahmed inspected the corrected preview and approved it. Raster provenance scan reports 16 assets and 0 missing prompts. Post-approval agent-readiness checks pass 166 names, 46 local links, 22 synchronized decisions, and 102 task contracts; the isolated handoff rehearsal also passes. `git diff --check` passes.
 
-**Remaining:** No WP03-T01 implementation or review work remains. The evidence filename identifies the pre-delivery base SHA because the complete approved worktree is being delivered directly to `main` under Ahmed's explicit instruction.
+**Remaining:** No WP03-T01 implementation or review work remains. Delivery is proceeding through the required pull-request path because GitHub rejected a direct protected-branch update; the evidence filename identifies the pre-delivery base SHA and candidate commit `79561c0` contains the approved worktree.
 
-**Next safe action:** Run the work-state selector and create the next eligible task record before beginning another WP03 slice; preserve all still-open decision and protected-gate blocks.
+**Next safe action:** Complete the required checks and merge the approved delivery pull request into `main`, then run the work-state selector before beginning another task; preserve all still-open decision and protected-gate blocks.
 
 **Reviewer action:** Complete. Ahmed selected The Study Shelf, confirmed its compact brief, approved Focused Rail, reviewed the corrected English/Arabic, RTL search, and mobile navigation behavior, and recorded the ordinary `PASS` checkpoint on 2026-09-12 Cairo time.
