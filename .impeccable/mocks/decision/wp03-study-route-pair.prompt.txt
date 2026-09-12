@@ -1,0 +1,1 @@
+Decision-board composite assembled from `.impeccable/mocks/decision/wp03-study-route.webp` and `.impeccable/mocks/decision/wp03-study-route-mobile.webp` at equal height. The original generated-image prompts remain in those source assets' provenance sidecars.

@@ -5,67 +5,114 @@
 }
 
 :root {
-  color-scheme: light dark;
-  font-family: system-ui, sans-serif;
+  color-scheme: dark;
+  --canvas: #0c1823;
+  --canvas-deep: #07131e;
+  --surface: #142132;
+  --surface-strong: #1a293d;
+  --surface-focus: #2a3b51;
+  --surface-active: #1e3557;
+  --text-primary: #ecf3f9;
+  --text-secondary: #c8d1d8;
+  --text-muted: #9aa8b8;
+  --accent: #3977f7;
+  --accent-focus: #336ae2;
+  --ready: #79dfb1;
+  --ready-surface: #10292a;
+  --line: #253a55;
+  --radius-card: 0.875rem;
+  --radius-control: 0.75rem;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  font-family:
+    var(--font-unimind-latin), var(--font-unimind-arabic), sans-serif;
   line-height: 1.5;
+  background: var(--canvas);
+  color: var(--text-primary);
 }
 
 body {
   margin: 0;
+  min-width: 20rem;
+  min-height: 100svh;
+  background: var(--canvas);
+  color: var(--text-primary);
+  text-rendering: optimizeLegibility;
 }
 
-main {
+::selection {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+* {
+  scrollbar-color: var(--accent-focus) var(--canvas-deep);
+  scrollbar-width: thin;
+}
+
+button,
+input,
+a {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-underline-offset: 0.2em;
+}
+
+:focus-visible {
+  outline: 0.1875rem solid var(--accent);
+  outline-offset: 0.1875rem;
+}
+
+.foundation-page {
   width: min(100% - 2rem, 70ch);
   margin-inline: auto;
   padding-block: 4rem;
 }
 
-h1,
-h2,
-p {
+.foundation-page h1,
+.foundation-page h2,
+.foundation-page p {
   margin-block-start: 0;
 }
 
-section {
+.foundation-page section {
   margin-block-start: 3rem;
 }
 
-dl {
+.foundation-page dl {
   display: grid;
   gap: 1rem;
   margin: 0;
 }
 
-dl div {
+.foundation-page dl div {
   display: grid;
   grid-template-columns: minmax(7rem, 1fr) 2fr;
   gap: 1rem;
 }
 
-dt {
+.foundation-page dt {
   font-weight: 700;
 }
 
-dd {
+.foundation-page dd {
   margin: 0;
 }
 
-button,
-a {
-  font: inherit;
-}
-
-:focus-visible {
-  outline: 0.2rem solid currentColor;
-  outline-offset: 0.2rem;
-}
-
 @media (max-width: 32rem) {
-  main {
+  .foundation-page {
     padding-block: 2rem;
   }
 
-  dl div {
+  .foundation-page dl div {
     grid-template-columns: 1fr;
     gap: 0.25rem;
   }

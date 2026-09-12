@@ -49,6 +49,10 @@ The security-aware result of authenticated membership, an unlocked cohort, a pub
 **Strict RAG**  
 The rule that factual student output comes only from retrieved passages in the authorized uploaded material. There is no web-search, general-reference, or hidden-knowledge completion branch.
 
+**Chat sharing mode**
+
+The student's time-effective choice for founder access to retained chat content. Chats are founder-visible by default. Private/no-sharing mode hides future exchanges from routine founder review, except for the specific exchange covered by a student report, explicit consent, or a qualifying approved automated misuse-policy flag. Sharing mode is separate from whether content is saved and how long it is retained.
+
 **Evidence packet**  
 The compact, scoped set of retrieved segments and metadata supplied to generation and later claim validation.
 
@@ -98,6 +102,7 @@ The sanitized record of scope, commit, environment, commands, results, deviation
 - A source asset has immutable source versions; each processed document, locator, segment, and embedding belongs to exactly one source version.
 - Authorized active READY segments form the unified knowledge pool for a cohort and curriculum unit.
 - Chat answers and Studio artifacts consume evidence packets and retain exact evidence links.
+- Chat sharing mode governs founder visibility independently of chat saving and retention; every founder access is auditable.
 - Durable jobs automate ingestion, generation, retries, reconciliation, metering, and deletion; humans retain governance actions and exceptional review.
 - A work package is complete only after its tasks, verification, evidence bundle, and required human checkpoint are complete; protected gates additionally require both founders' named confirmations.
 

@@ -1,0 +1,388 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-12T10:49:00.000Z",
+  "title": "Design System: UniMind",
+  "extensions": {
+    "colorMeta": {
+      "night-canvas": {
+        "role": "neutral",
+        "displayName": "Night Canvas",
+        "tonalRamp": [
+          "oklch(0.15 0.028 247.3)",
+          "oklch(0.25 0.028 247.3)",
+          "oklch(0.35 0.028 247.3)",
+          "oklch(0.45 0.028 247.3)",
+          "oklch(0.58 0.028 247.3)",
+          "oklch(0.70 0.028 247.3)",
+          "oklch(0.82 0.028 247.3)",
+          "oklch(0.95 0.028 247.3)"
+        ]
+      },
+      "deep-night": {
+        "role": "neutral",
+        "displayName": "Deep Night",
+        "tonalRamp": [
+          "oklch(0.15 0.029 247.1)",
+          "oklch(0.25 0.029 247.1)",
+          "oklch(0.35 0.029 247.1)",
+          "oklch(0.45 0.029 247.1)",
+          "oklch(0.58 0.029 247.1)",
+          "oklch(0.70 0.029 247.1)",
+          "oklch(0.82 0.029 247.1)",
+          "oklch(0.95 0.029 247.1)"
+        ]
+      },
+      "shelf-surface": {
+        "role": "neutral",
+        "displayName": "Shelf Surface",
+        "tonalRamp": [
+          "oklch(0.15 0.037 255.5)",
+          "oklch(0.25 0.037 255.5)",
+          "oklch(0.35 0.037 255.5)",
+          "oklch(0.45 0.037 255.5)",
+          "oklch(0.58 0.037 255.5)",
+          "oklch(0.70 0.037 255.5)",
+          "oklch(0.82 0.037 255.5)",
+          "oklch(0.95 0.037 255.5)"
+        ]
+      },
+      "raised-surface": {
+        "role": "neutral",
+        "displayName": "Raised Surface",
+        "tonalRamp": [
+          "oklch(0.15 0.043 255.9)",
+          "oklch(0.25 0.043 255.9)",
+          "oklch(0.35 0.043 255.9)",
+          "oklch(0.45 0.043 255.9)",
+          "oklch(0.58 0.043 255.9)",
+          "oklch(0.70 0.043 255.9)",
+          "oklch(0.82 0.043 255.9)",
+          "oklch(0.95 0.043 255.9)"
+        ]
+      },
+      "focused-surface": {
+        "role": "neutral",
+        "displayName": "Focused Surface",
+        "tonalRamp": [
+          "oklch(0.15 0.045 255.2)",
+          "oklch(0.25 0.045 255.2)",
+          "oklch(0.35 0.045 255.2)",
+          "oklch(0.45 0.045 255.2)",
+          "oklch(0.58 0.045 255.2)",
+          "oklch(0.70 0.045 255.2)",
+          "oklch(0.82 0.045 255.2)",
+          "oklch(0.95 0.045 255.2)"
+        ]
+      },
+      "active-surface": {
+        "role": "neutral",
+        "displayName": "Active Surface",
+        "tonalRamp": [
+          "oklch(0.15 0.067 258.0)",
+          "oklch(0.25 0.067 258.0)",
+          "oklch(0.35 0.067 258.0)",
+          "oklch(0.45 0.067 258.0)",
+          "oklch(0.58 0.067 258.0)",
+          "oklch(0.70 0.067 258.0)",
+          "oklch(0.82 0.067 258.0)",
+          "oklch(0.95 0.067 258.0)"
+        ]
+      },
+      "paper-white": {
+        "role": "neutral",
+        "displayName": "Paper White",
+        "tonalRamp": [
+          "oklch(0.15 0.011 243.7)",
+          "oklch(0.25 0.011 243.7)",
+          "oklch(0.35 0.011 243.7)",
+          "oklch(0.45 0.011 243.7)",
+          "oklch(0.58 0.011 243.7)",
+          "oklch(0.70 0.011 243.7)",
+          "oklch(0.82 0.011 243.7)",
+          "oklch(0.95 0.011 243.7)"
+        ]
+      },
+      "secondary-ink": {
+        "role": "neutral",
+        "displayName": "Secondary Ink",
+        "tonalRamp": [
+          "oklch(0.15 0.014 241.0)",
+          "oklch(0.25 0.014 241.0)",
+          "oklch(0.35 0.014 241.0)",
+          "oklch(0.45 0.014 241.0)",
+          "oklch(0.58 0.014 241.0)",
+          "oklch(0.70 0.014 241.0)",
+          "oklch(0.82 0.014 241.0)",
+          "oklch(0.95 0.014 241.0)"
+        ]
+      },
+      "muted-ink": {
+        "role": "neutral",
+        "displayName": "Muted Ink",
+        "tonalRamp": [
+          "oklch(0.15 0.028 251.7)",
+          "oklch(0.25 0.028 251.7)",
+          "oklch(0.35 0.028 251.7)",
+          "oklch(0.45 0.028 251.7)",
+          "oklch(0.58 0.028 251.7)",
+          "oklch(0.70 0.028 251.7)",
+          "oklch(0.82 0.028 251.7)",
+          "oklch(0.95 0.028 251.7)"
+        ]
+      },
+      "cobalt-action": {
+        "role": "primary",
+        "displayName": "Cobalt Action",
+        "tonalRamp": [
+          "oklch(0.15 0.203 262.5)",
+          "oklch(0.25 0.203 262.5)",
+          "oklch(0.35 0.203 262.5)",
+          "oklch(0.45 0.203 262.5)",
+          "oklch(0.58 0.203 262.5)",
+          "oklch(0.70 0.203 262.5)",
+          "oklch(0.82 0.203 262.5)",
+          "oklch(0.95 0.203 262.5)"
+        ]
+      },
+      "cobalt-focus": {
+        "role": "primary",
+        "displayName": "Cobalt Focus",
+        "tonalRamp": [
+          "oklch(0.15 0.192 263.1)",
+          "oklch(0.25 0.192 263.1)",
+          "oklch(0.35 0.192 263.1)",
+          "oklch(0.45 0.192 263.1)",
+          "oklch(0.58 0.192 263.1)",
+          "oklch(0.70 0.192 263.1)",
+          "oklch(0.82 0.192 263.1)",
+          "oklch(0.95 0.192 263.1)"
+        ]
+      },
+      "ready-mint": {
+        "role": "secondary",
+        "displayName": "Ready Mint",
+        "tonalRamp": [
+          "oklch(0.15 0.117 162.9)",
+          "oklch(0.25 0.117 162.9)",
+          "oklch(0.35 0.117 162.9)",
+          "oklch(0.45 0.117 162.9)",
+          "oklch(0.58 0.117 162.9)",
+          "oklch(0.70 0.117 162.9)",
+          "oklch(0.82 0.117 162.9)",
+          "oklch(0.95 0.117 162.9)"
+        ]
+      },
+      "ready-field": {
+        "role": "secondary",
+        "displayName": "Ready Field",
+        "tonalRamp": [
+          "oklch(0.15 0.031 198.9)",
+          "oklch(0.25 0.031 198.9)",
+          "oklch(0.35 0.031 198.9)",
+          "oklch(0.45 0.031 198.9)",
+          "oklch(0.58 0.031 198.9)",
+          "oklch(0.70 0.031 198.9)",
+          "oklch(0.82 0.031 198.9)",
+          "oklch(0.95 0.031 198.9)"
+        ]
+      },
+      "cool-separator": {
+        "role": "neutral",
+        "displayName": "Cool Separator",
+        "tonalRamp": [
+          "oklch(0.15 0.055 255.2)",
+          "oklch(0.25 0.055 255.2)",
+          "oklch(0.35 0.055 255.2)",
+          "oklch(0.45 0.055 255.2)",
+          "oklch(0.58 0.055 255.2)",
+          "oklch(0.70 0.055 255.2)",
+          "oklch(0.82 0.055 255.2)",
+          "oklch(0.95 0.055 255.2)"
+        ]
+      },
+      "on-action": {
+        "role": "neutral",
+        "displayName": "On Action",
+        "tonalRamp": [
+          "oklch(0.15 0 0)",
+          "oklch(0.25 0 0)",
+          "oklch(0.35 0 0)",
+          "oklch(0.45 0 0)",
+          "oklch(0.58 0 0)",
+          "oklch(0.70 0 0)",
+          "oklch(0.82 0 0)",
+          "oklch(0.95 0 0)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Active-language page headings that establish the current curriculum view."
+      },
+      "headline": {
+        "displayName": "Shelf Headline",
+        "purpose": "Compact curriculum rail headings."
+      },
+      "title": {
+        "displayName": "Unit Title",
+        "purpose": "Curriculum-unit identity inside shelf cards."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Default explanatory and utility copy."
+      },
+      "label": {
+        "displayName": "Operational Label",
+        "purpose": "Actions, state, scope, counts, and compact metadata."
+      },
+      "arabic-title": {
+        "displayName": "Arabic Title",
+        "purpose": "First-class headings whenever Arabic is the active locale."
+      },
+      "arabic-body": {
+        "displayName": "Arabic Body",
+        "purpose": "Arabic supporting copy with its own readable rhythm."
+      }
+    },
+    "shadows": [
+      {
+        "name": "focused-lift",
+        "value": "0 1rem 2rem rgba(0, 0, 0, 0.22)",
+        "purpose": "Structural lift reserved for the expanded focused unit."
+      }
+    ],
+    "motion": [
+      {
+        "name": "shelf-focus",
+        "value": "360ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Shared focused-width and restrained image-scale transition; remove under reduced motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "compact-desktop",
+        "value": "68rem"
+      },
+      {
+        "name": "mobile",
+        "value": "47.99rem"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Workspace Action (Pending)",
+      "kind": "button",
+      "refersTo": "workspace-action",
+      "description": "The active-language primary boundary inside a focused unit, shown disabled until the workspace destination exists.",
+      "html": "<button class=\"ds-workspace-action\" type=\"button\" disabled lang=\"en\" dir=\"ltr\">Workspace coming soon</button>",
+      "css": ".ds-workspace-action { min-height: 3.35rem; border: 0; border-radius: 0.65rem; background: var(--accent); color: #fff; padding: 0.65rem 0.8rem; font: 700 0.72rem/1.4 var(--font-unimind-latin), var(--font-unimind-arabic), sans-serif; } .ds-workspace-action:focus-visible { outline: 0.1875rem solid var(--accent); outline-offset: 0.1875rem; } .ds-workspace-action:disabled { cursor: not-allowed; opacity: 0.78; }"
+    },
+    {
+      "name": "Catalog Search",
+      "kind": "input",
+      "refersTo": "search-field",
+      "description": "A quiet full-width search field with a dedicated logical icon cell that prevents overlap in either text direction.",
+      "html": "<label class=\"ds-search\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"></circle><path d=\"m20 20-4-4\"></path></svg><span class=\"ds-search-label\">Search modules</span><input type=\"search\" placeholder=\"Search modules, topics, or sources…\"></label>",
+      "css": ".ds-search { min-height: 2.85rem; display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 0.75rem; border: 0.0625rem solid #30445e; border-radius: var(--radius-control); background: var(--surface-strong); padding-inline: 0.9rem 1rem; } .ds-search svg { width: 1.3rem; height: 1.3rem; fill: none; stroke: var(--text-muted); stroke-width: 1.8; stroke-linecap: round; pointer-events: none; } .ds-search-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); } .ds-search input { min-width: 0; width: 100%; min-height: 2.7rem; border: 0; background: transparent; color: var(--text-primary); padding: 0; caret-color: var(--accent); text-align: start; font: 400 1rem/1.5 var(--font-unimind-latin), var(--font-unimind-arabic), sans-serif; } .ds-search input::placeholder { color: #aab7c7; opacity: 1; } .ds-search:focus-within { border-color: transparent; outline: 0.1875rem solid var(--accent); outline-offset: 0.1875rem; } .ds-search input:focus-visible { outline: none; }"
+    },
+    {
+      "name": "Current Product Navigation",
+      "kind": "nav",
+      "refersTo": "product-nav-current",
+      "description": "The current active-language destination with a filled field and logical-edge cobalt marker.",
+      "html": "<a class=\"ds-nav-current\" href=\"#\" aria-current=\"page\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"3\" y=\"3\" width=\"6\" height=\"6\" rx=\"1\"></rect><rect x=\"15\" y=\"3\" width=\"6\" height=\"6\" rx=\"1\"></rect><rect x=\"3\" y=\"15\" width=\"6\" height=\"6\" rx=\"1\"></rect><rect x=\"15\" y=\"15\" width=\"6\" height=\"6\" rx=\"1\"></rect></svg><span lang=\"en\" dir=\"ltr\">Study Shelf</span></a>",
+      "css": ".ds-nav-current { position: relative; min-height: 4.25rem; display: grid; grid-template-columns: 2.2rem minmax(0, 1fr); align-items: center; gap: 0.75rem; border-radius: var(--radius-control); background: var(--surface-active); color: #8db4ff; padding: 0.65rem 0.75rem; text-decoration: none; font-family: var(--font-unimind-latin), var(--font-unimind-arabic), sans-serif; } .ds-nav-current::before { content: \"\"; position: absolute; inset-block: 0.45rem; inset-inline-start: -0.45rem; width: 0.1875rem; border-radius: 999px; background: var(--accent); } .ds-nav-current svg { width: 1.65rem; height: 1.65rem; fill: none; stroke: currentColor; stroke-width: 1.8; } .ds-nav-current > span > span { display: block; } .ds-nav-current span[lang=\"ar\"] { margin-block-start: 0.15rem; font: 400 0.78rem/1.5 var(--font-unimind-arabic), sans-serif; } .ds-nav-current:hover { color: var(--text-primary); } .ds-nav-current:focus-visible { outline: 0.1875rem solid var(--accent); outline-offset: 0.1875rem; }"
+    },
+    {
+      "name": "Locale Switch",
+      "kind": "chip",
+      "refersTo": "locale-option-selected",
+      "description": "A compact binary language control with an explicit pressed state.",
+      "html": "<div class=\"ds-locale-switch\" role=\"group\" aria-label=\"Language\"><button type=\"button\" aria-pressed=\"true\">EN</button><button type=\"button\" aria-pressed=\"false\">عربي</button></div>",
+      "css": ".ds-locale-switch { display: inline-flex; align-items: center; border: 0.0625rem solid var(--line); border-radius: 999px; padding: 0.2rem; background: #0a1520; } .ds-locale-switch button { min-width: 2.9rem; min-height: 2.2rem; border: 0; border-radius: 999px; background: transparent; color: var(--text-secondary); cursor: pointer; font-family: var(--font-unimind-latin), var(--font-unimind-arabic), sans-serif; } .ds-locale-switch button[aria-pressed=\"true\"] { background: var(--surface-active); color: var(--text-primary); } .ds-locale-switch button:hover { color: var(--text-primary); } .ds-locale-switch button:focus-visible { outline: 0.1875rem solid var(--accent); outline-offset: 0.1875rem; }"
+    },
+    {
+      "name": "Shelf Unit Card",
+      "kind": "card",
+      "refersTo": "unit-card",
+      "description": "A compact active-language curriculum unit that keeps image, identity, and progress in a strict shelf tile.",
+      "html": "<article class=\"ds-unit-card\"><div class=\"ds-unit-image\" aria-hidden=\"true\"></div><div class=\"ds-unit-copy\"><bdi lang=\"en\" dir=\"ltr\">Anatomy</bdi><span class=\"ds-progress\"><span><i></i></span>2/8 units</span></div></article>",
+      "css": ".ds-unit-card { width: 11.55rem; min-height: 14.75rem; overflow: hidden; border: 0.0625rem solid transparent; border-radius: var(--radius-card); background: var(--surface); color: var(--text-primary); font-family: var(--font-unimind-latin), var(--font-unimind-arabic), sans-serif; } .ds-unit-image { height: 8.9rem; background: var(--canvas-deep); } .ds-unit-copy { min-height: 5.8rem; padding: 0.7rem 0.75rem 0.8rem; } .ds-unit-copy > bdi { display: block; font-size: 0.96rem; font-weight: 720; line-height: 1.2; } .ds-unit-copy > bdi[lang=\"ar\"] { margin-block-start: 0.28rem; color: var(--text-secondary); font: 400 0.84rem/1.45 var(--font-unimind-arabic), sans-serif; } .ds-progress { display: flex; align-items: center; gap: 0.55rem; margin-block-start: 0.62rem; color: var(--text-secondary); font-size: 0.72rem; } .ds-progress > span { flex: 1; height: 0.42rem; overflow: hidden; border-radius: 999px; background: #2e4259; } .ds-progress i { display: block; width: 25%; height: 100%; border-radius: inherit; background: var(--ready); } .ds-unit-card:hover .ds-unit-image { filter: brightness(1.08); } .ds-unit-card:focus-within { outline: 0.1875rem solid var(--accent); outline-offset: 0.1875rem; }"
+    },
+    {
+      "name": "Focused Shelf Unit",
+      "kind": "custom",
+      "refersTo": "unit-card-focused",
+      "description": "The signature expanded unit that exposes active-language identity, readiness, scope, source count, and an honest destination boundary.",
+      "html": "<article class=\"ds-focused-unit\"><div class=\"ds-focused-summary\"><div class=\"ds-focused-image\" aria-hidden=\"true\"></div><div><bdi lang=\"en\" dir=\"ltr\">Cardiovascular Module</bdi><span class=\"ds-focused-ready\">✓ <span lang=\"en\">Ready</span></span></div></div><div class=\"ds-focused-details\"><strong>12</strong> approved sources · cohort scope</div></article>",
+      "css": ".ds-focused-unit { width: 23.85rem; min-height: 19.8rem; overflow: hidden; border: 0.0625rem solid var(--accent-focus); border-radius: var(--radius-card); outline: 0.125rem solid var(--accent); outline-offset: -0.125rem; background: var(--surface-focus); color: var(--text-primary); box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.22); font-family: var(--font-unimind-latin), var(--font-unimind-arabic), sans-serif; transition: width 360ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-focused-summary { display: grid; grid-template-columns: 9.7rem minmax(0, 1fr); align-items: stretch; } .ds-focused-image { min-height: 10.75rem; background: var(--canvas-deep); } .ds-focused-summary > div:last-child { display: flex; flex-direction: column; justify-content: center; padding: 1rem; } .ds-focused-summary bdi { display: block; font-weight: 720; font-size: 1.02rem; line-height: 1.2; } .ds-focused-summary bdi[lang=\"ar\"] { margin-block-start: 0.28rem; color: var(--text-secondary); font: 400 0.84rem/1.45 var(--font-unimind-arabic), sans-serif; } .ds-focused-ready { width: fit-content; margin-block-start: 0.75rem; border-radius: 0.55rem; background: var(--ready-surface); color: var(--ready); padding: 0.42rem 0.6rem; font-size: 0.8rem; font-weight: 700; } .ds-focused-details { border-block-start: 0.0625rem solid #3a4f68; padding: 0.75rem 1rem 0.9rem; color: var(--text-secondary); font-size: 0.78rem; } .ds-focused-unit:hover { border-color: var(--accent); } .ds-focused-unit:focus-within { outline-width: 0.1875rem; outline-offset: 0.1875rem; } @media (prefers-reduced-motion: reduce) { .ds-focused-unit { transition: none; } }"
+    },
+    {
+      "name": "Ready Status",
+      "kind": "chip",
+      "refersTo": "ready-status",
+      "description": "A redundant positive state using mint color, a check icon, and active-language copy.",
+      "html": "<span class=\"ds-ready-status\" role=\"status\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"9\"></circle><path d=\"m8 12 2.5 2.5L16 9\"></path></svg><span lang=\"en\" dir=\"ltr\">Ready</span></span>",
+      "css": ".ds-ready-status { width: fit-content; display: inline-flex; align-items: center; gap: 0.4rem; border-radius: 0.55rem; background: var(--ready-surface); color: var(--ready); padding: 0.42rem 0.6rem; font: 700 0.8rem/1.4 var(--font-unimind-latin), var(--font-unimind-arabic), sans-serif; } .ds-ready-status svg { width: 1.05rem; height: 1.05rem; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; } .ds-ready-status span span { display: block; } .ds-ready-status span[lang=\"ar\"] { margin-block-start: 0.08rem; font: 700 0.72rem/1.4 var(--font-unimind-arabic), sans-serif; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Study Shelf",
+    "overview": "UniMind is a dense but calm academic workspace. Deep matte fields and restrained subject plates let students scan authorized curriculum units as a set of ordered shelves, while off-white type and thin cool-blue separators maintain serious, work-focused clarity. The system is expressive through precise focus behavior, not decoration.\n\nThe signature transition turns one shelf item into a trustworthy study doorway: the focused unit expands in place, reveals its identity and state in the active language, and keeps neighboring choices visible. The visual language explicitly rejects the generic LMS dashboard, hospital-software sterility, and chatbot-first shells, while avoiding entertainment browsing cues.",
+    "keyCharacteristics": [
+      "Dark matte surfaces with low elevation and one cobalt interaction voice.",
+      "Compact, locale-switchable hierarchy built for scanning in English or Arabic, including mixed-direction technical content.",
+      "Horizontal academic rails whose focused item expands without hiding catalog context.",
+      "State communicated through text, icons, shape, and contrast rather than color alone.",
+      "Restrained, synthetic subject imagery with replaceable provenance-tracked assets."
+    ],
+    "rules": [
+      {
+        "name": "The One Cobalt Voice Rule",
+        "body": "Cobalt identifies focus, current location, and the primary action; do not scatter it as decoration.",
+        "section": "colors"
+      },
+      {
+        "name": "The State Is Redundant Rule",
+        "body": "Readiness and unavailability always pair color with explicit text plus an icon or other non-color cue.",
+        "section": "colors"
+      },
+      {
+        "name": "The Active Language Rule",
+        "body": "Render one selected interface language at a time. Every visible interface label, state, and description follows the active locale; only the language switch shows both choices.",
+        "section": "typography"
+      },
+      {
+        "name": "The Shelf Context Rule",
+        "body": "Expansion happens inside the rail: keep neighboring curriculum choices visible instead of opening an entertainment-style overlay.",
+        "section": "layout"
+      },
+      {
+        "name": "The Matte-At-Rest Rule",
+        "body": "Default surfaces do not float; reserve the single structural shadow for the focused shelf item.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Strict Tile Rule",
+        "body": "Keep shelf items visually rectangular and aligned even when focused; expansion changes width and information density, not the underlying form language.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "Do keep application surfaces in Operate mode: scanability, state clarity, and familiar controls outrank expression.",
+      "Do keep multiple curriculum rails and adjacent units visible at representative desktop widths.",
+      "Do render only the active locale, preserve semantic language and direction attributes, and keep logical CSS properties, keyboard focus, touch targets, and reduced-motion behavior.",
+      "Do use synthetic, provenance-tracked, replaceable subject imagery as restrained academic context.",
+      "Do state availability, readiness, and pending destinations truthfully with text plus a non-color cue."
+    ],
+    "donts": [
+      "Don't turn the shelf into a generic LMS dashboard, hospital-software interface, or chatbot-first shell.",
+      "Don't imitate streaming entertainment with posters, autoplay, hover-only disclosure, or cinematic overlays.",
+      "Don't add gamification, glassmorphism, neon glow, excessive animation, remote runtime assets, or invented claims.",
+      "Don't treat medical imagery as proof of approved sources, real curriculum, or availability.",
+      "Don't create separate LTR and RTL visual systems or allow mixed-direction labels to merge without isolation."
+    ]
+  }
+}

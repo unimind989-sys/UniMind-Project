@@ -1,0 +1,11 @@
+{
+  "prompt": "Use case: ui-mockup\nAsset type: full-fidelity north-star desktop web app direction comp, 1536x1024 landscape\nPrimary request: Design the first viewport for UniMind, a bilingual source-grounded university study platform, as The Study Shelf, translating the clear focus behavior of a streaming catalog wall into a serious authenticated Operate-mode academic interface.\nScene/backdrop: deep neutral navy-black ground, quiet off-white text, cobalt focus edge, muted green ready states; subject tiles provide restrained color without entertainment artwork.\nSubject: authorized bilingual curriculum choices grouped into hierarchical rails. A synthetic Human Medicine “Cardiovascular Module” tile is focused and expands to reveal readiness, 12 approved sources, cohort scope, and a clear “Open workspace” action. Include a visible catalog path and safe hidden/unavailable behavior.\nComposition/framing: horizontal curriculum rails and one expanded focused unit own the viewport. Use academic diagram thumbnails and typographic subject markers, not movie posters. The active rail lifts while others recede. Correctly render “Your Modules”, Arabic “وحداتك”, “Cardiovascular Module”, Arabic “وحدة الجهاز القلبي الوعائي”, “Ready”, Arabic “جاهز”.\nStyle/medium: exceptionally polished production UI mockup, strict tile ratios, dense but calm, familiar focus behavior, legible workhorse typography.\nInteraction implication: keyboard and pointer focus expands one tile; row scrolling snaps; selected and ready states use text/icon/shape; mobile shows fewer tiles without clipping labels.\nConstraints: equal phone and desktop credibility; accessible contrast; synthetic data only; no claims; no real university logos; no tiny text; no browser chrome; no device frame; no watermark.\nAvoid: Netflix copy, entertainment posters, autoplay video, generic LMS, chatbot-first layout, gamification, glassmorphism, neon glow, excessive animation.\n",
+  "createdAt": "2026-09-11T14:26:15.889Z",
+  "selected": true,
+  "selectedBy": "Ahmed",
+  "selectedAt": "2026-09-11T21:58:23Z",
+  "approved": true,
+  "approvedBy": "Ahmed",
+  "approvedAt": "2026-09-11T22:56:08Z",
+  "approvalContext": "Focused Rail selected in comp round f1fe101e"
+}

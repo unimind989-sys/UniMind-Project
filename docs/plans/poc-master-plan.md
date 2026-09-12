@@ -251,8 +251,8 @@ Safety behavior must not introduce outside medical knowledge into a strict-RAG a
 ### 6.7 Access, privacy, and governance
 
 - A student can retrieve only sources authorized for the selected cohort and curriculum unit.
-- Student chats are not visible to founders by default.
-- Reported or explicitly consented exchanges may be retained for a defined review period.
+- Saved student chats are visible to Ahmed and Ziad by default, with clear student-facing disclosure and audited founder access.
+- A student may enable private/no-sharing mode for future exchanges. While it is active, founder review is limited to the qualifying reported, explicitly consented, or automatically policy-flagged exchange and every access is audited. Automated misuse detection uses approved versioned categories and thresholds.
 - Source replacements create immutable new processed versions.
 - Raw deletion requires verified durable processed output and an append-only deletion event.
 - Availability requires source ready, unit published, cohort unlocked, valid rights, and valid membership.
@@ -623,14 +623,14 @@ Video adds a processor behind the existing pipeline; it must not create a separa
 
 | ID | Decision | Required/default direction | Owner | Status |
 | --- | --- | --- | --- | --- |
-| D-01 | First Human Medicine cohort | Select by source completeness, rights, reviewers, demand, and Batch Leader readiness | Ahmed | Open |
+| D-01 | First Human Medicine cohort | Zagazig University MBBCh, Year 5, Term 1, 2026/2027, Integrated 5+2 Bylaw; rolling sources, Ahmed academic review, campaign-scoped Batch Leaders, and per-source pre-upload rights gate | Ahmed | Approved direction |
 | D-02 | First Veterinary Medicine cohort | Use the same scoring model | Ziad | Open |
-| D-03 | Pilot institutions | Start where rights, complete sources, and testers are strongest | Ahmed + Ziad | Open |
+| D-03 | Pilot institutions | Zagazig University for both Human and Veterinary Medicine; D-02 still owns the exact Veterinary cohort | Ahmed + Ziad | Approved direction |
 | D-04 | AI providers | Select using project quality, latency, and cost benchmarks | Ahmed + Ziad | Open |
 | D-05 | Maximum PoC spend | Hard total and weekly limits before live processing | Ahmed + Ziad | Open |
 | D-06 | Knowledge boundary | Approved uploaded material only; no outside answer source | Ahmed + Ziad | Approved direction |
 | D-07 | PoC payment model | Free controlled beta; no manual payment operations | Ahmed + Ziad | Approved direction |
-| D-08 | Chat retention | Student-controlled content with minimal operational metadata | Ahmed + Ziad | Proposed |
+| D-08 | Chat retention and misuse review | Founder-visible saved chats by default; student private/no-sharing mode with bounded audited report, consent, and automated-policy exceptions; minimal operational metadata | Ahmed + Ziad | Proposed |
 | D-09 | Raw lifecycle | Temporary only; automatic verified deletion after complete output | Ahmed + Ziad | Approved direction |
 | D-10 | Processed format | Normalized Markdown/equivalent plus structured JSON metadata/locators | Ahmed + Ziad | Proposed |
 | D-11 | Batch Leader authority | Campaign-scoped submission/status only | Ahmed + Ziad | Approved direction |

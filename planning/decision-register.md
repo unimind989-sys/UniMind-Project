@@ -4,14 +4,14 @@ This register is the working index for decision ownership and blocking effects. 
 
 | ID | Decision | Owner | Due | Status | Record | Resolution path | Blocks | Last reviewed |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| D-01 | First Human Medicine cohort | Ahmed | UNSCHEDULED — OWNER INPUT REQUIRED | Open | `docs/decisions/d-01-human-medicine-cohort.md` (OPEN) | WP00-T02 | WP00-T03; WP00-T05; WP11-T01; WP11-T03 | NOT RECORDED |
+| D-01 | First Human Medicine cohort | Ahmed | N/A — APPROVED 2026-09-10 | Approved direction | `docs/decisions/d-01-human-medicine-cohort.md` (APPROVED) | N/A — approved | NONE — downstream tasks must conform; D-02 and per-source rights remain independent | 2026-09-10 |
 | D-02 | First Veterinary Medicine cohort | Ziad | UNSCHEDULED — OWNER INPUT REQUIRED | Open | `docs/decisions/d-02-veterinary-medicine-cohort.md` (OPEN) | WP00-T02 | WP00-T03; WP00-T05; WP10-T01; WP10-T02; WP11-T01 | NOT RECORDED |
-| D-03 | Pilot institutions | Ahmed + Ziad | UNSCHEDULED — OWNER INPUT REQUIRED | Open | `docs/decisions/d-03-pilot-institutions.md` (OPEN) | WP00-T02 | WP00-T03; WP11-T01 | NOT RECORDED |
+| D-03 | Pilot institutions | Ahmed + Ziad | N/A — APPROVED 2026-09-10 | Approved direction | `docs/decisions/d-03-pilot-institutions.md` (APPROVED) | N/A — approved | NONE — downstream tasks must conform; D-02 and per-source rights remain independent | 2026-09-10 |
 | D-04 | AI providers | Ahmed + Ziad | UNSCHEDULED — OWNER INPUT REQUIRED | Open | `docs/decisions/d-04-ai-providers.md` (OPEN) | WP09-T01 | WP04-T05 (real OCR); WP04-T06 (real transcription); WP04-T10 (real embeddings); WP06-T05 (real generation); WP07-T03 (real generation); WP11-T01 | NOT RECORDED |
 | D-05 | Maximum PoC spend | Ahmed + Ziad | UNSCHEDULED — OWNER INPUT REQUIRED | Open | `docs/decisions/d-05-maximum-poc-spend.md` (OPEN) | WP00-T06 | WP04-T05 (paid); WP04-T06 (paid); WP04-T10 (paid); WP06-T05 (paid); WP07-T03 (paid); WP09-T01; WP09-T03; WP11-T01 | NOT RECORDED |
 | D-06 | Knowledge boundary | Ahmed + Ziad | N/A — DIRECTION APPROVED | Approved direction | Master plan section 15 | N/A — approved | NONE — downstream tasks must conform | NOT RECORDED |
 | D-07 | PoC payment model | Ahmed + Ziad | N/A — DIRECTION APPROVED | Approved direction | Master plan section 15 | N/A — approved | NONE — downstream tasks must conform | NOT RECORDED |
-| D-08 | Chat retention | Ahmed + Ziad | UNSCHEDULED — OWNER INPUT REQUIRED | Proposed | `docs/decisions/d-08-chat-retention.md` (missing) | WP06-T07 | WP11-T01 | NOT RECORDED |
+| D-08 | Chat retention and misuse review | Ahmed + Ziad | UNSCHEDULED — OWNER INPUT REQUIRED | Proposed | `docs/decisions/d-08-chat-retention.md` (PROPOSED) | WP06-T07 | WP11-T01 | 2026-09-10 |
 | D-09 | Raw lifecycle | Ahmed + Ziad | N/A — DIRECTION APPROVED | Approved direction | Master plan section 15 | N/A — approved | NONE — WP00-T04 and D-19 must supply exact operating values | NOT RECORDED |
 | D-10 | Processed format | Ahmed + Ziad | UNSCHEDULED — OWNER INPUT REQUIRED | Proposed | `docs/decisions/d-10-processed-format.md` (PROPOSED) | WP00-T04 | WP04-T01; WP04-T08; WP04-T12 | NOT RECORDED |
 | D-11 | Batch Leader authority | Ahmed + Ziad | N/A — DIRECTION APPROVED | Approved direction | Master plan section 15 | N/A — approved | NONE — downstream tasks must conform | NOT RECORDED |

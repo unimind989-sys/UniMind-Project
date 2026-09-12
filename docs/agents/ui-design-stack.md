@@ -79,6 +79,36 @@ The Impeccable hook is intentionally off during planning. When UI code exists, a
 
 The Playwright CLI skill is kept byte-for-byte compatible with the pinned package so its built-in drift check works. UniMind's always-on rules add the local command, synthetic-state, credential, artifact, and E2E boundaries. The local wrapper disables the mutable update notifier because dependency upgrades follow the reviewed-pin policy. Do not run the CLI's global installer or commit `.playwright-cli/` output.
 
+## Component sources and 21st.dev MCP
+
+**Current recommendation (researched 2026-09-10): do not make 21st.dev MCP part of the required WP03 toolchain.** It may be reconsidered later as an optional component-discovery source after UniMind has an approved visual direction and component strategy; adoption still requires a named founder decision.
+
+21st.dev can search a large component catalog, retrieve component code, generate variants, and publish team components. That can save discovery time after a surface brief and `DESIGN.md` already constrain the result. It does not replace Impeccable's product discovery, visual-world decision, or finish review, and catalog popularity is not evidence that a component fits UniMind's accessibility, RTL, privacy, performance, or maintenance requirements.
+
+The distinction between open client code and the hosted service matters. The public `21st-dev/magic-mcp` repository is ISC-licensed, but its current package is a compatibility proxy to `https://21st.dev/api/mcp`; the catalog, code retrieval, and AI generation are hosted services that require a 21st account/API key and remain subject to 21st's terms. As checked on 2026-09-10, 21st advertises free search with two installs per day, paid Builder access for unlimited MCP/CLI retrieval, and credit-based AI generation. Therefore it is neither a fully open-source local catalog nor a zero-cost reproducible dependency.
+
+If the founders later authorize an evaluation:
+
+1. Use only synthetic/public prompts and public UI code. Never send private source material, student data, secrets, production logs, or unreleased proprietary context.
+2. Keep the API key outside Git and browser code. Record the exact CLI/proxy version, service terms/date, plan/cost ceiling, and disable/removal procedure.
+3. Use it only after the direction is approved, as a candidate-component source. Record the original component page/author/license and inspect every copied file, transitive dependency, remote asset, telemetry path, and Client Component boundary.
+4. Rebuild, test, audit, and maintain the imported code locally. No clean clone, CI check, runtime path, or rollback may depend on 21st availability, credits, or mutable catalog content.
+5. Compare one representative WP03 component against the open fallback below before deciding whether the saved time justifies the service and governance cost.
+
+### Open and zero-cost-first alternatives
+
+| Option | Best use | Tradeoff and UniMind rule |
+| --- | --- | --- |
+| Local semantic React/HTML plus project CSS | Default while the component strategy is unsettled | No catalog or account dependency and maximum design control, but the team owns interaction and accessibility details. Prefer native controls where they satisfy the behavior. |
+| Official shadcn/ui CLI or MCP with the public registry | Search, inspect, and copy source-owned primitives/blocks through an MIT-licensed local server | Strongest open MCP substitute for 21st catalog retrieval. It introduces a registry/configuration and normally a Tailwind-oriented workflow, which UniMind has not approved. Evaluate and pin an exact CLI version before use; never put `@latest` in repeatable commands. |
+| Base UI | Complex accessible unstyled React primitives | MIT and style-system neutral, with no catalog account. It is a runtime dependency and must pass bundle, React/Next compatibility, RTL, and removal review. |
+| React Aria Components | Accessibility- and internationalization-heavy primitives | Apache-2.0, unstyled, and strong keyboard/touch/RTL support. It is a broader runtime dependency and still needs UniMind styling and bundle review. |
+| Reviewed MIT shadcn-compatible registries such as Magic UI | A narrowly selected interaction or visual effect after the core Operate system exists | Copy-in source can remain local, but animation-heavy catalog defaults are a poor foundation for dense product UI. Verify each item's license and dependencies; do not use a catalog to choose the visual world. |
+
+Research sources: [21st MCP capabilities and limits](https://21st.dev/mcp), [21st pricing](https://21st.dev/pricing), [21st terms](https://mcp.21st.dev/terms), [current Magic MCP compatibility proxy](https://github.com/21st-dev/magic-mcp), [shadcn MCP](https://ui.shadcn.com/docs/mcp), [shadcn/ui license](https://github.com/shadcn-ui/ui/blob/main/LICENSE.md), [Base UI](https://base-ui.com/), [React Aria](https://react-spectrum.adobe.com/react-aria/), and [Magic UI](https://magicui.design/).
+
+Adopt no component source merely because an agent can install it. The selected option must be recorded in the WP03 task evidence with provenance, license, exact pin, accessibility/RTL proof, dependency cost, and rollback.
+
 ## Improvement rule
 
 Do not "self-improve" by rewriting instructions after every preference or model mistake. Capture confirmed design decisions in `DESIGN.md`. Change a skill only when repeated friction, user feedback, or a failed workflow exposes a reusable instruction defect. Record that change in `.agents/skills/ADAPTATIONS.md` and add a case to `.agents/skills/EVALS.md`.

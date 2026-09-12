@@ -1,0 +1,2523 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="A local bilingual workshop for Ahmed and Ziad to answer UniMind's unresolved decisions independently."
+    />
+    <title>UniMind decision workshop</title>
+    <link rel="icon" href="data:," />
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #182321;
+        --muted: #52605d;
+        --paper: #f5f7f5;
+        --surface: #ffffff;
+        --surface-subtle: #eef2f0;
+        --line: #d7dfdc;
+        --line-strong: #9caaa6;
+        --accent: #176b5b;
+        --accent-strong: #0e5548;
+        --accent-soft: #e5f3ef;
+        --warning: #825b13;
+        --warning-soft: #fff4d8;
+        --danger: #8b3333;
+        --danger-soft: #fdecec;
+        --focus: #7a5000;
+        --shadow: 0 16px 44px rgb(24 35 33 / 10%);
+        --radius: 14px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        scrollbar-color: var(--accent) var(--paper);
+      }
+
+      ::selection {
+        background: #bce4d9;
+        color: #0c332b;
+      }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        font-size: 16px;
+        line-height: 1.55;
+      }
+
+      body[data-profile="ziad"] {
+        font-family: Tahoma, Arial, sans-serif;
+      }
+
+      body[data-profile="ziad"] h1,
+      body[data-profile="ziad"] h2,
+      body[data-profile="ziad"] h3,
+      body[data-profile="ziad"] label,
+      body[data-profile="ziad"] p,
+      body[data-profile="ziad"] small,
+      body[data-profile="ziad"] .decision-name,
+      body[data-profile="ziad"] .group-title {
+        unicode-bidi: plaintext;
+      }
+
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+
+      button,
+      input,
+      select,
+      textarea,
+      summary {
+        outline: none;
+      }
+
+      button:focus-visible,
+      input:focus-visible,
+      select:focus-visible,
+      textarea:focus-visible,
+      summary:focus-visible {
+        outline: 3px solid var(--focus);
+        outline-offset: 3px;
+      }
+
+      button {
+        border: 0;
+        cursor: pointer;
+      }
+
+      button:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+
+      .shell {
+        width: min(1380px, calc(100% - 32px));
+        margin: 24px auto 56px;
+      }
+
+      .masthead {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 32px;
+        align-items: end;
+        padding: clamp(26px, 4vw, 48px);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: var(--surface);
+        box-shadow: var(--shadow);
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1,
+      h2,
+      h3 {
+        line-height: 1.16;
+        letter-spacing: -0.025em;
+      }
+
+      h1 {
+        max-width: 780px;
+        margin-bottom: 14px;
+        font-size: clamp(2.1rem, 5vw, 4.6rem);
+      }
+
+      h2 {
+        margin-bottom: 10px;
+        font-size: clamp(1.6rem, 3vw, 2.6rem);
+      }
+
+      h3 {
+        margin-bottom: 8px;
+        font-size: 1.08rem;
+      }
+
+      .lede {
+        max-width: 72ch;
+        margin-bottom: 0;
+        color: var(--muted);
+        font-size: clamp(1rem, 1.5vw, 1.18rem);
+      }
+
+      .status-note {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 18px;
+        color: var(--warning);
+        font-size: 0.86rem;
+        font-weight: 750;
+      }
+
+      .status-note::before {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+        content: "";
+      }
+
+      .profile-switcher {
+        min-width: 290px;
+        padding: 8px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--surface-subtle);
+      }
+
+      .profile-label {
+        display: block;
+        padding: 4px 8px 8px;
+        color: var(--muted);
+        font-size: 0.78rem;
+        font-weight: 750;
+      }
+
+      .profile-options {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+      }
+
+      .jump-export {
+        width: 100%;
+        margin-top: 7px;
+      }
+
+      .profile-button {
+        min-height: 46px;
+        border-radius: 11px;
+        background: transparent;
+        color: var(--muted);
+        font-weight: 800;
+      }
+
+      .profile-button[aria-pressed="true"] {
+        background: var(--ink);
+        color: #ffffff;
+      }
+
+      .privacy-strip {
+        display: grid;
+        grid-template-columns: 28px minmax(0, 1fr);
+        gap: 14px;
+        align-items: start;
+        margin-top: 18px;
+        padding: 16px 18px;
+        border: 1px solid var(--accent);
+        border-radius: 12px;
+        background: var(--accent-soft);
+        color: var(--accent-strong);
+      }
+
+      .privacy-strip svg {
+        width: 24px;
+        height: 24px;
+        stroke: currentColor;
+      }
+
+      .privacy-strip p {
+        margin: 0;
+      }
+
+      .workspace {
+        display: grid;
+        grid-template-columns: 310px minmax(0, 1fr);
+        gap: 22px;
+        margin-top: 22px;
+      }
+
+      .rail,
+      .decision-panel,
+      .export-panel {
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: var(--surface);
+      }
+
+      .rail {
+        position: sticky;
+        top: 18px;
+        align-self: start;
+        max-height: calc(100vh - 36px);
+        overflow: auto;
+        padding: 18px;
+      }
+
+      .progress-copy {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 8px;
+        color: var(--muted);
+        font-size: 0.85rem;
+        font-weight: 750;
+      }
+
+      #progress-value {
+        direction: ltr;
+        unicode-bidi: isolate;
+      }
+
+      .progress-track {
+        height: 8px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: var(--surface-subtle);
+      }
+
+      .progress-bar {
+        width: 100%;
+        height: 100%;
+        border-radius: inherit;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left center;
+        transition: transform 180ms ease-out;
+      }
+
+      [dir="rtl"] .progress-bar {
+        transform-origin: right center;
+      }
+
+      .decision-select-wrap {
+        display: none;
+        margin-top: 18px;
+      }
+
+      .decision-nav {
+        margin-top: 22px;
+      }
+
+      .group + .group {
+        margin-top: 22px;
+      }
+
+      .group-title {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--muted);
+        font-size: 0.74rem;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .decision-link {
+        display: grid;
+        grid-template-columns: 44px minmax(0, 1fr) 12px;
+        gap: 10px;
+        align-items: center;
+        width: 100%;
+        min-height: 52px;
+        padding: 8px 10px;
+        border-radius: 11px;
+        background: transparent;
+        color: var(--ink);
+        text-align: start;
+      }
+
+      .decision-link:hover {
+        background: var(--surface-subtle);
+      }
+
+      .decision-link[aria-current="step"] {
+        background: var(--accent-soft);
+        color: var(--accent-strong);
+      }
+
+      .decision-code,
+      .technical {
+        direction: ltr;
+        unicode-bidi: isolate;
+      }
+
+      .decision-code {
+        font-variant-numeric: tabular-nums;
+        font-weight: 850;
+      }
+
+      .decision-name {
+        overflow: hidden;
+        font-size: 0.88rem;
+        font-weight: 700;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .completion-dot {
+        width: 10px;
+        height: 10px;
+        border: 2px solid var(--line-strong);
+        border-radius: 50%;
+      }
+
+      .decision-link[data-state="draft"] .completion-dot {
+        border-color: var(--warning);
+        background: var(--warning-soft);
+        box-shadow: inset 0 0 0 2px var(--surface);
+      }
+
+      .decision-link[data-state="ready"] .completion-dot {
+        border-color: var(--accent);
+        background: var(--accent);
+      }
+
+      .rail-actions {
+        display: grid;
+        gap: 8px;
+        margin-top: 24px;
+        padding-top: 18px;
+        border-top: 1px solid var(--line);
+      }
+
+      .content-stack {
+        min-width: 0;
+      }
+
+      .decision-panel {
+        min-height: 720px;
+        padding: clamp(24px, 4vw, 46px);
+      }
+
+      .decision-heading {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 24px;
+        align-items: start;
+        padding-bottom: 24px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .decision-eyeline {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 14px;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        min-height: 27px;
+        padding: 3px 9px;
+        border-radius: 999px;
+        background: var(--surface-subtle);
+        color: var(--muted);
+        font-size: 0.76rem;
+        font-weight: 800;
+      }
+
+      .tag.proposed {
+        background: var(--warning-soft);
+        color: var(--warning);
+      }
+
+      .decision-description {
+        max-width: 72ch;
+        margin-bottom: 0;
+        color: var(--muted);
+      }
+
+      .closure-box {
+        max-width: 320px;
+        padding: 16px 18px;
+        border-radius: 12px;
+        background: var(--surface-subtle);
+      }
+
+      .closure-box strong {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--ink);
+      }
+
+      .closure-box p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .questions {
+        max-width: 820px;
+        margin-top: 30px;
+      }
+
+      .field {
+        margin-top: 24px;
+      }
+
+      .field:first-child {
+        margin-top: 0;
+      }
+
+      label,
+      .field-label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 800;
+      }
+
+      .required-mark {
+        color: var(--danger);
+      }
+
+      .field-help {
+        display: block;
+        max-width: 72ch;
+        margin: -2px 0 10px;
+        color: var(--muted);
+        font-size: 0.88rem;
+      }
+
+      input[type="text"],
+      input[type="date"],
+      input[type="number"],
+      select,
+      textarea {
+        width: 100%;
+        border: 1px solid var(--line-strong);
+        border-radius: 10px;
+        background: #ffffff;
+        color: var(--ink);
+        caret-color: var(--accent);
+      }
+
+      input[type="text"],
+      input[type="date"],
+      input[type="number"],
+      select {
+        min-height: 48px;
+        padding: 10px 12px;
+      }
+
+      textarea {
+        min-height: 126px;
+        resize: vertical;
+        padding: 12px;
+        line-height: 1.55;
+      }
+
+      input:hover,
+      select:hover,
+      textarea:hover {
+        border-color: var(--accent);
+      }
+
+      .readiness {
+        display: grid;
+        grid-template-columns: 22px minmax(0, 1fr);
+        gap: 12px;
+        align-items: start;
+        margin-top: 32px;
+        padding: 18px;
+        border: 1px solid var(--accent);
+        border-radius: 12px;
+        background: var(--accent-soft);
+      }
+
+      .readiness input {
+        width: 20px;
+        height: 20px;
+        margin: 2px 0 0;
+        accent-color: var(--accent);
+      }
+
+      .readiness label {
+        margin: 0;
+        color: var(--accent-strong);
+      }
+
+      .readiness small {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+      }
+
+      .decision-actions {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 32px;
+        padding-top: 22px;
+        border-top: 1px solid var(--line);
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        min-height: 44px;
+        padding: 9px 15px;
+        border-radius: 10px;
+        background: var(--ink);
+        color: #ffffff;
+        font-weight: 800;
+        text-decoration: none;
+      }
+
+      .button:hover {
+        background: #2d403c;
+      }
+
+      .button.secondary {
+        border: 1px solid var(--line-strong);
+        background: #ffffff;
+        color: var(--ink);
+      }
+
+      .button.secondary:hover {
+        border-color: var(--accent);
+        background: var(--accent-soft);
+      }
+
+      .button.quiet {
+        min-height: 40px;
+        padding: 8px 10px;
+        background: transparent;
+        color: var(--muted);
+      }
+
+      .button.quiet:hover {
+        background: var(--surface-subtle);
+        color: var(--ink);
+      }
+
+      .button.danger {
+        border-color: #d5a2a2;
+        color: var(--danger);
+      }
+
+      .button svg {
+        width: 18px;
+        height: 18px;
+        fill: none;
+        stroke: currentColor;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1.8;
+      }
+
+      .export-panel {
+        margin-top: 22px;
+        padding: clamp(22px, 3vw, 34px);
+      }
+
+      .export-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 0.8fr);
+        gap: 28px;
+        align-items: start;
+      }
+
+      .export-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .small-copy {
+        max-width: 72ch;
+        margin-bottom: 0;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .draft-tools {
+        display: grid;
+        gap: 10px;
+        padding: 18px;
+        border-radius: 12px;
+        background: var(--surface-subtle);
+      }
+
+      .draft-state {
+        min-height: 22px;
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+
+      .file-input {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        clip-path: inset(50%);
+      }
+
+      .toast {
+        position: fixed;
+        inset-inline-end: 22px;
+        bottom: 22px;
+        z-index: 20;
+        max-width: min(420px, calc(100% - 44px));
+        padding: 13px 16px;
+        border-radius: 11px;
+        background: var(--ink);
+        color: #ffffff;
+        box-shadow: var(--shadow);
+        opacity: 0;
+        transform: translateY(12px);
+        transition:
+          opacity 160ms ease-out,
+          transform 160ms ease-out;
+        pointer-events: none;
+      }
+
+      .toast[data-visible="true"] {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .noscript {
+        width: min(900px, calc(100% - 32px));
+        margin: 24px auto;
+        padding: 20px;
+        border: 1px solid var(--danger);
+        border-radius: 12px;
+        background: var(--danger-soft);
+        color: var(--danger);
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+
+      [dir="rtl"] .decision-link,
+      [dir="rtl"] .closure-box,
+      [dir="rtl"] .questions,
+      [dir="rtl"] .small-copy {
+        text-align: right;
+      }
+
+      @media (max-width: 980px) {
+        .masthead,
+        .workspace,
+        .export-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .masthead {
+          align-items: start;
+        }
+
+        .profile-switcher {
+          min-width: 0;
+        }
+
+        .rail {
+          position: static;
+          max-height: none;
+        }
+
+        .decision-nav {
+          display: none;
+        }
+
+        .decision-select-wrap {
+          display: block;
+        }
+
+        .rail-actions {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 680px) {
+        .shell {
+          width: min(100% - 20px, 1380px);
+          margin-top: 10px;
+        }
+
+        .masthead,
+        .rail,
+        .decision-panel,
+        .export-panel {
+          border-radius: 14px;
+        }
+
+        .decision-heading {
+          grid-template-columns: 1fr;
+        }
+
+        .closure-box {
+          max-width: none;
+        }
+
+        .decision-actions,
+        .export-buttons {
+          align-items: stretch;
+          flex-direction: column;
+        }
+
+        .button {
+          width: 100%;
+        }
+
+        .rail-actions {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        .progress-bar,
+        .toast {
+          transition: none;
+        }
+      }
+
+      @media print {
+        body {
+          background: #ffffff;
+        }
+
+        .shell {
+          width: 100%;
+          margin: 0;
+        }
+
+        .profile-switcher,
+        .rail,
+        .decision-actions,
+        .export-panel,
+        .privacy-strip,
+        .toast {
+          display: none;
+        }
+
+        .masthead,
+        .decision-panel {
+          border: 0;
+          box-shadow: none;
+        }
+      }
+    </style>
+  </head>
+  <body data-profile="ahmed">
+    <!-- THESIS: One local worksheet turns eleven governance decisions into separate founder positions; it refuses one giant bilingual table. OWN-WORLD: Inherits the planning manual's paper, white leaves, deep-green ink, restrained status color, and rounded utility controls. STORY: Ahmed and Ziad answer independently, mark discussion readiness, then export files for comparison and formal review. FIRST VIEWPORT: Purpose and profile choice lead into privacy guidance, progress navigation, and one focused decision; export remains one visible action away. FORM: Code-led Operate extension of planning/d-17-hosting-options-discussion.html; direction seed 25f00956 was recorded but not adopted because this extends an incumbent world. FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance -->
+    <noscript>
+      <div class="noscript">
+        This workshop needs JavaScript to switch profiles, save drafts, and
+        export answers. No network request is made.
+      </div>
+    </noscript>
+
+    <main class="shell" id="app">
+      <header class="masthead">
+        <div>
+          <h1 id="page-title">Decide separately. Compare clearly.</h1>
+          <p class="lede" id="page-lede">
+            Ahmed and Ziad can answer the same 11 unresolved decisions in their
+            own words, then export separate files for comparison and formal
+            review.
+          </p>
+          <span class="status-note" id="status-note"
+            >Discussion workspace — not an approval</span
+          >
+        </div>
+
+        <div class="profile-switcher" aria-labelledby="profile-label">
+          <span class="profile-label" id="profile-label"
+            >Whose answers are open?</span
+          >
+          <div class="profile-options">
+            <button
+              class="profile-button"
+              id="profile-ahmed"
+              type="button"
+              aria-pressed="true"
+              data-profile-button="ahmed"
+            >
+              Ahmed
+            </button>
+            <button
+              class="profile-button"
+              id="profile-ziad"
+              type="button"
+              aria-pressed="false"
+              data-profile-button="ziad"
+              lang="ar"
+            >
+              زياد
+            </button>
+          </div>
+          <button class="button secondary jump-export" type="button" id="jump-export">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 3v12M7 10l5 5 5-5M5 20h14" />
+            </svg>
+            <span>Go to export</span>
+          </button>
+        </div>
+      </header>
+
+      <aside class="privacy-strip" aria-labelledby="privacy-title">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 10V7a5 5 0 0 1 10 0v3" />
+          <rect x="4" y="10" width="16" height="11" rx="2" />
+          <path d="M12 14v3" />
+        </svg>
+        <p>
+          <strong id="privacy-title">Keep sensitive material out.</strong>
+          <span id="privacy-copy"
+            >Use role labels and opaque evidence references. Do not enter
+            credentials, source contents, private contact details, or signed
+            URLs.</span
+          >
+        </p>
+      </aside>
+
+      <div class="workspace">
+        <aside class="rail" aria-label="Decision navigation">
+          <div class="progress-copy">
+            <span id="progress-label">Ready to compare</span>
+            <span id="progress-value">0 / 11</span>
+          </div>
+          <div
+            class="progress-track"
+            role="progressbar"
+            aria-valuemin="0"
+            aria-valuemax="11"
+            aria-valuenow="0"
+            aria-labelledby="progress-label"
+          >
+            <div class="progress-bar" id="progress-bar"></div>
+          </div>
+
+          <div class="decision-select-wrap">
+            <label for="decision-select" id="decision-select-label"
+              >Choose a decision</label
+            >
+            <select id="decision-select"></select>
+          </div>
+
+          <nav class="decision-nav" id="decision-nav"></nav>
+
+          <div class="rail-actions">
+            <button class="button secondary" type="button" id="save-draft">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5 4h12l2 2v14H5z" />
+                <path d="M8 4v6h8V4M8 20v-6h8v6" />
+              </svg>
+              <span>Save draft</span>
+            </button>
+            <button class="button quiet" type="button" id="clear-profile">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13" />
+              </svg>
+              <span>Clear Ahmed</span>
+            </button>
+          </div>
+        </aside>
+
+        <div class="content-stack">
+          <section class="decision-panel" aria-live="polite">
+            <div class="decision-heading">
+              <div>
+                <div class="decision-eyeline">
+                  <span class="tag decision-code" id="decision-id">D-01</span>
+                  <span class="tag" id="decision-status">Open</span>
+                  <span class="tag" id="decision-group">Pilot scope</span>
+                </div>
+                <h2 id="decision-title">First Human Medicine cohort</h2>
+                <p class="decision-description" id="decision-description"></p>
+              </div>
+              <aside class="closure-box">
+                <strong id="closure-label">What closes this decision</strong>
+                <p id="decision-closure"></p>
+              </aside>
+            </div>
+
+            <form class="questions" id="decision-form" novalidate></form>
+
+            <div class="readiness">
+              <input type="checkbox" id="ready-to-compare" />
+              <div>
+                <label for="ready-to-compare" id="ready-label"
+                  >My position is ready to compare</label
+                >
+                <small id="ready-help"
+                  >This is discussion readiness, not formal approval. Required
+                  fields must be answered first.</small
+                >
+              </div>
+            </div>
+
+            <div class="decision-actions">
+              <button
+                class="button secondary"
+                type="button"
+                id="previous-decision"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m15 18-6-6 6-6" />
+                </svg>
+                <span>Previous</span>
+              </button>
+              <button class="button" type="button" id="next-decision">
+                <span>Next decision</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m9 18 6-6-6-6" />
+                </svg>
+              </button>
+            </div>
+          </section>
+
+          <section class="export-panel" aria-labelledby="export-title">
+            <div class="export-grid">
+              <div>
+                <h2 id="export-title">Export the answers</h2>
+                <p class="small-copy" id="export-copy">
+                  Export JSON for the agent to validate, or Markdown for an
+                  easy human review. Each export records whose answers they are
+                  and which decisions are still incomplete.
+                </p>
+                <div class="export-buttons">
+                  <button class="button" type="button" id="export-json">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 3v12M7 10l5 5 5-5M5 20h14" />
+                    </svg>
+                    <span>Export Ahmed JSON</span>
+                  </button>
+                  <button
+                    class="button secondary"
+                    type="button"
+                    id="export-markdown"
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M5 4h10l4 4v12H5zM15 4v5h4" />
+                    </svg>
+                    <span>Export Ahmed Markdown</span>
+                  </button>
+                  <button
+                    class="button secondary"
+                    type="button"
+                    id="export-combined"
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M8 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM16 13a3 3 0 1 0 0-6M2 21v-2a5 5 0 0 1 10 0v2M14 21v-1a4 4 0 0 1 7-2" />
+                    </svg>
+                    <span>Export combined JSON</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="draft-tools">
+                <strong id="draft-title">Draft controls</strong>
+                <p class="small-copy" id="draft-copy">
+                  Saving uses this browser's local storage only. Importing a
+                  previous JSON export replaces matching profile answers after
+                  confirmation.
+                </p>
+                <label class="button secondary" for="import-file">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 16V4M7 9l5-5 5 5M5 20h14" />
+                  </svg>
+                  <span id="import-label">Import JSON</span>
+                </label>
+                <input
+                  class="file-input"
+                  type="file"
+                  id="import-file"
+                  accept="application/json,.json"
+                />
+                <span class="draft-state" id="draft-state" aria-live="polite"
+                  >Nothing saved during this visit.</span
+                >
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script>
+      "use strict";
+
+      const workshopVersion = 1;
+      const storageKey = "unimind-decision-workshop-v1";
+
+      const copy = {
+        ahmed: {
+          lang: "en",
+          dir: "ltr",
+          statusNote: "Discussion workspace — not an approval",
+          pageTitle: "Decide separately. Compare clearly.",
+          pageLede:
+            "Ahmed and Ziad can answer the same 11 unresolved decisions in their own words, then export separate files for comparison and formal review.",
+          profileLabel: "Whose answers are open?",
+          jumpExport: "Go to export",
+          privacyTitle: "Keep sensitive material out.",
+          privacyCopy:
+            "Use role labels and opaque evidence references. Do not enter credentials, source contents, private contact details, or signed URLs.",
+          progressLabel: "Ready to compare",
+          selectLabel: "Choose a decision",
+          closureLabel: "What closes this decision",
+          readyLabel: "My position is ready to compare",
+          readyHelp:
+            "This is discussion readiness, not formal approval. Required fields must be answered first.",
+          previous: "Previous",
+          next: "Next decision",
+          save: "Save draft",
+          clear: "Clear Ahmed",
+          exportTitle: "Export the answers",
+          exportCopy:
+            "Export JSON for the agent to validate, or Markdown for an easy human review. Each export records whose answers they are and which decisions are still incomplete.",
+          exportJson: "Export Ahmed JSON",
+          exportMarkdown: "Export Ahmed Markdown",
+          exportBoth: "Export combined JSON",
+          draftTitle: "Draft controls",
+          draftCopy:
+            "Saving uses this browser's local storage only. Importing a previous JSON export replaces matching profile answers after confirmation.",
+          importLabel: "Import JSON",
+          nothingSaved: "Nothing saved during this visit.",
+          saved: "Draft saved on this device.",
+          cleared: "Ahmed's local answers were cleared.",
+          imported: "The response file was imported.",
+          importFailed: "That file is not a valid UniMind workshop export.",
+          confirmClear: "Clear all of Ahmed's answers from this browser?",
+          confirmImport:
+            "Import this file and replace answers for the profiles it contains?",
+          requiredWarning:
+            "Answer every required field before marking this decision ready.",
+          downloadReady: "Your export is ready.",
+          notAnswered: "Not answered",
+          draft: "Draft",
+          ready: "Ready",
+          required: "Required",
+          optional: "Optional",
+          open: "Open",
+          proposed: "Proposed",
+          groups: {
+            scope: "Pilot scope",
+            data: "Data governance",
+            services: "Providers and budget",
+            operations: "Operations",
+          },
+        },
+        ziad: {
+          lang: "ar",
+          dir: "rtl",
+          statusNote: "مساحة للنقاش — مش موافقة رسمية",
+          pageTitle: "جاوبوا كل واحد لوحده، وقارنوا الإجابات بوضوح.",
+          pageLede:
+            "أحمد وزياد يقدروا يجاوبوا على نفس الـ 11 decisions المفتوحة، وكل واحد يصدّر إجاباته لوحده علشان نقارنهم ونحوّل المتفق عليه لـ decision رسمي.",
+          profileLabel: "إجابات مين المفتوحة دلوقتي؟",
+          jumpExport: "روح للتصدير",
+          privacyTitle: "ماتكتبش بيانات حساسة.",
+          privacyCopy:
+            "استخدم اسم الـ role أو evidence reference غير حساس. ماتكتبش credentials، محتوى المصادر، بيانات تواصل خاصة، أو signed URLs.",
+          progressLabel: "جاهزة للمقارنة",
+          selectLabel: "اختار decision",
+          closureLabel: "إيه المطلوب علشان نقفل الـ decision؟",
+          readyLabel: "موقفي جاهز للمقارنة",
+          readyHelp:
+            "ده معناه إن إجابتك جاهزة للنقاش، مش إنها موافقة رسمية. لازم تجاوب على كل الخانات المطلوبة الأول.",
+          previous: "اللي قبلها",
+          next: "الـ decision اللي بعدها",
+          save: "احفظ Draft",
+          clear: "امسح إجابات زياد",
+          exportTitle: "صدّر الإجابات",
+          exportCopy:
+            "صدّر JSON علشان الـ agent يراجعه، أو Markdown علشان يبقى سهل تقروه. كل ملف بيوضح دي إجابات مين وإيه اللي لسه ناقص.",
+          exportJson: "صدّر JSON بتاع زياد",
+          exportMarkdown: "صدّر Markdown بتاع زياد",
+          exportBoth: "صدّر Combined JSON",
+          draftTitle: "الـ Draft والملفات",
+          draftCopy:
+            "الحفظ بيكون على الـ browser ده بس. لما تعمل Import لملف JSON قديم، الإجابات الموجودة لنفس الشخص هتتبدل بعد ما تأكد.",
+          importLabel: "اعمل Import لملف JSON",
+          nothingSaved: "مفيش حاجة اتحفظت في الزيارة دي.",
+          saved: "الـ Draft اتحفظ على الجهاز ده.",
+          cleared: "إجابات زياد المحلية اتمسحت.",
+          imported: "ملف الإجابات اتعمله Import.",
+          importFailed: "الملف ده مش UniMind workshop export صحيح.",
+          confirmClear: "نمـسح كل إجابات زياد من الـ browser ده؟",
+          confirmImport:
+            "نعمل Import للملف ونستبدل إجابات الأشخاص الموجودين جواه؟",
+          requiredWarning:
+            "جاوب على كل الخانات المطلوبة قبل ما تقول إن الـ decision جاهزة للمقارنة.",
+          downloadReady: "ملف التصدير جاهز.",
+          notAnswered: "لسه مفيش إجابة",
+          draft: "Draft",
+          ready: "جاهزة",
+          required: "مطلوب",
+          optional: "اختياري",
+          open: "مفتوحة",
+          proposed: "مقترحة",
+          groups: {
+            scope: "نطاق الـ Pilot",
+            data: "سياسة البيانات",
+            services: "Providers والميزانية",
+            operations: "التشغيل",
+          },
+        },
+      };
+
+      const field = (id, type, required, en, ar, options = null) => ({
+        id,
+        type,
+        required,
+        en,
+        ar,
+        options,
+      });
+
+      const decisions = [
+        {
+          id: "D-01",
+          status: "open",
+          group: "scope",
+          title: {
+            en: "First Human Medicine cohort",
+            ar: "أول Cohort لـ Human Medicine",
+          },
+          description: {
+            en: "Choose the exact Human Medicine batch and curriculum edition that will receive the first PoC experience.",
+            ar: "اختاروا بالظبط الـ batch والـ curriculum edition بتوع Human Medicine اللي هنبدأ بيهم الـ PoC.",
+          },
+          closure: {
+            en: "Candidate evidence, separate Ahmed/Ziad scoring, an ordered Module list, accountable people, and no rights or source-completeness blocker.",
+            ar: "Candidate evidence، scoring منفصل من أحمد وزياد، قايمة Modules بالترتيب، ناس مسؤولة، ومفيش blocker في الـ rights أو اكتمال المصادر.",
+          },
+          fields: [
+            field("candidate", "textarea", true, {
+              label: "Your preferred candidate and exact catalog path",
+              help: "Stage → institution → program → level → term → cohort → curriculum edition.",
+              placeholder: "Name the candidate and every catalog-path level…",
+            }, {
+              label: "الـ candidate اللي تفضله والـ catalog path كامل",
+              help: "Stage → institution → program → level → term → cohort → curriculum edition.",
+              placeholder: "اكتب الـ candidate وكل مستوى في الـ catalog path…",
+            }),
+            field("units", "textarea", true, {
+              label: "Ordered Modules",
+              help: "One Module per line, in the order students should see it.",
+              placeholder: "Module 1\nModule 2",
+            }, {
+              label: "الـ Modules بالترتيب",
+              help: "كل Module في سطر، بنفس الترتيب اللي الطلبة هيشوفوه.",
+              placeholder: "Module 1\nModule 2",
+            }),
+            field("people", "textarea", true, {
+              label: "Expected testers, Batch Leader, and academic reviewer",
+              help: "Use role labels or approved names; keep private contact details outside this file.",
+              placeholder: "Expected testers: …\nBatch Leader: …\nAcademic reviewer: …",
+            }, {
+              label: "عدد الـ testers والـ Batch Leader والـ academic reviewer",
+              help: "استخدم اسم الـ role أو اسم متوافق عليه، وسيب بيانات التواصل الخاصة بره الملف.",
+              placeholder: "Expected testers: …\nBatch Leader: …\nAcademic reviewer: …",
+            }),
+            field("evidence", "textarea", true, {
+              label: "Evidence and mandatory blockers",
+              help: "Reference source completeness, permissions, demand, exam/audio material, and evaluation-question capacity.",
+              placeholder: "Opaque evidence references and any blocker…",
+            }, {
+              label: "الـ Evidence وأي mandatory blockers",
+              help: "حط references لاكتمال المصادر والـ permissions والطلب والامتحانات أو الصوت وقدرة تجهيز evaluation questions.",
+              placeholder: "Evidence references من غير بيانات حساسة، وأي blocker…",
+            }),
+            field("deadline", "date", true, {
+              label: "Target decision date",
+              help: "A governance deadline, not a guessed implementation date.",
+            }, {
+              label: "التاريخ المستهدف للـ decision",
+              help: "ده governance deadline، مش تاريخ تنفيذ متوقع.",
+            }),
+          ],
+        },
+        {
+          id: "D-02",
+          status: "open",
+          group: "scope",
+          title: {
+            en: "First Veterinary Medicine cohort",
+            ar: "أول Cohort لـ Veterinary Medicine",
+          },
+          description: {
+            en: "Choose the Veterinary cohort that will prove the same architecture works through configuration rather than a separate product path.",
+            ar: "اختاروا Veterinary cohort تثبت إن نفس الـ architecture شغال بالـ configuration، من غير ما نعمل product path مختلف.",
+          },
+          closure: {
+            en: "The same evidence and independent scoring as D-01, with an ordered Subject list and no Veterinary-specific architecture.",
+            ar: "نفس الـ evidence والـ scoring المنفصل بتوع D-01، مع Subjects بالترتيب ومن غير Veterinary-specific architecture.",
+          },
+          fields: [
+            field("candidate", "textarea", true, {
+              label: "Your preferred candidate and exact catalog path",
+              help: "Stage → institution → program → level → term → cohort → curriculum edition.",
+              placeholder: "Name the candidate and every catalog-path level…",
+            }, {
+              label: "الـ candidate اللي تفضله والـ catalog path كامل",
+              help: "Stage → institution → program → level → term → cohort → curriculum edition.",
+              placeholder: "اكتب الـ candidate وكل مستوى في الـ catalog path…",
+            }),
+            field("units", "textarea", true, {
+              label: "Ordered Subjects",
+              help: "One Subject per line, in the order students should see it.",
+              placeholder: "Subject 1\nSubject 2",
+            }, {
+              label: "الـ Subjects بالترتيب",
+              help: "كل Subject في سطر، بنفس الترتيب اللي الطلبة هيشوفوه.",
+              placeholder: "Subject 1\nSubject 2",
+            }),
+            field("people", "textarea", true, {
+              label: "Expected testers, Batch Leader, and academic reviewer",
+              help: "Use role labels or approved names; keep private contact details outside this file.",
+              placeholder: "Expected testers: …\nBatch Leader: …\nAcademic reviewer: …",
+            }, {
+              label: "عدد الـ testers والـ Batch Leader والـ academic reviewer",
+              help: "استخدم اسم الـ role أو اسم متوافق عليه، وسيب بيانات التواصل الخاصة بره الملف.",
+              placeholder: "Expected testers: …\nBatch Leader: …\nAcademic reviewer: …",
+            }),
+            field("evidence", "textarea", true, {
+              label: "Evidence and mandatory blockers",
+              help: "Reference source completeness, permissions, demand, exam/audio material, and evaluation-question capacity.",
+              placeholder: "Opaque evidence references and any blocker…",
+            }, {
+              label: "الـ Evidence وأي mandatory blockers",
+              help: "حط references لاكتمال المصادر والـ permissions والطلب والامتحانات أو الصوت وقدرة تجهيز evaluation questions.",
+              placeholder: "Evidence references من غير بيانات حساسة، وأي blocker…",
+            }),
+            field("deadline", "date", true, {
+              label: "Target decision date",
+              help: "A governance deadline, not a guessed implementation date.",
+            }, {
+              label: "التاريخ المستهدف للـ decision",
+              help: "ده governance deadline، مش تاريخ تنفيذ متوقع.",
+            }),
+          ],
+        },
+        {
+          id: "D-03",
+          status: "open",
+          group: "scope",
+          title: { en: "Pilot institutions", ar: "مؤسسات الـ Pilot" },
+          description: {
+            en: "Confirm which institution or education system each selected cohort belongs to and why it is suitable for the pilot.",
+            ar: "حددوا كل cohort مختارة تابعة لأنهي institution أو education system، وليه الاختيار ده مناسب للـ pilot.",
+          },
+          closure: {
+            en: "A complete configurable catalog path with verifiable rights, source availability, testers, Batch Leaders, and academic reviewers.",
+            ar: "Catalog path كامل وقابل للـ configuration، مع rights قابلة للتحقق ومصادر وtesters وBatch Leaders وacademic reviewers.",
+          },
+          fields: [
+            field("institutions", "textarea", true, {
+              label: "Selected institution or education system for each cohort",
+              help: "State the Human and Veterinary selections separately.",
+              placeholder: "Human Medicine: …\nVeterinary Medicine: …",
+            }, {
+              label: "الـ institution أو education system لكل cohort",
+              help: "اكتب اختيار Human Medicine وVeterinary Medicine كل واحد لوحده.",
+              placeholder: "Human Medicine: …\nVeterinary Medicine: …",
+            }),
+            field("reason", "textarea", true, {
+              label: "Why these institutions are suitable",
+              help: "Cover rights clarity, source completeness, reviewer access, Batch Leader readiness, and tester access.",
+              placeholder: "Evidence-based reason…",
+            }, {
+              label: "ليه المؤسسات دي مناسبة؟",
+              help: "اتكلم عن وضوح الـ rights، اكتمال المصادر، وجود reviewer وBatch Leader، ووصول الـ testers.",
+              placeholder: "سبب مبني على evidence…",
+            }),
+            field("deadline", "date", true, {
+              label: "Target decision date",
+              help: "Use the same date as D-01/D-02 if you want one scope workshop.",
+            }, {
+              label: "التاريخ المستهدف للـ decision",
+              help: "ممكن يبقى نفس تاريخ D-01 وD-02 لو هتقفلوهم في workshop واحدة.",
+            }),
+          ],
+        },
+        {
+          id: "D-10",
+          status: "proposed",
+          group: "data",
+          title: {
+            en: "Processed representation format",
+            ar: "شكل الـ Processed representation",
+          },
+          description: {
+            en: "Review the proposed provider-neutral format that must preserve meaning and exact locators after temporary raw bytes are deleted.",
+            ar: "راجعوا الـ format المقترح اللي لازم يحافظ على المعنى والـ locators بعد ما الـ raw bytes المؤقتة تتمسح.",
+          },
+          closure: {
+            en: "Approve or revise immutable UTF-8 Markdown plus versioned JSON metadata/locators and the native-PDF, scanned-PDF, and audio acceptance thresholds.",
+            ar: "وافقوا أو عدّلوا UTF-8 Markdown ثابت مع versioned JSON metadata/locators، وكمان acceptance thresholds للـ PDF والـ scanned PDF والصوت.",
+          },
+          fields: [
+            field("format_position", "select", true, {
+              label: "Position on the proposed format",
+              help: "The current proposal is immutable Markdown plus a versioned JSON sidecar.",
+            }, {
+              label: "موقفك من الـ format المقترح",
+              help: "الاقتراح الحالي: immutable Markdown ومعاه versioned JSON sidecar.",
+            }, [
+              { value: "approve", en: "Approve as proposed", ar: "موافق زي ما هو" },
+              { value: "approve_changes", en: "Approve with changes", ar: "موافق مع تعديلات" },
+              { value: "reject", en: "Do not approve", ar: "مش موافق" },
+              { value: "need_evidence", en: "Need more evidence", ar: "محتاج evidence أكتر" },
+            ]),
+            field("format_changes", "textarea", false, {
+              label: "Requested changes or missing evidence",
+              help: "Mention tables, diagrams, mixed-language audio, locators, checksums, or schema compatibility where relevant.",
+              placeholder: "Changes, concerns, or evidence needed…",
+            }, {
+              label: "التعديلات المطلوبة أو الـ evidence الناقصة",
+              help: "اتكلم عن الجداول والرسومات والصوت mixed-language والـ locators والـ checksums والـ schema compatibility لو مهمين.",
+              placeholder: "تعديلات أو مخاوف أو evidence محتاجينها…",
+            }),
+            field("thresholds", "textarea", true, {
+              label: "Acceptance-threshold position",
+              help: "Approve or replace the proposed PDF/OCR/audio coverage and confidence thresholds, with evidence references.",
+              placeholder: "Native PDF: …\nScanned PDF/OCR: …\nAudio: …",
+            }, {
+              label: "موقفك من الـ acceptance thresholds",
+              help: "وافق أو غيّر thresholds بتاعة PDF وOCR والصوت، وحط evidence reference.",
+              placeholder: "Native PDF: …\nScanned PDF/OCR: …\nAudio: …",
+            }),
+            field("review_role", "text", true, {
+              label: "Named academic or security/data review role",
+              help: "Ahmed or Ziad may hold the role; state which role this answer represents.",
+              placeholder: "Example: Ahmed — academic review",
+            }, {
+              label: "مين ماسك academic أو security/data review؟",
+              help: "أحمد أو زياد ممكن يمسك الـ role؛ اكتب الإجابة دي بتمثل أنهي role.",
+              placeholder: "مثال: Ziad — security/data review",
+            }),
+            field("deadline", "date", true, {
+              label: "Target decision date",
+              help: "Real-data use stays disabled until the reviewed decision is recorded.",
+            }, {
+              label: "التاريخ المستهدف للـ decision",
+              help: "استخدام real data هيفضل مقفول لحد ما الـ decision تتراجع وتتسجل.",
+            }),
+          ],
+        },
+        {
+          id: "D-18",
+          status: "open",
+          group: "data",
+          title: {
+            en: "Raw and processed object-storage provider",
+            ar: "Object-storage provider للـ raw والـ processed data",
+          },
+          description: {
+            en: "Select private storage for temporary raw objects, temporary derived objects, and durable processed representations.",
+            ar: "اختاروا private storage للـ raw objects المؤقتة والـ temporary derived objects والـ processed representations الدائمة.",
+          },
+          closure: {
+            en: "A tested provider/region with private access, signed operations, independent deletion checks, durability, backup behavior, rights compatibility, and measured cost.",
+            ar: "Provider وregion متجربين، مع private access وsigned operations وindependent deletion checks وdurability وbackup behavior وrights مناسبة وتكلفة مقاسة.",
+          },
+          fields: [
+            field("owner", "text", true, {
+              label: "Security/data owner",
+              help: "Name Ahmed or Ziad. This role is currently unassigned.",
+              placeholder: "Ahmed or Ziad",
+            }, {
+              label: "مين الـ security/data owner؟",
+              help: "اكتب أحمد أو زياد. الـ role ده لسه مش متحدد.",
+              placeholder: "Ahmed أو Ziad",
+            }),
+            field("candidates", "textarea", true, {
+              label: "Provider and region candidates",
+              help: "List candidates to evaluate; this answer alone does not approve one.",
+              placeholder: "Provider / region / reason to test…",
+            }, {
+              label: "الـ provider والـ region المرشحين",
+              help: "اكتب المرشحين اللي نجربهم؛ الإجابة دي لوحدها مش موافقة على واحد منهم.",
+              placeholder: "Provider / region / سبب التجربة…",
+            }),
+            field("requirements", "textarea", true, {
+              label: "Required storage and deletion behavior",
+              help: "Cover namespaces, signed-operation lifetime, read-after-write, checksums, absence verification, backup/versioning, and maximum acceptable cost.",
+              placeholder: "Required behavior and limits…",
+            }, {
+              label: "Storage وdeletion behavior المطلوب",
+              help: "غطّي namespaces ومدة signed operations وread-after-write وchecksums وabsence verification والـ backup/versioning وأقصى تكلفة.",
+              placeholder: "الـ behavior والحدود المطلوبة…",
+            }),
+            field("rights_constraints", "textarea", true, {
+              label: "Rights, privacy, and provider-term constraints",
+              help: "State allowed regions, retention, training, subprocessors, and evidence requirements.",
+              placeholder: "Allowed and forbidden provider behavior…",
+            }, {
+              label: "قيود الـ rights والـ privacy وشروط الـ provider",
+              help: "حدد الـ regions والـ retention والـ training والـ subprocessors والـ evidence المطلوبة.",
+              placeholder: "إيه المسموح والممنوع عند الـ provider…",
+            }),
+            field("deadline", "date", true, {
+              label: "Target decision date",
+              help: "Real storage remains disabled until evaluation and approval are recorded.",
+            }, {
+              label: "التاريخ المستهدف للـ decision",
+              help: "Real storage هيفضل مقفول لحد التقييم والموافقة المسجلة.",
+            }),
+          ],
+        },
+        {
+          id: "D-08",
+          status: "proposed",
+          group: "data",
+          title: { en: "Chat retention", ar: "مدة الاحتفاظ بالـ Chat" },
+          description: {
+            en: "Define how long ordinary chat content, reported or consented conversations, and safe operational metadata remain available.",
+            ar: "حددوا هنحتفظ قد إيه بمحتوى الـ chat العادي، والمحادثات اللي اتعملها report أو consent، والـ operational metadata الآمنة.",
+          },
+          closure: {
+            en: "Exact periods and starting events, student deletion behavior, review exceptions, retained metadata, and a named security/data reviewer.",
+            ar: "مدد واضحة ومعاها starting events، وطريقة student deletion، وحالات الـ review الاستثنائية، والـ metadata اللي هتفضل، وsecurity/data reviewer متحدد.",
+          },
+          fields: [
+            field("ordinary_retention", "text", true, {
+              label: "Ordinary chat-content retention",
+              help: "Give a number, unit, and starting event; or explicitly choose session-only/no durable retention.",
+              placeholder: "Example: 30 days from message creation",
+            }, {
+              label: "مدة الاحتفاظ بمحتوى الـ chat العادي",
+              help: "اكتب رقم ووحدة وstarting event، أو اختار بوضوح session-only من غير durable retention.",
+              placeholder: "مثال: 30 يوم من وقت إنشاء الرسالة",
+            }),
+            field("student_controls", "textarea", true, {
+              label: "Student visibility and deletion controls",
+              help: "Explain what students can view, delete, export, or opt out of.",
+              placeholder: "Student controls…",
+            }, {
+              label: "الطالب يقدر يشوف أو يمسح أو يصدّر إيه؟",
+              help: "وضح كمان يقدر يعمل opt out من إيه.",
+              placeholder: "Student controls…",
+            }),
+            field("review_retention", "text", true, {
+              label: "Reported or explicitly consented review period",
+              help: "Give a number, unit, starting event, and who can access it.",
+              placeholder: "Period / start / authorized role",
+            }, {
+              label: "مدة الاحتفاظ للمحادثات reported أو consented",
+              help: "اكتب رقم ووحدة وstarting event ومين مسموح له يشوفها.",
+              placeholder: "المدة / البداية / الـ role المسموح",
+            }),
+            field("metadata_retention", "text", true, {
+              label: "Safe operational-metadata retention",
+              help: "Exclude ordinary chat text; specify IDs, timestamps, outcomes, cost, and audit duration where needed.",
+              placeholder: "Metadata / duration / start event",
+            }, {
+              label: "مدة الاحتفاظ بالـ operational metadata الآمنة",
+              help: "من غير نص الـ chat العادي؛ حدد IDs وtimestamps والنتيجة والتكلفة والـ audit لو محتاجين.",
+              placeholder: "Metadata / المدة / starting event",
+            }),
+            field("exceptions", "textarea", true, {
+              label: "Incident, legal, and patient-information exceptions",
+              help: "State hold authority, access limits, review interval, and maximum duration.",
+              placeholder: "Exception rules…",
+            }, {
+              label: "استثناءات الـ incidents أو legal hold أو patient information",
+              help: "حدد مين يقدر يعمل hold وحدود الوصول وreview interval وأقصى مدة.",
+              placeholder: "قواعد الاستثناء…",
+            }),
+            field("reviewer", "text", true, {
+              label: "Named security/data reviewer",
+              help: "Ahmed or Ziad.",
+              placeholder: "Ahmed or Ziad",
+            }, {
+              label: "مين الـ security/data reviewer؟",
+              help: "أحمد أو زياد.",
+              placeholder: "Ahmed أو Ziad",
+            }),
+            field("deadline", "date", true, {
+              label: "Target decision date",
+              help: "Chat retention must also remain compatible with D-19.",
+            }, {
+              label: "التاريخ المستهدف للـ decision",
+              help: "Chat retention لازم تفضل متوافقة مع D-19.",
+            }),
+          ],
+        },
+        {
+          id: "D-19",
+          status: "open",
+          group: "data",
+          title: {
+            en: "Retention periods and deletion deadlines",
+            ar: "مدد الـ Retention ومواعيد الـ Deletion",
+          },
+          description: {
+            en: "Set the real-data lifecycle values that replace the synthetic test profile without turning a deadline into a waiting period.",
+            ar: "حددوا قيم real-data lifecycle اللي هتبدّل synthetic test profile، من غير ما نخلي الـ deadline فترة انتظار.",
+          },
+          closure: {
+            en: "Exact durations and starting events, failed/quarantine behavior, hold governance, D-18 absence semantics, incident recipients, rights compatibility, and separate Ahmed/Ziad confirmation.",
+            ar: "مدد وstarting events واضحين، وقواعد الفشل والـ quarantine والـ holds، وطريقة absence حسب D-18، ومين يستقبل incidents، وتوافق rights، وتأكيد منفصل من أحمد وزياد.",
+          },
+          fields: [
+            field("owner", "text", true, {
+              label: "Security/data owner",
+              help: "Name Ahmed or Ziad. The protected raw-deletion gate still requires both confirmations.",
+              placeholder: "Ahmed or Ziad",
+            }, {
+              label: "مين الـ security/data owner؟",
+              help: "اكتب أحمد أو زياد. Protected raw-deletion gate لسه محتاجة تأكيد الاتنين.",
+              placeholder: "Ahmed أو Ziad",
+            }),
+            field("raw_limits", "textarea", true, {
+              label: "Raw-object limits",
+              help: "Give the absolute cap and the post-acceptance deletion deadline, each with a number, unit, and starting event. Deletion is enqueued immediately after acceptance.",
+              placeholder: "Absolute cap: …\nPost-acceptance deadline: …",
+            }, {
+              label: "حدود الـ Raw object",
+              help: "اكتب absolute cap وpost-acceptance deletion deadline، وكل واحدة رقم ووحدة وstarting event. الـ deletion بتبدأ فور القبول.",
+              placeholder: "Absolute cap: …\nPost-acceptance deadline: …",
+            }),
+            field("derived_processed", "textarea", true, {
+              label: "Temporary-derived, processed, locator, and evidence periods",
+              help: "Give each duration and starting/end event separately.",
+              placeholder: "Temporary derived: …\nProcessed: …\nLocators/provenance: …\nAnswer/artifact evidence: …",
+            }, {
+              label: "مدد temporary-derived والـ processed والـ locators والـ evidence",
+              help: "اكتب مدة وstarting/end event لكل نوع لوحده.",
+              placeholder: "Temporary derived: …\nProcessed: …\nLocators/provenance: …\nAnswer/artifact evidence: …",
+            }),
+            field("failure_quarantine", "textarea", true, {
+              label: "Failed conversion and quarantine",
+              help: "State retention, permitted access, retry ceiling, terminal action, and quarantine duration.",
+              placeholder: "Failure and quarantine rules…",
+            }, {
+              label: "قواعد failed conversion والـ quarantine",
+              help: "حدد retention ومين يدخل وretry ceiling والـ terminal action ومدة الـ quarantine.",
+              placeholder: "قواعد الفشل والـ quarantine…",
+            }),
+            field("holds", "textarea", true, {
+              label: "Hold authority and review",
+              help: "Name who may place/remove a hold, maximum duration, review interval, and evidence requirement.",
+              placeholder: "Place / remove / max duration / review / evidence…",
+            }, {
+              label: "مين يقدر يعمل أو يشيل Hold؟",
+              help: "حدد maximum duration وreview interval والـ evidence المطلوبة.",
+              placeholder: "Place / remove / max duration / review / evidence…",
+            }),
+            field("dependencies", "textarea", true, {
+              label: "D-18 deletion check, D-20 recipients, and rights evidence",
+              help: "Reference the agreed provider absence check, incident route, and reviewed rights inventory.",
+              placeholder: "Dependency references…",
+            }, {
+              label: "D-18 deletion check وD-20 recipients والـ rights evidence",
+              help: "حط reference لطريقة absence المتفق عليها ومسار الـ incident والـ rights inventory المتراجعة.",
+              placeholder: "Dependency references…",
+            }),
+            field("deadline", "date", true, {
+              label: "Target decision date",
+              help: "Both founders must separately confirm the protected raw-deletion gate.",
+            }, {
+              label: "التاريخ المستهدف للـ decision",
+              help: "لازم أحمد وزياد يأكدوا protected raw-deletion gate كل واحد لوحده.",
+            }),
+          ],
+        },
+        {
+          id: "D-20",
+          status: "open",
+          group: "operations",
+          title: {
+            en: "Notification and incident channels",
+            ar: "قنوات الـ Notifications والـ Incidents",
+          },
+          description: {
+            en: "Choose where actionable alerts go, who owns them, and when an unacknowledged alert escalates.",
+            ar: "اختاروا الـ alerts المهمة تروح فين، ومين مسؤول عنها، وإمتى تتعمل escalation لو محدش رد.",
+          },
+          closure: {
+            en: "Primary/fallback channels, recipients by incident type, severity routing, acknowledgement/escalation windows, and successful synthetic delivery tests.",
+            ar: "Primary وfallback channels، والـ recipients حسب نوع الـ incident، والـ severity routing، ومدد acknowledgement/escalation، واختبارات synthetic delivery ناجحة.",
+          },
+          fields: [
+            field("channels", "textarea", true, {
+              label: "Primary and fallback channels",
+              help: "Name services or operational routes, not credentials or personal addresses.",
+              placeholder: "Primary: …\nFallback: …",
+            }, {
+              label: "الـ Primary والـ fallback channels",
+              help: "اكتب اسم الخدمة أو المسار التشغيلي، مش credentials أو عناوين شخصية.",
+              placeholder: "Primary: …\nFallback: …",
+            }),
+            field("recipients", "textarea", true, {
+              label: "Recipients by incident type",
+              help: "Cover leakage/security, deletion, provider, worker/job, budget, availability, backup/restore, and failed notification.",
+              placeholder: "Incident type → responsible role → backup role",
+            }, {
+              label: "مين يستقبل كل نوع incident؟",
+              help: "غطّي leakage/security وdeletion وprovider وworker/job وbudget وavailability وbackup/restore وfailed notification.",
+              placeholder: "Incident type → responsible role → backup role",
+            }),
+            field("timing", "textarea", true, {
+              label: "Acknowledgement and escalation timing",
+              help: "Set windows per severity and name what happens when delivery itself fails.",
+              placeholder: "Critical: …\nHigh: …\nNormal: …\nDelivery failure: …",
+            }, {
+              label: "مواعيد الـ acknowledgement والـ escalation",
+              help: "حدد الوقت لكل severity، وإيه اللي يحصل لو الـ notification نفسها فشلت.",
+              placeholder: "Critical: …\nHigh: …\nNormal: …\nDelivery failure: …",
+            }),
+            field("constraints", "textarea", true, {
+              label: "Privacy, cost, and availability constraints",
+              help: "State what alert payloads must never contain and any monthly budget or uptime requirement.",
+              placeholder: "Payload restrictions / budget / uptime…",
+            }, {
+              label: "قيود الـ privacy والتكلفة والـ availability",
+              help: "حدد إيه اللي ممنوع يظهر في alert payload، وأي monthly budget أو uptime مطلوب.",
+              placeholder: "Payload restrictions / budget / uptime…",
+            }),
+            field("deadline", "date", true, {
+              label: "Target decision date",
+              help: "D-05 and D-19 need approved alert recipients.",
+            }, {
+              label: "التاريخ المستهدف للـ decision",
+              help: "D-05 وD-19 محتاجين alert recipients متوافق عليهم.",
+            }),
+          ],
+        },
+        {
+          id: "D-05",
+          status: "open",
+          group: "services",
+          title: {
+            en: "Maximum PoC spend and paid enablement",
+            ar: "أقصى تكلفة للـ PoC وتشغيل الخدمات المدفوعة",
+          },
+          description: {
+            en: "Define one currency and every hard spending scope before any real provider can initialize.",
+            ar: "حددوا currency واحدة وكل hard spending scopes قبل ما أي real provider يشتغل.",
+          },
+          closure: {
+            en: "Exact caps, exchange-rate evidence, D-20 alert recipients, a deliberate live confirmation guard, and separate Ahmed/Ziad budget confirmations.",
+            ar: "Caps واضحة وexchange-rate evidence وD-20 alert recipients وlive confirmation guard مقصود، وتأكيد budget منفصل من أحمد وزياد.",
+          },
+          fields: [
+            field("currency", "text", true, {
+              label: "Canonical currency and exchange-rate rule",
+              help: "Use one ISO 4217 code and name the dated evidence source for any conversion.",
+              placeholder: "Example: USD; dated conversion source: …",
+            }, {
+              label: "الـ Canonical currency وقاعدة الـ exchange rate",
+              help: "استخدم ISO 4217 code واحدة، وحدد مصدر dated evidence لأي تحويل عملة.",
+              placeholder: "مثال: USD؛ مصدر التحويل بتاريخ: …",
+            }),
+            field("caps", "textarea", true, {
+              label: "Every hard spending cap",
+              help: "State amount, currency, scope, period, and starting event for total PoC, weekly, each provider/action, source preflight, per-user daily, and single request.",
+              placeholder: "Total PoC: …\nWeekly: …\nProvider/action: …\nSource: …\nUser/day: …\nRequest: …",
+            }, {
+              label: "كل hard spending caps",
+              help: "اكتب amount وcurrency وscope وperiod وstarting event لكل من total PoC وweekly وكل provider/action والـ source والـ user/day والـ request.",
+              placeholder: "Total PoC: …\nWeekly: …\nProvider/action: …\nSource: …\nUser/day: …\nRequest: …",
+            }),
+            field("alerts", "textarea", true, {
+              label: "Threshold recipients and automatic action",
+              help: "Reference D-20 and state what happens at 50%, 75%, 90%, and 100%.",
+              placeholder: "50%: …\n75%: …\n90%: …\n100%: …",
+            }, {
+              label: "مين يستقبل budget thresholds وإيه الـ automatic action؟",
+              help: "اربطها بـ D-20 واكتب إيه اللي يحصل عند 50% و75% و90% و100%.",
+              placeholder: "50%: …\n75%: …\n90%: …\n100%: …",
+            }),
+            field("live_guard", "textarea", true, {
+              label: "Live-enablement confirmation guard",
+              help: "Name the allowed environment profile and the deliberate command-time confirmation mechanism.",
+              placeholder: "Environment / confirmation / approvers…",
+            }, {
+              label: "الـ Live-enablement confirmation guard",
+              help: "حدد environment profile المسموح والـ confirmation المطلوبة وقت تشغيل الـ command.",
+              placeholder: "Environment / confirmation / approvers…",
+            }),
+            field("review_role", "text", true, {
+              label: "Named budget or security/data review role",
+              help: "State which founder holds the review role for this answer.",
+              placeholder: "Ahmed or Ziad — role",
+            }, {
+              label: "مين ماسك budget أو security/data review؟",
+              help: "اكتب أنهي founder ماسك الـ review role في الإجابة دي.",
+              placeholder: "Ahmed أو Ziad — role",
+            }),
+            field("deadline", "date", true, {
+              label: "Target decision date",
+              help: "Zero paid capacity remains the only authorized profile until this gate closes.",
+            }, {
+              label: "التاريخ المستهدف للـ decision",
+              help: "Zero paid capacity هيفضل هو الـ profile الوحيد المسموح لحد ما الـ gate دي تقفل.",
+            }),
+          ],
+        },
+        {
+          id: "D-04",
+          status: "open",
+          group: "services",
+          title: { en: "AI providers", ar: "AI Providers" },
+          description: {
+            en: "Shortlist provider/model/config/region candidates for OCR, transcription, embeddings, chat, and Studio without treating preference as evaluation evidence.",
+            ar: "اختاروا shortlist لـ provider/model/config/region للـ OCR والـ transcription والـ embeddings والـ chat والـ Studio، من غير ما نعتبر التفضيل الشخصي evidence.",
+          },
+          closure: {
+            en: "Frozen rights-approved datasets, action-by-action benchmark results, compatible provider terms, D-05 budgets, rollback controls, and both founders confirming live enablement.",
+            ar: "Frozen datasets والـ rights متوافق عليها، وbenchmark لكل action، وشروط provider مناسبة، وD-05 budgets، وrollback controls، وتأكيد الاتنين على live enablement.",
+          },
+          fields: [
+            field("candidates", "textarea", true, {
+              label: "Candidates by action",
+              help: "List provider, model/config, and region separately for OCR, transcription, embeddings, chat generation, and Studio generation.",
+              placeholder: "OCR: …\nTranscription: …\nEmbeddings: …\nChat: …\nStudio: …",
+            }, {
+              label: "المرشحين لكل action",
+              help: "اكتب provider وmodel/config وregion لكل من OCR وtranscription وembeddings وchat generation وStudio generation.",
+              placeholder: "OCR: …\nTranscription: …\nEmbeddings: …\nChat: …\nStudio: …",
+            }),
+            field("requirements", "textarea", true, {
+              label: "Quality and reliability acceptance requirements",
+              help: "State required dataset versions, correctness thresholds, latency, timeout, retry, rate-limit, and uncertain-acceptance behavior.",
+              placeholder: "Benchmark requirements…",
+            }, {
+              label: "Quality وreliability requirements",
+              help: "حدد dataset versions والـ correctness thresholds والـ latency والـ timeout والـ retry والـ rate limits والـ uncertain acceptance.",
+              placeholder: "Benchmark requirements…",
+            }),
+            field("terms", "textarea", true, {
+              label: "Rights, region, retention, training, and deletion constraints",
+              help: "Reference the source-rights inventory; UNKNOWN or DENIED rights block processing.",
+              placeholder: "Allowed provider terms and hard exclusions…",
+            }, {
+              label: "قيود الـ rights والـ region والـ retention والـ training والـ deletion",
+              help: "اربطها بالـ source-rights inventory؛ أي UNKNOWN أو DENIED rights بتقفّل الـ processing.",
+              placeholder: "الشروط المسموحة والـ hard exclusions…",
+            }),
+            field("benchmark_owner", "text", true, {
+              label: "Benchmark and academic-review owner",
+              help: "Name Ahmed or Ziad and the role represented.",
+              placeholder: "Founder — role",
+            }, {
+              label: "مين مسؤول عن الـ benchmark والـ academic review؟",
+              help: "اكتب أحمد أو زياد والـ role اللي ماسكه.",
+              placeholder: "Founder — role",
+            }),
+            field("deadline", "date", true, {
+              label: "Target decision date",
+              help: "Final approval waits for WP09-T01 benchmark evidence and D-05.",
+            }, {
+              label: "التاريخ المستهدف للـ decision",
+              help: "الموافقة النهائية مستنية benchmark evidence من WP09-T01 وD-05.",
+            }),
+          ],
+        },
+        {
+          id: "D-17",
+          status: "open",
+          group: "operations",
+          title: {
+            en: "Queue transport and worker host",
+            ar: "Queue transport وWorker host",
+          },
+          description: {
+            en: "Choose external infrastructure for durable background work. Founder computers are development workstations only and are not candidates.",
+            ar: "اختاروا external infrastructure للـ durable background work. أجهزة أحمد وزياد للـ development بس ومش مرشحة للاستضافة.",
+          },
+          closure: {
+            en: "A measured external host/region and queue approach covering runtime, isolation, recovery, logs, secrets, concurrency, health, rollback, cost, and the 100-student workload.",
+            ar: "External host/region وqueue approach متقاسين، ويغطّوا runtime وisolation وrecovery وlogs وsecrets وconcurrency وhealth وrollback والتكلفة و100-student workload.",
+          },
+          fields: [
+            field("candidates", "textarea", true, {
+              label: "Queue and external worker-host candidates",
+              help: "Founder computers are excluded. State whether n8n has any optional, non-authoritative role.",
+              placeholder: "Queue: …\nWorker host/region: …\nOptional n8n role: …",
+            }, {
+              label: "مرشحين الـ Queue والـ external worker host",
+              help: "أجهزة أحمد وزياد مستبعدة. وضح هل n8n ليه دور اختياري من غير ما يبقى authoritative.",
+              placeholder: "Queue: …\nWorker host/region: …\nOptional n8n role: …",
+            }),
+            field("operations", "textarea", true, {
+              label: "Operations and reliability requirements",
+              help: "Cover both-computers-off operation, deployment, patches, backup, worker death, lease recovery, health, logs, and rollback.",
+              placeholder: "Required operational behavior…",
+            }, {
+              label: "Operations وreliability requirements",
+              help: "غطّي التشغيل والجهازين مقفولين والـ deployment والـ patches والـ backup وworker death وlease recovery والـ health والـ logs والـ rollback.",
+              placeholder: "الـ operational behavior المطلوب…",
+            }),
+            field("budget", "text", true, {
+              label: "Maximum monthly infrastructure budget",
+              help: "Use the D-05 currency and state whether zero-cost interruption risk is acceptable.",
+              placeholder: "Amount / currency / acceptable risk",
+            }, {
+              label: "أقصى monthly infrastructure budget",
+              help: "استخدم D-05 currency وحدد هل مخاطر انقطاع free tier مقبولة ولا لأ.",
+              placeholder: "Amount / currency / acceptable risk",
+            }),
+            field("owner", "text", true, {
+              label: "Named operations owner",
+              help: "Ahmed or Ziad; state who handles alerts, recovery, and security updates.",
+              placeholder: "Founder — responsibilities",
+            }, {
+              label: "مين الـ operations owner؟",
+              help: "أحمد أو زياد؛ وضح مين مسؤول عن alerts وrecovery وsecurity updates.",
+              placeholder: "Founder — responsibilities",
+            }),
+            field("deadline", "date", true, {
+              label: "Target decision date",
+              help: "Final approval requires benchmark and load evidence.",
+            }, {
+              label: "التاريخ المستهدف للـ decision",
+              help: "الموافقة النهائية محتاجة benchmark وload evidence.",
+            }),
+          ],
+        },
+      ];
+
+      const profiles = {
+        ahmed: { displayName: "Ahmed", answers: {} },
+        ziad: { displayName: "Ziad", answers: {} },
+      };
+
+      let activeProfile = "ahmed";
+      let activeDecisionIndex = 0;
+      let toastTimer;
+
+      const element = (id) => document.getElementById(id);
+
+      function emptyDecisionState() {
+        return { values: {}, readyToCompare: false, updatedAt: null };
+      }
+
+      function decisionState(profileId, decisionId) {
+        if (!profiles[profileId].answers[decisionId]) {
+          profiles[profileId].answers[decisionId] = emptyDecisionState();
+        }
+        return profiles[profileId].answers[decisionId];
+      }
+
+      function isolateTechnicalText(value) {
+        return String(value).replace(
+          /[A-Za-z0-9][A-Za-z0-9+./:_-]*(?:[ \t]+[A-Za-z0-9][A-Za-z0-9+./:_-]*)*/g,
+          "\u2066$&\u2069",
+        );
+      }
+
+      function displayText(value) {
+        return activeProfile === "ziad" ? isolateTechnicalText(value) : value;
+      }
+
+      function localized(value) {
+        return displayText(value[copy[activeProfile].lang]);
+      }
+
+      function hasValue(value) {
+        return typeof value === "string" && value.trim().length > 0;
+      }
+
+      function requiredComplete(profileId, decision) {
+        const state = decisionState(profileId, decision.id);
+        return decision.fields
+          .filter((item) => item.required)
+          .every((item) => hasValue(state.values[item.id]));
+      }
+
+      function answerState(profileId, decision) {
+        const state = decisionState(profileId, decision.id);
+        const anyAnswer = Object.values(state.values).some(hasValue);
+        if (state.readyToCompare && requiredComplete(profileId, decision)) {
+          return "ready";
+        }
+        return anyAnswer ? "draft" : "notAnswered";
+      }
+
+      function renderStaticCopy() {
+        const text = copy[activeProfile];
+        const activeName = profiles[activeProfile].displayName;
+        document.documentElement.lang = text.lang;
+        document.documentElement.dir = text.dir;
+        document.body.dataset.profile = activeProfile;
+        element("status-note").textContent = displayText(text.statusNote);
+        element("page-title").textContent = displayText(text.pageTitle);
+        element("page-lede").textContent = displayText(text.pageLede);
+        element("profile-label").textContent = displayText(text.profileLabel);
+        element("jump-export").querySelector("span").textContent = displayText(
+          text.jumpExport,
+        );
+        element("privacy-title").textContent = displayText(
+          text.privacyTitle + " ",
+        );
+        element("privacy-copy").textContent = displayText(text.privacyCopy);
+        element("progress-label").textContent = displayText(text.progressLabel);
+        element("decision-select-label").textContent = displayText(
+          text.selectLabel,
+        );
+        element("closure-label").textContent = displayText(text.closureLabel);
+        element("ready-label").textContent = displayText(text.readyLabel);
+        element("ready-help").textContent = displayText(text.readyHelp);
+        element("previous-decision").querySelector("span").textContent =
+          displayText(text.previous);
+        element("next-decision").querySelector("span").textContent = displayText(
+          text.next,
+        );
+        element("save-draft").querySelector("span").textContent = displayText(
+          text.save,
+        );
+        element("clear-profile").querySelector("span").textContent =
+          displayText(text.clear.replace("Ahmed", activeName));
+        element("export-title").textContent = displayText(text.exportTitle);
+        element("export-copy").textContent = displayText(text.exportCopy);
+        element("export-json").querySelector("span").textContent =
+          displayText(text.exportJson.replace("Ahmed", activeName));
+        element("export-markdown").querySelector("span").textContent =
+          displayText(text.exportMarkdown.replace("Ahmed", activeName));
+        element("export-combined").querySelector("span").textContent =
+          displayText(text.exportBoth);
+        element("draft-title").textContent = displayText(text.draftTitle);
+        element("draft-copy").textContent = displayText(text.draftCopy);
+        element("import-label").textContent = displayText(text.importLabel);
+        if (!element("draft-state").dataset.message) {
+          element("draft-state").textContent = displayText(text.nothingSaved);
+        }
+        document.querySelectorAll("[data-profile-button]").forEach((button) => {
+          button.setAttribute(
+            "aria-pressed",
+            String(button.dataset.profileButton === activeProfile),
+          );
+        });
+      }
+
+      function renderNavigation() {
+        const text = copy[activeProfile];
+        const nav = element("decision-nav");
+        const select = element("decision-select");
+        nav.replaceChildren();
+        select.replaceChildren();
+
+        Object.entries(text.groups).forEach(([groupId, groupLabel]) => {
+          const groupDecisions = decisions.filter(
+            (decision) => decision.group === groupId,
+          );
+          if (groupDecisions.length === 0) return;
+
+          const wrapper = document.createElement("div");
+          wrapper.className = "group";
+          const heading = document.createElement("span");
+          heading.className = "group-title";
+          heading.textContent = displayText(groupLabel);
+          wrapper.append(heading);
+
+          groupDecisions.forEach((decision) => {
+            const index = decisions.indexOf(decision);
+            const button = document.createElement("button");
+            const state = answerState(activeProfile, decision);
+            button.type = "button";
+            button.className = "decision-link";
+            button.dataset.index = String(index);
+            button.dataset.state = state;
+            button.setAttribute(
+              "aria-current",
+              index === activeDecisionIndex ? "step" : "false",
+            );
+            button.setAttribute(
+              "aria-label",
+              `${decision.id}: ${localized(decision.title)} — ${displayText(text[state])}`,
+            );
+
+            const codeNode = document.createElement("span");
+            codeNode.className = "decision-code";
+            codeNode.textContent = decision.id;
+            const titleNode = document.createElement("span");
+            titleNode.className = "decision-name";
+            titleNode.textContent = localized(decision.title);
+            const dot = document.createElement("span");
+            dot.className = "completion-dot";
+            dot.setAttribute("aria-hidden", "true");
+            button.append(codeNode, titleNode, dot);
+            wrapper.append(button);
+
+            const option = document.createElement("option");
+            option.value = String(index);
+            option.textContent = `${decision.id} — ${localized(decision.title)} (${displayText(text[state])})`;
+            option.selected = index === activeDecisionIndex;
+            select.append(option);
+          });
+
+          nav.append(wrapper);
+        });
+
+        updateProgress();
+      }
+
+      function createField(decision, item) {
+        const language = copy[activeProfile].lang;
+        const content = item[language];
+        const state = decisionState(activeProfile, decision.id);
+        const wrapper = document.createElement("div");
+        wrapper.className = "field";
+
+        const label = document.createElement("label");
+        label.htmlFor = `field-${decision.id}-${item.id}`;
+        label.textContent = displayText(content.label);
+        if (item.required) {
+          const mark = document.createElement("span");
+          mark.className = "required-mark";
+          mark.textContent = " *";
+          mark.setAttribute(
+            "aria-label",
+            displayText(copy[activeProfile].required),
+          );
+          label.append(mark);
+        }
+
+        const help = document.createElement("small");
+        help.className = "field-help";
+        help.id = `help-${decision.id}-${item.id}`;
+        help.textContent = displayText(content.help || "");
+
+        let input;
+        if (item.type === "textarea") {
+          input = document.createElement("textarea");
+        } else if (item.type === "select") {
+          input = document.createElement("select");
+          const blank = document.createElement("option");
+          blank.value = "";
+          blank.textContent = displayText(
+            language === "ar" ? "اختار…" : "Choose…",
+          );
+          input.append(blank);
+          item.options.forEach((optionData) => {
+            const option = document.createElement("option");
+            option.value = optionData.value;
+            option.textContent = displayText(optionData[language]);
+            input.append(option);
+          });
+        } else {
+          input = document.createElement("input");
+          input.type = item.type;
+        }
+
+        input.id = `field-${decision.id}-${item.id}`;
+        input.name = item.id;
+        input.required = item.required;
+        input.value = state.values[item.id] || "";
+        input.placeholder = displayText(content.placeholder || "");
+        input.setAttribute("aria-describedby", help.id);
+        input.addEventListener("input", (event) => {
+          state.values[item.id] = event.target.value;
+          state.updatedAt = new Date().toISOString();
+          if (state.readyToCompare && !requiredComplete(activeProfile, decision)) {
+            state.readyToCompare = false;
+            element("ready-to-compare").checked = false;
+          }
+          renderNavigation();
+          markUnsaved();
+        });
+
+        wrapper.append(label);
+        if (content.help) wrapper.append(help);
+        wrapper.append(input);
+        return wrapper;
+      }
+
+      function renderDecision() {
+        const decision = decisions[activeDecisionIndex];
+        const text = copy[activeProfile];
+        const state = decisionState(activeProfile, decision.id);
+        element("decision-id").textContent = decision.id;
+        element("decision-status").textContent = displayText(
+          text[decision.status],
+        );
+        element("decision-status").className =
+          decision.status === "proposed" ? "tag proposed" : "tag";
+        element("decision-group").textContent = displayText(
+          text.groups[decision.group],
+        );
+        element("decision-title").textContent = localized(decision.title);
+        element("decision-description").textContent = localized(
+          decision.description,
+        );
+        element("decision-closure").textContent = localized(decision.closure);
+
+        const form = element("decision-form");
+        form.replaceChildren();
+        decision.fields.forEach((item) => form.append(createField(decision, item)));
+
+        const ready = element("ready-to-compare");
+        ready.checked = state.readyToCompare;
+        ready.onchange = () => {
+          if (ready.checked && !requiredComplete(activeProfile, decision)) {
+            ready.checked = false;
+            showToast(text.requiredWarning);
+            const firstMissing = decision.fields.find(
+              (item) => item.required && !hasValue(state.values[item.id]),
+            );
+            element(`field-${decision.id}-${firstMissing.id}`).focus();
+            return;
+          }
+          state.readyToCompare = ready.checked;
+          state.updatedAt = new Date().toISOString();
+          renderNavigation();
+          markUnsaved();
+        };
+
+        element("previous-decision").disabled = activeDecisionIndex === 0;
+        element("next-decision").disabled =
+          activeDecisionIndex === decisions.length - 1;
+        renderNavigation();
+      }
+
+      function updateProgress() {
+        const readyCount = decisions.filter(
+          (decision) => answerState(activeProfile, decision) === "ready",
+        ).length;
+        const percentage = (readyCount / decisions.length) * 100;
+        element("progress-value").textContent = `${readyCount} / ${decisions.length}`;
+        element("progress-bar").style.transform = `scaleX(${percentage / 100})`;
+        const progress = element("progress-bar").parentElement;
+        progress.setAttribute("aria-valuenow", String(readyCount));
+      }
+
+      function switchProfile(profileId) {
+        activeProfile = profileId;
+        activeDecisionIndex = 0;
+        element("draft-state").dataset.message = "";
+        renderStaticCopy();
+        renderDecision();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function goToDecision(index) {
+        activeDecisionIndex = Math.max(0, Math.min(decisions.length - 1, index));
+        renderDecision();
+        document.querySelector(".decision-panel").scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+
+      function markUnsaved() {
+        const message =
+          activeProfile === "ziad"
+            ? "في تغييرات لسه ماتحفظتش على الجهاز. التصدير بياخد أحدث إجابات مباشرة."
+            : "There are unsaved local changes. Exports always use the latest answers.";
+        element("draft-state").dataset.message = "unsaved";
+        element("draft-state").textContent = message;
+      }
+
+      function saveDraft() {
+        const payload = {
+          schemaVersion: workshopVersion,
+          savedAt: new Date().toISOString(),
+          profiles,
+        };
+        localStorage.setItem(storageKey, JSON.stringify(payload));
+        element("draft-state").dataset.message = "saved";
+        element("draft-state").textContent = copy[activeProfile].saved;
+        showToast(copy[activeProfile].saved);
+      }
+
+      function loadDraft() {
+        const raw = localStorage.getItem(storageKey);
+        if (!raw) return;
+        try {
+          const parsed = JSON.parse(raw);
+          if (parsed.schemaVersion !== workshopVersion || !parsed.profiles) return;
+          ["ahmed", "ziad"].forEach((profileId) => {
+            if (parsed.profiles[profileId]?.answers) {
+              profiles[profileId].answers = parsed.profiles[profileId].answers;
+            }
+          });
+        } catch {
+          localStorage.removeItem(storageKey);
+        }
+      }
+
+      function clearActiveProfile() {
+        const text = copy[activeProfile];
+        if (!window.confirm(text.confirmClear)) return;
+        profiles[activeProfile].answers = {};
+        saveDraft();
+        element("draft-state").textContent = text.cleared;
+        renderDecision();
+        showToast(text.cleared);
+      }
+
+      function profileExport(profileId) {
+        const profile = profiles[profileId];
+        return {
+          founder: profile.displayName,
+          language: copy[profileId].lang,
+          decisions: decisions.map((decision) => {
+            const state = decisionState(profileId, decision.id);
+            return {
+              id: decision.id,
+              title: decision.title[copy[profileId].lang],
+              canonicalTitle: decision.title.en,
+              sourceStatus: decision.status.toUpperCase(),
+              discussionStatus: answerState(profileId, decision),
+              readyToCompare: state.readyToCompare,
+              requiredFieldsComplete: requiredComplete(profileId, decision),
+              updatedAt: state.updatedAt,
+              answers: decision.fields.reduce((answers, item) => {
+                answers[item.id] = state.values[item.id] || "";
+                return answers;
+              }, {}),
+            };
+          }),
+        };
+      }
+
+      function exportPayload(kind) {
+        const selectedProfiles =
+          kind === "combined" ? ["ahmed", "ziad"] : [activeProfile];
+        return {
+          schemaVersion: workshopVersion,
+          artifact: "UniMind unresolved-decision workshop",
+          exportKind: kind,
+          exportedAt: new Date().toISOString(),
+          notice:
+            "Discussion input only. This export is not formal approval and does not satisfy a protected gate.",
+          profiles: selectedProfiles.reduce((result, profileId) => {
+            result[profileId] = profileExport(profileId);
+            return result;
+          }, {}),
+        };
+      }
+
+      function escapeMarkdown(value) {
+        return String(value || "").replace(/\r\n/g, "\n").trim();
+      }
+
+      function markdownForProfile(profileId) {
+        const exported = profileExport(profileId);
+        const isArabic = profileId === "ziad";
+        const md = (value) =>
+          isArabic ? `\u200f${isolateTechnicalText(value)}` : value;
+        const labels = isArabic
+          ? {
+              title: "إجابات UniMind decisions — زياد",
+              exported: "تاريخ التصدير",
+              notice:
+                "مدخلات للنقاش بس. الملف ده مش موافقة رسمية ومش بيقفل أي protected gate.",
+              discussionStatus: "حالة الإجابة",
+              requiredComplete: "الخانات المطلوبة كاملة",
+              ready: "جاهزة للمقارنة",
+              yes: "أيوه",
+              no: "لأ",
+              notAnswered: "لسه مفيش إجابة",
+              states: {
+                notAnswered: "لسه مفيش إجابة",
+                draft: "Draft",
+                ready: "جاهزة",
+              },
+            }
+          : {
+              title: `UniMind decision answers — ${exported.founder}`,
+              exported: "Exported",
+              notice:
+                "Discussion input only. This is not formal approval and does not satisfy a protected gate.",
+              discussionStatus: "Discussion status",
+              requiredComplete: "Required fields complete",
+              ready: "Ready to compare",
+              yes: "yes",
+              no: "no",
+              notAnswered: "Not answered",
+              states: {
+                notAnswered: "Not answered",
+                draft: "Draft",
+                ready: "Ready",
+              },
+            };
+        const lines = [
+          `# ${md(labels.title)}`,
+          "",
+          `**${md(labels.exported)}:** ${new Date().toISOString()}`,
+          "",
+          `> ${md(labels.notice)}`,
+          "",
+        ];
+        exported.decisions.forEach((decision) => {
+          const definition = decisions.find((item) => item.id === decision.id);
+          lines.push(
+            `## ${decision.id} — ${md(definition.title[isArabic ? "ar" : "en"])}`,
+            "",
+          );
+          lines.push(
+            `- ${md(labels.discussionStatus)}: ${md(labels.states[decision.discussionStatus])}`,
+          );
+          lines.push(
+            `- ${md(labels.requiredComplete)}: ${md(decision.requiredFieldsComplete ? labels.yes : labels.no)}`,
+          );
+          lines.push(
+            `- ${md(labels.ready)}: ${md(decision.readyToCompare ? labels.yes : labels.no)}`,
+            "",
+          );
+          definition.fields.forEach((item) => {
+            const answer = escapeMarkdown(decision.answers[item.id]);
+            lines.push(
+              `### ${md(item[isArabic ? "ar" : "en"].label)}`,
+              "",
+            );
+            lines.push(
+              answer ? md(answer) : `_${md(labels.notAnswered)}_`,
+              "",
+            );
+          });
+        });
+        return lines.join("\n");
+      }
+
+      function downloadFile(filename, content, mimeType) {
+        const blob = new Blob([content], { type: mimeType });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = filename;
+        document.body.append(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+        showToast(copy[activeProfile].downloadReady);
+      }
+
+      function exportIndividualJson() {
+        const founder = profiles[activeProfile].displayName.toLowerCase();
+        downloadFile(
+          `unimind-decisions-${founder}.json`,
+          JSON.stringify(exportPayload("individual"), null, 2),
+          "application/json",
+        );
+      }
+
+      function exportIndividualMarkdown() {
+        const founder = profiles[activeProfile].displayName.toLowerCase();
+        downloadFile(
+          `unimind-decisions-${founder}.md`,
+          markdownForProfile(activeProfile),
+          "text/markdown;charset=utf-8",
+        );
+      }
+
+      function exportCombined() {
+        downloadFile(
+          "unimind-decisions-ahmed-and-ziad.json",
+          JSON.stringify(exportPayload("combined"), null, 2),
+          "application/json",
+        );
+      }
+
+      async function importJson(file) {
+        try {
+          const parsed = JSON.parse(await file.text());
+          if (
+            parsed.schemaVersion !== workshopVersion ||
+            parsed.artifact !== "UniMind unresolved-decision workshop" ||
+            !parsed.profiles
+          ) {
+            throw new Error("invalid export");
+          }
+          if (!window.confirm(copy[activeProfile].confirmImport)) return;
+          Object.entries(parsed.profiles).forEach(([profileId, profileData]) => {
+            if (!profiles[profileId] || !Array.isArray(profileData.decisions)) return;
+            const importedAnswers = {};
+            profileData.decisions.forEach((decision) => {
+              if (!decisions.some((item) => item.id === decision.id)) return;
+              importedAnswers[decision.id] = {
+                values: decision.answers || {},
+                readyToCompare: Boolean(decision.readyToCompare),
+                updatedAt: decision.updatedAt || null,
+              };
+            });
+            profiles[profileId].answers = importedAnswers;
+          });
+          saveDraft();
+          element("draft-state").textContent = copy[activeProfile].imported;
+          renderDecision();
+          showToast(copy[activeProfile].imported);
+        } catch {
+          showToast(copy[activeProfile].importFailed);
+        } finally {
+          element("import-file").value = "";
+        }
+      }
+
+      function showToast(message) {
+        const toast = element("toast");
+        window.clearTimeout(toastTimer);
+        toast.textContent = displayText(message);
+        toast.dataset.visible = "true";
+        toastTimer = window.setTimeout(() => {
+          toast.dataset.visible = "false";
+        }, 2600);
+      }
+
+      document.querySelectorAll("[data-profile-button]").forEach((button) => {
+        button.addEventListener("click", () =>
+          switchProfile(button.dataset.profileButton),
+        );
+      });
+
+      element("decision-nav").addEventListener("click", (event) => {
+        const button = event.target.closest("[data-index]");
+        if (button) goToDecision(Number(button.dataset.index));
+      });
+      element("decision-select").addEventListener("change", (event) =>
+                goToDecision(Number(event.target.value)),
+      );
+      element("jump-export").addEventListener("click", () => {
+        element("export-title").scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+        element("export-json").focus({ preventScroll: true });
+      });
+      element("previous-decision").addEventListener("click", () =>
+        goToDecision(activeDecisionIndex - 1),
+      );
+      element("next-decision").addEventListener("click", () =>
+        goToDecision(activeDecisionIndex + 1),
+      );
+      element("save-draft").addEventListener("click", saveDraft);
+      element("clear-profile").addEventListener("click", clearActiveProfile);
+      element("export-json").addEventListener("click", exportIndividualJson);
+      element("export-markdown").addEventListener(
+        "click",
+        exportIndividualMarkdown,
+      );
+      element("export-combined").addEventListener("click", exportCombined);
+      element("import-file").addEventListener("change", (event) => {
+        const [file] = event.target.files;
+        if (file) importJson(file);
+      });
+
+      loadDraft();
+      renderStaticCopy();
+      renderDecision();
+    </script>
+  </body>
+</html>

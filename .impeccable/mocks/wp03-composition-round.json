@@ -1,0 +1,55 @@
+{
+  "title": "Choose The Study Shelf composition",
+  "question": "Which composition should become the build contract for UniMind's catalog and workspace foundation?",
+  "options": [
+    {
+      "id": "focused-rail",
+      "label": "Focused Rail",
+      "kicker": "ORIGINAL DIRECTION COMP",
+      "lineage": "The selected Study Shelf direction",
+      "thesis": "Several subject rails remain visible while one focused unit expands in place with the action and state needed to continue.",
+      "palette": ["#10151D", "#F5F7FA", "#4D7CFE", "#48A58D"],
+      "materials": [
+        "deep neutral field",
+        "academic image tiles",
+        "focused-edge light"
+      ],
+      "viewport": "A familiar product navigation rail anchors the left; curriculum shelves fill the canvas and the focused unit grows within its row.",
+      "risk": "The permanent navigation rail can make the result feel closer to a conventional dashboard than the other options.",
+      "comp": ".impeccable/mocks/decision/wp03-study-shelf.webp"
+    },
+    {
+      "id": "path-rails",
+      "label": "Path Rails",
+      "kicker": "HIERARCHY FIRST",
+      "lineage": "The Study Shelf organized by the validated catalog path",
+      "thesis": "Each catalog decision is a shelf, so students understand exactly how they reached the active unit before entering it.",
+      "palette": ["#10151D", "#F5F7FA", "#4D7CFE", "#48A58D"],
+      "materials": [
+        "deep neutral field",
+        "compact selection rails",
+        "focused-edge light"
+      ],
+      "viewport": "Compact completed rails stack above one tall active Modules rail; the focused unit expands inline and the workspace preview follows below.",
+      "risk": "The complete hierarchy consumes more vertical space and needs disciplined collapsing on phones.",
+      "comp": ".impeccable/mocks/wp03-study-shelf-path-rails.webp"
+    },
+    {
+      "id": "workspace-bridge",
+      "label": "Workspace Bridge",
+      "kicker": "ACTION FIRST",
+      "lineage": "The Study Shelf centered on the browse-to-workspace transition",
+      "thesis": "One dominant expanded unit bridges discovery and study, making readiness, evidence, scope, and the next action impossible to miss.",
+      "palette": ["#10151D", "#F5F7FA", "#4D7CFE", "#48A58D"],
+      "materials": [
+        "deep neutral field",
+        "dominant subject tile",
+        "focused-edge light"
+      ],
+      "viewport": "A slim validated-path strip supports one dominant unit panel, with neighboring units and honest workspace placeholders in quieter rails below.",
+      "risk": "It shows fewer units at once and depends on excellent back/forward and path-change behavior.",
+      "comp": ".impeccable/mocks/wp03-study-shelf-workspace-bridge.webp"
+    }
+  ],
+  "steer": true
+}

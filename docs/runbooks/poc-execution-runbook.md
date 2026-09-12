@@ -1190,25 +1190,34 @@ If a `SECURITY DEFINER` function is unavoidable, place it outside exposed schema
 
 ## 6. Work package 3: Product shell, catalog, and release controls
 
-**Outcome:** each role can complete its non-AI journey against mocked providers; server-derived scope and database policy prevent URL/form manipulation; release state is safe and auditable.
+**Outcome:** each role can complete its non-AI journey against mocked providers in a confirmed bilingual visual system; server-derived scope and database policy prevent URL/form manipulation; release state is safe and auditable.
 
 ### 6.0 Tutorial procedure
 
-#### WP03-T01 — Build the bilingual design and terminology foundation
+WP03 application surfaces use Impeccable in **Operate** mode. Skills refine execution but do not replace the task contract, product authority, security tests, or human checkpoint. Run Impeccable `shape`/new-work before a new visual world, use `image-to-code` only after a visual is selected, use the project-pinned Playwright CLI for bounded rendered inspection, and run Impeccable's detector and audit after the implementation exists. The integrated Impeccable audit already includes the pinned Vercel Web Interface Guidelines; do not run a second overlapping review unless the user explicitly requests it.
 
-- [ ] Create `src/lib/catalog/terminology.ts` that derives Module/Subject labels from program data; no faculty-name conditional is allowed.
-- [ ] Create a locale dictionary for Arabic and English UI copy, validation errors, empty states, safety labels, and status labels.
-- [ ] Set `lang` and `dir` on the root layout from validated preference; use CSS logical properties so RTL does not require duplicate components.
-- [ ] Define accessible color, focus, typography, spacing, loading, error, empty, and disabled states.
-- [ ] Test English technical terms inside Arabic text and keyboard/screen-reader navigation.
+External component catalogs and MCPs are optional implementation aids, never design directors or delivery dependencies. Do not send private source material, student data, secrets, or proprietary prompts/code to them. Before importing a component, record its exact source and license, inspect the full code and dependency diff, pin any tool/package version, and prove accessibility, RTL, responsive behavior, security boundaries, and maintainability locally. `pnpm verify` and a clean-clone build must not require a catalog account, API key, network call, paid credit, or mutable remote content. Follow the component-source evaluation in `docs/agents/ui-design-stack.md`.
+
+#### WP03-T01 — Choose and build the bilingual design and terminology foundation
+
+- [x] Confirm the visual-authority state before UI code. No approved `DESIGN.md`, surface brief, visual implementation, or external brand assets exist. Task record: `planning/tasks/wp03-t01-bilingual-design-terminology-foundation.md`.
+- [x] Treat student, Batch Leader, and admin application surfaces as **Operate** mode. Impeccable `shape` discovery and new-world direction selection are complete; Ahmed explicitly confirmed the compact Study Shelf brief and approved the Focused Rail composition on 2026-09-12 Cairo time. Do not reduce the choice to arbitrary adjectives, CSS values, or a generic dashboard template.
+- [x] Present materially distinct visual directions or the documented category-standard exit through the Impeccable decision flow. The attended board included paired desktop/mobile evidence for the strongest grounded directions plus Batch Leader/admin structure; Ahmed selected **The Study Shelf** on 2026-09-12 Cairo time with the comp-led path unchanged. No product UI implementation began before this ordinary named checkpoint.
+- [x] Record only the confirmed direction in root `DESIGN.md`: visual thesis and rationale; palette and contrast intent; Arabic/English typography and fallbacks; spacing, density, layout, surfaces, borders/elevation, iconography and imagery; motion and reduced-motion behavior; responsive and touch behavior; component/state language; LTR/RTL and mixed-text rules; themes if approved; and explicit anti-patterns. Keep unsettled choices in the relevant surface brief instead of inventing tokens. After the implementation is visually verified, refresh `DESIGN.md` from the shipped system so it records ground truth rather than abandoned intent.
+- [x] Decide and document the component strategy before adding UI dependencies: native semantic elements and local components are sufficient for this foundation; no new UI dependency or external catalog was added. Accessibility, localization/RTL, client-JavaScript scope, maintenance, provenance, design-system fit, and deletion rollback are recorded in the task and asset manifests.
+- [x] Create `src/lib/catalog/terminology.ts` that derives Module/Subject labels from program data; no faculty-name conditional is allowed. Typed Arabic and English dictionaries cover required UI, validation, empty/loading/error/success, safety, status, and accessible-name copy; tests fail on missing, empty, or same-language fallback values.
+- [x] Set validated locale, `lang`, and `dir` at the root layout; isolate mixed-direction technical and medical terms; use CSS logical properties so RTL does not fork components; and define locale-aware count formatting.
+- [x] Implement the approved tokens and the smallest local primitives needed by this WP03 foundation, including default, hover, active, focus-visible, selected, disabled, ready/success, unavailable, pending, empty, warning, error, and loading language. Semantic HTML remains the base and the interactive shelf is the only new Client Component boundary.
+- [x] Automated contrast, accessible-role, keyboard, direction, reduced-motion, touch-target, and responsive desktop/mobile checks pass; bounded production-mode Playwright inspection and independent Impeccable finish review returned `ship`. After the requested single-active-language, RTL search-spacing, and mobile-tab-centering corrections passed the full zero-cost gate, Ahmed recorded the ordinary `PASS` completion checkpoint on 2026-09-12 Cairo time.
 
 #### WP03-T02 — Implement auth and consent as complete flows
 
-- [ ] Build login, registration, email verification, logout, expired-link, suspended-account, and rate-limited states.
+- [ ] Build login, registration, email verification/resend, forgot/reset password, logout, expired/replayed-link, suspended-account, and rate-limited states without requiring an admin workaround.
 - [ ] Require current terms/privacy/educational-boundary acceptance before learning routes.
 - [ ] Use generic authentication errors where account discovery would leak membership.
 - [ ] Redirect only to validated internal destinations; reject open redirects.
-- [ ] Test new, verified, unverified, suspended, revoked-session, and stale-cookie users.
+- [ ] Implement localized accessible form labels, descriptions, field/summary errors, pending/success states, password-manager/autocomplete behavior, duplicate-submit protection, focus restoration, and mobile/RTL layouts from `DESIGN.md`.
+- [ ] Test new, verified, unverified, suspended, revoked-session, stale-cookie, expired/replayed recovery link, outdated-consent, and forged-return-path users; inspect browser payloads so auth secrets and private membership state never reach the client.
 
 #### WP03-T03 — Implement the catalog journey server-first
 
@@ -1216,8 +1225,9 @@ If a `SECURITY DEFINER` function is unavoidable, place it outside exposed schema
 - [ ] Treat query parameters as selection hints only; validate every value against the returned authorized option set.
 - [ ] Clear all downstream selections when an upstream value changes.
 - [ ] Encode a stable authorized selection in the URL so refresh/back works without broadening access.
-- [ ] Implement distinct safe empty states from section 6.2 and analytics events that record reason codes without private labels.
-- [ ] Add Playwright cases for refresh, back/forward, direct deep link, forged IDs, expired membership, and release changing while the page is open.
+- [ ] Implement the approved catalog surface brief and distinct safe loading, no-result, error, and empty states from section 6.2. Move focus and announce results appropriately after a filter change; analytics may record safe reason codes, never private labels or hidden options.
+- [ ] Exercise minimum, typical, and maximum synthetic option counts plus long Arabic/English/mixed labels at the supported mobile and desktop layouts; preserve touch, keyboard, screen-reader, refresh, and back/forward behavior without a client-side authorization cache becoming authoritative.
+- [ ] Add Playwright cases for refresh, back/forward, interrupted navigation, direct deep link, forged IDs, expired membership, and release changing while the page is open.
 
 #### WP03-T04 — Build the unit workspace shell
 
@@ -1225,34 +1235,41 @@ If a `SECURITY DEFINER` function is unavoidable, place it outside exposed schema
 - [ ] Resolve and authorize the workspace in the server layout so every child inherits canonical scope.
 - [ ] Display breadcrumb, dynamic terminology, safe source status, material update, quota, language, and navigation.
 - [ ] Use `loading.tsx`, `error.tsx`, and `not-found.tsx` deliberately; do not reveal whether an unauthorized private ID exists.
-- [ ] Starting/switching chat creates/selects a session whose scope is persisted server-side.
+- [ ] Mark chat, Studio, quiz, evidence, and reporting placeholders truthfully; a polished placeholder must not imply that an unimplemented or unavailable action works.
+- [ ] Starting/switching the mocked chat seam creates or selects a session whose scope is persisted server-side; every child route rechecks canonical scope instead of trusting layout state.
+- [ ] Test long source/status content, unavailable quota, narrow/zoomed layouts, RTL/LTR switching, keyboard navigation, forged child routes, unit deactivation, and a release change during an active workspace session.
 
 #### WP03-T05 — Build Batch Leader collection flow
 
 - [ ] Show only active assigned campaigns and requested items.
 - [ ] Generate the client idempotency key before upload and preserve it across UI retry.
-- [ ] Validate file signature/type/size before issuing a signed upload target; treat client MIME as advisory.
+- [ ] Keep D-18 and per-source rights fail-closed: WP03 uses synthetic files and the deterministic storage/upload adapter only. Do not issue a real signed upload target or accept private source material until the exact storage and rights gates pass.
+- [ ] Validate file signature/type/size before requesting an upload target; treat client MIME as advisory.
 - [ ] Finalize through an authenticated server mutation that verifies campaign assignment, object metadata/checksum, rights declaration, and idempotency.
-- [ ] Show submitted/processing/needs-correction status without job/provider/internal diagnostics.
-- [ ] Test wrong campaign, expired assignment, replayed finalize, abandoned upload, checksum mismatch, forbidden type, and revoked rights.
+- [ ] Provide accessible drag/drop and file-input paths, progress, cancel, recoverable retry, duplicate/replacement guidance, validation summaries, and safe submitted/processing/needs-information/accepted/rejected/completed states without job/provider/internal diagnostics.
+- [ ] Test keyboard-only and mobile/RTL submission, wrong campaign, expired assignment, duplicate selection, replayed finalize, cancelled/abandoned upload, checksum mismatch, oversized/forbidden type, offline/interrupted retry, and revoked or unknown rights.
 
 #### WP03-T06 — Build audited admin actions, not table editors
 
 - [ ] Implement a typed server action/service for every action in section 6.4.
 - [ ] Require actor, target, expected prior version/state, reason, and correlation ID.
 - [ ] Use optimistic concurrency so a stale admin page cannot overwrite a newer decision.
-- [ ] Show the exact failed readiness predicate before publication/unlock and require a deliberate confirmation for high-impact actions.
+- [ ] Show the exact failed readiness predicate before publication/unlock. Model protected rights, release/unlock, raw-deletion, and budget-kill-switch transitions with the required separate Ahmed and Ziad confirmations; a shared service identity or one browser session never counts as both people. Keep enablement actions unavailable while their provider, rights, budget, or environment decision is open.
+- [ ] Design high-impact confirmations around exact scope, current/next state, consequences, reason, pending second confirmation where applicable, cancel, success, and recoverable failure. Do not rely on color alone or generic `Are you sure?` dialogs.
 - [ ] Append audit events in the same transaction as the governed change.
-- [ ] Make emergency disable/lock actions fast and reversible without deleting data.
-- [ ] Test a second admin race, stale version, non-admin invocation, source with invalid rights, and unit with zero READY sources.
+- [ ] Make emergency disable/lock actions fast and reversible without deleting data; distinguish containment from later protected re-enable/unlock approval.
+- [ ] Test a second admin race, stale version, non-admin invocation, one-founder-only protected approval, duplicate confirmation, source with invalid rights, unit with zero READY sources, preview without membership creation, and failure after the UI optimistically began a transition.
 
 #### WP03-T07 — Add UI and API contract tests
 
 - [ ] Use mocked providers only.
 - [ ] Test each role's allowed navigation and forbidden direct URL/API access.
 - [ ] Verify no browser request or React payload contains a service key, worker diagnostics, raw object key, private source text, or another user's state.
-- [ ] Run automated accessibility checks on auth, catalog, workspace, submission, and admin critical screens.
-- [ ] Capture screenshots only as supplemental UI evidence; passing security/contract tests remain mandatory.
+- [ ] Run automated accessibility checks plus keyboard/focus, zoom/reflow, reduced-motion, touch-target, and screen-reader smoke checks on auth, catalog, workspace, submission, and admin critical screens in English and Arabic.
+- [ ] Use Playwright Test for repeatable behavior and the project-pinned Playwright CLI for one bounded desktop/mobile rendered inspection. Compare the implementation with the approved surface briefs, selected comp/wireframe, and `DESIGN.md`; inspect console and network output, overflow, long content, loading/error/empty states, and LTR/RTL direction changes.
+- [ ] Run the Impeccable detector once after the changed UI is complete, then run one integrated Impeccable audit and resolve or explicitly record every material finding. Do not use a skill verdict, screenshot, or visual polish as proof of authorization, accessibility, privacy, or behavior.
+- [ ] Record the origin, exact version/commit, license, copied files, added dependencies, and local modifications for every imported component or asset; scan for hidden telemetry, remote fonts/assets, mutable CDN dependencies, incompatible licenses, and code that broadens Client Component or browser-data boundaries.
+- [ ] Capture sanitized screenshots or traces only as supplemental UI evidence; passing security, contract, accessibility, build, and E2E tests remain mandatory.
 
 #### WP03-T08 — Run the product-shell gate
 
@@ -1260,8 +1277,10 @@ If a `SECURITY DEFINER` function is unavoidable, place it outside exposed schema
 - [ ] Run the full role matrix in Playwright.
 - [ ] Demonstrate Human `Modules` and Veterinary `Subjects` from configuration.
 - [ ] Lock/deactivate/revoke access during an active browser session and confirm the next server operation fails safely.
-- [ ] Replay upload finalization and every admin action idempotently.
-- [ ] Review audit rows and browser network output.
+- [ ] Replay upload finalization and every admin action idempotently; prove one-founder-only protected transitions remain pending or denied and that emergency containment does not erase evidence.
+- [ ] Review audit rows, React/browser payloads, console/network output, external component provenance, and dependency/license changes; prove the gate used only synthetic data, mocked providers/storage, and zero paid UI services.
+- [ ] Review representative mobile and desktop English/Arabic flows against the approved visual direction, surface briefs, and final `DESIGN.md`; record the named founder checkpoint and keep screenshots supplemental to behavioral evidence.
+- [ ] Run `pnpm verify`, the Impeccable detector/audit disposition, `git diff --check`, `git diff --stat`, a full diff and secret/scope scan, and create the commit-specific WP03 evidence report before marking the package complete.
 
 ### 6.1 Routes
 
@@ -1327,17 +1346,24 @@ The submission form requires campaign, requested item or curriculum unit, title,
 
 - Human Medicine renders Modules; Veterinary renders Subjects from data.
 - Arabic layout is RTL while English medical terms remain readable.
+- Required copy has no missing-key or accidental-language fallback, and dates, numbers, counts, and long user-provided labels remain readable in both directions.
 - Browser navigation cannot change the authorized cohort/unit silently.
 - Locked/unpublished/empty units do not appear as available.
 - Batch Leader routes reject expired or wrong-campaign assignments.
 - Admin preview is visibly marked and does not create student membership.
+- Protected actions cannot complete from one founder confirmation, while emergency containment remains fast, audited, and reversible.
 - Chat and Studio remain scoped to the selected unit.
+- Critical flows reflow at the approved minimum mobile width and text zoom, support keyboard/touch/screen-reader use, respect reduced motion, and retain visible focus without clipping or horizontal overflow.
+- Loading, empty, error, offline/interrupted, success, disabled, and stale-state behavior matches the approved component language rather than using one generic fallback.
 
 ### 6.7 Exit evidence
 
 - Role-specific end-to-end test recordings/reports.
 - Availability states match database predicates.
 - Both Module and Subject configurations render without code branches based on faculty name.
+- Named founder approval of the selected visual direction, plus the final root `DESIGN.md` and surface briefs reconciled with the rendered implementation.
+- Impeccable detector/audit disposition, automated accessibility results, manual keyboard/screen-reader notes, and bounded desktop/mobile English/Arabic visual evidence.
+- Component/asset provenance and license report with exact pinned sources, dependency diff, and confirmation that no remote catalog or MCP is required by build, test, or runtime.
 - No paid provider call is required for UI completion.
 
 ## 7. Work package 4: Automated source processing
@@ -1748,9 +1774,9 @@ Report recall@k, mean reciprocal rank, unavailable-classification accuracy, conf
 #### WP06-T07 — Implement retention and reporting lifecycle
 
 - [ ] For `NO_SAVE`, delete content after the approved technical window while retaining only minimal non-content security/usage data.
-- [ ] For saved sessions, implement owner list/read/delete/retention behavior.
-- [ ] For reporting/consent, snapshot the permitted exchange, policy/model/source versions, evidence, reason, and review expiry.
-- [ ] Restrict admin review to reported/consented cases and audit access.
+- [ ] For saved sessions, implement owner list/read/delete/retention behavior, default audited founder visibility, and a time-effective student private/no-sharing preference.
+- [ ] For reporting, consent, or an approved automated misuse-policy flag, snapshot only the permitted exchange, policy/model/source versions, evidence, reason, and review expiry.
+- [ ] When private/no-sharing mode is active, restrict admin review to reported, consented, or qualifying automatically flagged cases; audit every access to chat content in all modes.
 - [ ] Test deletion, expiry, report-before-expiry, consent withdrawal behavior, and backup implications.
 
 #### WP06-T08 — Run frozen, fault, and browser gates
@@ -1844,9 +1870,9 @@ Test explicit statements such as "this is happening to me now," identifiable pat
 ### 9.8 Retention and reporting
 
 - `NO_SAVE` sessions delete message content after response completion/defined short technical window while retaining minimal non-content usage and security metadata.
-- Saved sessions remain user-owned under the retention policy.
-- Reported answers retain the relevant exchange, policy/model/source versions, evidence, and consent for a defined review window.
-- Admin review screens hide ordinary chats and expose only authorized reported/consented cases.
+- Saved sessions remain user-owned under the retention policy and are founder-visible by default with clear disclosure; students can enable private/no-sharing mode for future exchanges.
+- Reported, explicitly consented, or qualifying automatically policy-flagged answers retain only the relevant exchange, policy/model/source versions, evidence, trigger, and review authority for a defined review window.
+- Admin review screens may expose default shared chats. For private/no-sharing exchanges they expose only authorized reported, consented, or automatically flagged cases; every founder access is audited.
 
 ### 9.9 Exit evidence
 
