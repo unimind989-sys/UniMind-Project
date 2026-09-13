@@ -1,0 +1,7 @@
+interface:
+  display_name: "Finalize"
+  short_description: "Ship UniMind changes with adaptive verification"
+  default_prompt: "Use $finalize to review, merge, verify, and clean up the current UniMind change."
+
+policy:
+  allow_implicit_invocation: false

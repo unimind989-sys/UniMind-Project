@@ -12,6 +12,7 @@ Codex can use a repository skill in two ways:
 | Skill | Use it when | Example prompt |
 | --- | --- | --- |
 | `$unimind-skills` | You do not know which workflow fits the next task. | `$unimind-skills I need to decide how the ingestion modules should be divided.` |
+| `$finalize` | Local work is complete and you want adaptive review, protected-main delivery, affected-service verification, production promotion when needed, evidence, and cleanup. | `$finalize Finalize the current task.` |
 | `$grill-me` | You want a demanding interview before committing to a plan or decision. | `$grill-me Help me choose the first Human Medicine pilot cohort for D-01.` |
 | `$wait-what` | The previous assistant message did not make sense or skipped context. | `$wait-what` |
 | `$blast-radius` | A change is ready or nearly ready and you want proof of what it could break outside the diff. Include a branch, commit, or fixed point. | `$blast-radius Review this branch against main and prove whether the RLS change is safe.` |
@@ -52,6 +53,10 @@ Use the smallest useful flow. Do not invoke every skill for every task.
 1. Map the task to the execution runbook.
 2. `$tdd` when the public seam is known and test-first work is useful.
 3. `$blast-radius` before merge for a change with indirect security, data, job, or cost effects.
+
+### Finalize completed work
+
+Invoke `$finalize` after the selected task's local implementation is ready and both founders have given ordinary approval for finalization. It classifies the diff before spending remote calls: repository-only work skips Supabase and production promotion; presentation, runtime, and protected changes receive progressively deeper checks. One GitHub account authors the pull request and the other submits the formal approving review because GitHub does not allow self-approval. Separate artifact-specific Ahmed-and-Ziad confirmations remain required for production release and every other protected gate.
 
 ### Hard bug
 

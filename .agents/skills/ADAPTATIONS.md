@@ -2,6 +2,15 @@
 
 This log records evidence-based changes to repo-scoped skills. It is not a record of ordinary task corrections.
 
+## 2026-09-13 — Resilient skill-validator dependency cache
+
+### `skill-maintainer`
+
+- **Evidence:** While validating the new `$finalize` skill, the repository validator found its expected temporary `yaml` directory but Python loaded an incomplete namespace package without `safe_load` or `YAMLError`. The validator then failed every skill instead of repairing its bootstrap dependency.
+- **Change:** The validator now tests the cached module's required PyYAML API and force-reinstalls pinned `PyYAML==6.0.2` into the system-temp cache when the module is missing or invalid.
+- **Validation:** Reproduce the invalid-cache condition, confirm automatic repair, then validate the complete repository skill inventory and supporting script syntax.
+- **Upstream:** UniMind-owned validator bootstrap; no upstream skill source change.
+
 ## 2026-08-25 — Explicit Wizard invocation
 
 ### `wizard`

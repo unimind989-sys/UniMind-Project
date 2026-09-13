@@ -21,10 +21,23 @@ if (-not (Test-Path -LiteralPath $validator -PathType Leaf)) {
 
 $python = Get-Command python -ErrorAction Stop
 $dependencyRoot = Join-Path ([IO.Path]::GetTempPath()) 'unimind-codex-skill-validator-pyyaml-6.0.2'
+$dependencyModule = Join-Path $dependencyRoot 'yaml'
+$needsDependencyInstall = -not (Test-Path -LiteralPath $dependencyModule -PathType Container)
 
-if (-not (Test-Path -LiteralPath (Join-Path $dependencyRoot 'yaml') -PathType Container)) {
+if (-not $needsDependencyInstall) {
+    $previousDependencyCheckPath = $env:PYTHONPATH
+    try {
+        $env:PYTHONPATH = $dependencyRoot
+        & $python.Source -c "import sys, yaml; sys.exit(0 if callable(getattr(yaml, 'safe_load', None)) and hasattr(yaml, 'YAMLError') else 1)" 2>$null
+        $needsDependencyInstall = $LASTEXITCODE -ne 0
+    } finally {
+        $env:PYTHONPATH = $previousDependencyCheckPath
+    }
+}
+
+if ($needsDependencyInstall) {
     New-Item -ItemType Directory -Path $dependencyRoot -Force | Out-Null
-    & $python.Source -m pip install 'PyYAML==6.0.2' --target $dependencyRoot --disable-pip-version-check --no-warn-script-location
+    & $python.Source -m pip install 'PyYAML==6.0.2' --target $dependencyRoot --upgrade --force-reinstall --disable-pip-version-check --no-warn-script-location
     if ($LASTEXITCODE -ne 0) {
         throw 'Failed to install the temporary PyYAML validator dependency.'
     }
