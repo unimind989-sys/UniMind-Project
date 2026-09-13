@@ -1213,12 +1213,12 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 #### WP03-T02 — Implement auth and consent as complete flows
 
-- [~] Build login, registration, email verification/resend, forgot/reset password, logout, expired/replayed-link, suspended-account, and rate-limited states without requiring an admin workaround. Task record: `planning/tasks/wp03-t02-auth-consent-flows.md`.
-- [~] Require current terms/privacy/educational-boundary acceptance before learning routes.
-- [~] Use generic authentication errors where account discovery would leak membership.
-- [~] Redirect only to validated internal destinations; reject open redirects.
-- [~] Implement localized accessible form labels, descriptions, field/summary errors, pending/success states, password-manager/autocomplete behavior, duplicate-submit protection, focus restoration, and mobile/RTL layouts from `DESIGN.md`.
-- [~] Test new, verified, unverified, suspended, revoked-session, stale-cookie, expired/replayed recovery link, outdated-consent, and forged-return-path users; inspect browser payloads so auth secrets and private membership state never reach the client.
+- [x] Build login, registration, email verification/resend, forgot/reset password, logout, expired/replayed-link, suspended-account, and rate-limited states without requiring an admin workaround. Task record: `planning/tasks/wp03-t02-auth-consent-flows.md`; release evidence: `evidence/wp03-product-shell/2026-09-14_auth-consent-release_production_fd3b093.md`.
+- [x] Require current terms/privacy/educational-boundary acceptance before learning routes.
+- [x] Use generic authentication errors where account discovery would leak membership.
+- [x] Redirect only to validated internal destinations; reject open redirects.
+- [x] Implement localized accessible form labels, descriptions, field/summary errors, pending/success states, password-manager/autocomplete behavior, duplicate-submit protection, focus restoration, and mobile/RTL layouts from `DESIGN.md`.
+- [x] Test new, verified, unverified, suspended, revoked-session, stale-cookie, expired/replayed recovery link, outdated-consent, and forged-return-path users; inspect browser payloads so auth secrets and private membership state never reach the client. PR `#29`, merged commit `fd3b093`, guarded Supabase Preview promotion, and production deployment `dpl_2JoV9xgDnxWoPpCVf6XrkfyHPSCN` completed the protected release with named Ahmed and Ziad confirmations.
 
 #### WP03-T03 — Implement the catalog journey server-first
 
