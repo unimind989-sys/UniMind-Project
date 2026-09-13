@@ -12,7 +12,7 @@
 
 **Branch:** `wp03/auth-consent-flows`
 
-**Updated (UTC):** 2026-09-13T16:16:24Z
+**Updated (UTC):** 2026-09-13T19:56:52Z
 
 ## Execution contract
 
@@ -26,7 +26,7 @@
 
 **Pass:** New, verified, unverified, suspended, revoked-session, stale-cookie, expired/replayed recovery-link, outdated-consent, rate-limited, and forged-return-path states fail or advance safely; current terms, privacy, and educational-boundary acceptance gates learning routes; localized accessible forms prevent account discovery, duplicate submission, and open redirects; browser payloads contain no auth secrets or private membership state.
 
-**Evidence:** Expected at `evidence/wp03-product-shell/2026-09-13_auth-consent_<environment>_<short-sha>.md` after a candidate SHA exists.
+**Evidence:** Candidate report `evidence/wp03-product-shell/2026-09-13_auth-consent_preview_2777eb2.md`; later protected production-release evidence remains separate.
 
 **Rollback:** Remove the WP03-T02 routes, helpers, tests, and forward-only schema additions before review; after delivery, revert the task commit while retaining WP03-T01. Do not rewrite or destructively roll back an applied migration.
 
@@ -39,7 +39,7 @@
 - [x] Build the complete English/Arabic auth and consent routes in the approved Study Shelf visual system.
 - [x] Exercise the required user, recovery, session, consent, responsive, accessibility, and browser-payload states with synthetic fixtures.
 - [x] Complete bounded rendered inspection, the one Impeccable detector pass, independent finish review, and full zero-cost verification.
-- [~] Assemble sanitized evidence and obtain Ahmed's ordinary completion checkpoint.
+- [x] Assemble sanitized evidence and obtain Ahmed's ordinary completion checkpoint. Ahmed's manual checklist passed after the search correction, and his explicit `$finalize` invocation records the ordinary task approval.
 
 ## Handoff
 
@@ -47,8 +47,8 @@
 
 **Commands:** The post-search-correction `corepack pnpm verify` passed the zero-cost full suite. GitHub Actions run `34767111323` passed `dependency-audit`, `application`, and `database-ci`; its disposable Supabase/Auth stack applied and tested the migration, removed the temporary stack and volumes, and uploaded sanitized reports without touching a shared environment. The first Vercel branch preview `BsqM2y2SzvtqSx1kE48hd1a4icqo` then failed safely at build time because `APP_ORIGIN` was absent. The bounded deployment fix passed 14 focused environment tests, strict typecheck, full lint, and a fresh `corepack pnpm verify`: formatting, lint, strict typing, boundaries, SQL conventions, CI policy, secret scan, 297 unit tests, 15 mock integration tests with 2 hosted tests skipped by contract, 22 security tests, 3 evaluation cases, 5 load-contract checks, 12 Playwright tests, a production build, and client-artifact secret scanning. Project-pinned Playwright CLI inspection produced valid desktop and mobile English/Arabic captures with zero console errors. The one Impeccable detector pass completed; the original independent finish reviewer scored all eight requested fixes resolved and returned `ship`. Raster provenance reports 12 decision rasters and 0 missing prompts. `scripts/verify-agent-readiness.ps1` passed 168 names, 46 local links, 22 synchronized decisions, and 102 task contracts; `scripts/test-agent-handoff.ps1` passed its isolated rehearsal. A fresh full Impeccable reviewer found no material fixes and returned `disposition: ship`. Local `pnpm test:integration:database` correctly refused because disposable Supabase commands are restricted to a GitHub-hosted Linux runner; no shared environment was touched.
 
-**Remaining:** Push the bounded Vercel-origin fix, obtain green GitHub and Vercel checks for the new exact candidate, verify the rendered branch preview, freeze the sanitized commit-specific evidence report, satisfy the protected-main review rule, and merge. The migration has been exercised only in disposable CI; no shared Supabase environment, live provider, release, or protected gate has been changed.
+**Remaining:** Commit and push the sanitized candidate report, obtain green checks for the documentation head, satisfy the protected-main cross-account review rule, and merge. The migration has been exercised only in disposable CI; no shared Supabase environment, live provider, release, or protected gate has been changed.
 
-**Next safe action:** Commit and push the bounded Vercel-origin correction on PR `#29`, then wait for the new exact candidate's GitHub and Vercel checks before preview verification and evidence assembly.
+**Next safe action:** Commit and push the candidate evidence on PR `#29`, wait for its exact-head checks, then record the required formal approval from the non-author GitHub account and merge the reviewed candidate.
 
-**Reviewer action:** Ahmed completed the full manual checklist, requested only the removal of catalog search from the access flow, confirmed the corrected search-free working tree, and authorized reviewable-candidate preparation on 2026-09-13. Ahmed still inspects the later candidate-SHA evidence before recording the ordinary WP03-T02 completion checkpoint.
+**Reviewer action:** Ahmed completed the full manual checklist, requested only the removal of catalog search from the access flow, confirmed the corrected search-free working tree, and invoked `$finalize` on 2026-09-13, recording the ordinary WP03-T02 completion approval. Protected-main approval still comes from the non-author GitHub account; protected production release remains a separate Ahmed-and-Ziad gate.
