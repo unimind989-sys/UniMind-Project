@@ -76,6 +76,7 @@ create temporary table reviewed_private_functions (
 insert into reviewed_private_functions (function_name)
 values
   ('append_governance_audit'),
+  ('activate_profile_after_email_confirmation'),
   ('assert_source_version_ready_prerequisites'),
   ('assert_valid_transition'),
   ('can_read_source_asset'),

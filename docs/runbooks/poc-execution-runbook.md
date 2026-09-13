@@ -863,6 +863,7 @@ Use different database projects/branches, storage namespaces, secrets, webhook e
 Define validated placeholders for:
 
 - Public Supabase URL and publishable key.
+- Server-only canonical application origin for Auth callback and redirect URLs.
 - Server-only Supabase service-role key.
 - Generation, embedding, transcription, and OCR provider credentials.
 - Raw/processed storage credentials and namespace names.
@@ -1212,12 +1213,12 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 #### WP03-T02 — Implement auth and consent as complete flows
 
-- [ ] Build login, registration, email verification/resend, forgot/reset password, logout, expired/replayed-link, suspended-account, and rate-limited states without requiring an admin workaround.
-- [ ] Require current terms/privacy/educational-boundary acceptance before learning routes.
-- [ ] Use generic authentication errors where account discovery would leak membership.
-- [ ] Redirect only to validated internal destinations; reject open redirects.
-- [ ] Implement localized accessible form labels, descriptions, field/summary errors, pending/success states, password-manager/autocomplete behavior, duplicate-submit protection, focus restoration, and mobile/RTL layouts from `DESIGN.md`.
-- [ ] Test new, verified, unverified, suspended, revoked-session, stale-cookie, expired/replayed recovery link, outdated-consent, and forged-return-path users; inspect browser payloads so auth secrets and private membership state never reach the client.
+- [~] Build login, registration, email verification/resend, forgot/reset password, logout, expired/replayed-link, suspended-account, and rate-limited states without requiring an admin workaround. Task record: `planning/tasks/wp03-t02-auth-consent-flows.md`.
+- [~] Require current terms/privacy/educational-boundary acceptance before learning routes.
+- [~] Use generic authentication errors where account discovery would leak membership.
+- [~] Redirect only to validated internal destinations; reject open redirects.
+- [~] Implement localized accessible form labels, descriptions, field/summary errors, pending/success states, password-manager/autocomplete behavior, duplicate-submit protection, focus restoration, and mobile/RTL layouts from `DESIGN.md`.
+- [~] Test new, verified, unverified, suspended, revoked-session, stale-cookie, expired/replayed recovery link, outdated-consent, and forged-return-path users; inspect browser payloads so auth secrets and private membership state never reach the client.
 
 #### WP03-T03 — Implement the catalog journey server-first
 

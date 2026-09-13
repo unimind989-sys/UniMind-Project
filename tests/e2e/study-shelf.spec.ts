@@ -14,7 +14,7 @@ test.beforeEach(async ({ page }) => {
 test("the Study Shelf renders one active language with focus and search", async ({
   page,
 }) => {
-  await page.goto("/learn");
+  await page.goto("/preview/learn");
 
   await expect(
     page.getByRole("heading", { name: "Your Modules" }),
@@ -94,7 +94,7 @@ test("the mobile composition contains horizontal rails without page overflow", a
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/learn");
+  await page.goto("/preview/learn");
   await page.waitForTimeout(500);
 
   await expect(
@@ -182,7 +182,7 @@ test("the shelf exposes accessible structure, contrast, and reduced motion", asy
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto("/learn");
+  await page.goto("/preview/learn");
 
   await expect(page.getByRole("main")).toBeVisible();
   await expect(

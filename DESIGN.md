@@ -16,6 +16,7 @@ colors:
   cobalt-focus: "#336ae2"
   ready-mint: "#79dfb1"
   ready-field: "#10292a"
+  error: "#ffb4ab"
   cool-separator: "#253a55"
   on-action: "#ffffff"
 typography:
@@ -118,6 +119,26 @@ components:
     typography: "{typography.label}"
     rounded: "0.55rem"
     padding: "0.42rem 0.6rem"
+  access-stage-active:
+    backgroundColor: "#10263c"
+    textColor: "{colors.paper-white}"
+    typography: "{typography.body}"
+    rounded: "{rounded.card}"
+    padding: "1.2rem"
+  form-field:
+    backgroundColor: "{colors.raised-surface}"
+    textColor: "{colors.paper-white}"
+    typography: "{typography.body}"
+    rounded: "{rounded.control}"
+    padding: "0 0.9rem 0 2.8rem"
+    height: "3.2rem"
+  primary-next-action:
+    backgroundColor: "{colors.cobalt-action}"
+    textColor: "{colors.on-action}"
+    typography: "{typography.label}"
+    rounded: "0.65rem"
+    padding: "0 1rem"
+    height: "3.5rem"
 ---
 
 # Design System: UniMind
@@ -151,6 +172,7 @@ The palette layers cool night neutrals, paper-like text, focused cobalt, and a d
 
 - **Ready Mint:** Reserved for explicit ready and progress state signals.
 - **Ready Field:** The quiet dark field behind positive state copy and icons.
+- **Error:** Reserved for invalid-field borders and their adjacent error copy; never use it as decoration or as the only error cue.
 
 ### Neutral
 
@@ -189,7 +211,9 @@ The palette layers cool night neutrals, paper-like text, focused cobalt, and a d
 
 The desktop shell uses a fixed product-navigation rail beside a fluid content region. Within content, a bounded search field shares the utility bar with language and identity controls; the heading then leads into multiple horizontal curriculum rails. Default unit tiles are compact, while one focused tile expands to roughly twice a neighbor's width and remains part of the same rail.
 
-Spacing follows the documented quarter-rem progression, with the three-quarter-rem and one-rem steps doing most component work. At the compact desktop breakpoint (68rem), the navigation and content inset tighten. Below the mobile breakpoint (47.99rem), product navigation becomes a fixed bottom strip, identity utilities recede, shelf cards use viewport-relative widths, and rails preserve adjacent context through overflow, snapping, and safe inline padding. The page must not gain horizontal overflow.
+Account readiness uses the same spatial grammar as an Access Shelf: four aligned stages remain visible, and only the current stage expands in place to hold the active form and next action. Completed and pending stages contract without losing their identity or status, so the learner always retains neighboring context.
+
+Spacing follows the documented quarter-rem progression, with the three-quarter-rem and one-rem steps doing most component work. At the compact desktop breakpoint (68rem), the navigation and content inset tighten. Below the mobile breakpoint (47.99rem), product navigation becomes a fixed bottom strip, identity utilities recede, shelf cards use viewport-relative widths, and rails preserve adjacent context through overflow, snapping, and safe inline padding. Access Shelf centers the active stage while adjacent stages peek into the viewport. The page must not gain horizontal overflow.
 
 RTL uses the same layout through logical properties. The active locale sets the page language and direction, while technical or medical terms use bidi isolation rather than a forked RTL component tree. Touch layouts keep the focused action tall and place it across the detail grid. Mobile product-navigation items occupy equal columns with their icon and label centered inside each tab.
 
@@ -216,7 +240,7 @@ Cards and controls use gently curved small-to-medium corners, with the card radi
 ### Buttons
 
 - **Shape:** Compact curved controls; the workspace action uses the smaller action corner and a tall mobile target.
-- **Primary:** Cobalt fill with pure-white active-language copy. It belongs inside the focused unit and remains truthfully disabled until its destination exists.
+- **Primary:** Cobalt fill with pure-white active-language copy. A focused unit or active Access Shelf stage has one primary next action; it remains truthfully disabled while pending or until its destination exists.
 - **Hover / Focus:** Global focus is a bright three-pixel cobalt outline with matching offset. Avoid motion on disabled actions.
 - **Locale:** A quiet pill group with a transparent option at rest and an active-surface fill for the pressed option.
 
@@ -235,13 +259,22 @@ Cards and controls use gently curved small-to-medium corners, with the card radi
 
 ### Inputs / Fields
 
-- **Style:** Search uses a raised matte surface, a thin cool border, and a two-column logical layout that reserves a dedicated cell for the leading icon so localized placeholder text cannot overlap it.
+- **Style:** Search and form fields use a raised matte surface and thin cool border. Form fields reserve a logical-leading well for a local line SVG, keeping icons direction-safe and independent of remote assets.
 - **Focus:** The border becomes transparent so the global cobalt focus outline is the only strong ring.
+- **Error:** Invalid fields receive the semantic error border and adjacent error copy while retaining explicit accessible invalid and description relationships.
 - **Placeholder:** Supporting text stays visibly lighter than muted metadata on the deep input field.
 
 ### Navigation
 
 Desktop navigation is a quiet fixed rail on the deepest field. The current location receives an active-surface fill, a cobalt logical-start marker, and brighter blue copy; unavailable destinations remain visibly disabled. On mobile, the same semantic navigation becomes a fixed bottom strip with six equal-width, centered tabs and an upper current marker.
+
+### Access Shelf
+
+Access Shelf is the form counterpart to the focused curriculum rail. It presents four aligned stages with local line-icon identity and explicit pending or complete furniture. The active stage expands in place on a deep navy focal field, keeps its neighbors visible, and alone contains the form and single cobalt next action; completion uses mint plus copy and an icon.
+
+Catalog search does not appear in authentication, verification, recovery, or consent. Search begins only after authorized entry to the learning shelf; the access surface retains only its locale utility.
+
+Stage width, focal field, and lift settle together over 360ms with emphasized easing. Reduced-motion preference removes the transition and makes active-stage centering immediate. On mobile, the active stage centers in the horizontal rail while narrower adjacent stages remain visible as peeking context.
 
 ### Focused Unit
 
@@ -257,6 +290,7 @@ Motion is limited to the unit-width transition and the small image hover scale, 
 
 - **Do** keep application surfaces in Operate mode: scanability, state clarity, and familiar controls outrank expression.
 - **Do** keep multiple curriculum rails and adjacent units visible at representative desktop widths.
+- **Do** keep all four Access Shelf stages legible and reserve the single cobalt primary action for the active stage.
 - **Do** render only the active locale, preserve semantic language and direction attributes, and keep logical CSS properties, keyboard focus, touch targets, and reduced-motion behavior.
 - **Do** use synthetic, provenance-tracked, replaceable subject imagery as restrained academic context.
 - **Do** state availability, readiness, and pending destinations truthfully with text plus a non-color cue.

@@ -10,6 +10,7 @@ import {
   getTextDirection,
   type Locale,
 } from "@/lib/i18n/locale";
+import { logoutAction } from "@/app/(auth)/actions";
 
 import type {
   ShelfIcon,
@@ -282,9 +283,11 @@ function UnitCard({
 export function StudyShelf({
   initialLocale,
   shelves,
+  showLogout = false,
 }: Readonly<{
   initialLocale: Locale;
   shelves: readonly SyntheticShelf[];
+  showLogout?: boolean | undefined;
 }>) {
   const [locale, setLocale] = useState(initialLocale);
   const [query, setQuery] = useState("");
@@ -451,6 +454,13 @@ export function StudyShelf({
               >
                 {dictionary["identity.student"]}
               </span>
+              {showLogout ? (
+                <form action={logoutAction}>
+                  <button className={styles.logoutAction} type="submit">
+                    {locale === "ar" ? "تسجيل الخروج" : "Sign out"}
+                  </button>
+                </form>
+              ) : null}
             </div>
           </div>
         </div>

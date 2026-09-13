@@ -30,6 +30,10 @@ const secretString = z.string().min(16);
 
 const serverEnvironmentSchema = publicEnvironmentSchema
   .extend({
+    APP_ORIGIN: z
+      .string()
+      .url()
+      .transform((value) => new URL(value).origin),
     DATABASE_URL: z.string().url(),
     SUPABASE_SERVICE_ROLE_KEY: secretString,
     RAW_STORAGE_CREDENTIAL: secretString,

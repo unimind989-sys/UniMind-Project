@@ -17,6 +17,7 @@ function validEnvironment(): Record<string, string> {
     NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: syntheticCredential,
     NEXT_PUBLIC_RELEASE_ID: "unit-test",
     NEXT_PUBLIC_TELEMETRY_ENABLED: "false",
+    APP_ORIGIN: "https://preview.synthetic.unimind.invalid",
     DATABASE_URL:
       "postgresql://synthetic:synthetic@db.synthetic.invalid:5432/test",
     SUPABASE_SERVICE_ROLE_KEY: syntheticCredential,
@@ -44,6 +45,7 @@ describe("environment contract", () => {
     const environment = readExampleEnvironment();
 
     expect(parseServerEnvironment(environment)).toMatchObject({
+      APP_ORIGIN: "http://127.0.0.1:3000",
       NEXT_PUBLIC_RELEASE_ID: "workstation-mock",
       PROVIDER_MODE: "mock",
       APPROVED_PROVIDER_BUDGET_MINOR: 0,
@@ -59,6 +61,7 @@ describe("environment contract", () => {
     const environment = parseServerEnvironment(validEnvironment());
 
     expect(environment).toMatchObject({
+      APP_ORIGIN: "https://preview.synthetic.unimind.invalid",
       PROVIDER_MODE: "mock",
       APPROVED_PROVIDER_BUDGET_MINOR: 0,
       GENERATION_PROVIDER_ENABLED: false,
