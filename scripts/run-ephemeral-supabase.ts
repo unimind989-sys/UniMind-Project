@@ -579,6 +579,7 @@ function runAuthIntegration(): void {
     NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: status.publishableKey,
     NEXT_PUBLIC_RELEASE_ID: "ephemeral-database-auth-integration",
     NEXT_PUBLIC_TELEMETRY_ENABLED: "false",
+    APP_ORIGIN: "http://127.0.0.1:3000",
     DATABASE_URL: status.databaseUrl,
     SUPABASE_SERVICE_ROLE_KEY: status.serviceRoleKey,
     RAW_STORAGE_CREDENTIAL: syntheticServerCredential,

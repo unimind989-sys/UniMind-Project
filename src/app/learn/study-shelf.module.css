@@ -232,6 +232,26 @@
   white-space: nowrap;
 }
 
+.logoutAction {
+  min-height: 2.75rem;
+  border: 0.0625rem solid var(--line);
+  border-radius: var(--radius-control);
+  background: transparent;
+  padding: 0.55rem 0.8rem;
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.logoutAction:hover {
+  background: var(--surface-active);
+}
+
+.logoutAction:focus-visible {
+  outline: 0.1875rem solid var(--focus);
+  outline-offset: 0.125rem;
+}
+
 .identityCopy[lang="ar"] {
   font-family: var(--font-unimind-arabic), sans-serif;
 }

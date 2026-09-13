@@ -39,6 +39,7 @@ export default defineConfig({
       NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: syntheticPublicCredential,
       NEXT_PUBLIC_RELEASE_ID: "e2e-synthetic",
       NEXT_PUBLIC_TELEMETRY_ENABLED: "false",
+      APP_ORIGIN: "http://127.0.0.1:3100",
       DATABASE_URL:
         "postgresql://synthetic:synthetic@db.synthetic.invalid:5432/e2e",
       SUPABASE_SERVICE_ROLE_KEY: syntheticServerCredential,

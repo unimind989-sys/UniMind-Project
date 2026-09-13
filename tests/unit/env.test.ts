@@ -7,6 +7,7 @@ import {
   EnvironmentValidationError,
   parseClientEnvironment,
   parseServerEnvironment,
+  withCanonicalApplicationOrigin,
 } from "../../src/lib/config/env.schema";
 
 const syntheticCredential = ["synthetic", "test", "credential"].join("-");
@@ -17,6 +18,7 @@ function validEnvironment(): Record<string, string> {
     NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: syntheticCredential,
     NEXT_PUBLIC_RELEASE_ID: "unit-test",
     NEXT_PUBLIC_TELEMETRY_ENABLED: "false",
+    APP_ORIGIN: "https://preview.synthetic.unimind.invalid",
     DATABASE_URL:
       "postgresql://synthetic:synthetic@db.synthetic.invalid:5432/test",
     SUPABASE_SERVICE_ROLE_KEY: syntheticCredential,
@@ -44,6 +46,7 @@ describe("environment contract", () => {
     const environment = readExampleEnvironment();
 
     expect(parseServerEnvironment(environment)).toMatchObject({
+      APP_ORIGIN: "http://127.0.0.1:3000",
       NEXT_PUBLIC_RELEASE_ID: "workstation-mock",
       PROVIDER_MODE: "mock",
       APPROVED_PROVIDER_BUDGET_MINOR: 0,
@@ -59,6 +62,7 @@ describe("environment contract", () => {
     const environment = parseServerEnvironment(validEnvironment());
 
     expect(environment).toMatchObject({
+      APP_ORIGIN: "https://preview.synthetic.unimind.invalid",
       PROVIDER_MODE: "mock",
       APPROVED_PROVIDER_BUDGET_MINOR: 0,
       GENERATION_PROVIDER_ENABLED: false,
@@ -71,6 +75,53 @@ describe("environment contract", () => {
       PROVIDER_RETRY_COUNT: 3,
       DAILY_STUDENT_QUOTA: 50,
     });
+  });
+
+  it("derives the canonical preview origin from Vercel's server-owned branch URL", () => {
+    const environment = validEnvironment();
+    delete environment.APP_ORIGIN;
+
+    expect(
+      parseServerEnvironment(
+        withCanonicalApplicationOrigin({
+          ...environment,
+          VERCEL_TARGET_ENV: "preview",
+          VERCEL_BRANCH_URL:
+            "unimind-preview-git-wp03-auth-consent-flows.vercel.app",
+          VERCEL_PROJECT_PRODUCTION_URL: "project-xwrez.vercel.app",
+        }),
+      ).APP_ORIGIN,
+    ).toBe("https://unimind-preview-git-wp03-auth-consent-flows.vercel.app");
+  });
+
+  it("derives the canonical production origin from Vercel's project domain", () => {
+    const environment = validEnvironment();
+    delete environment.APP_ORIGIN;
+
+    expect(
+      parseServerEnvironment(
+        withCanonicalApplicationOrigin({
+          ...environment,
+          VERCEL_TARGET_ENV: "production",
+          VERCEL_URL: "unimind-preview-random-deployment.vercel.app",
+          VERCEL_PROJECT_PRODUCTION_URL: "project-xwrez.vercel.app",
+        }),
+      ).APP_ORIGIN,
+    ).toBe("https://project-xwrez.vercel.app");
+  });
+
+  it("keeps explicit application origins authoritative outside Vercel", () => {
+    const environment = validEnvironment();
+
+    expect(
+      parseServerEnvironment(
+        withCanonicalApplicationOrigin({
+          ...environment,
+          VERCEL_TARGET_ENV: "preview",
+          VERCEL_BRANCH_URL: "ignored-preview.vercel.app",
+        }),
+      ).APP_ORIGIN,
+    ).toBe("https://preview.synthetic.unimind.invalid");
   });
 
   it("parses the browser-safe subset", () => {

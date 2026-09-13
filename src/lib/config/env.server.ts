@@ -3,8 +3,9 @@ import "server-only";
 import {
   createCachedEnvironmentReader,
   parseServerEnvironment,
+  withCanonicalApplicationOrigin,
 } from "./env.schema";
 
 export const getServerEnvironment = createCachedEnvironmentReader(() =>
-  parseServerEnvironment(process.env),
+  parseServerEnvironment(withCanonicalApplicationOrigin(process.env)),
 );

@@ -1,0 +1,55 @@
+{
+  "title": "Choose the UniMind access-flow structure",
+  "question": "The visual world is fixed. Which composition should carry login, verification, recovery, and consent?",
+  "options": [
+    {
+      "id": "focused-threshold",
+      "label": "Focused Threshold",
+      "kicker": "THE ROLL",
+      "lineage": "a focused academic threshold with a live access ledger",
+      "thesis": "One calm authentication task stays central while the surrounding frame explains exactly what still gates access.",
+      "palette": ["#0c1823", "#1a293d", "#3977f7", "#79dfb1"],
+      "materials": [
+        "matte navy fields",
+        "cool route lines",
+        "compact status ledger"
+      ],
+      "viewport": "A 254px path rail, one wide credential panel, and a narrow status ledger form a single horizontal threshold.",
+      "risk": "The status ledger must remain useful without exposing private membership details.",
+      "comp": ".impeccable/mocks/decision/wp03-auth-focused-threshold.png"
+    },
+    {
+      "id": "access-shelf",
+      "label": "Access Shelf",
+      "lineage": "the approved Focused Rail translated into an account journey",
+      "thesis": "Authentication becomes a four-step academic shelf whose current stage expands without hiding what comes next.",
+      "palette": ["#0c1823", "#142132", "#2a3b51", "#3977f7"],
+      "materials": [
+        "strict shelf tiles",
+        "focused cobalt outline",
+        "explicit pending states"
+      ],
+      "viewport": "Four aligned stage tiles fill the workspace; Account expands to hold the form while Verify, Consent, and Entry stay visible.",
+      "risk": "A horizontal sequence needs careful mobile scrolling and focus management.",
+      "comp": ".impeccable/mocks/decision/wp03-auth-access-shelf.png"
+    },
+    {
+      "id": "policy-desk",
+      "label": "Policy Desk",
+      "lineage": "an orderly academic desk pairing credentials with commitments",
+      "thesis": "Credentials and the three learner commitments share one working desk, making consent visible before it becomes blocking.",
+      "palette": ["#07131e", "#1a293d", "#3977f7", "#c8d1d8"],
+      "materials": [
+        "paired work panels",
+        "document ledger rows",
+        "thin folio connectors"
+      ],
+      "viewport": "An asymmetric credential panel and three-row commitment ledger sit side by side under one compact progress line.",
+      "risk": "Showing consent beside login can feel dense if the hierarchy is not disciplined.",
+      "comp": ".impeccable/mocks/decision/wp03-auth-policy-desk.png"
+    }
+  ],
+  "reroll": { "registers": ["safer", "bolder"] },
+  "buildPath": { "value": "comp", "toggle": true },
+  "steer": true
+}

@@ -114,6 +114,7 @@ const childEnvironment: NodeJS.ProcessEnv = {
   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: publishableKey,
   NEXT_PUBLIC_RELEASE_ID: `hosted-auth-${target.environment}-integration`,
   NEXT_PUBLIC_TELEMETRY_ENABLED: "false",
+  APP_ORIGIN: "https://preview.synthetic.unimind.invalid",
   DATABASE_URL:
     "postgresql://synthetic:synthetic@db.synthetic.invalid:5432/auth_test",
   SUPABASE_SERVICE_ROLE_KEY: serviceRoleKey,
