@@ -8,11 +8,11 @@
 
 **Owner:** Codex `/root`; Ahmed is the requester and named human checkpoint
 
-**Reviewer:** Ahmed for the ordinary visual-direction and task-completion checkpoints
+**Reviewer:** Ahmed for the ordinary visual-direction and task-completion checkpoints; Ahmed and Ziad for the protected Vercel production release
 
-**Branch:** `wp03/approved-study-shelf`, targeting protected `main`; Ahmed explicitly authorized committing and pushing the complete current worktree to `main` after approval, and GitHub requires the delivery to pass through a pull request
+**Branch:** Application delivery merged through PR `#27` from `wp03/approved-study-shelf` into protected `main` at `142ac61`; post-release evidence is delivered through `wp03/production-release-evidence`
 
-**Updated (UTC):** 2026-09-12T15:05:03Z
+**Updated (UTC):** 2026-09-13T04:41:46Z
 
 ## Execution contract
 
@@ -26,7 +26,7 @@
 
 **Pass:** Ahmed selects and approves one direction; English, Arabic, mixed-direction, long-content, keyboard, screen-reader, reduced-motion, touch, mobile, and desktop requirements pass; Module/Subject labels derive only from program data; required copy cannot silently fall back; reusable primitives expose every required interaction/status state; no real data, private source, live provider, paid service, or protected transition is enabled.
 
-**Evidence:** Expected commit-specific report `evidence/wp03-product-shell/YYYY-MM-DD_bilingual-design-foundation_<environment>_<short-sha>.md`, plus sanitized decision and rendered evidence where allowed.
+**Evidence:** Local implementation report `evidence/wp03-product-shell/2026-09-12_bilingual-design-foundation_local_7957a10.md`; protected production-release report `evidence/wp03-product-shell/2026-09-13_study-shelf-release_production_142ac61.md`; sanitized decision and rendered evidence where allowed.
 
 **Rollback:** Remove the unapproved UI slice and localization additions before merge; after merge, revert the application commit while retaining the prior foundation page. No database rollback or shared-environment mutation is part of this task.
 
@@ -46,6 +46,8 @@
 
 **Changed:** Implemented the reviewed `/learn` Study Shelf foundation with a 254 px desktop product rail, responsive bottom navigation, three locale-switchable curriculum shelves, in-place keyboard/touch focus, search, locale/direction switching, truthful synthetic state, and an intentionally disabled WP03-T03 workspace boundary. Following Ahmed's review feedback, the surface now renders exactly one active interface language at a time, reserves a separate logical grid cell for the RTL/LTR search icon, and centers all six mobile navigation tabs in equal-width columns. Added configuration-driven Module/Subject terminology, validated locale utilities, typed complete English/Arabic dictionaries, local semantic components, generated synthetic subject plates with embedded provenance, root `DESIGN.md`, and the schema-v2 Impeccable sidecar. No real data, live provider, paid service, remote runtime asset, release, or protected transition was used.
 
+After PR `#27` merged with five passing checks and the required review, Ahmed and Ziad separately approved the protected production promotion. The approved preview source at `12c60d6` has the same Git tree as merge commit `142ac61`. Vercel production deployment `dpl_8DuxtrDanzY9WLe5i7iqahXHWDKC` is Ready and promoted at `https://project-xwrez.vercel.app` with release fingerprint `wp03-t01-12c60d6-preview`; the environment remains synthetic-only, mock-only, zero-budget, and provider-disabled.
+
 ### Approved-comp implementation analysis
 
 - **Frame and grid:** the approved source is 1536×1024. A 254 px fixed desktop navigation rail leaves an approximately 1282 px work area. The content begins near x=294 with a 40 px inline margin; the top utility row is about 46 px high. Three curriculum rails are visible in the first viewport. The focused tile is about twice a neighboring tile's width.
@@ -58,8 +60,8 @@
 
 **Commands:** The terminology unit slice was observed red before implementation and now passes 6/6 tests. The post-feedback `corepack pnpm verify` passes the zero-cost full suite: formatting, lint, strict typing, boundaries, SQL conventions, CI policy, secret scan, 252 unit tests, 15 local integration tests with 2 hosted tests skipped by contract, 22 security tests, 3 evaluation tests plus 3 synthetic cases, 5 load-contract tests, 5 Playwright tests, and a production-safe Next 16.3.4 build with client secret scan. The one Impeccable detector pass returned `[]`. Focused typecheck, lint, JSON validation, diff check, and 3/3 Study Shelf Playwright tests pass against the retained synthetic preview. In-app browser inspection confirms Arabic search icon-to-input spacing of 12 px, zero English headings in Arabic mode, zero Arabic headings/navigation labels in English mode, six equal mobile tab columns of about 60.7 px, zero icon-center offset, and no page overflow at 390×844. Production Playwright captures at 1536×1024 and 390×844 have no console warnings, no development overlay, and no page overflow; the focused mobile unit measures x=10.8 px and width=368 px in a 390 px viewport. The independent finish reviewer scored all six initial requested fixes resolved and returned `disposition: ship`; Ahmed inspected the corrected preview and approved it. Raster provenance scan reports 16 assets and 0 missing prompts. Post-approval agent-readiness checks pass 166 names, 46 local links, 22 synchronized decisions, and 102 task contracts; the isolated handoff rehearsal also passes. `git diff --check` passes.
 
-**Remaining:** No WP03-T01 implementation or review work remains. Delivery is proceeding through the required pull-request path because GitHub rejected a direct protected-branch update; the evidence filename identifies the pre-delivery base SHA and candidate commit `79561c0` contains the approved worktree.
+**Remaining:** No WP03-T01 implementation, review, delivery, or protected production-release work remains. Later WP03 tasks retain their own dependencies and gates.
 
-**Next safe action:** Complete the required checks and merge the approved delivery pull request into `main`, then run the work-state selector before beginning another task; preserve all still-open decision and protected-gate blocks.
+**Next safe action:** Run the work-state selector before beginning another task; preserve all still-open decision and protected-gate blocks.
 
-**Reviewer action:** Complete. Ahmed selected The Study Shelf, confirmed its compact brief, approved Focused Rail, reviewed the corrected English/Arabic, RTL search, and mobile navigation behavior, and recorded the ordinary `PASS` checkpoint on 2026-09-12 Cairo time.
+**Reviewer action:** Complete. Ahmed selected The Study Shelf, confirmed its compact brief, approved Focused Rail, reviewed the corrected English/Arabic, RTL search, and mobile navigation behavior, and recorded the ordinary `PASS` checkpoint on 2026-09-12 Cairo time. Ahmed then approved the protected production promotion, and Ziad separately confirmed the same approved commit and Vercel artifact on 2026-09-13 Cairo time.
