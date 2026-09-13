@@ -149,6 +149,29 @@ const serverEnvironmentSchema = publicEnvironmentSchema
 
 type EnvironmentInput = Readonly<Record<string, string | undefined>>;
 
+export function withCanonicalApplicationOrigin(
+  input: EnvironmentInput,
+): EnvironmentInput {
+  if (input.APP_ORIGIN !== undefined) {
+    return input;
+  }
+
+  const targetEnvironment = input.VERCEL_TARGET_ENV ?? input.VERCEL_ENV;
+  const vercelHost =
+    targetEnvironment === "production"
+      ? (input.VERCEL_PROJECT_PRODUCTION_URL ?? input.VERCEL_URL)
+      : (input.VERCEL_BRANCH_URL ?? input.VERCEL_URL);
+
+  if (vercelHost === undefined) {
+    return input;
+  }
+
+  return {
+    ...input,
+    APP_ORIGIN: `https://${vercelHost}`,
+  };
+}
+
 export class EnvironmentValidationError extends Error {
   readonly variableNames: readonly string[];
 

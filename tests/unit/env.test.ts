@@ -7,6 +7,7 @@ import {
   EnvironmentValidationError,
   parseClientEnvironment,
   parseServerEnvironment,
+  withCanonicalApplicationOrigin,
 } from "../../src/lib/config/env.schema";
 
 const syntheticCredential = ["synthetic", "test", "credential"].join("-");
@@ -74,6 +75,53 @@ describe("environment contract", () => {
       PROVIDER_RETRY_COUNT: 3,
       DAILY_STUDENT_QUOTA: 50,
     });
+  });
+
+  it("derives the canonical preview origin from Vercel's server-owned branch URL", () => {
+    const environment = validEnvironment();
+    delete environment.APP_ORIGIN;
+
+    expect(
+      parseServerEnvironment(
+        withCanonicalApplicationOrigin({
+          ...environment,
+          VERCEL_TARGET_ENV: "preview",
+          VERCEL_BRANCH_URL:
+            "unimind-preview-git-wp03-auth-consent-flows.vercel.app",
+          VERCEL_PROJECT_PRODUCTION_URL: "project-xwrez.vercel.app",
+        }),
+      ).APP_ORIGIN,
+    ).toBe("https://unimind-preview-git-wp03-auth-consent-flows.vercel.app");
+  });
+
+  it("derives the canonical production origin from Vercel's project domain", () => {
+    const environment = validEnvironment();
+    delete environment.APP_ORIGIN;
+
+    expect(
+      parseServerEnvironment(
+        withCanonicalApplicationOrigin({
+          ...environment,
+          VERCEL_TARGET_ENV: "production",
+          VERCEL_URL: "unimind-preview-random-deployment.vercel.app",
+          VERCEL_PROJECT_PRODUCTION_URL: "project-xwrez.vercel.app",
+        }),
+      ).APP_ORIGIN,
+    ).toBe("https://project-xwrez.vercel.app");
+  });
+
+  it("keeps explicit application origins authoritative outside Vercel", () => {
+    const environment = validEnvironment();
+
+    expect(
+      parseServerEnvironment(
+        withCanonicalApplicationOrigin({
+          ...environment,
+          VERCEL_TARGET_ENV: "preview",
+          VERCEL_BRANCH_URL: "ignored-preview.vercel.app",
+        }),
+      ).APP_ORIGIN,
+    ).toBe("https://preview.synthetic.unimind.invalid");
   });
 
   it("parses the browser-safe subset", () => {
