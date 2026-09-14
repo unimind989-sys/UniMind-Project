@@ -38,9 +38,9 @@ When a request does not name a task, select exactly one using this order:
 
 **WP00 mock bridge:** a reviewed `PASS` for WP00-T08 may route selection to WP01 while unresolved real-choice tasks remain `[?]`, because WP01 uses their documented synthetic/mock interfaces. This bridge unlocks WP01 only and never marks an open decision complete or enables a real adapter.
 
-**WP01 foundation bridge:** after every WP01 task is complete and WP01-T11 has reviewed `PASS` evidence, selection may route to the earliest eligible WP02 task because the delivery table makes Package 1 its dependency. Open real-choice decisions retain their exact consumer blocks. Rights, RLS, raw deletion, budget, release, and live-provider gates retain their required confirmations; in particular, WP02-T04's protected RLS negative run requires separate Ahmed and Ziad confirmations.
+**WP01 foundation bridge:** after every WP01 task is complete and WP01-T11 has reviewed `PASS` evidence, selection may route to the earliest eligible WP02 task because the delivery table makes Package 1 its dependency. Open real-choice decisions retain their exact consumer blocks. Rights, RLS, raw deletion, budget, release, and live-provider gates retain their required confirmations; explicit `$finalize` invocation supplies both founders' standing authorization for the selected task's non-financial delivery, while real-money exposure still requires fresh confirmation.
 
-### 0.2 Agent execution, human checkpoints, and the two-person rule
+### 0.2 Agent execution, human checkpoints, and autonomous finalization
 
 Name the agent executor and the applicable human checkpoint before starting a package:
 
@@ -48,16 +48,16 @@ Name the agent executor and the applicable human checkpoint before starting a pa
 | --- | --- | --- |
 | Agent executor | Implements the task, runs the checks, and assembles evidence. | An agent may execute work requested by either founder. |
 | Human operator/authorizer | Supplies authorization and performs unavoidable signed-in actions that an agent cannot complete directly. | Ahmed or Ziad; may also review the same ordinary task. |
-| Human reviewer | Inspects the gate evidence and records the human checkpoint. | Ahmed or Ziad for ordinary work, including the same founder who requested or operated it. Protected gates require separate named confirmations from both. |
+| Human reviewer | Inspects the gate evidence and records the human checkpoint. | Ahmed or Ziad for ordinary work, including the same founder who requested or operated it. Protected gates require both founders' named authorization; `$finalize` invocation supplies it for selected-task non-financial delivery. |
 | Product decision owner | Resolves scope, cohort, terminology, retention, and UX decisions. | Ahmed or Ziad as recorded in the decision log. |
-| Security/data owner | Approves access policy, rights, retention, takedown, and incident decisions. | Ahmed or Ziad must be explicitly named; protected gates require both. |
+| Security/data owner | Approves access policy, rights, retention, takedown, and incident decisions. | Ahmed or Ziad must be explicitly named; protected gates require both, with `$finalize` supplying standing non-financial delivery authorization when invoked. |
 | Academic reviewer | Judges source completeness, conflicts, grounding, and educational-case quality. | Ahmed or Ziad must be explicitly named; an automated score cannot replace the human judgment. |
 
 For every work session, write the agent executor, named human checkpoint, work package, branch, intended evidence, and hard-stop conditions at the top of the session note. If a founder performs signed-in actions, record that human-operator role separately.
 
 The default delivery model is agent-first: a coding agent acts as executor and performs repository implementation, tests, documentation, verification, and sanitized evidence preparation. Ahmed or Ziad supplies the ordinary human checkpoint and may also be the requester, authorizer, and signed-in operator. A missing human checkpoint blocks gate completion, not safe preparatory work.
 
-Ahmed and Ziad intentionally use one shared GitHub/Supabase/Google service identity and will share future service identities; Ahmed's separate GitHub contributor account is the current exception. Never infer the acting founder from a provider account. Record the explicitly selected chat speaker and named human checkpoint in the task/evidence record. For RLS, raw deletion, rights, budget kill switches, release/unlock, and beta go-live, record separate confirmations naming both Ahmed and Ziad even when the service account is shared.
+Ahmed and Ziad intentionally use one shared GitHub/Supabase/Google service identity and will share future service identities; Ahmed's separate GitHub contributor account is the current exception. Never infer the acting founder from a provider account. Record the explicitly selected chat speaker and named human checkpoint in the task/evidence record. For RLS, raw deletion, rights, budget controls, release/unlock, and beta go-live, record both founders' authorization even when the service account is shared. Explicit `$finalize` invocation records both founders' standing authorization for every selected-task action that cannot spend money or create a financial liability, and the agent does not ask again. Paid calls, billable resources, paid or auto-billing trials, and nonzero cap increases or re-enablement require fresh explicit Ahmed-and-Ziad confirmation immediately before the financial mutation.
 
 ### 0.3 Definition of ready for any task
 
@@ -83,7 +83,7 @@ A task may be marked complete only when all applicable statements are true:
 - [ ] Logs contain the correlation ID and safe diagnostics, but no secret, raw private content, or ordinary chat content.
 - [ ] Documentation, environment schema, fixtures, and generated database types were updated where affected.
 - [ ] The evidence bundle exists at the required path and identifies commit SHA, environment, agent executor, required human checkpoint, time, commands, and outcome.
-- [ ] The named human inspected the evidence and the exit gate is green; protected gates include both founders' confirmations.
+- [ ] The named human inspected the evidence and the exit gate is green; protected gates include both founders' authorization, with `$finalize` invocation accepted for non-financial delivery.
 
 ### 0.5 Evidence storage and naming
 
@@ -123,7 +123,7 @@ Name an evidence bundle `YYYY-MM-DD_<gate>_<environment>_<short-sha>.md`. Each b
 4. Commands executed and their exit codes.
 5. Summary metrics and links to raw machine-readable reports.
 6. Failures, deviations, and linked defects.
-7. Agent executor and required human checkpoint; protected gates include both founders' named confirmations.
+7. Agent executor and required human checkpoint; protected gates include both founders' named authorization and identify `$finalize` when it supplied standing non-financial delivery authorization.
 8. Rollback/disable instruction.
 
 Never commit `.env*`, access tokens, private raw files, student exports, full chat transcripts, provider request payloads containing source content, or unredacted production logs.
@@ -250,7 +250,7 @@ git diff
 
 9. Commit using an outcome-oriented message such as `feat(catalog): enforce released unit availability`.
 10. Open a pull request that links the work-package task and evidence bundle.
-11. The required humans re-run protected security/raw-deletion/release gates where applicable; ordinary review may be completed by the same founder who requested or operated the task.
+11. The required humans re-run protected security/raw-deletion/release gates where applicable; ordinary review may be completed by the same founder who requested or operated the task. During `$finalize`, the agent runs these gates and uses the invocation's standing Ahmed-and-Ziad authorization without returning for another non-financial approval.
 12. Merge only when required checks are green. Never repair preview or beta manually after merge; add a migration/configuration change and redeploy.
 
 `pnpm verify` must remain credential-free, mock-only, and zero paid-provider cost. Hosted database commands require the guarded `development` or `ci` profile and are recorded separately in evidence. If any command above does not exist yet, creating it is part of work package 1.
@@ -264,7 +264,7 @@ Task ID: WPXX-TYY
 Status: [ ] | [~] | [?] | [x] | [!]
 Outcome: Student A cannot read Student B's chat rows.
 Owner: <name>
-Reviewer: <Ahmed or Ziad for an ordinary human checkpoint; Ahmed + Ziad for a protected gate>
+Reviewer: <Ahmed or Ziad for an ordinary human checkpoint; Ahmed + Ziad or explicit $finalize invocation for a protected gate>
 Dependencies: <earlier task IDs>
 Inputs: migration names, fixture users, policy decision
 Files: exact expected files
@@ -290,7 +290,7 @@ At the end of every package:
 4. Run at least one negative/forbidden path and one retry/recovery path.
 5. Compare measured results with numeric thresholds; do not substitute “looks good.”
 6. Record every deviation as a defect, risk acceptance, or decision. Release blockers cannot be waived informally.
-7. The named human reviewer writes `PASS`, `FAIL`, or `CONDITIONAL PASS` with an expiry and linked follow-up. A protected gate records separate decisions from Ahmed and Ziad.
+7. The named human reviewer writes `PASS`, `FAIL`, or `CONDITIONAL PASS` with an expiry and linked follow-up. A protected gate records both founders' authorization; explicit `$finalize` invocation supplies standing authorization for non-financial delivery, while a real-money mutation requires fresh decisions from Ahmed and Ziad.
 8. Mark package tasks `[x]` only after `PASS`. A conditional pass never permits a later dependent package that needs the missing behavior.
 
 ### 0.12 Global rollback hierarchy

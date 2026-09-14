@@ -130,7 +130,7 @@ The `db:ci:*` and `test:integration:database` commands fail closed outside the G
 
 Read `planning/environment-matrix.md` and `docs/runbooks/environment-promotion.md` before any hosted action. Preview is protected, synthetic-only, and mock-only. Beta is protected, Git-disconnected, empty, and unreleased. Neither target accepts destructive development/CI commands.
 
-Run `smoke:deployment` only for an explicitly approved Preview URL and access window. Keep Beta locked; its evidence is a protected liveness/readiness and isolation check, not a public release. Use forward migrations only, preserve exact-commit promotion and recovery evidence, and stop if Vercel Hobby eligibility, target identity, or the zero-cost boundary is uncertain. Beta unlock, real data, release, and go-live remain separate protected gates requiring Ahmed and Ziad.
+Run `smoke:deployment` only for an explicitly approved Preview URL and access window. Keep Beta locked; its evidence is a protected liveness/readiness and isolation check, not a public release. Use forward migrations only, preserve exact-commit promotion and recovery evidence, and stop if Vercel Hobby eligibility, target identity, or the zero-cost boundary is uncertain. Beta unlock, real data, release, and go-live remain separate protected gates requiring Ahmed and Ziad; explicit `$finalize` invocation supplies their standing non-financial delivery authorization.
 
 ## 6. End-of-session loop
 
@@ -221,7 +221,7 @@ git switch -c wp01/provider-mocks
 6. Run the end-of-session loop and inspect the full diff.
 7. Commit the coherent candidate with an outcome-oriented message.
 8. Create sanitized evidence named `YYYY-MM-DD_<gate>_<environment>_<short-sha>.md` in the correct `evidence/wpNN-*` directory.
-9. Obtain the required human checkpoint. Ahmed or Ziad may request, authorize, operate, and review the same ordinary agent-executed task. RLS, grants, rights, raw deletion, budgets/kill switches, release/unlock, and beta go-live keep their two-person rule and require separate named confirmations from both founders.
+9. Obtain the required human checkpoint. Ahmed or Ziad may request, authorize, operate, and review the same ordinary agent-executed task. RLS, grants, rights, raw deletion, budget controls, release/unlock, and beta go-live keep their two-person rule. Explicit `$finalize` invocation supplies both founders' standing authorization for non-financial delivery; real-money exposure requires fresh explicit confirmation.
 
 Do not push, open a pull request, merge, deploy, unlock, or enable a live provider unless the user explicitly authorizes that external action.
 
@@ -236,7 +236,7 @@ corepack pnpm verify
 
 Push the review branch and require the external `database-ci` job to prove the populated forward upgrade, two clean disposable resets, all migration contracts, a warning-free pinned advisor, and stable generated types. Inspect any generated-type diff on the branch before review. Do not claim the database gate from workstation mocks or invoke a retired hosted command with Preview/Beta credentials.
 
-Edit only the CLI-created migration filename. Never invent a migration timestamp, reset Preview/Beta, repair a shared database in a dashboard, rewrite applied history, or add real seed data. Preview/Beta receive reviewed forward migrations only. RLS, grants, rights, deletion, release, and usage migrations require the documented protected-gate confirmations from both founders.
+Edit only the CLI-created migration filename. Never invent a migration timestamp, reset Preview/Beta, repair a shared database in a dashboard, rewrite applied history, or add real seed data. Preview/Beta receive reviewed forward migrations only. RLS, grants, rights, deletion, release, and usage migrations require the documented protected-gate authorization from both founders; explicit `$finalize` invocation supplies it for non-financial delivery.
 
 ## 10. Pull request handoff
 

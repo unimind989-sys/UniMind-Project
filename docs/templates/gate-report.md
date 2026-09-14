@@ -14,7 +14,7 @@
 
 **Agent executor:** <agent/task name>
 
-**Human reviewer(s):** <Ahmed or Ziad for ordinary work; Ahmed + Ziad for a protected gate>
+**Human reviewer(s):** <Ahmed or Ziad for ordinary work; Ahmed + Ziad or explicit $finalize invocation for a protected gate>
 
 **Started/finished (UTC):** <timestamps>
 

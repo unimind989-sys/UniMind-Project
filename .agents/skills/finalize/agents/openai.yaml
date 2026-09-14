@@ -1,7 +1,7 @@
 interface:
   display_name: "Finalize"
-  short_description: "Ship UniMind changes with adaptive verification"
-  default_prompt: "Use $finalize to review, merge, verify, and clean up the current UniMind change."
+  short_description: "Autonomously verify, merge, release, and clean up"
+  default_prompt: "Use $finalize to autonomously review, verify, merge to main, release affected zero-cost services when needed, and delete the merged task branch. Ask me only before real-money exposure."
 
 policy:
   allow_implicit_invocation: false

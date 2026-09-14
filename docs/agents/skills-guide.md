@@ -12,7 +12,7 @@ Codex can use a repository skill in two ways:
 | Skill | Use it when | Example prompt |
 | --- | --- | --- |
 | `$unimind-skills` | You do not know which workflow fits the next task. | `$unimind-skills I need to decide how the ingestion modules should be divided.` |
-| `$finalize` | Local work is complete and you want adaptive review, protected-main delivery, affected-service verification, production promotion when needed, evidence, and cleanup. | `$finalize Finalize the current task.` |
+| `$finalize` | Local work is complete and you want autonomous review, protected-main delivery, affected-service verification, production promotion when needed, evidence, and merged-branch cleanup. Invocation supplies both founders' standing non-financial authorization. | `$finalize Finalize the current task.` |
 | `$grill-me` | You want a demanding interview before committing to a plan or decision. | `$grill-me Help me choose the first Human Medicine pilot cohort for D-01.` |
 | `$wait-what` | The previous assistant message did not make sense or skipped context. | `$wait-what` |
 | `$blast-radius` | A change is ready or nearly ready and you want proof of what it could break outside the diff. Include a branch, commit, or fixed point. | `$blast-radius Review this branch against main and prove whether the RLS change is safe.` |
@@ -56,7 +56,7 @@ Use the smallest useful flow. Do not invoke every skill for every task.
 
 ### Finalize completed work
 
-Invoke `$finalize` after the selected task's local implementation is ready and both founders have given ordinary approval for finalization. It classifies the diff before spending remote calls: repository-only work skips Supabase and production promotion; presentation, runtime, and protected changes receive progressively deeper checks. One GitHub account authors the pull request and the other submits the formal approving review because GitHub does not allow self-approval. Separate artifact-specific Ahmed-and-Ziad confirmations remain required for production release and every other protected gate.
+Invoke `$finalize` after the selected task's local implementation is ready. Invocation records Ahmed and Ziad's standing authorization for every task-scoped action that cannot spend money or create a financial liability, so the agent continues through adaptive verification, protected-main delivery, affected-service promotion, production proof when needed, evidence, and local/remote task-branch deletion without asking again. One GitHub account authors the pull request and the other submits the formal approving review because GitHub does not allow self-approval. A paid call, billable resource, paid or auto-billing trial, or nonzero spending-cap increase/re-enablement is the only approval pause and requires a fresh exact-cost confirmation from both founders.
 
 ### Hard bug
 

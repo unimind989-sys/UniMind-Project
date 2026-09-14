@@ -2,6 +2,15 @@
 
 This log records evidence-based changes to repo-scoped skills. It is not a record of ordinary task corrections.
 
+## 2026-09-14 — Autonomous non-financial finalization
+
+### `finalize`
+
+- **Evidence:** Ahmed reported that `$finalize` asked for protected-gate approval during an unattended workflow, halting delivery even though explicit invocation was intended to authorize complete finalization. Ahmed relayed that both founders approve autonomous verification, protected mutations, merge to `main`, affected-service promotion, evidence, and branch cleanup; only real-money exposure remains outside that standing authorization.
+- **Change:** Made invocation the recorded Ahmed-and-Ziad authorization for all selected-task non-financial delivery actions, removed artifact-specific approval pauses, added an exact real-money boundary, required recovery through failed checks, and made verified local/remote task-branch deletion part of completion. Synchronized D-22 and the governing workflow documentation.
+- **Validation:** Repository skill validation, local-reference resolution, agent-readiness and isolated handoff checks, focused formatter checks, and behavior cases for R0, R1, R3, real-money exposure, recovery, and cleanup.
+- **Upstream:** UniMind-owned skill and authorization policy; no upstream source change.
+
 ## 2026-09-13 — Resilient skill-validator dependency cache
 
 ### `skill-maintainer`

@@ -75,7 +75,7 @@ A PostgreSQL-authoritative unit of background work with an explicit state, idemp
 A deliberate human decision such as approving rights, publishing a unit, unlocking a cohort, setting a budget, or resolving an exceptional failure. It is distinct from routine automated processing.
 
 **Shared founder authority**
-The project authority held by Ahmed and Ziad. Either founder may supply an ordinary human authorization or review; a protected gate requires separate named confirmations from both.
+The project authority held by Ahmed and Ziad. Either founder may supply an ordinary human authorization or review. A protected gate requires both founders' named authorization; explicit `$finalize` invocation supplies that standing authorization for the selected task's non-financial delivery.
 
 **Shared service identity**
 The intentionally shared provider account used by Ahmed and Ziad. It does not identify which founder acted; Ahmed's separate GitHub contributor account is the sole current personal-account exception.
@@ -84,7 +84,7 @@ The intentionally shared provider account used by Ahmed and Ziad. It does not id
 A named confirmation from Ahmed or Ziad that authorizes an agent action or accepts its evidence. The same founder may authorize, operate, and review an ordinary task.
 
 **Protected gate**
-A gate for RLS, raw deletion, rights, budget kill switches, release or unlock, or beta go-live that requires separate named confirmations from both Ahmed and Ziad.
+A gate for RLS, raw deletion, rights, budget controls, release or unlock, or beta go-live that requires both founders' authorization. Explicit `$finalize` invocation records both founders' standing authorization for non-financial delivery actions; a real-money mutation requires fresh confirmation.
 
 **Work package**  
 A dependency-ordered delivery stage in the execution runbook, abbreviated `WP00` through `WP12`.
@@ -104,7 +104,7 @@ The sanitized record of scope, commit, environment, commands, results, deviation
 - Chat answers and Studio artifacts consume evidence packets and retain exact evidence links.
 - Chat sharing mode governs founder visibility independently of chat saving and retention; every founder access is auditable.
 - Durable jobs automate ingestion, generation, retries, reconciliation, metering, and deletion; humans retain governance actions and exceptional review.
-- A work package is complete only after its tasks, verification, evidence bundle, and required human checkpoint are complete; protected gates additionally require both founders' named confirmations.
+- A work package is complete only after its tasks, verification, evidence bundle, and required human checkpoint are complete; protected gates additionally require both founders' named authorization, which `$finalize` supplies for non-financial delivery.
 
 ## Ambiguities to avoid
 

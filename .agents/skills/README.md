@@ -23,7 +23,7 @@ Third-party skills are copied into the repository at fixed commits. Review upstr
 | Skill | Origin | Invocation | Purpose |
 | --- | --- | --- | --- |
 | `unimind-skills` | UniMind | Manual | Recommend the next skill and a copy-ready prompt. |
-| `finalize` | UniMind | Manual | Ship a completed change through adaptive verification, protected main, affected services, production when needed, evidence, and cleanup. |
+| `finalize` | UniMind | Manual | Autonomously verify, merge, release affected non-financial services, record evidence, and delete the merged task branch; pause only for real-money exposure. |
 | `grill-me` | Matt Pocock | Manual | Run a full design or decision interview. |
 | `wait-what` | Matt Pocock, adapted | Manual | Re-explain the previous message in clear English. |
 | `blast-radius` | Cursor pstack, adapted | Manual | Prove indirect change risk beyond a diff. |
