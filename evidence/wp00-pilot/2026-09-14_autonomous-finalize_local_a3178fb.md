@@ -38,6 +38,7 @@
 | 2026-09-14 | `pwsh -NoProfile -File scripts/test-agent-handoff.ps1` | 0 | Isolated committed snapshot, clean worktree, durable task records, and readiness verification passed. |
 | 2026-09-14 | `corepack pnpm verify` | 0 | Formatting, lint, strict typing, boundaries, 23-migration SQL conventions, CI policy, 870-file secret scan, 297 unit tests, 15 local integration tests with 2 guarded hosted skips, 22 security tests, evaluations, 5 load-contract tests, 12 Playwright tests, production build, and client-artifact scan passed. |
 | 2026-09-14 | `git diff --check` and staged scope review | 0 | No whitespace error; the candidate contains only the finalize skill, synchronized authorization/governance records, templates, evaluations, adaptation log, and WP00-T00 handoff. |
+| 2026-09-14 | GitHub Actions run `34834273294` for pull request #31 at exact head `26e22e7` | 0 | `dependency-audit`, `application`, and `database-ci` passed; the Vercel preview also completed successfully. |
 
 ## Negative, retry, and recovery cases
 
@@ -67,7 +68,7 @@ Revert implementation candidate `a3178fb` and its evidence follow-up commit. Thi
 
 ## Decision
 
-The autonomous-finalization correction is technically `PASS` at implementation candidate `a3178fb`. Explicit `$finalize` invocation now carries Ahmed and Ziad's standing authorization through every selected-task non-financial delivery gate, while real-money exposure remains the sole approval pause. Complete verification, protected-main mechanics, affected-service proof, evidence, and verified local/remote branch cleanup remain mandatory.
+The autonomous-finalization correction is technically `PASS` at implementation candidate `a3178fb` and was submitted as pull request #31. Explicit `$finalize` invocation now carries Ahmed and Ziad's standing authorization through every selected-task non-financial delivery gate, while real-money exposure remains the sole approval pause. Complete verification, protected-main mechanics, affected-service proof, evidence, and verified local/remote branch cleanup remain mandatory.
 
 | Name | Role | Decision | Date |
 | --- | --- | --- | --- |
