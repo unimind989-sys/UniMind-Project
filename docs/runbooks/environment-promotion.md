@@ -44,7 +44,7 @@ Stop if any precondition is unknown. Never point one environment at another envi
 4. Verify liveness and readiness while Beta remains inaccessible to students. Do not use the Preview smoke mode against Beta or claim Preview's synthetic-mode proof as Beta isolation evidence.
 5. Record the candidate deployment ID, commit SHA, migration list, configuration fingerprint, and prior known-good Beta deployment ID in restricted/sanitized evidence as appropriate.
 
-Deploying a locked Beta candidate is not Beta go-live. Unlock/release remains a protected gate requiring separate named confirmations from Ahmed and Ziad.
+Deploying a locked Beta candidate is not Beta go-live. Unlock/release remains a protected gate requiring Ahmed and Ziad's authorization; explicit `$finalize` invocation supplies standing authorization for selected-task non-financial delivery.
 
 ## Rollback
 
@@ -62,4 +62,4 @@ Deploying a locked Beta candidate is not Beta go-live. Unlock/release remains a 
 - Locked Beta readiness, isolation, promotion, and rollback rehearsal.
 - Zero-cost plan/entitlement state, Vercel eligibility checkpoint, and confirmation that no paid plan, trial, add-on, or billable resource was enabled.
 - Backup/restore gate state; synthetic provisioning may pass while real-data Beta remains blocked.
-- Named human checkpoint; later Beta unlock/go-live evidence separately names both Ahmed and Ziad.
+- Named human checkpoint; later Beta unlock/go-live evidence names both Ahmed and Ziad or records the explicit `$finalize` invocation that supplied their standing non-financial delivery authorization.

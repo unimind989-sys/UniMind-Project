@@ -24,7 +24,7 @@
 - Before editing, inspect `git status` and preserve unrelated user changes.
 - Implement the smallest independently reviewable end-to-end slice. Keep the diff limited to the named work-package outcome.
 - Use the controlled templates under `docs/templates/` and the required task-record format in runbook section 0.10. Do not replace them with unstructured notes.
-- An agent executor may mark work in progress and assemble evidence. Ahmed or Ziad may mark an ordinary gate complete after inspecting its evidence, including when that founder also authorized or performed the signed-in actions. Preserve the two-person rule for RLS, raw deletion, rights, budget kill switches, release/unlock, and beta go-live: those protected gates require separate named confirmations from both Ahmed and Ziad even when they use the same service account.
+- An agent executor may mark work in progress and assemble evidence. Ahmed or Ziad may mark an ordinary gate complete after inspecting its evidence, including when that founder also authorized or performed the signed-in actions. RLS, raw deletion, rights, release/unlock, and beta go-live normally require separate named confirmations from both founders; an explicit `$finalize` invocation is the recorded Ahmed-and-Ziad standing authorization for every task-scoped non-financial delivery action, so the agent proceeds without another approval prompt. Any action that can spend real money or create financial liability still requires fresh explicit Ahmed-and-Ziad confirmation immediately before the charge or enablement.
 
 ## Protect the approved architecture
 

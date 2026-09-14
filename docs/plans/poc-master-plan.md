@@ -93,7 +93,7 @@ The normal path from accepted upload to student-ready knowledge must require zer
 
 Ahmed and Ziad retain explicit governance controls: they create campaigns, configure the catalog, publish or hide curriculum units, unlock or lock cohorts, manage rights, and intervene in exceptional failures. These deliberate governance decisions are not routine processing steps and do not weaken the zero-manual-operation requirement.
 
-UniMind uses shared founder authority and shared service identities. Coding agents are the implementation executors. Either Ahmed or Ziad may authorize, perform the necessary signed-in actions for, inspect, and approve an ordinary agent-executed task; this is one named human checkpoint and does not require a different reviewer. All project reviewer roles are filled by Ahmed or Ziad, with the applicable academic, security/data, cost, or operations role named when required. The founders intentionally share GitHub, Supabase, Google, and future service accounts, with Ahmed's separate GitHub contributor account as the current exception, so provider account identity is not proof of which founder acted. RLS, raw deletion, rights, budget kill switches, release/unlock, and beta go-live remain protected gates and require separate named confirmations from both Ahmed and Ziad.
+UniMind uses shared founder authority and shared service identities. Coding agents are the implementation executors. Either Ahmed or Ziad may authorize, perform the necessary signed-in actions for, inspect, and approve an ordinary agent-executed task; this is one named human checkpoint and does not require a different reviewer. All project reviewer roles are filled by Ahmed or Ziad, with the applicable academic, security/data, cost, or operations role named when required. The founders intentionally share GitHub, Supabase, Google, and future service accounts, with Ahmed's separate GitHub contributor account as the current exception, so provider account identity is not proof of which founder acted. RLS, raw deletion, rights, release/unlock, and beta go-live remain protected two-person gates. Explicit `$finalize` invocation is the recorded Ahmed-and-Ziad standing authorization for all selected-task delivery actions that cannot spend money or create a financial liability; the agent proceeds through verification, merge, affected-service promotion, and cleanup without another approval prompt. Real-money actions, including paid calls, billable resources, paid or auto-billing trials, and nonzero cap increases or re-enablement, require fresh explicit confirmation from both founders immediately before the financial mutation.
 
 The PoC will be a free, controlled beta. Manual receipt verification and manual payment approval are removed from the PoC. Commercial payments are deferred until an automated payment provider and automated reconciliation flow are selected.
 
@@ -644,7 +644,7 @@ Video adds a processor behind the existing pipeline; it must not create a separa
 | D-19 | Retention periods and deletion deadlines | Short synthetic-test values until exact periods are approved | Security/data owner (unassigned) | Open |
 | D-20 | Notification and incident channels | In-process deterministic test sink until operational channels are approved | Ahmed + Ziad | Open |
 | D-21 | Zero-cost development, CI, Preview, and Beta infrastructure | Workstation mocks, ephemeral Supabase CI, and two persistent Supabase Free projects for separate Preview/Beta; conditional Vercel Hobby use (revised 2026-08-27) | Ahmed | Approved direction |
-| D-22 | Founder authorization and shared service identity | Shared service accounts; either founder may satisfy an ordinary human checkpoint; protected gates still require both named confirmations | Ahmed + Ziad — shared founder authority | Approved direction |
+| D-22 | Founder authorization and autonomous finalization | Shared service accounts; either founder may satisfy an ordinary checkpoint; explicit `$finalize` supplies both founders' standing non-financial delivery authorization; real-money actions require fresh confirmation (revised 2026-09-14) | Ahmed + Ziad — shared founder authority | Approved direction |
 
 ## 16. Immediate actions
 
@@ -663,7 +663,7 @@ Video adds a processor behind the existing pipeline; it must not create a separa
 
 ## 17. Working rules
 
-- After the reviewed WP01 foundation gate passes, begin eligible WP02 database work with synthetic/generic fixtures while open decisions retain their exact consumer blocks; protected rights, RLS, raw-deletion, budget, release, and live-provider gates still require their named confirmations.
+- After the reviewed WP01 foundation gate passes, begin eligible WP02 database work with synthetic/generic fixtures while open decisions retain their exact consumer blocks. Protected rights, RLS, raw-deletion, budget, release, and live-provider gates require their named confirmations; explicit `$finalize` supplies both founders' standing confirmation for the selected task's non-financial delivery, while real-money exposure still requires a fresh confirmation.
 - Update this file when direction, scope, architecture, quality, capacity, or operating policy changes.
 - Do not complete a phase because its interface looks finished; exit evidence must exist.
 - Record unresolved decisions instead of hiding assumptions in code.

@@ -1,19 +1,21 @@
 ---
 name: finalize
-description: Finalize an already-implemented UniMind change through adaptive verification, protected-main delivery, impact-scoped service checks, production promotion when runtime changed, evidence, and cleanup. Use only when the user explicitly invokes $finalize.
+description: Autonomously finalize an already-implemented UniMind change through adaptive verification, protected-main delivery, impact-scoped service checks, production promotion when runtime changed, evidence, and branch cleanup. Use only when the user explicitly invokes $finalize; fresh approval is requested only for real-money exposure.
 ---
 
 # Finalize
 
 Run this workflow only when the user explicitly invokes `$finalize`. Finish the selected UniMind change across the repository and every service it can actually affect; do not turn finalization into unrelated implementation or a blanket infrastructure audit.
 
-This skill refines, but never replaces, `AGENTS.md`, `docs/agents/agent-workflow.md`, the active task contract, or protected human gates. Read those authorities before acting.
+This skill refines, but never replaces, `AGENTS.md`, `docs/agents/agent-workflow.md`, or the active task contract. Read those authorities before acting.
 
 ## Authorization boundary
 
-Invocation represents Ahmed and Ziad's ordinary approval to finalize the explicitly scoped task through review, pull request, merge, affected non-protected services, and cleanup. Record the explicitly selected chat speaker as the invoker; provider accounts still do not prove which founder is acting.
+Explicit invocation is Ahmed and Ziad's standing authorization for the selected task's complete non-financial finalization. It covers review, pull-request creation and updates, cross-account GitHub approval, merge, migrations, RLS, grants, raw deletion, rights actions, release/unlock, beta go-live, affected-service changes, production promotion, rollback or containment, evidence, and cleanup when those actions are within the task contract and their technical gates pass. Record the selected chat speaker as the invoker and as the relay of both founders' authorization under D-22; provider account identity is not evidence of who authorized the workflow.
 
-This ordinary approval does not cross UniMind's protected gates. Record fresh, separate named confirmations from Ahmed and Ziad before any RLS, raw-deletion, rights, budget-kill-switch, release/unlock, or beta-go-live action. Ask immediately before the first unfulfilled protected mutation, after the exact commit, deployment, migration, and consequences are known. Shared accounts and the general invocation cannot replace that artifact-specific checkpoint.
+Operate autonomously. Do not pause, ask for approval, or request confirmation for a zero-cost action inside this scope. Use the authenticated accounts, tools, repository state, and service access already available; satisfy provider and branch-protection mechanics directly. Invocation supplies human authorization, but it does not waive tests, exact-target checks, security/privacy rules, dependency order, provider terms, branch protection, or evidence.
+
+The only approval boundary is a real-money action: anything that can charge an account, create a financial obligation, begin a paid or auto-billing trial, provision a billable resource, enable a paid provider call, or raise/re-enable a nonzero spending cap. Before that mutation, present the exact provider, environment, action, currency, maximum authorized amount, and rollback, then obtain fresh explicit Ahmed-and-Ziad confirmation. A verified free-tier operation, a zero-cost test, lowering a cap, or disabling paid work is not a real-money action. When cost cannot be proven zero, treat it as real-money exposure and stop before the mutation.
 
 ## 1. Resolve the finalization target
 
@@ -24,7 +26,7 @@ Establish these fixed points:
 - task or outcome being finalized;
 - base branch and candidate commit or uncommitted change set;
 - expected runtime, database, infrastructure, and documentation effects;
-- required checks, evidence, rollback, and human checkpoint;
+- required checks, evidence, rollback, and authorization record;
 - already-completed CI, review, preview, or service verification that can be reused.
 
 If the implementation is incomplete, finish only defects or omissions within the selected task. A new product choice or unrelated architecture change is a new task, not finalization.
@@ -48,7 +50,7 @@ User-visible copy, translation, or styling with no behavior, API, authentication
 - Run the required local gate and focused rendered check of the affected surface.
 - Verify the Vercel preview and the exact changed behavior.
 - Skip Supabase unless the rendered path exposes a real Supabase regression.
-- After merge, treat public-domain promotion as a protected release.
+- After merge, promote and verify the public artifact under the invocation's standing authorization.
 
 ### R2 — Runtime or integration
 
@@ -64,7 +66,7 @@ Application behavior, API routes, dependencies, build/runtime configuration, CI/
 Database migrations, grants, RLS, authentication, authorization, storage, durable data, destructive operations, rights, provider budgets, release controls, live providers, or beta/go-live state.
 
 - Apply the runbook's complete relevant database, security, rollback, and service verification.
-- Require every applicable named protected confirmation.
+- Use the invocation's standing Ahmed-and-Ziad authorization for non-financial protected actions.
 - Prove allowed and forbidden paths, migration safety, state consistency, and rollback or containment.
 
 When classification is uncertain, use the next higher tier. Service relevance is determined by real dependency paths, not by the service merely existing in the UniMind stack.
@@ -99,13 +101,13 @@ Use the existing reviewable task branch when valid; otherwise create the runbook
 
 Perform a final technical review, wait for required GitHub checks, address legitimate findings, and satisfy the repository's review rule. Do not bypass branch protection for a small change.
 
-Use both authenticated GitHub accounts in the normal manual flow:
+Use both authenticated GitHub accounts without returning control to the user:
 
 1. One account creates or owns the pull request.
 2. Switch to the other account and submit the formal approving review after inspecting the diff and checks.
 3. Return to the author or repository-owner account and merge when every requirement is green.
 
-GitHub does not allow a pull-request author to approve their own pull request. Report the accounts' real roles as author/merger and approving reviewer; never claim that GitHub recorded two approving reviews when it recorded one. If repository rules later require two formal approving reviews, stop until a non-reviewing author identity exists instead of bypassing the rule.
+GitHub does not allow a pull-request author to approve their own pull request. Report the accounts' real roles as author/merger and approving reviewer; never claim that GitHub recorded two approving reviews when it recorded one. If repository rules later require more authenticated reviewers than are available, exhaust task-scoped compliant identities and report an access blocker without asking the user to approve or bypass the rule.
 
 Merge only the reviewed candidate, then fetch and prove that local `main`, remote `main`, and the merge result agree.
 
@@ -124,7 +126,7 @@ UniMind's automatic production-domain assignment is disabled. After a runtime-ch
 1. Wait for Vercel to build the merged candidate.
 2. Prove the deployment corresponds to the reviewed source and intended environment/configuration.
 3. Verify the preview through the changed public seam.
-4. Record separate Ahmed and Ziad release confirmations for that exact commit and deployment.
+4. Record the `$finalize` invocation as Ahmed and Ziad's standing release authorization for that exact commit and deployment.
 5. Manually promote the verified artifact to `project-xwrez.vercel.app`.
 6. Prove the public domain resolves to that deployment, verify the release/configuration fingerprint, run focused production smoke checks, and inspect relevant error signals.
 
@@ -132,17 +134,18 @@ For R0, do not promote a deployment because the runtime product did not change. 
 
 ## 6. Recover without widening scope
 
-When a check fails, reproduce the failure, identify the cause, fix it within the selected task, rerun every invalidated check, and reclassify impact. Use bounded retries and preserve the last known identifiers and evidence.
+When a check fails, keep working: reproduce the failure, identify the cause, repair it within scope, rerun every invalidated check, and reclassify impact. Wait with bounded backoff for external state, preserve the last known identifiers and evidence, and use an exercised rollback or containment action when needed. Make bounded reversible choices from the governing material instead of asking for approval.
 
-Stop and report the exact blocker when completion requires an unresolved product decision, unavailable access, a paid call or destructive action outside the task's authority, unrelated remediation, or a missing protected confirmation. Never hide, waive, or relabel a failure as unrelated without evidence.
+Stop only before a real-money action awaiting the confirmation defined above, or when completion is technically impossible because required access is unavailable, an external service remains unavailable after bounded retries, the requested operation is outside the selected task, or no safe compliant path exists. Report those conditions as financial, access, external, scope, or safety blockers—never as missing approval. Never hide, waive, or relabel a failed technical gate.
 
 ## 7. Record evidence and clean up
 
-Update the task record and create the sanitized commit-specific evidence required by the runbook. Include commands, results, skipped services with impact-based reasons, approvals, deployment identity, rollback, and production proof without copying secrets or private payloads.
+Update the task record and create the sanitized commit-specific evidence required by the runbook. Include commands, results, skipped services with impact-based reasons, the invocation authorization, deployment identity, rollback, and production proof without copying secrets or private payloads.
 
-After merge and verification:
+Only after the merged `main` commit and every affected service are verified:
 
-- delete only merged, obsolete task branches and task-created temporary artifacts;
+- switch to `main`, synchronize it to the verified remote merge result, and delete the merged local and remote task branches;
+- delete only task-created temporary artifacts and obsolete task branches;
 - close only superseded task pull requests;
 - keep unrelated branches, work, data, and service resources intact;
 - leave local `main` clean and synchronized with remote `main`.
@@ -158,6 +161,6 @@ Lead with `FINALIZED`, `BLOCKED`, or `NOT FINALIZED`, followed by:
 - Vercel deployment and production status, or the precise reason promotion was skipped;
 - production behavior verified when runtime changed;
 - evidence and cleanup completed;
-- only genuine unresolved limitations or the exact protected action awaiting confirmation.
+- only genuine unresolved limitations or the exact real-money action awaiting confirmation.
 
 Completion means the selected change is merged, its affected services are healthy, runtime changes are promoted and verified, required evidence exists, and task-created state is clean. A commit, open pull request, green CI run, or Ready deployment is only an intermediate state.

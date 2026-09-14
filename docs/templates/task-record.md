@@ -8,7 +8,7 @@
 
 **Owner:** <agent executor; name any human signed-in operator separately>
 
-**Reviewer:** <Ahmed or Ziad for an ordinary human checkpoint; Ahmed + Ziad for a protected gate>
+**Reviewer:** <Ahmed or Ziad for an ordinary human checkpoint; Ahmed + Ziad or explicit $finalize invocation for a protected gate>
 
 **Branch:** <wpNN/short-outcome or current branch when no delivery branch was requested>
 
@@ -46,4 +46,4 @@
 
 **Next safe action:** <one concrete action>
 
-**Reviewer action:** <ordinary human checkpoint, protected two-person gate, or NONE>
+**Reviewer action:** <ordinary human checkpoint, protected two-person gate, explicit $finalize standing authorization, or NONE>
