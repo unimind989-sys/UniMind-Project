@@ -20,6 +20,7 @@ Codex can use a repository skill in two ways:
 | `$taste` | You explicitly want a stronger direction for a visitor-facing marketing or landing page. It is excluded from UniMind app screens. | `$taste Design the public beta waitlist page for prospective students.` |
 | `$awesome-design-md` | You want to consult one named brand reference before confirming a visual direction. | `$awesome-design-md Compare the Linear and Notion references for this student workspace; do not adopt either yet.` |
 | `$wizard` | You explicitly want an interactive PowerShell walkthrough for manual setup, credentials, signed-in dashboards, or irreversible approval steps. | `$wizard Create a PowerShell wizard for configuring the preview Supabase project and GitHub secrets.` |
+| `$playwright-cli` | You explicitly need the pinned CLI's trace, locator, or Playwright test-debugging workflow. Ordinary internal rendered inspection uses the in-app side browser. | `$playwright-cli Debug this failing Playwright test and capture one trace.` |
 
 ## Skills that normally activate automatically
 
@@ -36,7 +37,6 @@ Codex can use a repository skill in two ways:
 | `skill-maintainer` | Your feedback or a demonstrated workflow failure exposes a repeatable problem in a repo skill. It announces itself before editing. | `$skill-maintainer The TDD skill keeps asking me to confirm obvious seams. Adapt it based on our last two tasks.` |
 | `impeccable` | You ask to design, redesign, critique, audit, or visually refine a frontend surface. | `$impeccable shape the student curriculum-unit workspace.` |
 | `image-to-code` | You provide or select a screenshot, mockup, or generated visual and ask for a faithful implementation. | `$image-to-code Implement this selected desktop mockup and verify it at the matching viewport plus mobile.` |
-| `playwright-cli` | A web task needs interactive exploration, rendered inspection, screenshots, traces, locator discovery, or Playwright test debugging. | `$playwright-cli Verify the curriculum-unit flow and capture any console or request failures.` |
 
 ## Common flows
 
@@ -82,7 +82,7 @@ Invoke `$finalize` after the selected task's local implementation is ready. Invo
 4. When a screenshot, mockup, or generated reference is selected, `image-to-code` measures and implements it without inventing missing product behavior.
 5. Let Impeccable choose the surface mode. UniMind app screens normally use **Operate**; a marketing page uses **Persuade**; documentation uses **Read**.
 6. After real visual decisions or code exist, use `$impeccable document` to create or refresh root `DESIGN.md`. Do not create fake tokens before that point.
-7. Use the project-pinned Playwright CLI for rendered interaction and visual checks; keep `pnpm test:e2e` as the repeatable E2E gate.
+7. Use the in-app side browser for internal rendered interaction and visual checks; keep `pnpm test:e2e` as the repeatable E2E gate. Invoke `$playwright-cli` only for an explicitly requested trace, locator, or Playwright test-debugging workflow.
 8. Use `$impeccable audit <target>` for the integrated technical review. It includes the pinned Vercel guidelines. Call `$web-design-guidelines <target>` only for a separate Vercel-only report.
 
 The deterministic Impeccable edit hook is not enabled during planning. Without the hook, Impeccable runs its detector explicitly during its finish workflow. Add the hook later only after reviewing it and approving it through Codex's `/hooks` screen.

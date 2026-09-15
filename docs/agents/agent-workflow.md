@@ -31,17 +31,19 @@ After every WP01 task and the reviewed WP01-T11 package gate pass, the command m
 2. Keep business rules in domain/application modules and external systems behind adapters. Follow the file conventions and per-module contracts in [module-boundaries.md](module-boundaries.md); `pnpm check:boundaries` enforces the main forbidden directions.
 3. Use synthetic fixtures and deterministic mocks unless the task records approved real-data and paid-call gates.
 4. Encode repeatable work in repository scripts, tests, migrations, or runbooks. Document unavoidable signed-in, consent, credential, payment, or approval steps in the handoff; route them through `$wizard` only after an explicit user request.
-5. Run the narrowest relevant check after each meaningful change and record any deviation immediately.
+5. For semantic service work, use an authenticated structured connector or repository-pinned CLI first. Use the in-app side browser for internal dashboard work, rendered inspection, and interactive testing when no direct path fits. Reserve external Chrome for the completed user-facing review handoff.
+6. Run the narrowest relevant check after each meaningful change and record any deviation immediately.
 
 **Complete when:** the observable outcome works through its public seam, failure and forbidden paths are covered where applicable, and another agent can reproduce the result from version control.
 
 ## 4. Verify the claimed scope
 
-1. Run the task's exact focused checks.
-2. Run `pnpm verify` once work package 1 provides it; before then, run every available applicable check and name the missing infrastructure.
-3. For agent-facing documentation, task-state, or repository navigation changes, run `pwsh -NoProfile -File scripts/verify-agent-readiness.ps1` and `pwsh -NoProfile -File scripts/test-agent-handoff.ps1`.
-4. Run `git diff --check`, `git diff --stat`, inspect the full diff, and scan changed files for secrets and accidental scope.
-5. Update the evidence bundle with commands, exit codes, results, deviations, and rollback.
+1. Write a short verification map from each changed public seam, acceptance criterion, and material risk to the one check that proves it. Reuse exact-match evidence instead of rerunning it.
+2. Run the task's focused checks from cheapest to broadest. Stop after the required evidence is complete; broaden or repeat only after a relevant diff change, failure, or unresolved risk.
+3. Run local `pnpm verify` for code, runtime, dependency, CI, build, environment-contract, migration, or executable-script changes, or when the task contract explicitly names it. For documentation-, planning-, evidence-, and skill-only changes, run focused checks locally and let required GitHub CI provide the full merge gate unless the change can affect `pnpm verify` itself.
+4. Select agent-facing checks by impact: the skill validator for skills/metadata, agent readiness for routing/task-state/navigation, and the isolated handoff rehearsal for discovery/resume behavior. Do not run all three automatically.
+5. Run `git diff --check`, `git diff --stat`, inspect the full diff, and scan changed files for secrets and accidental scope.
+6. Update the evidence bundle with commands, exit codes, results, deviations, and rollback, including why any broad check was intentionally deferred to CI or skipped as unaffected.
 
 **Complete when:** every acceptance criterion has direct evidence, every applicable check is green, and every unrun check is explicitly reported.
 
