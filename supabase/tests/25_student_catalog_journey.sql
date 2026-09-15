@@ -1,6 +1,10 @@
 begin;
 select plan(19);
 
+set local unimind.actor_id = '10000000-0000-0000-0000-000000000001';
+set local unimind.audit_reason = 'WP03-T03 synthetic catalog journey';
+set local unimind.correlation_id = '90000000-0000-0000-0000-000000000010';
+
 select is(
   (
     select count(*)

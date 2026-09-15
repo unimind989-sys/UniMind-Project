@@ -52,6 +52,8 @@
 | 2026-09-15 | `pwsh -NoProfile -File scripts/verify-agent-readiness.ps1` | 0 | 173 names, 46 local links, 23 synchronized decisions, and 102 task contracts passed. |
 | 2026-09-15 | `pwsh -NoProfile -File scripts/test-agent-handoff.ps1` | 0 | Isolated committed-snapshot rehearsal passed with a clean reconstructed worktree, 6 durable active records, and readiness verification. |
 | 2026-09-15 | External Google Chrome review handoff | 0 | Launched `http://127.0.0.1:3000/preview/learn` in the installed external Chrome executable; the persistent synthetic preview server returned HTTP 200. |
+| 2026-09-15 | GitHub Actions run `34953965803` | 1 | Dependency audit, application gate, Vercel Preview, upgrade, two clean resets, and migration parity passed; pgTAP then rejected two missing public-function allowlist entries and governed fixture mutations without audit correlation. The disposable stack and volumes were removed and no shared environment changed. |
+| 2026-09-15 | Post-CI fixture repair: `corepack pnpm check:sql`; `corepack pnpm test:security`; diff and secret scans | 0 | Added the two caller-scoped RPCs to the database matrix's explicit allowlist and supplied synthetic actor/reason/correlation context to the mutation tests; 24 migrations and 22/22 security tests pass locally before the replacement disposable run. |
 
 ## Negative, retry, and recovery cases
 
@@ -73,6 +75,7 @@
 | WP03-T03-D01 | Environment | The guarded disposable Supabase/pgTAP runner refuses Windows and requires GitHub-hosted Linux. The 19-check database file is written but not represented as locally executed. | Delivery agent / GitHub CI | Before technical completion | Database migration acceptance |
 | WP03-T03-D02 | Delivery | Candidate remains an uncommitted local diff before `$finalize` creates its review branch. | Delivery agent | During finalization | Commit-specific CI and final task status |
 | WP03-T03-D03 | Advisory | Next development mode emitted an LCP hint for a card that already renders with eager loading and high fetch priority when first visible; production build and rendered inspection were clean. | WP03-T07 performance review | Product-shell gate | None for T03 |
+| WP03-T03-D04 | Closed CI fixture defect | First disposable run found that the pgTAP harness had not listed the two new public RPCs and had not supplied required audit context for governed synthetic mutations. The allowlist and test-local actor/reason/correlation settings were added without changing production grants or behavior. | Delivery agent | Closed 2026-09-15 | Replacement database CI |
 
 ## Security and privacy review
 

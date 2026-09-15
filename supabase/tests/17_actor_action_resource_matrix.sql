@@ -55,7 +55,9 @@ create temporary table reviewed_public_functions (
 
 insert into reviewed_public_functions (function_signature)
 values
+  ('available_catalog_entries()'),
   ('available_curriculum_units(boolean)'),
+  ('current_student_catalog_state()'),
   ('is_admin()'),
   ('has_active_membership(uuid)'),
   ('has_campaign_assignment(uuid)'),
