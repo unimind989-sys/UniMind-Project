@@ -85,6 +85,7 @@ values
   ('can_user_access_unit'),
   ('claim_processing_job'),
   ('create_profile_for_auth_user'),
+  ('current_student_catalog_state'),
   ('enforce_ready_embedding_config_update'),
   ('enforce_ready_quality_report_insert'),
   ('enforce_ready_source_segment_update'),
@@ -537,12 +538,15 @@ select is(
     where grantee = 'authenticated'
       and routine_schema = 'unimind_private'
       and (
-        routine_name <> 'can_read_source_asset'
+        routine_name not in (
+          'can_read_source_asset',
+          'current_student_catalog_state'
+        )
         or privilege_type <> 'EXECUTE'
       )
   ),
   0::bigint,
-  'authenticated has only the reviewed private helper execution grant'
+  'authenticated has only the reviewed private helper execution grants'
 );
 
 select is(
@@ -551,11 +555,14 @@ select is(
     from information_schema.routine_privileges
     where grantee = 'authenticated'
       and routine_schema = 'unimind_private'
-      and routine_name = 'can_read_source_asset'
+      and routine_name in (
+        'can_read_source_asset',
+        'current_student_catalog_state'
+      )
       and privilege_type = 'EXECUTE'
   ),
-  1::bigint,
-  'authenticated receives the one private execution grant required by RLS'
+  2::bigint,
+  'authenticated receives only the two private execution grants required by stored seams'
 );
 
 select ok(

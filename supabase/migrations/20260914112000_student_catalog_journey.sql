@@ -132,11 +132,11 @@ revoke all on function public.available_catalog_entries()
 grant execute on function public.available_catalog_entries()
   to authenticated;
 
-create function public.current_student_catalog_state()
+create function unimind_private.current_student_catalog_state()
 returns text
 language plpgsql
 stable
-security invoker
+security definer
 set search_path = ''
 as $$
 declare
@@ -235,6 +235,19 @@ begin
   return 'READY_SOURCE_MISSING';
 end;
 $$;
+
+revoke all on function unimind_private.current_student_catalog_state()
+  from public, anon, authenticated;
+grant execute on function unimind_private.current_student_catalog_state()
+  to authenticated;
+
+create function public.current_student_catalog_state()
+returns text
+language sql
+stable
+security invoker
+set search_path = ''
+return unimind_private.current_student_catalog_state();
 
 revoke all on function public.current_student_catalog_state()
   from public, anon, authenticated;

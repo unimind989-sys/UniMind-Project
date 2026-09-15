@@ -26,14 +26,16 @@ select is(
     from pg_catalog.pg_proc as procedures
     join pg_catalog.pg_namespace as namespaces
       on namespaces.oid = procedures.pronamespace
-    where namespaces.nspname = 'public'
-      and procedures.proname = 'current_student_catalog_state'
+    where procedures.proname = 'current_student_catalog_state'
       and procedures.provolatile = 's'
-      and not procedures.prosecdef
       and array_to_string(procedures.proconfig, ',') like '%search_path=""%'
+      and (
+        (namespaces.nspname = 'public' and not procedures.prosecdef)
+        or (namespaces.nspname = 'unimind_private' and procedures.prosecdef)
+      )
   ),
-  1::bigint,
-  'browser-facing catalog state uses one stable security-invoker function with a safe search path'
+  2::bigint,
+  'browser-facing state uses a stable invoker wrapper and bounded private evaluator with safe search paths'
 );
 select ok(
   has_function_privilege('authenticated', 'public.available_catalog_entries()', 'EXECUTE'),
