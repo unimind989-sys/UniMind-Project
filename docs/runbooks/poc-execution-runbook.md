@@ -1054,9 +1054,9 @@ Implement:
 
 - `education_stages(id, code, name_en, name_ar, status, sort_order)`.
 - `institutions(id, education_stage_id, code, name_en, name_ar, status)`.
-- `programs(id, institution_id, code, program_type, name_en, name_ar, default_unit_type, unit_label_singular_en, unit_label_plural_en, unit_label_singular_ar, unit_label_plural_ar, status)`.
+- `programs(id, institution_id, code, program_type, progression_mode, name_en, name_ar, default_unit_type, unit_label_singular_en, unit_label_plural_en, unit_label_singular_ar, unit_label_plural_ar, status)`; `progression_mode` is `TERM_BASED` or `FLEXIBLE_CREDIT`.
 - `academic_levels(id, program_id, code, name_en, name_ar, sort_order, status)`.
-- `terms(id, academic_level_id, code, name_en, name_ar, sort_order, status)`.
+- `terms(id, academic_level_id, code, name_en, name_ar, sort_order, status)`; this stores a semester for `TERM_BASED` programs or a non-semester course-plan period for `FLEXIBLE_CREDIT` programs.
 - `cohorts(id, term_id, code, name, curriculum_edition, starts_at, ends_at, status)`.
 - `curriculum_units(id, cohort_id, parent_unit_id, code, unit_type, title_en, title_ar, sort_order, publication_status, published_at, published_by)`.
 
@@ -1222,11 +1222,12 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 #### WP03-T03 — Implement the catalog journey server-first
 
-- [ ] Load allowed options in Server Components/services using caller-scoped database functions.
+- [~] Load allowed options in Server Components/services using caller-scoped database functions. Task record: `planning/tasks/wp03-t03-catalog-journey-server-first.md`.
 - [ ] Treat query parameters as selection hints only; validate every value against the returned authorized option set.
 - [ ] Clear all downstream selections when an upstream value changes.
 - [ ] Encode a stable authorized selection in the URL so refresh/back works without broadening access.
 - [ ] Implement the approved catalog surface brief and distinct safe loading, no-result, error, and empty states from section 6.2. Move focus and announce results appropriately after a filter change; analytics may record safe reason codes, never private labels or hidden options.
+- [ ] Render the cascade as education level -> university/system -> faculty/program/track -> academic year/level -> semester/term when required. Keep Human Medicine and Veterinary Medicine as the first university pilots and derive labels plus progression behavior from configuration.
 - [ ] Exercise minimum, typical, and maximum synthetic option counts plus long Arabic/English/mixed labels at the supported mobile and desktop layouts; preserve touch, keyboard, screen-reader, refresh, and back/forward behavior without a client-side authorization cache becoming authoritative.
 - [ ] Add Playwright cases for refresh, back/forward, interrupted navigation, direct deep link, forged IDs, expired membership, and release changing while the page is open.
 
@@ -1305,11 +1306,13 @@ Build dependent server-authorized filters in this order:
 2. Institution/system.
 3. Program/faculty.
 4. Academic level.
-5. Term.
+5. Semester/term for `TERM_BASED` programs; for `FLEXIBLE_CREDIT`, use the configured course-plan period without presenting a rigid semester list.
 6. Released cohort when more than one matches.
 7. Available Modules or Subjects.
 
 Changing an upstream filter clears invalid downstream choices. Empty states must distinguish no configured catalog, no membership, locked cohort, unpublished unit, and no READY sources without exposing private details.
+
+After the path resolves, a student selects an individual authorized Module or Subject. A flexible-credit program lists only the caller's eligible course-plan units; it never infers eligibility from a fixed semester or accepts browser-selected units as authorization.
 
 ### 6.3 Subject workspace
 

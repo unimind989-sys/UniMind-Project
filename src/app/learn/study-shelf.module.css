@@ -6,6 +6,33 @@
   background: var(--canvas);
 }
 
+.shell button,
+.shell select,
+.shell a {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgb(57 119 247 / 18%);
+}
+
+.skipLink {
+  position: fixed;
+  z-index: 20;
+  inset-block-start: 0.75rem;
+  inset-inline-start: 0.75rem;
+  min-height: 2.75rem;
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-control);
+  background: var(--accent);
+  color: #ffffff;
+  padding-inline: 1rem;
+  text-decoration: none;
+  transform: translateY(-180%);
+}
+
+.skipLink:focus-visible {
+  transform: translateY(0);
+}
+
 .productNav {
   position: sticky;
   inset-block-start: 0;
@@ -264,6 +291,13 @@
   margin-block: 1.75rem 2.35rem;
 }
 
+.pageHeader h1 {
+  margin: 0;
+  font-size: clamp(2.15rem, 3vw, 2.65rem);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+}
+
 .titleRow {
   display: flex;
   align-items: baseline;
@@ -305,8 +339,165 @@
   font-size: 0.75rem;
 }
 
+.pathPanel {
+  border-block: 0.0625rem solid var(--line);
+  padding-block: 1.15rem 1.35rem;
+}
+
+.pathIntro {
+  display: grid;
+  grid-template-columns: minmax(12rem, 0.55fr) minmax(20rem, 1fr);
+  align-items: baseline;
+  gap: 1.5rem;
+  margin-block-end: 1rem;
+}
+
+.pathIntro h2 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1.18rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.pathIntro p {
+  max-width: 68ch;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.pathGrid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.pathField {
+  min-width: 0;
+  display: grid;
+  gap: 0.38rem;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.pathField select {
+  width: 100%;
+  min-height: 3.2rem;
+  border: 0.0625rem solid var(--line);
+  border-radius: var(--radius-control);
+  background: var(--surface-strong);
+  color: var(--text-primary);
+  padding-inline: 0.8rem 2.2rem;
+  font: inherit;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.pathField select:focus-visible {
+  border-color: transparent;
+  outline: 0.1875rem solid var(--accent);
+  outline-offset: 0.1875rem;
+}
+
+.pathField select:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.pathField[data-ready="true"] select {
+  border-color: #3c5573;
+}
+
+.navigationStatus {
+  min-height: 1.2rem;
+  margin: 0.7rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+}
+
+.flexiblePathNotice {
+  display: grid;
+  gap: 0.25rem;
+  max-width: 72ch;
+  margin-block-start: 0.85rem;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.flexiblePathNotice strong {
+  color: var(--text-primary);
+}
+
+.safeState {
+  min-height: 16rem;
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 42rem) auto;
+  align-items: center;
+  gap: 1rem;
+  border-block: 0.0625rem solid var(--line);
+  padding-block: 3rem;
+}
+
+.safeStateIcon {
+  width: 2.25rem;
+  height: 2.25rem;
+  color: #8db4ff;
+}
+
+.safeState h2,
+.emptyState h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1.18rem;
+  line-height: 1.25;
+}
+
+.safeState p,
+.emptyState p {
+  max-width: 68ch;
+  margin: 0.45rem 0 0;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.retryAction,
+.emptyState button {
+  min-height: 3rem;
+  border: 0;
+  border-radius: 0.65rem;
+  background: var(--accent);
+  color: #ffffff;
+  padding: 0.7rem 1rem;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+@media (hover: hover) {
+  .pathField select:hover:not(:disabled) {
+    border-color: var(--accent-focus);
+  }
+
+  .localeButton:hover:not(:disabled) {
+    background: var(--surface-focus);
+    color: var(--text-primary);
+  }
+
+  .retryAction:hover,
+  .emptyState button:hover {
+    background: var(--accent-focus);
+  }
+}
+
 .shelves {
   min-width: 0;
+  padding-block-start: 1.55rem;
 }
 
 .shelf + .shelf {
@@ -615,6 +806,10 @@
   text-align: center;
 }
 
+.emptyState button {
+  margin-block-start: 1rem;
+}
+
 .srOnly {
   position: absolute;
   width: 0.0625rem;
@@ -623,6 +818,56 @@
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   clip-path: inset(50%);
+}
+
+.loadingShell {
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: 15.875rem minmax(0, 1fr);
+  grid-template-rows: 4rem 7rem 10rem 1fr;
+  gap: 1rem;
+  padding: 1rem 1.125rem 2rem 0;
+  background: var(--canvas);
+}
+
+.loadingRail,
+.loadingUtility,
+.loadingHeading,
+.loadingPath,
+.loadingUnits {
+  display: block;
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  animation: catalog-loading 1.2s ease-in-out infinite alternate;
+}
+
+.loadingRail {
+  grid-row: 1 / -1;
+  border-radius: 0;
+  background: var(--canvas-deep);
+}
+
+.loadingUtility {
+  grid-column: 2;
+}
+
+.loadingHeading {
+  grid-column: 2;
+  width: min(28rem, 65%);
+}
+
+.loadingPath,
+.loadingUnits {
+  grid-column: 2;
+}
+
+@keyframes catalog-loading {
+  from {
+    opacity: 0.55;
+  }
+  to {
+    opacity: 0.9;
+  }
 }
 
 @media (max-width: 68rem) {
@@ -646,6 +891,10 @@
   .utilityDivider {
     display: none;
   }
+
+  .pathGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 47.99rem) {
@@ -653,6 +902,25 @@
     display: block;
     min-height: 100svh;
     padding-block-end: 5.25rem;
+  }
+
+  .loadingShell {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: 3rem 6rem 14rem 1fr 4.75rem;
+    padding: 0.75rem 1rem 0;
+  }
+
+  .loadingRail {
+    grid-column: 1;
+    grid-row: 5;
+  }
+
+  .loadingUtility,
+  .loadingHeading,
+  .loadingPath,
+  .loadingUnits {
+    grid-column: 1;
   }
 
   .productNav {
@@ -740,13 +1008,17 @@
 
   .localeButton {
     min-width: 2.35rem;
-    min-height: 2rem;
+    min-height: 2.75rem;
     font-size: 0.73rem;
   }
 
   .pageHeader {
     align-items: flex-start;
     margin-block: 1.55rem 1.9rem;
+  }
+
+  .pageHeader h1 {
+    font-size: 2rem;
   }
 
   .titleRow {
@@ -769,6 +1041,31 @@
 
   .syntheticNotice {
     margin-block-start: 0.2rem;
+  }
+
+  .pathIntro {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.4rem;
+  }
+
+  .pathGrid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .pathField select {
+    min-height: 3.35rem;
+    font-size: 1rem;
+  }
+
+  .safeState {
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    align-items: start;
+    padding-block: 2.5rem;
+  }
+
+  .retryAction {
+    grid-column: 1 / -1;
+    text-align: center;
   }
 
   .shelf + .shelf {
@@ -838,7 +1135,13 @@
 
 @media (prefers-reduced-motion: reduce) {
   .unitItem,
-  .unitImage img {
+  .unitImage img,
+  .loadingRail,
+  .loadingUtility,
+  .loadingHeading,
+  .loadingPath,
+  .loadingUnits {
     transition: none;
+    animation: none;
   }
 }

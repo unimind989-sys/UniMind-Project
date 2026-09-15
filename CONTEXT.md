@@ -8,7 +8,10 @@ This file is the shared language for product discussion, code, tests, decisions,
 The source-grounded educational platform. The PoC is its first production-shaped release, not a disposable demo.
 
 **Catalog path**  
-The configured hierarchy `education stage -> institution or education system -> program -> academic level -> term -> cohort or curriculum edition -> curriculum unit`.
+The configured hierarchy `education stage -> institution or education system -> program -> academic level -> configured academic period -> cohort or curriculum edition -> curriculum unit`.
+
+**Program progression mode**
+The configuration that determines how a student reaches eligible curriculum units. `TERM_BASED` requires a semester/term. `FLEXIBLE_CREDIT` uses an active course-plan period and exposes individually eligible Modules or Subjects without presenting a rigid semester list.
 
 **Cohort**  
 The exact student batch and curriculum edition whose access and approved sources are managed together. A cohort is more specific than a program or academic level.
@@ -98,6 +101,7 @@ The sanitized record of scope, commit, environment, commands, results, deviation
 ## Relationships
 
 - A catalog path contains many curriculum units; a curriculum unit belongs to one cohort/curriculum edition.
+- Program progression mode changes the selection experience, not the authorization model: every visible unit still comes from the caller-scoped authorized catalog.
 - An admin creates collection campaigns and assigns Batch Leaders; a Batch Leader submits source material within that campaign only.
 - A source asset has immutable source versions; each processed document, locator, segment, and embedding belongs to exactly one source version.
 - Authorized active READY segments form the unified knowledge pool for a cohort and curriculum unit.

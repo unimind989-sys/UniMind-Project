@@ -57,7 +57,7 @@ UniMind authority (AGENTS.md + master plan + CONTEXT.md)
  Impeccable audit + pinned Vercel guidelines + detector
                          |
                          v
-       evidence-backed fixes and final handoff
+       evidence-backed fixes + external Chrome review
 ```
 
 ## Commands
@@ -74,6 +74,18 @@ UniMind authority (AGENTS.md + master plan + CONTEXT.md)
 - Record the implemented design system: `$impeccable document`
 - Request only the Vercel rules report: `$web-design-guidelines <file-or-glob>`
 - Ask which skill fits: `$unimind-skills <goal>`
+
+## External Chrome review handoff
+
+Completing any UI implementation or revision includes a visible founder-review handoff. After the candidate passes its bounded rendered checks:
+
+This handoff is automatic. The founder must not need to ask for the external Chrome launch on each UI task or revision.
+
+1. Start or reuse the zero-cost local preview with synthetic state and navigate to the exact updated route.
+2. Launch that route in the installed external Google Chrome application. The in-app browser and agent-only Playwright sessions remain verification tools; neither substitutes for the external Chrome handoff.
+3. Keep the preview server running and give the founder the direct URL plus the specific flow and states to inspect. Record approval or requested revisions in the active task record.
+
+If the page cannot run or Google Chrome cannot launch, report that concrete blocker at handoff instead of claiming the UI is ready for review.
 
 The Impeccable hook is intentionally off during planning. When UI code exists, ask for `$impeccable hooks on`, inspect the generated `.codex/hooks.json`, and approve it through Codex's `/hooks` screen only if the automatic detector saves more time than it adds.
 

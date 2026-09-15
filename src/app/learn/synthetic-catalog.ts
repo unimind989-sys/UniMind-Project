@@ -1,260 +1,366 @@
-import type { ProgramTerminology } from "@/lib/catalog/terminology";
+import type { AuthorizedCatalogRow } from "@/lib/catalog/catalog-journey.application";
 
-export type ShelfIcon = "medicine" | "science" | "clinical";
-
-export type SyntheticUnit = Readonly<{
-  id: string;
-  nameEn: string;
-  nameAr: string;
+export type UnitPresentation = Readonly<{
   image: string;
-  completedUnits: number;
-  totalUnits: number;
-  available: boolean;
-  sourceCount?: number;
   descriptionEn?: string;
   descriptionAr?: string;
 }>;
 
-export type SyntheticShelf = Readonly<{
+type SyntheticUnit = Readonly<{
   id: string;
-  titleEn: string;
-  titleAr: string;
-  year: number;
-  icon: ShelfIcon;
-  terminology: ProgramTerminology;
+  nameEn: string;
+  nameAr: string;
+  image: string;
+  sourceCount: number;
+  descriptionEn: string;
+  descriptionAr: string;
+}>;
+
+type SyntheticProgram = Readonly<{
+  id: string;
+  code: string;
+  nameEn: string;
+  nameAr: string;
+  sortOrder: number;
+  progressionMode: "TERM_BASED" | "FLEXIBLE_CREDIT";
+  unitType: "MODULE" | "SUBJECT";
+  unitLabelSingularEn: string;
+  unitLabelPluralEn: string;
+  unitLabelSingularAr: string;
+  unitLabelPluralAr: string;
+  years: readonly (1 | 2 | 3)[];
   units: readonly SyntheticUnit[];
 }>;
 
-export const syntheticShelves: readonly SyntheticShelf[] = [
+const humanMedicineUnits: readonly SyntheticUnit[] = [
+  {
+    id: "anatomy",
+    nameEn: "Anatomy",
+    nameAr: "علم التشريح",
+    image: "/images/study-shelf/clinical-medicine.png",
+    sourceCount: 8,
+    descriptionEn: "Structure, regional anatomy, and clinical relationships.",
+    descriptionAr: "البنية والتشريح الموضعي والعلاقات السريرية.",
+  },
+  {
+    id: "biochemistry",
+    nameEn: "Biochemistry",
+    nameAr: "الكيمياء الحيوية",
+    image: "/images/study-shelf/biochemistry.png",
+    sourceCount: 11,
+    descriptionEn: "Biomolecules, enzymes, metabolism, and regulation.",
+    descriptionAr: "الجزيئات الحيوية والإنزيمات والأيض وتنظيمه.",
+  },
+  {
+    id: "physiology",
+    nameEn: "Physiology",
+    nameAr: "وظائف الأعضاء",
+    image: "/images/study-shelf/physiology.png",
+    sourceCount: 10,
+    descriptionEn: "Integrated organ function and homeostatic control.",
+    descriptionAr: "تكامل وظائف الأعضاء وآليات الاتزان الداخلي.",
+  },
+  {
+    id: "pathology",
+    nameEn: "Pathology",
+    nameAr: "علم الأمراض",
+    image: "/images/study-shelf/pathology.png",
+    sourceCount: 6,
+    descriptionEn: "Mechanisms of injury, adaptation, and disease patterns.",
+    descriptionAr: "آليات الإصابة والتكيف وأنماط الأمراض.",
+  },
+  {
+    id: "pharmacology",
+    nameEn: "Pharmacology",
+    nameAr: "علم الأدوية",
+    image: "/images/study-shelf/pharmacology.png",
+    sourceCount: 9,
+    descriptionEn: "Drug actions, kinetics, safety, and clinical use.",
+    descriptionAr: "تأثيرات الأدوية وحركتها وسلامتها واستخدامها السريري.",
+  },
+];
+
+const veterinaryMedicineUnits: readonly SyntheticUnit[] = [
+  {
+    id: "veterinary-anatomy",
+    nameEn: "Veterinary Anatomy",
+    nameAr: "تشريح بيطري",
+    image: "/images/study-shelf/clinical-medicine.png",
+    sourceCount: 7,
+    descriptionEn: "Comparative structure across common domestic species.",
+    descriptionAr: "التشريح المقارن بين أنواع الحيوانات المنزلية الشائعة.",
+  },
+  {
+    id: "animal-physiology",
+    nameEn: "Animal Physiology",
+    nameAr: "فسيولوجيا الحيوان",
+    image: "/images/study-shelf/physiology.png",
+    sourceCount: 9,
+    descriptionEn: "Integrated organ function across animal species.",
+    descriptionAr: "تكامل وظائف الأعضاء في الأنواع الحيوانية المختلفة.",
+  },
+  {
+    id: "veterinary-microbiology",
+    nameEn: "Veterinary Microbiology",
+    nameAr: "الميكروبيولوجيا البيطرية",
+    image: "/images/study-shelf/microbiology.png",
+    sourceCount: 8,
+    descriptionEn: "Animal pathogens, transmission, and laboratory basics.",
+    descriptionAr: "مسببات أمراض الحيوان وانتقالها وأساسيات المختبر.",
+  },
+  {
+    id: "animal-nutrition",
+    nameEn: "Animal Nutrition",
+    nameAr: "تغذية الحيوان",
+    image: "/images/study-shelf/gastrointestinal.png",
+    sourceCount: 6,
+    descriptionEn: "Nutrient requirements, feeds, and ration principles.",
+    descriptionAr: "الاحتياجات الغذائية والأعلاف ومبادئ تكوين العلائق.",
+  },
+  {
+    id: "veterinary-pathology",
+    nameEn: "Veterinary Pathology",
+    nameAr: "الباثولوجيا البيطرية",
+    image: "/images/study-shelf/pathology.png",
+    sourceCount: 5,
+    descriptionEn: "Disease mechanisms and tissue changes in animals.",
+    descriptionAr: "آليات المرض والتغيرات النسيجية في الحيوانات.",
+  },
+];
+
+const highSchoolUnits: readonly SyntheticUnit[] = [
+  {
+    id: "biology",
+    nameEn: "Biology",
+    nameAr: "الأحياء",
+    image: "/images/study-shelf/cell-biology.png",
+    sourceCount: 8,
+    descriptionEn: "Synthetic Thanaweya Amma biology material.",
+    descriptionAr: "محتوى تجريبي لمادة الأحياء بالثانوية العامة.",
+  },
+  {
+    id: "chemistry",
+    nameEn: "Chemistry",
+    nameAr: "الكيمياء",
+    image: "/images/study-shelf/biochemistry.png",
+    sourceCount: 7,
+    descriptionEn: "Synthetic Thanaweya Amma chemistry material.",
+    descriptionAr: "محتوى تجريبي لمادة الكيمياء بالثانوية العامة.",
+  },
+  {
+    id: "physics",
+    nameEn: "Physics",
+    nameAr: "الفيزياء",
+    image: "/images/study-shelf/cardiovascular.png",
+    sourceCount: 6,
+    descriptionEn: "Synthetic Thanaweya Amma physics material.",
+    descriptionAr: "محتوى تجريبي لمادة الفيزياء بالثانوية العامة.",
+  },
+];
+
+const universityPrograms: readonly SyntheticProgram[] = [
   {
     id: "human-medicine",
-    titleEn: "Human Medicine",
-    titleAr: "الطب البشري",
-    year: 2,
-    icon: "medicine",
-    terminology: { curriculumUnitNoun: "module" },
-    units: [
-      {
-        id: "anatomy",
-        nameEn: "Anatomy",
-        nameAr: "علم التشريح",
-        image: "/images/study-shelf/clinical-medicine.png",
-        completedUnits: 2,
-        totalUnits: 8,
-        available: true,
-      },
-      {
-        id: "cardiovascular",
-        nameEn: "Cardiovascular Module",
-        nameAr: "وحدة الجهاز القلبي الوعائي",
-        image: "/images/study-shelf/cardiovascular.png",
-        completedUnits: 4,
-        totalUnits: 8,
-        available: true,
-        sourceCount: 12,
-        descriptionEn:
-          "Cardiac structure, function, regulation, and common pathologies.",
-        descriptionAr: "بنية القلب ووظيفته وتنظيمه وأهم الأمراض الشائعة.",
-      },
-      {
-        id: "respiratory",
-        nameEn: "Respiratory Module",
-        nameAr: "وحدة الجهاز التنفسي",
-        image: "/images/study-shelf/respiratory.png",
-        completedUnits: 1,
-        totalUnits: 8,
-        available: true,
-        sourceCount: 9,
-        descriptionEn:
-          "Airways, gas exchange, mechanics, and common disorders.",
-        descriptionAr:
-          "الممرات الهوائية وتبادل الغازات والميكانيكا والاضطرابات الشائعة.",
-      },
-      {
-        id: "renal",
-        nameEn: "Renal Module",
-        nameAr: "وحدة الجهاز البولي",
-        image: "/images/study-shelf/renal.png",
-        completedUnits: 0,
-        totalUnits: 8,
-        available: true,
-        sourceCount: 7,
-        descriptionEn:
-          "Renal structure, fluid balance, and filtration principles.",
-        descriptionAr: "بنية الكلى وتوازن السوائل ومبادئ الترشيح.",
-      },
-      {
-        id: "gastrointestinal",
-        nameEn: "Gastrointestinal Module",
-        nameAr: "وحدة الجهاز الهضمي",
-        image: "/images/study-shelf/gastrointestinal.png",
-        completedUnits: 3,
-        totalUnits: 8,
-        available: true,
-        sourceCount: 10,
-        descriptionEn:
-          "Digestive anatomy, physiology, and common presentations.",
-        descriptionAr: "تشريح الجهاز الهضمي ووظائفه وأهم الحالات الشائعة.",
-      },
-      {
-        id: "endocrine",
-        nameEn: "Endocrine Module",
-        nameAr: "وحدة الغدد الصماء",
-        image: "/images/study-shelf/cell-biology.png",
-        completedUnits: 0,
-        totalUnits: 8,
-        available: false,
-      },
-    ],
+    code: "HUMAN_MEDICINE",
+    nameEn: "Faculty of Medicine",
+    nameAr: "كلية الطب البشري",
+    sortOrder: 1,
+    progressionMode: "TERM_BASED",
+    unitType: "MODULE",
+    unitLabelSingularEn: "Module",
+    unitLabelPluralEn: "Modules",
+    unitLabelSingularAr: "وحدة",
+    unitLabelPluralAr: "وحدات",
+    years: [1, 2, 3],
+    units: humanMedicineUnits,
   },
   {
-    id: "basic-sciences",
-    titleEn: "Basic Sciences",
-    titleAr: "العلوم الأساسية",
-    year: 1,
-    icon: "science",
-    terminology: { curriculumUnitNoun: "module" },
-    units: [
-      {
-        id: "cell-biology",
-        nameEn: "Cell Biology",
-        nameAr: "علم الخلية",
-        image: "/images/study-shelf/cell-biology.png",
-        completedUnits: 4,
-        totalUnits: 6,
-        available: true,
-        sourceCount: 8,
-        descriptionEn: "Cell structure, organelles, transport, and signaling.",
-        descriptionAr: "بنية الخلية وعضياتها والنقل والإشارات الخلوية.",
-      },
-      {
-        id: "biochemistry",
-        nameEn: "Biochemistry",
-        nameAr: "الكيمياء الحيوية",
-        image: "/images/study-shelf/biochemistry.png",
-        completedUnits: 2,
-        totalUnits: 6,
-        available: true,
-        sourceCount: 11,
-        descriptionEn: "Biomolecules, enzymes, metabolism, and regulation.",
-        descriptionAr: "الجزيئات الحيوية والإنزيمات والأيض وتنظيمه.",
-      },
-      {
-        id: "physiology",
-        nameEn: "Physiology",
-        nameAr: "وظائف الأعضاء",
-        image: "/images/study-shelf/physiology.png",
-        completedUnits: 1,
-        totalUnits: 6,
-        available: true,
-        sourceCount: 10,
-        descriptionEn: "Integrated organ function and homeostatic control.",
-        descriptionAr: "تكامل وظائف الأعضاء وآليات الاتزان الداخلي.",
-      },
-      {
-        id: "pathology",
-        nameEn: "Pathology",
-        nameAr: "علم الأمراض",
-        image: "/images/study-shelf/pathology.png",
-        completedUnits: 0,
-        totalUnits: 6,
-        available: true,
-        sourceCount: 6,
-        descriptionEn:
-          "Mechanisms of injury, adaptation, and disease patterns.",
-        descriptionAr: "آليات الإصابة والتكيف وأنماط الأمراض.",
-      },
-      {
-        id: "pharmacology",
-        nameEn: "Pharmacology",
-        nameAr: "علم الأدوية",
-        image: "/images/study-shelf/pharmacology.png",
-        completedUnits: 1,
-        totalUnits: 6,
-        available: true,
-        sourceCount: 9,
-        descriptionEn: "Drug actions, kinetics, safety, and clinical use.",
-        descriptionAr: "تأثيرات الأدوية وحركتها وسلامتها واستخدامها السريري.",
-      },
-      {
-        id: "microbiology",
-        nameEn: "Microbiology",
-        nameAr: "الأحياء الدقيقة",
-        image: "/images/study-shelf/microbiology.png",
-        completedUnits: 0,
-        totalUnits: 6,
-        available: false,
-      },
-    ],
+    id: "veterinary-medicine",
+    code: "VETERINARY_MEDICINE",
+    nameEn: "Faculty of Veterinary Medicine",
+    nameAr: "كلية الطب البيطري",
+    sortOrder: 2,
+    progressionMode: "TERM_BASED",
+    unitType: "SUBJECT",
+    unitLabelSingularEn: "Subject",
+    unitLabelPluralEn: "Subjects",
+    unitLabelSingularAr: "مادة",
+    unitLabelPluralAr: "مواد",
+    years: [1, 2, 3],
+    units: veterinaryMedicineUnits,
+  },
+];
+
+const highSchoolPrograms: readonly SyntheticProgram[] = [
+  {
+    id: "science-track",
+    code: "SCIENCE_TRACK",
+    nameEn: "Science track",
+    nameAr: "شعبة علمي علوم",
+    sortOrder: 1,
+    progressionMode: "TERM_BASED",
+    unitType: "SUBJECT",
+    unitLabelSingularEn: "Subject",
+    unitLabelPluralEn: "Subjects",
+    unitLabelSingularAr: "مادة",
+    unitLabelPluralAr: "مواد",
+    years: [3],
+    units: highSchoolUnits,
   },
   {
-    id: "clinical-practice",
-    titleEn: "Clinical Practice",
-    titleAr: "التدريب السريري",
-    year: 3,
-    icon: "clinical",
-    terminology: { curriculumUnitNoun: "module" },
-    units: [
+    id: "mathematics-track",
+    code: "MATHEMATICS_TRACK",
+    nameEn: "Mathematics track",
+    nameAr: "شعبة علمي رياضة",
+    sortOrder: 2,
+    progressionMode: "TERM_BASED",
+    unitType: "SUBJECT",
+    unitLabelSingularEn: "Subject",
+    unitLabelPluralEn: "Subjects",
+    unitLabelSingularAr: "مادة",
+    unitLabelPluralAr: "مواد",
+    years: [3],
+    units: highSchoolUnits,
+  },
+];
+
+const stages = [
+  {
+    id: "university",
+    code: "UNIVERSITY",
+    nameEn: "University student",
+    nameAr: "طالب جامعي",
+    sortOrder: 1,
+    institutions: [
       {
-        id: "internal-medicine",
-        nameEn: "Internal Medicine",
-        nameAr: "الأمراض الباطنية",
-        image: "/images/study-shelf/internal-medicine.png",
-        completedUnits: 2,
-        totalUnits: 5,
-        available: true,
-        sourceCount: 12,
-        descriptionEn: "Structured approaches to common adult presentations.",
-        descriptionAr: "مناهج منظمة للتعامل مع حالات البالغين الشائعة.",
+        id: "zagazig-university",
+        code: "ZAGAZIG_UNIVERSITY",
+        nameEn: "Zagazig University",
+        nameAr: "جامعة الزقازيق",
+        sortOrder: 1,
       },
       {
-        id: "surgery",
-        nameEn: "Surgery",
-        nameAr: "الجراحة",
-        image: "/images/study-shelf/surgery.png",
-        completedUnits: 1,
-        totalUnits: 5,
-        available: true,
-        sourceCount: 8,
-        descriptionEn:
-          "Assessment, perioperative care, and surgical principles.",
-        descriptionAr: "التقييم والرعاية المحيطة بالجراحة ومبادئها.",
+        id: "ain-shams-university",
+        code: "AIN_SHAMS_UNIVERSITY",
+        nameEn: "Ain Shams University",
+        nameAr: "جامعة عين شمس",
+        sortOrder: 2,
       },
       {
-        id: "pediatrics",
-        nameEn: "Pediatrics",
-        nameAr: "طب الأطفال",
-        image: "/images/study-shelf/pediatrics.png",
-        completedUnits: 0,
-        totalUnits: 5,
-        available: true,
-        sourceCount: 7,
-        descriptionEn:
-          "Age-aware assessment, growth, and common presentations.",
-        descriptionAr: "التقييم حسب العمر والنمو وحالات الأطفال الشائعة.",
-      },
-      {
-        id: "obstetrics",
-        nameEn: "Obstetrics & Gynecology",
-        nameAr: "أمراض النساء والتوليد",
-        image: "/images/study-shelf/obstetrics.png",
-        completedUnits: 1,
-        totalUnits: 5,
-        available: true,
-        sourceCount: 6,
-        descriptionEn:
-          "Reproductive health, pregnancy, and clinical assessment.",
-        descriptionAr: "الصحة الإنجابية والحمل والتقييم السريري.",
-      },
-      {
-        id: "emergency-medicine",
-        nameEn: "Emergency Medicine",
-        nameAr: "طب الطوارئ",
-        image: "/images/study-shelf/emergency-medicine.png",
-        completedUnits: 0,
-        totalUnits: 5,
-        available: false,
+        id: "benha-university",
+        code: "BENHA_UNIVERSITY",
+        nameEn: "Benha University",
+        nameAr: "جامعة بنها",
+        sortOrder: 3,
       },
     ],
+    programs: universityPrograms,
+  },
+  {
+    id: "thanaweya-amma",
+    code: "HIGH_SCHOOL",
+    nameEn: "High school (Thanaweya Amma)",
+    nameAr: "الثانوية العامة",
+    sortOrder: 2,
+    institutions: [
+      {
+        id: "egyptian-thanaweya-amma",
+        code: "EGYPTIAN_THANAWAYA_AMMA",
+        nameEn: "Egyptian Thanaweya Amma",
+        nameAr: "نظام الثانوية العامة المصرية",
+        sortOrder: 1,
+      },
+    ],
+    programs: highSchoolPrograms,
   },
 ] as const;
+
+const ordinalNames = {
+  1: { en: "First year", ar: "السنة الأولى" },
+  2: { en: "Second year", ar: "السنة الثانية" },
+  3: { en: "Third year", ar: "السنة الثالثة" },
+} as const;
+
+const rows: AuthorizedCatalogRow[] = [];
+const presentations: Record<string, UnitPresentation> = {};
+
+for (const stage of stages) {
+  for (const institution of stage.institutions) {
+    for (const program of stage.programs) {
+      for (const year of program.years) {
+        for (const semester of [1, 2] as const) {
+          for (const [unitIndex, unit] of program.units.entries()) {
+            const levelId = `${program.id}-year-${year}`;
+            const termId = `${levelId}-term-${semester}`;
+            const cohortId = `${institution.id}-${termId}-cohort`;
+            const unitId = `${institution.id}-${program.id}-y${year}-t${semester}-${unit.id}`;
+            rows.push({
+              stage: {
+                id: stage.id,
+                code: stage.code,
+                nameEn: stage.nameEn,
+                nameAr: stage.nameAr,
+                sortOrder: stage.sortOrder,
+              },
+              institution,
+              program: {
+                id: program.id,
+                code: program.code,
+                nameEn: program.nameEn,
+                nameAr: program.nameAr,
+                sortOrder: program.sortOrder,
+                progressionMode: program.progressionMode,
+                unitType: program.unitType,
+                unitLabelSingularEn: program.unitLabelSingularEn,
+                unitLabelPluralEn: program.unitLabelPluralEn,
+                unitLabelSingularAr: program.unitLabelSingularAr,
+                unitLabelPluralAr: program.unitLabelPluralAr,
+              },
+              level: {
+                id: levelId,
+                code: `YEAR_${year}`,
+                nameEn: ordinalNames[year].en,
+                nameAr: ordinalNames[year].ar,
+                sortOrder: year,
+              },
+              term: {
+                id: termId,
+                code: `TERM_${semester}`,
+                nameEn: `Term ${semester}`,
+                nameAr: `الترم ${semester === 1 ? "الأول" : "الثاني"}`,
+                sortOrder: semester,
+              },
+              cohort: {
+                id: cohortId,
+                code: `${program.code}_Y${year}_T${semester}_2026`,
+                nameEn: `Synthetic ${program.nameEn} year ${year}, term ${semester}`,
+                nameAr: `مجموعة تجريبية: ${program.nameAr}، السنة ${year}، الترم ${semester}`,
+                sortOrder: 1,
+                curriculumEdition: "synthetic-2026-2027",
+              },
+              unit: {
+                id: unitId,
+                code: unit.id.toUpperCase().replaceAll("-", "_"),
+                nameEn: unit.nameEn,
+                nameAr: unit.nameAr,
+                sortOrder: unitIndex + 1,
+                unitType: program.unitType,
+                sourceCount: unit.sourceCount,
+              },
+            });
+            presentations[unitId] = {
+              image: unit.image,
+              descriptionEn: unit.descriptionEn,
+              descriptionAr: unit.descriptionAr,
+            };
+          }
+        }
+      }
+    }
+  }
+}
+
+export const syntheticCatalogRows: readonly AuthorizedCatalogRow[] = rows;
+export const syntheticUnitPresentationById: Readonly<
+  Record<string, UnitPresentation>
+> = presentations;

@@ -1,26 +1,39 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import type { Route } from "next";
+import { useRouter } from "next/navigation";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type ReactNode,
+} from "react";
 
-import { curriculumUnitLabel } from "@/lib/catalog/terminology";
+import { logoutAction } from "@/app/(auth)/actions";
+import {
+  buildCatalogHref,
+  type CatalogJourney,
+  type CatalogNode,
+  type CatalogSelectionKey,
+  type CatalogUnitNode,
+  type CatalogAccessState,
+} from "@/lib/catalog/catalog-journey.application";
+import { getCatalogCopy } from "@/lib/i18n/catalog-copy";
 import {
   formatInteger,
   getDictionary,
   getTextDirection,
   type Locale,
 } from "@/lib/i18n/locale";
-import { logoutAction } from "@/app/(auth)/actions";
 
-import type {
-  ShelfIcon,
-  SyntheticShelf,
-  SyntheticUnit,
-} from "../synthetic-catalog";
+import type { UnitPresentation } from "../synthetic-catalog";
 import styles from "../study-shelf.module.css";
 
+type CatalogViewState = CatalogAccessState | "ERROR";
 type IconName =
-  | ShelfIcon
   | "calendar"
   | "check"
   | "grid"
@@ -38,17 +51,18 @@ const navItems = [
   { icon: "sources", labelKey: "nav.sources", current: false },
   { icon: "progress", labelKey: "nav.progress", current: false },
   { icon: "settings", labelKey: "nav.settings", current: false },
-] as const satisfies readonly Readonly<{
-  icon: IconName;
-  labelKey:
-    | "nav.studyShelf"
-    | "nav.workspace"
-    | "nav.calendar"
-    | "nav.sources"
-    | "nav.progress"
-    | "nav.settings";
-  current: boolean;
-}>[];
+] as const;
+
+const fallbackImages = [
+  "/images/study-shelf/cell-biology.png",
+  "/images/study-shelf/cardiovascular.png",
+  "/images/study-shelf/physiology.png",
+  "/images/study-shelf/clinical-medicine.png",
+] as const;
+
+const subscribeToHydration = () => () => {};
+const clientHydrationSnapshot = () => true;
+const serverHydrationSnapshot = () => false;
 
 function Icon({
   name,
@@ -112,22 +126,6 @@ function Icon({
         <path d="M8 10V7a4 4 0 0 1 8 0v3" />
       </>
     ),
-    medicine: (
-      <>
-        <path d="M5 3v5a4 4 0 0 0 8 0V3M4 3h2M12 3h2M9 12v2a5 5 0 0 0 10 0v-1" />
-        <circle cx="19" cy="10" r="2" />
-      </>
-    ),
-    science: (
-      <>
-        <path d="M9 3v6l-4.5 8a2.5 2.5 0 0 0 2.2 4h10.6a2.5 2.5 0 0 0 2.2-4L15 9V3M8 3h8M7 15h10" />
-      </>
-    ),
-    clinical: (
-      <>
-        <path d="M3 12v8M21 12v8M3 17h18M6 17v-5h5a3 3 0 0 1 3 3v2M6 12V7h2a3 3 0 0 1 3 3v2" />
-      </>
-    ),
   };
 
   return (
@@ -161,118 +159,190 @@ function BrandMark() {
   );
 }
 
+function localizedName(node: CatalogNode, locale: Locale) {
+  return locale === "ar" ? node.nameAr : node.nameEn;
+}
+
+function imageForUnit(unit: CatalogUnitNode, presentation?: UnitPresentation) {
+  if (presentation !== undefined) return presentation.image;
+  const score = [...unit.code].reduce(
+    (total, character) => total + character.codePointAt(0)!,
+    0,
+  );
+  return fallbackImages[score % fallbackImages.length] ?? fallbackImages[0];
+}
+
+function PathSelect({
+  id,
+  label,
+  options,
+  value,
+  locale,
+  pending,
+  onChange,
+}: Readonly<{
+  id: CatalogSelectionKey;
+  label: string;
+  options: readonly CatalogNode[];
+  value?: string | undefined;
+  locale: Locale;
+  pending: boolean;
+  onChange: (key: CatalogSelectionKey, value: string) => void;
+}>) {
+  const catalogCopy = getCatalogCopy(locale);
+  return (
+    <label className={styles.pathField} data-ready={options.length > 0}>
+      <span>{label}</span>
+      <select
+        name={id}
+        value={value ?? ""}
+        disabled={pending || options.length === 0}
+        onChange={(event) => onChange(id, event.target.value)}
+      >
+        <option value="">{catalogCopy.choose}</option>
+        {options.map((option) => (
+          <option key={option.id} value={option.id}>
+            {localizedName(option, locale)}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+function SafeState({
+  state,
+  locale,
+  basePath,
+}: Readonly<{
+  state: Exclude<CatalogViewState, "READY">;
+  locale: Locale;
+  basePath: string;
+}>) {
+  const text = getCatalogCopy(locale);
+  const content = {
+    NO_MEMBERSHIP: [text.noMembershipTitle, text.noMembershipBody],
+    COHORT_LOCKED: [text.cohortLockedTitle, text.cohortLockedBody],
+    NO_CATALOG: [text.noCatalogTitle, text.noCatalogBody],
+    UNIT_UNPUBLISHED: [text.unpublishedTitle, text.unpublishedBody],
+    READY_SOURCE_MISSING: [text.noReadySourceTitle, text.noReadySourceBody],
+    ERROR: [text.errorTitle, text.errorBody],
+  } as const;
+  const [title, body] = content[state];
+
+  return (
+    <section
+      className={styles.safeState}
+      role={state === "ERROR" ? "alert" : "status"}
+    >
+      <Icon
+        name={state === "ERROR" ? "lock" : "sources"}
+        className={styles.safeStateIcon}
+      />
+      <div>
+        <h2>{title}</h2>
+        <p>{body}</p>
+      </div>
+      {state === "ERROR" ? (
+        <a className={styles.retryAction} href={`${basePath}?lang=${locale}`}>
+          {text.retry}
+        </a>
+      ) : null}
+    </section>
+  );
+}
+
 function UnitCard({
   unit,
   locale,
-  focused,
-  onFocus,
+  selected,
+  pending,
+  edition,
+  presentation,
+  eager,
+  onSelect,
 }: Readonly<{
-  unit: SyntheticUnit;
+  unit: CatalogUnitNode;
   locale: Locale;
-  focused: boolean;
-  onFocus: (unitId: string) => void;
+  selected: boolean;
+  pending: boolean;
+  edition: string;
+  presentation?: UnitPresentation | undefined;
+  eager: boolean;
+  onSelect: (unitId: string) => void;
 }>) {
   const dictionary = getDictionary(locale);
+  const text = getCatalogCopy(locale);
   const direction = getTextDirection(locale);
-  const progress = Math.round((unit.completedUnits / unit.totalUnits) * 100);
-  const primaryName = locale === "ar" ? unit.nameAr : unit.nameEn;
-  const description = locale === "ar" ? unit.descriptionAr : unit.descriptionEn;
+  const description =
+    locale === "ar" ? presentation?.descriptionAr : presentation?.descriptionEn;
 
   return (
     <li
       className={styles.unitItem}
-      data-focused={focused}
-      data-available={unit.available}
+      data-focused={selected}
       data-unit-id={unit.id}
     >
       <article className={styles.unitCard}>
         <button
           className={styles.unitSelect}
           type="button"
-          disabled={!unit.available}
-          aria-pressed={focused}
-          aria-label={`${dictionary["catalog.focusUnit"]}: ${primaryName}`}
-          onClick={() => onFocus(unit.id)}
+          disabled={pending}
+          aria-pressed={selected}
+          aria-label={`${text.selectUnit}: ${localizedName(unit, locale)}`}
+          onClick={() => onSelect(unit.id)}
         >
           <span className={styles.unitImage}>
             <Image
-              src={unit.image}
+              src={imageForUnit(unit, presentation)}
               alt=""
               fill
               sizes="(max-width: 767px) 88vw, 382px"
-              {...(unit.id === "cardiovascular"
-                ? { loading: "eager", fetchPriority: "high" as const }
-                : {})}
+              loading={eager ? "eager" : "lazy"}
+              fetchPriority={eager ? "high" : "auto"}
             />
           </span>
           <span className={styles.unitCopy}>
             <bdi className={styles.unitName} lang={locale} dir={direction}>
-              {primaryName}
+              {localizedName(unit, locale)}
             </bdi>
-            {focused && unit.available ? (
+            {selected ? (
               <span className={styles.readyBadge} role="status">
                 <Icon name="check" className={styles.statusIcon} />
-                <span lang={locale} dir={direction}>
-                  {dictionary["catalog.ready"]}
-                </span>
-              </span>
-            ) : !unit.available ? (
-              <span className={styles.lockedBadge}>
-                <Icon name="lock" className={styles.statusIcon} />
-                <span lang={locale}>{dictionary["catalog.unavailable"]}</span>
-              </span>
-            ) : null}
-            {!focused && unit.available ? (
-              <span className={styles.progressRow}>
-                <span className={styles.progressTrack} aria-hidden="true">
-                  <span
-                    className={styles.progressValue}
-                    style={{ width: `${progress}%` }}
-                  />
-                </span>
-                <span>
-                  {formatInteger(locale, unit.completedUnits)}/
-                  {formatInteger(locale, unit.totalUnits)}{" "}
-                  {dictionary["catalog.units"]}
-                </span>
+                {dictionary["catalog.ready"]}
               </span>
             ) : null}
           </span>
         </button>
-
-        {focused && unit.available ? (
+        {selected ? (
           <div className={styles.focusedDetails}>
             <div className={styles.detailGrid}>
               <p className={styles.detailLabel}>
                 <strong className={styles.detailValue}>
-                  {formatInteger(locale, unit.sourceCount ?? 0)}
+                  {formatInteger(locale, unit.sourceCount ?? 1)}
                 </strong>
-                <span lang={locale} dir={direction}>
-                  {dictionary["catalog.sources"]}
-                </span>
+                <span>{text.sourceCount}</span>
               </p>
               <p className={styles.detailLabel}>
                 <strong className={styles.detailValue}>
-                  {dictionary["catalog.scopeValue"]}
+                  <bdi>{edition}</bdi>
                 </strong>
-                <span lang={locale} dir={direction}>
-                  {dictionary["catalog.scope"]}
-                </span>
+                <span>{text.edition}</span>
               </p>
               <button
                 className={styles.workspaceAction}
                 type="button"
                 disabled
-                title={dictionary["catalog.workspacePending"]}
+                title={text.workspacePending}
               >
-                {dictionary["catalog.workspacePending"]}
+                {text.workspacePending}
               </button>
             </div>
-            <p className={styles.unitDescription}>
-              <bdi lang={locale} dir={direction}>
-                {description}
-              </bdi>
-            </p>
+            {description === undefined ? null : (
+              <p className={styles.unitDescription}>
+                <bdi>{description}</bdi>
+              </p>
+            )}
           </div>
         ) : null}
       </article>
@@ -282,76 +352,130 @@ function UnitCard({
 
 export function StudyShelf({
   initialLocale,
-  shelves,
+  journey,
+  state,
+  basePath,
+  synthetic = false,
   showLogout = false,
+  unitPresentationById = {},
 }: Readonly<{
   initialLocale: Locale;
-  shelves: readonly SyntheticShelf[];
-  showLogout?: boolean | undefined;
+  journey: CatalogJourney;
+  state: CatalogViewState;
+  basePath: string;
+  synthetic?: boolean;
+  showLogout?: boolean;
+  unitPresentationById?: Readonly<Record<string, UnitPresentation>>;
 }>) {
-  const [locale, setLocale] = useState(initialLocale);
+  const router = useRouter();
   const [query, setQuery] = useState("");
-  const [focusedUnitId, setFocusedUnitId] = useState("cardiovascular");
-  const shelvesRootRef = useRef<HTMLDivElement>(null);
-  const dictionary = getDictionary(locale);
-  const direction = getTextDirection(locale);
+  const hydrated = useSyncExternalStore(
+    subscribeToHydration,
+    clientHydrationSnapshot,
+    serverHydrationSnapshot,
+  );
+  const [pending, setPending] = useState(false);
+  const resultsHeadingRef = useRef<HTMLHeadingElement>(null);
+  const navigationStarted = useRef(false);
+  const dictionary = getDictionary(initialLocale);
+  const text = getCatalogCopy(initialLocale);
+  const direction = getTextDirection(initialLocale);
 
   useEffect(() => {
-    document.documentElement.lang = locale;
+    document.documentElement.lang = initialLocale;
     document.documentElement.dir = direction;
-  }, [direction, locale]);
+  }, [direction, initialLocale]);
 
   useEffect(() => {
-    if (!window.matchMedia("(max-width: 47.99rem)").matches) return;
+    if (!navigationStarted.current) return;
+    navigationStarted.current = false;
+    setPending(false);
+    resultsHeadingRef.current?.focus();
+  }, [initialLocale, journey.canonicalQuery]);
 
-    const selectedUnit = shelvesRootRef.current?.querySelector<HTMLElement>(
-      `[data-unit-id="${CSS.escape(focusedUnitId)}"]`,
+  const filteredUnits = useMemo(() => {
+    const normalized = query.trim().toLocaleLowerCase(initialLocale);
+    if (normalized === "") return journey.units;
+    return journey.units.filter((unit) =>
+      `${unit.nameEn} ${unit.nameAr}`
+        .toLocaleLowerCase(initialLocale)
+        .includes(normalized),
     );
-    const reducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
+  }, [initialLocale, journey.units, query]);
 
-    selectedUnit?.scrollIntoView({
-      behavior: reducedMotion ? "auto" : "smooth",
-      block: "nearest",
-      inline: "center",
-    });
-  }, [focusedUnitId]);
-
-  const filteredShelves = useMemo(() => {
-    const normalizedQuery = query.trim().toLocaleLowerCase(locale);
-    if (normalizedQuery === "") return shelves;
-
-    return shelves
-      .map((shelf) => ({
-        ...shelf,
-        units: shelf.units.filter((unit) =>
-          `${unit.nameEn} ${unit.nameAr}`
-            .toLocaleLowerCase(locale)
-            .includes(normalizedQuery),
-        ),
-      }))
-      .filter((shelf) => shelf.units.length > 0);
-  }, [locale, query, shelves]);
-
-  function selectLocale(nextLocale: Locale) {
-    setLocale(nextLocale);
-    const url = new URL(window.location.href);
-    url.searchParams.set("lang", nextLocale);
-    window.history.replaceState(null, "", url);
+  function navigate(key: CatalogSelectionKey, value: string) {
+    navigationStarted.current = true;
+    setPending(true);
+    router.push(
+      buildCatalogHref(
+        basePath,
+        initialLocale,
+        journey.selection,
+        key,
+        value,
+      ) as Route,
+    );
   }
 
+  function selectLocale(locale: Locale) {
+    navigationStarted.current = true;
+    setPending(true);
+    const url = new URL(window.location.href);
+    url.searchParams.set("lang", locale);
+    router.replace(`${url.pathname}?${url.searchParams.toString()}` as Route);
+  }
+
+  const showCohort = journey.options.cohorts.length > 1;
+  const selectedStageCode = journey.selectedStage?.code;
+  const isUniversity = selectedStageCode === "UNIVERSITY";
+  const isHighSchool = selectedStageCode === "HIGH_SCHOOL";
+  const usesFlexibleCredits =
+    journey.selectedProgram?.progressionMode === "FLEXIBLE_CREDIT";
+  const showTerm = !usesFlexibleCredits || journey.options.terms.length > 1;
+  const institutionLabel = isUniversity
+    ? text.university
+    : isHighSchool
+      ? text.educationSystem
+      : text.institution;
+  const programLabel = isUniversity
+    ? text.faculty
+    : isHighSchool
+      ? text.track
+      : text.program;
+  const levelLabel = isUniversity
+    ? text.academicYear
+    : isHighSchool
+      ? text.schoolYear
+      : text.level;
+  const termLabel = isUniversity ? text.semester : text.term;
+  const resultLabel =
+    initialLocale === "ar"
+      ? (journey.selectedProgram?.unitLabelPluralAr ??
+        dictionary["catalog.heading"])
+      : (journey.selectedProgram?.unitLabelPluralEn ??
+        dictionary["catalog.heading"]);
+
   return (
-    <div className={styles.shell} lang={locale} dir={direction}>
+    <div
+      className={styles.shell}
+      lang={initialLocale}
+      dir={direction}
+      aria-busy={!hydrated || pending}
+    >
+      <a className={styles.skipLink} href="#main-content">
+        {initialLocale === "ar" ? "انتقل إلى المحتوى" : "Skip to content"}
+      </a>
       <aside className={styles.productNav} aria-label="UniMind">
         <div className={styles.brand}>
           <BrandMark />
-          <span className={styles.brandName}>UniMind</span>
+          <span className={styles.brandName} translate="no">
+            UniMind
+          </span>
         </div>
         <p className={styles.brandTagline}>{dictionary["brand.tagline"]}</p>
         <nav
           aria-label={
-            locale === "ar" ? "التنقل في المنتج" : "Product navigation"
+            initialLocale === "ar" ? "التنقل في المنتج" : "Product navigation"
           }
         >
           <ul className={styles.navList}>
@@ -360,27 +484,19 @@ export function StudyShelf({
                 {item.current ? (
                   <a
                     className={styles.navItem}
-                    href="/learn"
+                    href={`${basePath}?lang=${initialLocale}`}
                     aria-current="page"
                     data-current="true"
                   >
                     <Icon name={item.icon} className={styles.navIcon} />
-                    <span
-                      className={styles.navCopy}
-                      lang={locale}
-                      dir={direction}
-                    >
+                    <span className={styles.navCopy}>
                       {dictionary[item.labelKey]}
                     </span>
                   </a>
                 ) : (
                   <span className={styles.navItem} aria-disabled="true">
                     <Icon name={item.icon} className={styles.navIcon} />
-                    <span
-                      className={styles.navCopy}
-                      lang={locale}
-                      dir={direction}
-                    >
+                    <span className={styles.navCopy}>
                       {dictionary[item.labelKey]}
                     </span>
                   </span>
@@ -390,15 +506,15 @@ export function StudyShelf({
           </ul>
         </nav>
         <div className={styles.navFooter}>
-          <p lang={locale} dir={direction}>
-            {locale === "ar"
+          <p>
+            {initialLocale === "ar"
               ? "بخطوات هادئة نحو مستقبل أكثر إشراقًا"
               : "A calmer path to a brighter you."}
           </p>
         </div>
       </aside>
 
-      <main className={styles.content}>
+      <main id="main-content" className={styles.content} tabIndex={-1}>
         <div className={styles.utilityBar}>
           <form
             className={styles.searchForm}
@@ -414,6 +530,7 @@ export function StudyShelf({
               className={styles.searchInput}
               type="search"
               value={query}
+              disabled={journey.units.length === 0}
               onChange={(event) => setQuery(event.target.value)}
               placeholder={dictionary["catalog.searchPlaceholder"]}
               autoComplete="off"
@@ -422,13 +539,14 @@ export function StudyShelf({
           <div className={styles.utilityActions}>
             <div
               className={styles.localeSwitch}
-              aria-label={locale === "ar" ? "اللغة" : "Language"}
+              aria-label={initialLocale === "ar" ? "اللغة" : "Language"}
               role="group"
             >
               <button
                 className={styles.localeButton}
                 type="button"
-                aria-pressed={locale === "en"}
+                aria-pressed={initialLocale === "en"}
+                disabled={!hydrated || pending}
                 onClick={() => selectLocale("en")}
               >
                 EN
@@ -436,7 +554,8 @@ export function StudyShelf({
               <button
                 className={styles.localeButton}
                 type="button"
-                aria-pressed={locale === "ar"}
+                aria-pressed={initialLocale === "ar"}
+                disabled={!hydrated || pending}
                 onClick={() => selectLocale("ar")}
               >
                 عربي
@@ -447,17 +566,13 @@ export function StudyShelf({
               <span className={styles.avatar} aria-hidden="true">
                 SA
               </span>
-              <span
-                className={styles.identityCopy}
-                lang={locale}
-                dir={direction}
-              >
+              <span className={styles.identityCopy}>
                 {dictionary["identity.student"]}
               </span>
               {showLogout ? (
                 <form action={logoutAction}>
                   <button className={styles.logoutAction} type="submit">
-                    {locale === "ar" ? "تسجيل الخروج" : "Sign out"}
+                    {initialLocale === "ar" ? "تسجيل الخروج" : "Sign out"}
                   </button>
                 </form>
               ) : null}
@@ -467,81 +582,161 @@ export function StudyShelf({
 
         <header className={styles.pageHeader}>
           <div>
-            <div className={styles.titleRow}>
-              <h1 lang={locale} dir={direction}>
-                {dictionary["catalog.heading"]}
-              </h1>
-            </div>
+            <h1>{dictionary["catalog.heading"]}</h1>
             <p className={styles.summary}>
-              <span lang={locale} dir={direction}>
-                {dictionary["catalog.summary"]}
-              </span>
-              <span className={styles.syntheticNotice} role="status">
-                {dictionary["catalog.syntheticNotice"]}
-              </span>
+              <span>{dictionary["catalog.summary"]}</span>
+              {synthetic ? (
+                <span className={styles.syntheticNotice} role="status">
+                  {text.syntheticNotice}
+                </span>
+              ) : null}
             </p>
           </div>
-          <a className={styles.viewAll} href="#catalog-shelves">
-            {dictionary["catalog.viewAll"]} {locale === "ar" ? "←" : "→"}
-          </a>
         </header>
 
-        <div
-          id="catalog-shelves"
-          ref={shelvesRootRef}
-          className={styles.shelves}
-          aria-live="polite"
-        >
-          {filteredShelves.length === 0 ? (
-            <p className={styles.emptyState}>
-              {dictionary["catalog.noResults"]}
-            </p>
-          ) : (
-            filteredShelves.map((shelf) => (
-              <section
-                className={styles.shelf}
-                key={shelf.id}
-                aria-labelledby={`${shelf.id}-heading`}
-              >
-                <div className={styles.shelfHeading}>
-                  <div className={styles.shelfTitle}>
-                    <Icon name={shelf.icon} className={styles.shelfIcon} />
-                    <h2
-                      id={`${shelf.id}-heading`}
-                      lang={locale}
-                      dir={direction}
-                    >
-                      {locale === "ar" ? shelf.titleAr : shelf.titleEn}
-                    </h2>
-                  </div>
-                  <div className={styles.shelfMeta}>
-                    <span lang={locale} dir={direction}>
-                      {locale === "ar" ? "السنة" : "Year"}{" "}
-                      {formatInteger(locale, shelf.year)} ·{" "}
-                      {formatInteger(locale, shelf.units.length)}{" "}
-                      {curriculumUnitLabel(
-                        shelf.terminology,
-                        locale,
-                        shelf.units.length,
-                      )}
-                    </span>
-                  </div>
+        {state === "READY" ? (
+          <>
+            <section
+              className={styles.pathPanel}
+              aria-labelledby="catalog-path-heading"
+            >
+              <div className={styles.pathIntro}>
+                <h2 id="catalog-path-heading">{text.pathHeading}</h2>
+                <p>{text.pathSummary}</p>
+              </div>
+              <div className={styles.pathGrid}>
+                <PathSelect
+                  id="stage"
+                  label={text.stage}
+                  options={journey.options.stages}
+                  value={journey.selection.stageId}
+                  locale={initialLocale}
+                  pending={!hydrated || pending}
+                  onChange={navigate}
+                />
+                <PathSelect
+                  id="institution"
+                  label={institutionLabel}
+                  options={journey.options.institutions}
+                  value={journey.selection.institutionId}
+                  locale={initialLocale}
+                  pending={!hydrated || pending}
+                  onChange={navigate}
+                />
+                <PathSelect
+                  id="program"
+                  label={programLabel}
+                  options={journey.options.programs}
+                  value={journey.selection.programId}
+                  locale={initialLocale}
+                  pending={!hydrated || pending}
+                  onChange={navigate}
+                />
+                <PathSelect
+                  id="level"
+                  label={levelLabel}
+                  options={journey.options.levels}
+                  value={journey.selection.levelId}
+                  locale={initialLocale}
+                  pending={!hydrated || pending}
+                  onChange={navigate}
+                />
+                {showTerm ? (
+                  <PathSelect
+                    id="term"
+                    label={termLabel}
+                    options={journey.options.terms}
+                    value={journey.selection.termId}
+                    locale={initialLocale}
+                    pending={!hydrated || pending}
+                    onChange={navigate}
+                  />
+                ) : null}
+                {showCohort ? (
+                  <PathSelect
+                    id="cohort"
+                    label={text.cohort}
+                    options={journey.options.cohorts}
+                    value={journey.selection.cohortId}
+                    locale={initialLocale}
+                    pending={!hydrated || pending}
+                    onChange={navigate}
+                  />
+                ) : null}
+              </div>
+              {usesFlexibleCredits ? (
+                <div className={styles.flexiblePathNotice} role="status">
+                  <strong>{text.flexibleCourseHeading}</strong>
+                  <span>{text.flexibleCourseBody}</span>
                 </div>
-                <ul className={styles.unitRail}>
-                  {shelf.units.map((unit) => (
+              ) : null}
+              <p className={styles.navigationStatus} aria-live="polite">
+                {!hydrated || pending
+                  ? text.navigationPending
+                  : text.resultsUpdated}
+              </p>
+            </section>
+
+            <section
+              id="catalog-shelves"
+              className={styles.shelves}
+              aria-labelledby="catalog-results-heading"
+            >
+              <div className={styles.shelfHeading}>
+                <div className={styles.shelfTitle}>
+                  <Icon name="sources" className={styles.shelfIcon} />
+                  <h2
+                    id="catalog-results-heading"
+                    ref={resultsHeadingRef}
+                    tabIndex={-1}
+                  >
+                    {resultLabel}
+                  </h2>
+                </div>
+                {journey.selectedCohort ? (
+                  <span className={styles.shelfMeta}>
+                    <bdi>
+                      {localizedName(journey.selectedCohort, initialLocale)}
+                    </bdi>
+                  </span>
+                ) : null}
+              </div>
+
+              {journey.units.length === 0 ? (
+                <div className={styles.emptyState} role="status">
+                  <h3>{text.choosePathTitle}</h3>
+                  <p>{text.choosePathBody}</p>
+                </div>
+              ) : filteredUnits.length === 0 ? (
+                <div className={styles.emptyState} role="status">
+                  <h3>{text.noSearchTitle}</h3>
+                  <p>{text.noSearchBody}</p>
+                  <button type="button" onClick={() => setQuery("")}>
+                    {text.clearSearch}
+                  </button>
+                </div>
+              ) : (
+                <ul className={styles.unitRail} aria-live="polite">
+                  {filteredUnits.map((unit, index) => (
                     <UnitCard
                       key={unit.id}
                       unit={unit}
-                      locale={locale}
-                      focused={focusedUnitId === unit.id}
-                      onFocus={setFocusedUnitId}
+                      locale={initialLocale}
+                      selected={journey.selection.unitId === unit.id}
+                      pending={!hydrated || pending}
+                      edition={journey.selectedCohort?.curriculumEdition ?? "—"}
+                      presentation={unitPresentationById[unit.id]}
+                      eager={index === 0}
+                      onSelect={(unitId) => navigate("unit", unitId)}
                     />
                   ))}
                 </ul>
-              </section>
-            ))
-          )}
-        </div>
+              )}
+            </section>
+          </>
+        ) : (
+          <SafeState state={state} locale={initialLocale} basePath={basePath} />
+        )}
       </main>
     </div>
   );

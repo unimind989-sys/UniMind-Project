@@ -24,7 +24,7 @@ One authorized knowledge pool serves each cohort and curriculum unit. Chat and S
 
 ## Operating Context
 
-The PoC begins with university programs and must expand through configuration rather than hard-coded program screens. It supports English, Egyptian Arabic, and mixed-language study, including RTL and LTR behavior, while preserving technical terminology. Development and verification use synthetic fixtures and zero-cost mocks by default.
+The PoC begins with Human Medicine and Veterinary Medicine, while the same configurable catalog supports university and Thanaweya Amma paths. Students choose education level, institution/system, faculty/program/track, and academic year; term-based programs then require a semester. Future flexible-credit programs expose individually eligible Modules or Subjects from an active course plan instead of forcing a rigid semester list. The product supports English, Egyptian Arabic, and mixed-language study, including RTL and LTR behavior, while preserving technical terminology. Development and verification use synthetic fixtures and zero-cost mocks by default.
 
 ## Capabilities and Constraints
 

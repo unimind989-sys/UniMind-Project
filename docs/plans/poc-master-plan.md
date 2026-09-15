@@ -20,23 +20,25 @@ UniMind is a highly scalable educational platform that converts approved study m
 
 The first supported university programs are Human Medicine and Veterinary Medicine. The same architecture must later support Pharmacy, Engineering, other university faculties and programs, and High School education including Thanaweya Amma curricula and tracks.
 
-Expansion must be data-driven. Adding a faculty, institution, academic level, term, cohort, or curriculum unit must not require a new application architecture or hard-coded screens.
+Expansion must be data-driven. Adding a faculty, institution, academic level, academic period, cohort, curriculum unit, or program progression mode must not require a new application architecture or hard-coded screens.
 
 ### 2.1 Catalog hierarchy
 
 The durable hierarchy is:
 
-`Education stage -> Institution or education system -> Program -> Academic level -> Term -> Cohort or curriculum edition -> Curriculum unit`
+`Education stage -> Institution or education system -> Program -> Academic level -> Configured academic period -> Cohort or curriculum edition -> Curriculum unit`
 
 - **Education stage:** initially `UNIVERSITY`; later `HIGH_SCHOOL` and other stages.
 - **Institution or education system:** a university such as Zagazig University, or a future school/exam system.
 - **Program:** a university faculty or a future school track/stream.
 - **Academic level:** 1st Year, 2nd Year, 3rd Year, or another configured level.
-- **Term:** First Semester, Second Semester, or another configured academic period.
+- **Configured academic period:** First Semester, Second Semester, or a non-semester course-plan period for a flexible-credit program.
 - **Cohort or curriculum edition:** the exact batch and curriculum version whose sources and access are managed together.
 - **Curriculum unit:** the learning container a student opens. Human Medicine normally displays it as a `Module`; other faculties normally display it as a `Subject`.
 
 The interface must read the singular and plural curriculum-unit labels from program configuration. Shared screens must never hard-code `Module` or `Subject`.
+
+Program configuration also owns progression mode. `TERM_BASED` programs require the configured semester/term before units appear. `FLEXIBLE_CREDIT` programs do not force every student through a fixed semester list: the interface may omit a redundant semester selector and exposes the caller's individually eligible Modules or Subjects from the active course plan. The same membership, cohort/edition, publication, rights, source-readiness, and server-authorization rules still apply.
 
 ### 2.2 Core student promise
 
@@ -263,7 +265,7 @@ Safety behavior must not introduce outside medical knowledge into a strict-RAG a
 ### 7.1 Student journey
 
 1. Register, verify email, and accept terms, privacy rules, and the educational-use boundary.
-2. Select education stage, institution, Faculty/program, Academic Year/level, and Term.
+2. Select education level, institution or system, Faculty/program or track, and Academic Year/level; select Semester/Term when the program is term-based.
 3. See only released cohorts and source-ready published Modules or Subjects.
 4. Open one Module or Subject and arrive at that unit's dedicated chat and Studio.
 5. Ask in English, Egyptian Arabic, or a mixed style.
@@ -343,7 +345,7 @@ This result must be derived in a security-aware query or security-invoker view. 
 
 ### 8.4 Key schema rules
 
-- `programs` stores program type, default unit type, and localized singular/plural labels.
+- `programs` stores program type, progression mode, default unit type, and localized singular/plural labels.
 - `curriculum_units` stores type, optional parent, cohort, order, and publication state.
 - `source_versions` are immutable after acceptance except for controlled activation and status transitions.
 - Every processed document, locator, segment, and embedding belongs to exactly one source version.
@@ -645,6 +647,7 @@ Video adds a processor behind the existing pipeline; it must not create a separa
 | D-20 | Notification and incident channels | In-process deterministic test sink until operational channels are approved | Ahmed + Ziad | Open |
 | D-21 | Zero-cost development, CI, Preview, and Beta infrastructure | Workstation mocks, ephemeral Supabase CI, and two persistent Supabase Free projects for separate Preview/Beta; conditional Vercel Hobby use (revised 2026-08-27) | Ahmed | Approved direction |
 | D-22 | Founder authorization and autonomous finalization | Shared service accounts; either founder may satisfy an ordinary checkpoint; explicit `$finalize` supplies both founders' standing non-financial delivery authorization; real-money actions require fresh confirmation (revised 2026-09-14) | Ahmed + Ziad — shared founder authority | Approved direction |
+| D-23 | Program progression mode | Human Medicine and Veterinary Medicine begin as `TERM_BASED`; future credit-hour programs use configuration-driven `FLEXIBLE_CREDIT` course selection without a rigid semester list | Ahmed | Approved direction |
 
 ## 16. Immediate actions
 
