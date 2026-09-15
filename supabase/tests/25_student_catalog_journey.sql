@@ -67,6 +67,11 @@ select is((select count(*) from public.available_catalog_entries()), 0::bigint, 
 select is((select current_student_catalog_state from public.current_student_catalog_state()), 'NO_MEMBERSHIP'::text, 'inactive member receives only the safe no-membership state');
 reset role;
 
+-- Governed setup mutations below run as the database owner. Clear the synthetic
+-- caller claims first so the audit trigger uses the explicit founder actor.
+select set_config('request.jwt.claim.role', '', true);
+select set_config('request.jwt.claim.sub', '', true);
+
 savepoint locked_catalog;
 update public.cohort_releases
 set release_status = 'LOCKED', reason = 'WP03-T03 synthetic catalog-state check'

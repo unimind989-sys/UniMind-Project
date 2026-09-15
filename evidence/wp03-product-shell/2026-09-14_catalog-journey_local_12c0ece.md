@@ -1,10 +1,10 @@
 # Gate report: WP03-T03 server-first catalog journey
 
-**Status:** TECHNICAL CANDIDATE PASS — disposable database CI and Ahmed's ordinary checkpoint remain open
+**Status:** APPROVED CANDIDATE — replacement disposable database CI remains open
 
 **Environment:** Windows PowerShell, local synthetic-only browser and production-safe build
 
-**Commit SHA:** `12c0ece` is the clean pre-delivery base identified by this evidence filename; the WP03-T03 candidate remains an uncommitted local diff pending Ahmed's review and a requested delivery branch
+**Commit SHA:** `12c0ece` is the clean pre-delivery base identified by this evidence filename; delivery candidate commits are tracked on `wp03/catalog-journey` through PR #32 and final merge evidence will use the exact merged SHA
 
 **Release/config fingerprint:** `node=24.19.0; pnpm=10.34.5; next=16.3.4; supabase-js=2.112.3; provider-mode=mock; provider-budget-minor=0; generation=false; embedding=false; transcription=false`
 
@@ -54,6 +54,8 @@
 | 2026-09-15 | External Google Chrome review handoff | 0 | Launched `http://127.0.0.1:3000/preview/learn` in the installed external Chrome executable; the persistent synthetic preview server returned HTTP 200. |
 | 2026-09-15 | GitHub Actions run `34953965803` | 1 | Dependency audit, application gate, Vercel Preview, upgrade, two clean resets, and migration parity passed; pgTAP then rejected two missing public-function allowlist entries and governed fixture mutations without audit correlation. The disposable stack and volumes were removed and no shared environment changed. |
 | 2026-09-15 | Post-CI fixture repair: `corepack pnpm check:sql`; `corepack pnpm test:security`; diff and secret scans | 0 | Added the two caller-scoped RPCs to the database matrix's explicit allowlist and supplied synthetic actor/reason/correlation context to the mutation tests; 24 migrations and 22/22 security tests pass locally before the replacement disposable run. |
+| 2026-09-15 | GitHub Actions run `34954938957` | 1 | Dependency/application gates, Vercel Preview, upgrade, two clean resets, migration parity, and the corrected public-function matrix passed. The new journey pgTAP file then exposed a test-only stale JWT caller claim after `reset role`; the disposable environment was cleaned and no shared environment changed. |
+| 2026-09-15 | Stale-claim fixture repair: `corepack pnpm check:sql`; `corepack pnpm test:security`; diff and secret scans | 0 | Cleared the synthetic JWT role/subject before owner-governed setup mutations so the audit trigger uses the explicit founder actor. SQL conventions, 22/22 security tests, diff check, and the 882-file secret scan pass locally before the next disposable run. |
 
 ## Negative, retry, and recovery cases
 
@@ -73,9 +75,10 @@
 | ID | Severity | Description | Owner | Due | Blocks |
 | --- | --- | --- | --- | --- | --- |
 | WP03-T03-D01 | Environment | The guarded disposable Supabase/pgTAP runner refuses Windows and requires GitHub-hosted Linux. The 19-check database file is written but not represented as locally executed. | Delivery agent / GitHub CI | Before technical completion | Database migration acceptance |
-| WP03-T03-D02 | Delivery | Candidate remains an uncommitted local diff before `$finalize` creates its review branch. | Delivery agent | During finalization | Commit-specific CI and final task status |
+| WP03-T03-D02 | Closed delivery setup | `$finalize` created `wp03/catalog-journey`, pushed the candidate, and opened protected PR #32. | Delivery agent | Closed 2026-09-15 | None |
 | WP03-T03-D03 | Advisory | Next development mode emitted an LCP hint for a card that already renders with eager loading and high fetch priority when first visible; production build and rendered inspection were clean. | WP03-T07 performance review | Product-shell gate | None for T03 |
 | WP03-T03-D04 | Closed CI fixture defect | First disposable run found that the pgTAP harness had not listed the two new public RPCs and had not supplied required audit context for governed synthetic mutations. The allowlist and test-local actor/reason/correlation settings were added without changing production grants or behavior. | Delivery agent | Closed 2026-09-15 | Replacement database CI |
+| WP03-T03-D05 | Closed CI fixture defect | The replacement disposable run showed that PostgreSQL `reset role` did not clear the synthetic authenticated JWT claim, so the audit helper correctly rejected a database-owner setup mutation whose explicit founder actor differed from the stale student caller. The harness now clears those claims before its governed savepoint mutations; production SQL and grants are unchanged. | Delivery agent | Closed 2026-09-15 | Replacement database CI |
 
 ## Security and privacy review
 
