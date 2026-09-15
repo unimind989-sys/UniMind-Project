@@ -847,8 +847,8 @@ export type Database = {
           institution_id: string;
           name_ar: string;
           name_en: string;
-          progression_mode: string;
           program_type: string;
+          progression_mode: string;
           status: string;
           unit_label_plural_ar: string;
           unit_label_plural_en: string;
@@ -863,8 +863,8 @@ export type Database = {
           institution_id: string;
           name_ar: string;
           name_en: string;
-          progression_mode?: string;
           program_type: string;
+          progression_mode?: string;
           status?: string;
           unit_label_plural_ar: string;
           unit_label_plural_en: string;
@@ -879,8 +879,8 @@ export type Database = {
           institution_id?: string;
           name_ar?: string;
           name_en?: string;
-          progression_mode?: string;
           program_type?: string;
+          progression_mode?: string;
           status?: string;
           unit_label_plural_ar?: string;
           unit_label_plural_en?: string;
