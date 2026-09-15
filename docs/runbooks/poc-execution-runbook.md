@@ -355,18 +355,18 @@ Do not start Studio generation before retrieval and strict-RAG answer contracts 
 
 #### WP00-T00 — Establish agent-first delivery controls
 
-- [~] Define one short workflow from repository orientation through task selection, execution, verification, and handoff.
-- [~] Make coding agents the default executors while preserving human governance decisions, ordinary human checkpoints, and protected two-person review.
-- [~] Add a controlled task-record template and a predictable `planning/tasks/` handoff location.
-- [~] Resolve documentation naming exceptions and give decision files one lowercase convention.
-- [~] Add and run a zero-cost check for required entry points, local links, names, task IDs, acceptance items, and task-record fields.
-- [~] Add a read-only work-state command that derives task status, separates decision resolution paths from blocked tasks, and recommends only an eligible task.
-- [~] Rehearse discovery, selection, readiness checks, and durable handoff from a clean isolated committed snapshot without copying chat state.
-- [?] Obtain a founder human checkpoint and commit-specific evidence; Ahmed or Ziad may perform the ordinary review.
+- [x] Define one short workflow from repository orientation through task selection, execution, verification, and handoff.
+- [x] Make coding agents the default executors while preserving human governance decisions, ordinary human checkpoints, and protected two-person review.
+- [x] Add a controlled task-record template and a predictable `planning/tasks/` handoff location.
+- [x] Resolve documentation naming exceptions and give decision files one lowercase convention.
+- [x] Add and run a zero-cost check for required entry points, local links, names, task IDs, acceptance items, and task-record fields.
+- [x] Add a read-only work-state command that derives task status, separates decision resolution paths from blocked tasks, and recommends only an eligible task.
+- [x] Rehearse discovery, selection, readiness checks, and durable handoff from a clean isolated committed snapshot without copying chat state.
+- [x] Obtain a founder human checkpoint and commit-specific evidence; Ahmed approved through `$finalize` on 2026-09-15.
 
 **Pass:** a fresh agent can select and claim the next valid task, find every governing authority, identify human-only gates, run the readiness check successfully, and resume this task from repository state without prior chat.
 
-**Evidence:** `evidence/wp00-pilot/<date>_agent-readiness_local_<short-sha>.md`.
+**Evidence:** `evidence/wp00-pilot/2026-09-16_agent-readiness_local_5fd79cc.md`.
 
 #### WP00-T01 — Create the planning workspace
 
