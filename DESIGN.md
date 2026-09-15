@@ -155,6 +155,7 @@ The signature transition turns one shelf item into a trustworthy study doorway: 
 
 - Dark matte surfaces with low elevation and one cobalt interaction voice.
 - Compact, locale-switchable hierarchy built for scanning in English or Arabic, including mixed-direction technical content.
+- Progressive catalog controls whose labels adapt from university/faculty/year/semester to system/track/year/term without changing the visual grammar.
 - Horizontal academic rails whose focused item expands without hiding catalog context.
 - State communicated through text, icons, shape, and contrast rather than color alone.
 - Restrained, synthetic subject imagery with replaceable provenance-tracked assets.

@@ -847,6 +847,7 @@ export type Database = {
           institution_id: string;
           name_ar: string;
           name_en: string;
+          progression_mode: string;
           program_type: string;
           status: string;
           unit_label_plural_ar: string;
@@ -862,6 +863,7 @@ export type Database = {
           institution_id: string;
           name_ar: string;
           name_en: string;
+          progression_mode?: string;
           program_type: string;
           status?: string;
           unit_label_plural_ar: string;
@@ -877,6 +879,7 @@ export type Database = {
           institution_id?: string;
           name_ar?: string;
           name_en?: string;
+          progression_mode?: string;
           program_type?: string;
           status?: string;
           unit_label_plural_ar?: string;
@@ -1541,6 +1544,51 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      available_catalog_entries: {
+        Args: never;
+        Returns: {
+          academic_level_code: string;
+          academic_level_id: string;
+          academic_level_name_ar: string;
+          academic_level_name_en: string;
+          academic_level_sort_order: number;
+          cohort_code: string;
+          cohort_id: string;
+          cohort_name: string;
+          curriculum_edition: string;
+          curriculum_unit_code: string;
+          curriculum_unit_id: string;
+          curriculum_unit_sort_order: number;
+          curriculum_unit_title_ar: string;
+          curriculum_unit_title_en: string;
+          curriculum_unit_type: Database["public"]["Enums"]["curriculum_unit_type"];
+          education_stage_code: string;
+          education_stage_id: string;
+          education_stage_name_ar: string;
+          education_stage_name_en: string;
+          education_stage_sort_order: number;
+          institution_code: string;
+          institution_id: string;
+          institution_name_ar: string;
+          institution_name_en: string;
+          program_code: string;
+          program_default_unit_type: Database["public"]["Enums"]["curriculum_unit_type"];
+          program_id: string;
+          program_name_ar: string;
+          program_name_en: string;
+          program_progression_mode: string;
+          source_count: number;
+          term_code: string;
+          term_id: string;
+          term_name_ar: string;
+          term_name_en: string;
+          term_sort_order: number;
+          unit_label_plural_ar: string;
+          unit_label_plural_en: string;
+          unit_label_singular_ar: string;
+          unit_label_singular_en: string;
+        }[];
+      };
       available_curriculum_units: {
         Args: { admin_preview?: boolean };
         Returns: {
@@ -1561,6 +1609,7 @@ export type Database = {
         Args: { target_curriculum_unit_id: string };
         Returns: boolean;
       };
+      current_student_catalog_state: { Args: never; Returns: string };
       has_active_membership: {
         Args: { target_cohort_id: string };
         Returns: boolean;
