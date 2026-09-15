@@ -1222,14 +1222,14 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 #### WP03-T03 — Implement the catalog journey server-first
 
-- [~] Load allowed options in Server Components/services using caller-scoped database functions. Task record: `planning/tasks/wp03-t03-catalog-journey-server-first.md`.
-- [ ] Treat query parameters as selection hints only; validate every value against the returned authorized option set.
-- [ ] Clear all downstream selections when an upstream value changes.
-- [ ] Encode a stable authorized selection in the URL so refresh/back works without broadening access.
-- [ ] Implement the approved catalog surface brief and distinct safe loading, no-result, error, and empty states from section 6.2. Move focus and announce results appropriately after a filter change; analytics may record safe reason codes, never private labels or hidden options.
-- [ ] Render the cascade as education level -> university/system -> faculty/program/track -> academic year/level -> semester/term when required. Keep Human Medicine and Veterinary Medicine as the first university pilots and derive labels plus progression behavior from configuration.
-- [ ] Exercise minimum, typical, and maximum synthetic option counts plus long Arabic/English/mixed labels at the supported mobile and desktop layouts; preserve touch, keyboard, screen-reader, refresh, and back/forward behavior without a client-side authorization cache becoming authoritative.
-- [ ] Add Playwright cases for refresh, back/forward, interrupted navigation, direct deep link, forged IDs, expired membership, and release changing while the page is open.
+- [x] Load allowed options in Server Components/services using caller-scoped database functions. Task record: `planning/tasks/wp03-t03-catalog-journey-server-first.md`; protected release evidence: `evidence/wp03-product-shell/2026-09-15_catalog-journey-release_production_1ee9593.md`.
+- [x] Treat query parameters as selection hints only; validate every value against the returned authorized option set.
+- [x] Clear all downstream selections when an upstream value changes.
+- [x] Encode a stable authorized selection in the URL so refresh/back works without broadening access.
+- [x] Implement the approved catalog surface brief and distinct safe loading, no-result, error, and empty states from section 6.2. Move focus and announce results appropriately after a filter change; analytics may record safe reason codes, never private labels or hidden options.
+- [x] Render the cascade as education level -> university/system -> faculty/program/track -> academic year/level -> semester/term when required. Keep Human Medicine and Veterinary Medicine as the first university pilots and derive labels plus progression behavior from configuration.
+- [x] Exercise minimum, typical, and maximum synthetic option counts plus long Arabic/English/mixed labels at the supported mobile and desktop layouts; preserve touch, keyboard, screen-reader, refresh, and back/forward behavior without a client-side authorization cache becoming authoritative. PR #32 merged as `1ee9593`; Supabase Preview migration `20260914112000` and Vercel production deployment `dpl_3tLLtfqMwoLt1zzJqfc6t7pLysWo` passed hosted postflight.
+- [x] Add Playwright cases for refresh, back/forward, interrupted navigation, direct deep link, forged IDs, expired membership, and release changing while the page is open. The focused catalog suite passed 10/10 locally and again inside the 19-case full E2E gate.
 
 #### WP03-T04 — Build the unit workspace shell
 
