@@ -16,6 +16,13 @@
 - Apply the selected profile from `docs/agents/communication-profiles.md` to conversation wording, explanation, and intent clarification only.
 - Keep one universal execution path for Ahmed and Ziad: use the same governing material, reasoning standards, skills, implementation steps, safety and permission boundaries, verification, evidence, and output-quality bar. The speaker profile never selects, rewrites, skips, or weakens a skill or project rule.
 
+## Tool and browser routing
+
+- For semantic GitHub, Supabase, Vercel, CI, and test operations, prefer an authenticated structured connector, repository-pinned CLI, or local command when it provides the required capability. Verify the target account, project, environment, and write scope before a mutation.
+- When a browser is required for development, service dashboards, rendered inspection, or interactive testing, use Codex's in-app side browser. Keep internal browser work in that surface, use the existing signed-in sessions, and never inspect or export cookies, tokens, passwords, or browser storage.
+- Use external Google Chrome only for the user-facing review handoff: open the completed web preview, changed route, or UI result there after bounded internal verification. Chrome is a presentation surface, not the agent's internal execution surface.
+- A direct tool's presence is not proof of useful authorization. Fall back from structured access to the side browser only after confirming that the direct path is unavailable, unauthenticated, or missing the required operation. Leave unavoidable consent, credential creation/reveal, CAPTCHA, payment, and account-recovery actions to Ahmed or Ziad.
+
 ## Work from evidence, not assumptions
 
 - The repository is currently in planning and execution-readiness. Infer progress from committed artifacts and reviewed evidence; unchecked runbook items are not complete.
@@ -40,7 +47,7 @@
 
 - For any UI implementation or revision, automatically follow `docs/agents/ui-design-stack.md` through its external-Chrome review handoff; the founder must not need to request that launch per task. That document routes visual direction, references, rendered verification, and standards review without overlapping roles.
 - Use the repo-scoped `impeccable` skill for new UI, redesigns, design critique, and visual refinement. Treat application surfaces as **Operate** mode unless the requested surface has a different visitor goal.
-- Run Playwright CLI through the project pin with `pnpm browser:cli <command>`; use synthetic state, keep browser artifacts under ignored `.playwright-cli/` unless sanitizing named evidence, and treat saved storage state as credentials. Playwright Test remains the repeatable E2E gate.
+- Use the in-app side browser for agent-led rendered inspection and interactive UI testing. Keep Playwright Test as the repeatable automated E2E gate. Run the project-pinned Playwright CLI through `pnpm browser:cli <command>` only when the user explicitly invokes `$playwright-cli` or the task specifically requires its trace/test-debugging workflow; use synthetic state, keep artifacts under ignored `.playwright-cli/`, and treat saved storage state as credentials.
 - Read root `DESIGN.md` before UI work once it exists. Until real visual decisions exist, do not invent design tokens, brand claims, colors, typefaces, or component rules merely to fill a template.
 - `PRODUCT.md` is a compact design-workflow record used by Impeccable. It may summarize and link to confirmed facts, but `docs/plans/poc-master-plan.md`, the execution runbook, `CONTEXT.md`, and approved decisions remain authoritative.
 - Impeccable's web audit includes the repository's pinned Vercel Web Interface Guidelines. Use `$web-design-guidelines` only when the user wants a separate Vercel-only review.
@@ -57,7 +64,9 @@
 ## Verification and delivery
 
 - Prefer behavior tests at public seams and work in small red-to-green slices when the seam is established.
-- Run the narrowest relevant check after each meaningful change. Once work package 1 provides the scripts, run `pnpm verify` before review; until then, run every available applicable check and report missing infrastructure explicitly.
+- Set a verification budget from the changed public seams, risks, and task acceptance criteria before running checks. Run the narrowest check that can reject the change early, then run each broader required gate once against a stable candidate. Do not repeat or broaden passing checks unless the diff changed in a relevant way, a failure invalidated evidence, or an unresolved risk requires a distinct check.
+- Run `pnpm verify` locally for code, runtime, dependency, CI, build, environment-contract, migration, or executable-script changes, or when the active task contract explicitly requires it. For documentation-, planning-, evidence-, and skill-only changes, run the affected formatter/link/skill/agent check and use required GitHub CI as the full merge gate; escalate to local `pnpm verify` only when the change can affect that gate or focused evidence is insufficient.
+- Select agent-documentation checks by affected contract: run the skill validator for skill or skill-metadata changes, agent readiness for routing/task-state/navigation contracts, and the isolated handoff rehearsal only for handoff discovery or resume behavior. One check may cover several acceptance criteria; do not run overlapping checks merely because they are available.
 - Never claim success from screenshots or code inspection alone. Report the exact commands run, their results, and anything not run.
 - Review `git diff --check`, `git diff --stat`, and the full diff before handoff. Scan changed files for secrets and accidental scope.
 - Store sanitized proof under `evidence/wpNN-*/` using `YYYY-MM-DD_<gate>_<environment>_<short-sha>.md`. Sensitive proof belongs in the approved restricted store with only an opaque link committed.

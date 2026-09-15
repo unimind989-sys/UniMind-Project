@@ -2,6 +2,22 @@
 
 This log records evidence-based changes to repo-scoped skills. It is not a record of ordinary task corrections.
 
+## 2026-09-15 — Lean verification and side-browser ownership
+
+### `finalize`
+
+- **Evidence:** Ahmed reported that Codex consumes too much rate-limit capacity through unnecessary work and testing. The governing workflow and `$finalize` combined mandatory skill validation, agent readiness, handoff rehearsal, and local `pnpm verify` even when a small documentation/skill diff could not affect every contract; the same passing behavior could also be checked again in GitHub CI.
+- **Change:** Added a verification map and non-overlap rule, made R0 checks conditional on the affected contract, permitted exact-commit CI to be the full merge gate for documentation/skill-only candidates, and required internal browser work to use the in-app side browser with Chrome reserved for the completed review handoff.
+- **Validation:** Repository skill validator, focused agent-readiness checks, behavior cases for R0 check selection and invalidation, and diff/secret review. The isolated handoff rehearsal and local `pnpm verify` are required only if this change affects their contracts.
+- **Upstream:** UniMind-owned skill and workflow; no upstream source change.
+
+### `playwright-cli`
+
+- **Evidence:** Ahmed explicitly assigned ordinary internal browser work to Codex's in-app side browser and external Chrome to founder-facing review. Automatic Playwright CLI invocation created a competing internal browser path and additional browser sessions/artifacts.
+- **Change:** Kept Microsoft's pinned skill content byte-compatible, changed only Codex metadata to manual invocation, and routed ordinary rendered inspection to the in-app side browser. Playwright Test remains the repeatable E2E/CI gate; `$playwright-cli` remains available for explicit tracing, locator discovery, and test debugging.
+- **Validation:** Repository skill validator plus explicit-invocation and ordinary-rendered-inspection behavior cases.
+- **Upstream:** Invocation-only UniMind adaptation of Microsoft Playwright CLI commit `2f85a94b7b885dbf4a5d34462f253a8746a690c9`; upstream skill content unchanged.
+
 ## 2026-09-14 — Autonomous non-financial finalization
 
 ### `finalize`

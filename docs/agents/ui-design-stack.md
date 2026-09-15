@@ -11,11 +11,11 @@ This project uses one product design director plus narrowly scoped reference, tr
 | Reference library | `$awesome-design-md` | One user-selected brand reference for comparison or inspiration; never an automatic design choice. |
 | Visual translation | `image-to-code` | Faithful responsive implementation after a screenshot, mockup, or generated image is selected. |
 | Persistent visual context | root `DESIGN.md` | Confirmed tokens, component language, responsive behavior, and design rationale. It is created after real decisions exist. |
-| Rendered verification | project-pinned Playwright CLI | Interactive browser inspection, screenshots, traces, locators, and visual comparison. Playwright Test remains the automated E2E gate. |
+| Rendered verification | Codex in-app side browser | Internal interactive inspection, screenshots, console/request review, and visual comparison. Playwright Test remains the automated E2E gate; the pinned Playwright CLI is an explicit specialist for traces and test debugging. |
 | Standards review | pinned Vercel Web Interface Guidelines | Accessibility, forms, interaction, typography, performance, theming, touch, and internationalization checks. |
 | Project learning | `skill-maintainer` | Narrow improvements when real UniMind work exposes a repeatable skill defect. |
 
-Taste and Impeccable are not simultaneous design directors. Impeccable owns UniMind product surfaces. Taste is manual and limited to a separately requested visitor-facing marketing surface. Awesome DESIGN.md supplies references, Image to Code translates a selected visual, Playwright CLI verifies the render, and the Vercel rules review standards; none may overwrite confirmed product or root `DESIGN.md` decisions.
+Taste and Impeccable are not simultaneous design directors. Impeccable owns UniMind product surfaces. Taste is manual and limited to a separately requested visitor-facing marketing surface. Awesome DESIGN.md supplies references, Image to Code translates a selected visual, the in-app side browser verifies the render, and the Vercel rules review standards; none may overwrite confirmed product or root `DESIGN.md` decisions.
 
 ## Why Impeccable was selected
 
@@ -51,7 +51,7 @@ UniMind authority (AGENTS.md + master plan + CONTEXT.md)
                     DESIGN.md
                          |
                          v
-         implementation + Playwright CLI check
+        implementation + in-app browser check
                          |
                          v
  Impeccable audit + pinned Vercel guidelines + detector
@@ -68,7 +68,8 @@ UniMind authority (AGENTS.md + master plan + CONTEXT.md)
 - Direct a visitor-facing marketing page: `$taste <surface>`
 - Build or redesign from product intent: describe the UI task normally; Impeccable can activate automatically.
 - Implement a selected visual: `$image-to-code <image-and-target>` or describe the supplied screenshot task normally.
-- Inspect the rendered flow: `$playwright-cli <flow>` or `pnpm browser:cli <command>`.
+- Inspect the rendered flow internally: use the Codex in-app side browser.
+- Debug a Playwright test or capture a CLI trace: `$playwright-cli <flow>` or `pnpm browser:cli <command>` after explicit invocation.
 - Review UX and hierarchy: `$impeccable critique <target>`
 - Run the integrated technical audit: `$impeccable audit <target>`
 - Record the implemented design system: `$impeccable document`
@@ -82,14 +83,14 @@ Completing any UI implementation or revision includes a visible founder-review h
 This handoff is automatic. The founder must not need to ask for the external Chrome launch on each UI task or revision.
 
 1. Start or reuse the zero-cost local preview with synthetic state and navigate to the exact updated route.
-2. Launch that route in the installed external Google Chrome application. The in-app browser and agent-only Playwright sessions remain verification tools; neither substitutes for the external Chrome handoff.
+2. Launch that route in the installed external Google Chrome application. The in-app side browser remains the internal execution and verification surface; it does not substitute for the external Chrome handoff.
 3. Keep the preview server running and give the founder the direct URL plus the specific flow and states to inspect. Record approval or requested revisions in the active task record.
 
 If the page cannot run or Google Chrome cannot launch, report that concrete blocker at handoff instead of claiming the UI is ready for review.
 
 The Impeccable hook is intentionally off during planning. When UI code exists, ask for `$impeccable hooks on`, inspect the generated `.codex/hooks.json`, and approve it through Codex's `/hooks` screen only if the automatic detector saves more time than it adds.
 
-The Playwright CLI skill is kept byte-for-byte compatible with the pinned package so its built-in drift check works. UniMind's always-on rules add the local command, synthetic-state, credential, artifact, and E2E boundaries. The local wrapper disables the mutable update notifier because dependency upgrades follow the reviewed-pin policy. Do not run the CLI's global installer or commit `.playwright-cli/` output.
+The Playwright CLI skill is kept byte-for-byte compatible with the pinned package so its built-in drift check works. Its Codex metadata makes it manual-only because the in-app side browser owns ordinary internal browser work. UniMind's always-on rules add the local command, synthetic-state, credential, artifact, and E2E boundaries. The local wrapper disables the mutable update notifier because dependency upgrades follow the reviewed-pin policy. Do not run the CLI's global installer or commit `.playwright-cli/` output.
 
 ## Component sources and 21st.dev MCP
 

@@ -224,8 +224,8 @@ For every independently reviewable slice:
 2. Create a branch named `wpNN/short-outcome`, for example `wp02/catalog-rls`.
 3. Copy the applicable gate template to the evidence folder and leave its status `IN PROGRESS`.
 4. Implement the smallest end-to-end slice, including migration, service, UI, test, and telemetry where applicable.
-5. Run the focused test after each meaningful change.
-6. Before review, run the credential-free merge gate, then the hosted database gate when the slice affects database/Auth behavior:
+5. Map changed seams, acceptance criteria, and material risks to the smallest non-overlapping set of checks. Run the focused check after each meaningful change; repeat a passing check only after a relevant diff change or invalidating failure.
+6. Before review, run the credential-free merge gate once for code, runtime, dependency, CI, build, environment-contract, migration, or executable-script changes. For documentation-, planning-, evidence-, and skill-only slices, run the affected focused checks locally and use required GitHub CI as the full merge gate unless the task contract explicitly requires local `pnpm verify`. Run hosted database commands only when the slice affects database/Auth behavior:
 
 ```powershell
 pnpm verify
@@ -253,7 +253,7 @@ git diff
 11. The required humans re-run protected security/raw-deletion/release gates where applicable; ordinary review may be completed by the same founder who requested or operated the task. During `$finalize`, the agent runs these gates and uses the invocation's standing Ahmed-and-Ziad authorization without returning for another non-financial approval.
 12. Merge only when required checks are green. Never repair preview or beta manually after merge; add a migration/configuration change and redeploy.
 
-`pnpm verify` must remain credential-free, mock-only, and zero paid-provider cost. Hosted database commands require the guarded `development` or `ci` profile and are recorded separately in evidence. If any command above does not exist yet, creating it is part of work package 1.
+`pnpm verify` must remain credential-free, mock-only, and zero paid-provider cost. A passing candidate should not be rerun locally and in overlapping forms without a relevant invalidation; reuse exact-commit CI evidence. Hosted database commands require the guarded `development` or `ci` profile and are recorded separately in evidence. If any command above does not exist yet, creating it is part of work package 1.
 
 ### 0.10 Required task record format
 
@@ -1195,7 +1195,7 @@ If a `SECURITY DEFINER` function is unavoidable, place it outside exposed schema
 
 ### 6.0 Tutorial procedure
 
-WP03 application surfaces use Impeccable in **Operate** mode. Skills refine execution but do not replace the task contract, product authority, security tests, or human checkpoint. Run Impeccable `shape`/new-work before a new visual world, use `image-to-code` only after a visual is selected, use the project-pinned Playwright CLI for bounded rendered inspection, and run Impeccable's detector and audit after the implementation exists. The integrated Impeccable audit already includes the pinned Vercel Web Interface Guidelines; do not run a second overlapping review unless the user explicitly requests it.
+WP03 application surfaces use Impeccable in **Operate** mode. Skills refine execution but do not replace the task contract, product authority, security tests, or human checkpoint. Run Impeccable `shape`/new-work before a new visual world, use `image-to-code` only after a visual is selected, use the Codex in-app side browser for bounded internal rendered inspection, and run Impeccable's detector and audit after the implementation exists. Playwright Test remains the repeatable E2E gate; use the project-pinned Playwright CLI only after explicit `$playwright-cli` invocation for tracing, locator discovery, or test debugging. The integrated Impeccable audit already includes the pinned Vercel Web Interface Guidelines; do not run a second overlapping review unless the user explicitly requests it.
 
 External component catalogs and MCPs are optional implementation aids, never design directors or delivery dependencies. Do not send private source material, student data, secrets, or proprietary prompts/code to them. Before importing a component, record its exact source and license, inspect the full code and dependency diff, pin any tool/package version, and prove accessibility, RTL, responsive behavior, security boundaries, and maintainability locally. `pnpm verify` and a clean-clone build must not require a catalog account, API key, network call, paid credit, or mutable remote content. Follow the component-source evaluation in `docs/agents/ui-design-stack.md`.
 
@@ -1268,7 +1268,7 @@ External component catalogs and MCPs are optional implementation aids, never des
 - [ ] Test each role's allowed navigation and forbidden direct URL/API access.
 - [ ] Verify no browser request or React payload contains a service key, worker diagnostics, raw object key, private source text, or another user's state.
 - [ ] Run automated accessibility checks plus keyboard/focus, zoom/reflow, reduced-motion, touch-target, and screen-reader smoke checks on auth, catalog, workspace, submission, and admin critical screens in English and Arabic.
-- [ ] Use Playwright Test for repeatable behavior and the project-pinned Playwright CLI for one bounded desktop/mobile rendered inspection. Compare the implementation with the approved surface briefs, selected comp/wireframe, and `DESIGN.md`; inspect console and network output, overflow, long content, loading/error/empty states, and LTR/RTL direction changes.
+- [ ] Use Playwright Test for repeatable behavior and the Codex in-app side browser for one bounded internal desktop/mobile rendered inspection. Compare the implementation with the approved surface briefs, selected comp/wireframe, and `DESIGN.md`; inspect console and network output, overflow, long content, loading/error/empty states, and LTR/RTL direction changes. Use the project-pinned Playwright CLI only when explicitly invoked for its specialist trace or test-debugging workflow.
 - [ ] Run the Impeccable detector once after the changed UI is complete, then run one integrated Impeccable audit and resolve or explicitly record every material finding. Do not use a skill verdict, screenshot, or visual polish as proof of authorization, accessibility, privacy, or behavior.
 - [ ] Record the origin, exact version/commit, license, copied files, added dependencies, and local modifications for every imported component or asset; scan for hidden telemetry, remote fonts/assets, mutable CDN dependencies, incompatible licenses, and code that broadens Client Component or browser-data boundaries.
 - [ ] Capture sanitized screenshots or traces only as supplemental UI evidence; passing security, contract, accessibility, build, and E2E tests remain mandatory.

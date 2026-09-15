@@ -73,7 +73,9 @@ When classification is uncertain, use the next higher tier. Service relevance is
 
 ## 3. Spend verification proportionally
 
-The local safety floor applies to every tier and does not consume service rate limits:
+Before calling a test or service, build a verification map: each changed public seam, acceptance criterion, and material risk must point to one check or exact-match existing result. If a proposed check proves nothing unique, remove it.
+
+The local safety floor applies to every tier:
 
 1. Run every check required by the active task contract and `docs/agents/agent-workflow.md`.
 2. Run the narrowest file-type or behavior check that can reject the change early.
@@ -81,13 +83,16 @@ The local safety floor applies to every tier and does not consume service rate l
 4. Scan changed files for secrets, private data, accidental scope, debug artifacts, and unsafe configuration.
 5. Use existing green evidence when its commit, environment, configuration, and scope still match exactly.
 
-For agent-facing documentation or skill changes, run the repository skill validator, agent-readiness check, and isolated handoff rehearsal. Do not inspect Supabase or promote Vercel for an R0 change.
+For R0 changes, select focused checks by affected contract: skill or skill-metadata changes use the repository skill validator; routing, task-state, or navigation changes use agent readiness; discovery/resume behavior changes use the isolated handoff rehearsal. Run local `pnpm verify` only when the task contract explicitly requires it or the diff can affect executable scripts, package/build inputs, CI, or the gate itself. Required GitHub CI may provide the full merge gate for a stable documentation/skill candidate. Do not inspect Supabase, run rendered browser checks, or promote Vercel for R0.
+
+Once a required check passes, broaden or repeat it only when a relevant diff change, failure, or unresolved risk invalidates that evidence. Do not run a focused command and then a broader command containing the same work unless the broader command is the required final gate. Do not add tests that merely mirror a reversible low-impact change.
 
 Conserve remote calls:
 
 - resolve facts from repository state before querying a service;
 - prefer one authoritative CLI, API, or connector read over several dashboard visits;
-- use the browser only for rendered behavior or signed-in actions unavailable through a safer interface;
+- use Codex's in-app side browser for internal rendered behavior and signed-in actions unavailable through a safer interface;
+- use external Chrome only to present the completed preview, changed route, or UI result to the user;
 - batch independent reads and reuse deployment, commit, run, and project identifiers;
 - wait on service events or use increasing intervals instead of busy polling;
 - query logs once after the relevant deployment, and again only after a failure or changed artifact;
@@ -101,7 +106,7 @@ Use the existing reviewable task branch when valid; otherwise create the runbook
 
 Perform a final technical review, wait for required GitHub checks, address legitimate findings, and satisfy the repository's review rule. Do not bypass branch protection for a small change.
 
-Use both authenticated GitHub accounts without returning control to the user:
+Use both authenticated GitHub accounts through the in-app side browser when the direct GitHub path cannot select the required identity, without returning control to the user:
 
 1. One account creates or owns the pull request.
 2. Switch to the other account and submit the formal approving review after inspecting the diff and checks.

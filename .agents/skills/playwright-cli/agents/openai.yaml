@@ -1,7 +1,7 @@
 interface:
   display_name: "Playwright CLI"
-  short_description: "Explore and verify rendered web behavior"
-  default_prompt: "Use $playwright-cli to inspect and verify this rendered web flow."
+  short_description: "Explicit CLI tracing and Playwright test debugging"
+  default_prompt: "Use $playwright-cli for this explicit CLI tracing or Playwright test-debugging task."
 
 policy:
-  allow_implicit_invocation: true
+  allow_implicit_invocation: false

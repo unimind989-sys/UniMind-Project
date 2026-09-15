@@ -42,6 +42,6 @@ Third-party skills are copied into the repository at fixed commits. Review upstr
 | `skill-maintainer` | UniMind | Automatic | Adapt skills from demonstrated project feedback. |
 | `impeccable` | Paul Bakaus, adapted | Automatic | Design, critique, and audit distinctive production UI. |
 | `image-to-code` | Gekkos Tech, adapted | Automatic | Translate a selected screenshot or mockup into verified responsive UI. |
-| `playwright-cli` | Microsoft, adapted | Automatic | Explore and verify rendered web behavior with the project-pinned CLI. |
+| `playwright-cli` | Microsoft, adapted | Manual | Run explicitly requested CLI tracing, locator discovery, or Playwright test debugging; ordinary internal browser work uses the in-app side browser. |
 
 "Automatic" means Codex may load the skill when a request matches its narrow description. It does not grant permission for external changes, paid calls, deployment, or destructive operations.
