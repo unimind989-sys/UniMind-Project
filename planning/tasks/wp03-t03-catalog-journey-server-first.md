@@ -2,7 +2,7 @@
 
 **Task ID:** WP03-T03
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** An authenticated student can traverse only their server-authorized education level -> institution/system -> faculty/program/track -> academic year/level -> configured period -> curriculum-unit path, preserve a canonical selection in the URL, and recover safely from forged, stale, empty, loading, and error states in English or Arabic.
 
@@ -10,9 +10,9 @@
 
 **Reviewer:** Ahmed approved the ordinary WP03-T03 completion checkpoint on 2026-09-15; Ahmed's explicit `$finalize` invocation relays Ahmed + Ziad standing authorization for this task's protected non-financial database and production delivery under D-22
 
-**Branch:** `wp03/catalog-journey`; protected delivery PR #32 targets `main`
+**Branch:** `wp03/catalog-journey`; protected delivery PR #32 merged to `main` as `1ee9593`
 
-**Updated (UTC):** 2026-09-15T10:01:25Z
+**Updated (UTC):** 2026-09-15T14:40:41Z
 
 ## Execution contract
 
@@ -26,9 +26,9 @@
 
 **Pass:** Every visible option originates from the current caller-scoped authorized result; the cascade names education level, university/system, faculty/program/track, academic year/level, and semester/term when required; Human Medicine and Veterinary Medicine share the same data-driven path and terminology seam; `FLEXIBLE_CREDIT` remains a program configuration rather than a faculty-name branch; query parameters are hints only and canonical invalid/downstream values are removed; upstream changes clear downstream selections; refresh and history preserve only authorized state; safe localized loading, no-result, no-membership, locked, unpublished, no-READY-source, and generic error behavior does not reveal hidden labels or IDs; keyboard, focus announcements, touch, responsive, RTL/LTR, long-label, and minimum/typical/maximum synthetic-count checks pass without a client authorization cache becoming authoritative.
 
-**Evidence:** Expected candidate report `evidence/wp03-product-shell/2026-09-14_catalog-journey_local_<short-sha>.md`; sanitized rendered artifacts are supplemental only.
+**Evidence:** Candidate report `evidence/wp03-product-shell/2026-09-14_catalog-journey_local_12c0ece.md`; protected release report `evidence/wp03-product-shell/2026-09-15_catalog-journey-release_production_1ee9593.md`. Sanitized rendered artifacts are supplemental only.
 
-**Rollback:** Remove the WP03-T03 application/UI/tests before review; if a forward-only migration is added, revert it with a new migration rather than rewriting applied history. No shared-environment mutation or production promotion is authorized by this task start.
+**Rollback:** Reassign `project-xwrez.vercel.app` to last-known-good deployment `dpl_2JoV9xgDnxWoPpCVf6XrkfyHPSCN`, restore the prior release fingerprint, and verify health plus browser routes. The database migration is forward-only: disable the capability or ship a reviewed forward repair; never rewrite the Preview ledger or migrate it backward.
 
 **Hard stop:** Do not use real student/source data, trust query parameters or client cache for authorization, expose hidden option labels/IDs or reason details, weaken RLS/grants, enable providers or paid calls, apply a migration to a shared environment, publish/unlock, or promote/release without the required named confirmations.
 
@@ -45,10 +45,10 @@
 
 **Changed:** Added a pure canonical catalog resolver, public application contract, caller-session Supabase adapter, two RLS-scoped database functions plus pgTAP coverage, synchronized function matrix/types, localized progressive Study Shelf controls and safe states, a localized loading boundary, and minimum/typical/maximum fixtures. Ahmed's review revised the cascade to education level -> university/system -> faculty/program/track -> academic year/level -> semester/term; the synthetic preview now demonstrates three university choices, the Human Medicine and Veterinary Medicine pilots, and the reusable Thanaweya Amma seam. Program configuration now carries `TERM_BASED` or `FLEXIBLE_CREDIT`, with individually eligible unit selection retained as the authority-safe course seam. The external-Chrome review handoff is now a permanent UI workflow rule. The Impeccable audit added a skip link and removed new token drift; updated English desktop and Arabic mobile inspection found no overflow or browser errors.
 
-**Commands:** Focused domain/adapter tests pass 10/10; revised catalog Playwright passes 10/10. Final `corepack pnpm verify` passed formatting, lint, strict types, boundaries, SQL/CI policy, secret scans, 307 unit, 15 integration with 2 intentional hosted skips, 22 security, 3 evaluation, 5 load-contract, 19 E2E, and the production build. Agent readiness passed with 173 names, 46 local links, 23 synchronized decisions, and 102 task contracts; the isolated clean-snapshot handoff rehearsal also passed. The first protected PR run `34953965803` caught two test-harness omissions; replacement run `34954938957` exposed a stale test JWT claim; run `34955820545` caught the safe-state/RLS semantic gap; run `34957051902` then passed upgrade, two resets, migration parity, all 370 pgTAP assertions, advisors, and type generation before rejecting only a three-line generated-property ordering mismatch. The public state RPC remains a security invoker and delegates through a definition-time-bound call to one private bounded security-definer evaluator; identity comes only from `auth.uid()`, output is a fixed non-identifying code, both search paths are empty, and authenticated callers retain no private-schema usage. The checked-in generated type order now matches the hosted generator. Focused SQL conventions, the 41-function/1,590-decision matrix, 22 security tests, diff check, and secret scan pass before the next disposable run. Project-pinned Playwright CLI rendered 1280px English Veterinary Medicine and 390px Arabic with zero console warnings/errors and exact viewport width. One detector pass returned advisory-only token findings on the original candidate; this focused content/hierarchy revision used the bounded browser pass without spending a second detector run.
+**Commands:** Focused domain/adapter tests pass 10/10; revised catalog Playwright passes 10/10. Final `corepack pnpm verify` passed formatting, lint, strict types, boundaries, SQL/CI policy, secret scans, 307 unit, 15 integration with 2 intentional hosted skips, 22 security, 3 evaluation, 5 load-contract, 19 E2E, and the production build. Agent readiness passed with 173 names, 46 local links, 23 synchronized decisions, and 102 task contracts; the isolated clean-snapshot handoff rehearsal also passed. The first protected PR run `34953965803` caught two test-harness omissions; replacement run `34954938957` exposed a stale test JWT claim; run `34955820545` caught the safe-state/RLS semantic gap; run `34957051902` passed upgrade, two resets, migration parity, all 370 pgTAP assertions, advisors, and type generation before rejecting only generated-property ordering. Final exact-head run `34957861352` and merged-main run `34979935225` passed. PR #32 received owner approval on exact head `742e61e` and merged as `1ee9593`, with both commits resolving to tree `9a1a970`. Supabase Preview accepted guarded migration `20260914112000` with one ledger statement; hosted metadata, bounded safe-state behavior, function modes/search paths/grants, and Security/Performance/Health advisors passed. Vercel production deployment `dpl_3tLLtfqMwoLt1zzJqfc6t7pLysWo` is Ready, owns `project-xwrez.vercel.app`, exposes release `wp03-t03-1ee9593-preview`, passed seven deployment-smoke checks, rendered catalog/auth browser checks, and deployment-scoped error/warning scans. Project-pinned Playwright CLI rendered 1280px English Veterinary Medicine and 390px Arabic with zero console warnings/errors and exact viewport width. One detector pass returned advisory-only token findings on the original candidate; this focused content/hierarchy revision used the bounded browser pass without spending a second detector run.
 
-**Remaining:** Run the 19-check pgTAP file in disposable GitHub CI, deliver through protected `main`, apply and verify the forward migration on affected Supabase environments, and verify/promote the affected Vercel runtime. Ahmed approved the external-Chrome preview and invoked `$finalize` on 2026-09-15; no further non-financial approval is required.
+**Remaining:** None for WP03-T03. Ahmed approved the external-Chrome preview and invoked `$finalize` on 2026-09-15; the protected GitHub, Supabase Preview, and Vercel Production delivery completed without paid calls.
 
-**Next safe action:** Run replacement disposable GitHub database CI, satisfy protected review, merge, verify affected Supabase and Vercel services, promote the verified runtime, update commit-specific evidence, and clean task-created branches.
+**Next safe action:** Start WP03-T04 from clean `main`, using the now-authorized catalog selection as the workspace-entry boundary.
 
 **Reviewer action:** Ahmed reviewed the external-Chrome candidate and recorded `APPROVED` on 2026-09-15. His explicit `$finalize` invocation records Ahmed + Ziad standing authorization for every task-scoped non-financial protected action under D-22; it does not authorize real-money exposure.
