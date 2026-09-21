@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "policyVersion": 2,
   "task": "WP00-T09",
-  "candidate": "8a28622c1b32c73108d5485e13694f12dc3af086",
+  "candidate": "2f1d73e3b443bf3c14f40c17ca560a78c2d9bd94",
   "proofs": [
     {
       "id": "agent-policy-regression",

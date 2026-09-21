@@ -4,7 +4,7 @@
 
 **Environment:** Local repository; credential-free, mock-only, and zero-cost verification
 
-**Commit SHA:** implementation candidate `ff150022e7f0fd7280bb900a4ccd93c40126af7a`; first exact-head delivery candidate `385d3f544085c210d710cf2f58ec676d48ffc85c`; implementation merge `6c5cad8fa26c1c70efb2cef1c2b2e17baea71484`; corrective candidate `8a28622c1b32c73108d5485e13694f12dc3af086`
+**Commit SHA:** implementation candidate `ff150022e7f0fd7280bb900a4ccd93c40126af7a`; first exact-head delivery candidate `385d3f544085c210d710cf2f58ec676d48ffc85c`; implementation merge `6c5cad8fa26c1c70efb2cef1c2b2e17baea71484`; corrective candidate `8a28622c1b32c73108d5485e13694f12dc3af086`; closure candidate `2f1d73e3b443bf3c14f40c17ca560a78c2d9bd94`
 
 **Release/config fingerprint:** execution-policy schema 1, policy 2 corrective candidate; core routing/model/worker/context/verification/evidence/finalization rules `ENFORCED`; conditional CI `SHADOW`
 
@@ -52,6 +52,7 @@
 | 2026-09-21 | Repository skill validator and readiness | 0 | All 22 skills validated; readiness passed 184 names, 46 links, 23 decisions, and 103 task contracts while WP00-T09 remained selected. |
 | 2026-09-21 | `pnpm verify` on `8a28622` | 0 | Formatting, lint, strict types, boundaries, 24-migration SQL policy, unchanged broad-CI policy, policy v2 replay, 898-file secret scan, 337 unit, 15 integration with 2 intentional hosted skips, 22 security, 3 evaluation plus 3 synthetic foundation cases, 5 load-contract, 19 Playwright, safe production build, and client-artifact scan passed. |
 | 2026-09-21 | Corrective isolated handoff rehearsal | 0 | Clean committed snapshot selected active WP00-T09, validated 6 durable active records, and selected WP03-T04 only after simulated WP00-T09 closure. |
+| 2026-09-21 | Closure-candidate work-state and isolated handoff proof | 0 | Clean committed snapshot selected WP03-T04 directly, preserved 5 unrelated blocked records, and passed readiness without implementing WP03-T04. |
 
 ## External-audit correction state
 
@@ -86,7 +87,7 @@ Revert the WP00-T09 implementation and evidence commits. This restores the previ
 
 ## Delivery state
 
-PR #35 delivered exact head `385d3f5` through all required checks and an independent write-access approval, without branch-protection bypass. Owner `unimind989-sys` merged it as `6c5cad8`, and a fresh fetch proved that `origin/main` contains the reviewed candidate. The implementation branch was removed locally and remotely. An external audit then found material gaps in unknown-path actual-diff widening and conditional-CI shadow evidence, plus model-runtime and GitHub-confirmation limitations that required accurate representation. Corrective candidate `8a28622` passes every focused correction and the invalidated broad local gate; the candidate-bound evidence follow-up preserves those results. The task and runbook now carry closure-candidate markers so clean-snapshot selection can prove WP03-T04, but those markers become authoritative only after this exact reviewed state reaches protected `main`. Exact-head CI, independent review, merge, synchronized-main proof, and cleanup remain delivery conditions. No application runtime, database, Supabase, provider, or paid-resource production proof is applicable because the task changes only repository governance and tooling.
+PR #35 delivered exact head `385d3f5` through all required checks and an independent write-access approval, without branch-protection bypass. Owner `unimind989-sys` merged it as `6c5cad8`, and a fresh fetch proved that `origin/main` contains the reviewed candidate. The implementation branch was removed locally and remotely. An external audit then found material gaps in unknown-path actual-diff widening and conditional-CI shadow evidence, plus model-runtime and GitHub-confirmation limitations that required accurate representation. Corrective candidate `8a28622` passes every focused correction and the invalidated broad local gate; the candidate-bound evidence follow-up preserves those results. Closure candidate `2f1d73e` carries the task/runbook markers and a clean-snapshot handoff proof that selects WP03-T04 directly while leaving it unimplemented. Those markers become authoritative only after this exact reviewed state reaches protected `main`. Exact-head CI, independent review, merge, synchronized-main proof, and cleanup remain delivery conditions. No application runtime, database, Supabase, provider, or paid-resource production proof is applicable because the task changes only repository governance and tooling.
 
 | Name | Role | Decision | Date |
 | --- | --- | --- | --- |
