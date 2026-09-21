@@ -1263,12 +1263,12 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 #### WP03-T04 — Build the unit workspace shell
 
-- [ ] Create layout, overview, chat placeholder, Studio placeholder, and quiz routes under one authorized cohort/unit segment.
-- [ ] Resolve and authorize the workspace in the server layout so every child inherits canonical scope.
-- [ ] Display breadcrumb, dynamic terminology, safe source status, material update, quota, language, and navigation.
-- [ ] Use `loading.tsx`, `error.tsx`, and `not-found.tsx` deliberately; do not reveal whether an unauthorized private ID exists.
-- [ ] Mark chat, Studio, quiz, evidence, and reporting placeholders truthfully; a polished placeholder must not imply that an unimplemented or unavailable action works.
-- [ ] Starting/switching the mocked chat seam creates or selects a session whose scope is persisted server-side; every child route rechecks canonical scope instead of trusting layout state.
+- [x] Create layout, overview, chat placeholder, Studio placeholder, and quiz routes under one authorized cohort/unit segment. Task record: `planning/tasks/wp03-t04-unit-workspace-shell.md`.
+- [x] Resolve and authorize the workspace in the server layout so every child inherits canonical scope.
+- [x] Display breadcrumb, dynamic terminology, safe source status, material update, quota, language, and navigation.
+- [x] Use `loading.tsx`, `error.tsx`, and `not-found.tsx` deliberately; do not reveal whether an unauthorized private ID exists.
+- [x] Mark chat, Studio, quiz, evidence, and reporting placeholders truthfully; a polished placeholder must not imply that an unimplemented or unavailable action works.
+- [x] Starting/switching the mocked chat seam creates or selects a session whose scope is persisted server-side; every child route rechecks canonical scope instead of trusting layout state.
 - [ ] Test long source/status content, unavailable quota, narrow/zoomed layouts, RTL/LTR switching, keyboard navigation, forged child routes, unit deactivation, and a release change during an active workspace session.
 
 #### WP03-T05 — Build Batch Leader collection flow

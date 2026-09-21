@@ -157,8 +157,11 @@ test("the server-authorized path clears downstream choices and survives browser 
   await catalogExpect(unit).toHaveAttribute("aria-pressed", "true");
   await catalogExpect(page.getByText("11", { exact: true })).toBeVisible();
   await catalogExpect(
-    page.getByRole("button", { name: "Workspace follows in WP03-T04" }),
-  ).toBeDisabled();
+    page.getByRole("link", { name: "Open authorized workspace" }),
+  ).toHaveAttribute(
+    "href",
+    /\/preview\/learn\/zagazig-university-human-medicine-year-1-term-1-cohort\/zagazig-university-human-medicine-y1-t1-biochemistry\?lang=en/u,
+  );
 
   await page.reload();
   await catalogExpect(page).toHaveURL(

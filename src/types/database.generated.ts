@@ -1610,6 +1610,35 @@ export type Database = {
         Returns: boolean;
       };
       current_student_catalog_state: { Args: never; Returns: string };
+      current_student_workspace: {
+        Args: { target_cohort_id: string; target_curriculum_unit_id: string };
+        Returns: {
+          academic_level_name_ar: string;
+          academic_level_name_en: string;
+          cohort_id: string;
+          cohort_name: string;
+          curriculum_edition: string;
+          curriculum_unit_id: string;
+          curriculum_unit_title_ar: string;
+          curriculum_unit_title_en: string;
+          curriculum_unit_type: Database["public"]["Enums"]["curriculum_unit_type"];
+          education_stage_name_ar: string;
+          education_stage_name_en: string;
+          institution_name_ar: string;
+          institution_name_en: string;
+          material_updated_at: string;
+          program_name_ar: string;
+          program_name_en: string;
+          program_progression_mode: string;
+          source_count: number;
+          term_name_ar: string;
+          term_name_en: string;
+          unit_label_plural_ar: string;
+          unit_label_plural_en: string;
+          unit_label_singular_ar: string;
+          unit_label_singular_en: string;
+        }[];
+      };
       has_active_membership: {
         Args: { target_cohort_id: string };
         Returns: boolean;

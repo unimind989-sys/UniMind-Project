@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import type { Route } from "next";
 import { useRouter } from "next/navigation";
 import {
@@ -260,6 +261,7 @@ function UnitCard({
   edition,
   presentation,
   eager,
+  workspaceHref,
   onSelect,
 }: Readonly<{
   unit: CatalogUnitNode;
@@ -269,6 +271,7 @@ function UnitCard({
   edition: string;
   presentation?: UnitPresentation | undefined;
   eager: boolean;
+  workspaceHref?: string | undefined;
   onSelect: (unitId: string) => void;
 }>) {
   const dictionary = getDictionary(locale);
@@ -329,14 +332,12 @@ function UnitCard({
                 </strong>
                 <span>{text.edition}</span>
               </p>
-              <button
+              <Link
                 className={styles.workspaceAction}
-                type="button"
-                disabled
-                title={text.workspacePending}
+                href={workspaceHref as Route}
               >
                 {text.workspacePending}
-              </button>
+              </Link>
             </div>
             {description === undefined ? null : (
               <p className={styles.unitDescription}>
@@ -727,6 +728,11 @@ export function StudyShelf({
                       edition={journey.selectedCohort?.curriculumEdition ?? "—"}
                       presentation={unitPresentationById[unit.id]}
                       eager={index === 0}
+                      workspaceHref={
+                        journey.selectedCohort === null
+                          ? undefined
+                          : `${basePath}/${journey.selectedCohort.id}/${unit.id}?lang=${initialLocale}`
+                      }
                       onSelect={(unitId) => navigate("unit", unitId)}
                     />
                   ))}
