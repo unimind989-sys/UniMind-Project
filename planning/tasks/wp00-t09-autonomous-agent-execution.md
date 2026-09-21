@@ -2,7 +2,7 @@
 
 **Task ID:** WP00-T09
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** A selected UniMind runbook task can move from compact deterministic routing through focused proof, exact-head protected delivery, affected production verification, closure, and cleanup without routine human orchestration or duplicated work.
 
@@ -10,9 +10,9 @@
 
 **Reviewer:** Ahmed's WP00-T09 directive is the standing checkpoint and relays the task-scoped non-financial delivery authorization; fresh Ahmed-and-Ziad confirmation remains required immediately before real-money exposure
 
-**Branch:** `wp00/autonomous-agent-execution`
+**Branch:** implementation `wp00/autonomous-agent-execution` (merged by PR #35 and deleted); closure `wp00/autonomous-agent-execution-closure`
 
-**Updated (UTC):** 2026-09-21T10:31:00Z
+**Updated (UTC):** 2026-09-21T12:11:40Z
 
 ## Derived execution envelope
 
@@ -61,16 +61,16 @@
 - [x] Integrate routing/evidence metadata with task records and work-state output without rewriting completed records.
 - [x] Slim and synchronize agent guidance, master-plan/D-22 authorization, runbook, README, CONTRIBUTING, templates, and skill governance.
 - [x] Run focused and broad verification once against the stable candidate, review scope/secrets, and assemble sanitized evidence.
-- [ ] Push, open/update the PR, wait for exact-head required CI, repair legitimate failures, satisfy protected review mechanics, merge, verify clean synchronized main, delete the task branch, close WP00-T09, and confirm WP03-T04 selection.
+- [x] Push, open/update the PR, wait for exact-head required CI, repair legitimate failures, satisfy protected review mechanics, merge, verify synchronized main, delete the implementation branch, close WP00-T09 through this protected closure record, and confirm WP03-T04 selection.
 
 ## Handoff
 
 **Changed:** Added the versioned policy, deterministic router, evidence assessment, historical regression suite, compact capability guidance, skill repairs, synchronized workflow/authorization guidance, and deterministic handoff selection proof.
 
-**Commands:** Node 24.19.0/pnpm 10.34.5 focused policy replay passed 10 historical cases and 23 focused tests; all 22 skills validated; readiness passed 183 names, 46 links, 23 decisions, and 103 task contracts; the isolated handoff rehearsal passed including simulated WP03-T04 selection. Final `pnpm verify` passed formatting, lint, strict types, boundaries, 24-migration SQL policy, CI policy, policy replay, the 896-file secret scan, 330 unit, 15 integration with 2 intentional hosted skips, 22 security, 3 evaluation plus 3 synthetic foundation cases, 5 load-contract, 19 E2E, the safe production build, and client-artifact scanning. The first broad attempt rejected one lint warning; runtime planning/model/risk validation corrected it. Evidence assembly exposed and corrected receipt comparison against the wrong Git base and original task surfaces; all invalidated proof reran on implementation SHA `ff15002`.
+**Commands:** Node 24.19.0/pnpm 10.34.5 focused policy replay passed 10 historical cases and 23 focused tests; all 22 skills validated; readiness passed 183 names, 46 links, 23 decisions, and 103 task contracts; the isolated handoff rehearsal passed including simulated WP03-T04 selection. Final `pnpm verify` passed formatting, lint, strict types, boundaries, 24-migration SQL policy, CI policy, policy replay, the 896-file secret scan, 330 unit, 15 integration with 2 intentional hosted skips, 22 security, 3 evaluation plus 3 synthetic foundation cases, 5 load-contract, 19 E2E, the safe production build, and client-artifact scanning. The first broad attempt rejected one lint warning; runtime planning/model/risk validation corrected it. Evidence assembly exposed and corrected receipt comparison against the wrong Git base and original task surfaces; all invalidated proof reran on implementation SHA `ff15002`. Exact-head GitHub Actions run `35590667885` passed dependency-audit, application, and disposable database CI for `385d3f5`; `aboayman-oss` approved that exact head; owner `unimind989-sys` merged PR #35 as `6c5cad8`; synchronized `origin/main` contains the reviewed candidate; the merged implementation branch was deleted locally and remotely.
 
-**Remaining:** Protected publication, exact-head CI, merge, final-main proof, closure, and cleanup.
+**Remaining:** None for WP00-T09. The protected closure record must be merged unchanged; its presence on `main` is the durable closure proof.
 
-**Next safe action:** Commit the sanitized evidence follow-up, publish the task branch, and open the protected pull request.
+**Next safe action:** Resume normal runbook selection at WP03-T04. Do not implement it as part of WP00-T09.
 
 **Reviewer action:** NONE for routine work; the WP00-T09 directive authorizes autonomous non-financial completion. Fresh Ahmed-and-Ziad confirmation is required only immediately before any real-money exposure.
