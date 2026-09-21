@@ -12,7 +12,7 @@
 
 **Branch:** `wp00/tooling-auth-stack`
 
-**Updated (UTC):** 2026-09-21T17:36:00Z
+**Updated (UTC):** 2026-09-21T18:02:00Z
 
 ## Derived execution envelope
 
@@ -48,7 +48,7 @@
 
 **Pass:** every requested system has one evidence-backed classification and primary/fallback path; any human checkpoint is explicit and minimal; no duplicate integration or unnecessary browser/E2E check is introduced; post-completion work-state selects WP03-T04
 
-**Evidence:** `evidence/wp00-pilot/2026-09-21_tooling-authentication-stack_<short-sha>.md` plus any connector/CLI output summarized without secrets
+**Evidence:** `evidence/wp00-pilot/2026-09-21_tooling-authentication-stack_5ad335d.md` plus any connector/CLI output summarized without secrets
 
 **Rollback:** revert this task's repository commit; if a reversible local account-selection check is performed, restore the prior explicitly recorded active account; no provider-side mutation is authorized by this task
 
@@ -68,21 +68,21 @@
 
 - [x] Read the current repository authority, baseline audit, task conventions, and clean main; select Ahmed and create the review branch.
 - [x] Revalidate local Git, GitHub connector/CLI, pinned Supabase CLI, pinned Vercel CLI, and the minimum CI/tooling paths with the cheapest safe read-only checks.
-- [~] Classify the requested systems and identify only demonstrated gaps or limitations.
-- [ ] Apply the smallest safe repository-guidance or local configuration corrections; do not add external integrations or credentials.
+- [x] Classify the requested systems and identify only demonstrated gaps or limitations.
+- [x] Apply the smallest safe repository-guidance or local configuration corrections; do not add external integrations or credentials.
 - [x] Handle and verify any genuine human-only checkpoint, one service at a time.
-- [ ] Record the current matrix, trust-boundary result, evidence, rollback, and rate-limit impact without inventing savings.
+- [x] Record the current matrix, trust-boundary result, evidence, rollback, and rate-limit impact without inventing savings.
 - [ ] Run selected proof, exact-head CI, protected delivery, affected proof if applicable, closure, and cleanup; confirm WP03-T04 is next.
 
 ## Handoff
 
-**Changed:** Task registration and the post-foundation runbook entry are in progress; the work-state routing label now includes WP00-T10. No external service or credential has been mutated.
+**Changed:** Task registration, the post-foundation runbook entry, the current audit section, and the work-state routing label are recorded. No external service, hosted project, or credential has been mutated by the repository changes.
 
-**Commands:** Intent routing passed for policy 2, docs/tooling, R0, minimal planning, Luna Max floor with unverified runtime disclosure; full revalidation and repository proof are pending.
+**Commands:** Intent routing passed for policy 2, docs/tooling, R0, minimal planning, Luna Max floor with unverified runtime disclosure. Local/Git, GitHub CLI, Supabase CLI, Vercel CLI, Playwright version, secret scan, readiness, and base CI read-only checks passed as recorded in the evidence.
 
-**Remaining:** Current external identities/scopes, CLI authentication, connector capability, retained-tool classifications, and final evidence/delivery.
+**Remaining:** Candidate exact-head CI, protected PR review/merge, affected proof if selected, main synchronization, cleanup, and final handoff. The current-thread GitHub connector remains unavailable as `Unknown tool`; `gh` is the deterministic delivery fallback.
 
-**Next safe action:** Classify the verified stack, assemble sanitized evidence, run the selected repository proof, and prepare the reviewable candidate; no further credential or hosted-project setup is needed.
+**Next safe action:** Commit the sanitized evidence, run the selected repository proof, push the candidate through the protected PR path, and request independent review if branch protection requires it; no further credential or hosted-project setup is needed.
 
 **Reviewer action:** NONE for current non-financial work; GitHub and Supabase login checkpoints are complete and verified read-only. Fresh Ahmed-and-Ziad confirmation remains required only for real-money exposure.
 
