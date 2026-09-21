@@ -4,6 +4,7 @@ import { WorkspaceChat } from "@/app/learn/_components/workspace-pages";
 import { loadSyntheticWorkspaceScope } from "@/app/learn/synthetic-workspace";
 import { resolveLocale } from "@/lib/i18n/locale";
 import { resolveWorkspaceChat } from "@/lib/workspace/workspace.application";
+import type { WorkspacePageProps } from "@/lib/workspace/workspace-route.types";
 
 import { previewWorkspaceRepository } from "../preview-workspace.server";
 import { startPreviewChatSession } from "./actions";
@@ -11,7 +12,7 @@ import { startPreviewChatSession } from "./actions";
 export default async function PreviewChatPage({
   params,
   searchParams,
-}: PageProps<"/preview/learn/[cohortId]/[unitId]/chat">) {
+}: WorkspacePageProps) {
   const [{ cohortId, unitId }, query] = await Promise.all([
     params,
     searchParams,

@@ -3,11 +3,12 @@ import { notFound } from "next/navigation";
 import { WorkspacePlaceholder } from "@/app/learn/_components/workspace-pages";
 import { loadSyntheticWorkspaceScope } from "@/app/learn/synthetic-workspace";
 import { resolveLocale } from "@/lib/i18n/locale";
+import type { WorkspacePageProps } from "@/lib/workspace/workspace-route.types";
 
 export default async function PreviewQuizPage({
   params,
   searchParams,
-}: PageProps<"/preview/learn/[cohortId]/[unitId]/quiz">) {
+}: WorkspacePageProps) {
   const [{ cohortId, unitId }, query] = await Promise.all([
     params,
     searchParams,

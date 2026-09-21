@@ -43,6 +43,7 @@
 | Bounded rendered inspection | English overview/chat and Arabic narrow overview had exact viewport width, no relevant console errors/warnings, no clipping, Manrope for English, and custom Noto Sans Arabic for Arabic |
 | One Impeccable detector pass | New brand/color token drift was corrected; documented component radii were retained. Per the selected workflow, the detector was not rerun. |
 | `pnpm verify` | Passed: 344 unit; 15 integration with 2 intentional hosted-only skips; 24 security; 3 evaluation; 5 load-contract; 24 E2E; optimized production build; client-artifact secret scan |
+| GitHub Actions run `35653565111` | Dependency audit passed; application rejected fresh-checkout use of generated `PageProps`/`LayoutProps` before database CI. Explicit checked-in async route-prop types replaced that assumption, and the complete local gate reran green. |
 | `pwsh -NoProfile -File scripts/verify-agent-readiness.ps1` | Passed: 187 names, 46 local links, 23 synchronized decisions, and 104 task contracts |
 | Actual-diff router | Policy v2; R3/protected; docs/frontend/runtime/auth/data/storage/delivery/tooling; broad CI; Sol High floor required; active primary model not externally verifiable; zero workers used |
 | Diff and secret review | `git diff --check`, staged stat/full-diff review, repository secret scan, and client-artifact scan passed; no unrelated work was present |
@@ -67,6 +68,7 @@
 | WP03-T04-A02 | Design metadata | `.impeccable/design.json` predates the current `DESIGN.md`, and the login surface brief is orphaned. | Left untouched because repairing design-side metadata is outside the selected workspace slice. |
 | WP03-T04-A03 | Existing development advisory | Next development mode emits an intermittent Study Shelf LCP hint; the first visible card already receives eager behavior, the production build is clean, and WP03-T07 owns broader performance review. | Does not block T04. |
 | WP03-T04-A04 | Platform split | The guarded disposable PostgreSQL/pgTAP gate does not run on this Windows candidate host. | Exact-head GitHub database CI is mandatory before merge. |
+| WP03-T04-A05 | Closed CI portability defect | The first exact-head application job found that local `.next` artifacts had supplied route-prop globals unavailable before generation in a clean checkout. | Replaced generated globals with explicit shared async route-prop types; formatting, lint, typecheck, 7/7 focused tests, 24/24 E2E, production build, and client scan reran green. |
 
 ## Security and privacy review
 

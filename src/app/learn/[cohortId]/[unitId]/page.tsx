@@ -1,11 +1,12 @@
 import { WorkspaceOverview } from "@/app/learn/_components/workspace-pages";
 import { resolveLocale } from "@/lib/i18n/locale";
 import { requireAuthorizedWorkspace } from "@/lib/workspace/workspace-route.server";
+import type { WorkspacePageProps } from "@/lib/workspace/workspace-route.types";
 
 export default async function WorkspaceOverviewPage({
   params,
   searchParams,
-}: PageProps<"/learn/[cohortId]/[unitId]">) {
+}: WorkspacePageProps) {
   const [{ cohortId, unitId }, query] = await Promise.all([
     params,
     searchParams,

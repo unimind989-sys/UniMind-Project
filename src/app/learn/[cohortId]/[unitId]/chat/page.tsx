@@ -2,6 +2,7 @@ import { WorkspaceChat } from "@/app/learn/_components/workspace-pages";
 import { resolveLocale } from "@/lib/i18n/locale";
 import { resolveWorkspaceChat } from "@/lib/workspace/workspace.application";
 import { requireAuthorizedWorkspace } from "@/lib/workspace/workspace-route.server";
+import type { WorkspacePageProps } from "@/lib/workspace/workspace-route.types";
 import { supabaseWorkspaceRepository } from "@/lib/workspace/workspace.supabase.server";
 
 import { startChatSession } from "./actions";
@@ -9,7 +10,7 @@ import { startChatSession } from "./actions";
 export default async function ChatPage({
   params,
   searchParams,
-}: PageProps<"/learn/[cohortId]/[unitId]/chat">) {
+}: WorkspacePageProps) {
   const [{ cohortId, unitId }, query] = await Promise.all([
     params,
     searchParams,
