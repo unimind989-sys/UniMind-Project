@@ -1611,10 +1611,7 @@ export type Database = {
       };
       current_student_catalog_state: { Args: never; Returns: string };
       current_student_workspace: {
-        Args: {
-          target_cohort_id: string;
-          target_curriculum_unit_id: string;
-        };
+        Args: { target_cohort_id: string; target_curriculum_unit_id: string };
         Returns: {
           academic_level_name_ar: string;
           academic_level_name_en: string;
@@ -1629,7 +1626,7 @@ export type Database = {
           education_stage_name_en: string;
           institution_name_ar: string;
           institution_name_en: string;
-          material_updated_at: string | null;
+          material_updated_at: string;
           program_name_ar: string;
           program_name_en: string;
           program_progression_mode: string;
