@@ -2,7 +2,7 @@
 
 **Task ID:** WP00-T09
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** A selected UniMind runbook task can move from compact deterministic routing through focused proof, exact-head protected delivery, affected production verification, closure, and cleanup without routine human orchestration or duplicated work.
 
@@ -12,7 +12,7 @@
 
 **Branch:** implementation `wp00/autonomous-agent-execution` (merged by PR #35 and deleted); corrective/closure `wp00/autonomous-agent-execution-closure`
 
-**Updated (UTC):** 2026-09-21T12:18:00Z
+**Updated (UTC):** 2026-09-21T15:19:29Z
 
 ## Derived execution envelope
 
@@ -82,7 +82,7 @@
 - [x] Run focused and broad verification once against the stable candidate, review scope/secrets, and assemble sanitized evidence.
 - [x] Reproduce the audited actual-diff and conditional-CI gaps with a focused red-capable regression loop.
 - [x] Implement policy v2 unknown-path fallback, precise worker routing, CI predictions/evidence assessment, model-runtime actions, and accurate GitHub capability/confirmation guidance.
-- [~] Run the invalidated focused and broad proof, bind sanitized evidence to the corrective candidate, then complete one final protected closure and confirm WP03-T04 selection.
+- [x] Run the invalidated focused and broad proof, bind sanitized evidence to the corrective candidate, then prepare one final protected closure and confirm WP03-T04 selection. These closure markers become authoritative only when this exact candidate reaches protected `main`.
 
 ## Handoff
 
@@ -90,8 +90,8 @@
 
 **Commands:** Node 24.19.0/pnpm 10.34.5 focused policy replay passed 10 historical cases and 23 focused tests; all 22 skills validated; readiness passed 183 names, 46 links, 23 decisions, and 103 task contracts; the isolated handoff rehearsal passed including simulated WP03-T04 selection. Final `pnpm verify` passed formatting, lint, strict types, boundaries, 24-migration SQL policy, CI policy, policy replay, the 896-file secret scan, 330 unit, 15 integration with 2 intentional hosted skips, 22 security, 3 evaluation plus 3 synthetic foundation cases, 5 load-contract, 19 E2E, the safe production build, and client-artifact scanning. The first broad attempt rejected one lint warning; runtime planning/model/risk validation corrected it. Evidence assembly exposed and corrected receipt comparison against the wrong Git base and original task surfaces; all invalidated proof reran on implementation SHA `ff15002`. Exact-head GitHub Actions run `35590667885` passed dependency-audit, application, and disposable database CI for `385d3f5`; `aboayman-oss` approved that exact head; owner `unimind989-sys` merged PR #35 as `6c5cad8`; synchronized `origin/main` contains the reviewed candidate; the merged implementation branch was deleted locally and remotely. The audit regression loop first failed 4/26 focused cases at the real router seam. Policy v2 then passed 30/30 focused tests, 10 historical cases, 5 named conditional-CI regressions, strict types, all 22 skill validations, and readiness with 184 names, 46 links, 23 decisions, and 103 task contracts. PR #35's broad CI outcomes were reused once as shadow evidence: all three jobs remain SHADOW because each still lacks either run or would-skip observation coverage, with zero contradictions. Clean corrective candidate `8a28622` passed the invalidated `pnpm verify` gate with 898-file secret scanning, 337 unit, 15 integration plus 2 intentional hosted skips, 22 security, evaluation/load, 19 E2E, safe build, and client-artifact scan. Its isolated handoff rehearsal selected WP00-T09 now and WP03-T04 only after simulated closure.
 
-**Remaining:** Correct the four audited gaps, update the focused regressions and evidence, rerun invalidated broad proof because routing/verification code changes, and deliver one final protected closure.
+**Remaining:** No implementation or local-proof work. Protected exact-head CI, independent review, merge, synchronized-main proof, and branch cleanup remain delivery conditions for this closure candidate.
 
-**Next safe action:** Commit the candidate-bound evidence follow-up, confirm it reuses the unchanged proofs, then publish one final protected corrective/closure pull request. Do not implement WP03-T04.
+**Next safe action:** Publish this exact closure candidate through one protected corrective pull request, then prove synchronized `main` selects WP03-T04. Do not implement WP03-T04.
 
 **Reviewer action:** NONE for routine work; the WP00-T09 directive authorizes autonomous non-financial completion. Fresh Ahmed-and-Ziad confirmation is required only immediately before any real-money exposure.

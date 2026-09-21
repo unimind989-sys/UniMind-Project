@@ -1,6 +1,6 @@
 # Gate report: WP00-T09 autonomous agent execution
 
-**Status:** CORRECTIVE LOCAL PASS — final protected closure pending
+**Status:** PASS — protected corrective closure candidate
 
 **Environment:** Local repository; credential-free, mock-only, and zero-cost verification
 
@@ -60,7 +60,7 @@
 | Unknown actual-diff paths | Actual-diff routing enables conservative unknown fallback; intent remains semantic; `workers/` is a known runtime path | Focused PASS |
 | Conditional CI | Router emits dependency-aware per-job predictions; the assessor reuses broad outcomes, derives READY only from explicit regression/run/skip evidence, and falls back only contradicted jobs | SHADOW with real PR #35 evidence; not promoted |
 | Model runtime | Output distinguishes verified satisfaction, verified insufficiency, and unverified active model; only verified insufficiency requests a switch | Focused PASS; live runtime remains unverified |
-| GitHub delivery autonomy | Finalization probes structured connector and `gh` before browser use and records host-required action-time confirmation as a limitation | Skill validation PASS; final corrective delivery probe pending |
+| GitHub delivery autonomy | Finalization probes structured connector and `gh` before browser use and records host-required action-time confirmation as a limitation | Skill validation PASS; final corrective delivery probe remains a protected-delivery condition |
 
 ## Negative, retry, and recovery cases
 
@@ -86,7 +86,7 @@ Revert the WP00-T09 implementation and evidence commits. This restores the previ
 
 ## Delivery state
 
-PR #35 delivered exact head `385d3f5` through all required checks and an independent write-access approval, without branch-protection bypass. Owner `unimind989-sys` merged it as `6c5cad8`, and a fresh fetch proved that `origin/main` contains the reviewed candidate. The implementation branch was removed locally and remotely. An external audit then found material gaps in unknown-path actual-diff widening and conditional-CI shadow evidence, plus model-runtime and GitHub-confirmation limitations that required accurate representation. Corrective candidate `8a28622` now passes every focused correction and the invalidated broad local gate. WP00-T09 remains open until the corrective evidence follow-up receives exact-head protected CI, independent review, merge, synchronized-main proof, and cleanup. No application runtime, database, Supabase, provider, or paid-resource production proof is applicable because the task changes only repository governance and tooling.
+PR #35 delivered exact head `385d3f5` through all required checks and an independent write-access approval, without branch-protection bypass. Owner `unimind989-sys` merged it as `6c5cad8`, and a fresh fetch proved that `origin/main` contains the reviewed candidate. The implementation branch was removed locally and remotely. An external audit then found material gaps in unknown-path actual-diff widening and conditional-CI shadow evidence, plus model-runtime and GitHub-confirmation limitations that required accurate representation. Corrective candidate `8a28622` passes every focused correction and the invalidated broad local gate; the candidate-bound evidence follow-up preserves those results. The task and runbook now carry closure-candidate markers so clean-snapshot selection can prove WP03-T04, but those markers become authoritative only after this exact reviewed state reaches protected `main`. Exact-head CI, independent review, merge, synchronized-main proof, and cleanup remain delivery conditions. No application runtime, database, Supabase, provider, or paid-resource production proof is applicable because the task changes only repository governance and tooling.
 
 | Name | Role | Decision | Date |
 | --- | --- | --- | --- |
