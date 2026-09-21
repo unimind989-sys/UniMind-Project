@@ -48,7 +48,7 @@
 
 **Pass:** every requested system has one evidence-backed classification and primary/fallback path; any human checkpoint is explicit and minimal; no duplicate integration or unnecessary browser/E2E check is introduced; post-completion work-state selects WP03-T04
 
-**Evidence:** `evidence/wp00-pilot/2026-09-21_tooling-authentication-stack_5ad335d.md` plus any connector/CLI output summarized without secrets
+**Evidence:** `evidence/wp00-pilot/2026-09-21_tooling-authentication-stack_local_5ad335d.md` plus any connector/CLI output summarized without secrets
 
 **Rollback:** revert this task's repository commit; if a reversible local account-selection check is performed, restore the prior explicitly recorded active account; no provider-side mutation is authorized by this task
 
