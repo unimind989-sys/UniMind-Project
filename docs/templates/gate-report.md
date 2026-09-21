@@ -14,7 +14,7 @@
 
 **Agent executor:** <agent/task name>
 
-**Human reviewer(s):** <Ahmed or Ziad for ordinary work; Ahmed + Ziad or explicit $finalize invocation for a protected gate>
+**Human checkpoint:** <selected Ahmed or Ziad; D-22 supplies protected non-financial standing authorization>
 
 **Started/finished (UTC):** <timestamps>
 

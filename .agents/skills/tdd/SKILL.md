@@ -19,9 +19,9 @@ See [tests.md](tests.md) for examples and [mocking.md](mocking.md) for mocking g
 
 A **seam** is the public boundary you test at: the interface where you observe behavior without reaching inside. Tests live at seams, never against internals.
 
-**Test only at pre-agreed seams.** Before writing any test, write down the seams under test and confirm them with the user. No test is written at an unconfirmed seam. You can't test everything, so agreeing the seams up front is how testing effort lands on the critical paths and complex logic instead of every edge case.
+**Test at established public seams.** Before writing a test, name the seam in the task record or working note. When repository authority, an existing public interface, or the task contract already establishes it, proceed autonomously. Escalate only when choosing the seam is itself a consequential unresolved architecture decision.
 
-Ask: "What's the public interface, and which seams should we test?"
+Ask: "What's the public interface, and which established seam proves this behavior?"
 
 When the shape of that interface is itself in question (how deep the module is, where the seam belongs, what the interface should expose), read [`../codebase-design/SKILL.md`](../codebase-design/SKILL.md) before choosing the seam. It is the shared source of the module, interface, depth, seam, adapter, leverage, and locality terms. Consult it as a reference inside the TDD workflow; do not look for a separate "Skill tool."
 
@@ -35,4 +35,4 @@ When the shape of that interface is itself in question (how deep the module is, 
 
 - **Red before green.** Write the failing test first, then only enough code to pass it. Don't anticipate future tests or add speculative features.
 - **One slice at a time.** One seam, one test, one minimal implementation per cycle.
-- **Refactoring is not part of the loop.** It belongs to the review stage (see the `code-review` skill), not the red → green implementation cycle.
+- **Refactoring is not part of the loop.** Review structure after the red-to-green slice; no separate skill is required.

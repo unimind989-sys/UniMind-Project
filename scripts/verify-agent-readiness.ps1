@@ -16,7 +16,9 @@ $requiredPaths = @(
   'AGENTS.md'
   'CONTEXT.md'
   'docs/README.md'
+  'docs/agents/agent-execution-policy.yaml'
   'docs/agents/agent-workflow.md'
+  'docs/agents/frontend-quality-floor.md'
   'docs/plans/poc-master-plan.md'
   'docs/runbooks/poc-execution-runbook.md'
   'docs/templates/README.md'
@@ -45,8 +47,11 @@ $requiredPaths = @(
   'planning/load-profile-100-students.yaml'
   'evidence/README.md'
   'evidence/wp00-pilot/README.md'
+  '.agents/skills/trust-boundaries/SKILL.md'
+  'scripts/derive-agent-execution.ts'
   'scripts/show-work-state.ps1'
   'scripts/test-agent-handoff.ps1'
+  'scripts/verify-agent-execution-policy.ts'
 )
 
 foreach ($relativePath in $requiredPaths) {
@@ -242,6 +247,23 @@ if (Test-Path -LiteralPath $taskTemplatePath -PathType Leaf) {
       Add-Failure "Task-record template lacks required field: $field"
     }
   }
+
+  $routingFields = @(
+    'Policy version'
+    'Surfaces'
+    'Risk'
+    'Planning'
+    'Model floor'
+    'Worker budget'
+    'Capabilities'
+    'Procedural skills'
+    'Routing reason'
+  )
+  foreach ($field in $routingFields) {
+    if ($taskTemplate -notmatch "(?m)^\*\*$([regex]::Escape($field)):\*\*") {
+      Add-Failure "Task-record template lacks routing field: $field"
+    }
+  }
 }
 
 $taskRecordRoot = Join-Path $projectRoot 'planning/tasks'
@@ -252,6 +274,14 @@ if (Test-Path -LiteralPath $taskRecordRoot -PathType Container) {
       if ($taskRecord -notmatch "(?m)^\*\*$([regex]::Escape($field)):\*\*") {
         $relativePath = [System.IO.Path]::GetRelativePath($projectRoot, $taskRecordFile.FullName).Replace('\', '/')
         Add-Failure "Task record $relativePath lacks required field: $field"
+      }
+    }
+    if ($taskRecord -match '(?m)^\*\*Policy version:\*\*') {
+      foreach ($field in $routingFields) {
+        if ($taskRecord -notmatch "(?m)^\*\*$([regex]::Escape($field)):\*\*\s*\S") {
+          $relativePath = [System.IO.Path]::GetRelativePath($projectRoot, $taskRecordFile.FullName).Replace('\', '/')
+          Add-Failure "Task record $relativePath lacks populated routing field: $field"
+        }
       }
     }
   }

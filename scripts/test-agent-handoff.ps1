@@ -101,8 +101,37 @@ try {
     throw "Rehearsal commands modified the isolated repository: $($gitStatus -join ', ')"
   }
 
+  if ($expectedTaskId -ceq 'WP00-T09') {
+    $runbookPath = Join-Path $rehearsalPath 'docs/runbooks/poc-execution-runbook.md'
+    $taskRecordPath = Join-Path $rehearsalPath 'planning/tasks/wp00-t09-autonomous-agent-execution.md'
+    $runbook = Get-Content -LiteralPath $runbookPath -Raw
+    $taskRecord = Get-Content -LiteralPath $taskRecordPath -Raw
+    $taskBlockPattern = '(?ms)(^#### WP00-T09 —.*?)(?=^#### |^### )'
+    $taskBlockMatch = [regex]::Match($runbook, $taskBlockPattern)
+    if (-not $taskBlockMatch.Success) {
+      throw 'Unable to locate WP00-T09 in the isolated runbook.'
+    }
+
+    $completedTaskBlock = [regex]::Replace($taskBlockMatch.Value, '(?m)^- \[[ ~?!]\]', '- [x]')
+    $runbook = $runbook.Remove($taskBlockMatch.Index, $taskBlockMatch.Length).Insert($taskBlockMatch.Index, $completedTaskBlock)
+    $taskRecord = [regex]::Replace($taskRecord, '(?m)^\*\*Status:\*\* \[[ ~?!]\]$', '**Status:** [x]', 1)
+    $taskRecord = [regex]::Replace($taskRecord, '(?m)^- \[[ ~?!]\]', '- [x]')
+    Set-Content -LiteralPath $runbookPath -Value $runbook -NoNewline
+    Set-Content -LiteralPath $taskRecordPath -Value $taskRecord -NoNewline
+
+    $postCompletionOutput = @(& pwsh -NoProfile -File $workStateScript -Format Json)
+    if ($LASTEXITCODE -ne 0) {
+      throw "Post-completion work-state command failed with exit code $LASTEXITCODE."
+    }
+    $postCompletionState = ($postCompletionOutput -join [Environment]::NewLine) | ConvertFrom-Json -Depth 8
+    if ($postCompletionState.currentWorkPackage -cne 'WP03' -or $postCompletionState.recommendedTask.taskId -cne 'WP03-T04') {
+      throw "Completing WP00-T09 must return selection to WP03-T04; got $($postCompletionState.currentWorkPackage)/$($postCompletionState.recommendedTask.taskId)."
+    }
+  }
+
   $displayRecommendation = if ($null -eq $workState.recommendedTask) { 'no eligible task' } else { "$($workState.recommendedTask.taskId) recommendation" }
-  Write-Output "Agent handoff rehearsal passed: isolated committed snapshot, clean worktree, $displayRecommendation, $(@($workState.activeTaskRecords).Count) durable active records, and readiness verification."
+  $completionProof = if ($expectedTaskId -ceq 'WP00-T09') { ', plus deterministic WP03-T04 selection after simulated WP00-T09 closure' } else { '' }
+  Write-Output "Agent handoff rehearsal passed: isolated committed snapshot, clean worktree, $displayRecommendation, $(@($workState.activeTaskRecords).Count) durable active records, readiness verification$completionProof."
 } finally {
   if (Test-Path -LiteralPath $rehearsalPath) {
     $resolvedRemovalPath = [System.IO.Path]::GetFullPath((Resolve-Path -LiteralPath $rehearsalPath).Path)

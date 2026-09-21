@@ -25,7 +25,7 @@ Use these markers in the working copy or project tracker:
 - `[!]` failed gate or release blocker; link the incident or defect.
 - `N/A` only when the master plan explicitly excludes the item and the gate reviewer records why.
 
-Never turn `[ ]` directly into `[x]`. The agent executor first marks `[~]`, performs the work and verification, attaches evidence, and then obtains the required human checkpoint before `[x]`. For ordinary work, the same founder may have requested, authorized, operated, and reviewed the task.
+Never turn `[ ]` directly into `[x]`. The agent executor first marks `[~]`, performs the work and verification, attaches evidence, completes the authorized delivery boundary, and only then marks `[x]`. Record the selected founder as the ordinary checkpoint; routine completion does not wait for a second review message.
 
 Derive task status from its checklist: all `[ ]` means not started; any `[~]`, or a mixture of completed and incomplete items, means in progress; all applicable items `[x]` plus linked reviewed evidence means complete. `[?]` and `[!]` take precedence over those derived states.
 
@@ -38,7 +38,7 @@ When a request does not name a task, select exactly one using this order:
 
 **WP00 mock bridge:** a reviewed `PASS` for WP00-T08 may route selection to WP01 while unresolved real-choice tasks remain `[?]`, because WP01 uses their documented synthetic/mock interfaces. This bridge unlocks WP01 only and never marks an open decision complete or enables a real adapter.
 
-**WP01 foundation bridge:** after every WP01 task is complete and WP01-T11 has reviewed `PASS` evidence, selection may route to the earliest eligible WP02 task because the delivery table makes Package 1 its dependency. Open real-choice decisions retain their exact consumer blocks. Rights, RLS, raw deletion, budget, release, and live-provider gates retain their required confirmations; explicit `$finalize` invocation supplies both founders' standing authorization for the selected task's non-financial delivery, while real-money exposure still requires fresh confirmation.
+**WP01 foundation bridge:** after every WP01 task is complete and WP01-T11 has reviewed `PASS` evidence, selection may route to the earliest eligible WP02 task because the delivery table makes Package 1 its dependency. Open real-choice decisions retain their exact consumer blocks. D-22 supplies standing two-founder authorization for selected-task non-financial rights, RLS, raw-deletion, budget-control, release, and live-provider actions after their technical gates pass; real-money exposure still requires fresh confirmation.
 
 ### 0.2 Agent execution, human checkpoints, and autonomous finalization
 
@@ -48,16 +48,16 @@ Name the agent executor and the applicable human checkpoint before starting a pa
 | --- | --- | --- |
 | Agent executor | Implements the task, runs the checks, and assembles evidence. | An agent may execute work requested by either founder. |
 | Human operator/authorizer | Supplies authorization and performs unavoidable signed-in actions that an agent cannot complete directly. | Ahmed or Ziad; may also review the same ordinary task. |
-| Human reviewer | Inspects the gate evidence and records the human checkpoint. | Ahmed or Ziad for ordinary work, including the same founder who requested or operated it. Protected gates require both founders' named authorization; `$finalize` invocation supplies it for selected-task non-financial delivery. |
+| Human reviewer | Voluntarily inspects evidence or resolves a genuine product/academic judgment that repository authority cannot decide. | Ahmed or Ziad; routine technical completion does not require a second message. D-22 supplies protected non-financial authorization. |
 | Product decision owner | Resolves scope, cohort, terminology, retention, and UX decisions. | Ahmed or Ziad as recorded in the decision log. |
-| Security/data owner | Approves access policy, rights, retention, takedown, and incident decisions. | Ahmed or Ziad must be explicitly named; protected gates require both, with `$finalize` supplying standing non-financial delivery authorization when invoked. |
+| Security/data owner | Resolves access policy, rights, retention, takedown, and incident decisions that are not already determined by approved authority. | Ahmed or Ziad must be explicitly named; D-22 supplies standing two-founder non-financial delivery authorization after technical proof. |
 | Academic reviewer | Judges source completeness, conflicts, grounding, and educational-case quality. | Ahmed or Ziad must be explicitly named; an automated score cannot replace the human judgment. |
 
 For every work session, write the agent executor, named human checkpoint, work package, branch, intended evidence, and hard-stop conditions at the top of the session note. If a founder performs signed-in actions, record that human-operator role separately.
 
-The default delivery model is agent-first: a coding agent acts as executor and performs repository implementation, tests, documentation, verification, and sanitized evidence preparation. Ahmed or Ziad supplies the ordinary human checkpoint and may also be the requester, authorizer, and signed-in operator. A missing human checkpoint blocks gate completion, not safe preparatory work.
+The default delivery model is agent-first and full lifecycle: a coding agent performs implementation, tests, documentation, verification, protected delivery, affected production proof, evidence closure, and cleanup. The selected Ahmed-or-Ziad speaker is the ordinary checkpoint. Human review remains available, but routine technical completion does not depend on it. An explicit scope opt-out stops at the requested boundary.
 
-Ahmed and Ziad intentionally use one shared GitHub/Supabase/Google service identity and will share future service identities; Ahmed's separate GitHub contributor account is the current exception. Never infer the acting founder from a provider account. Record the explicitly selected chat speaker and named human checkpoint in the task/evidence record. For RLS, raw deletion, rights, budget controls, release/unlock, and beta go-live, record both founders' authorization even when the service account is shared. Explicit `$finalize` invocation records both founders' standing authorization for every selected-task action that cannot spend money or create a financial liability, and the agent does not ask again. Paid calls, billable resources, paid or auto-billing trials, and nonzero cap increases or re-enablement require fresh explicit Ahmed-and-Ziad confirmation immediately before the financial mutation.
+Ahmed and Ziad intentionally use one shared GitHub/Supabase/Google service identity and will share future service identities; Ahmed's separate GitHub contributor account is the current exception. Never infer the acting founder from a provider account. Record the explicitly selected chat speaker/checkpoint in the task and evidence. D-22 records both founders' standing authorization for every selected-task action that cannot spend money or create a financial liability; `$finalize` is an optional manual/recovery entry. Paid calls, billable resources, paid or auto-billing trials, and nonzero cap increases or re-enablement require fresh explicit Ahmed-and-Ziad confirmation immediately before the financial mutation.
 
 ### 0.3 Definition of ready for any task
 
@@ -83,7 +83,7 @@ A task may be marked complete only when all applicable statements are true:
 - [ ] Logs contain the correlation ID and safe diagnostics, but no secret, raw private content, or ordinary chat content.
 - [ ] Documentation, environment schema, fixtures, and generated database types were updated where affected.
 - [ ] The evidence bundle exists at the required path and identifies commit SHA, environment, agent executor, required human checkpoint, time, commands, and outcome.
-- [ ] The named human inspected the evidence and the exit gate is green; protected gates include both founders' authorization, with `$finalize` invocation accepted for non-financial delivery.
+- [ ] The exit gate is green and the selected checkpoint plus D-22 standing non-financial authorization are recorded; any genuine unresolved product/academic judgment has its named human decision.
 
 ### 0.5 Evidence storage and naming
 
@@ -123,7 +123,7 @@ Name an evidence bundle `YYYY-MM-DD_<gate>_<environment>_<short-sha>.md`. Each b
 4. Commands executed and their exit codes.
 5. Summary metrics and links to raw machine-readable reports.
 6. Failures, deviations, and linked defects.
-7. Agent executor and required human checkpoint; protected gates include both founders' named authorization and identify `$finalize` when it supplied standing non-financial delivery authorization.
+7. Agent executor, selected speaker/checkpoint, policy version/final envelope, and D-22 standing authorization; identify `$finalize` only when it was the manual/recovery entry.
 8. Rollback/disable instruction.
 
 Never commit `.env*`, access tokens, private raw files, student exports, full chat transcripts, provider request payloads containing source content, or unredacted production logs.
@@ -250,7 +250,7 @@ git diff
 
 9. Commit using an outcome-oriented message such as `feat(catalog): enforce released unit availability`.
 10. Open a pull request that links the work-package task and evidence bundle.
-11. The required humans re-run protected security/raw-deletion/release gates where applicable; ordinary review may be completed by the same founder who requested or operated the task. During `$finalize`, the agent runs these gates and uses the invocation's standing Ahmed-and-Ziad authorization without returning for another non-financial approval.
+11. The agent runs every selected protected security/raw-deletion/release gate and records D-22 standing Ahmed-and-Ziad authorization without returning for another non-financial approval. Pause only for a genuine unresolved human judgment or the fresh real-money boundary.
 12. Merge only when required checks are green. Never repair preview or beta manually after merge; add a migration/configuration change and redeploy.
 
 `pnpm verify` must remain credential-free, mock-only, and zero paid-provider cost. A passing candidate should not be rerun locally and in overlapping forms without a relevant invalidation; reuse exact-commit CI evidence. Hosted database commands require the guarded `development` or `ci` profile and are recorded separately in evidence. If any command above does not exist yet, creating it is part of work package 1.
@@ -264,7 +264,8 @@ Task ID: WPXX-TYY
 Status: [ ] | [~] | [?] | [x] | [!]
 Outcome: Student A cannot read Student B's chat rows.
 Owner: <name>
-Reviewer: <Ahmed or Ziad for an ordinary human checkpoint; Ahmed + Ziad or explicit $finalize invocation for a protected gate>
+Reviewer: <selected Ahmed-or-Ziad checkpoint; D-22 standing authorization for protected non-financial delivery>
+Policy version / Surfaces / Risk / Planning / Model floor / Worker budget / Capabilities / Procedural skills / Routing reason
 Dependencies: <earlier task IDs>
 Inputs: migration names, fixture users, policy decision
 Files: exact expected files
@@ -290,7 +291,7 @@ At the end of every package:
 4. Run at least one negative/forbidden path and one retry/recovery path.
 5. Compare measured results with numeric thresholds; do not substitute “looks good.”
 6. Record every deviation as a defect, risk acceptance, or decision. Release blockers cannot be waived informally.
-7. The named human reviewer writes `PASS`, `FAIL`, or `CONDITIONAL PASS` with an expiry and linked follow-up. A protected gate records both founders' authorization; explicit `$finalize` invocation supplies standing authorization for non-financial delivery, while a real-money mutation requires fresh decisions from Ahmed and Ziad.
+7. Record `PASS`, `FAIL`, or `CONDITIONAL PASS` from the required evidence. A genuine product/academic judgment names the deciding founder. A protected non-financial gate records D-22 standing authorization; a real-money mutation requires fresh decisions from Ahmed and Ziad.
 8. Mark package tasks `[x]` only after `PASS`. A conditional pass never permits a later dependent package that needs the missing behavior.
 
 ### 0.12 Global rollback hierarchy
@@ -481,6 +482,21 @@ Dataset schemas and manifests are implementation outputs of WP00-T05, not copies
 - [x] Confirm no paid provider call, private source upload, raw deletion, or student invitation occurred.
 - [x] Keep the master-plan decision log and runbook synchronized; no open decision is represented as approved.
 - [x] Ahmed independently reviewed the constraints-only packet and authorized mock-only WP01 progression on 2026-08-20.
+
+#### WP00-T09 — Consolidate autonomous lean agent execution
+
+This post-foundation workflow-maintenance task was introduced after the reviewed WP00-WP02 packages and WP03-T01 through WP03-T03. It does not invalidate or reopen that completed work and does not implement WP03-T04.
+
+- [x] Register the task and derive one versioned execution policy beneath the existing master-plan, runbook, task-record, code/test, and evidence authority hierarchy. Owner: Codex `/root`; requester and standing checkpoint: Ahmed; branch: `wp00/autonomous-agent-execution`; task record: `planning/tasks/wp00-t09-autonomous-agent-execution.md`.
+- [x] Implement and validate deterministic intent/actual-diff routing, protected risk floors, model floors, worker limits, capability activation, focused verification selection, and conservative evidence invalidation without adding an agent supervisor or parallel tracker.
+- [x] Replay representative completed WP02/WP03 cases, keep broad CI unchanged, and promote only the proven core rules from shadow to enforced state; conditional CI remains shadow.
+- [x] Add the compact trust-boundaries capability, repair the evidenced skill conflicts, and preserve pinned provenance, licenses, adaptations, evaluations, and validation.
+- [x] Integrate compact routing metadata with new/active task records and work-state output while leaving historical completed records valid.
+- [x] Deduplicate always-on and workflow guidance only after the replacement policy passes focused regression checks.
+- [x] Make full non-financial terminal delivery the default for selected runbook tasks unless the request narrows scope; retain `$finalize` as a manual/recovery entry point and preserve fresh two-founder confirmation for real-money exposure.
+- [~] Run the focused policy, skill, agent-readiness, and handoff checks plus the broad zero-cost local gate; deliver through protected GitHub, record exact-head CI and merge evidence, clean task-created state, and prove that normal selection returns WP03-T04.
+
+**Pass:** the core router, model/worker/context, verification, evidence-reuse, and terminal-delivery rules are enforced from one compact policy; malformed or uncertain state falls back conservatively; broad CI remains unchanged; the merged repository is clean and selects WP03-T04 next.
 
 ### 3.1 Select exact pilot cohorts
 
@@ -1195,7 +1211,7 @@ If a `SECURITY DEFINER` function is unavoidable, place it outside exposed schema
 
 ### 6.0 Tutorial procedure
 
-WP03 application surfaces use Impeccable in **Operate** mode. Skills refine execution but do not replace the task contract, product authority, security tests, or human checkpoint. Run Impeccable `shape`/new-work before a new visual world, use `image-to-code` only after a visual is selected, use the Codex in-app side browser for bounded internal rendered inspection, and run Impeccable's detector and audit after the implementation exists. Playwright Test remains the repeatable E2E gate; use the project-pinned Playwright CLI only after explicit `$playwright-cli` invocation for tracing, locator discovery, or test debugging. The integrated Impeccable audit already includes the pinned Vercel Web Interface Guidelines; do not run a second overlapping review unless the user explicitly requests it.
+Every WP03 frontend task applies the compact frontend quality floor. Activate Impeccable in **Operate** mode only for design direction, redesign, significant UX restructuring, interaction-design judgment, critique, or substantial visual refinement. Skills refine execution but do not replace the task contract, product authority, security tests, or evidence. Run Impeccable `shape`/new-work before a new visual world, use `image-to-code` only after a visual is selected, use the Codex side browser for ordinary bounded rendered inspection, and run the applicable detector/audit only when the heavy workflow activated. Playwright Test remains the repeatable E2E gate; use the project-pinned Playwright CLI only after explicit `$playwright-cli` invocation for tracing, locator discovery, or test debugging. The integrated Impeccable audit already includes the pinned Vercel Web Interface Guidelines; do not run a second overlapping review unless the user explicitly requests it.
 
 External component catalogs and MCPs are optional implementation aids, never design directors or delivery dependencies. Do not send private source material, student data, secrets, or proprietary prompts/code to them. Before importing a component, record its exact source and license, inspect the full code and dependency diff, pin any tool/package version, and prove accessibility, RTL, responsive behavior, security boundaries, and maintainability locally. `pnpm verify` and a clean-clone build must not require a catalog account, API key, network call, paid credit, or mutable remote content. Follow the component-source evaluation in `docs/agents/ui-design-stack.md`.
 

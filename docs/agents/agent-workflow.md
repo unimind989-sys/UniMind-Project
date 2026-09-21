@@ -1,61 +1,62 @@
 # Agent workflow
 
-Use this workflow for every repository change. It is a routing document: product truth remains in the master plan, task contracts remain in the execution runbook, and domain language remains in `CONTEXT.md`.
+Use this lifecycle for every repository task. Product truth stays in the master plan, requirements and order stay in the runbook, durable task state stays in the task record, and derived execution mechanics stay in `agent-execution-policy.yaml`.
 
-## 1. Orient
+## 1. Orient and select
 
-1. Run `git status --short` and identify every existing change before editing.
-2. Read the root `README.md` map and the always-on `AGENTS.md` rules.
-3. Classify the request as product/architecture, implementation, domain behavior, UI, diagnosis, or documentation.
-4. Load only the authority triggered by that class: the relevant master-plan section, runbook task, `CONTEXT.md`, design records, or an applicable skill.
+1. Run `git status --short`, preserve every unrelated change, and read the root `README.md` map.
+2. Run `pwsh -NoProfile -File scripts/show-work-state.ps1`. Continue the earliest executable in-progress task, otherwise select the earliest executable task in runbook dependency order. A user-named outcome still maps to exactly one runbook task.
+3. Read only the selected task, its direct dependencies/evidence, and the product/domain/design authority triggered by the request.
+4. Create or update `planning/tasks/wpNN-tyy-short-outcome.md` from the controlled template. Record the selected speaker/checkpoint, files, acceptance, proof, evidence, rollback, and hard stops.
 
-**Complete when:** the request has one named authority, unrelated user work is identified, and no required context branch remains unread.
+**Complete when:** one task is claimed, its readiness is proven, unrelated work is known, and no required context branch remains unread.
 
-## 2. Select one executable task
+## 2. Derive the intent envelope
 
-1. Run `pwsh -NoProfile -File scripts/show-work-state.ps1` to see active records, human-only blockers, and the earliest task not blocked by a decision or failed dependency.
-2. Map a user-named outcome to one work package and task; otherwise inspect the command's recommendation and apply the selection order in runbook section 0.1.
-3. Prove the definition of ready from runbook section 0.3. Treat missing or unreviewed evidence as incomplete; the work-state command is routing evidence, not proof of readiness.
-4. Copy `docs/templates/task-record.md` to `planning/tasks/wpNN-tyy-short-outcome.md` and fill every field. For ordinary work, name Ahmed or Ziad as the human checkpoint; that founder may also be the requester, authorizer, and signed-in operator. Use `AHMED + ZIAD — TWO-PERSON GATE BLOCKED` only when a protected gate lacks both named confirmations and `$finalize` has not supplied its standing non-financial authorization.
-5. Mark the selected checklist item `[~]`; mark a blocking item `[?]` with a linked decision or dependency.
+Give the central router a compact semantic classification:
 
-After reviewed WP00-T08 `PASS`, the work-state command may use the runbook's **WP00 mock bridge** to select WP01 while real-choice tasks remain blocked. Treat this as permission for synthetic data, deterministic mocks, local sinks, and zero paid capacity only.
+```powershell
+pnpm agent:route -- --task WP03-T04 --pass intent --surface frontend --surface runtime
+```
 
-After every WP01 task and the reviewed WP01-T11 package gate pass, the command may use the **WP01 foundation bridge** to select the earliest eligible WP02 task. Preserve every open decision's exact consumer block and stop at protected rights, RLS, raw-deletion, budget, release, or live-provider gates until their named confirmations exist. An explicit `$finalize` invocation supplies both founders' standing confirmation for the selected task's non-financial finalization; real-money exposure still requires fresh confirmation.
+Record its policy version, surfaces, risk, planning/model floor, worker budget, capabilities, procedural skills, and reason in the task record. The router applies deterministic floors and widening; it does not define acceptance criteria. If the runtime cannot prove it satisfies the model floor, expose that limitation rather than pretending to switch models.
 
-**Complete when:** exactly one task is claimed and its dependencies, files, verification, evidence, rollback, and hard stops are explicit.
+**Complete when:** the task record contains one small execution envelope and every selected capability/skill has a concrete trigger.
 
-## 3. Execute a recoverable slice
+## 3. Execute recoverable slices
 
-1. Implement the smallest end-to-end outcome that satisfies the task rather than a disconnected layer.
-2. Keep business rules in domain/application modules and external systems behind adapters. Follow the file conventions and per-module contracts in [module-boundaries.md](module-boundaries.md); `pnpm check:boundaries` enforces the main forbidden directions.
-3. Use synthetic fixtures and deterministic mocks unless the task records approved real-data and paid-call gates.
-4. Encode repeatable work in repository scripts, tests, migrations, or runbooks. Document unavoidable signed-in, consent, credential, payment, or approval steps in the handoff; route them through `$wizard` only after an explicit user request.
-5. For semantic service work, use an authenticated structured connector or repository-pinned CLI first. Use the in-app side browser for internal dashboard work, rendered inspection, and interactive testing when no direct path fits. Reserve external Chrome for the completed user-facing review handoff.
-6. Run the narrowest relevant check after each meaningful change and record any deviation immediately.
+1. Implement one end-to-end behavior through an established public seam. Keep domain/application rules behind small interfaces and external systems behind adapters.
+2. Use synthetic fixtures, deterministic mocks, and zero paid capacity unless the task records approved real inputs and the financial boundary.
+3. Run the smallest check able to reject the current slice. Fix recoverable failures proportionally; heavyweight diagnosis starts only for hard, unclear, reproduction-dependent, performance, or non-converging failures.
+4. Persist decisions, commands, blockers, and resumable state in repository artifacts. Chat is coordination, not project memory.
 
-**Complete when:** the observable outcome works through its public seam, failure and forbidden paths are covered where applicable, and another agent can reproduce the result from version control.
+**Complete when:** the observable allowed path works, applicable failure/forbidden paths are covered, and another agent can reproduce it from version control.
 
-## 4. Verify the claimed scope
+## 4. Reclassify the actual diff
 
-1. Write a short verification map from each changed public seam, acceptance criterion, and material risk to the one check that proves it. Reuse exact-match evidence instead of rerunning it.
-2. Run the task's focused checks from cheapest to broadest. Stop after the required evidence is complete; broaden or repeat only after a relevant diff change, failure, or unresolved risk.
-3. Run local `pnpm verify` for code, runtime, dependency, CI, build, environment-contract, migration, or executable-script changes, or when the task contract explicitly names it. For documentation-, planning-, evidence-, and skill-only changes, run focused checks locally and let required GitHub CI provide the full merge gate unless the change can affect `pnpm verify` itself.
-4. Select agent-facing checks by impact: the skill validator for skills/metadata, agent readiness for routing/task-state/navigation, and the isolated handoff rehearsal for discovery/resume behavior. Do not run all three automatically.
-5. Run `git diff --check`, `git diff --stat`, inspect the full diff, and scan changed files for secrets and accidental scope.
-6. Update the evidence bundle with commands, exit codes, results, deviations, and rollback, including why any broad check was intentionally deferred to CI or skipped as unaffected.
+Before candidate proof, run the actual-diff pass with semantic surfaces and any protected or uncertainty flags:
 
-**Complete when:** every acceptance criterion has direct evidence, every applicable check is green, and every unrun check is explicitly reported.
+```powershell
+pnpm agent:route -- --task WP03-T04 --pass actual-diff --surface frontend --surface runtime
+```
 
-## 5. Hand off from repository state
+Widen only for actual changed behavior, paths, or external mutations. Protected classification cannot be downgraded. Update the task record when the final envelope differs from intent.
 
-1. Update the task record status and handoff section with changed files, commands/results, remaining work, and the next safe action.
-2. Link the evidence bundle and identify any restricted evidence without copying sensitive content.
-3. Leave protected gates unapproved until both founders' named confirmations exist. During `$finalize`, record its invocation as both founders' standing confirmation for task-scoped non-financial delivery and continue without another approval request; record fresh confirmation only for real-money exposure. For ordinary work, record which founder inspected the evidence and the resulting decision.
-4. Summarize the outcome, verification, and open risks to the user without relying on earlier progress messages.
+**Complete when:** every changed path is covered by the final semantic envelope and no protected mutation or uncertainty is hidden.
 
-**Complete when:** a fresh agent can resume safely from the task record, authorities, diff, and evidence without access to the prior chat.
+## 5. Verify and persist evidence
 
-## Fresh-agent rule
+1. Add explicit runbook/task checks to the router's selected checks. Map each acceptance criterion, changed public seam, and material risk to one rejecting proof.
+2. Reuse an exact-match passing receipt until a relevant surface/input changes. Malformed, missing, mismatched, or contradicted evidence means proof is missing.
+3. Run focused stable-candidate checks once. Run local `pnpm verify` when the task or policy selects it; exact-head required GitHub CI remains the broad delivery gate.
+4. Inspect `git diff --check`, `git diff --stat`, the full diff, and changed-file secret/scope risk. Record results, invalidation/reuse, deviations, rollback, and unaffected checks/services in sanitized evidence.
 
-Chat is coordination, not durable project state. Persist every implementation choice, task status, command contract, blocker, and handoff fact in its authoritative repository artifact. If a fresh agent must ask what happened, the handoff is incomplete.
+**Complete when:** every acceptance criterion has direct green proof and every unrun check has an impact-based reason.
+
+## 6. Deliver or honor the opt-out
+
+For ordinary selected tasks, enter the terminal `finalize` workflow automatically: push one reviewable branch, create/update one PR, wait for exact-head required CI, repair invalidated proof, satisfy branch protection, merge the reviewed candidate, verify only affected external/production state, close task/runbook evidence, synchronize clean `main`, and delete task-created branch/temp state. D-22 supplies standing non-financial authorization; stop only immediately before real-money exposure or a genuine access/external/safety blocker.
+
+If the request explicitly narrowed delivery, update the task record handoff with the exact remaining action and stop at that boundary. `$finalize` can manually enter or resume terminal delivery later.
+
+**Complete when:** the requested lifecycle boundary is proven from repository state and a fresh agent needs no prior-chat context.

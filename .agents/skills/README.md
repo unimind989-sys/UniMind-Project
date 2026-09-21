@@ -23,7 +23,7 @@ Third-party skills are copied into the repository at fixed commits. Review upstr
 | Skill | Origin | Invocation | Purpose |
 | --- | --- | --- | --- |
 | `unimind-skills` | UniMind | Manual | Recommend the next skill and a copy-ready prompt. |
-| `finalize` | UniMind | Manual | Autonomously verify, merge, release affected non-financial services, record evidence, and delete the merged task branch; pause only for real-money exposure. |
+| `finalize` | UniMind | Automatic/manual | Terminally verify, merge, prove affected non-financial services, record evidence, and clean the selected task; `$finalize` remains a manual/recovery entry point and real-money exposure pauses. |
 | `grill-me` | Matt Pocock | Manual | Run a full design or decision interview. |
 | `wait-what` | Matt Pocock, adapted | Manual | Re-explain the previous message in clear English. |
 | `blast-radius` | Cursor pstack, adapted | Manual | Prove indirect change risk beyond a diff. |
@@ -40,6 +40,7 @@ Third-party skills are copied into the repository at fixed commits. Review upstr
 | `wizard` | Matt Pocock, adapted | Manual | Generate Windows/PowerShell manual-setup walkthroughs when explicitly requested. |
 | `writing-for-agents` | Matt Pocock | Automatic | Improve skills and agent-facing instructions. |
 | `skill-maintainer` | UniMind | Automatic | Adapt skills from demonstrated project feedback. |
+| `trust-boundaries` | UniMind | Automatic | Prove material identity, authorization, and storage trust semantics selected by the central execution policy. |
 | `impeccable` | Paul Bakaus, adapted | Automatic | Design, critique, and audit distinctive production UI. |
 | `image-to-code` | Gekkos Tech, adapted | Automatic | Translate a selected screenshot or mockup into verified responsive UI. |
 | `playwright-cli` | Microsoft, adapted | Manual | Run explicitly requested CLI tracing, locator discovery, or Playwright test debugging; ordinary internal browser work uses the in-app side browser. |

@@ -95,7 +95,9 @@ The application fails with variable names—not values—when configuration is m
 
 ## 5. Current safe loop
 
-The zero-cost application gate works without infrastructure or provider credentials:
+Derive the selected task's verification from its explicit contract and final execution envelope. Use the narrowest check that can reject the current edit; do not run the broad gate after every successful slice.
+
+The broad zero-cost application gate works without infrastructure or provider credentials and is required when the task or central policy selects it:
 
 ```powershell
 corepack pnpm verify
@@ -130,16 +132,15 @@ The `db:ci:*` and `test:integration:database` commands fail closed outside the G
 
 Read `planning/environment-matrix.md` and `docs/runbooks/environment-promotion.md` before any hosted action. Preview is protected, synthetic-only, and mock-only. Beta is protected, Git-disconnected, empty, and unreleased. Neither target accepts destructive development/CI commands.
 
-Run `smoke:deployment` only for an explicitly approved Preview URL and access window. Keep Beta locked; its evidence is a protected liveness/readiness and isolation check, not a public release. Use forward migrations only, preserve exact-commit promotion and recovery evidence, and stop if Vercel Hobby eligibility, target identity, or the zero-cost boundary is uncertain. Beta unlock, real data, release, and go-live remain separate protected gates requiring Ahmed and Ziad; explicit `$finalize` invocation supplies their standing non-financial delivery authorization.
+Run `smoke:deployment` only for a task-selected Preview target and verified zero-cost access window. Keep Beta locked; its evidence is a protected liveness/readiness and isolation check, not a public release. Use forward migrations only, preserve exact-commit promotion and recovery evidence, and stop if Vercel Hobby eligibility, target identity, or the zero-cost boundary is uncertain. D-22 supplies standing Ahmed-and-Ziad authorization for selected-task non-financial protected delivery; real-money exposure still pauses for fresh confirmation.
 
 ## 6. End-of-session loop
 
-Stop any development server, then run:
+Stop any development server, clean only the named generated paths, then run the focused stable-candidate checks selected by the task and policy. Run `corepack pnpm verify` here only when selected; exact-head required CI remains the broad delivery gate.
 
 ```powershell
 git clean -dfX -- .next/
 git restore --source=HEAD -- next-env.d.ts
-corepack pnpm verify
 git diff --check
 git diff --stat
 git status --short
@@ -170,6 +171,8 @@ Duration classes are workstation estimates: **instant** is normally under 10 sec
 | `pnpm check:boundaries`              | Enforce UI/application/domain/adapter/server import directions                        | None                                                                    | None                                                                      | Instant      |
 | `pnpm check:sql`                     | Enforce mechanical naming, schema, identity, time, grant, and function SQL rules      | None                                                                    | Versioned migrations                                                      | Instant      |
 | `pnpm verify:ci-workflow`            | Audit CI syntax, pins, permissions, lifecycle, and cleanup                            | None                                                                    | None                                                                      | Instant      |
+| `pnpm agent:route`                   | Derive an intent or actual-diff execution envelope from the central policy            | None                                                                    | Task ID and compact semantic surfaces                                     | Instant      |
+| `pnpm verify:agent-policy`           | Validate policy schema, references, activation state, and historical regressions      | None                                                                    | None                                                                      | Instant      |
 | `pnpm scan:secrets`                  | Scan tracked repository content for secret-like values                                | None                                                                    | None                                                                      | Instant      |
 | `pnpm test:unit`                     | Run pure rules, configuration, and deterministic provider contracts                   | None                                                                    | None                                                                      | Short        |
 | `pnpm test:integration`              | Run credential-free application/mock integration tests; database Auth skips           | None                                                                    | None                                                                      | Short        |
@@ -218,12 +221,12 @@ git switch -c wp01/provider-mocks
 
 4. Implement the smallest observable end-to-end result. Keep business rules out of React, route handlers, provider SDKs, and workflow tools.
 5. Run the narrowest focused check after each meaningful change.
-6. Run the end-of-session loop and inspect the full diff.
+6. Reclassify the actual diff, run the selected stable-candidate proof once, and inspect the full diff.
 7. Commit the coherent candidate with an outcome-oriented message.
 8. Create sanitized evidence named `YYYY-MM-DD_<gate>_<environment>_<short-sha>.md` in the correct `evidence/wpNN-*` directory.
-9. Obtain the required human checkpoint. Ahmed or Ziad may request, authorize, operate, and review the same ordinary agent-executed task. RLS, grants, rights, raw deletion, budget controls, release/unlock, and beta go-live keep their two-person rule. Explicit `$finalize` invocation supplies both founders' standing authorization for non-financial delivery; real-money exposure requires fresh explicit confirmation.
+9. Enter terminal delivery automatically unless the request explicitly narrowed scope. D-22 supplies standing non-financial authorization, including protected gates after technical proof; real-money exposure requires fresh exact confirmation.
 
-Do not push, open a pull request, merge, deploy, unlock, or enable a live provider unless the user explicitly authorizes that external action.
+`$finalize` remains available to enter or resume terminal delivery manually. It is not required after an ordinary stable candidate.
 
 ## 9. Database migration workflow
 
@@ -236,7 +239,7 @@ corepack pnpm verify
 
 Push the review branch and require the external `database-ci` job to prove the populated forward upgrade, two clean disposable resets, all migration contracts, a warning-free pinned advisor, and stable generated types. Inspect any generated-type diff on the branch before review. Do not claim the database gate from workstation mocks or invoke a retired hosted command with Preview/Beta credentials.
 
-Edit only the CLI-created migration filename. Never invent a migration timestamp, reset Preview/Beta, repair a shared database in a dashboard, rewrite applied history, or add real seed data. Preview/Beta receive reviewed forward migrations only. RLS, grants, rights, deletion, release, and usage migrations require the documented protected-gate authorization from both founders; explicit `$finalize` invocation supplies it for non-financial delivery.
+Edit only the CLI-created migration filename. Never invent a migration timestamp, reset Preview/Beta, repair a shared database in a dashboard, rewrite applied history, or add real seed data. Preview/Beta receive reviewed forward migrations only. D-22 supplies the protected two-founder authorization for task-scoped non-financial RLS, grants, rights, deletion, release, and usage migrations after every technical gate passes.
 
 ## 10. Pull request handoff
 
@@ -250,7 +253,7 @@ A review request must contain:
 - Failures encountered and how they were resolved.
 - Anything not run and the exact blocker.
 - Rollback/disable action.
-- One next safe action and the reviewer action still required.
+- One next safe action, or confirmation that closure and cleanup are complete.
 
 The committed task record is authoritative. A screenshot, chat summary, or green build without the required database/security/evidence gate is not completion proof.
 

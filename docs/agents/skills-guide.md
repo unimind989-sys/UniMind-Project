@@ -12,7 +12,7 @@ Codex can use a repository skill in two ways:
 | Skill | Use it when | Example prompt |
 | --- | --- | --- |
 | `$unimind-skills` | You do not know which workflow fits the next task. | `$unimind-skills I need to decide how the ingestion modules should be divided.` |
-| `$finalize` | Local work is complete and you want autonomous review, protected-main delivery, affected-service verification, production promotion when needed, evidence, and merged-branch cleanup. Invocation supplies both founders' standing non-financial authorization. | `$finalize Finalize the current task.` |
+| `$finalize` | You want to manually enter or resume terminal delivery. Ordinary selected runbook tasks already enter it automatically under D-22. | `$finalize Resume finalization of the current task.` |
 | `$grill-me` | You want a demanding interview before committing to a plan or decision. | `$grill-me Help me choose the first Human Medicine pilot cohort for D-01.` |
 | `$wait-what` | The previous assistant message did not make sense or skipped context. | `$wait-what` |
 | `$blast-radius` | A change is ready or nearly ready and you want proof of what it could break outside the diff. Include a branch, commit, or fixed point. | `$blast-radius Review this branch against main and prove whether the RLS change is safe.` |
@@ -32,11 +32,12 @@ Codex can use a repository skill in two ways:
 | `domain-modeling` | A domain term, `CONTEXT.md`, or an ADR is being created or changed. | `$domain-modeling Help us distinguish source asset, source version, and raw object.` |
 | `codebase-design` | A module boundary, public interface, seam, dependency direction, or testability decision is being designed. | `$codebase-design Design a deep module for derived availability.` |
 | `tdd` | You explicitly request test-first implementation, red-green work, or integration tests. It does not force TDD onto every task. | `$tdd Implement the availability rule one vertical slice at a time.` |
-| `diagnosing-bugs` | You report a hard failure, regression, exception, or performance problem. | `$diagnosing-bugs The same ingestion job sometimes charges twice after a timeout.` |
+| `diagnosing-bugs` | A failure is hard, unclear, reproduction-dependent, performance-related, non-converging, or explicitly requested for diagnosis. Routine direct test failures use the ordinary edit loop. | `$diagnosing-bugs The same ingestion job sometimes charges twice after a timeout.` |
 | `writing-for-agents` | A skill, `AGENTS.md`, or another agent-facing instruction is being edited. | `$writing-for-agents Tighten these code-review instructions.` |
 | `skill-maintainer` | Your feedback or a demonstrated workflow failure exposes a repeatable problem in a repo skill. It announces itself before editing. | `$skill-maintainer The TDD skill keeps asking me to confirm obvious seams. Adapt it based on our last two tasks.` |
-| `impeccable` | You ask to design, redesign, critique, audit, or visually refine a frontend surface. | `$impeccable shape the student curriculum-unit workspace.` |
+| `impeccable` | Material design direction, redesign, significant UX restructuring, interaction judgment, critique, or substantial visual refinement is requested. Tiny corrections use the frontend quality floor. | `$impeccable shape the student curriculum-unit workspace.` |
 | `image-to-code` | You provide or select a screenshot, mockup, or generated visual and ask for a faithful implementation. | `$image-to-code Implement this selected desktop mockup and verify it at the matching viewport plus mobile.` |
+| `trust-boundaries` | The central envelope includes material auth or storage semantics. | `$trust-boundaries Prove the ownership and revocation paths for signed source downloads.` |
 
 ## Common flows
 
@@ -56,7 +57,7 @@ Use the smallest useful flow. Do not invoke every skill for every task.
 
 ### Finalize completed work
 
-Invoke `$finalize` after the selected task's local implementation is ready. Invocation records Ahmed and Ziad's standing authorization for every task-scoped action that cannot spend money or create a financial liability, so the agent continues through adaptive verification, protected-main delivery, affected-service promotion, production proof when needed, evidence, and local/remote task-branch deletion without asking again. One GitHub account authors the pull request and the other submits the formal approving review because GitHub does not allow self-approval. A paid call, billable resource, paid or auto-billing trial, or nonzero spending-cap increase/re-enablement is the only approval pause and requires a fresh exact-cost confirmation from both founders.
+A selected runbook task enters terminal finalization automatically after its stable candidate unless the request said local/draft/review-only or otherwise stopped delivery. D-22 records Ahmed and Ziad's standing authorization for every task-scoped action that cannot spend money or create financial liability. `$finalize` manually enters or resumes the same workflow; it does not create a second authorization class. Branch protection, exact-head CI, affected production proof, evidence, and cleanup remain mandatory. A paid call, billable resource, paid or auto-billing trial, or nonzero spending-cap increase/re-enablement pauses for fresh exact-cost confirmation from both founders.
 
 ### Hard bug
 
@@ -76,14 +77,15 @@ Invoke `$finalize` after the selected task's local implementation is ready. Invo
 
 ### UI design
 
-1. Run `$impeccable init` once when UI work begins. It reads the repository first, then asks only for missing durable product facts and creates `PRODUCT.md`.
-2. Use `$awesome-design-md` only when you want to inspect one named reference before deciding. A library file is inspiration, not UniMind's root design authority.
-3. Use `$impeccable shape <surface>` when the workflow or visual direction needs a decision before implementation. Use `$taste` only for an explicitly requested visitor-facing marketing surface.
-4. When a screenshot, mockup, or generated reference is selected, `image-to-code` measures and implements it without inventing missing product behavior.
-5. Let Impeccable choose the surface mode. UniMind app screens normally use **Operate**; a marketing page uses **Persuade**; documentation uses **Read**.
-6. After real visual decisions or code exist, use `$impeccable document` to create or refresh root `DESIGN.md`. Do not create fake tokens before that point.
-7. Use the in-app side browser for internal rendered interaction and visual checks; keep `pnpm test:e2e` as the repeatable E2E gate. Invoke `$playwright-cli` only for an explicitly requested trace, locator, or Playwright test-debugging workflow.
-8. Use `$impeccable audit <target>` for the integrated technical review. It includes the pinned Vercel guidelines. Call `$web-design-guidelines <target>` only for a separate Vercel-only report.
+1. Apply `docs/agents/frontend-quality-floor.md` to every frontend task. Activate the heavier Impeccable flow only for material design/UX judgment.
+2. Run `$impeccable init` once when material UI design work begins. It reads the repository first, then asks only for missing durable product facts and creates `PRODUCT.md`.
+3. Use `$awesome-design-md` only when you want to inspect one named reference before deciding. A library file is inspiration, not UniMind's root design authority.
+4. Use `$impeccable shape <surface>` when the workflow or visual direction needs a decision before implementation. Use `$taste` only for an explicitly requested visitor-facing marketing surface.
+5. When a screenshot, mockup, or generated reference is selected, `image-to-code` measures and implements it without inventing missing product behavior.
+6. Let Impeccable choose the surface mode. UniMind app screens normally use **Operate**; a marketing page uses **Persuade**; documentation uses **Read**.
+7. After real visual decisions or code exist, use `$impeccable document` to create or refresh root `DESIGN.md`. Do not create fake tokens before that point.
+8. Use the in-app side browser for internal rendered interaction and visual checks; keep `pnpm test:e2e` as the repeatable E2E gate. Invoke `$playwright-cli` only for an explicitly requested trace, locator, or Playwright test-debugging workflow.
+9. Use `$impeccable audit <target>` for the integrated technical review. It includes the pinned Vercel guidelines. Call `$web-design-guidelines <target>` only for a separate Vercel-only report.
 
 The deterministic Impeccable edit hook is not enabled during planning. Without the hook, Impeccable runs its detector explicitly during its finish workflow. Add the hook later only after reviewing it and approving it through Codex's `/hooks` screen.
 

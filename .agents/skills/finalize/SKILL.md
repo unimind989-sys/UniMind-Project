@@ -1,17 +1,17 @@
 ---
 name: finalize
-description: Autonomously finalize an already-implemented UniMind change through adaptive verification, protected-main delivery, impact-scoped service checks, production promotion when runtime changed, evidence, and branch cleanup. Use only when the user explicitly invokes $finalize; fresh approval is requested only for real-money exposure.
+description: Terminally deliver a stable UniMind runbook candidate through central-policy verification, protected main, affected production proof, evidence, closure, and cleanup. Runs automatically for full-lifecycle selected tasks and remains available through explicit $finalize for manual entry or recovery. Fresh confirmation is requested only for real-money exposure.
 ---
 
 # Finalize
 
-Run this workflow only when the user explicitly invokes `$finalize`. Finish the selected UniMind change across the repository and every service it can actually affect; do not turn finalization into unrelated implementation or a blanket infrastructure audit.
+Run this workflow when a selected runbook task reaches a stable candidate under the default full lifecycle, or when the user explicitly invokes `$finalize` to enter or resume it. Respect an explicit `local only`, `draft only`, `do not merge`, `stop before delivery`, or `prepare for review only` scope. Finish the selected change across the repository and every service it can actually affect; do not turn finalization into unrelated implementation or a blanket infrastructure audit.
 
 This skill refines, but never replaces, `AGENTS.md`, `docs/agents/agent-workflow.md`, or the active task contract. Read those authorities before acting.
 
 ## Authorization boundary
 
-Explicit invocation is Ahmed and Ziad's standing authorization for the selected task's complete non-financial finalization. It covers review, pull-request creation and updates, cross-account GitHub approval, merge, migrations, RLS, grants, raw deletion, rights actions, release/unlock, beta go-live, affected-service changes, production promotion, rollback or containment, evidence, and cleanup when those actions are within the task contract and their technical gates pass. Record the selected chat speaker as the invoker and as the relay of both founders' authorization under D-22; provider account identity is not evidence of who authorized the workflow.
+The approved D-22 project policy is Ahmed and Ziad's standing authorization for a selected task's complete non-financial lifecycle. It covers review, pull-request creation and updates, compliant GitHub review, merge, migrations, RLS, grants, raw deletion, rights actions, release/unlock, beta go-live, affected-service changes, production promotion, rollback or containment, evidence, and cleanup when those actions are within the task contract and their technical gates pass. Record the selected chat speaker and the standing authorization under D-22; provider account identity is not evidence of who authorized the workflow. Explicit `$finalize` is an entry signal, not a stronger authorization class.
 
 Operate autonomously. Do not pause, ask for approval, or request confirmation for a zero-cost action inside this scope. Use the authenticated accounts, tools, repository state, and service access already available; satisfy provider and branch-protection mechanics directly. Invocation supplies human authorization, but it does not waive tests, exact-target checks, security/privacy rules, dependency order, provider terms, branch protection, or evidence.
 
@@ -31,45 +31,11 @@ Establish these fixed points:
 
 If the implementation is incomplete, finish only defects or omissions within the selected task. A new product choice or unrelated architecture change is a new task, not finalization.
 
-## 2. Classify impact
+## 2. Derive the final execution envelope
 
-Assign the highest applicable tier. Reclassify whenever a fix changes the diff.
+Run the actual-diff pass through `pnpm agent:route` and the authoritative `docs/agents/agent-execution-policy.yaml`. Supply compact semantic surfaces and every changed path or external mutation. The policy owns surface definitions, risk/planning/model floors, worker limits, capabilities, verification metadata, evidence invalidation, and activation state; this skill does not keep a second taxonomy.
 
-### R0 — Repository only
-
-Documentation, evidence, planning records, or repository skills with no change to application/runtime inputs, dependencies, CI, deployment configuration, environment contracts, migrations, or service configuration.
-
-- Use the repository's required local documentation or skill checks.
-- Use GitHub for protected-main delivery.
-- Skip Supabase inspection, Vercel dashboard inspection, browser runtime checks, and production promotion.
-
-### R1 — Isolated presentation
-
-User-visible copy, translation, or styling with no behavior, API, authentication, persistence, dependency, environment, or infrastructure change.
-
-- Run the required local gate and focused rendered check of the affected surface.
-- Verify the Vercel preview and the exact changed behavior.
-- Skip Supabase unless the rendered path exposes a real Supabase regression.
-- After merge, promote and verify the public artifact under the invocation's standing authorization.
-
-### R2 — Runtime or integration
-
-Application behavior, API routes, dependencies, build/runtime configuration, CI/CD, environment contracts, or integrations.
-
-- Run the required local gate plus tests at every changed public seam.
-- Inspect GitHub and Vercel.
-- Inspect Supabase only when the diff or affected end-to-end path depends on it.
-- Verify preview and production behavior, configuration identity, and relevant logs.
-
-### R3 — Protected or stateful
-
-Database migrations, grants, RLS, authentication, authorization, storage, durable data, destructive operations, rights, provider budgets, release controls, live providers, or beta/go-live state.
-
-- Apply the runbook's complete relevant database, security, rollback, and service verification.
-- Use the invocation's standing Ahmed-and-Ziad authorization for non-financial protected actions.
-- Prove allowed and forbidden paths, migration safety, state consistency, and rollback or containment.
-
-When classification is uncertain, use the next higher tier. Service relevance is determined by real dependency paths, not by the service merely existing in the UniMind stack.
+Compare the result with the intent pass recorded in the task. Widen only for newly changed behavior, paths, or external mutations. Protected classification cannot be downgraded. When classification is uncertain or malformed, use conservative proof. Service relevance follows real dependency paths, not the existence of a service in the stack.
 
 ## 3. Spend verification proportionally
 
@@ -83,7 +49,7 @@ The local safety floor applies to every tier:
 4. Scan changed files for secrets, private data, accidental scope, debug artifacts, and unsafe configuration.
 5. Use existing green evidence when its commit, environment, configuration, and scope still match exactly.
 
-For R0 changes, select focused checks by affected contract: skill or skill-metadata changes use the repository skill validator; routing, task-state, or navigation changes use agent readiness; discovery/resume behavior changes use the isolated handoff rehearsal. Run local `pnpm verify` only when the task contract explicitly requires it or the diff can affect executable scripts, package/build inputs, CI, or the gate itself. Required GitHub CI may provide the full merge gate for a stable documentation/skill candidate. Do not inspect Supabase, run rendered browser checks, or promote Vercel for R0.
+For repository-only changes, select focused checks by affected contract: skill or skill-metadata changes use the repository skill validator; routing, task-state, or navigation changes use agent readiness; discovery/resume behavior changes use the isolated handoff rehearsal. Run local `pnpm verify` only when the task contract or central policy selects it because the diff can affect executable scripts, package/build inputs, CI, or the gate itself. Required GitHub CI may provide the full merge gate for a stable documentation/skill candidate. Do not inspect unaffected services.
 
 Once a required check passes, broaden or repeat it only when a relevant diff change, failure, or unresolved risk invalidates that evidence. Do not run a focused command and then a broader command containing the same work unless the broader command is the required final gate. Do not add tests that merely mirror a reversible low-impact change.
 
@@ -122,7 +88,7 @@ GitHub completion requires a merged pull request, green required checks, no rele
 
 ### Supabase
 
-Skip Supabase for R0 and ordinary R1 changes. For R2, inspect it only when a changed dependency or tested user flow reaches Supabase. For R3, verify every affected migration, schema object, grant, RLS policy, Auth behavior, function, trigger, storage rule, and environment using synthetic data and the guarded runbook commands. Never reset or destructively test a shared environment.
+Skip Supabase unless the final envelope or a changed end-to-end dependency reaches its auth, data, or storage surface. For protected Supabase work, verify every affected migration, schema object, grant, RLS policy, Auth behavior, function, trigger, storage rule, and environment using synthetic data and the guarded runbook commands. Never reset or destructively test a shared environment.
 
 ### Vercel
 
@@ -131,11 +97,11 @@ UniMind's automatic production-domain assignment is disabled. After a runtime-ch
 1. Wait for Vercel to build the merged candidate.
 2. Prove the deployment corresponds to the reviewed source and intended environment/configuration.
 3. Verify the preview through the changed public seam.
-4. Record the `$finalize` invocation as Ahmed and Ziad's standing release authorization for that exact commit and deployment.
+4. Record D-22 standing authorization for that exact commit and deployment; also record `$finalize` when it was the manual/recovery entry point.
 5. Manually promote the verified artifact to `project-xwrez.vercel.app`.
 6. Prove the public domain resolves to that deployment, verify the release/configuration fingerprint, run focused production smoke checks, and inspect relevant error signals.
 
-For R0, do not promote a deployment because the runtime product did not change. For R1-R3, never infer production success from a green build or Ready badge alone.
+When runtime product state did not change, do not promote a deployment. When it did, never infer production success from a green build or Ready badge alone.
 
 ## 6. Recover without widening scope
 
@@ -145,7 +111,7 @@ Stop only before a real-money action awaiting the confirmation defined above, or
 
 ## 7. Record evidence and clean up
 
-Update the task record and create the sanitized commit-specific evidence required by the runbook. Include commands, results, skipped services with impact-based reasons, the invocation authorization, deployment identity, rollback, and production proof without copying secrets or private payloads.
+Update the task record and create the sanitized commit-specific evidence required by the runbook. Include the policy version and final envelope, commands, reused/invalidated proof, results, skipped services with impact-based reasons, D-22 standing authorization, deployment identity, rollback, and production proof without copying secrets or private payloads.
 
 Only after the merged `main` commit and every affected service are verified:
 
@@ -159,7 +125,7 @@ Only after the merged `main` commit and every affected service are verified:
 
 Lead with `FINALIZED`, `BLOCKED`, or `NOT FINALIZED`, followed by:
 
-- impact tier and why;
+- final surfaces, risk, planning/model floors, and why;
 - implementation or fixes made during finalization;
 - commit, pull request, both GitHub account roles, review, checks, merge, and final `main` identity;
 - Supabase status or the precise reason it was skipped;
