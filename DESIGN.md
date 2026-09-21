@@ -21,42 +21,43 @@ colors:
   on-action: "#ffffff"
 typography:
   display:
-    fontFamily: "Manrope, Noto Sans Arabic, sans-serif"
+    fontFamily: "Manrope for English; Noto Sans Arabic for Arabic"
     fontSize: "clamp(2.15rem, 3vw, 2.65rem)"
     fontWeight: 700
     lineHeight: 1.04
     letterSpacing: "-0.035em"
   headline:
-    fontFamily: "Manrope, Noto Sans Arabic, sans-serif"
+    fontFamily: "Active-locale UI family"
     fontSize: "1.18rem"
     fontWeight: 700
     lineHeight: 1.2
     letterSpacing: "-0.02em"
   title:
-    fontFamily: "Manrope, Noto Sans Arabic, sans-serif"
+    fontFamily: "Active-locale UI family"
     fontSize: "1.02rem"
     fontWeight: 720
     lineHeight: 1.2
   body:
-    fontFamily: "Manrope, Noto Sans Arabic, sans-serif"
+    fontFamily: "Active-locale UI family"
     fontSize: "1rem"
     fontWeight: 400
     lineHeight: 1.5
   label:
-    fontFamily: "Manrope, Noto Sans Arabic, sans-serif"
+    fontFamily: "Active-locale UI family"
     fontSize: "0.78rem"
     fontWeight: 700
     lineHeight: 1.4
   arabic-title:
     fontFamily: "Noto Sans Arabic, sans-serif"
-    fontSize: "2rem"
+    fontSize: "clamp(2.28rem, 3.15vw, 2.8rem)"
     fontWeight: 700
     lineHeight: 1.2
   arabic-body:
     fontFamily: "Noto Sans Arabic, sans-serif"
-    fontSize: "0.84rem"
-    fontWeight: 400
-    lineHeight: 1.45
+    fontSize: "1.0625rem"
+    fontWeight: 450
+    lineHeight: 1.65
+    fontSizeAdjust: 0.56
 rounded:
   control: "0.75rem"
   card: "0.875rem"
@@ -189,13 +190,13 @@ The palette layers cool night neutrals, paper-like text, focused cobalt, and a d
 
 ## Typography
 
-**Display Font:** Manrope (with Noto Sans Arabic and sans-serif fallbacks)
+**Display Font:** Manrope for English; Noto Sans Arabic for Arabic
 
-**Body Font:** Manrope (with Noto Sans Arabic and sans-serif fallbacks)
+**Body Font:** The active-locale family: Manrope for English and Noto Sans Arabic for Arabic
 
 **Arabic Font:** Noto Sans Arabic (with sans-serif fallback)
 
-**Character:** A tight workhorse sans hierarchy keeps dense catalog information legible and contemporary. Arabic is a first-class parallel voice, not a decorative translation, and uses its dedicated font without forcing Latin technical terms into Arabic shaping.
+**Character:** A tight workhorse sans hierarchy keeps dense catalog information legible and contemporary. Arabic is a first-class parallel voice, not a decorative translation, and uses its dedicated font without forcing Latin technical terms into Arabic shaping. The language root selects the intended family before generated fallback faces, preventing the Latin fallback from intercepting Arabic glyphs. Arabic role tokens compensate for its different perceived metrics through slightly larger body/label roles, a 450 reading weight on dark surfaces, looser leading, neutral tracking, and a measured `font-size-adjust`; English metrics remain unchanged.
 
 ### Hierarchy
 
@@ -204,7 +205,7 @@ The palette layers cool night neutrals, paper-like text, focused cobalt, and a d
 - **Title:** Firm unit names and focused-card identity; use the observed intermediate weight only where the loaded family supports it.
 - **Body:** The default reading voice for explanatory and utility copy.
 - **Label:** Dense action, status, count, and boundary copy; keep sentence case rather than turning metadata into decorative uppercase.
-- **Arabic Title / Body:** Use the dedicated Arabic roles whenever Arabic is active, preserving their observed looser line height.
+- **Arabic Title / Body:** Use the dedicated Arabic roles whenever Arabic is active. Preserve the slightly larger role scale, 450 reading weight, neutral tracking, and looser line height; do not replace them with scattered component overrides.
 
 **The Active Language Rule.** Render one selected interface language at a time. Every visible interface label, state, and description follows the active locale; only the language switch shows both language choices. Keep explicit language and direction boundaries around technical mixed-direction content.
 

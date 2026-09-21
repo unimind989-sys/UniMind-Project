@@ -57,6 +57,7 @@ insert into reviewed_public_functions (function_signature)
 values
   ('available_catalog_entries()'),
   ('available_curriculum_units(boolean)'),
+  ('current_student_workspace(uuid, uuid)'),
   ('current_student_catalog_state()'),
   ('is_admin()'),
   ('has_active_membership(uuid)'),

@@ -776,6 +776,8 @@
 }
 
 .workspaceAction {
+  display: grid;
+  place-items: center;
   min-height: 3.35rem;
   border: 0;
   border-radius: 0.65rem;
@@ -785,11 +787,13 @@
   font-size: 0.72rem;
   line-height: 1.4;
   font-weight: 700;
-  cursor: not-allowed;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
 }
 
-.workspaceAction:disabled {
-  opacity: 0.78;
+.workspaceAction:hover {
+  background: var(--accent-focus);
 }
 
 .unitDescription {

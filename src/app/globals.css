@@ -30,11 +30,64 @@
   --space-5: 1.5rem;
   --space-6: 2rem;
   --space-7: 3rem;
-  font-family:
-    var(--font-unimind-latin), var(--font-unimind-arabic), sans-serif;
-  line-height: 1.5;
+  --font-unimind-ui: var(--font-unimind-latin);
+  --type-display-size: clamp(2.15rem, 3vw, 2.65rem);
+  --type-display-mobile-size: 2rem;
+  --type-auth-display-size: clamp(2.65rem, 4vw, 3.35rem);
+  --type-auth-display-mobile-size: 2.15rem;
+  --type-headline-size: 1.18rem;
+  --type-title-size: 1.02rem;
+  --type-body-size: 1rem;
+  --type-body-compact-size: 0.82rem;
+  --type-label-size: 0.78rem;
+  --type-caption-size: 0.72rem;
+  --type-mobile-nav-size: clamp(0.55rem, 2.3vw, 0.65rem);
+  --type-body-weight: 400;
+  --type-display-leading: 1.04;
+  --type-headline-leading: 1.2;
+  --type-title-leading: 1.2;
+  --type-body-leading: 1.55;
+  --type-caption-leading: 1.5;
+  --type-display-tracking: -0.035em;
+  --type-headline-tracking: -0.02em;
+  font-family: var(--font-unimind-ui), sans-serif;
+  line-height: var(--type-body-leading);
   background: var(--canvas);
   color: var(--text-primary);
+}
+
+html[lang="ar"],
+[lang="ar"][dir="rtl"] {
+  --font-unimind-ui: var(--font-unimind-arabic);
+  --type-display-size: clamp(2.28rem, 3.15vw, 2.8rem);
+  --type-display-mobile-size: 2.2rem;
+  --type-auth-display-size: clamp(2.8rem, 4.2vw, 3.55rem);
+  --type-auth-display-mobile-size: 2.3rem;
+  --type-headline-size: 1.25rem;
+  --type-title-size: 1.08rem;
+  --type-body-size: 1.0625rem;
+  --type-body-compact-size: 0.9rem;
+  --type-label-size: 0.84rem;
+  --type-caption-size: 0.78rem;
+  --type-mobile-nav-size: clamp(0.62rem, 2.5vw, 0.72rem);
+  --type-body-weight: 450;
+  --type-display-leading: 1.2;
+  --type-headline-leading: 1.35;
+  --type-title-leading: 1.4;
+  --type-body-leading: 1.65;
+  --type-caption-leading: 1.55;
+  --type-display-tracking: 0;
+  --type-headline-tracking: 0;
+  font-family: var(--font-unimind-ui), sans-serif;
+  font-weight: var(--type-body-weight);
+  line-height: var(--type-body-leading);
+  font-synthesis: none;
+  font-size-adjust: 0.56;
+}
+
+html[lang="ar"] :where(h1, h2, h3),
+[lang="ar"][dir="rtl"] :where(h1, h2, h3) {
+  letter-spacing: 0;
 }
 
 body {
@@ -43,6 +96,7 @@ body {
   min-height: 100svh;
   background: var(--canvas);
   color: var(--text-primary);
+  font-weight: var(--type-body-weight);
   text-rendering: optimizeLegibility;
 }
 
