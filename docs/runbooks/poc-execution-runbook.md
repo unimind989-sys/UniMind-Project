@@ -498,6 +498,20 @@ This post-foundation workflow-maintenance task was introduced after the reviewed
 
 **Pass:** the core router, model/worker/context, verification, evidence-reuse, and terminal-delivery rules are enforced from one compact policy; malformed or uncertain state falls back conservatively; broad CI remains unchanged; the merged repository is clean and selects WP03-T04 next.
 
+#### WP00-T10 — Revalidate actual Codex tooling and authentication stack
+
+This post-foundation tooling-maintenance task revalidates the current local, GitHub, Supabase, Vercel, browser, Playwright, and CI access paths against the WP00-T09 baseline. It does not reopen WP00-T09, add an MCP for completeness, or implement WP03-T04.
+
+- [x] Register one task record and derive the bounded docs/tooling execution envelope before external checks. Owner: Codex `/root`; selected checkpoint: Ahmed; branch: `wp00/tooling-auth-stack`; task record: `planning/tasks/wp00-t10-tooling-authentication-stack.md`.
+- [~] Revalidate the local repository, Git transport, GitHub connector/CLI, pinned Supabase CLI, pinned Vercel CLI, and the minimum CI/tooling evidence paths with read-only checks; use the side browser only if structured state cannot answer the question.
+- [ ] Classify each requested system as `WORKING`, `WORKING_WITH_LIMITATION`, `AUTH_REQUIRED`, `PERMISSION_REQUIRED`, `MISSING_CAPABILITY`, `REDUNDANT`, or `NOT_NEEDED` using current evidence rather than the historical audit.
+- [ ] Repair only demonstrated repository guidance or safe local configuration gaps; do not create credentials, broaden permissions, authorize a new integration, or install a duplicate MCP/browser stack.
+- [ ] Handle any unavoidable human checkpoint one service at a time, recording only the minimum account, screen/action, scope, and success signal; verify any completed checkpoint once with a read-only operation.
+- [ ] Persist the sanitized current matrix, trust map, limitations, and verification receipts in the task record/evidence and update the baseline audit only where current evidence supersedes it.
+- [ ] Run the selected repository proof, complete protected delivery under the existing finalization workflow, clean task-created state, and confirm ordinary selection returns to WP03-T04.
+
+**Pass:** current access and scope are accurately classified; the retained stack is the smallest reliable set; no secret, private payload, new external authorization, paid resource, or unnecessary browser/test operation was introduced; the merged clean repository selects WP03-T04 next.
+
 ### 3.1 Select exact pilot cohorts
 
 Create one decision record for Human Medicine and one for Veterinary Medicine containing:
