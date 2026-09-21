@@ -19,7 +19,7 @@ Give the central router a compact semantic classification:
 pnpm agent:route -- --task WP03-T04 --pass intent --surface frontend --surface runtime
 ```
 
-Record its policy version, surfaces, risk, planning/model floor, worker budget, capabilities, procedural skills, and reason in the task record. The router applies deterministic floors and widening; it does not define acceptance criteria. If the runtime cannot prove it satisfies the model floor, expose that limitation rather than pretending to switch models.
+Record its policy version, surfaces, risk, planning/model floor, worker budget, capabilities, procedural skills, and reason in the task record. Read the router's model-runtime action before implementation: proceed when a verified active model satisfies the floor, request a switch only when a verified active model is below it, and record `unverified` as a runtime limitation when the active model cannot be established. Never mutate shared Codex configuration and treat that as proof that the live session changed. The router applies deterministic floors and widening; it does not define acceptance criteria.
 
 **Complete when:** the task record contains one small execution envelope and every selected capability/skill has a concrete trigger.
 
@@ -49,7 +49,8 @@ Widen only for actual changed behavior, paths, or external mutations. Protected 
 1. Add explicit runbook/task checks to the router's selected checks. Map each acceptance criterion, changed public seam, and material risk to one rejecting proof.
 2. Reuse an exact-match passing receipt until a relevant surface/input changes. Malformed, missing, mismatched, or contradicted evidence means proof is missing.
 3. Run focused stable-candidate checks once. Run local `pnpm verify` when the task or policy selects it; exact-head required GitHub CI remains the broad delivery gate.
-4. Inspect `git diff --check`, `git diff --stat`, the full diff, and changed-file secret/scope risk. Record results, invalidation/reuse, deviations, rollback, and unaffected checks/services in sanitized evidence.
+4. While conditional CI is `SHADOW` or `READY`, keep broad CI unchanged, retain the router's per-job run/would-skip predictions, and compare them with outcomes from that same broad run. READY requires the policy's complete regression coverage, run and would-skip observations for every job, and zero unsafe skip contradictions; a contradiction falls back only the affected job. ENFORCED requires a separate governed policy and CI workflow change.
+5. Inspect `git diff --check`, `git diff --stat`, the full diff, and changed-file secret/scope risk. Record results, invalidation/reuse, deviations, rollback, and unaffected checks/services in sanitized evidence.
 
 **Complete when:** every acceptance criterion has direct green proof and every unrun check has an impact-based reason.
 

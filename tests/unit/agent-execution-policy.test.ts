@@ -3,6 +3,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 
 import {
+  assessConditionalCiEvidence,
   assessEvidenceReceipt,
   classifyChangedPaths,
   deriveAgentExecution,
@@ -93,6 +94,38 @@ describe("agent execution policy", () => {
     expect(result.modelFloor).toBe("sol-high");
   });
 
+  it("reports an unverifiable active model without pretending to switch it", () => {
+    const unverified = deriveAgentExecution(policy, {
+      task: "WP03-T04",
+      pass: "intent",
+      declaredSurfaces: ["frontend"],
+      changedPaths: [],
+    });
+    const insufficient = deriveAgentExecution(policy, {
+      task: "WP02-T08",
+      pass: "intent",
+      declaredSurfaces: ["auth"],
+      changedPaths: [],
+      activeModel: "luna-max",
+    });
+
+    expect(unverified.modelRuntime).toEqual(
+      expect.objectContaining({
+        requiredFloor: "luna-max",
+        status: "unverified",
+        action: "report-limitation",
+      }),
+    );
+    expect(insufficient.modelRuntime).toEqual(
+      expect.objectContaining({
+        requiredFloor: "sol-high",
+        activeModel: "luna-max",
+        status: "switch-required",
+        action: "request-switch",
+      }),
+    );
+  });
+
   it("classifies receipt deltas without inheriting original task surfaces", () => {
     expect(
       classifyChangedPaths(
@@ -114,6 +147,49 @@ describe("agent execution policy", () => {
       "delivery",
       "tooling",
     ]);
+  });
+
+  it("keeps intent semantic but widens unknown actual-diff paths conservatively", () => {
+    const intent = deriveAgentExecution(policy, {
+      task: "WP00-T09",
+      pass: "intent",
+      declaredSurfaces: ["docs"],
+      changedPaths: ["ops/new-runtime.ts"],
+    });
+    const actualDiff = deriveAgentExecution(policy, {
+      task: "WP00-T09",
+      pass: "actual-diff",
+      declaredSurfaces: ["docs"],
+      changedPaths: ["ops/new-runtime.ts"],
+    });
+
+    expect(intent.surfaces).toEqual(["docs"]);
+    expect(actualDiff.surfaces).toEqual([
+      "docs",
+      "frontend",
+      "runtime",
+      "auth",
+      "data",
+      "storage",
+      "delivery",
+      "tooling",
+    ]);
+    expect(actualDiff.risk).toBe("R3");
+    expect(actualDiff.reasons).toContain(
+      "unknown path widened conservatively: ops/new-runtime.ts",
+    );
+  });
+
+  it("classifies worker runtime files without losing semantic precision", () => {
+    const result = deriveAgentExecution(policy, {
+      task: "WP00-T09",
+      pass: "actual-diff",
+      declaredSurfaces: ["docs"],
+      changedPaths: ["workers/ingestion/process-job.ts"],
+    });
+
+    expect(result.surfaces).toEqual(["docs", "runtime"]);
+    expect(result.risk).toBe("R2");
   });
 
   it("rejects a second worker and every nested worker", () => {
@@ -144,7 +220,7 @@ describe("agent execution policy", () => {
       policy,
       {
         schemaVersion: 1,
-        policyVersion: 1,
+        policyVersion: policy.policy_version,
         task: "WP02-T08",
         candidate: "742e61e",
         proofs: [
@@ -176,7 +252,7 @@ describe("agent execution policy", () => {
       policy,
       {
         schemaVersion: 1,
-        policyVersion: 1,
+        policyVersion: policy.policy_version,
         task: "WP02-T08",
         candidate: "742e61e",
         proofs: [
@@ -223,7 +299,7 @@ describe("agent execution policy", () => {
         policy,
         {
           schemaVersion: 1,
-          policyVersion: 1,
+          policyVersion: policy.policy_version,
           task: "WP02-T08",
           candidate: "742e61e",
           proofs: [
@@ -253,7 +329,7 @@ describe("agent execution policy", () => {
         policy,
         {
           schemaVersion: 1,
-          policyVersion: 1,
+          policyVersion: policy.policy_version,
           task: "WP02-T08",
           candidate: "current",
           proofs: [],
@@ -274,7 +350,7 @@ describe("agent execution policy", () => {
       fallbackPolicy,
       {
         schemaVersion: 1,
-        policyVersion: 1,
+        policyVersion: policy.policy_version,
         task: "WP02-T08",
         candidate: "742e61e",
         proofs: [
@@ -366,7 +442,191 @@ describe("agent execution policy", () => {
       expect.arrayContaining(["agent-policy", "pnpm-verify", "exact-head-ci"]),
     );
     expect(result.ci).toEqual(
-      expect.objectContaining({ mode: "broad", selectorState: "SHADOW" }),
+      expect.objectContaining({
+        mode: "broad",
+        selectorState: "SHADOW",
+        predictions: [
+          expect.objectContaining({
+            id: "dependency-audit",
+            action: "WOULD_SKIP",
+          }),
+          expect.objectContaining({ id: "application", action: "RUN" }),
+          expect.objectContaining({ id: "database-ci", action: "WOULD_SKIP" }),
+        ],
+      }),
+    );
+  });
+
+  it("allows governed conditional-CI readiness states without enabling them", () => {
+    const readyPolicy = structuredClone(policy);
+    readyPolicy.activation.conditional_ci = "READY";
+
+    expect(validateAgentExecutionPolicy(readyPolicy)).toEqual([]);
+    const result = deriveAgentExecution(readyPolicy, {
+      task: "WP00-T09",
+      pass: "actual-diff",
+      declaredSurfaces: ["docs"],
+      changedPaths: ["docs/agents/agent-workflow.md"],
+    });
+
+    expect(result.ci).toEqual(
+      expect.objectContaining({ mode: "broad", selectorState: "READY" }),
+    );
+  });
+
+  it("rejects conditional-CI enforcement without a governed workflow fingerprint", () => {
+    const enforcedPolicy = structuredClone(policy);
+    enforcedPolicy.activation.conditional_ci = "ENFORCED";
+
+    expect(validateAgentExecutionPolicy(enforcedPolicy)).toContain(
+      "conditional_ci ENFORCED requires the governed CI workflow SHA-256",
+    );
+  });
+
+  it("derives READY only from explicit regression and broad-CI evidence", () => {
+    const evidence = {
+      schemaVersion: 1,
+      policyVersion: policy.policy_version,
+      regressionCases: [
+        "docs-only",
+        "dependency-change",
+        "application-change",
+        "database-change",
+        "unknown-path",
+      ],
+      observations: [
+        {
+          runId: "docs-run",
+          candidate: "1111111",
+          input: {
+            task: "WP00-T09",
+            pass: "actual-diff",
+            declaredSurfaces: ["docs"],
+            changedPaths: ["README.md"],
+          },
+          outcomes: {
+            "dependency-audit": "PASS",
+            application: "PASS",
+            "database-ci": "PASS",
+          },
+        },
+        {
+          runId: "dependency-run",
+          candidate: "2222222",
+          input: {
+            task: "WP00-T09",
+            pass: "actual-diff",
+            declaredSurfaces: ["tooling"],
+            changedPaths: ["package.json"],
+          },
+          outcomes: {
+            "dependency-audit": "PASS",
+            application: "PASS",
+            "database-ci": "PASS",
+          },
+        },
+        {
+          runId: "database-run",
+          candidate: "3333333",
+          input: {
+            task: "WP02-T08",
+            pass: "actual-diff",
+            declaredSurfaces: ["data"],
+            changedPaths: ["supabase/migrations/20260921000000_gate.sql"],
+          },
+          outcomes: {
+            "dependency-audit": "PASS",
+            application: "PASS",
+            "database-ci": "PASS",
+          },
+        },
+      ],
+    };
+
+    expect(assessConditionalCiEvidence(policy, evidence)).toEqual(
+      expect.objectContaining({
+        recommendedState: "READY",
+        regressionCoverage: true,
+        jobs: expect.arrayContaining([
+          expect.objectContaining({ id: "dependency-audit", state: "READY" }),
+          expect.objectContaining({ id: "application", state: "READY" }),
+          expect.objectContaining({ id: "database-ci", state: "READY" }),
+        ]),
+      }),
+    );
+  });
+
+  it("falls back only the conditional-CI job with an unsafe skip contradiction", () => {
+    const assessment = assessConditionalCiEvidence(policy, {
+      schemaVersion: 1,
+      policyVersion: policy.policy_version,
+      regressionCases: [
+        "docs-only",
+        "dependency-change",
+        "application-change",
+        "database-change",
+        "unknown-path",
+      ],
+      observations: [
+        {
+          runId: "docs-run",
+          candidate: "1111111",
+          input: {
+            task: "WP00-T09",
+            pass: "actual-diff",
+            declaredSurfaces: ["docs"],
+            changedPaths: ["README.md"],
+          },
+          outcomes: {
+            "dependency-audit": "PASS",
+            application: "PASS",
+            "database-ci": "FAIL",
+          },
+        },
+        {
+          runId: "dependency-run",
+          candidate: "2222222",
+          input: {
+            task: "WP00-T09",
+            pass: "actual-diff",
+            declaredSurfaces: ["tooling"],
+            changedPaths: ["package.json"],
+          },
+          outcomes: {
+            "dependency-audit": "PASS",
+            application: "PASS",
+            "database-ci": "PASS",
+          },
+        },
+        {
+          runId: "database-run",
+          candidate: "3333333",
+          input: {
+            task: "WP02-T08",
+            pass: "actual-diff",
+            declaredSurfaces: ["data"],
+            changedPaths: ["supabase/migrations/20260921000000_gate.sql"],
+          },
+          outcomes: {
+            "dependency-audit": "PASS",
+            application: "PASS",
+            "database-ci": "PASS",
+          },
+        },
+      ],
+    });
+
+    expect(assessment.recommendedState).toBe("SHADOW");
+    expect(assessment.jobs).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ id: "dependency-audit", state: "READY" }),
+        expect.objectContaining({ id: "application", state: "READY" }),
+        expect.objectContaining({
+          id: "database-ci",
+          state: "FALLBACK",
+          contradictions: 1,
+        }),
+      ]),
     );
   });
 });

@@ -5,6 +5,7 @@ import path from "node:path";
 import { stringify } from "yaml";
 
 import {
+  assessConditionalCiEvidence,
   assessEvidenceReceipt,
   classifyChangedPaths,
   deriveAgentExecution,
@@ -63,7 +64,7 @@ const task = valueAfter("--task");
 const pass = valueAfter("--pass");
 if (task === undefined || (pass !== "intent" && pass !== "actual-diff")) {
   throw new Error(
-    "Usage: pnpm agent:route -- --task WPXX-TYY --pass intent|actual-diff --surface <surface> [--surface ...] [--flag <name>] [--path <path>] [--receipt <path>] [--format json|yaml]",
+    "Usage: pnpm agent:route -- --task WPXX-TYY --pass intent|actual-diff --surface <surface> [--surface ...] [--flag <name>] [--path <path>] [--active-model luna-max|sol-high] [--receipt <path>] [--ci-evidence <path>] [--format json|yaml]",
   );
 }
 
@@ -85,6 +86,9 @@ const input: AgentExecutionInput = {
   ...(valueAfter("--previous-model") === undefined
     ? {}
     : { previousModelFloor: valueAfter("--previous-model") as ModelFloor }),
+  ...(valueAfter("--active-model") === undefined
+    ? {}
+    : { activeModel: valueAfter("--active-model") as ModelFloor }),
   ...(workerCountValue === undefined
     ? {}
     : { workerCount: Number.parseInt(workerCountValue, 10) }),
@@ -115,7 +119,7 @@ const evidenceSurfaces = classifyChangedPaths(
   evidenceChangedPaths,
   true,
 ).surfaces;
-const output =
+const receiptOutput =
   receiptValue === undefined
     ? result
     : {
@@ -125,6 +129,23 @@ const output =
           surfaces: evidenceSurfaces,
           changedPaths: evidenceChangedPaths,
         }),
+      };
+const conditionalCiEvidencePath = valueAfter("--ci-evidence");
+const conditionalCiEvidenceValue =
+  conditionalCiEvidencePath === undefined
+    ? undefined
+    : (JSON.parse(
+        readFileSync(path.resolve(conditionalCiEvidencePath), "utf8"),
+      ) as unknown);
+const output =
+  conditionalCiEvidenceValue === undefined
+    ? receiptOutput
+    : {
+        ...receiptOutput,
+        conditionalCiAssessment: assessConditionalCiEvidence(
+          policy,
+          conditionalCiEvidenceValue,
+        ),
       };
 if (valueAfter("--format") === "json") {
   console.log(JSON.stringify(output, null, 2));

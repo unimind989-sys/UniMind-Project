@@ -494,7 +494,7 @@ This post-foundation workflow-maintenance task was introduced after the reviewed
 - [x] Integrate compact routing metadata with new/active task records and work-state output while leaving historical completed records valid.
 - [x] Deduplicate always-on and workflow guidance only after the replacement policy passes focused regression checks.
 - [x] Make full non-financial terminal delivery the default for selected runbook tasks unless the request narrows scope; retain `$finalize` as a manual/recovery entry point and preserve fresh two-founder confirmation for real-money exposure.
-- [x] Run the focused policy, skill, agent-readiness, and handoff checks plus the broad zero-cost local gate; deliver through protected GitHub, record exact-head CI and merge evidence, clean task-created state, and prove that normal selection returns WP03-T04.
+- [~] Run the focused policy, skill, agent-readiness, and handoff checks plus the broad zero-cost local gate; correct the external-audit gaps in actual-diff fallback, conditional-CI shadow evidence, model-runtime disclosure, and GitHub confirmation reporting; then deliver one final protected closure, clean task-created state, and prove that normal selection returns WP03-T04.
 
 **Pass:** the core router, model/worker/context, verification, evidence-reuse, and terminal-delivery rules are enforced from one compact policy; malformed or uncertain state falls back conservatively; broad CI remains unchanged; the merged repository is clean and selects WP03-T04 next.
 

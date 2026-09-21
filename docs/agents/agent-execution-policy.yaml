@@ -1,5 +1,5 @@
 schema_version: 1
-policy_version: 1
+policy_version: 2
 
 authority:
   - docs/plans/poc-master-plan.md
@@ -47,6 +47,8 @@ path_widening:
   - pattern: '^src/(app/(?!api/).+\.(tsx|css)|components/)'
     surfaces: [frontend]
   - pattern: '^src/(lib|app/api)/.+\.(ts|tsx)$'
+    surfaces: [runtime]
+  - pattern: '^workers/'
     surfaces: [runtime]
   - pattern: '^src/(lib|app)/(.*/)?auth([/-]|\.)'
     surfaces: [auth, runtime]
@@ -151,6 +153,39 @@ verification:
       stage: delivery
       command: required GitHub CI on the reviewed candidate
       always: true
+
+conditional_ci:
+  evidence_schema_version: 1
+  jobs:
+    - id: dependency-audit
+      required_surfaces: []
+      path_patterns:
+        - '^(package\.json|pnpm-lock\.yaml|\.npmrc|\.nvmrc)$'
+      needs: []
+    - id: application
+      required_surfaces: [frontend, runtime, auth, data, storage, delivery, tooling]
+      path_patterns: []
+      needs: []
+    - id: database-ci
+      required_surfaces: [auth, data, storage]
+      path_patterns:
+        - '^supabase/'
+        - '^src/types/database\.generated\.ts$'
+      needs: [application]
+  readiness:
+    required_regression_cases:
+      - docs-only
+      - dependency-change
+      - application-change
+      - database-change
+      - unknown-path
+    require_run_observation: true
+    require_skip_observation: true
+    zero_unsafe_skip_contradictions: true
+  enforcement:
+    requires_governed_workflow_change: true
+    workflow_path: .github/workflows/ci.yml
+    workflow_sha256: null
 
 evidence:
   schema_version: 1

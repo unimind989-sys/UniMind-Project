@@ -1,12 +1,12 @@
 # Gate report: WP00-T09 autonomous agent execution
 
-**Status:** PASS — protected implementation delivered; closure record ready for protected main
+**Status:** PROTECTED IMPLEMENTATION MERGED — external-audit corrections in progress
 
 **Environment:** Local repository; credential-free, mock-only, and zero-cost verification
 
 **Commit SHA:** implementation candidate `ff150022e7f0fd7280bb900a4ccd93c40126af7a`; exact-head delivery candidate `385d3f544085c210d710cf2f58ec676d48ffc85c`; implementation merge `6c5cad8fa26c1c70efb2cef1c2b2e17baea71484`
 
-**Release/config fingerprint:** execution-policy schema 1, policy 1; core routing/model/worker/context/verification/evidence/finalization rules `ENFORCED`; conditional CI `SHADOW`
+**Release/config fingerprint:** execution-policy schema 1, policy 2 corrective candidate; core routing/model/worker/context/verification/evidence/finalization rules `ENFORCED`; conditional CI `SHADOW`
 
 **Migrations:** None
 
@@ -45,6 +45,20 @@
 | 2026-09-21 | GitHub Actions run `35590667885` on `385d3f5` | 0 | Required dependency-audit, application, and disposable database CI passed; Vercel and preview-comment checks also passed. |
 | 2026-09-21 | Protected review and PR #35 merge | 0 | `aboayman-oss` approved exact head `385d3f5`; owner `unimind989-sys` merged it without bypass as merge commit `6c5cad8`; fetched `origin/main` contains the reviewed candidate. |
 | 2026-09-21 | Implementation-branch cleanup | 0 | Deleted `wp00/autonomous-agent-execution` locally and remotely after the protected merge; the commits remain recoverable through PR #35 and `main`. |
+| 2026-09-21 | Audit red-capable policy loop | 1 (expected) | 4/26 focused cases failed on the audited symptoms: unknown actual-diff path, `workers/` routing, missing CI predictions, and hard-coded SHADOW validation. |
+| 2026-09-21 | Policy v2 focused suite | 0 | 30/30 tests passed, including unknown-path R3 fallback, precise worker runtime routing, model-runtime actions, explicit governed-workflow enforcement, conditional-CI READY criteria, and per-job contradiction fallback. |
+| 2026-09-21 | Policy v2 verifier | 0 | Schema/references, 10 historical cases, and 5 named conditional-CI regression cases passed; broad CI remains unchanged and SHADOW. |
+| 2026-09-21 | Conditional-CI shadow replay | 0 | PR #35 run `35590667885` supplied one existing broad outcome set. Regression coverage is complete and contradictions are zero; every job remains SHADOW because run/would-skip observation coverage is incomplete. |
+| 2026-09-21 | Repository skill validator and readiness | 0 | All 22 skills validated; readiness passed 184 names, 46 links, 23 decisions, and 103 task contracts while WP00-T09 remained selected. |
+
+## External-audit correction state
+
+| Audit item | Corrective result | Current proof state |
+| --- | --- | --- |
+| Unknown actual-diff paths | Actual-diff routing enables conservative unknown fallback; intent remains semantic; `workers/` is a known runtime path | Focused PASS |
+| Conditional CI | Router emits dependency-aware per-job predictions; the assessor reuses broad outcomes, derives READY only from explicit regression/run/skip evidence, and falls back only contradicted jobs | SHADOW with real PR #35 evidence; not promoted |
+| Model runtime | Output distinguishes verified satisfaction, verified insufficiency, and unverified active model; only verified insufficiency requests a switch | Focused PASS; live runtime remains unverified |
+| GitHub delivery autonomy | Finalization probes structured connector and `gh` before browser use and records host-required action-time confirmation as a limitation | Skill validation PASS; final corrective delivery probe pending |
 
 ## Negative, retry, and recovery cases
 
@@ -70,7 +84,7 @@ Revert the WP00-T09 implementation and evidence commits. This restores the previ
 
 ## Delivery state
 
-PR #35 delivered exact head `385d3f5` through all required checks and an independent write-access approval, without branch-protection bypass. Owner `unimind989-sys` merged it as `6c5cad8`, and a fresh fetch proved that `origin/main` contains the reviewed candidate. The implementation branch was removed locally and remotely. This closure record marks WP00-T09 complete when it appears on protected `main`; the selector must then return WP03-T04. No application runtime, database, Supabase, provider, or paid-resource production proof is applicable because the task changed only repository governance and tooling.
+PR #35 delivered exact head `385d3f5` through all required checks and an independent write-access approval, without branch-protection bypass. Owner `unimind989-sys` merged it as `6c5cad8`, and a fresh fetch proved that `origin/main` contains the reviewed candidate. The implementation branch was removed locally and remotely. An external audit then found material gaps in unknown-path actual-diff widening and conditional-CI shadow evidence, plus model-runtime and GitHub-confirmation limitations that require accurate representation. WP00-T09 remains open on its corrective/closure branch until those gaps pass focused and invalidated broad proof and one final protected closure. No application runtime, database, Supabase, provider, or paid-resource production proof is applicable because the task changes only repository governance and tooling.
 
 | Name | Role | Decision | Date |
 | --- | --- | --- | --- |
