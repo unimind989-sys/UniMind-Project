@@ -4,4 +4,4 @@ interface:
   default_prompt: "Use $finalize to autonomously review, verify, merge to main, release affected zero-cost services when needed, and delete the merged task branch. Ask me only before real-money exposure."
 
 policy:
-  allow_implicit_invocation: false
+  allow_implicit_invocation: true

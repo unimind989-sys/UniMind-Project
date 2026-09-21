@@ -8,6 +8,7 @@ This repository contains the source-of-truth plan, executable delivery runbook, 
 - [Execution runbook](docs/runbooks/poc-execution-runbook.md) — tutorial-style implementation checklist, verification gates, rollback guidance, and delivery sequence.
 - [Agent instructions](AGENTS.md) — always-on repository rules for Codex and compatible coding agents.
 - [Agent workflow](docs/agents/agent-workflow.md) — deterministic path for selecting, executing, verifying, and handing off work.
+- [Agent execution policy](docs/agents/agent-execution-policy.yaml) — versioned routing, model/worker floors, verification selection, evidence invalidation, and activation state.
 - [Contributing and operation tutorial](CONTRIBUTING.md) — workstation setup, daily commands, migrations, verification, troubleshooting, and handoff for humans and agents.
 - [Domain context](CONTEXT.md) — shared UniMind vocabulary and relationships for discussion, code, tests, and decisions.
 - [Product context](PRODUCT.md) — compact confirmed product truth for implementation and UI workflows.
@@ -45,11 +46,11 @@ This repository contains the source-of-truth plan, executable delivery runbook, 
 └── README.md
 ```
 
-## Status
+## Current state
 
-The project has a reviewed mock-only WP00 constraints gate and a reviewed WP01 foundation gate. Open real-world decisions retain their exact downstream blocks; the runbook's bridges now expose the earliest eligible WP02 database task without enabling real data, paid providers, or protected gates. Follow later packages in dependency order; a package is complete only after its independent gate review passes.
+Repository status is derived from the runbook, decision register, and task records. Run `scripts/show-work-state.ps1` for the current task and blockers; do not copy mutable progress prose into this README.
 
-For agent-led work, use the [agent workflow](docs/agents/agent-workflow.md). When a request does not name a task, it provides the rule for choosing the next executable task without guessing.
+For agent-led work, use the [agent workflow](docs/agents/agent-workflow.md). A selected runbook task completes its full non-financial lifecycle by default unless the request explicitly narrows delivery.
 
 ## Agent commands
 
@@ -59,6 +60,10 @@ pwsh -NoProfile -File scripts/show-work-state.ps1
 
 # Verify agent entry points, links, names, decisions, task records, and selection output.
 pwsh -NoProfile -File scripts/verify-agent-readiness.ps1
+
+# Derive and validate the central execution envelope.
+corepack pnpm agent:route -- --task WP03-T04 --pass intent --surface frontend --surface runtime
+corepack pnpm verify:agent-policy
 
 # Rehearse discovery, selection, and handoff from an isolated committed snapshot.
 pwsh -NoProfile -File scripts/test-agent-handoff.ps1

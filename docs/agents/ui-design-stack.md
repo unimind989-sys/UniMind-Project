@@ -1,6 +1,6 @@
 # UniMind UI design stack
 
-This project uses one product design director plus narrowly scoped reference, translation, browser, and review tools. Each tool has one trigger so visual opinions do not compete.
+Every frontend task starts with the lightweight `frontend-quality-floor.md`. This document activates only when material design direction, redesign, significant UX restructuring, interaction-design judgment, critique, or substantial visual refinement requires the heavier visual stack.
 
 ## Decision
 
@@ -57,7 +57,7 @@ UniMind authority (AGENTS.md + master plan + CONTEXT.md)
  Impeccable audit + pinned Vercel guidelines + detector
                          |
                          v
-       evidence-backed fixes + external Chrome review
+       evidence-backed fixes + optional presentation/review
 ```
 
 ## Commands
@@ -78,15 +78,13 @@ UniMind authority (AGENTS.md + master plan + CONTEXT.md)
 
 ## External Chrome review handoff
 
-Completing any UI implementation or revision includes a visible founder-review handoff. After the candidate passes its bounded rendered checks:
-
-This handoff is automatic. The founder must not need to ask for the external Chrome launch on each UI task or revision.
+The Codex side browser owns ordinary internal rendered inspection. Open external Chrome only when the user requested to see the result or a genuine founder visual/product decision remains. When that condition applies after bounded rendered checks:
 
 1. Start or reuse the zero-cost local preview with synthetic state and navigate to the exact updated route.
 2. Launch that route in the installed external Google Chrome application. The in-app side browser remains the internal execution and verification surface; it does not substitute for the external Chrome handoff.
 3. Keep the preview server running and give the founder the direct URL plus the specific flow and states to inspect. Record approval or requested revisions in the active task record.
 
-If the page cannot run or Google Chrome cannot launch, report that concrete blocker at handoff instead of claiming the UI is ready for review.
+If external review is required and the page cannot run or Chrome cannot launch, report that concrete blocker. Otherwise strong automated plus internal rendered evidence may complete the frontend task without waiting for a human presentation step.
 
 The Impeccable hook is intentionally off during planning. When UI code exists, ask for `$impeccable hooks on`, inspect the generated `.codex/hooks.json`, and approve it through Codex's `/hooks` screen only if the automatic detector saves more time than it adds.
 

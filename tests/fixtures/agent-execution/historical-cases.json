@@ -1,0 +1,176 @@
+{
+  "cases": [
+    {
+      "name": "repository documentation stays R0",
+      "input": {
+        "task": "WP00-T08",
+        "pass": "actual-diff",
+        "declaredSurfaces": ["docs"],
+        "changedPaths": [
+          "README.md",
+          "evidence/wp00-pilot/2026-08-20_agent-readiness_local_da9f07f.md"
+        ]
+      },
+      "expected": {
+        "surfaces": ["docs"],
+        "risk": "R0",
+        "planning": "minimal",
+        "modelFloor": "luna-max"
+      }
+    },
+    {
+      "name": "bounded visual copy is frontend R1 without heavy design",
+      "input": {
+        "task": "WP03-T01",
+        "pass": "actual-diff",
+        "declaredSurfaces": ["frontend"],
+        "changedPaths": ["src/app/learn/page.tsx"],
+        "flags": { "designJudgment": false }
+      },
+      "expected": {
+        "surfaces": ["frontend"],
+        "risk": "R1",
+        "planning": "short",
+        "modelFloor": "luna-max",
+        "capabilities": ["frontend-quality-floor"],
+        "proceduralSkillsAbsent": ["impeccable"],
+        "browser": {
+          "internal": "side-browser",
+          "externalChrome": false,
+          "playwrightCli": false
+        }
+      }
+    },
+    {
+      "name": "well-defined server behavior is runtime R2",
+      "input": {
+        "task": "WP03-T03",
+        "pass": "intent",
+        "declaredSurfaces": ["runtime"],
+        "changedPaths": ["src/lib/catalog/resolve-catalog-selection.ts"]
+      },
+      "expected": {
+        "surfaces": ["runtime"],
+        "risk": "R2",
+        "planning": "short",
+        "modelFloor": "luna-max"
+      }
+    },
+    {
+      "name": "auth semantics activate protected planning",
+      "input": {
+        "task": "WP03-T02",
+        "pass": "intent",
+        "declaredSurfaces": ["auth", "runtime"],
+        "changedPaths": ["src/lib/auth/resolve-session.ts"]
+      },
+      "expected": {
+        "surfaces": ["runtime", "auth"],
+        "risk": "R3",
+        "planning": "protected",
+        "modelFloor": "sol-high",
+        "capabilities": ["trust-boundaries"]
+      }
+    },
+    {
+      "name": "RLS migration is protected data and auth",
+      "input": {
+        "task": "WP02-T08",
+        "pass": "actual-diff",
+        "declaredSurfaces": ["data"],
+        "changedPaths": [
+          "supabase/migrations/20260908000000_rls_application_boundaries.sql"
+        ],
+        "flags": { "rls": true }
+      },
+      "expected": {
+        "surfaces": ["auth", "data"],
+        "risk": "R3",
+        "planning": "protected",
+        "modelFloor": "sol-high",
+        "capabilities": ["trust-boundaries"]
+      }
+    },
+    {
+      "name": "architecture uncertainty escalates without inventing protected risk",
+      "input": {
+        "task": "WP03-T04",
+        "pass": "intent",
+        "declaredSurfaces": ["frontend", "runtime"],
+        "changedPaths": [],
+        "flags": { "architectureUncertainty": true }
+      },
+      "expected": {
+        "surfaces": ["frontend", "runtime"],
+        "risk": "R2",
+        "planning": "deliberate",
+        "modelFloor": "sol-high"
+      }
+    },
+    {
+      "name": "actual diff widens a frontend task to auth R3",
+      "input": {
+        "task": "WP03-T03",
+        "pass": "actual-diff",
+        "declaredSurfaces": ["frontend"],
+        "changedPaths": [
+          "src/app/learn/page.tsx",
+          "src/lib/auth/resolve-session.ts"
+        ]
+      },
+      "expected": {
+        "surfaces": ["frontend", "runtime", "auth"],
+        "risk": "R3",
+        "planning": "protected",
+        "modelFloor": "sol-high"
+      }
+    },
+    {
+      "name": "design direction selectively activates Impeccable",
+      "input": {
+        "task": "WP03-T01",
+        "pass": "intent",
+        "declaredSurfaces": ["frontend"],
+        "changedPaths": [],
+        "flags": { "designJudgment": true }
+      },
+      "expected": {
+        "proceduralSkills": ["impeccable"]
+      }
+    },
+    {
+      "name": "founder visual decision opens external Chrome",
+      "input": {
+        "task": "WP03-T01",
+        "pass": "actual-diff",
+        "declaredSurfaces": ["frontend"],
+        "changedPaths": ["src/app/learn/page.tsx"],
+        "flags": { "humanVisualDecision": true }
+      },
+      "expected": {
+        "browser": {
+          "internal": "side-browser",
+          "externalChrome": true,
+          "playwrightCli": false
+        }
+      }
+    },
+    {
+      "name": "specialist trace explicitly activates Playwright CLI",
+      "input": {
+        "task": "WP03-T03",
+        "pass": "actual-diff",
+        "declaredSurfaces": ["frontend"],
+        "changedPaths": ["tests/e2e/study-shelf.spec.ts"],
+        "flags": { "specialistBrowserDebug": true }
+      },
+      "expected": {
+        "browser": {
+          "internal": "side-browser",
+          "externalChrome": false,
+          "playwrightCli": true
+        }
+      }
+    }
+  ]
+}

@@ -8,11 +8,33 @@
 
 **Owner:** <agent executor; name any human signed-in operator separately>
 
-**Reviewer:** <Ahmed or Ziad for an ordinary human checkpoint; Ahmed + Ziad or explicit $finalize invocation for a protected gate>
+**Reviewer:** <selected Ahmed-or-Ziad checkpoint; D-22 standing authorization applies to protected non-financial delivery>
 
 **Branch:** <wpNN/short-outcome or current branch when no delivery branch was requested>
 
 **Updated (UTC):** <timestamp>
+
+## Derived execution envelope
+
+Complete this compact block for tasks created under the central execution policy. Historical records without it remain valid.
+
+**Policy version:** <integer>
+
+**Surfaces:** <comma-separated semantic surfaces>
+
+**Risk:** <R0 | R1 | R2 | R3>
+
+**Planning:** <Minimal | Short | Deliberate | Protected>
+
+**Model floor:** <Luna Max | Sol High>
+
+**Worker budget:** <used, maximum, and nested-worker rule>
+
+**Capabilities:** <surface capabilities or NONE>
+
+**Procedural skills:** <selected methods or NONE>
+
+**Routing reason:** <one compact semantic reason; do not copy acceptance criteria>
 
 ## Execution contract
 
@@ -46,4 +68,4 @@
 
 **Next safe action:** <one concrete action>
 
-**Reviewer action:** <ordinary human checkpoint, protected two-person gate, explicit $finalize standing authorization, or NONE>
+**Reviewer action:** <genuine unresolved human judgment, fresh real-money confirmation, or NONE>

@@ -12,7 +12,7 @@ Turn design images into a website that someone could mistake for the images. The
 - Read `AGENTS.md`, the relevant product authority, and root `DESIGN.md` when it exists. Product behavior, accessibility, security, and confirmed design decisions override a visual reference.
 - Inspect every local source image with the available image-viewing tool before editing. If a required image is missing, ask the user to attach or select it instead of guessing.
 - Implement through the repository's existing Next.js and component seams. A screenshot does not authorize new backend behavior, routes, dependencies, providers, or invented product state.
-- Use the project-pinned Playwright CLI at the same source viewport for rendered comparison, then check a narrow mobile viewport. Run the applicable automated checks and Vercel guidelines review before handoff.
+- Use the Codex side browser at the same source viewport for ordinary rendered comparison, then check a narrow mobile viewport. Reserve the project-pinned Playwright CLI for explicitly requested trace, locator-discovery, or test-debugging work. Run the applicable automated checks and Vercel guidelines review before handoff.
 - Keep analysis notes in the task record or evidence bundle. Do not create an ungoverned root design document from a screenshot.
 
 ## Phase 0 — Resolve the selected image

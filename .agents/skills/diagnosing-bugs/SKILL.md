@@ -1,11 +1,11 @@
 ---
 name: diagnosing-bugs
-description: Diagnosis loop for hard bugs and performance regressions. Use when the user says "diagnose"/"debug this", or reports something broken/throwing/failing/slow.
+description: Diagnosis loop for genuinely hard, unclear, reproduction-dependent, performance, or non-converging bugs, and when the user explicitly asks to diagnose or debug. A routine failing test with a direct cause uses the ordinary edit loop.
 ---
 
 # Diagnosing Bugs
 
-A discipline for hard bugs. Skip phases only when explicitly justified.
+A discipline for hard bugs. Activate after ordinary focused inspection cannot explain the failure, or immediately for performance/flaky/reproduction-dependent work and explicit diagnosis requests. A single routine test failure does not activate this workflow. Skip phases only when explicitly justified.
 
 When exploring the codebase, read `CONTEXT.md` (if it exists) to get a clear mental model of the relevant modules, and check ADRs in the area you're touching.
 

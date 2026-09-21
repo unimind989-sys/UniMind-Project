@@ -1,5 +1,49 @@
 # Skill adaptations
 
+## 2026-09-16 — WP00-T09 central execution policy cutover
+
+### `tdd`
+
+- **Evidence:** The established-seam rule required user confirmation even when the runbook, public interface, and repository tests already fixed the seam, creating a routine approval round trip.
+- **Change:** Established/documented public seams now proceed autonomously; only consequential unresolved seam placement enters codebase design or founder choice. Removed the stale nonexistent `code-review` skill reference.
+- **Validation:** Agent-policy regressions, skill validator, and behavior cases in `EVALS.md`.
+- **Upstream:** Matt Pocock skills commit `885e2ca4d842d139e9aef4e48d366c63cb1b8013`; UniMind adaptation only.
+
+### `diagnosing-bugs`
+
+- **Evidence:** The broad description activated a heavyweight six-phase diagnosis for any failing or throwing behavior, including routine single-test failures with direct causes.
+- **Change:** Automatic activation is limited to hard, unclear, reproduction-dependent, performance, non-converging, or explicitly requested diagnosis; routine failures stay in the ordinary edit loop.
+- **Validation:** Skill validator and trigger/non-trigger cases in `EVALS.md`.
+- **Upstream:** Matt Pocock skills commit `885e2ca4d842d139e9aef4e48d366c63cb1b8013`; UniMind adaptation only.
+
+### `codebase-design`
+
+- **Evidence:** `DESIGN-IT-TWICE.md` required a 3+ agent swarm, conflicting with the project-wide default-zero, maximum-one, no-nesting worker policy.
+- **Change:** The primary agent generates alternatives; at most one bounded challenger may be used when central policy and user-authorized delegation both allow it.
+- **Validation:** Skill validator, worker-ceiling policy regressions, and behavior cases in `EVALS.md`.
+- **Upstream:** Matt Pocock skills commit `885e2ca4d842d139e9aef4e48d366c63cb1b8013`; UniMind adaptation only.
+
+### `image-to-code`
+
+- **Evidence:** Ordinary screenshot comparison mandated Playwright CLI although UniMind already owns ordinary rendered inspection in the side browser and reserves the CLI for trace/test debugging.
+- **Change:** Ordinary same-viewport/mobile comparison uses the side browser; Playwright CLI remains an explicit specialist.
+- **Validation:** Skill validator and browser-routing policy regressions.
+- **Upstream:** Agency OS commit `87d202e56939ad9889960a96796fc33bb76c5de0`; UniMind adaptation only.
+
+### `impeccable`
+
+- **Evidence:** Its broad automatic trigger and helper roles could turn tiny UI corrections into the full design workflow and appear to add worker budget.
+- **Change:** Automatic activation now targets material design/UX judgment; every frontend task keeps a separate light quality floor, and helper roles are subordinate to the central worker ceiling.
+- **Validation:** Skill validator, selective-activation regressions, and behavior cases in `EVALS.md`.
+- **Upstream:** Impeccable commit `f88b2837a7d7c3182e46307bbbb091a1ed547571`; UniMind adaptation only.
+
+### `finalize` and `trust-boundaries`
+
+- **Evidence:** `$finalize` duplicated R0-R3 routing and required a second explicit ceremony after implementation; material auth/storage work lacked one compact reusable trust checklist.
+- **Change:** Finalization now consumes the central actual-diff envelope and starts automatically for full-lifecycle selected tasks while retaining `$finalize` for manual/recovery entry. Added the small UniMind-owned `trust-boundaries` capability.
+- **Validation:** Agent-policy historical regressions, evidence-invalidation cases, skill validator, agent readiness, isolated handoff rehearsal, and `EVALS.md`.
+- **Upstream:** UniMind-owned behavior; no third-party source changed.
+
 This log records evidence-based changes to repo-scoped skills. It is not a record of ordinary task corrections.
 
 ## 2026-09-15 — Lean verification and side-browser ownership

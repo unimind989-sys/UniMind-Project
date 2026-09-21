@@ -16,6 +16,8 @@
     "check:sql": "tsx scripts/check-sql-conventions.ts",
     "scan:secrets": "tsx scripts/scan-repository-secrets.ts",
     "verify:ci-workflow": "tsx scripts/verify-ci-workflow.ts",
+    "agent:route": "tsx scripts/derive-agent-execution.ts",
+    "verify:agent-policy": "tsx scripts/verify-agent-execution-policy.ts",
     "typecheck": "tsc --noEmit",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
@@ -45,7 +47,7 @@
     "db:ci:stop": "tsx scripts/run-ephemeral-supabase.ts stop",
     "db:types:check": "git diff --exit-code -- src/types/database.generated.ts",
     "test:env-build": "tsx scripts/build-with-safe-env.ts",
-    "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm check:boundaries && pnpm check:sql && pnpm verify:ci-workflow && pnpm scan:secrets && pnpm test:unit && pnpm test:integration && pnpm test:security && pnpm test:eval && pnpm test:load && pnpm test:e2e && pnpm test:env-build"
+    "verify": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm check:boundaries && pnpm check:sql && pnpm verify:ci-workflow && pnpm verify:agent-policy && pnpm scan:secrets && pnpm test:unit && pnpm test:integration && pnpm test:security && pnpm test:eval && pnpm test:load && pnpm test:e2e && pnpm test:env-build"
   },
   "dependencies": {
     "@supabase/ssr": "0.12.4",

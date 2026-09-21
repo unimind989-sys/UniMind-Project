@@ -1,0 +1,181 @@
+schema_version: 1
+policy_version: 1
+
+authority:
+  - docs/plans/poc-master-plan.md
+  - docs/runbooks/poc-execution-runbook.md
+  - docs/templates/task-record.md
+  - code-tests-evidence
+
+references:
+  workflow: docs/agents/agent-workflow.md
+  frontend_quality: docs/agents/frontend-quality-floor.md
+  trust_boundaries: .agents/skills/trust-boundaries/SKILL.md
+  database_migrations: docs/runbooks/database-migration-checklist.md
+  finalization: .agents/skills/finalize/SKILL.md
+
+surface_order: [docs, frontend, runtime, auth, data, storage, delivery, tooling]
+surfaces:
+  docs:
+    risk_floor: R0
+    capabilities: []
+  frontend:
+    risk_floor: R1
+    capabilities: [frontend-quality-floor]
+  runtime:
+    risk_floor: R2
+    capabilities: []
+  auth:
+    risk_floor: R3
+    capabilities: [trust-boundaries]
+  data:
+    risk_floor: R2
+    capabilities: [data-integrity]
+  storage:
+    risk_floor: R2
+    capabilities: [trust-boundaries, storage-safety]
+  delivery:
+    risk_floor: R2
+    capabilities: [release-safety]
+  tooling:
+    risk_floor: R0
+    capabilities: []
+
+path_widening:
+  - pattern: '(^|/)(docs|planning|evidence)/|(^|/)(README|CONTRIBUTING|PRODUCT|DESIGN|CONTEXT|AGENTS)\.md$'
+    surfaces: [docs]
+  - pattern: '^src/(app/(?!api/).+\.(tsx|css)|components/)'
+    surfaces: [frontend]
+  - pattern: '^src/(lib|app/api)/.+\.(ts|tsx)$'
+    surfaces: [runtime]
+  - pattern: '^src/(lib|app)/(.*/)?auth([/-]|\.)'
+    surfaces: [auth, runtime]
+  - pattern: '^supabase/migrations/'
+    surfaces: [data]
+  - pattern: '(^|/)(storage|upload|download|signed-url)([/-]|\.)'
+    surfaces: [storage]
+  - pattern: '^(vercel\.json|\.github/workflows/|\.env\.example)'
+    surfaces: [delivery]
+  - pattern: '^(scripts|tests|evals|\.agents)/|^(package\.json|pnpm-lock\.yaml|tsconfig\.json|vitest\.config\.ts|playwright\.config\.ts)$'
+    surfaces: [tooling]
+
+risk:
+  order: [R0, R1, R2, R3]
+  planning_floor:
+    R0: minimal
+    R1: short
+    R2: short
+    R3: protected
+  model_floor:
+    R0: luna-max
+    R1: luna-max
+    R2: luna-max
+    R3: sol-high
+  protected_flags: [authSemantics, rls, destructiveMigration, productionMutation]
+  deliberate_flags: [architectureUncertainty, domainUncertainty]
+  sol_flags: [architectureUncertainty, domainUncertainty, securityUncertainty]
+
+workers:
+  default: 0
+  maximum: 1
+  nested: false
+  default_model: luna-max
+
+browser:
+  internal: side-browser
+  external_chrome_flags: [humanVisualDecision, userRequestedView]
+  playwright_cli_flags: [specialistBrowserDebug, explicitPlaywrightCli]
+
+verification:
+  checks:
+    - id: diff-integrity
+      stage: stable-candidate
+      command: git diff --check; git diff --stat; inspect full diff
+      always: true
+    - id: secret-scan
+      stage: stable-candidate
+      command: pnpm scan:secrets
+      always: true
+    - id: agent-policy
+      stage: stable-candidate
+      command: pnpm verify:agent-policy
+      path_patterns:
+        - '^docs/agents/agent-execution-policy\.yaml$'
+        - '^scripts/(lib/)?agent-execution-policy\.ts$'
+        - '^scripts/(derive|verify)-agent-execution(-policy)?\.ts$'
+        - '^tests/(unit/agent-execution-policy\.test\.ts|fixtures/agent-execution/)'
+    - id: skill-validator
+      stage: stable-candidate
+      command: pwsh -File .agents/skills/skill-maintainer/scripts/validate-repo-skills.ps1
+      path_patterns: ['^\.agents/skills/']
+    - id: agent-readiness
+      stage: stable-candidate
+      command: pwsh -File scripts/verify-agent-readiness.ps1
+      path_patterns:
+        - '^(AGENTS\.md|docs/agents/|docs/runbooks/poc-execution-runbook\.md|docs/templates/task-record\.md|planning/tasks/|scripts/show-work-state\.ps1)'
+    - id: handoff-rehearsal
+      stage: stable-candidate
+      command: pwsh -File scripts/test-agent-handoff.ps1
+      path_patterns:
+        - '^(docs/agents/agent-workflow\.md|docs/templates/task-record\.md|scripts/show-work-state\.ps1)'
+    - id: frontend-behavior
+      stage: stable-candidate
+      command: pnpm test:e2e plus bounded side-browser inspection
+      surfaces: [frontend]
+    - id: authorization-denial
+      stage: stable-candidate
+      command: pnpm test:security
+      surfaces: [auth]
+    - id: database-contracts
+      stage: stable-candidate
+      command: task-selected migration and database checks
+      surfaces: [data]
+    - id: storage-security
+      stage: stable-candidate
+      command: task-selected storage authorization and lifecycle checks
+      surfaces: [storage]
+    - id: affected-production-proof
+      stage: delivery
+      command: verify only affected external or production state
+      surfaces: [delivery]
+    - id: pnpm-verify
+      stage: stable-candidate
+      command: pnpm verify
+      path_patterns:
+        - '^docs/agents/agent-execution-policy\.yaml$'
+        - '^scripts/(lib/)?agent-execution-policy\.ts$'
+        - '^scripts/(derive|verify)-agent-execution(-policy)?\.ts$'
+        - '^package\.json$'
+        - '^\.github/workflows/'
+    - id: exact-head-ci
+      stage: delivery
+      command: required GitHub CI on the reviewed candidate
+      always: true
+
+evidence:
+  schema_version: 1
+  malformed: missing
+  policy_version_mismatch: missing
+  default_invalidation:
+    authorization: [auth, data, storage]
+    database: [data]
+    rendered: [frontend]
+    deployment: [delivery]
+
+activation:
+  routing: ENFORCED
+  model_routing: ENFORCED
+  worker_policy: ENFORCED
+  context_routing: ENFORCED
+  verification_selection: ENFORCED
+  evidence_reuse: ENFORCED
+  automatic_finalization: ENFORCED
+  conditional_ci: SHADOW
+
+self_correction:
+  safety_trigger: immediate
+  efficiency_trigger: repeated-or-static-systemic-evidence
+  steady_state_extra_model_calls: 0
+  steady_state_extra_workers: 0
+  correction_scope: owning-rule-only
+  background_process: false
