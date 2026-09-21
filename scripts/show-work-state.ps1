@@ -183,7 +183,7 @@ $currentWorkPackage = if ($null -ne $recommendedTask) {
   if ($null -ne $firstUnfinishedTask) { $firstUnfinishedTask.workPackage } else { $null }
 }
 
-if ($null -ne $recommendedTask -and $recommendedTask.taskId -eq 'WP00-T09') {
+if ($null -ne $recommendedTask -and $recommendedTask.taskId -in @('WP00-T09', 'WP00-T10')) {
   $routingMode = 'post-foundation-maintenance'
 }
 

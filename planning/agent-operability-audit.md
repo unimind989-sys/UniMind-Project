@@ -1,12 +1,33 @@
 # Agent operability and tool-access audit
 
-**Status:** COMPLETE — point-in-time audit
+**Status:** COMPLETE baseline — WP00-T10 current revalidation in progress
 
 **Audited:** 2026-09-15 from the local UniMind checkout and current Codex desktop session. This is a point-in-time access record; authentication and connector scope must be rechecked before a consequential external mutation.
 
 **Objective:** Give Codex the smallest reliable operational toolset for repository work, GitHub delivery, Supabase, Vercel, rendered verification, and CI evidence while limiting credential exposure, browser dependence, and overlapping verification.
 
 The selection order is: authenticated structured connector or repository-pinned CLI, then Codex's in-app side browser, then a named human-only action. External Google Chrome is reserved for presenting completed previews and UI results to Ahmed or Ziad.
+
+## Current revalidation — 2026-09-21 / WP00-T10
+
+This section supersedes only the matching current-state claims above; the 2026-09-15 section remains the historical baseline. The checks were read-only or Git dry-runs, except for local task-branch creation. No provider-side resource, credential, permission, billing setting, or deployment was mutated.
+
+| System | Current classification | Current proof and retained path | Limitation or human dependency |
+| --- | --- | --- | --- |
+| Local/Git | `WORKING` | `corepack pnpm exec node` resolves the pinned Node `24.19.0`; pnpm is `10.34.5`; Git Credential Manager `2.5.0` is configured; the `origin` remote is `https://github.com/unimind989-sys/UniMind-Project.git`; `git ls-remote` and a dry-run push both passed without creating a remote branch. | The Git credential helper does not disclose the provider actor; do not inspect it. |
+| GitHub connector/API | `WORKING_WITH_LIMITATION` | The working GitHub chat reports login and installed account `unimind989-sys` for `UniMind-Project`, with `pull: true`, `push: true`, `admin: true`, and `maintain: true`; the connector's CI/status methods were previously callable. | This task thread still returns `Unknown tool` before reaching the connector. The account/scope result is accepted as sanitized cross-chat evidence, but direct connector operations remain unavailable here. |
+| GitHub CLI | `WORKING_WITH_LIMITATION` | `gh 2.87.2` is authenticated in the OS keyring as `unimind989-sys`; `gh repo view` reports `ADMIN` on `unimind989-sys/UniMind-Project`, HTTPS, and `repo`/`workflow` scopes. | Only the owner account is configured. Keep `aboayman-oss` as the independent browser/human review identity; do not add a second CLI credential unless a recurring need is demonstrated. |
+| Supabase CLI | `WORKING_WITH_LIMITATION` | From the repository root, pinned pnpm `10.34.5`, Node `24.19.0`, and Supabase `2.115.0` run; after official login, `supabase projects list` lists `unimind-preview` as `ACTIVE_HEALTHY` and `unimind-beta` as `INACTIVE`. | This checkout is intentionally not linked to a hosted ref. Preserve the CLI project/migration path; do not link, reset, or mutate Preview/Beta for convenience, and do not add a Supabase MCP. |
+| Vercel CLI | `WORKING_WITH_LIMITATION` | Pinned Vercel CLI `59.9.1` identifies `unimind989-sys`, resolves team `unimind2`, verifies linked project `unimind-preview` (`prj_pVmnuEUakL8R5ap78cAalBjwymbO`), lists a `READY` deployment, and inspects it. | The connector is not connected. Deployment logs were not fetched because raw runtime logs are an unnecessary exposure for this setup task; promote/rollback remain CLI-supported commands and require a task-selected target. |
+| Codex side browser | `NOT_NEEDED` | Structured connector and CLI state answered the current identity, scope, linkage, and deployment questions. | Preserve as the fallback for dashboard-only or authenticated UI operations; do not duplicate these checks in a browser. |
+| Playwright Test | `WORKING` | Repository-pinned Playwright Test `1.62.1` executes its version probe. | Repeatable E2E remains task-impact-selected; no E2E run is justified by this docs/tooling-only task. |
+| Playwright CLI | `WORKING_WITH_LIMITATION` | The pinned `@playwright/cli 0.1.18` and repository wrapper remain present. | Manual specialist tracing/locator/debugging only; not invoked for this setup task. |
+| Chrome | `NOT_NEEDED` | No founder-facing visual decision or completed deployment demonstration is part of this task. | Use only for a requested demonstration or genuine visual/product decision. |
+| GitHub Actions/CI | `WORKING_WITH_LIMITATION` | The pinned `gh` path lists and inspects workflow run `35620750742` for base SHA `6afcfd49bdeeebe2ea12797ec46b30873ffc95f5`; application and database jobs passed and dependency audit was skipped by policy. | Exact-head required CI remains the delivery authority; the base-main result is evidence reuse only and does not prove the WP00-T10 candidate. |
+
+The retained minimum set is therefore local Git/GCM, the corrected existing GitHub connector when reauthorized, repository-pinned `gh` only if its secure login is needed as a fallback, the pinned Supabase CLI after human login, the authenticated pinned Vercel CLI, the side browser for UI-only work, Playwright Test for selected E2E, and the manual-only Playwright CLI. No additional MCP or browser connector is added.
+
+After the human GitHub reconnection checkpoint, the live Codex runtime returned `Unknown tool` for every GitHub connector method before reaching GitHub. A separate working chat supplied sanitized structured evidence for `unimind989-sys` / `UniMind-Project` with pull, push, admin, and maintain permissions. The screenshot and cross-chat result establish the intended account/scope, but direct connector operations remain unavailable in this task thread and must not be represented as locally executed here.
 
 ## Current access and recommendations
 
