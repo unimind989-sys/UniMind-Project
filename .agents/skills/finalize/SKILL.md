@@ -13,7 +13,7 @@ This skill refines, but never replaces, `AGENTS.md`, `docs/agents/agent-workflow
 
 The approved D-22 project policy is Ahmed and Ziad's standing authorization for a selected task's complete non-financial lifecycle. It covers review, pull-request creation and updates, compliant GitHub review, merge, migrations, RLS, grants, raw deletion, rights actions, release/unlock, beta go-live, affected-service changes, production promotion, rollback or containment, evidence, and cleanup when those actions are within the task contract and their technical gates pass. Record the selected chat speaker and the standing authorization under D-22; provider account identity is not evidence of who authorized the workflow. Explicit `$finalize` is an entry signal, not a stronger authorization class.
 
-Operate autonomously. Do not pause, ask for approval, or request confirmation for a zero-cost action inside this scope. Use the authenticated accounts, tools, repository state, and service access already available; satisfy provider and branch-protection mechanics directly. Invocation supplies human authorization, but it does not waive tests, exact-target checks, security/privacy rules, dependency order, provider terms, branch protection, or evidence.
+Operate autonomously. Do not invent an extra project-approval checkpoint for a zero-cost action inside this scope. Use the authenticated accounts, tools, repository state, and service access already available; satisfy provider and branch-protection mechanics directly. When the host platform itself mandates an action-time confirmation, comply and record it as a runtime/tooling limitation rather than claiming zero-human completion. Invocation supplies human authorization, but it does not waive tests, exact-target checks, security/privacy rules, dependency order, provider terms, branch protection, platform safety controls, or evidence.
 
 The only approval boundary is a real-money action: anything that can charge an account, create a financial obligation, begin a paid or auto-billing trial, provision a billable resource, enable a paid provider call, or raise/re-enable a nonzero spending cap. Before that mutation, present the exact provider, environment, action, currency, maximum authorized amount, and rollback, then obtain fresh explicit Ahmed-and-Ziad confirmation. A verified free-tier operation, a zero-cost test, lowering a cap, or disabling paid work is not a real-money action. When cost cannot be proven zero, treat it as real-money exposure and stop before the mutation.
 
@@ -72,11 +72,15 @@ Use the existing reviewable task branch when valid; otherwise create the runbook
 
 Perform a final technical review, wait for required GitHub checks, address legitimate findings, and satisfy the repository's review rule. Do not bypass branch protection for a small change.
 
-Use both authenticated GitHub accounts through the in-app side browser when the direct GitHub path cannot select the required identity, without returning control to the user:
+Before opening the side browser for a protected GitHub mutation, probe the authenticated structured GitHub connector and repository-pinned or installed `gh` CLI. Use a structured path only when it can prove the active identity and select the distinct author/reviewer/merger roles without weakening protection. Do not inspect or export tokens, cookies, browser storage, or credentials. Record unavailable authentication, insufficient permissions, or identity-selection limits once and reuse that result until the environment changes.
+
+When structured GitHub and `gh` cannot satisfy the required identity mechanics, use both authenticated GitHub accounts through the in-app side browser:
 
 1. One account creates or owns the pull request.
 2. Switch to the other account and submit the formal approving review after inspecting the diff and checks.
 3. Return to the author or repository-owner account and merge when every requirement is green.
+
+If the Codex host requires human action-time confirmation for a browser mutation, obtain it at the required moment, resume from the preserved exact-head state, and record the confirmation as an unavoidable platform limitation. It does not count as autonomous zero-human delivery and does not change D-22's project authorization.
 
 GitHub does not allow a pull-request author to approve their own pull request. Report the accounts' real roles as author/merger and approving reviewer; never claim that GitHub recorded two approving reviews when it recorded one. If repository rules later require more authenticated reviewers than are available, exhaust task-scoped compliant identities and report an access blocker without asking the user to approve or bypass the rule.
 

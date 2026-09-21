@@ -1,0 +1,74 @@
+{
+  "cases": [
+    {
+      "id": "docs-only",
+      "input": {
+        "task": "WP00-T09",
+        "pass": "actual-diff",
+        "declaredSurfaces": ["docs"],
+        "changedPaths": ["README.md"]
+      },
+      "expected": {
+        "dependency-audit": "WOULD_SKIP",
+        "application": "WOULD_SKIP",
+        "database-ci": "WOULD_SKIP"
+      }
+    },
+    {
+      "id": "dependency-change",
+      "input": {
+        "task": "WP00-T09",
+        "pass": "actual-diff",
+        "declaredSurfaces": ["tooling"],
+        "changedPaths": ["package.json"]
+      },
+      "expected": {
+        "dependency-audit": "RUN",
+        "application": "RUN",
+        "database-ci": "WOULD_SKIP"
+      }
+    },
+    {
+      "id": "application-change",
+      "input": {
+        "task": "WP03-T04",
+        "pass": "actual-diff",
+        "declaredSurfaces": ["runtime"],
+        "changedPaths": ["src/lib/catalog/resolve-unit.ts"]
+      },
+      "expected": {
+        "dependency-audit": "WOULD_SKIP",
+        "application": "RUN",
+        "database-ci": "WOULD_SKIP"
+      }
+    },
+    {
+      "id": "database-change",
+      "input": {
+        "task": "WP02-T08",
+        "pass": "actual-diff",
+        "declaredSurfaces": ["data"],
+        "changedPaths": ["supabase/migrations/20260921000000_gate.sql"]
+      },
+      "expected": {
+        "dependency-audit": "WOULD_SKIP",
+        "application": "RUN",
+        "database-ci": "RUN"
+      }
+    },
+    {
+      "id": "unknown-path",
+      "input": {
+        "task": "WP00-T09",
+        "pass": "actual-diff",
+        "declaredSurfaces": ["docs"],
+        "changedPaths": ["ops/new-runtime.ts"]
+      },
+      "expected": {
+        "dependency-audit": "WOULD_SKIP",
+        "application": "RUN",
+        "database-ci": "RUN"
+      }
+    }
+  ]
+}

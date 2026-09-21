@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "policyVersion": 2,
+  "regressionCases": [
+    "docs-only",
+    "dependency-change",
+    "application-change",
+    "database-change",
+    "unknown-path"
+  ],
+  "observations": [
+    {
+      "runId": "35590667885",
+      "candidate": "385d3f544085c210d710cf2f58ec676d48ffc85c",
+      "input": {
+        "task": "WP00-T09",
+        "pass": "actual-diff",
+        "declaredSurfaces": ["docs", "tooling"],
+        "changedPaths": [
+          ".agents/skills/ADAPTATIONS.md",
+          ".agents/skills/EVALS.md",
+          ".agents/skills/README.md",
+          ".agents/skills/codebase-design/DESIGN-IT-TWICE.md",
+          ".agents/skills/codebase-design/SKILL.md",
+          ".agents/skills/diagnosing-bugs/SKILL.md",
+          ".agents/skills/finalize/SKILL.md",
+          ".agents/skills/finalize/agents/openai.yaml",
+          ".agents/skills/image-to-code/SKILL.md",
+          ".agents/skills/impeccable/SKILL.md",
+          ".agents/skills/tdd/SKILL.md",
+          ".agents/skills/trust-boundaries/SKILL.md",
+          ".agents/skills/trust-boundaries/agents/openai.yaml",
+          "AGENTS.md",
+          "CONTEXT.md",
+          "CONTRIBUTING.md",
+          "README.md",
+          "docs/agents/agent-execution-policy.yaml",
+          "docs/agents/agent-workflow.md",
+          "docs/agents/frontend-quality-floor.md",
+          "docs/agents/skills-guide.md",
+          "docs/agents/ui-design-stack.md",
+          "docs/decisions/d-22-founder-authorization-and-shared-service-identity.md",
+          "docs/plans/poc-master-plan.md",
+          "docs/runbooks/environment-promotion.md",
+          "docs/runbooks/poc-execution-runbook.md",
+          "docs/templates/gate-report.md",
+          "docs/templates/task-record.md",
+          "evidence/wp00-pilot/2026-09-21_autonomous-agent-execution_local_ff15002.md",
+          "evidence/wp00-pilot/agent-execution-receipt.json",
+          "package.json",
+          "planning/decision-register.md",
+          "planning/tasks/wp00-t09-autonomous-agent-execution.md",
+          "scripts/derive-agent-execution.ts",
+          "scripts/lib/agent-execution-policy.ts",
+          "scripts/show-work-state.ps1",
+          "scripts/test-agent-handoff.ps1",
+          "scripts/verify-agent-execution-policy.ts",
+          "scripts/verify-agent-readiness.ps1",
+          "tests/fixtures/agent-execution/historical-cases.json",
+          "tests/unit/agent-execution-policy.test.ts"
+        ]
+      },
+      "outcomes": {
+        "dependency-audit": "PASS",
+        "application": "PASS",
+        "database-ci": "PASS"
+      }
+    }
+  ]
+}

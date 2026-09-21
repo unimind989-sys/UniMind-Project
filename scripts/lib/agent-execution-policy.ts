@@ -53,6 +53,22 @@ type VerificationCheck = {
   path_patterns?: string[];
 };
 
+type ConditionalCiJob = {
+  id: string;
+  required_surfaces: Surface[];
+  path_patterns: string[];
+  needs: string[];
+};
+
+type ConditionalCiAction = "RUN" | "WOULD_SKIP";
+type ConditionalCiOutcome = "PASS" | "FAIL" | "CANCELLED" | "SKIPPED";
+
+export type ConditionalCiPrediction = {
+  id: string;
+  action: ConditionalCiAction;
+  reason: string;
+};
+
 export type AgentExecutionPolicy = {
   schema_version: number;
   policy_version: number;
@@ -81,6 +97,21 @@ export type AgentExecutionPolicy = {
     playwright_cli_flags: string[];
   };
   verification: { checks: VerificationCheck[] };
+  conditional_ci: {
+    evidence_schema_version: number;
+    jobs: ConditionalCiJob[];
+    readiness: {
+      required_regression_cases: string[];
+      require_run_observation: boolean;
+      require_skip_observation: boolean;
+      zero_unsafe_skip_contradictions: boolean;
+    };
+    enforcement: {
+      requires_governed_workflow_change: boolean;
+      workflow_path: string;
+      workflow_sha256: string | null;
+    };
+  };
   evidence: {
     schema_version: number;
     malformed: "missing";
@@ -123,6 +154,7 @@ export type AgentExecutionInput = {
   flags?: AgentExecutionFlags;
   requestedRisk?: Risk;
   previousModelFloor?: ModelFloor;
+  activeModel?: ModelFloor;
   workerCount?: number;
   nestedWorker?: boolean;
   proceduralSkills?: string[];
@@ -137,7 +169,14 @@ export type AgentExecutionResult = {
   risk: Risk;
   planning: Planning;
   modelFloor: ModelFloor;
-  modelRuntimeStatus: "unverified";
+  modelRuntimeStatus: "unverified" | "satisfied" | "switch-required";
+  modelRuntime: {
+    requiredFloor: ModelFloor;
+    activeModel?: ModelFloor;
+    status: "unverified" | "satisfied" | "switch-required";
+    action: "report-limitation" | "proceed" | "request-switch";
+    message: string;
+  };
   worker: { default: number; maximum: number; used: number; nested: false };
   capabilities: string[];
   proceduralSkills: string[];
@@ -153,9 +192,10 @@ export type AgentExecutionResult = {
     reason: string;
   }>;
   ci: {
-    mode: "broad";
+    mode: "broad" | "conditional";
     selectorState: ActivationState;
-    predictionOnly: true;
+    predictionOnly: boolean;
+    predictions: ConditionalCiPrediction[];
   };
   finalization: {
     state: ActivationState;
@@ -187,6 +227,33 @@ export type EvidenceAssessment = {
   state: "REUSE" | "INVALID" | "MISSING";
   reason: string;
   sourceCandidate?: string;
+};
+
+type ConditionalCiObservation = {
+  runId: string;
+  candidate: string;
+  input: AgentExecutionInput;
+  outcomes: Record<string, ConditionalCiOutcome>;
+};
+
+type ConditionalCiEvidence = {
+  schemaVersion: number;
+  policyVersion: number;
+  regressionCases: string[];
+  observations: ConditionalCiObservation[];
+};
+
+export type ConditionalCiAssessment = {
+  recommendedState: "SHADOW" | "READY" | "FALLBACK";
+  regressionCoverage: boolean;
+  jobs: Array<{
+    id: string;
+    state: "SHADOW" | "READY" | "FALLBACK";
+    runEvidence: boolean;
+    skipEvidence: boolean;
+    contradictions: number;
+    reasons: string[];
+  }>;
 };
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -235,6 +302,61 @@ export function classifyChangedPaths(
     surfaces: policy.surface_order.filter((surface) => surfaces.has(surface)),
     reasons,
   };
+}
+
+export function predictConditionalCiJobs(
+  policy: AgentExecutionPolicy,
+  surfaces: Surface[],
+  changedPaths: string[],
+): ConditionalCiPrediction[] {
+  if (policy.activation.conditional_ci === "FALLBACK") {
+    return policy.conditional_ci.jobs.map((job) => ({
+      id: job.id,
+      action: "RUN",
+      reason: "conditional-CI optimization is in FALLBACK",
+    }));
+  }
+
+  const normalizedPaths = changedPaths.map((changedPath) =>
+    changedPath.replaceAll("\\", "/"),
+  );
+  const runJobs = new Set<string>();
+  const reasons = new Map<string, string>();
+  for (const job of policy.conditional_ci.jobs) {
+    const matchedSurface = job.required_surfaces.find((surface) =>
+      surfaces.includes(surface),
+    );
+    const matchedPath = normalizedPaths.find((changedPath) =>
+      matchesAny(changedPath, job.path_patterns),
+    );
+    if (matchedSurface !== undefined) {
+      runJobs.add(job.id);
+      reasons.set(job.id, `required by ${matchedSurface} surface`);
+    } else if (matchedPath !== undefined) {
+      runJobs.add(job.id);
+      reasons.set(job.id, `required by changed path ${matchedPath}`);
+    }
+  }
+
+  let widened = true;
+  while (widened) {
+    widened = false;
+    for (const job of policy.conditional_ci.jobs) {
+      if (!runJobs.has(job.id)) continue;
+      for (const dependency of job.needs) {
+        if (runJobs.has(dependency)) continue;
+        runJobs.add(dependency);
+        reasons.set(dependency, `required by ${job.id} dependency`);
+        widened = true;
+      }
+    }
+  }
+
+  return policy.conditional_ci.jobs.map((job) => ({
+    id: job.id,
+    action: runJobs.has(job.id) ? "RUN" : "WOULD_SKIP",
+    reason: reasons.get(job.id) ?? "no affected surface, path, or dependency",
+  }));
 }
 
 export function loadAgentExecutionPolicy(
@@ -294,8 +416,67 @@ export function validateAgentExecutionPolicy(
       failures.push(`invalid activation state for ${rule}: ${state}`);
     }
   }
-  if (policy.activation.conditional_ci !== "SHADOW") {
-    failures.push("conditional_ci must remain SHADOW during WP00-T09");
+  if (policy.conditional_ci.evidence_schema_version !== 1) {
+    failures.push("conditional_ci evidence_schema_version must be 1");
+  }
+  const conditionalJobIds = policy.conditional_ci.jobs.map((job) => job.id);
+  const conditionalJobIdSet = new Set(conditionalJobIds);
+  if (
+    conditionalJobIds.length === 0 ||
+    conditionalJobIdSet.size !== conditionalJobIds.length
+  ) {
+    failures.push("conditional_ci job ids must be non-empty and unique");
+  }
+  for (const job of policy.conditional_ci.jobs) {
+    if (
+      job.required_surfaces.some((surface) => !surfaceNames.includes(surface))
+    ) {
+      failures.push(`conditional_ci job has invalid surface: ${job.id}`);
+    }
+    if (
+      job.needs.some(
+        (dependency) =>
+          dependency === job.id || !conditionalJobIdSet.has(dependency),
+      )
+    ) {
+      failures.push(`conditional_ci job has invalid dependency: ${job.id}`);
+    }
+    for (const pattern of job.path_patterns) {
+      try {
+        new RegExp(pattern, "i");
+      } catch {
+        failures.push(
+          `invalid conditional_ci path regex for ${job.id}: ${pattern}`,
+        );
+      }
+    }
+  }
+  if (
+    policy.conditional_ci.readiness.required_regression_cases.length === 0 ||
+    new Set(policy.conditional_ci.readiness.required_regression_cases).size !==
+      policy.conditional_ci.readiness.required_regression_cases.length
+  ) {
+    failures.push(
+      "conditional_ci readiness requires unique regression case ids",
+    );
+  }
+  if (
+    policy.conditional_ci.enforcement.requires_governed_workflow_change !== true
+  ) {
+    failures.push(
+      "conditional_ci enforcement must require a governed workflow change",
+    );
+  }
+  if (
+    policy.activation.conditional_ci === "ENFORCED" &&
+    (typeof policy.conditional_ci.enforcement.workflow_sha256 !== "string" ||
+      !/^[a-f0-9]{64}$/u.test(
+        policy.conditional_ci.enforcement.workflow_sha256,
+      ))
+  ) {
+    failures.push(
+      "conditional_ci ENFORCED requires the governed CI workflow SHA-256",
+    );
   }
   for (const rule of policy.path_widening) {
     try {
@@ -336,6 +517,12 @@ export function deriveAgentExecution(
   ) {
     throw new Error("Input contains an unsupported previous model floor.");
   }
+  if (
+    input.activeModel !== undefined &&
+    !modelNames.includes(input.activeModel)
+  ) {
+    throw new Error("Input contains an unsupported active model.");
+  }
   const workerCount = input.workerCount ?? policy.workers.default;
   if (!Number.isInteger(workerCount) || workerCount < 0) {
     throw new Error("Worker count must be a non-negative integer.");
@@ -357,7 +544,16 @@ export function deriveAgentExecution(
   const reasons: string[] = input.declaredSurfaces.map(
     (surface) => `semantic classification: ${surface}`,
   );
-  const pathClassification = classifyChangedPaths(policy, input.changedPaths);
+  const pathClassification = classifyChangedPaths(
+    policy,
+    input.changedPaths,
+    input.pass === "actual-diff",
+  );
+  reasons.push(
+    ...pathClassification.reasons.filter((reason) =>
+      reason.startsWith("unknown path widened conservatively:"),
+    ),
+  );
   for (const surface of pathClassification.surfaces) {
     if (!surfaces.has(surface)) {
       reasons.push(
@@ -429,6 +625,40 @@ export function deriveAgentExecution(
       `model routing ${policy.activation.model_routing.toLowerCase()} used the Sol floor`,
     );
   }
+  let modelRuntimeStatus: AgentExecutionResult["modelRuntimeStatus"];
+  let modelRuntime: AgentExecutionResult["modelRuntime"];
+  if (input.activeModel === undefined) {
+    modelRuntimeStatus = "unverified";
+    modelRuntime = {
+      requiredFloor: modelFloor,
+      status: modelRuntimeStatus,
+      action: "report-limitation",
+      message:
+        "The runtime did not expose a verifiable active primary model; report the required floor without claiming a switch.",
+    };
+  } else if (
+    modelNames.indexOf(input.activeModel) < modelNames.indexOf(modelFloor)
+  ) {
+    modelRuntimeStatus = "switch-required";
+    modelRuntime = {
+      requiredFloor: modelFloor,
+      activeModel: input.activeModel,
+      status: modelRuntimeStatus,
+      action: "request-switch",
+      message:
+        "The verified active primary model is below the required floor; request a model switch before implementation.",
+    };
+  } else {
+    modelRuntimeStatus = "satisfied";
+    modelRuntime = {
+      requiredFloor: modelFloor,
+      activeModel: input.activeModel,
+      status: modelRuntimeStatus,
+      action: "proceed",
+      message:
+        "The verified active primary model satisfies the required floor.",
+    };
+  }
 
   const capabilitySurfaces =
     policy.activation.context_routing === "ENFORCED"
@@ -481,6 +711,11 @@ export function deriveAgentExecution(
   }
 
   const isFrontend = surfaces.has("frontend");
+  const ciPredictions = predictConditionalCiJobs(
+    policy,
+    sortedSurfaces,
+    input.changedPaths,
+  );
   return {
     task: input.task,
     policyVersion: policy.policy_version,
@@ -489,7 +724,8 @@ export function deriveAgentExecution(
     risk,
     planning,
     modelFloor,
-    modelRuntimeStatus: "unverified",
+    modelRuntimeStatus,
+    modelRuntime,
     worker: {
       default: policy.workers.default,
       maximum: workerMaximum,
@@ -513,9 +749,13 @@ export function deriveAgentExecution(
     },
     verification,
     ci: {
-      mode: "broad",
+      mode:
+        policy.activation.conditional_ci === "ENFORCED"
+          ? "conditional"
+          : "broad",
       selectorState: policy.activation.conditional_ci,
-      predictionOnly: true,
+      predictionOnly: policy.activation.conditional_ci !== "ENFORCED",
+      predictions: ciPredictions,
     },
     finalization: {
       state: policy.activation.automatic_finalization,
@@ -525,6 +765,171 @@ export function deriveAgentExecution(
           : "manual-recovery",
     },
     reasons,
+  };
+}
+
+function conservativeConditionalCiAssessment(
+  policy: AgentExecutionPolicy,
+  reason: string,
+): ConditionalCiAssessment {
+  return {
+    recommendedState: "SHADOW",
+    regressionCoverage: false,
+    jobs: policy.conditional_ci.jobs.map((job) => ({
+      id: job.id,
+      state: "SHADOW",
+      runEvidence: false,
+      skipEvidence: false,
+      contradictions: 0,
+      reasons: [reason],
+    })),
+  };
+}
+
+export function assessConditionalCiEvidence(
+  policy: AgentExecutionPolicy,
+  value: unknown,
+): ConditionalCiAssessment {
+  if (
+    !isRecord(value) ||
+    value.schemaVersion !== policy.conditional_ci.evidence_schema_version ||
+    value.policyVersion !== policy.policy_version ||
+    !Array.isArray(value.regressionCases) ||
+    !value.regressionCases.every((item) => typeof item === "string") ||
+    !Array.isArray(value.observations)
+  ) {
+    return conservativeConditionalCiAssessment(
+      policy,
+      "conditional-CI evidence is missing, malformed, or policy-mismatched",
+    );
+  }
+
+  const evidence = value as ConditionalCiEvidence;
+  const regressionCoverage =
+    policy.conditional_ci.readiness.required_regression_cases.every((caseId) =>
+      evidence.regressionCases.includes(caseId),
+    );
+  const jobEvidence = new Map(
+    policy.conditional_ci.jobs.map((job) => [
+      job.id,
+      { runEvidence: false, skipEvidence: false, contradictions: 0 },
+    ]),
+  );
+
+  for (const observation of evidence.observations) {
+    if (
+      !isRecord(observation) ||
+      typeof observation.runId !== "string" ||
+      observation.runId.length === 0 ||
+      typeof observation.candidate !== "string" ||
+      !/^[a-f0-9]{7,40}$/u.test(observation.candidate) ||
+      !isRecord(observation.input) ||
+      !isRecord(observation.outcomes)
+    ) {
+      return conservativeConditionalCiAssessment(
+        policy,
+        "conditional-CI observation is malformed",
+      );
+    }
+
+    let derived: AgentExecutionResult;
+    try {
+      derived = deriveAgentExecution(
+        policy,
+        observation.input as unknown as AgentExecutionInput,
+      );
+    } catch {
+      return conservativeConditionalCiAssessment(
+        policy,
+        "conditional-CI observation input cannot be derived",
+      );
+    }
+
+    for (const prediction of derived.ci.predictions) {
+      const outcome = observation.outcomes[prediction.id];
+      if (outcome === undefined) continue;
+      if (
+        outcome !== "PASS" &&
+        outcome !== "FAIL" &&
+        outcome !== "CANCELLED" &&
+        outcome !== "SKIPPED"
+      ) {
+        return conservativeConditionalCiAssessment(
+          policy,
+          `conditional-CI outcome is invalid for ${prediction.id}`,
+        );
+      }
+      const current = jobEvidence.get(prediction.id);
+      if (current === undefined) continue;
+      if (prediction.action === "RUN" && outcome === "PASS") {
+        current.runEvidence = true;
+      }
+      if (prediction.action === "WOULD_SKIP" && outcome === "PASS") {
+        current.skipEvidence = true;
+      }
+      if (prediction.action === "WOULD_SKIP" && outcome === "FAIL") {
+        current.contradictions += 1;
+      }
+    }
+  }
+
+  const jobs = policy.conditional_ci.jobs.map((job) => {
+    const evidenceForJob = jobEvidence.get(job.id) as {
+      runEvidence: boolean;
+      skipEvidence: boolean;
+      contradictions: number;
+    };
+    const reasons: string[] = [];
+    if (!regressionCoverage)
+      reasons.push("required selector regressions missing");
+    if (
+      policy.conditional_ci.readiness.require_run_observation &&
+      !evidenceForJob.runEvidence
+    ) {
+      reasons.push("successful broad-CI run evidence missing");
+    }
+    if (
+      policy.conditional_ci.readiness.require_skip_observation &&
+      !evidenceForJob.skipEvidence
+    ) {
+      reasons.push("successful broad-CI would-skip evidence missing");
+    }
+    if (evidenceForJob.contradictions > 0) {
+      reasons.push("unsafe would-skip contradiction observed");
+    }
+
+    const ready =
+      regressionCoverage &&
+      (!policy.conditional_ci.readiness.require_run_observation ||
+        evidenceForJob.runEvidence) &&
+      (!policy.conditional_ci.readiness.require_skip_observation ||
+        evidenceForJob.skipEvidence);
+    const state: ConditionalCiAssessment["jobs"][number]["state"] =
+      policy.activation.conditional_ci === "FALLBACK" ||
+      (policy.conditional_ci.readiness.zero_unsafe_skip_contradictions &&
+        evidenceForJob.contradictions > 0)
+        ? "FALLBACK"
+        : ready
+          ? "READY"
+          : "SHADOW";
+    if (state === "READY") reasons.push("explicit readiness evidence complete");
+    if (
+      state === "FALLBACK" &&
+      policy.activation.conditional_ci === "FALLBACK"
+    ) {
+      reasons.push("conditional-CI activation is in FALLBACK");
+    }
+    return { id: job.id, state, ...evidenceForJob, reasons };
+  });
+
+  return {
+    recommendedState: jobs.every((job) => job.state === "READY")
+      ? "READY"
+      : jobs.every((job) => job.state === "FALLBACK")
+        ? "FALLBACK"
+        : "SHADOW",
+    regressionCoverage,
+    jobs,
   };
 }
 

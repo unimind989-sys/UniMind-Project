@@ -28,6 +28,8 @@ Complete this compact block for tasks created under the central execution policy
 
 **Model floor:** <Luna Max | Sol High>
 
+**Model runtime:** <satisfied with verified active model | switch required from verified active model | active model unverified and limitation reported>
+
 **Worker budget:** <used, maximum, and nested-worker rule>
 
 **Capabilities:** <surface capabilities or NONE>

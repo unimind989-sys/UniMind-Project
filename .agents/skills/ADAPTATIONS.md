@@ -1,5 +1,14 @@
 # Skill adaptations
 
+## 2026-09-21 — GitHub delivery capability probe and confirmation accuracy
+
+### `finalize`
+
+- **Evidence:** WP00-T09 had authenticated GitHub connector, CLI, and side-browser paths, but finalization moved directly to the side browser and described the completed protected delivery as fully autonomous even though the Codex host required human action-time confirmations for PR creation and review submission.
+- **Change:** Finalization now probes structured GitHub and `gh` identity/permission mechanics before browser mutation, uses the browser only when those paths cannot satisfy distinct roles, and records host-mandated confirmation as a runtime limitation rather than zero-human completion.
+- **Validation:** Repository skill validator, the new behavior case in `EVALS.md`, protected GitHub identity trust map, and WP00-T09 delivery evidence.
+- **Upstream:** UniMind-owned skill; no third-party source changed.
+
 ## 2026-09-16 — WP00-T09 central execution policy cutover
 
 ### `tdd`
