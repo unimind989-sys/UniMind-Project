@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "policyVersion": 1,
+  "task": "WP00-T09",
+  "candidate": "ff150022e7f0fd7280bb900a4ccd93c40126af7a",
+  "proofs": [
+    {
+      "id": "agent-policy-regression",
+      "check": "pnpm verify:agent-policy and focused policy unit suite",
+      "status": "PASS",
+      "invalidatedBy": {
+        "surfaces": ["tooling"],
+        "pathPatterns": [
+          "^docs/agents/agent-execution-policy\\.yaml$",
+          "^scripts/(lib/)?agent-execution-policy\\.ts$",
+          "^scripts/(derive|verify)-agent-execution(-policy)?\\.ts$",
+          "^tests/(unit/agent-execution-policy\\.test\\.ts|fixtures/agent-execution/)"
+        ]
+      }
+    },
+    {
+      "id": "repo-skill-contracts",
+      "check": "repository skill validator",
+      "status": "PASS",
+      "invalidatedBy": {
+        "surfaces": [],
+        "pathPatterns": ["^\\.agents/skills/"]
+      }
+    },
+    {
+      "id": "broad-local-gate",
+      "check": "pnpm verify",
+      "status": "PASS",
+      "invalidatedBy": {
+        "surfaces": [
+          "frontend",
+          "runtime",
+          "auth",
+          "data",
+          "storage",
+          "delivery",
+          "tooling"
+        ],
+        "pathPatterns": [
+          "^src/",
+          "^supabase/",
+          "^scripts/",
+          "^tests/",
+          "^evals/",
+          "^\\.github/workflows/",
+          "^(package\\.json|pnpm-lock\\.yaml|tsconfig\\.json|vitest\\.config\\.ts|playwright\\.config\\.ts|vercel\\.json)$"
+        ]
+      }
+    }
+  ]
+}

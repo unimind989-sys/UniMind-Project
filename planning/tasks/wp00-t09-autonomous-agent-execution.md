@@ -12,7 +12,7 @@
 
 **Branch:** `wp00/autonomous-agent-execution`
 
-**Updated (UTC):** 2026-09-21T10:10:00Z
+**Updated (UTC):** 2026-09-21T10:31:00Z
 
 ## Derived execution envelope
 
@@ -46,7 +46,7 @@
 
 **Pass:** Every WP00-T09 acceptance item is represented by executable policy, focused regression evidence, or an authoritative pointer; core rules are ENFORCED only after historical replay; conditional CI stays SHADOW; terminal delivery preserves branch protection and the fresh real-money boundary; merged clean `main` recommends WP03-T04.
 
-**Evidence:** `evidence/wp00-pilot/2026-09-21_autonomous-agent-execution_local_<candidate-sha>.md`, a minimal machine receipt when stable, and the final protected-delivery result linked from the same evidence set.
+**Evidence:** `evidence/wp00-pilot/2026-09-21_autonomous-agent-execution_local_ff15002.md`, `evidence/wp00-pilot/agent-execution-receipt.json`, and the final protected-delivery result appended to the report.
 
 **Rollback:** Revert the WP00-T09 merge to restore the previous instruction/work-state/finalize behavior; keep broad CI unchanged throughout so conservative exact-head protection remains available.
 
@@ -60,17 +60,17 @@
 - [x] Add trust-boundaries and narrowly repair TDD, diagnosis, codebase-design, image-to-code, Impeccable, and finalization conflicts.
 - [x] Integrate routing/evidence metadata with task records and work-state output without rewriting completed records.
 - [x] Slim and synchronize agent guidance, master-plan/D-22 authorization, runbook, README, CONTRIBUTING, templates, and skill governance.
-- [~] Run focused and broad verification once against the stable candidate, review scope/secrets, and assemble sanitized evidence.
+- [x] Run focused and broad verification once against the stable candidate, review scope/secrets, and assemble sanitized evidence.
 - [ ] Push, open/update the PR, wait for exact-head required CI, repair legitimate failures, satisfy protected review mechanics, merge, verify clean synchronized main, delete the task branch, close WP00-T09, and confirm WP03-T04 selection.
 
 ## Handoff
 
 **Changed:** Added the versioned policy, deterministic router, evidence assessment, historical regression suite, compact capability guidance, skill repairs, synchronized workflow/authorization guidance, and deterministic handoff selection proof.
 
-**Commands:** Workstation preflight found repository-pinned Node 24.19.0 available through the Codex bundled runtime; system Node 22.21.0 is not used for verification. `git fetch origin --prune` confirmed local and remote main at `34ab825`; `gh auth status` showed the CLI unauthenticated, so authenticated GitHub mutations must use the existing side-browser session if Git/GCM cannot complete them.
+**Commands:** Node 24.19.0/pnpm 10.34.5 focused policy replay passed 10 historical cases and 23 focused tests; all 22 skills validated; readiness passed 183 names, 46 links, 23 decisions, and 103 task contracts; the isolated handoff rehearsal passed including simulated WP03-T04 selection. Final `pnpm verify` passed formatting, lint, strict types, boundaries, 24-migration SQL policy, CI policy, policy replay, the 896-file secret scan, 330 unit, 15 integration with 2 intentional hosted skips, 22 security, 3 evaluation plus 3 synthetic foundation cases, 5 load-contract, 19 E2E, the safe production build, and client-artifact scanning. The first broad attempt rejected one lint warning; runtime planning/model/risk validation corrected it. Evidence assembly exposed and corrected receipt comparison against the wrong Git base and original task surfaces; all invalidated proof reran on implementation SHA `ff15002`.
 
-**Remaining:** Stable-candidate verification, sanitized evidence, protected delivery, merge, closure, and cleanup.
+**Remaining:** Protected publication, exact-head CI, merge, final-main proof, closure, and cleanup.
 
-**Next safe action:** Format the stable candidate, run focused and broad verification once, then assemble evidence for protected delivery.
+**Next safe action:** Commit the sanitized evidence follow-up, publish the task branch, and open the protected pull request.
 
 **Reviewer action:** NONE for routine work; the WP00-T09 directive authorizes autonomous non-financial completion. Fresh Ahmed-and-Ziad confirmation is required only immediately before any real-money exposure.
