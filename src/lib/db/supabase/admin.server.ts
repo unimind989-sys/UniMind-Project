@@ -86,6 +86,28 @@ export class SupabaseAdminOperationError extends Error {
   }
 }
 
+export class SupabaseCollectionRegistrationError extends Error {
+  constructor() {
+    super("Supabase collection upload registration failed.");
+    this.name = "SupabaseCollectionRegistrationError";
+  }
+}
+
+export type SyntheticCollectionUploadEvidence = Readonly<{
+  actorId: string;
+  campaignId: string;
+  requestedMaterialItemId: string;
+  curriculumUnitId: string;
+  clientIdempotencyKey: string;
+  originalFileName: string;
+  declaredFormat: string;
+  provider: string;
+  objectKey: string;
+  checksum: string;
+  mimeType: string;
+  byteSize: number;
+}>;
+
 function createAdminClient() {
   const environment = getServerEnvironment();
 
@@ -160,6 +182,33 @@ async function recordPrivilegedAuthAction(
       providerStatus(error),
     );
   }
+}
+
+export async function registerSyntheticCollectionUploadEvidence(
+  evidence: SyntheticCollectionUploadEvidence,
+) {
+  const client = createAdminClient();
+  const { data, error } = await client.rpc(
+    "register_synthetic_collection_upload",
+    {
+      p_actor_id: evidence.actorId,
+      p_campaign_id: evidence.campaignId,
+      p_requested_material_item_id: evidence.requestedMaterialItemId,
+      p_curriculum_unit_id: evidence.curriculumUnitId,
+      p_client_idempotency_key: evidence.clientIdempotencyKey,
+      p_original_file_name: evidence.originalFileName,
+      p_declared_format: evidence.declaredFormat,
+      p_provider: evidence.provider,
+      p_object_key: evidence.objectKey,
+      p_checksum: evidence.checksum,
+      p_mime_type: evidence.mimeType,
+      p_byte_size: evidence.byteSize,
+    },
+  );
+  if (error !== null || data?.length !== 1 || data[0] === undefined) {
+    throw new SupabaseCollectionRegistrationError();
+  }
+  return data[0];
 }
 
 export async function createSyntheticAuthUser(

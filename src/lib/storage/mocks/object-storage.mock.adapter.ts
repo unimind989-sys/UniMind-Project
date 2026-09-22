@@ -18,11 +18,18 @@ export class DeterministicMockObjectStorageProvider implements ObjectStorageProv
     private readonly caseId: DeterministicProviderCaseId = "success",
   ) {}
 
-  putObject(request: PutObjectRequest, context: ProviderCallContext) {
+  async putObject(request: PutObjectRequest, context: ProviderCallContext) {
+    const digest = await crypto.subtle.digest(
+      "SHA-256",
+      request.bytes.slice().buffer,
+    );
+    const checksum = Array.from(new Uint8Array(digest), (byte) =>
+      byte.toString(16).padStart(2, "0"),
+    ).join("");
     const value: StoredObject = {
       namespace: request.namespace,
       objectKey: request.objectKey,
-      checksum: "synthetic-checksum",
+      checksum: `sha256:${checksum}`,
       byteLength: request.bytes.byteLength,
     };
     return this.run(context, value);
