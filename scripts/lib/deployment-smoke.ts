@@ -10,6 +10,23 @@ export type DeploymentSmokeResult = Readonly<{
   checks: readonly string[];
 }>;
 
+export type ReleaseFingerprintInput = Readonly<{
+  reviewedSourceSha: string;
+  deploymentSourceSha: string;
+  expectedEnvironment: "preview" | "production";
+  deploymentEnvironment: "preview" | "production";
+  expectedReleaseId: string;
+  publicReleaseId: string;
+  requiredConfiguration: Readonly<Record<string, boolean>>;
+  intendedDeployment: boolean;
+  rollbackTarget: string;
+}>;
+
+export type ReleaseFingerprintResult = Readonly<{
+  status: "PASS";
+  checks: readonly string[];
+}>;
+
 type SmokeFetch = (
   input: string | URL,
   init?: RequestInit,
@@ -23,6 +40,53 @@ export class DeploymentSmokeError extends Error {
     this.name = "DeploymentSmokeError";
     this.code = code;
   }
+}
+
+export function validateReleaseFingerprint(
+  input: ReleaseFingerprintInput,
+): ReleaseFingerprintResult {
+  if (
+    !/^[a-f0-9]{7,64}$/u.test(input.reviewedSourceSha) ||
+    input.reviewedSourceSha !== input.deploymentSourceSha
+  ) {
+    throw new DeploymentSmokeError("RELEASE_SOURCE_MISMATCH");
+  }
+  if (input.expectedEnvironment !== input.deploymentEnvironment) {
+    throw new DeploymentSmokeError("RELEASE_ENVIRONMENT_MISMATCH");
+  }
+  if (
+    input.expectedReleaseId.length === 0 ||
+    input.publicReleaseId !== input.expectedReleaseId
+  ) {
+    throw new DeploymentSmokeError("RELEASE_FINGERPRINT_MISMATCH");
+  }
+  const requiredConfigurationNames = Object.keys(input.requiredConfiguration);
+  if (
+    requiredConfigurationNames.length === 0 ||
+    requiredConfigurationNames.some(
+      (name) => input.requiredConfiguration[name] !== true,
+    )
+  ) {
+    throw new DeploymentSmokeError("RELEASE_CONFIGURATION_MISSING");
+  }
+  if (!input.intendedDeployment) {
+    throw new DeploymentSmokeError("RELEASE_TARGET_MISMATCH");
+  }
+  if (input.rollbackTarget.trim() === "") {
+    throw new DeploymentSmokeError("RELEASE_ROLLBACK_TARGET_MISSING");
+  }
+
+  return {
+    status: "PASS",
+    checks: [
+      "source-sha",
+      "environment",
+      "release-fingerprint",
+      "required-configuration-presence",
+      "intended-deployment",
+      "rollback-target",
+    ],
+  };
 }
 
 function isLocalHostname(hostname: string): boolean {

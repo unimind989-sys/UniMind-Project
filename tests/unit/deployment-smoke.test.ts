@@ -4,6 +4,7 @@ import {
   DeploymentSmokeError,
   parseDeploymentSmokeCommand,
   runDeploymentSmoke,
+  validateReleaseFingerprint,
 } from "../../scripts/lib/deployment-smoke";
 
 function passingFetch(
@@ -146,5 +147,78 @@ describe("deployment smoke contract", () => {
     await expect(runDeploymentSmoke(command, realModeFetch)).rejects.toThrow(
       "NON_SYNTHETIC_RUNTIME",
     );
+  });
+
+  it("accepts a source-bound pre-promotion release fingerprint", () => {
+    expect(
+      validateReleaseFingerprint({
+        reviewedSourceSha: "a".repeat(40),
+        deploymentSourceSha: "a".repeat(40),
+        expectedEnvironment: "production",
+        deploymentEnvironment: "production",
+        expectedReleaseId: "wp00-t11-a-preview",
+        publicReleaseId: "wp00-t11-a-preview",
+        intendedDeployment: true,
+        requiredConfiguration: {
+          APP_ORIGIN: true,
+          NEXT_PUBLIC_RELEASE_ID: true,
+        },
+        rollbackTarget: "dpl-last-known-good",
+      }),
+    ).toEqual({
+      status: "PASS",
+      checks: [
+        "source-sha",
+        "environment",
+        "release-fingerprint",
+        "required-configuration-presence",
+        "intended-deployment",
+        "rollback-target",
+      ],
+    });
+  });
+
+  it("rejects an inconsistent release fingerprint before promotion", () => {
+    expect(() =>
+      validateReleaseFingerprint({
+        reviewedSourceSha: "a".repeat(40),
+        deploymentSourceSha: "b".repeat(40),
+        expectedEnvironment: "production",
+        deploymentEnvironment: "production",
+        expectedReleaseId: "wp00-t11-a-preview",
+        publicReleaseId: "stale-release",
+        intendedDeployment: true,
+        requiredConfiguration: { APP_ORIGIN: true },
+        rollbackTarget: "dpl-last-known-good",
+      }),
+    ).toThrow("RELEASE_SOURCE_MISMATCH");
+
+    expect(() =>
+      validateReleaseFingerprint({
+        reviewedSourceSha: "a".repeat(40),
+        deploymentSourceSha: "a".repeat(40),
+        expectedEnvironment: "production",
+        deploymentEnvironment: "preview",
+        expectedReleaseId: "wp00-t11-a-preview",
+        publicReleaseId: "wp00-t11-a-preview",
+        intendedDeployment: true,
+        requiredConfiguration: { APP_ORIGIN: true },
+        rollbackTarget: "dpl-last-known-good",
+      }),
+    ).toThrow("RELEASE_ENVIRONMENT_MISMATCH");
+
+    expect(() =>
+      validateReleaseFingerprint({
+        reviewedSourceSha: "a".repeat(40),
+        deploymentSourceSha: "a".repeat(40),
+        expectedEnvironment: "production",
+        deploymentEnvironment: "production",
+        expectedReleaseId: "reviewed-release",
+        publicReleaseId: "stale-release",
+        intendedDeployment: true,
+        requiredConfiguration: { APP_ORIGIN: true },
+        rollbackTarget: "dpl-last-known-good",
+      }),
+    ).toThrow("RELEASE_FINGERPRINT_MISMATCH");
   });
 });

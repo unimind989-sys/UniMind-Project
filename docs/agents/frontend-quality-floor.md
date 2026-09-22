@@ -16,6 +16,8 @@ Prove the applicable behavior through the changed public seam:
 
 Use Impeccable only for design direction, redesign, significant UX restructuring, interaction-design judgment, critique, or substantial visual refinement. A small copy, spacing, or behavior correction keeps this floor without starting the full design workflow.
 
+The central route raises `HUMAN_DESIGN_ACCEPTANCE_REQUIRED` only for a material unresolved subjective frontend decision. Complete the technical floor above before presenting the candidate to Ahmed or Ziad for hands-on product/design acceptance. Their checkpoint covers product feel and subjective presentation; it does not replace correctness, security, accessibility mechanics, automated tests, or CI. A material post-acceptance visual change makes that acceptance stale; a nonvisual correction keeps it valid.
+
 Use the project-pinned Playwright CLI only for explicit trace, locator-discovery, or test-debugging work. Open external Chrome only when the user asked to see the result or a founder must make a real visual/product decision.
 
 A render proves appearance, not authorization, privacy, accessibility, security, or delivery. Keep those checks in their owning seams.

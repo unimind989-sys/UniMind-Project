@@ -39,7 +39,7 @@ Compare the result with the intent pass recorded in the task. Widen only for new
 
 ## 3. Spend verification proportionally
 
-Before calling a test or service, build a verification map: each changed public seam, acceptance criterion, and material risk must point to one check or exact-match existing result. If a proposed check proves nothing unique, remove it.
+Before calling a test or service, build a verification map: each changed public seam, acceptance criterion, and material risk must point to one check or exact-match existing result. If a proposed check proves nothing unique, remove it. After focused rejection checks produce a coherent rendered candidate, resolve the central route's `HUMAN_DESIGN_ACCEPTANCE_REQUIRED` checkpoint when present, then run one `proof-preflight` pass. The preflight must inventory all applicable obligations before stable broad verification; it does not run every expensive check. Do not start stable broad verification while the inventory is incomplete, unknown, or waiting for current founder design acceptance.
 
 The local safety floor applies to every tier:
 
@@ -65,6 +65,8 @@ Conserve remote calls:
 - stop querying once the required evidence is stable and complete.
 
 Rate limiting changes timing, not safety. Back off and resume from known identifiers; never bypass a required check to make progress.
+
+For running CI, keep the structured wait and evidence-retrieval path. Use a coarse bounded wait or wait for a meaningful status/completion revision; do not repeatedly consume unchanged command output merely because a job is still alive. Preserve exact-head CI and retrieve detailed output after a state change, failure, or completion.
 
 ## 4. Deliver through protected GitHub
 
@@ -102,8 +104,9 @@ UniMind's automatic production-domain assignment is disabled. After a runtime-ch
 2. Prove the deployment corresponds to the reviewed source and intended environment/configuration.
 3. Verify the preview through the changed public seam.
 4. Record D-22 standing authorization for that exact commit and deployment; also record `$finalize` when it was the manual/recovery entry point.
-5. Manually promote the verified artifact to `project-xwrez.vercel.app`.
-6. Prove the public domain resolves to that deployment, verify the release/configuration fingerprint, run focused production smoke checks, and inspect relevant error signals.
+5. Before promotion, run the existing deployment-smoke release-fingerprint validation against sanitized facts: reviewed source SHA/tree, expected environment, deployment source identity, public `NEXT_PUBLIC_RELEASE_ID`, required-configuration presence booleans, intended target, and rollback target. Reject any mismatch before mutating the production alias; never print secret values.
+6. Manually promote the verified artifact to `project-xwrez.vercel.app`.
+7. Prove the public domain resolves to that deployment, rerun the public release/configuration fingerprint and focused production smoke checks, and inspect relevant error signals.
 
 When runtime product state did not change, do not promote a deployment. When it did, never infer production success from a green build or Ready badge alone.
 

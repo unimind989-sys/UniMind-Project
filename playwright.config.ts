@@ -29,7 +29,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "corepack pnpm next dev --hostname 127.0.0.1 --port 3100",
+    command: "corepack pnpm exec tsx scripts/run-playwright-server.ts",
     url: "http://127.0.0.1:3100",
     reuseExistingServer: false,
     timeout: 120_000,

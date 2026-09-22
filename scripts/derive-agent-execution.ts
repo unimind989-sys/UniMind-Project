@@ -62,9 +62,12 @@ function changedPaths(baseRef = "origin/main"): string[] {
 
 const task = valueAfter("--task");
 const pass = valueAfter("--pass");
-if (task === undefined || (pass !== "intent" && pass !== "actual-diff")) {
+if (
+  task === undefined ||
+  (pass !== "intent" && pass !== "actual-diff" && pass !== "proof-preflight")
+) {
   throw new Error(
-    "Usage: pnpm agent:route -- --task WPXX-TYY --pass intent|actual-diff --surface <surface> [--surface ...] [--flag <name>] [--path <path>] [--active-model luna-max|sol-high] [--receipt <path>] [--ci-evidence <path>] [--format json|yaml]",
+    "Usage: pnpm agent:route -- --task WPXX-TYY --pass intent|actual-diff|proof-preflight --surface <surface> [--surface ...] [--flag <name>] [--path <path>] [--active-model luna-max|sol-high] [--receipt <path>] [--ci-evidence <path>] [--format json|yaml]",
   );
 }
 
