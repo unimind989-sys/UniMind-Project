@@ -91,6 +91,7 @@ values
   ('claim_processing_job'),
   ('finalize_synthetic_source_submission_internal'),
   ('create_profile_for_auth_user'),
+  ('current_batch_leader_campaign_internal'),
   ('current_student_catalog_state'),
   ('enforce_ready_embedding_config_update'),
   ('enforce_ready_quality_report_insert'),
@@ -139,9 +140,7 @@ values
   ('academic_levels', 'academic_levels_select_active', 'SELECT'),
   ('terms', 'terms_select_active', 'SELECT'),
   ('cohorts', 'cohorts_select_member_or_admin', 'SELECT'),
-  ('cohorts', 'cohorts_select_assigned_collection', 'SELECT'),
   ('curriculum_units', 'curriculum_units_select_member_or_admin', 'SELECT'),
-  ('curriculum_units', 'curriculum_units_select_assigned_collection', 'SELECT'),
   ('cohort_memberships', 'cohort_memberships_select_own', 'SELECT'),
   ('cohort_releases', 'cohort_releases_select_member_or_admin', 'SELECT'),
   ('collection_campaigns', 'collection_campaigns_select_assigned_or_admin', 'SELECT'),
@@ -547,6 +546,7 @@ select is(
       and (
         routine_name not in (
           'can_read_source_asset',
+          'current_batch_leader_campaign_internal',
           'current_student_catalog_state',
           'finalize_synthetic_source_submission_internal'
         )
@@ -565,13 +565,14 @@ select is(
       and routine_schema = 'unimind_private'
       and routine_name in (
         'can_read_source_asset',
+        'current_batch_leader_campaign_internal',
         'current_student_catalog_state',
         'finalize_synthetic_source_submission_internal'
       )
       and privilege_type = 'EXECUTE'
   ),
-  3::bigint,
-  'authenticated receives only the three private execution grants required by caller seams'
+  4::bigint,
+  'authenticated receives only the four private execution grants required by caller seams'
 );
 
 select ok(

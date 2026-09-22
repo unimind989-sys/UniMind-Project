@@ -73,46 +73,8 @@ create index collection_uploads_uploaded_by_idx
 revoke all on table unimind_private.collection_uploads
   from public, anon, authenticated;
 
-create policy cohorts_select_assigned_collection
-on public.cohorts for select to authenticated
-using (
-  exists (
-    select 1
-    from public.collection_campaigns as campaigns
-    join public.batch_leader_assignments as assignments
-      on assignments.campaign_id = campaigns.id
-    where campaigns.cohort_id = cohorts.id
-      and campaigns.status = 'OPEN'
-      and campaigns.opens_at <= transaction_timestamp()
-      and campaigns.closes_at > transaction_timestamp()
-      and assignments.user_id = (select auth.uid())
-      and assignments.status = 'ACTIVE'
-      and assignments.expires_at > transaction_timestamp()
-  )
-);
-
-create policy curriculum_units_select_assigned_collection
-on public.curriculum_units for select to authenticated
-using (
-  exists (
-    select 1
-    from public.campaign_curriculum_units as campaign_units
-    join public.collection_campaigns as campaigns
-      on campaigns.id = campaign_units.campaign_id
-    join public.batch_leader_assignments as assignments
-      on assignments.campaign_id = campaigns.id
-    where campaign_units.curriculum_unit_id = curriculum_units.id
-      and campaigns.status = 'OPEN'
-      and campaigns.opens_at <= transaction_timestamp()
-      and campaigns.closes_at > transaction_timestamp()
-      and assignments.user_id = (select auth.uid())
-      and assignments.status = 'ACTIVE'
-      and assignments.expires_at > transaction_timestamp()
-  )
-);
-
-create function public.current_batch_leader_campaign(
-  target_campaign_id uuid default null
+create function unimind_private.current_batch_leader_campaign_internal(
+  target_campaign_id uuid
 )
 returns table (
   campaign_id uuid,
@@ -136,7 +98,7 @@ returns table (
 )
 language sql
 stable
-security invoker
+security definer
 set search_path = ''
 as $$
   select
@@ -186,6 +148,40 @@ as $$
     and (target_campaign_id is null or campaigns.id = target_campaign_id)
   order by campaigns.closes_at, requested.required desc,
     units.sort_order, requested.created_at, requested.id;
+$$;
+
+create function public.current_batch_leader_campaign(
+  target_campaign_id uuid default null
+)
+returns table (
+  campaign_id uuid,
+  campaign_name text,
+  cohort_name text,
+  campaign_opens_at timestamptz,
+  campaign_closes_at timestamptz,
+  assignment_expires_at timestamptz,
+  requested_item_id uuid,
+  curriculum_unit_id uuid,
+  requested_title text,
+  expected_type text,
+  required boolean,
+  requested_status text,
+  unit_title_en text,
+  unit_title_ar text,
+  latest_submission_id uuid,
+  latest_submission_name text,
+  latest_submission_status text,
+  latest_submission_created_at timestamptz
+)
+language sql
+stable
+security invoker
+set search_path = ''
+as $$
+  select *
+  from unimind_private.current_batch_leader_campaign_internal(
+    target_campaign_id
+  );
 $$;
 
 create function unimind_private.register_synthetic_collection_upload_internal(
@@ -539,6 +535,8 @@ $$;
 revoke all on function unimind_private.register_synthetic_collection_upload_internal(
   uuid, uuid, uuid, uuid, text, text, text, text, text, text, text, bigint
 ) from public, anon, authenticated;
+revoke all on function unimind_private.current_batch_leader_campaign_internal(uuid)
+  from public, anon, authenticated;
 revoke all on function public.current_batch_leader_campaign(uuid)
   from public, anon, authenticated;
 revoke all on function unimind_private.finalize_synthetic_source_submission_internal(
@@ -554,6 +552,8 @@ revoke all on function public.finalize_synthetic_source_submission(
 grant execute on function unimind_private.register_synthetic_collection_upload_internal(
   uuid, uuid, uuid, uuid, text, text, text, text, text, text, text, bigint
 ) to service_role;
+grant execute on function unimind_private.current_batch_leader_campaign_internal(uuid)
+  to authenticated;
 grant execute on function unimind_private.finalize_synthetic_source_submission_internal(
   uuid, uuid, uuid, text, text, text, text
 ) to authenticated;

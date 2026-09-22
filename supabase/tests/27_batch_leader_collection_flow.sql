@@ -20,6 +20,8 @@ create temporary table collection_test_state (
   value uuid not null
 );
 
+grant select, insert on collection_test_state to authenticated, service_role;
+
 select ok(
   not has_schema_privilege('authenticated', 'unimind_private', 'USAGE'),
   'authenticated clients cannot browse the private upload evidence schema'

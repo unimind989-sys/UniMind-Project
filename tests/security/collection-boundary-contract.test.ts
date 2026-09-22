@@ -18,9 +18,13 @@ describe("Batch Leader collection trust boundary", () => {
     expect(sql).toContain("campaigns.status = 'OPEN'");
     expect(sql).toContain("p_declared_rights <> 'DECLARED'");
     expect(sql).toContain("for update");
-    expect(sql).toContain("create policy cohorts_select_assigned_collection");
-    expect(sql).toContain(
-      "create policy curriculum_units_select_assigned_collection",
+    expect(sql).not.toContain("cohorts_select_assigned_collection");
+    expect(sql).not.toContain("curriculum_units_select_assigned_collection");
+    expect(sql).toMatch(
+      /create function unimind_private\.current_batch_leader_campaign_internal[\s\S]+?language sql\s+stable\s+security definer\s+set search_path/iu,
+    );
+    expect(sql).toMatch(
+      /create function public\.current_batch_leader_campaign[\s\S]+?language sql\s+stable\s+security invoker\s+set search_path/iu,
     );
     expect(sql).toContain("security invoker");
   });
