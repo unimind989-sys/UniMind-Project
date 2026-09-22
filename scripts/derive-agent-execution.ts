@@ -7,6 +7,7 @@ import { stringify } from "yaml";
 import {
   assessConditionalCiEvidence,
   assessEvidenceReceipt,
+  buildEvidenceReceipt,
   classifyChangedPaths,
   deriveAgentExecution,
   loadAgentExecutionPolicy,
@@ -67,7 +68,7 @@ if (
   (pass !== "intent" && pass !== "actual-diff" && pass !== "proof-preflight")
 ) {
   throw new Error(
-    "Usage: pnpm agent:route -- --task WPXX-TYY --pass intent|actual-diff|proof-preflight --surface <surface> [--surface ...] [--flag <name>] [--path <path>] [--active-model luna-max|sol-high] [--receipt <path>] [--ci-evidence <path>] [--format json|yaml]",
+    "Usage: pnpm agent:route -- --task WPXX-TYY --pass intent|actual-diff|proof-preflight --surface <surface> [--surface ...] [--flag <name>] [--path <path>] [--active-model luna-max|sol-high] [--receipt <path>] [--emit-receipt-candidate <sha> --passed-check <id> ...] [--ci-evidence <path>] [--format json|yaml]",
   );
 }
 
@@ -131,7 +132,21 @@ const receiptOutput =
           task,
           surfaces: evidenceSurfaces,
           changedPaths: evidenceChangedPaths,
+          flags,
         }),
+      };
+const generatedReceiptCandidate = valueAfter("--emit-receipt-candidate");
+const generatedReceiptOutput =
+  generatedReceiptCandidate === undefined
+    ? receiptOutput
+    : {
+        ...receiptOutput,
+        generatedReceipt: buildEvidenceReceipt(
+          policy,
+          result,
+          generatedReceiptCandidate,
+          valuesAfter("--passed-check"),
+        ),
       };
 const conditionalCiEvidencePath = valueAfter("--ci-evidence");
 const conditionalCiEvidenceValue =
@@ -142,9 +157,9 @@ const conditionalCiEvidenceValue =
       ) as unknown);
 const output =
   conditionalCiEvidenceValue === undefined
-    ? receiptOutput
+    ? generatedReceiptOutput
     : {
-        ...receiptOutput,
+        ...generatedReceiptOutput,
         conditionalCiAssessment: assessConditionalCiEvidence(
           policy,
           conditionalCiEvidenceValue,

@@ -526,6 +526,18 @@ This bounded self-correction task applies the first real WP03 benchmark to the e
 
 **Pass:** the benchmarked defects are corrected through the existing central policy/router, receipt, task, and verification seams; mandatory security, accessibility, responsive, RTL/LTR, release, and exact-head proof remains required; the merged clean repository recommends WP03-T05 and leaves WP03-T04 unchanged.
 
+#### WP00-T12 — Correct proof reuse and review semantics
+
+This final bounded WP00-T11 audit repair removes the duplicate proof taxonomy, corrects design-evidence invalidation, and records review provenance accurately. It does not reopen WP03-T04 or start WP03-T05 and adds no worker, connector, orchestration layer, telemetry, or verification architecture.
+
+- [x] Derive proof-completeness obligations directly from the authoritative selected verification requirements, retaining explicit human design acceptance and conservative unknown handling.
+- [x] Represent semantic invalidating inputs in the existing receipt fingerprint so known nonvisual frontend, backend, and docs-only changes preserve design acceptance, material visual changes invalidate it, and unknown visual impact fails conservatively.
+- [x] Prove those rules through the normal receipt-generation and assessment path rather than manually idealized receipts.
+- [x] Distinguish executor-controlled distinct-account approval from genuinely independent review in policy, finalization, evidence, and regressions without adding a mandatory reviewer where the runbook does not require one.
+- [x] Run focused proof first, one stable broad gate, exact-head CI, protected delivery, synchronized-main proof, evidence closure, cleanup, and confirm WP03-T05 remains next without implementing it. These closure markers become authoritative only when the exact reviewed PR #44 head reaches protected `main`.
+
+**Pass:** selected verification additions/removals flow into proof completeness automatically; generated evidence has correct semantic invalidation; uncertain visual impact cannot reuse acceptance; account separation is recorded without a false independence claim; the merged clean repository recommends WP03-T05.
+
 ### 3.1 Select exact pilot cohorts
 
 Create one decision record for Human Medicine and one for Veterinary Medicine containing:

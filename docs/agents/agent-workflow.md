@@ -56,7 +56,7 @@ After the candidate is technically safe and any required founder design acceptan
 corepack pnpm agent:route -- --task WPXX-TYY --pass proof-preflight --surface <surface> --path <changed-path> --format json
 ```
 
-The preflight inventories every applicable proof obligation through the central selector: application/type/lint, security/Auth/RLS, database and generated-artifact parity, rendered behavior, accessibility, RTL/LTR, responsive behavior, fresh-checkout assumptions, release fingerprint, task/readiness, and task-selected hosted-service proof. It identifies obligations; it does not run every expensive check. Do not begin stable broad verification until the result is `COMPLETE` and no design gate is pending. Unknown paths, malformed policy, and high-risk omissions remain conservative and block stable-candidate status.
+The preflight consumes the central selector's final verification requirements directly, including universal, surface-, path-, risk-, and task-selected checks. It adds only explicit non-automated acceptance such as current founder design acceptance; it does not maintain a second proof taxonomy or run every expensive check. Do not begin stable broad verification until every selected check is represented, every explicit acceptance is satisfied, the phase is `proof-preflight`, and the result is `COMPLETE`. Unknown paths, unknown visual impact, malformed policy, and high-risk omissions remain conservative and block stable-candidate status.
 
 For large policy, runbook, or reference files, inspect headings/index or search targeted concepts first, then read bounded ranges. A truncated output triggers narrower retrieval; it is not a reason to repeat the same oversized read. Reuse unchanged complete reads unless a relevant section may have changed or a new question requires it.
 
@@ -65,7 +65,7 @@ For large policy, runbook, or reference files, inspect headings/index or search 
 ## 6. Verify and persist evidence
 
 1. Add explicit runbook/task checks to the router's selected checks. Map each acceptance criterion, changed public seam, and material risk to one rejecting proof.
-2. Reuse an exact-match passing receipt until a relevant surface/input changes. Malformed, missing, mismatched, or contradicted evidence means proof is missing.
+2. Reuse an exact-match passing receipt until one of its declared invalidating inputs changes. Generated receipts derive automated invalidators from the selected verification rule; human design acceptance is invalidated by material design judgment, retained for known nonvisual frontend/backend/docs changes, and treated as missing when visual impact is unknown. Malformed, missing, mismatched, or contradicted evidence means proof is missing.
 3. Run focused stable-candidate checks once. Run local `pnpm verify` when the task or policy selects it; exact-head required GitHub CI remains the broad delivery gate.
 4. While conditional CI is `SHADOW` or `READY`, keep broad CI unchanged, retain the router's per-job run/would-skip predictions, and compare them with outcomes from that same broad run. READY requires the policy's complete regression coverage, run and would-skip observations for every job, and zero unsafe skip contradictions; a contradiction falls back only the affected job. ENFORCED requires a separate governed policy and CI workflow change.
 5. Inspect `git diff --check`, `git diff --stat`, the full diff, and changed-file secret/scope risk. Record results, invalidation/reuse, deviations, rollback, and unaffected checks/services in sanitized evidence.
@@ -75,6 +75,8 @@ For large policy, runbook, or reference files, inspect headings/index or search 
 ## 7. Deliver or honor the opt-out
 
 For ordinary selected tasks, enter the terminal `finalize` workflow automatically: push one reviewable branch, create/update one PR, wait for exact-head required CI, repair invalidated proof, satisfy branch protection, merge the reviewed candidate, verify only affected external/production state, close task/runbook evidence, synchronize clean `main`, and delete task-created branch/temp state. D-22 supplies standing non-financial authorization; stop only immediately before real-money exposure or a genuine access/external/safety blocker.
+
+Record review provenance accurately. An executor switching to another authorized GitHub account provides distinct-account approval and may satisfy account/branch-protection separation, but it is not independent review. Claim independent review only when a separate human or separately executing review agent/process examines the exact candidate. Require that stronger provenance only when the task or protected gate already requires it.
 
 If the request explicitly narrowed delivery, update the task record handoff with the exact remaining action and stop at that boundary. `$finalize` can manually enter or resume terminal delivery later.
 

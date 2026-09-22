@@ -72,19 +72,24 @@ For running CI, keep the structured wait and evidence-retrieval path. Use a coar
 
 Use the existing reviewable task branch when valid; otherwise create the runbook-named branch without mixing unrelated work. Commit an outcome-oriented change, push it, and create or update one pull request.
 
-Perform a final technical review, wait for required GitHub checks, address legitimate findings, and satisfy the repository's review rule. Do not bypass branch protection for a small change.
+Perform a final technical review, wait for required GitHub checks, address legitimate findings, and satisfy the repository's actual review rule. Keep account separation and reviewer independence as separate facts:
+
+- **Distinct-account approval:** the executing agent switches to an authorized reviewer GitHub identity and submits the approval. This may satisfy GitHub account and branch-protection separation, but record it as executor-controlled distinct-account approval.
+- **Independent review:** a separate human or separately executing review agent/process examines the exact candidate. Claim or satisfy this gate only with that separate reviewer provenance.
+
+Do not add a worker or mandatory human review merely to strengthen the label. If the task or protected gate explicitly requires independent review, executor-controlled account switching leaves that gate unsatisfied. Do not bypass branch protection for a small change.
 
 Before opening the side browser for a protected GitHub mutation, probe the authenticated structured GitHub connector and repository-pinned or installed `gh` CLI. Use a structured path only when it can prove the active identity and select the distinct author/reviewer/merger roles without weakening protection. Do not inspect or export tokens, cookies, browser storage, or credentials. Record unavailable authentication, insufficient permissions, or identity-selection limits once and reuse that result until the environment changes.
 
 When structured GitHub and `gh` cannot satisfy the required identity mechanics, use both authenticated GitHub accounts through the in-app side browser:
 
 1. One account creates or owns the pull request.
-2. Switch to the other account and submit the formal approving review after inspecting the diff and checks.
+2. Switch to the other account and submit the formal approving review after inspecting the diff and checks; when the same executing agent controls both steps, record this as distinct-account approval rather than independent review.
 3. Return to the author or repository-owner account and merge when every requirement is green.
 
 If the Codex host requires human action-time confirmation for a browser mutation, obtain it at the required moment, resume from the preserved exact-head state, and record the confirmation as an unavoidable platform limitation. It does not count as autonomous zero-human delivery and does not change D-22's project authorization.
 
-GitHub does not allow a pull-request author to approve their own pull request. Report the accounts' real roles as author/merger and approving reviewer; never claim that GitHub recorded two approving reviews when it recorded one. If repository rules later require more authenticated reviewers than are available, exhaust task-scoped compliant identities and report an access blocker without asking the user to approve or bypass the rule.
+GitHub does not allow a pull-request author to approve their own pull request. Report the accounts' real roles as author/merger and approving reviewer; never claim that GitHub recorded two approving reviews when it recorded one. If repository rules later require independent review or more authenticated reviewers than are actually available, exhaust task-scoped compliant provenance and identities, then report an access blocker without asking the user to approve or bypass the rule.
 
 Merge only the reviewed candidate, then fetch and prove that local `main`, remote `main`, and the merge result agree.
 
@@ -134,7 +139,7 @@ Lead with `FINALIZED`, `BLOCKED`, or `NOT FINALIZED`, followed by:
 
 - final surfaces, risk, planning/model floors, and why;
 - implementation or fixes made during finalization;
-- commit, pull request, both GitHub account roles, review, checks, merge, and final `main` identity;
+- commit, pull request, GitHub account roles, reviewer-process provenance, review requirement/result, checks, merge, and final `main` identity;
 - Supabase status or the precise reason it was skipped;
 - Vercel deployment and production status, or the precise reason promotion was skipped;
 - production behavior verified when runtime changed;

@@ -1,5 +1,14 @@
 # Skill adaptations
 
+## 2026-09-22 — Review provenance accuracy
+
+### `finalize`
+
+- **Evidence:** WP00-T11's executing Codex agent switched from the author account to `aboayman-oss` and submitted the approving review itself. The delivery workflow and closure evidence called this independent review even though only the GitHub account changed.
+- **Change:** Finalization now distinguishes executor-controlled distinct-account approval from review by a separate human or separately executing agent/process. It satisfies only the review provenance the task or protected gate actually requires and does not add a reviewer merely to strengthen the label.
+- **Validation:** Central review-provenance regressions, explicit trigger/non-trigger behavior cases in `EVALS.md`, repository skill validation, and corrected WP00-T11 evidence terminology.
+- **Upstream:** UniMind-owned skill; no third-party source changed.
+
 ## 2026-09-21 — GitHub delivery capability probe and confirmation accuracy
 
 ### `finalize`
