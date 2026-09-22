@@ -2,6 +2,9 @@
 -- WP03-T05-ANON-DENY, WP03-T05-SERVER-ONLY, WP03-T05-FUNCTION-GRANTS.
 begin;
 select plan(25);
+set local unimind.actor_id = '10000000-0000-0000-0000-000000000001';
+set local unimind.audit_reason = 'WP03-T05 synthetic revocation proof';
+set local unimind.correlation_id = '90000000-0000-0000-0000-000000000005';
 
 insert into public.requested_material_items (
   id, campaign_id, curriculum_unit_id, title, expected_type, required, status
