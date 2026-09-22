@@ -27,6 +27,21 @@ const activationRuleNames = [
   "automatic_finalization",
   "conditional_ci",
 ] as const;
+const agentExecutionFlagNames = [
+  "architectureUncertainty",
+  "authSemantics",
+  "designJudgment",
+  "destructiveMigration",
+  "domainUncertainty",
+  "explicitPlaywrightCli",
+  "humanVisualDecision",
+  "productionMutation",
+  "rls",
+  "securityUncertainty",
+  "specialistBrowserDebug",
+  "userRequestedView",
+  "visualImpactUnknown",
+] as const;
 
 export type Surface = (typeof surfaceNames)[number];
 export type Risk = (typeof riskNames)[number];
@@ -50,6 +65,7 @@ type VerificationCheck = {
   command: string;
   always?: boolean;
   surfaces?: Surface[];
+  risks?: Risk[];
   path_patterns?: string[];
 };
 
@@ -156,6 +172,7 @@ export type AgentExecutionFlags = {
   securityUncertainty?: boolean;
   specialistBrowserDebug?: boolean;
   userRequestedView?: boolean;
+  visualImpactUnknown?: boolean;
 };
 
 export type AgentExecutionInput = {
@@ -223,17 +240,24 @@ export type AgentExecutionResult = {
   reasons: string[];
 };
 
-type EvidenceProof = {
+type EvidenceSemanticFact = {
+  flag: keyof AgentExecutionFlags;
+  equals: true;
+  result: "INVALID" | "MISSING";
+};
+
+export type EvidenceProof = {
   id: string;
   check: string;
   status: "PASS";
   invalidatedBy: {
     surfaces: Surface[];
     pathPatterns: string[];
+    semanticFacts?: EvidenceSemanticFact[];
   };
 };
 
-type EvidenceReceipt = {
+export type EvidenceReceipt = {
   schemaVersion: number;
   policyVersion: number;
   task: string;
@@ -278,6 +302,19 @@ export type EvidenceAssessment = {
   state: "REUSE" | "INVALID" | "MISSING";
   reason: string;
   sourceCandidate?: string;
+};
+
+export type ReviewRequirement = "distinct-account" | "independent";
+
+export type ReviewProvenance = {
+  accountSeparated: boolean;
+  reviewerSeparated: boolean;
+  exactCandidate: boolean;
+  reviewCompleted: boolean;
+  kind: "SAME_ACCOUNT" | "DISTINCT_ACCOUNT" | "INDEPENDENT";
+  requirement: ReviewRequirement;
+  status: "SATISFIED" | "MISSING";
+  reason: string;
 };
 
 type ConditionalCiObservation = {
@@ -616,16 +653,12 @@ export function validateAgentExecutionPolicy(
   if (new Set(checkIds).size !== checkIds.length) {
     failures.push("verification check ids must be unique");
   }
+  for (const check of policy.verification.checks) {
+    if (check.risks?.some((risk) => !riskNames.includes(risk)) === true) {
+      failures.push(`verification check has invalid risk: ${check.id}`);
+    }
+  }
   return failures;
-}
-
-function pathMatchesAny(
-  changedPaths: readonly string[],
-  patterns: readonly string[],
-): boolean {
-  return changedPaths.some((changedPath) =>
-    matchesAny(changedPath.replaceAll("\\", "/"), [...patterns]),
-  );
 }
 
 function unknownChangedPaths(
@@ -643,142 +676,31 @@ function unknownChangedPaths(
 export function buildProofCompletenessPreflight(
   policy: AgentExecutionPolicy,
   input: AgentExecutionInput,
-  surfaces: readonly Surface[],
-  risk: Risk,
+  selectedVerification: AgentExecutionResult["verification"],
   designAcceptance: AgentExecutionResult["designAcceptance"],
 ): ProofCompletenessPreflight {
-  const availableCheckIds = new Set(
-    policy.verification.checks.map((check) => check.id),
-  );
-  const obligations: ProofObligation[] = [];
-  const addAutomated = (
-    id: string,
-    checkIds: readonly string[],
-    reason: string,
-  ): void => {
-    obligations.push({ id, kind: "automated", checkIds, reason });
-  };
-  const addHuman = (id: string, reason: string): void => {
-    obligations.push({ id, kind: "human", checkIds: [], reason });
-  };
-
-  const hasSurface = (...names: Surface[]): boolean =>
-    names.some((name) => surfaces.includes(name));
-  const applicationChange = hasSurface(
-    "frontend",
-    "runtime",
-    "auth",
-    "data",
-    "storage",
-    "tooling",
-  );
-  const generatedTypeChange = pathMatchesAny(input.changedPaths, [
-    "^src/types/database\\.generated\\.ts$",
-  ]);
-  const releaseRelevant =
-    input.flags?.productionMutation === true ||
-    pathMatchesAny(input.changedPaths, [
-      "^(vercel\\.json|\\.github/workflows/|\\.env\\.example)",
-      "(^|/)(release|deployment)/",
-      "(^|/)(NEXT_PUBLIC_RELEASE_ID|release-fingerprint)(/|$|\\.)",
-    ]);
-  const hostedServiceProofSelected =
-    input.flags?.productionMutation === true ||
-    input.explicitChecks?.includes("affected-production-proof") === true ||
-    pathMatchesAny(input.changedPaths, ["^supabase/"]);
-
-  if (applicationChange) {
-    addAutomated(
-      "application-quality",
-      ["application-quality", "pnpm-verify"],
-      "Application, type, and lint proof covers the executable diff.",
-    );
-    addAutomated(
-      "fresh-checkout",
-      ["fresh-checkout"],
-      "A clean generated-state-free type proof catches checkout-only assumptions before broad CI.",
-    );
-  }
-  if (hasSurface("auth") || input.flags?.rls === true) {
-    addAutomated(
-      "security-auth-rls",
-      ["authorization-denial"],
-      "Auth/RLS behavior requires allowed and forbidden-path security proof.",
-    );
-  }
-  if (hasSurface("data", "storage") || input.flags?.rls === true) {
-    addAutomated(
-      "database-contracts",
-      ["database-contracts"],
-      "Database/storage state requires the task-selected database contract proof.",
-    );
-  }
-  if (generatedTypeChange) {
-    addAutomated(
-      "generated-artifact-parity",
-      ["database-contracts", "fresh-checkout"],
-      "Generated database artifacts require parity, type, and database proof.",
-    );
-  }
-  if (hasSurface("frontend")) {
-    addAutomated(
-      "rendered-frontend",
-      ["frontend-behavior"],
-      "The changed user-visible surface requires rendered behavior proof.",
-    );
-    addAutomated(
-      "accessibility",
-      ["frontend-behavior"],
-      "Rendered frontend proof must include keyboard, semantics, and basic accessibility behavior.",
-    );
-    addAutomated(
-      "rtl-ltr",
-      ["frontend-behavior"],
-      "Rendered frontend proof must cover affected RTL/LTR presentation when applicable.",
-    );
-    addAutomated(
-      "responsive",
-      ["frontend-behavior"],
-      "Rendered frontend proof must cover affected responsive presentation.",
-    );
-  }
-  if (releaseRelevant) {
-    addAutomated(
-      "release-fingerprint",
-      ["affected-production-proof"],
-      "Promotion must bind reviewed source, environment, public release identity, configuration presence, intended deployment, and rollback target before mutation.",
-    );
-  }
-  if (hasSurface("auth", "data", "storage") && hostedServiceProofSelected) {
-    addAutomated(
-      "hosted-service-proof",
-      ["affected-production-proof"],
-      "The task-selected hosted service must be checked only when the final dependency reaches it.",
-    );
-  }
-
-  addAutomated(
-    "task-readiness",
-    ["agent-readiness"],
-    "Task/readiness evidence binds the final task record, runbook state, and durable handoff.",
-  );
+  const obligations: ProofObligation[] = selectedVerification.map((check) => ({
+    id: check.id,
+    kind: "automated",
+    checkIds: [check.id],
+    reason: `${check.reason}: ${check.command}`,
+  }));
   if (designAcceptance.required || designAcceptance.status === "ACCEPTED") {
-    addHuman(
-      "human-design-acceptance",
-      designAcceptance.required
+    obligations.push({
+      id: "human-design-acceptance",
+      kind: "human",
+      checkIds: [],
+      reason: designAcceptance.required
         ? "Founder hands-on subjective review is required before stable broad verification."
         : "Founder hands-on subjective review is recorded for the accepted material candidate.",
-    );
+    });
   }
 
   const missing = obligations
     .filter(
       (obligation) =>
         obligation.kind === "automated" &&
-        (obligation.checkIds.length === 0 ||
-          obligation.checkIds.every(
-            (checkId) => !availableCheckIds.has(checkId),
-          )),
+        (obligation.id.trim().length === 0 || obligation.checkIds.length !== 1),
     )
     .map((obligation) => obligation.id);
   if (designAcceptance.required) missing.push("human-design-acceptance");
@@ -800,19 +722,12 @@ export function buildProofCompletenessPreflight(
       `unknown paths require conservative proof: ${unknownPaths.join(", ")}`,
     );
   }
-  if (
-    risk === "R3" &&
-    !obligations.some((item) => item.id === "security-auth-rls")
-  ) {
-    missing.push("security-auth-rls");
-    reasons.push(
-      "R3 proof must include an explicit security/auth boundary obligation.",
-    );
+  if (input.flags?.visualImpactUnknown === true) {
+    reasons.push("unknown visual impact requires conservative proof");
   }
-
   const uniqueMissing = Array.from(new Set(missing));
   const status: ProofPreflightStatus =
-    unknownPaths.length > 0
+    unknownPaths.length > 0 || input.flags?.visualImpactUnknown === true
       ? "UNKNOWN"
       : input.pass !== "proof-preflight" || uniqueMissing.length > 0
         ? "INCOMPLETE"
@@ -1045,6 +960,7 @@ export function deriveAgentExecution(
       if (check.surfaces?.some((surface) => surfaces.has(surface)) === true) {
         return true;
       }
+      if (check.risks?.includes(risk) === true) return true;
       return input.changedPaths.some((changedPath) =>
         matchesAny(
           changedPath.replaceAll("\\", "/"),
@@ -1076,8 +992,7 @@ export function deriveAgentExecution(
   const proofPreflight = buildProofCompletenessPreflight(
     policy,
     input,
-    sortedSurfaces,
-    risk,
+    verification,
     designAcceptance,
   );
   const ciPredictions = predictConditionalCiJobs(
@@ -1322,6 +1237,7 @@ function parseEvidenceReceipt(value: unknown): EvidenceReceipt | undefined {
       return undefined;
     }
     const invalidatedBy = proofValue.invalidatedBy;
+    const semanticFacts = invalidatedBy.semanticFacts;
     if (
       typeof proofValue.id !== "string" ||
       typeof proofValue.check !== "string" ||
@@ -1341,7 +1257,26 @@ function parseEvidenceReceipt(value: unknown): EvidenceReceipt | undefined {
         } catch {
           return false;
         }
-      })
+      }) ||
+      (semanticFacts !== undefined &&
+        (!Array.isArray(semanticFacts) ||
+          !semanticFacts.every(
+            (fact) =>
+              isRecord(fact) &&
+              typeof fact.flag === "string" &&
+              agentExecutionFlagNames.includes(
+                fact.flag as (typeof agentExecutionFlagNames)[number],
+              ) &&
+              fact.equals === true &&
+              (fact.result === "INVALID" || fact.result === "MISSING"),
+          )))
+    ) {
+      return undefined;
+    }
+    const parsedSemanticFacts = (semanticFacts ?? []) as EvidenceSemanticFact[];
+    if (
+      proofValue.id === "human-design-acceptance" &&
+      !parsedSemanticFacts.some((fact) => fact.flag === "designJudgment")
     ) {
       return undefined;
     }
@@ -1352,6 +1287,9 @@ function parseEvidenceReceipt(value: unknown): EvidenceReceipt | undefined {
       invalidatedBy: {
         surfaces: invalidatedBy.surfaces as Surface[],
         pathPatterns: invalidatedBy.pathPatterns as string[],
+        ...(parsedSemanticFacts.length === 0
+          ? {}
+          : { semanticFacts: parsedSemanticFacts }),
       },
     });
   }
@@ -1367,7 +1305,12 @@ function parseEvidenceReceipt(value: unknown): EvidenceReceipt | undefined {
 export function assessEvidenceReceipt(
   policy: AgentExecutionPolicy,
   receiptValue: unknown,
-  current: { task: string; surfaces: Surface[]; changedPaths: string[] },
+  current: {
+    task: string;
+    surfaces: Surface[];
+    changedPaths: string[];
+    flags?: AgentExecutionFlags;
+  },
 ): EvidenceAssessment[] {
   const receipt = parseEvidenceReceipt(receiptValue);
   if (receipt === undefined) {
@@ -1406,6 +1349,30 @@ export function assessEvidenceReceipt(
   }
 
   return receipt.proofs.map((proof) => {
+    const semanticResult = proof.invalidatedBy.semanticFacts?.find(
+      (fact) => current.flags?.[fact.flag] === fact.equals,
+    );
+    const unknownVisualPath =
+      proof.id === "human-design-acceptance" &&
+      current.surfaces.includes("frontend") &&
+      unknownChangedPaths(policy, current.changedPaths).length > 0;
+    if (semanticResult?.result === "MISSING" || unknownVisualPath) {
+      return {
+        id: proof.id,
+        state: "MISSING" as const,
+        reason:
+          "visual impact is unknown, so design acceptance cannot be reused",
+        sourceCandidate: receipt.candidate,
+      };
+    }
+    if (semanticResult?.result === "INVALID") {
+      return {
+        id: proof.id,
+        state: "INVALID" as const,
+        reason: "material visual change makes founder design acceptance stale",
+        sourceCandidate: receipt.candidate,
+      };
+    }
     const surfaceChanged = proof.invalidatedBy.surfaces.some((surface) =>
       current.surfaces.includes(surface),
     );
@@ -1432,4 +1399,129 @@ export function assessEvidenceReceipt(
           sourceCandidate: receipt.candidate,
         };
   });
+}
+
+function receiptInvalidatorsForCheck(
+  policy: AgentExecutionPolicy,
+  checkId: string,
+): EvidenceProof["invalidatedBy"] {
+  const check = policy.verification.checks.find((item) => item.id === checkId);
+  if (check === undefined || check.always === true) {
+    return { surfaces: [...surfaceNames], pathPatterns: [] };
+  }
+  return {
+    surfaces: [...(check.surfaces ?? [])],
+    pathPatterns: [...(check.path_patterns ?? [])],
+  };
+}
+
+export function buildEvidenceReceipt(
+  policy: AgentExecutionPolicy,
+  result: AgentExecutionResult,
+  candidate: string,
+  passedCheckIds: readonly string[],
+): EvidenceReceipt {
+  if (!/^[a-f0-9]{7,40}$/u.test(candidate)) {
+    throw new Error("Evidence receipt candidate must be a Git commit SHA.");
+  }
+  if (
+    result.pass !== "proof-preflight" ||
+    result.proofPreflight.status !== "COMPLETE"
+  ) {
+    throw new Error(
+      "Evidence receipts require a complete proof-preflight result.",
+    );
+  }
+  const selected = new Map(
+    result.verification.map((check) => [check.id, check]),
+  );
+  const proofs: EvidenceProof[] = Array.from(new Set(passedCheckIds)).map(
+    (checkId) => {
+      const check = selected.get(checkId);
+      if (check === undefined) {
+        throw new Error(
+          `Cannot receipt unselected verification check: ${checkId}`,
+        );
+      }
+      return {
+        id: check.id,
+        check: check.command,
+        status: "PASS",
+        invalidatedBy: receiptInvalidatorsForCheck(policy, check.id),
+      };
+    },
+  );
+  if (result.designAcceptance.status === "ACCEPTED") {
+    proofs.push({
+      id: "human-design-acceptance",
+      check: "founder hands-on design acceptance",
+      status: "PASS",
+      invalidatedBy: {
+        surfaces: [],
+        pathPatterns: [],
+        semanticFacts: [
+          { flag: "designJudgment", equals: true, result: "INVALID" },
+          { flag: "visualImpactUnknown", equals: true, result: "MISSING" },
+        ],
+      },
+    });
+  }
+  return {
+    schemaVersion: policy.evidence.schema_version,
+    policyVersion: policy.policy_version,
+    task: result.task,
+    candidate,
+    proofs,
+  };
+}
+
+export function classifyReviewProvenance(input: {
+  authorAccount: string;
+  approvalAccount: string;
+  executor: string;
+  reviewer: string;
+  candidate: string;
+  reviewedCandidate: string;
+  reviewCompleted: boolean;
+  requirement: ReviewRequirement;
+}): ReviewProvenance {
+  const accountSeparated = input.authorAccount !== input.approvalAccount;
+  const reviewerSeparated = input.executor !== input.reviewer;
+  const exactCandidate = input.candidate === input.reviewedCandidate;
+  const independent =
+    reviewerSeparated && exactCandidate && input.reviewCompleted;
+  const kind = independent
+    ? "INDEPENDENT"
+    : accountSeparated
+      ? "DISTINCT_ACCOUNT"
+      : "SAME_ACCOUNT";
+  const status =
+    input.requirement === "independent"
+      ? independent
+        ? "SATISFIED"
+        : "MISSING"
+      : accountSeparated && exactCandidate && input.reviewCompleted
+        ? "SATISFIED"
+        : "MISSING";
+  return {
+    accountSeparated,
+    reviewerSeparated,
+    exactCandidate,
+    reviewCompleted: input.reviewCompleted,
+    kind,
+    requirement: input.requirement,
+    status,
+    reason:
+      status === "SATISFIED"
+        ? input.requirement === "independent"
+          ? "A separate reviewer examined the candidate."
+          : "A distinct authorized account submitted the approval."
+        : !input.reviewCompleted
+          ? "No completed review is recorded."
+          : !exactCandidate
+            ? "The review does not match the exact candidate."
+            : input.requirement === "independent"
+              ? "The executor cannot satisfy independent review by switching accounts."
+              : "The approval account is not distinct from the author account.",
+  };
 }

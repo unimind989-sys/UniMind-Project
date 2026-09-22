@@ -1,5 +1,5 @@
 schema_version: 1
-policy_version: 3
+policy_version: 4
 
 authority:
   - docs/plans/poc-master-plan.md
@@ -78,8 +78,8 @@ risk:
     R2: luna-max
     R3: sol-high
   protected_flags: [authSemantics, rls, destructiveMigration, productionMutation]
-  deliberate_flags: [architectureUncertainty, domainUncertainty]
-  sol_flags: [architectureUncertainty, domainUncertainty, securityUncertainty]
+  deliberate_flags: [architectureUncertainty, domainUncertainty, visualImpactUnknown]
+  sol_flags: [architectureUncertainty, domainUncertainty, securityUncertainty, visualImpactUnknown]
 
 workers:
   default: 0
@@ -157,6 +157,7 @@ verification:
       stage: stable-candidate
       command: pnpm test:security
       surfaces: [auth]
+      risks: [R3]
     - id: database-contracts
       stage: stable-candidate
       command: task-selected migration and database checks
@@ -217,7 +218,7 @@ conditional_ci:
     workflow_sha256: null
 
 evidence:
-  schema_version: 1
+  schema_version: 2
   malformed: missing
   policy_version_mismatch: missing
   default_invalidation:

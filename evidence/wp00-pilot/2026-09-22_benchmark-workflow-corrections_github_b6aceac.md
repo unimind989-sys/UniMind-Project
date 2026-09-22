@@ -40,6 +40,6 @@ The correction keeps the existing policy/router, receipt/invalidation, task, ver
 
 ## Delivery and rollback
 
-PR #42 was independently approved by `aboayman-oss` on exact head `f86b197` and merged through protected main as `b6aceac`. The reviewed candidate and merged main both passed required CI. Rollback is one protected revert PR for #42; no durable hosted state requires rollback.
+PR #42 received executor-controlled distinct-account approval from `aboayman-oss` on exact head `f86b197` and was merged through protected main as `b6aceac`. This proves GitHub account/branch-protection separation, not cognitively independent review. WP00-T11 required the former and did not add a separate-reviewer gate. The reviewed candidate and merged main both passed required CI. Rollback is one protected revert PR for #42; no durable hosted state requires rollback.
 
 After this closure record is merged, the clean selector must recommend WP03-T05 as the next eligible product task. WP03-T05 remains unimplemented.

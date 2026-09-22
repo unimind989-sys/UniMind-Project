@@ -5,6 +5,8 @@ import { describe, expect, it } from "vitest";
 import {
   assessConditionalCiEvidence,
   assessEvidenceReceipt,
+  buildEvidenceReceipt,
+  classifyReviewProvenance,
   classifyChangedPaths,
   deriveAgentExecution,
   loadAgentExecutionPolicy,
@@ -220,7 +222,7 @@ describe("agent execution policy", () => {
     const assessment = assessEvidenceReceipt(
       policy,
       {
-        schemaVersion: 1,
+        schemaVersion: policy.evidence.schema_version,
         policyVersion: policy.policy_version,
         task: "WP02-T08",
         candidate: "742e61e",
@@ -252,7 +254,7 @@ describe("agent execution policy", () => {
     const assessment = assessEvidenceReceipt(
       policy,
       {
-        schemaVersion: 1,
+        schemaVersion: policy.evidence.schema_version,
         policyVersion: policy.policy_version,
         task: "WP02-T08",
         candidate: "742e61e",
@@ -765,15 +767,48 @@ describe("agent execution policy", () => {
     );
     expect(result.proofPreflight.obligations.map((item) => item.id)).toEqual(
       expect.arrayContaining([
+        "diff-integrity",
+        "secret-scan",
         "application-quality",
-        "rendered-frontend",
-        "accessibility",
-        "rtl-ltr",
-        "responsive",
         "fresh-checkout",
-        "task-readiness",
+        "frontend-behavior",
+        "exact-head-ci",
+        "human-design-acceptance",
       ]),
     );
+  });
+
+  it("tracks verification selector additions and removals without a second proof mapping", () => {
+    const extendedPolicy = structuredClone(policy);
+    extendedPolicy.verification.checks.push({
+      id: "future-tooling-proof",
+      stage: "stable-candidate",
+      command: "pnpm future:proof",
+      surfaces: ["tooling"],
+    });
+
+    const withRequirement = deriveAgentExecution(extendedPolicy, {
+      task: "WP00-T12",
+      pass: "proof-preflight",
+      declaredSurfaces: ["tooling"],
+      changedPaths: ["scripts/lib/agent-execution-policy.ts"],
+    });
+    const withoutRequirement = deriveAgentExecution(policy, {
+      task: "WP00-T12",
+      pass: "proof-preflight",
+      declaredSurfaces: ["tooling"],
+      changedPaths: ["scripts/lib/agent-execution-policy.ts"],
+    });
+
+    expect(withRequirement.verification.map((check) => check.id)).toContain(
+      "future-tooling-proof",
+    );
+    expect(
+      withRequirement.proofPreflight.obligations.map((item) => item.id),
+    ).toContain("future-tooling-proof");
+    expect(
+      withoutRequirement.proofPreflight.obligations.map((item) => item.id),
+    ).not.toContain("future-tooling-proof");
   });
 
   it("fails unknown high-risk proof obligations conservatively", () => {
@@ -793,103 +828,160 @@ describe("agent execution policy", () => {
     );
   });
 
-  it("marks material post-approval visual changes stale but retains approval for nonvisual fixes", () => {
-    const receipt = {
-      schemaVersion: 1,
-      policyVersion: policy.policy_version,
-      task: "WP00-T11",
-      candidate: "742e61e",
-      proofs: [
-        {
-          id: "human-design-acceptance",
-          check: "founder design acceptance",
-          status: "PASS" as const,
-          invalidatedBy: {
-            surfaces: ["frontend" as const],
-            pathPatterns: ["^src/app/", "^src/components/"],
-          },
-        },
-      ],
-    };
+  it("fails known-path proof preflight when visual impact is explicitly unknown", () => {
+    const result = deriveAgentExecution(policy, {
+      task: "WP00-T12",
+      pass: "proof-preflight",
+      declaredSurfaces: ["frontend"],
+      changedPaths: ["src/app/learn/page.tsx"],
+      flags: { visualImpactUnknown: true },
+    });
 
-    expect(
-      assessEvidenceReceipt(policy, receipt, {
-        task: "WP00-T11",
-        surfaces: ["frontend"],
-        changedPaths: ["src/app/learn/page.tsx"],
-      }),
-    ).toEqual([
+    expect(result.proofPreflight).toEqual(
       expect.objectContaining({
-        id: "human-design-acceptance",
-        state: "INVALID",
-        reason: expect.stringMatching(/stale|visual/i),
+        status: "UNKNOWN",
+        stableCandidateAllowed: false,
       }),
-    ]);
-    expect(
-      assessEvidenceReceipt(policy, receipt, {
-        task: "WP00-T11",
-        surfaces: ["runtime"],
-        changedPaths: ["src/lib/catalog/resolve-unit.ts"],
-      }),
-    ).toEqual([
-      expect.objectContaining({
-        id: "human-design-acceptance",
-        state: "REUSE",
-      }),
-    ]);
+    );
   });
 
-  it("reuses application and rendered proof for documentation closure and generated-type changes only invalidate affected proof", () => {
-    const receipt = {
-      schemaVersion: 1,
-      policyVersion: policy.policy_version,
-      task: "WP00-T11",
-      candidate: "742e61e",
-      proofs: [
-        {
-          id: "application-quality",
-          check: "pnpm verify",
-          status: "PASS" as const,
-          invalidatedBy: {
-            surfaces: ["runtime" as const, "tooling" as const],
-            pathPatterns: ["^src/", "^scripts/", "^package\\.json$"],
-          },
-        },
-        {
-          id: "rendered-frontend",
-          check: "pnpm test:e2e",
-          status: "PASS" as const,
-          invalidatedBy: {
-            surfaces: ["frontend" as const],
-            pathPatterns: ["^src/app/", "^src/components/"],
-          },
-        },
-        {
-          id: "database-contracts",
-          check: "database checks",
-          status: "PASS" as const,
-          invalidatedBy: {
-            surfaces: ["data" as const],
-            pathPatterns: ["^supabase/", "^src/types/database\\.generated"],
-          },
-        },
-      ],
-    };
+  it("generates and reuses real design receipts by semantic visual impact", () => {
+    const accepted = deriveAgentExecution(policy, {
+      task: "WP00-T12",
+      pass: "proof-preflight",
+      declaredSurfaces: ["frontend"],
+      changedPaths: ["src/app/learn/page.tsx"],
+      flags: { designJudgment: true, humanVisualDecision: true },
+    });
+    const receipt = buildEvidenceReceipt(policy, accepted, "742e61e", [
+      "application-quality",
+      "frontend-behavior",
+    ]);
+    const assessDesign = (
+      surfaces: (typeof accepted.surfaces)[number][],
+      changedPaths: string[],
+      flags?: { designJudgment?: boolean; visualImpactUnknown?: boolean },
+    ) =>
+      assessEvidenceReceipt(policy, receipt, {
+        task: "WP00-T12",
+        surfaces,
+        changedPaths,
+        ...(flags === undefined ? {} : { flags }),
+      }).find((item) => item.id === "human-design-acceptance");
 
     expect(
+      receipt.proofs.find((proof) => proof.id === "human-design-acceptance")
+        ?.invalidatedBy,
+    ).toEqual(
+      expect.objectContaining({
+        surfaces: [],
+        semanticFacts: expect.arrayContaining([
+          expect.objectContaining({
+            flag: "designJudgment",
+            result: "INVALID",
+          }),
+          expect.objectContaining({
+            flag: "visualImpactUnknown",
+            result: "MISSING",
+          }),
+        ]),
+      }),
+    );
+    expect(
+      assessDesign(["frontend"], ["src/app/learn/page.tsx"], {
+        designJudgment: false,
+      }),
+    ).toEqual(expect.objectContaining({ state: "REUSE" }));
+    expect(
+      assessDesign(["runtime"], ["src/lib/catalog/resolve-unit.ts"]),
+    ).toEqual(expect.objectContaining({ state: "REUSE" }));
+    expect(
+      assessDesign(["frontend"], ["src/app/learn/page.tsx"], {
+        designJudgment: true,
+      }),
+    ).toEqual(expect.objectContaining({ state: "INVALID" }));
+    expect(
       assessEvidenceReceipt(policy, receipt, {
-        task: "WP00-T11",
+        task: "WP00-T12",
         surfaces: ["docs"],
         changedPaths: ["evidence/wp00-pilot/2026-09-22_closure.md"],
       }).map((item) => item.state),
     ).toEqual(["REUSE", "REUSE", "REUSE"]);
     expect(
-      assessEvidenceReceipt(policy, receipt, {
-        task: "WP00-T11",
-        surfaces: ["data", "tooling"],
-        changedPaths: ["src/types/database.generated.ts"],
-      }).map((item) => item.state),
-    ).toEqual(["INVALID", "REUSE", "INVALID"]);
+      assessDesign(["frontend"], ["src/app/learn/page.tsx"], {
+        visualImpactUnknown: true,
+      }),
+    ).toEqual(expect.objectContaining({ state: "MISSING" }));
+    expect(assessDesign(["frontend"], ["unknown/visual-change.asset"])).toEqual(
+      expect.objectContaining({ state: "MISSING" }),
+    );
+  });
+
+  it("distinguishes executor-controlled account approval from independent review", () => {
+    expect(
+      classifyReviewProvenance({
+        authorAccount: "unimind989-sys",
+        approvalAccount: "aboayman-oss",
+        executor: "codex-root",
+        reviewer: "codex-root",
+        candidate: "abcdef1",
+        reviewedCandidate: "abcdef1",
+        reviewCompleted: true,
+        requirement: "distinct-account",
+      }),
+    ).toEqual(
+      expect.objectContaining({
+        kind: "DISTINCT_ACCOUNT",
+        accountSeparated: true,
+        reviewerSeparated: false,
+        status: "SATISFIED",
+      }),
+    );
+    expect(
+      classifyReviewProvenance({
+        authorAccount: "unimind989-sys",
+        approvalAccount: "aboayman-oss",
+        executor: "codex-root",
+        reviewer: "codex-root",
+        candidate: "abcdef1",
+        reviewedCandidate: "abcdef1",
+        reviewCompleted: true,
+        requirement: "independent",
+      }),
+    ).toEqual(
+      expect.objectContaining({
+        kind: "DISTINCT_ACCOUNT",
+        status: "MISSING",
+      }),
+    );
+    expect(
+      classifyReviewProvenance({
+        authorAccount: "unimind989-sys",
+        approvalAccount: "aboayman-oss",
+        executor: "codex-root",
+        reviewer: "human-aboayman",
+        candidate: "abcdef1",
+        reviewedCandidate: "abcdef1",
+        reviewCompleted: true,
+        requirement: "independent",
+      }),
+    ).toEqual(
+      expect.objectContaining({ kind: "INDEPENDENT", status: "SATISFIED" }),
+    );
+    expect(
+      classifyReviewProvenance({
+        authorAccount: "unimind989-sys",
+        approvalAccount: "aboayman-oss",
+        executor: "codex-root",
+        reviewer: "human-aboayman",
+        candidate: "abcdef1",
+        reviewedCandidate: "abcdef2",
+        reviewCompleted: true,
+        requirement: "independent",
+      }),
+    ).toEqual(
+      expect.objectContaining({ exactCandidate: false, status: "MISSING" }),
+    );
   });
 
   it("plans narrower retrieval after a large context read is truncated", () => {
