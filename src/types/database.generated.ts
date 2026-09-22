@@ -1093,8 +1093,8 @@ export type Database = {
           declared_rights: string;
           id: string;
           requested_material_item_id: string | null;
-          source_name: string;
           source_description: string | null;
+          source_name: string;
           status: string;
           submitted_by: string;
         };
@@ -1108,8 +1108,8 @@ export type Database = {
           declared_rights: string;
           id?: string;
           requested_material_item_id?: string | null;
-          source_name: string;
           source_description?: string | null;
+          source_name: string;
           status?: string;
           submitted_by: string;
         };
@@ -1123,8 +1123,8 @@ export type Database = {
           declared_rights?: string;
           id?: string;
           requested_material_item_id?: string | null;
-          source_name?: string;
           source_description?: string | null;
+          source_name?: string;
           status?: string;
           submitted_by?: string;
         };
@@ -1612,7 +1612,6 @@ export type Database = {
         Args: { target_curriculum_unit_id: string };
         Returns: boolean;
       };
-      current_student_catalog_state: { Args: never; Returns: string };
       current_batch_leader_campaign: {
         Args: { target_campaign_id?: string };
         Returns: {
@@ -1624,10 +1623,10 @@ export type Database = {
           cohort_name: string;
           curriculum_unit_id: string;
           expected_type: string;
-          latest_submission_created_at: string | null;
-          latest_submission_id: string | null;
-          latest_submission_name: string | null;
-          latest_submission_status: string | null;
+          latest_submission_created_at: string;
+          latest_submission_id: string;
+          latest_submission_name: string;
+          latest_submission_status: string;
           requested_item_id: string;
           requested_status: string;
           requested_title: string;
@@ -1636,6 +1635,7 @@ export type Database = {
           unit_title_en: string;
         }[];
       };
+      current_student_catalog_state: { Args: never; Returns: string };
       current_student_workspace: {
         Args: { target_cohort_id: string; target_curriculum_unit_id: string };
         Returns: {
@@ -1665,15 +1665,6 @@ export type Database = {
           unit_label_singular_en: string;
         }[];
       };
-      has_active_membership: {
-        Args: { target_cohort_id: string };
-        Returns: boolean;
-      };
-      has_campaign_assignment: {
-        Args: { target_campaign_id: string };
-        Returns: boolean;
-      };
-      is_admin: { Args: never; Returns: boolean };
       finalize_synthetic_source_submission: {
         Args: {
           p_actor_id: string;
@@ -1692,6 +1683,15 @@ export type Database = {
           submission_status: string;
         }[];
       };
+      has_active_membership: {
+        Args: { target_cohort_id: string };
+        Returns: boolean;
+      };
+      has_campaign_assignment: {
+        Args: { target_campaign_id: string };
+        Returns: boolean;
+      };
+      is_admin: { Args: never; Returns: boolean };
       record_privileged_auth_action: {
         Args: {
           p_action_name: string;
