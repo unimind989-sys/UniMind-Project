@@ -225,7 +225,9 @@ For every independently reviewable slice:
 3. Copy the applicable gate template to the evidence folder and leave its status `IN PROGRESS`.
 4. Implement the smallest end-to-end slice, including migration, service, UI, test, and telemetry where applicable.
 5. Map changed seams, acceptance criteria, and material risks to the smallest non-overlapping set of checks. Run the focused check after each meaningful change; repeat a passing check only after a relevant diff change or invalidating failure.
-6. Before review, run the credential-free merge gate once for code, runtime, dependency, CI, build, environment-contract, migration, or executable-script changes. For documentation-, planning-, evidence-, and skill-only slices, run the affected focused checks locally and use required GitHub CI as the full merge gate unless the task contract explicitly requires local `pnpm verify`. Run hosted database commands only when the slice affects database/Auth behavior:
+6. For a material unresolved subjective frontend decision, make the candidate technically safe, present it through the existing `humanVisualDecision` route, and record `HUMAN_DESIGN_ACCEPTANCE_REQUIRED` plus one founder hands-on product/design decision. Keep that checkpoint out of backend-only, nonvisual, objective, tiny approved-intent, routine responsive, and faithful approved-reference work. A material visual revision makes the design receipt stale; a nonvisual repair retains it.
+7. Before stable broad verification, run one bounded proof-completeness preflight through `pnpm agent:route -- --pass proof-preflight`. Inventory every applicable obligation before running the expensive checks; unknown/high-risk omissions fail conservatively. A `COMPLETE` inventory does not itself pass any check.
+8. Before review, run the credential-free merge gate once for code, runtime, dependency, CI, build, environment-contract, migration, or executable-script changes. For documentation-, planning-, evidence-, and skill-only slices, run the affected focused checks locally and use required GitHub CI as the full merge gate unless the task contract explicitly requires local `pnpm verify`. Run hosted database commands only when the slice affects database/Auth behavior:
 
 ```powershell
 pnpm verify
@@ -238,8 +240,8 @@ pnpm db:types:check
 pnpm build
 ```
 
-7. Record command results in the evidence bundle; never paste secrets or private content.
-8. Review the diff for accidental scope and secret exposure:
+9. Record command results in the evidence bundle; never paste secrets or private content.
+10. Review the diff for accidental scope and secret exposure:
 
 ```powershell
 git status --short
@@ -248,10 +250,10 @@ git diff --stat
 git diff
 ```
 
-9. Commit using an outcome-oriented message such as `feat(catalog): enforce released unit availability`.
-10. Open a pull request that links the work-package task and evidence bundle.
-11. The agent runs every selected protected security/raw-deletion/release gate and records D-22 standing Ahmed-and-Ziad authorization without returning for another non-financial approval. Pause only for a genuine unresolved human judgment or the fresh real-money boundary.
-12. Merge only when required checks are green. Never repair preview or beta manually after merge; add a migration/configuration change and redeploy.
+11. Commit using an outcome-oriented message such as `feat(catalog): enforce released unit availability`.
+12. Open a pull request that links the work-package task and evidence bundle.
+13. The agent runs every selected protected security/raw-deletion/release gate and records D-22 standing Ahmed-and-Ziad authorization without returning for another non-financial approval. Pause only for a genuine unresolved human judgment or the fresh real-money boundary.
+14. Merge only when required checks are green. Never repair preview or beta manually after merge; add a migration/configuration change and redeploy.
 
 `pnpm verify` must remain credential-free, mock-only, and zero paid-provider cost. A passing candidate should not be rerun locally and in overlapping forms without a relevant invalidation; reuse exact-commit CI evidence. Hosted database commands require the guarded `development` or `ci` profile and are recorded separately in evidence. If any command above does not exist yet, creating it is part of work package 1.
 
@@ -511,6 +513,18 @@ This post-foundation tooling-maintenance task revalidates the current local, Git
 - [x] Run the selected repository proof, complete protected delivery under the existing finalization workflow, clean task-created state, and confirm ordinary selection returns to WP03-T04.
 
 **Pass:** current access and scope are accurately classified; the retained stack is the smallest reliable set; no secret, private payload, new external authorization, paid resource, or unnecessary browser/test operation was introduced; the merged clean repository selects WP03-T04 next.
+
+#### WP00-T11 — Correct benchmarked execution workflow defects
+
+This bounded self-correction task applies the first real WP03 benchmark to the existing WP00-T09/T10 execution architecture. It preserves the completed WP03-T04 record and does not open WP03-T05. It adds no supervisor, worker, connector, browser stack, telemetry, or alternate evidence store.
+
+- [x] Extend the existing frontend/design route and `humanVisualDecision` semantics so material subjective product-surface changes require `HUMAN_DESIGN_ACCEPTANCE_REQUIRED`, while approved-intent and objective fixes do not create redundant founder gates.
+- [x] Add one bounded proof-completeness preflight before stable broad verification, with conservative handling for unknown or high-risk obligations and evidence-aware reuse/invalidation.
+- [x] Add bounded context-retrieval guidance, a deterministic fresh-checkout type proof, task-owned Playwright server cleanup, pre-promotion release-fingerprint validation, and coarse CI wait guidance without weakening exact-head CI.
+- [x] Add focused policy, evidence, context, process, deployment, and release regression coverage for the benchmarked defects and named acceptance cases.
+- [~] Run affected verification, exact-head CI/review, protected merge, synchronized-main proof, cleanup, and confirm normal selection returns WP03-T05 without implementing it.
+
+**Pass:** the benchmarked defects are corrected through the existing central policy/router, receipt, task, and verification seams; mandatory security, accessibility, responsive, RTL/LTR, release, and exact-head proof remains required; the merged clean repository recommends WP03-T05 and leaves WP03-T04 unchanged.
 
 ### 3.1 Select exact pilot cohorts
 

@@ -8,6 +8,7 @@ import {
   classifyChangedPaths,
   deriveAgentExecution,
   loadAgentExecutionPolicy,
+  planContextRetrieval,
   validateAgentExecutionPolicy,
   type AgentExecutionInput,
 } from "../../scripts/lib/agent-execution-policy";
@@ -627,6 +628,284 @@ describe("agent execution policy", () => {
           contradictions: 1,
         }),
       ]),
+    );
+  });
+
+  it("requires founder design acceptance for a material frontend layout change", () => {
+    const result = deriveAgentExecution(policy, {
+      task: "WP00-T11",
+      pass: "actual-diff",
+      declaredSurfaces: ["frontend"],
+      changedPaths: ["src/app/learn/page.tsx"],
+      flags: { designJudgment: true },
+    });
+
+    expect(result.designAcceptance).toEqual(
+      expect.objectContaining({
+        required: true,
+        status: "HUMAN_DESIGN_ACCEPTANCE_REQUIRED",
+      }),
+    );
+  });
+
+  it("requires founder design acceptance for a material typography redesign", () => {
+    const result = deriveAgentExecution(policy, {
+      task: "WP00-T11",
+      pass: "actual-diff",
+      declaredSurfaces: ["frontend"],
+      changedPaths: ["src/app/globals.css"],
+      flags: { designJudgment: true },
+    });
+
+    expect(result.designAcceptance.status).toBe(
+      "HUMAN_DESIGN_ACCEPTANCE_REQUIRED",
+    );
+  });
+
+  it("does not require design acceptance for backend-only work", () => {
+    const result = deriveAgentExecution(policy, {
+      task: "WP00-T11",
+      pass: "actual-diff",
+      declaredSurfaces: ["runtime"],
+      changedPaths: ["src/lib/catalog/resolve-unit.ts"],
+      flags: { designJudgment: true },
+    });
+
+    expect(result.designAcceptance).toEqual(
+      expect.objectContaining({ required: false, status: "NOT_REQUIRED" }),
+    );
+  });
+
+  it("does not add redundant acceptance for tiny or approved-intent visual changes", () => {
+    const tinyCorrection = deriveAgentExecution(policy, {
+      task: "WP00-T11",
+      pass: "actual-diff",
+      declaredSurfaces: ["frontend"],
+      changedPaths: ["src/app/learn/page.tsx"],
+      flags: { designJudgment: false, humanVisualDecision: true },
+    });
+    const approvedReference = deriveAgentExecution(policy, {
+      task: "WP00-T11",
+      pass: "actual-diff",
+      declaredSurfaces: ["frontend"],
+      changedPaths: ["src/app/learn/page.tsx"],
+      flags: { designJudgment: false },
+    });
+
+    expect(tinyCorrection.designAcceptance.required).toBe(false);
+    expect(tinyCorrection.designAcceptance.retained).toBe(true);
+    expect(approvedReference.designAcceptance.status).toBe("NOT_REQUIRED");
+  });
+
+  it("reports a completed founder acceptance when the current material candidate is approved", () => {
+    const result = deriveAgentExecution(policy, {
+      task: "WP00-T11",
+      pass: "actual-diff",
+      declaredSurfaces: ["frontend"],
+      changedPaths: ["src/app/learn/page.tsx"],
+      flags: { designJudgment: true, humanVisualDecision: true },
+    });
+
+    expect(result.designAcceptance).toEqual(
+      expect.objectContaining({ required: false, status: "ACCEPTED" }),
+    );
+  });
+
+  it("blocks stable verification until the material design gate is accepted", () => {
+    const pending = deriveAgentExecution(policy, {
+      task: "WP00-T11",
+      pass: "actual-diff",
+      declaredSurfaces: ["frontend"],
+      changedPaths: ["src/app/learn/page.tsx"],
+      flags: { designJudgment: true },
+    });
+
+    expect(pending.proofPreflight).toEqual(
+      expect.objectContaining({
+        status: "INCOMPLETE",
+        stableCandidateAllowed: false,
+        missing: expect.arrayContaining(["human-design-acceptance"]),
+      }),
+    );
+  });
+
+  it("does not mark an actual diff stable before the preflight pass runs", () => {
+    const result = deriveAgentExecution(policy, {
+      task: "WP00-T11",
+      pass: "actual-diff",
+      declaredSurfaces: ["docs"],
+      changedPaths: ["docs/agents/agent-workflow.md"],
+    });
+
+    expect(result.proofPreflight).toEqual(
+      expect.objectContaining({
+        status: "INCOMPLETE",
+        stableCandidateAllowed: false,
+      }),
+    );
+  });
+
+  it("inventories proof obligations before stable broad verification", () => {
+    const result = deriveAgentExecution(policy, {
+      task: "WP00-T11",
+      pass: "proof-preflight",
+      declaredSurfaces: ["frontend", "runtime"],
+      changedPaths: [
+        "src/app/learn/page.tsx",
+        "src/lib/catalog/resolve-unit.ts",
+      ],
+      flags: { designJudgment: true, humanVisualDecision: true },
+    });
+
+    expect(result.proofPreflight).toEqual(
+      expect.objectContaining({
+        status: "COMPLETE",
+        stableCandidateAllowed: true,
+      }),
+    );
+    expect(result.proofPreflight.obligations.map((item) => item.id)).toEqual(
+      expect.arrayContaining([
+        "application-quality",
+        "rendered-frontend",
+        "accessibility",
+        "rtl-ltr",
+        "responsive",
+        "fresh-checkout",
+        "task-readiness",
+      ]),
+    );
+  });
+
+  it("fails unknown high-risk proof obligations conservatively", () => {
+    const result = deriveAgentExecution(policy, {
+      task: "WP00-T11",
+      pass: "proof-preflight",
+      declaredSurfaces: ["auth"],
+      changedPaths: ["ops/unclassified-auth-change.ts"],
+      flags: { authSemantics: true },
+    });
+
+    expect(result.proofPreflight).toEqual(
+      expect.objectContaining({
+        status: "UNKNOWN",
+        stableCandidateAllowed: false,
+      }),
+    );
+  });
+
+  it("marks material post-approval visual changes stale but retains approval for nonvisual fixes", () => {
+    const receipt = {
+      schemaVersion: 1,
+      policyVersion: policy.policy_version,
+      task: "WP00-T11",
+      candidate: "742e61e",
+      proofs: [
+        {
+          id: "human-design-acceptance",
+          check: "founder design acceptance",
+          status: "PASS" as const,
+          invalidatedBy: {
+            surfaces: ["frontend" as const],
+            pathPatterns: ["^src/app/", "^src/components/"],
+          },
+        },
+      ],
+    };
+
+    expect(
+      assessEvidenceReceipt(policy, receipt, {
+        task: "WP00-T11",
+        surfaces: ["frontend"],
+        changedPaths: ["src/app/learn/page.tsx"],
+      }),
+    ).toEqual([
+      expect.objectContaining({
+        id: "human-design-acceptance",
+        state: "INVALID",
+        reason: expect.stringMatching(/stale|visual/i),
+      }),
+    ]);
+    expect(
+      assessEvidenceReceipt(policy, receipt, {
+        task: "WP00-T11",
+        surfaces: ["runtime"],
+        changedPaths: ["src/lib/catalog/resolve-unit.ts"],
+      }),
+    ).toEqual([
+      expect.objectContaining({
+        id: "human-design-acceptance",
+        state: "REUSE",
+      }),
+    ]);
+  });
+
+  it("reuses application and rendered proof for documentation closure and generated-type changes only invalidate affected proof", () => {
+    const receipt = {
+      schemaVersion: 1,
+      policyVersion: policy.policy_version,
+      task: "WP00-T11",
+      candidate: "742e61e",
+      proofs: [
+        {
+          id: "application-quality",
+          check: "pnpm verify",
+          status: "PASS" as const,
+          invalidatedBy: {
+            surfaces: ["runtime" as const, "tooling" as const],
+            pathPatterns: ["^src/", "^scripts/", "^package\\.json$"],
+          },
+        },
+        {
+          id: "rendered-frontend",
+          check: "pnpm test:e2e",
+          status: "PASS" as const,
+          invalidatedBy: {
+            surfaces: ["frontend" as const],
+            pathPatterns: ["^src/app/", "^src/components/"],
+          },
+        },
+        {
+          id: "database-contracts",
+          check: "database checks",
+          status: "PASS" as const,
+          invalidatedBy: {
+            surfaces: ["data" as const],
+            pathPatterns: ["^supabase/", "^src/types/database\\.generated"],
+          },
+        },
+      ],
+    };
+
+    expect(
+      assessEvidenceReceipt(policy, receipt, {
+        task: "WP00-T11",
+        surfaces: ["docs"],
+        changedPaths: ["evidence/wp00-pilot/2026-09-22_closure.md"],
+      }).map((item) => item.state),
+    ).toEqual(["REUSE", "REUSE", "REUSE"]);
+    expect(
+      assessEvidenceReceipt(policy, receipt, {
+        task: "WP00-T11",
+        surfaces: ["data", "tooling"],
+        changedPaths: ["src/types/database.generated.ts"],
+      }).map((item) => item.state),
+    ).toEqual(["INVALID", "REUSE", "INVALID"]);
+  });
+
+  it("plans narrower retrieval after a large context read is truncated", () => {
+    expect(
+      planContextRetrieval(policy, {
+        path: "docs/runbooks/poc-execution-runbook.md",
+        fileChars: 120_000,
+        outputTruncated: true,
+        contentChanged: false,
+        newQuestion: true,
+      }),
+    ).toEqual(
+      expect.objectContaining({
+        action: "targeted-ranges",
+        repeatFullRead: false,
+      }),
     );
   });
 });

@@ -44,7 +44,25 @@ Widen only for actual changed behavior, paths, or external mutations. Protected 
 
 **Complete when:** every changed path is covered by the final semantic envelope and no protected mutation or uncertainty is hidden.
 
-## 5. Verify and persist evidence
+## 5. Resolve material design judgment and proof completeness
+
+The central route uses the existing `designJudgment` and `humanVisualDecision` flags. Set `designJudgment` only when the frontend diff contains unresolved subjective judgment about layout, hierarchy, typography/readability, navigation or interaction presentation, density, responsive presentation, copy/presentation, or overall product feel. Backend-only work, nonvisual refactors, objective accessibility fixes, tiny corrections that preserve approved intent, routine responsive repairs that preserve an approved design, and faithful implementation of an explicitly approved reference keep it false unless a material unresolved choice appears.
+
+When the route reports `HUMAN_DESIGN_ACCEPTANCE_REQUIRED`, first make a technically safe coherent rendered candidate: focused types/lint/tests pass, obvious runtime/console/render failures are fixed, and basic accessibility, responsive, and RTL/LTR behavior are checked. Present that candidate for one founder hands-on subjective product/design decision. The founder decides whether the layout, hierarchy, readability, density, navigation, interaction presentation, copy, and UniMind feel are acceptable; the agent remains responsible for correctness, security, accessibility mechanics, automated proof, CI, and delivery. A material visual change after acceptance makes the existing design receipt stale and requires the candidate to be shown again. A nonvisual repair retains the accepted design receipt.
+
+After the candidate is technically safe and any required founder design acceptance is recorded, run the bounded proof-completeness pass once:
+
+```powershell
+corepack pnpm agent:route -- --task WPXX-TYY --pass proof-preflight --surface <surface> --path <changed-path> --format json
+```
+
+The preflight inventories every applicable proof obligation through the central selector: application/type/lint, security/Auth/RLS, database and generated-artifact parity, rendered behavior, accessibility, RTL/LTR, responsive behavior, fresh-checkout assumptions, release fingerprint, task/readiness, and task-selected hosted-service proof. It identifies obligations; it does not run every expensive check. Do not begin stable broad verification until the result is `COMPLETE` and no design gate is pending. Unknown paths, malformed policy, and high-risk omissions remain conservative and block stable-candidate status.
+
+For large policy, runbook, or reference files, inspect headings/index or search targeted concepts first, then read bounded ranges. A truncated output triggers narrower retrieval; it is not a reason to repeat the same oversized read. Reuse unchanged complete reads unless a relevant section may have changed or a new question requires it.
+
+**Complete when:** a coherent candidate has passed focused rejection checks, any required founder design acceptance is current, and the proof inventory is complete before expensive stable verification.
+
+## 6. Verify and persist evidence
 
 1. Add explicit runbook/task checks to the router's selected checks. Map each acceptance criterion, changed public seam, and material risk to one rejecting proof.
 2. Reuse an exact-match passing receipt until a relevant surface/input changes. Malformed, missing, mismatched, or contradicted evidence means proof is missing.
@@ -54,7 +72,7 @@ Widen only for actual changed behavior, paths, or external mutations. Protected 
 
 **Complete when:** every acceptance criterion has direct green proof and every unrun check has an impact-based reason.
 
-## 6. Deliver or honor the opt-out
+## 7. Deliver or honor the opt-out
 
 For ordinary selected tasks, enter the terminal `finalize` workflow automatically: push one reviewable branch, create/update one PR, wait for exact-head required CI, repair invalidated proof, satisfy branch protection, merge the reviewed candidate, verify only affected external/production state, close task/runbook evidence, synchronize clean `main`, and delete task-created branch/temp state. D-22 supplies standing non-financial authorization; stop only immediately before real-money exposure or a genuine access/external/safety blocker.
 

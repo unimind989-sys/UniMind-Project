@@ -138,6 +138,8 @@ Run `smoke:deployment` only for a task-selected Preview target and verified zero
 
 Stop any development server, clean only the named generated paths, then run the focused stable-candidate checks selected by the task and policy. Run `corepack pnpm verify` here only when selected; exact-head required CI remains the broad delivery gate.
 
+For a final candidate, complete focused technical rejection checks and any required founder design checkpoint before running one `corepack pnpm agent:route -- --pass proof-preflight` inventory. Run broad verification only after that inventory is complete. The preflight identifies obligations; it does not replace their checks. `corepack pnpm typecheck:fresh` checks the application without `.next` generated route/type state and is included in the credential-free verify gate.
+
 ```powershell
 git clean -dfX -- .next/
 git restore --source=HEAD -- next-env.d.ts

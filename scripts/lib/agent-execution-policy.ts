@@ -63,6 +63,13 @@ type ConditionalCiJob = {
 type ConditionalCiAction = "RUN" | "WOULD_SKIP";
 type ConditionalCiOutcome = "PASS" | "FAIL" | "CANCELLED" | "SKIPPED";
 
+export type ExecutionPass = "intent" | "actual-diff" | "proof-preflight";
+export type DesignAcceptanceStatus =
+  "NOT_REQUIRED" | "HUMAN_DESIGN_ACCEPTANCE_REQUIRED" | "ACCEPTED";
+export type ProofPreflightStatus = "COMPLETE" | "INCOMPLETE" | "UNKNOWN";
+export type ContextRetrievalAction =
+  "reuse-prior-read" | "inspect-headings" | "targeted-ranges" | "full-read";
+
 export type ConditionalCiPrediction = {
   id: string;
   action: ConditionalCiAction;
@@ -95,6 +102,11 @@ export type AgentExecutionPolicy = {
     internal: "side-browser";
     external_chrome_flags: string[];
     playwright_cli_flags: string[];
+  };
+  context: {
+    large_file_chars: number;
+    bounded_read_chars: number;
+    truncated_action: "targeted-ranges";
   };
   verification: { checks: VerificationCheck[] };
   conditional_ci: {
@@ -148,7 +160,7 @@ export type AgentExecutionFlags = {
 
 export type AgentExecutionInput = {
   task: string;
-  pass: "intent" | "actual-diff";
+  pass: ExecutionPass;
   declaredSurfaces: Surface[];
   changedPaths: string[];
   flags?: AgentExecutionFlags;
@@ -164,7 +176,7 @@ export type AgentExecutionInput = {
 export type AgentExecutionResult = {
   task: string;
   policyVersion: number;
-  pass: "intent" | "actual-diff";
+  pass: ExecutionPass;
   surfaces: Surface[];
   risk: Risk;
   planning: Planning;
@@ -185,6 +197,13 @@ export type AgentExecutionResult = {
     externalChrome: boolean;
     playwrightCli: boolean;
   };
+  designAcceptance: {
+    required: boolean;
+    retained: boolean;
+    status: DesignAcceptanceStatus;
+    reason: string;
+  };
+  proofPreflight: ProofCompletenessPreflight;
   verification: Array<{
     id: string;
     stage: string;
@@ -221,6 +240,38 @@ type EvidenceReceipt = {
   candidate: string;
   proofs: EvidenceProof[];
 };
+
+export type ProofObligation = Readonly<{
+  id: string;
+  kind: "automated" | "human";
+  checkIds: readonly string[];
+  reason: string;
+}>;
+
+export type ProofCompletenessPreflight = Readonly<{
+  status: ProofPreflightStatus;
+  stableCandidateAllowed: boolean;
+  obligations: readonly ProofObligation[];
+  missing: readonly string[];
+  reasons: readonly string[];
+}>;
+
+export type ContextRetrievalInput = Readonly<{
+  path: string;
+  fileChars: number;
+  outputTruncated: boolean;
+  contentChanged: boolean;
+  newQuestion: boolean;
+  priorReadAvailable?: boolean;
+  fullReadJustified?: boolean;
+}>;
+
+export type ContextRetrievalPlan = Readonly<{
+  action: ContextRetrievalAction;
+  repeatFullRead: boolean;
+  maxChars?: number;
+  reason: string;
+}>;
 
 export type EvidenceAssessment = {
   id: string;
@@ -301,6 +352,64 @@ export function classifyChangedPaths(
   return {
     surfaces: policy.surface_order.filter((surface) => surfaces.has(surface)),
     reasons,
+  };
+}
+
+export function planContextRetrieval(
+  policy: AgentExecutionPolicy,
+  input: ContextRetrievalInput,
+): ContextRetrievalPlan {
+  if (
+    !Number.isFinite(input.fileChars) ||
+    input.fileChars < 0 ||
+    !Number.isInteger(input.fileChars)
+  ) {
+    throw new Error("Context file size must be a non-negative integer.");
+  }
+
+  if (input.outputTruncated) {
+    return {
+      action: policy.context.truncated_action,
+      repeatFullRead: false,
+      maxChars: policy.context.bounded_read_chars,
+      reason:
+        "The previous output was truncated; inspect targeted concepts and read bounded ranges instead of repeating the oversized read.",
+    };
+  }
+
+  if (
+    input.priorReadAvailable === true &&
+    input.contentChanged === false &&
+    input.newQuestion === false
+  ) {
+    return {
+      action: "reuse-prior-read",
+      repeatFullRead: false,
+      reason:
+        "The prior read is complete, unchanged, and answers the same question; avoid an unchanged-file reread.",
+    };
+  }
+
+  if (
+    input.fileChars >= policy.context.large_file_chars &&
+    input.fullReadJustified !== true
+  ) {
+    return {
+      action: "inspect-headings",
+      repeatFullRead: false,
+      maxChars: policy.context.bounded_read_chars,
+      reason:
+        "The file is large; inspect headings or targeted concepts before reading bounded ranges.",
+    };
+  }
+
+  return {
+    action: "full-read",
+    repeatFullRead: false,
+    reason:
+      input.fullReadJustified === true
+        ? "The task explicitly requires the complete file after bounded discovery."
+        : "The file is within the bounded context size; a complete read is proportionate.",
   };
 }
 
@@ -410,6 +519,24 @@ export function validateAgentExecutionPolicy(
   if (policy.workers.nested !== false) {
     failures.push("nested workers must be disabled");
   }
+  if (
+    !Number.isInteger(policy.context.large_file_chars) ||
+    policy.context.large_file_chars <= 0
+  ) {
+    failures.push("context.large_file_chars must be a positive integer");
+  }
+  if (
+    !Number.isInteger(policy.context.bounded_read_chars) ||
+    policy.context.bounded_read_chars <= 0 ||
+    policy.context.bounded_read_chars > policy.context.large_file_chars
+  ) {
+    failures.push(
+      "context.bounded_read_chars must be positive and no larger than the large-file threshold",
+    );
+  }
+  if (policy.context.truncated_action !== "targeted-ranges") {
+    failures.push("context.truncated_action must be targeted-ranges");
+  }
   for (const rule of activationRuleNames) {
     const state = policy.activation[rule];
     if (!activationStates.includes(state)) {
@@ -492,6 +619,213 @@ export function validateAgentExecutionPolicy(
   return failures;
 }
 
+function pathMatchesAny(
+  changedPaths: readonly string[],
+  patterns: readonly string[],
+): boolean {
+  return changedPaths.some((changedPath) =>
+    matchesAny(changedPath.replaceAll("\\", "/"), [...patterns]),
+  );
+}
+
+function unknownChangedPaths(
+  policy: AgentExecutionPolicy,
+  changedPaths: readonly string[],
+): string[] {
+  return changedPaths.filter((changedPath) => {
+    const normalizedPath = changedPath.replaceAll("\\", "/");
+    return !policy.path_widening.some((rule) =>
+      new RegExp(rule.pattern, "i").test(normalizedPath),
+    );
+  });
+}
+
+export function buildProofCompletenessPreflight(
+  policy: AgentExecutionPolicy,
+  input: AgentExecutionInput,
+  surfaces: readonly Surface[],
+  risk: Risk,
+  designAcceptance: AgentExecutionResult["designAcceptance"],
+): ProofCompletenessPreflight {
+  const availableCheckIds = new Set(
+    policy.verification.checks.map((check) => check.id),
+  );
+  const obligations: ProofObligation[] = [];
+  const addAutomated = (
+    id: string,
+    checkIds: readonly string[],
+    reason: string,
+  ): void => {
+    obligations.push({ id, kind: "automated", checkIds, reason });
+  };
+  const addHuman = (id: string, reason: string): void => {
+    obligations.push({ id, kind: "human", checkIds: [], reason });
+  };
+
+  const hasSurface = (...names: Surface[]): boolean =>
+    names.some((name) => surfaces.includes(name));
+  const applicationChange = hasSurface(
+    "frontend",
+    "runtime",
+    "auth",
+    "data",
+    "storage",
+    "tooling",
+  );
+  const generatedTypeChange = pathMatchesAny(input.changedPaths, [
+    "^src/types/database\\.generated\\.ts$",
+  ]);
+  const releaseRelevant =
+    input.flags?.productionMutation === true ||
+    pathMatchesAny(input.changedPaths, [
+      "^(vercel\\.json|\\.github/workflows/|\\.env\\.example)",
+      "(^|/)(release|deployment)/",
+      "(^|/)(NEXT_PUBLIC_RELEASE_ID|release-fingerprint)(/|$|\\.)",
+    ]);
+  const hostedServiceProofSelected =
+    input.flags?.productionMutation === true ||
+    input.explicitChecks?.includes("affected-production-proof") === true ||
+    pathMatchesAny(input.changedPaths, ["^supabase/"]);
+
+  if (applicationChange) {
+    addAutomated(
+      "application-quality",
+      ["application-quality", "pnpm-verify"],
+      "Application, type, and lint proof covers the executable diff.",
+    );
+    addAutomated(
+      "fresh-checkout",
+      ["fresh-checkout"],
+      "A clean generated-state-free type proof catches checkout-only assumptions before broad CI.",
+    );
+  }
+  if (hasSurface("auth") || input.flags?.rls === true) {
+    addAutomated(
+      "security-auth-rls",
+      ["authorization-denial"],
+      "Auth/RLS behavior requires allowed and forbidden-path security proof.",
+    );
+  }
+  if (hasSurface("data", "storage") || input.flags?.rls === true) {
+    addAutomated(
+      "database-contracts",
+      ["database-contracts"],
+      "Database/storage state requires the task-selected database contract proof.",
+    );
+  }
+  if (generatedTypeChange) {
+    addAutomated(
+      "generated-artifact-parity",
+      ["database-contracts", "fresh-checkout"],
+      "Generated database artifacts require parity, type, and database proof.",
+    );
+  }
+  if (hasSurface("frontend")) {
+    addAutomated(
+      "rendered-frontend",
+      ["frontend-behavior"],
+      "The changed user-visible surface requires rendered behavior proof.",
+    );
+    addAutomated(
+      "accessibility",
+      ["frontend-behavior"],
+      "Rendered frontend proof must include keyboard, semantics, and basic accessibility behavior.",
+    );
+    addAutomated(
+      "rtl-ltr",
+      ["frontend-behavior"],
+      "Rendered frontend proof must cover affected RTL/LTR presentation when applicable.",
+    );
+    addAutomated(
+      "responsive",
+      ["frontend-behavior"],
+      "Rendered frontend proof must cover affected responsive presentation.",
+    );
+  }
+  if (releaseRelevant) {
+    addAutomated(
+      "release-fingerprint",
+      ["affected-production-proof"],
+      "Promotion must bind reviewed source, environment, public release identity, configuration presence, intended deployment, and rollback target before mutation.",
+    );
+  }
+  if (hasSurface("auth", "data", "storage") && hostedServiceProofSelected) {
+    addAutomated(
+      "hosted-service-proof",
+      ["affected-production-proof"],
+      "The task-selected hosted service must be checked only when the final dependency reaches it.",
+    );
+  }
+
+  addAutomated(
+    "task-readiness",
+    ["agent-readiness"],
+    "Task/readiness evidence binds the final task record, runbook state, and durable handoff.",
+  );
+  if (designAcceptance.required || designAcceptance.status === "ACCEPTED") {
+    addHuman(
+      "human-design-acceptance",
+      designAcceptance.required
+        ? "Founder hands-on subjective review is required before stable broad verification."
+        : "Founder hands-on subjective review is recorded for the accepted material candidate.",
+    );
+  }
+
+  const missing = obligations
+    .filter(
+      (obligation) =>
+        obligation.kind === "automated" &&
+        (obligation.checkIds.length === 0 ||
+          obligation.checkIds.every(
+            (checkId) => !availableCheckIds.has(checkId),
+          )),
+    )
+    .map((obligation) => obligation.id);
+  if (designAcceptance.required) missing.push("human-design-acceptance");
+
+  const unknownPaths =
+    input.pass === "intent"
+      ? []
+      : unknownChangedPaths(policy, input.changedPaths);
+  const reasons = obligations.map(
+    (obligation) => `${obligation.id}: ${obligation.reason}`,
+  );
+  if (input.pass !== "proof-preflight") {
+    reasons.push(
+      "proof-completeness preflight must run before stable verification",
+    );
+  }
+  if (unknownPaths.length > 0) {
+    reasons.push(
+      `unknown paths require conservative proof: ${unknownPaths.join(", ")}`,
+    );
+  }
+  if (
+    risk === "R3" &&
+    !obligations.some((item) => item.id === "security-auth-rls")
+  ) {
+    missing.push("security-auth-rls");
+    reasons.push(
+      "R3 proof must include an explicit security/auth boundary obligation.",
+    );
+  }
+
+  const uniqueMissing = Array.from(new Set(missing));
+  const status: ProofPreflightStatus =
+    unknownPaths.length > 0
+      ? "UNKNOWN"
+      : input.pass !== "proof-preflight" || uniqueMissing.length > 0
+        ? "INCOMPLETE"
+        : "COMPLETE";
+  return {
+    status,
+    stableCandidateAllowed: status === "COMPLETE",
+    obligations,
+    missing: uniqueMissing,
+    reasons,
+  };
+}
+
 export function deriveAgentExecution(
   policy: AgentExecutionPolicy,
   input: AgentExecutionInput,
@@ -547,7 +881,7 @@ export function deriveAgentExecution(
   const pathClassification = classifyChangedPaths(
     policy,
     input.changedPaths,
-    input.pass === "actual-diff",
+    input.pass === "actual-diff" || input.pass === "proof-preflight",
   );
   reasons.push(
     ...pathClassification.reasons.filter((reason) =>
@@ -591,6 +925,34 @@ export function deriveAgentExecution(
   const sortedSurfaces = policy.surface_order.filter((surface) =>
     surfaces.has(surface),
   );
+  const materialDesignChange =
+    flags.designJudgment === true && sortedSurfaces.includes("frontend");
+  const designAcceptance: AgentExecutionResult["designAcceptance"] =
+    materialDesignChange
+      ? flags.humanVisualDecision === true
+        ? {
+            required: false,
+            retained: false,
+            status: "ACCEPTED",
+            reason:
+              "The material subjective frontend candidate has a recorded founder visual decision.",
+          }
+        : {
+            required: true,
+            retained: false,
+            status: "HUMAN_DESIGN_ACCEPTANCE_REQUIRED",
+            reason:
+              "Material subjective frontend judgment requires a coherent candidate and founder hands-on design acceptance before stable broad verification.",
+          }
+      : {
+          required: false,
+          retained: flags.humanVisualDecision === true,
+          status: "NOT_REQUIRED",
+          reason:
+            flags.humanVisualDecision === true
+              ? "The current change preserves approved design intent; existing founder design acceptance remains valid."
+              : "No material unresolved subjective frontend design judgment is present.",
+        };
   const risks = sortedSurfaces.map(
     (surface) => policy.surfaces[surface].risk_floor,
   );
@@ -711,6 +1073,13 @@ export function deriveAgentExecution(
   }
 
   const isFrontend = surfaces.has("frontend");
+  const proofPreflight = buildProofCompletenessPreflight(
+    policy,
+    input,
+    sortedSurfaces,
+    risk,
+    designAcceptance,
+  );
   const ciPredictions = predictConditionalCiJobs(
     policy,
     sortedSurfaces,
@@ -738,15 +1107,18 @@ export function deriveAgentExecution(
       internal: isFrontend ? policy.browser.internal : "none",
       externalChrome:
         isFrontend &&
-        policy.browser.external_chrome_flags.some((flag) =>
-          flagEnabled(flags, flag),
-        ),
+        (designAcceptance.required ||
+          policy.browser.external_chrome_flags.some((flag) =>
+            flagEnabled(flags, flag),
+          )),
       playwrightCli:
         isFrontend &&
         policy.browser.playwright_cli_flags.some((flag) =>
           flagEnabled(flags, flag),
         ),
     },
+    designAcceptance,
+    proofPreflight,
     verification,
     ci: {
       mode:
@@ -1047,7 +1419,10 @@ export function assessEvidenceReceipt(
       ? {
           id: proof.id,
           state: "INVALID" as const,
-          reason: "a relevant surface or input path changed",
+          reason:
+            proof.id === "human-design-acceptance"
+              ? "material visual change makes founder design acceptance stale"
+              : "a relevant surface or input path changed",
           sourceCandidate: receipt.candidate,
         }
       : {

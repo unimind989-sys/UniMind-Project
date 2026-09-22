@@ -1,5 +1,5 @@
 schema_version: 1
-policy_version: 2
+policy_version: 3
 
 authority:
   - docs/plans/poc-master-plan.md
@@ -52,13 +52,17 @@ path_widening:
     surfaces: [runtime]
   - pattern: '^src/(lib|app)/(.*/)?auth([/-]|\.)'
     surfaces: [auth, runtime]
+  - pattern: '^src/types/database\.generated\.ts$'
+    surfaces: [data, tooling]
   - pattern: '^supabase/migrations/'
     surfaces: [data]
   - pattern: '(^|/)(storage|upload|download|signed-url)([/-]|\.)'
     surfaces: [storage]
   - pattern: '^(vercel\.json|\.github/workflows/|\.env\.example)'
     surfaces: [delivery]
-  - pattern: '^(scripts|tests|evals|\.agents)/|^(package\.json|pnpm-lock\.yaml|tsconfig\.json|vitest\.config\.ts|playwright\.config\.ts)$'
+  - pattern: '(^|/)(release|deployment)/|(^|/)(NEXT_PUBLIC_RELEASE_ID|release-fingerprint)(/|$|\.)'
+    surfaces: [delivery]
+  - pattern: '^(scripts|tests|evals|\.agents)/|^(package\.json|pnpm-lock\.yaml|tsconfig[^/]*\.json|vitest\.config\.ts|playwright\.config\.ts)$'
     surfaces: [tooling]
 
 risk:
@@ -88,6 +92,11 @@ browser:
   external_chrome_flags: [humanVisualDecision, userRequestedView]
   playwright_cli_flags: [specialistBrowserDebug, explicitPlaywrightCli]
 
+context:
+  large_file_chars: 16000
+  bounded_read_chars: 12000
+  truncated_action: targeted-ranges
+
 verification:
   checks:
     - id: diff-integrity
@@ -98,6 +107,26 @@ verification:
       stage: stable-candidate
       command: pnpm scan:secrets
       always: true
+    - id: application-quality
+      stage: edit-loop
+      command: pnpm lint; pnpm typecheck
+      path_patterns:
+        - '^src/'
+        - '^workers/'
+        - '^scripts/'
+        - '^tests/'
+        - '^evals/'
+        - '^(package\.json|pnpm-lock\.yaml|tsconfig[^/]*\.json|next-env\.d\.ts)$'
+    - id: fresh-checkout
+      stage: stable-candidate
+      command: pnpm typecheck:fresh
+      path_patterns:
+        - '^src/'
+        - '^workers/'
+        - '^scripts/'
+        - '^tests/'
+        - '^evals/'
+        - '^(package\.json|pnpm-lock\.yaml|tsconfig[^/]*\.json|next-env\.d\.ts|playwright\.config\.ts)$'
     - id: agent-policy
       stage: stable-candidate
       command: pnpm verify:agent-policy
@@ -214,3 +243,6 @@ self_correction:
   steady_state_extra_workers: 0
   correction_scope: owning-rule-only
   background_process: false
+  proof_preflight: required-before-stable-candidate
+  design_acceptance: material-subjective-frontend-only
+  context_truncation: targeted-ranges-no-repeat
