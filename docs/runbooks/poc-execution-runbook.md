@@ -522,7 +522,7 @@ This bounded self-correction task applies the first real WP03 benchmark to the e
 - [x] Add one bounded proof-completeness preflight before stable broad verification, with conservative handling for unknown or high-risk obligations and evidence-aware reuse/invalidation.
 - [x] Add bounded context-retrieval guidance, a deterministic fresh-checkout type proof, task-owned Playwright server cleanup, pre-promotion release-fingerprint validation, and coarse CI wait guidance without weakening exact-head CI.
 - [x] Add focused policy, evidence, context, process, deployment, and release regression coverage for the benchmarked defects and named acceptance cases.
-- [~] Run affected verification, exact-head CI/review, protected merge, synchronized-main proof, cleanup, and confirm normal selection returns WP03-T05 without implementing it.
+- [x] Run affected verification, exact-head CI/review, protected merge, synchronized-main proof, cleanup, and confirm normal selection returns WP03-T05 without implementing it. PR #42 reviewed exact head `f86b197`, merged as `b6aceac`; merged-main run `35729451733` passed; evidence: `evidence/wp00-pilot/2026-09-22_benchmark-workflow-corrections_github_b6aceac.md`.
 
 **Pass:** the benchmarked defects are corrected through the existing central policy/router, receipt, task, and verification seams; mandatory security, accessibility, responsive, RTL/LTR, release, and exact-head proof remains required; the merged clean repository recommends WP03-T05 and leaves WP03-T04 unchanged.
 
