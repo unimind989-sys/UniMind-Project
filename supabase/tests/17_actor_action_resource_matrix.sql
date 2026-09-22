@@ -61,7 +61,6 @@ values
   ('current_batch_leader_campaign(uuid)'),
   ('current_student_workspace(uuid, uuid)'),
   ('current_student_catalog_state()'),
-  ('finalize_synthetic_source_submission(uuid, uuid, uuid, text, text, text, text)'),
   ('is_admin()'),
   ('has_active_membership(uuid)'),
   ('has_campaign_assignment(uuid)'),
@@ -74,6 +73,7 @@ create temporary table reviewed_service_role_functions (
 insert into reviewed_service_role_functions (function_signature)
 values
   ('record_privileged_auth_action(uuid, text, text, uuid, text, uuid, text)'),
+  ('finalize_synthetic_source_submission(uuid, uuid, uuid, uuid, text, text, text, text)'),
   ('register_synthetic_collection_upload(uuid, uuid, uuid, uuid, text, text, text, text, text, text, text, bigint)');
 
 create temporary table reviewed_private_functions (
@@ -545,8 +545,7 @@ select is(
       and (
         routine_name not in (
           'can_read_source_asset',
-          'current_student_catalog_state',
-          'finalize_synthetic_source_submission_internal'
+          'current_student_catalog_state'
         )
         or privilege_type <> 'EXECUTE'
       )
@@ -563,13 +562,12 @@ select is(
       and routine_schema = 'unimind_private'
       and routine_name in (
         'can_read_source_asset',
-        'current_student_catalog_state',
-        'finalize_synthetic_source_submission_internal'
+        'current_student_catalog_state'
       )
       and privilege_type = 'EXECUTE'
   ),
-  3::bigint,
-  'authenticated receives only the three private execution grants required by caller seams'
+  2::bigint,
+  'authenticated receives only the two private execution grants required by caller seams'
 );
 
 select ok(

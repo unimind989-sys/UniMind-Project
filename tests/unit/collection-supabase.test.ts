@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
   createServerSupabaseClient: vi.fn(),
+  finalizeSyntheticCollectionSubmission: vi.fn(),
   registerSyntheticCollectionUploadEvidence: vi.fn(),
   requireVerifiedIdentity: vi.fn(),
   rpc: vi.fn(),
@@ -12,6 +13,8 @@ vi.mock("../../src/lib/db/supabase/server", () => ({
   createServerSupabaseClient: mocks.createServerSupabaseClient,
 }));
 vi.mock("../../src/lib/db/supabase/admin.server", () => ({
+  finalizeSyntheticCollectionSubmission:
+    mocks.finalizeSyntheticCollectionSubmission,
   registerSyntheticCollectionUploadEvidence:
     mocks.registerSyntheticCollectionUploadEvidence,
 }));
@@ -122,6 +125,33 @@ describe("collection Supabase adapter", () => {
     expect(
       mocks.registerSyntheticCollectionUploadEvidence,
     ).toHaveBeenCalledWith(
+      expect.objectContaining({
+        actorId: "99999999-9999-4999-8999-999999999999",
+      }),
+    );
+  });
+
+  it("finalizes through the service-only seam with the verified actor", async () => {
+    mocks.finalizeSyntheticCollectionSubmission.mockResolvedValue({
+      submission_id: "55555555-5555-4555-8555-555555555555",
+      submission_status: "RECEIVED",
+      submission_created_at: "2026-09-22T00:00:00.000Z",
+      replayed: false,
+    });
+    const { supabaseCollectionRepository } =
+      await import("../../src/lib/collection/collection.supabase.server");
+    await supabaseCollectionRepository.finalizeSubmission({
+      campaignId: campaignRow.campaign_id,
+      requestedItemId: campaignRow.requested_item_id,
+      uploadId: "44444444-4444-4444-8444-444444444444",
+      clientIdempotencyKey: "synthetic-key",
+      sourceName: "Synthetic handout",
+      sourceDescription: "Synthetic fixture description.",
+      declaredRights: "DECLARED",
+    });
+    expect(mocks.requireVerifiedIdentity).toHaveBeenCalledOnce();
+    expect(mocks.createServerSupabaseClient).not.toHaveBeenCalled();
+    expect(mocks.finalizeSyntheticCollectionSubmission).toHaveBeenCalledWith(
       expect.objectContaining({
         actorId: "99999999-9999-4999-8999-999999999999",
       }),

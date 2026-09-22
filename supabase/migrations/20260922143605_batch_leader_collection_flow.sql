@@ -286,6 +286,7 @@ end;
 $$;
 
 create function unimind_private.finalize_synthetic_source_submission_internal(
+  p_actor_id uuid,
   p_campaign_id uuid,
   p_requested_material_item_id uuid,
   p_upload_id uuid,
@@ -305,12 +306,12 @@ security definer
 set search_path = ''
 as $$
 declare
-  actor_id uuid := (select auth.uid());
+  actor_id uuid := p_actor_id;
   target_upload unimind_private.collection_uploads%rowtype;
   target_campaign public.collection_campaigns%rowtype;
   target_submission public.source_submissions%rowtype;
 begin
-  if actor_id is null then
+  if actor_id is null or (select auth.role()) <> 'service_role' then
     raise exception using errcode = '42501', message = 'collection scope unavailable';
   end if;
   if p_declared_rights <> 'DECLARED' then
@@ -468,6 +469,7 @@ as $$
 $$;
 
 create function public.finalize_synthetic_source_submission(
+  p_actor_id uuid,
   p_campaign_id uuid,
   p_requested_material_item_id uuid,
   p_upload_id uuid,
@@ -488,6 +490,7 @@ set search_path = ''
 as $$
   select *
   from unimind_private.finalize_synthetic_source_submission_internal(
+    p_actor_id,
     p_campaign_id,
     p_requested_material_item_id,
     p_upload_id,
@@ -504,26 +507,26 @@ revoke all on function unimind_private.register_synthetic_collection_upload_inte
 revoke all on function public.current_batch_leader_campaign(uuid)
   from public, anon, authenticated;
 revoke all on function unimind_private.finalize_synthetic_source_submission_internal(
-  uuid, uuid, uuid, text, text, text, text
+  uuid, uuid, uuid, uuid, text, text, text, text
 ) from public, anon, authenticated;
 revoke all on function public.register_synthetic_collection_upload(
   uuid, uuid, uuid, uuid, text, text, text, text, text, text, text, bigint
 ) from public, anon, authenticated;
 revoke all on function public.finalize_synthetic_source_submission(
-  uuid, uuid, uuid, text, text, text, text
+  uuid, uuid, uuid, uuid, text, text, text, text
 ) from public, anon, authenticated;
 
 grant execute on function unimind_private.register_synthetic_collection_upload_internal(
   uuid, uuid, uuid, uuid, text, text, text, text, text, text, text, bigint
 ) to service_role;
 grant execute on function unimind_private.finalize_synthetic_source_submission_internal(
-  uuid, uuid, uuid, text, text, text, text
-) to authenticated;
+  uuid, uuid, uuid, uuid, text, text, text, text
+) to service_role;
 grant execute on function public.current_batch_leader_campaign(uuid)
   to authenticated;
 grant execute on function public.register_synthetic_collection_upload(
   uuid, uuid, uuid, uuid, text, text, text, text, text, text, text, bigint
 ) to service_role;
 grant execute on function public.finalize_synthetic_source_submission(
-  uuid, uuid, uuid, text, text, text, text
-) to authenticated;
+  uuid, uuid, uuid, uuid, text, text, text, text
+) to service_role;

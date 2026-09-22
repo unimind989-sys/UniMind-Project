@@ -93,6 +93,13 @@ export class SupabaseCollectionRegistrationError extends Error {
   }
 }
 
+export class SupabaseCollectionFinalizationError extends Error {
+  constructor() {
+    super("Supabase collection submission finalization failed.");
+    this.name = "SupabaseCollectionFinalizationError";
+  }
+}
+
 export type SyntheticCollectionUploadEvidence = Readonly<{
   actorId: string;
   campaignId: string;
@@ -106,6 +113,17 @@ export type SyntheticCollectionUploadEvidence = Readonly<{
   checksum: string;
   mimeType: string;
   byteSize: number;
+}>;
+
+export type SyntheticCollectionFinalization = Readonly<{
+  actorId: string;
+  campaignId: string;
+  requestedMaterialItemId: string;
+  uploadId: string;
+  clientIdempotencyKey: string;
+  sourceName: string;
+  sourceDescription: string;
+  declaredRights: string;
 }>;
 
 function createAdminClient() {
@@ -207,6 +225,29 @@ export async function registerSyntheticCollectionUploadEvidence(
   );
   if (error !== null || data?.length !== 1 || data[0] === undefined) {
     throw new SupabaseCollectionRegistrationError();
+  }
+  return data[0];
+}
+
+export async function finalizeSyntheticCollectionSubmission(
+  input: SyntheticCollectionFinalization,
+) {
+  const client = createAdminClient();
+  const { data, error } = await client.rpc(
+    "finalize_synthetic_source_submission",
+    {
+      p_actor_id: input.actorId,
+      p_campaign_id: input.campaignId,
+      p_requested_material_item_id: input.requestedMaterialItemId,
+      p_upload_id: input.uploadId,
+      p_client_idempotency_key: input.clientIdempotencyKey,
+      p_source_name: input.sourceName,
+      p_source_description: input.sourceDescription,
+      p_declared_rights: input.declaredRights,
+    },
+  );
+  if (error !== null || data?.length !== 1 || data[0] === undefined) {
+    throw new SupabaseCollectionFinalizationError();
   }
   return data[0];
 }

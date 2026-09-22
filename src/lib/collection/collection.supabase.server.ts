@@ -3,7 +3,10 @@ import "server-only";
 import { z } from "zod";
 
 import { requireVerifiedIdentity } from "../auth/verified-identity.server";
-import { registerSyntheticCollectionUploadEvidence } from "../db/supabase/admin.server";
+import {
+  finalizeSyntheticCollectionSubmission,
+  registerSyntheticCollectionUploadEvidence,
+} from "../db/supabase/admin.server";
 import { createServerSupabaseClient } from "../db/supabase/server";
 import type { Database } from "../../types/database.generated";
 import type {
@@ -174,27 +177,18 @@ export const supabaseCollectionRepository: CollectionRepository = {
   },
 
   async finalizeSubmission(input) {
-    const [, client] = await Promise.all([
-      requireVerifiedIdentity(),
-      createServerSupabaseClient(),
-    ]);
-    const { data, error } = await client.rpc(
-      "finalize_synthetic_source_submission",
-      {
-        p_campaign_id: input.campaignId,
-        p_requested_material_item_id: input.requestedItemId,
-        p_upload_id: input.uploadId,
-        p_client_idempotency_key: input.clientIdempotencyKey,
-        p_source_name: input.sourceName,
-        p_source_description: input.sourceDescription,
-        p_declared_rights: input.declaredRights,
-      },
-    );
-    const row = data?.[0];
+    const identity = await requireVerifiedIdentity();
+    const row = await finalizeSyntheticCollectionSubmission({
+      actorId: identity.userId,
+      campaignId: input.campaignId,
+      requestedMaterialItemId: input.requestedItemId,
+      uploadId: input.uploadId,
+      clientIdempotencyKey: input.clientIdempotencyKey,
+      sourceName: input.sourceName,
+      sourceDescription: input.sourceDescription,
+      declaredRights: input.declaredRights,
+    });
     if (
-      error !== null ||
-      data?.length !== 1 ||
-      row === undefined ||
       !uuid.safeParse(row.submission_id).success ||
       row.submission_status !== "RECEIVED"
     ) {

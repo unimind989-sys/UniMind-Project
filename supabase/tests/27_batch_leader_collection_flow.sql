@@ -1,7 +1,7 @@
 -- Matrix test IDs exercised below:
 -- WP03-T05-ANON-DENY, WP03-T05-SERVER-ONLY, WP03-T05-FUNCTION-GRANTS.
 begin;
-select plan(23);
+select plan(25);
 
 insert into public.requested_material_items (
   id, campaign_id, curriculum_unit_id, title, expected_type, required, status
@@ -59,6 +59,22 @@ select ok(
     'EXECUTE'
   ),
   'anonymous callers cannot register collection uploads'
+);
+select ok(
+  not has_function_privilege(
+    'authenticated',
+    'public.finalize_synthetic_source_submission(uuid,uuid,uuid,uuid,text,text,text,text)',
+    'EXECUTE'
+  ),
+  'authenticated callers cannot invoke the service-only finalizer directly'
+);
+select ok(
+  has_function_privilege(
+    'service_role',
+    'public.finalize_synthetic_source_submission(uuid,uuid,uuid,uuid,text,text,text,text)',
+    'EXECUTE'
+  ),
+  'the trusted service runtime receives the bounded finalization seam'
 );
 
 set local role authenticated;
@@ -172,13 +188,9 @@ select throws_ok(
   'a conflicting checksum cannot replay an upload key'
 );
 
-reset role;
-set local role authenticated;
-set local request.jwt.claim.role = 'authenticated';
-set local request.jwt.claim.sub = '10000000-0000-0000-0000-000000000002';
-
 select throws_ok(
   $$select * from public.finalize_synthetic_source_submission(
+    '10000000-0000-0000-0000-000000000002',
     '30000000-0000-0000-0000-000000000001',
     '99000000-0000-4000-8000-000000000005',
     (select value from collection_test_state where label = 'first-upload'),
@@ -195,6 +207,7 @@ select is(
   (
     select replayed
     from public.finalize_synthetic_source_submission(
+      '10000000-0000-0000-0000-000000000002',
       '30000000-0000-0000-0000-000000000001',
       '99000000-0000-4000-8000-000000000005',
       (select value from collection_test_state where label = 'first-upload'),
@@ -211,6 +224,7 @@ select is(
   (
     select replayed
     from public.finalize_synthetic_source_submission(
+      '10000000-0000-0000-0000-000000000002',
       '30000000-0000-0000-0000-000000000001',
       '99000000-0000-4000-8000-000000000005',
       (select value from collection_test_state where label = 'first-upload'),
@@ -235,6 +249,7 @@ select is(
 );
 select throws_ok(
   $$select * from public.finalize_synthetic_source_submission(
+    '10000000-0000-0000-0000-000000000002',
     '30000000-0000-0000-0000-000000000001',
     '99000000-0000-4000-8000-000000000005',
     (select value from collection_test_state where label = 'first-upload'),
@@ -295,13 +310,9 @@ select isnt(
   'the service runtime can register a second verified receipt for the assignee'
 );
 
-reset role;
-set local role authenticated;
-set local request.jwt.claim.role = 'authenticated';
-set local request.jwt.claim.sub = '10000000-0000-0000-0000-000000000003';
-
 select throws_ok(
   $$select * from public.finalize_synthetic_source_submission(
+    '10000000-0000-0000-0000-000000000003',
     '30000000-0000-0000-0000-000000000001',
     '99000000-0000-4000-8000-000000000005',
     (select value from collection_test_state where label = 'stale-upload'),
@@ -359,13 +370,9 @@ select throws_ok(
   'the server registrar rechecks an expired assignee before writing evidence'
 );
 
-reset role;
-set local role authenticated;
-set local request.jwt.claim.role = 'authenticated';
-set local request.jwt.claim.sub = '10000000-0000-0000-0000-000000000002';
-
 select throws_ok(
   $$select * from public.finalize_synthetic_source_submission(
+    '10000000-0000-0000-0000-000000000002',
     '30000000-0000-0000-0000-000000000001',
     '99000000-0000-4000-8000-000000000005',
     (select value from collection_test_state where label = 'stale-upload'),

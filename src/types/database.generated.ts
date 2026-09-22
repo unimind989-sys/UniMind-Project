@@ -1676,6 +1676,7 @@ export type Database = {
       is_admin: { Args: never; Returns: boolean };
       finalize_synthetic_source_submission: {
         Args: {
+          p_actor_id: string;
           p_campaign_id: string;
           p_client_idempotency_key: string;
           p_declared_rights: string;

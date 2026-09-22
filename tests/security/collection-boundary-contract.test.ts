@@ -50,8 +50,13 @@ describe("Batch Leader collection trust boundary", () => {
       /grant execute on function public\.register_synthetic_collection_upload\([^;]+\)\s+to authenticated;/iu,
     );
     expect(sql).toMatch(
-      /grant execute on function public\.finalize_synthetic_source_submission[\s\S]+to authenticated/iu,
+      /grant execute on function public\.finalize_synthetic_source_submission[\s\S]+to service_role/iu,
     );
+    expect(sql).not.toMatch(
+      /grant execute on function public\.finalize_synthetic_source_submission\([^;]+\)\s+to authenticated;/iu,
+    );
+    expect(sql).toContain("actor_id uuid := p_actor_id");
+    expect(sql).toContain("auth.role()) <> 'service_role'");
     expect(sql).not.toContain(
       "grant select on table unimind_private.collection_uploads",
     );
