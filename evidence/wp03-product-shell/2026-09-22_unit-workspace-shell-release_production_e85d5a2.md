@@ -14,7 +14,7 @@
 
 **Human reviewer:** Ahmed requested end-to-end completion; GitHub owner `unimind989-sys` approved exact head `dda4069`; D-22 supplied the standing Ahmed-and-Ziad authorization for task-scoped non-financial protected delivery
 
-**Started/finished (UTC):** 2026-09-21 / 2026-09-21T21:41:00Z
+**Started/finished (UTC):** 2026-09-21 / 2026-09-22T05:28:00Z
 
 ## Scope and acceptance criteria
 
@@ -52,6 +52,8 @@
 | 2026-09-21 | `corepack pnpm smoke:deployment -- --base-url https://project-xwrez.vercel.app --target preview` | 0 | Seven live/ready, write-denial, application identity, synthetic/mock, and icon checks passed. |
 | 2026-09-21 | Production rendered verification | 0 | Arabic and English workspace states, custom fonts, RTL/LTR, normal/narrow geometry, mixed content, protected-route redirect, and browser console checks passed. |
 | 2026-09-21 | Final Vercel error/warning scans | 0 | No runtime error or warning logs found for the final production deployment. |
+| 2026-09-22 | Closure PR #40 exact-head run `35689865417` | 0 | Dependency audit, application, complete disposable database, and Vercel Preview checks passed on `1b8be8b`; `aboayman-oss` independently approved that exact head. |
+| 2026-09-22 | Closure merge and main run `35690367720` | 0 | PR #40 merged as `dda90b9`; merged-main application and disposable database jobs passed; task-created implementation and closure branches were deleted locally and remotely; the selector advanced to WP03-T05. |
 
 ## Negative, retry, and recovery cases
 
