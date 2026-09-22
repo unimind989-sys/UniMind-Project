@@ -1269,7 +1269,7 @@ External component catalogs and MCPs are optional implementation aids, never des
 - [x] Use `loading.tsx`, `error.tsx`, and `not-found.tsx` deliberately; do not reveal whether an unauthorized private ID exists.
 - [x] Mark chat, Studio, quiz, evidence, and reporting placeholders truthfully; a polished placeholder must not imply that an unimplemented or unavailable action works.
 - [x] Starting/switching the mocked chat seam creates or selects a session whose scope is persisted server-side; every child route rechecks canonical scope instead of trusting layout state.
-- [ ] Test long source/status content, unavailable quota, narrow/zoomed layouts, RTL/LTR switching, keyboard navigation, forged child routes, unit deactivation, and a release change during an active workspace session.
+- [x] Test long source/status content, unavailable quota, narrow/zoomed layouts, RTL/LTR switching, keyboard navigation, forged child routes, unit deactivation, and a release change during an active workspace session. PR #39 merged as `e85d5a2`; Supabase Preview migration `20260921190508` and Vercel production deployment `dpl_k6YpGerq6sT7JzbGacfrpQmYYGp9` passed hosted postflight. Protected release evidence: `evidence/wp03-product-shell/2026-09-22_unit-workspace-shell-release_production_e85d5a2.md`.
 
 #### WP03-T05 — Build Batch Leader collection flow
 
