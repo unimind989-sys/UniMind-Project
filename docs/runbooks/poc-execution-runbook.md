@@ -534,7 +534,7 @@ This final bounded WP00-T11 audit repair removes the duplicate proof taxonomy, c
 - [x] Represent semantic invalidating inputs in the existing receipt fingerprint so known nonvisual frontend, backend, and docs-only changes preserve design acceptance, material visual changes invalidate it, and unknown visual impact fails conservatively.
 - [x] Prove those rules through the normal receipt-generation and assessment path rather than manually idealized receipts.
 - [x] Distinguish executor-controlled distinct-account approval from genuinely independent review in policy, finalization, evidence, and regressions without adding a mandatory reviewer where the runbook does not require one.
-- [ ] Run focused proof first, one stable broad gate, exact-head CI, protected delivery, synchronized-main proof, evidence closure, cleanup, and confirm WP03-T05 remains next without implementing it.
+- [x] Run focused proof first, one stable broad gate, exact-head CI, protected delivery, synchronized-main proof, evidence closure, cleanup, and confirm WP03-T05 remains next without implementing it. These closure markers become authoritative only when the exact reviewed PR #44 head reaches protected `main`.
 
 **Pass:** selected verification additions/removals flow into proof completeness automatically; generated evidence has correct semantic invalidation; uncertain visual impact cannot reuse acceptance; account separation is recorded without a false independence claim; the merged clean repository recommends WP03-T05.
 

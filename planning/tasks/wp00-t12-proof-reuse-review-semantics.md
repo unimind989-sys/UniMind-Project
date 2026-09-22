@@ -2,7 +2,7 @@
 
 **Task ID:** WP00-T12
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** Proof completeness follows the authoritative selected verification set, human design evidence invalidates only on material or unknown visual impact, and protected delivery records distinct-account approval without claiming independent review.
 
@@ -12,7 +12,7 @@
 
 **Branch:** `wp00/proof-reuse-review-semantics`
 
-**Updated (UTC):** 2026-09-22T13:36:39Z
+**Updated (UTC):** 2026-09-22T14:07:24Z
 
 ## Derived execution envelope
 
@@ -48,7 +48,7 @@
 
 **Pass:** Every selected verification requirement automatically appears in proof completeness; human design acceptance reuses on known nonvisual frontend, backend, and docs-only changes, invalidates on material visual changes, and fails conservatively on unknown visual impact; generated receipts carry those semantics; review provenance never turns executor-controlled account switching into independent review.
 
-**Evidence:** Expected `evidence/wp00-pilot/2026-09-22_proof-reuse-review-semantics_<merge>.md`, focused regression output, exact-head CI, protected PR, and synchronized-main proof.
+**Evidence:** `evidence/wp00-pilot/2026-09-22_proof-reuse-review-semantics_local_ba7f01c.md`, protected PR #44, exact-head required checks, and synchronized-main proof. Closure markers become authoritative only when the exact reviewed PR head reaches protected `main`.
 
 **Rollback:** Revert this task through one protected PR. Restore policy schema/code/tests and the prior wording; no database, provider, deployment, billing, or user data state is mutated.
 
@@ -69,16 +69,16 @@
 - [x] Replace the duplicate proof taxonomy with selected-verification-derived obligations and focused regressions.
 - [x] Extend the existing receipt fingerprint with semantic invalidators and prove real generated receipt reuse/invalidation end to end.
 - [x] Correct review terminology and mechanically prevent false independent-review claims.
-- [~] Run the bounded verification inventory and one stable broad gate, then complete protected delivery, evidence, synchronization, cleanup, and WP03-T05-next proof.
+- [x] Run the bounded verification inventory and one stable broad gate, then complete protected delivery, evidence, synchronization, cleanup, and WP03-T05-next proof.
 
 ## Handoff
 
-**Changed:** Policy v4 now derives proof completeness directly from selected verification, emits schema-v2 receipts with selected-check and semantic invalidators, and classifies account separation separately from reviewer-process independence. Workflow/finalization/evidence guidance and the historical WP00-T11 closure wording use the corrected semantics.
+**Changed:** Policy v4 now derives proof completeness directly from selected verification, emits schema-v2 receipts with selected-check and semantic invalidators, and classifies account separation separately from reviewer-process independence. Workflow/finalization/evidence guidance and the historical WP00-T11 closure wording use the corrected semantics. These closure markers become authoritative only after the exact reviewed PR #44 head reaches protected `main`.
 
 **Commands:** Intent route selected policy v3 before the policy revision; final actual-diff and proof-preflight routes selected policy v4, docs/delivery/tooling, R2, Short, Luna Max floor, zero workers, release-safety, and automatic finalization, with a complete eleven-check inventory and no design gate. Active model remained unverified. Focused policy/type proof passed 44/44 regressions and strict TypeScript. The real CLI receipt path emitted schema v2 semantic invalidators. Skill validation passed 22 skills; agent readiness passed 194 names, 46 links, 23 decisions, and 106 task contracts; isolated handoff rehearsal selected WP00-T12. The one credential-free broad `pnpm verify` gate passed formatting, lint, normal and fresh types, boundaries, 25-migration SQL conventions, CI/policy audits, a 944-file secret scan, 361 unit tests, 15 integration tests with 2 expected hosted-only skips, 24 security tests, 3 evaluation cases, 5 load-contract tests, 24 E2E tests, the production build, and client-artifact scanning.
 
-**Remaining:** One broad stable-candidate gate, final diff/secret review, exact-head CI, protected distinct-account approval, merge, synchronized-main evidence closure, cleanup, and WP03-T05-next proof.
+**Remaining:** NONE after PR #44's exact reviewed head passes required checks, receives executor-controlled distinct-account approval, reaches protected `main`, and cleanup/WP03-T05 selection are proven. Until then, the conditional closure markers are not authoritative.
 
-**Next safe action:** Run the selected credential-free broad stable-candidate gate once.
+**Next safe action:** After protected delivery and cleanup, select WP03-T05 through the normal product-task lifecycle; do not implement it as part of this repair.
 
 **Reviewer action:** NONE unless an existing protected gate explicitly requires genuine independent review; distinct-account approval is sufficient only where that is the real gate.
