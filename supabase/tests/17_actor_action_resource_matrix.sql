@@ -91,7 +91,6 @@ values
   ('claim_processing_job'),
   ('finalize_synthetic_source_submission_internal'),
   ('create_profile_for_auth_user'),
-  ('current_batch_leader_campaign_internal'),
   ('current_student_catalog_state'),
   ('enforce_ready_embedding_config_update'),
   ('enforce_ready_quality_report_insert'),
@@ -546,7 +545,6 @@ select is(
       and (
         routine_name not in (
           'can_read_source_asset',
-          'current_batch_leader_campaign_internal',
           'current_student_catalog_state',
           'finalize_synthetic_source_submission_internal'
         )
@@ -565,14 +563,13 @@ select is(
       and routine_schema = 'unimind_private'
       and routine_name in (
         'can_read_source_asset',
-        'current_batch_leader_campaign_internal',
         'current_student_catalog_state',
         'finalize_synthetic_source_submission_internal'
       )
       and privilege_type = 'EXECUTE'
   ),
-  4::bigint,
-  'authenticated receives only the four private execution grants required by caller seams'
+  3::bigint,
+  'authenticated receives only the three private execution grants required by caller seams'
 );
 
 select ok(

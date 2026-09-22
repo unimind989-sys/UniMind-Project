@@ -73,83 +73,6 @@ create index collection_uploads_uploaded_by_idx
 revoke all on table unimind_private.collection_uploads
   from public, anon, authenticated;
 
-create function unimind_private.current_batch_leader_campaign_internal(
-  target_campaign_id uuid
-)
-returns table (
-  campaign_id uuid,
-  campaign_name text,
-  cohort_name text,
-  campaign_opens_at timestamptz,
-  campaign_closes_at timestamptz,
-  assignment_expires_at timestamptz,
-  requested_item_id uuid,
-  curriculum_unit_id uuid,
-  requested_title text,
-  expected_type text,
-  required boolean,
-  requested_status text,
-  unit_title_en text,
-  unit_title_ar text,
-  latest_submission_id uuid,
-  latest_submission_name text,
-  latest_submission_status text,
-  latest_submission_created_at timestamptz
-)
-language sql
-stable
-security definer
-set search_path = ''
-as $$
-  select
-    campaigns.id,
-    campaigns.name,
-    cohorts.name,
-    campaigns.opens_at,
-    campaigns.closes_at,
-    assignments.expires_at,
-    requested.id,
-    requested.curriculum_unit_id,
-    requested.title,
-    requested.expected_type,
-    requested.required,
-    requested.status,
-    units.title_en,
-    units.title_ar,
-    latest.id,
-    latest.source_name,
-    latest.status,
-    latest.created_at
-  from public.collection_campaigns as campaigns
-  join public.cohorts as cohorts on cohorts.id = campaigns.cohort_id
-  join public.batch_leader_assignments as assignments
-    on assignments.campaign_id = campaigns.id
-  join public.requested_material_items as requested
-    on requested.campaign_id = campaigns.id
-  join public.curriculum_units as units
-    on units.id = requested.curriculum_unit_id
-  left join lateral (
-    select submissions.id, submissions.source_name,
-      submissions.status, submissions.created_at
-    from public.source_submissions as submissions
-    where submissions.campaign_id = campaigns.id
-      and submissions.requested_material_item_id = requested.id
-      and submissions.submitted_by = (select auth.uid())
-    order by submissions.created_at desc, submissions.id desc
-    limit 1
-  ) as latest on true
-  where assignments.user_id = (select auth.uid())
-    and assignments.status = 'ACTIVE'
-    and assignments.expires_at > transaction_timestamp()
-    and campaigns.status = 'OPEN'
-    and campaigns.opens_at <= transaction_timestamp()
-    and campaigns.closes_at > transaction_timestamp()
-    and requested.status in ('REQUESTED', 'RECEIVED')
-    and (target_campaign_id is null or campaigns.id = target_campaign_id)
-  order by campaigns.closes_at, requested.required desc,
-    units.sort_order, requested.created_at, requested.id;
-$$;
-
 create function public.current_batch_leader_campaign(
   target_campaign_id uuid default null
 )
@@ -178,10 +101,53 @@ stable
 security invoker
 set search_path = ''
 as $$
-  select *
-  from unimind_private.current_batch_leader_campaign_internal(
-    target_campaign_id
-  );
+  select
+    campaigns.id,
+    campaigns.name,
+    coalesce(cohorts.name, campaigns.name),
+    campaigns.opens_at,
+    campaigns.closes_at,
+    assignments.expires_at,
+    requested.id,
+    requested.curriculum_unit_id,
+    requested.title,
+    requested.expected_type,
+    requested.required,
+    requested.status,
+    coalesce(units.title_en, requested.title),
+    coalesce(units.title_ar, requested.title),
+    latest.id,
+    latest.source_name,
+    latest.status,
+    latest.created_at
+  from public.collection_campaigns as campaigns
+  left join public.cohorts as cohorts on cohorts.id = campaigns.cohort_id
+  join public.batch_leader_assignments as assignments
+    on assignments.campaign_id = campaigns.id
+  join public.requested_material_items as requested
+    on requested.campaign_id = campaigns.id
+  left join public.curriculum_units as units
+    on units.id = requested.curriculum_unit_id
+  left join lateral (
+    select submissions.id, submissions.source_name,
+      submissions.status, submissions.created_at
+    from public.source_submissions as submissions
+    where submissions.campaign_id = campaigns.id
+      and submissions.requested_material_item_id = requested.id
+      and submissions.submitted_by = (select auth.uid())
+    order by submissions.created_at desc, submissions.id desc
+    limit 1
+  ) as latest on true
+  where assignments.user_id = (select auth.uid())
+    and assignments.status = 'ACTIVE'
+    and assignments.expires_at > transaction_timestamp()
+    and campaigns.status = 'OPEN'
+    and campaigns.opens_at <= transaction_timestamp()
+    and campaigns.closes_at > transaction_timestamp()
+    and requested.status in ('REQUESTED', 'RECEIVED')
+    and (target_campaign_id is null or campaigns.id = target_campaign_id)
+  order by campaigns.closes_at, requested.required desc,
+    units.sort_order, requested.created_at, requested.id;
 $$;
 
 create function unimind_private.register_synthetic_collection_upload_internal(
@@ -535,8 +501,6 @@ $$;
 revoke all on function unimind_private.register_synthetic_collection_upload_internal(
   uuid, uuid, uuid, uuid, text, text, text, text, text, text, text, bigint
 ) from public, anon, authenticated;
-revoke all on function unimind_private.current_batch_leader_campaign_internal(uuid)
-  from public, anon, authenticated;
 revoke all on function public.current_batch_leader_campaign(uuid)
   from public, anon, authenticated;
 revoke all on function unimind_private.finalize_synthetic_source_submission_internal(
@@ -552,8 +516,6 @@ revoke all on function public.finalize_synthetic_source_submission(
 grant execute on function unimind_private.register_synthetic_collection_upload_internal(
   uuid, uuid, uuid, uuid, text, text, text, text, text, text, text, bigint
 ) to service_role;
-grant execute on function unimind_private.current_batch_leader_campaign_internal(uuid)
-  to authenticated;
 grant execute on function unimind_private.finalize_synthetic_source_submission_internal(
   uuid, uuid, uuid, text, text, text, text
 ) to authenticated;

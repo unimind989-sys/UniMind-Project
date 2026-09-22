@@ -1,19 +1,29 @@
 -- Matrix test IDs exercised below:
 -- WP03-T05-ANON-DENY, WP03-T05-SERVER-ONLY, WP03-T05-FUNCTION-GRANTS.
 begin;
-select plan(21);
+select plan(23);
 
 insert into public.requested_material_items (
   id, campaign_id, curriculum_unit_id, title, expected_type, required, status
-) values (
-  '99000000-0000-4000-8000-000000000005',
-  '30000000-0000-0000-0000-000000000001',
-  '20000000-0000-0000-0000-000000000007',
-  'WP03-T05 synthetic document request',
-  'DOCUMENT',
-  true,
-  'REQUESTED'
-);
+) values
+  (
+    '99000000-0000-4000-8000-000000000005',
+    '30000000-0000-0000-0000-000000000001',
+    '20000000-0000-0000-0000-000000000007',
+    'WP03-T05 synthetic document request',
+    'DOCUMENT',
+    true,
+    'REQUESTED'
+  ),
+  (
+    '99000000-0000-4000-8000-000000000006',
+    '30000000-0000-0000-0000-000000000001',
+    '20000000-0000-0000-0000-000000000008',
+    'WP03-T05 draft-unit request',
+    'DOCUMENT',
+    false,
+    'REQUESTED'
+  );
 
 create temporary table collection_test_state (
   label text primary key,
@@ -67,6 +77,26 @@ select is(
   ),
   1::bigint,
   'the active assignee sees the requested item through the caller-scoped read seam'
+);
+select is(
+  (
+    select count(*)
+    from public.curriculum_units
+    where id = '20000000-0000-0000-0000-000000000008'
+  ),
+  0::bigint,
+  'the collection seam does not widen direct access to draft unit metadata'
+);
+select is(
+  (
+    select unit_title_en
+    from public.current_batch_leader_campaign(
+      '30000000-0000-0000-0000-000000000001'
+    )
+    where requested_item_id = '99000000-0000-4000-8000-000000000006'
+  ),
+  'WP03-T05 draft-unit request'::text,
+  'an assigned draft-unit request remains usable through its safe requested-item label'
 );
 select throws_ok(
   $$select count(*) from unimind_private.collection_uploads$$,

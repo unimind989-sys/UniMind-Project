@@ -164,8 +164,8 @@ describe("WP02-T04 actor/action/resource matrix contract", () => {
         `${actor}|${resource}|${action}`,
     );
     expect(tables.size).toBe(57);
-    expect(functions.size).toBe(48);
-    expect(matrix).toHaveLength(1_656);
+    expect(functions.size).toBe(47);
+    expect(matrix).toHaveLength(1_650);
     expect(new Set(actualKeys).size).toBe(matrix.length);
     expect(new Set(actualKeys)).toEqual(expectedKeys);
 

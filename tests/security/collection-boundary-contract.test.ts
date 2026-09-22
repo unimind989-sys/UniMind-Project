@@ -20,12 +20,13 @@ describe("Batch Leader collection trust boundary", () => {
     expect(sql).toContain("for update");
     expect(sql).not.toContain("cohorts_select_assigned_collection");
     expect(sql).not.toContain("curriculum_units_select_assigned_collection");
-    expect(sql).toMatch(
-      /create function unimind_private\.current_batch_leader_campaign_internal[\s\S]+?language sql\s+stable\s+security definer\s+set search_path/iu,
-    );
+    expect(sql).not.toContain("current_batch_leader_campaign_internal");
     expect(sql).toMatch(
       /create function public\.current_batch_leader_campaign[\s\S]+?language sql\s+stable\s+security invoker\s+set search_path/iu,
     );
+    expect(sql).toContain("left join public.cohorts as cohorts");
+    expect(sql).toContain("left join public.curriculum_units as units");
+    expect(sql).toContain("coalesce(units.title_en, requested.title)");
     expect(sql).toContain("security invoker");
   });
 
