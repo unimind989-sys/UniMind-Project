@@ -1299,7 +1299,7 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 #### WP03-T05 — Build Batch Leader collection flow
 
-- [ ] Show only active assigned campaigns and requested items.
+- [~] Show only active assigned campaigns and requested items.
 - [ ] Generate the client idempotency key before upload and preserve it across UI retry.
 - [ ] Keep D-18 and per-source rights fail-closed: WP03 uses synthetic files and the deterministic storage/upload adapter only. Do not issue a real signed upload target or accept private source material until the exact storage and rights gates pass.
 - [ ] Validate file signature/type/size before requesting an upload target; treat client MIME as advisory.

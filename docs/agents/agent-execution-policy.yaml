@@ -1,5 +1,5 @@
 schema_version: 1
-policy_version: 4
+policy_version: 5
 
 authority:
   - docs/plans/poc-master-plan.md
@@ -42,11 +42,13 @@ surfaces:
     capabilities: []
 
 path_widening:
-  - pattern: '(^|/)(docs|planning|evidence)/|(^|/)(README|CONTRIBUTING|PRODUCT|DESIGN|CONTEXT|AGENTS)\.md$'
+  - pattern: '(^|/)(docs|planning|evidence|\.impeccable/surfaces)/|(^|/)(README|CONTRIBUTING|PRODUCT|DESIGN|CONTEXT|AGENTS)\.md$'
     surfaces: [docs]
   - pattern: '^src/(app/(?!api/).+\.(tsx|css)|components/)'
     surfaces: [frontend]
   - pattern: '^src/(lib|app/api)/.+\.(ts|tsx)$'
+    surfaces: [runtime]
+  - pattern: '^src/app/(?!api/).+\.ts$'
     surfaces: [runtime]
   - pattern: '^workers/'
     surfaces: [runtime]
@@ -56,13 +58,15 @@ path_widening:
     surfaces: [data, tooling]
   - pattern: '^supabase/migrations/'
     surfaces: [data]
+  - pattern: '^supabase/tests/'
+    surfaces: [data, tooling]
   - pattern: '(^|/)(storage|upload|download|signed-url)([/-]|\.)'
     surfaces: [storage]
   - pattern: '^(vercel\.json|\.github/workflows/|\.env\.example)'
     surfaces: [delivery]
   - pattern: '(^|/)(release|deployment)/|(^|/)(NEXT_PUBLIC_RELEASE_ID|release-fingerprint)(/|$|\.)'
     surfaces: [delivery]
-  - pattern: '^(scripts|tests|evals|\.agents)/|^(package\.json|pnpm-lock\.yaml|tsconfig[^/]*\.json|vitest\.config\.ts|playwright\.config\.ts)$'
+  - pattern: '^(scripts|tests|evals|\.agents)/|^(package\.json|pnpm-lock\.yaml|tsconfig[^/]*\.json|vitest\.config\.ts|playwright\.config\.ts|next-env\.d\.ts)$'
     surfaces: [tooling]
 
 risk:

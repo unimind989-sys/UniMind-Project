@@ -2,6 +2,7 @@
 -- RLS-T04-ANON-DENY, RLS-T04-GRANT-META, RLS-T04-POLICY-META,
 -- RLS-T04-FUNCTION-GRANTS, RLS-T04-CROSS-USER, RLS-T04-CROSS-SCOPE,
 -- RLS-T04-BATCH-LEADER, RLS-T04-REVOCATION, RLS-T04-SERVER-ONLY.
+-- WP03-T05-ANON-DENY, WP03-T05-SERVER-ONLY, WP03-T05-FUNCTION-GRANTS.
 begin;
 select plan(121);
 
@@ -57,6 +58,7 @@ insert into reviewed_public_functions (function_signature)
 values
   ('available_catalog_entries()'),
   ('available_curriculum_units(boolean)'),
+  ('current_batch_leader_campaign(uuid)'),
   ('current_student_workspace(uuid, uuid)'),
   ('current_student_catalog_state()'),
   ('is_admin()'),
@@ -70,7 +72,9 @@ create temporary table reviewed_service_role_functions (
 
 insert into reviewed_service_role_functions (function_signature)
 values
-  ('record_privileged_auth_action(uuid, text, text, uuid, text, uuid, text)');
+  ('record_privileged_auth_action(uuid, text, text, uuid, text, uuid, text)'),
+  ('finalize_synthetic_source_submission(uuid, uuid, uuid, uuid, text, text, text, text)'),
+  ('register_synthetic_collection_upload(uuid, uuid, uuid, uuid, text, text, text, text, text, text, text, bigint)');
 
 create temporary table reviewed_private_functions (
   function_name text primary key
@@ -85,6 +89,7 @@ values
   ('can_read_source_asset'),
   ('can_user_access_unit'),
   ('claim_processing_job'),
+  ('finalize_synthetic_source_submission_internal'),
   ('create_profile_for_auth_user'),
   ('current_student_catalog_state'),
   ('enforce_ready_embedding_config_update'),
@@ -101,6 +106,7 @@ values
   ('is_valid_transition'),
   ('reject_row_mutation'),
   ('release_usage'),
+  ('register_synthetic_collection_upload_internal'),
   ('reserve_usage'),
   ('retrieve_authorized_segments'),
   ('retry_processing_job'),
@@ -141,7 +147,6 @@ values
   ('batch_leader_assignments', 'batch_leader_assignments_select_own_or_admin', 'SELECT'),
   ('requested_material_items', 'requested_material_items_select_assigned_or_admin', 'SELECT'),
   ('source_submissions', 'source_submissions_select_own_or_admin', 'SELECT'),
-  ('source_submissions', 'source_submissions_insert_assigned', 'INSERT'),
   ('source_assets', 'source_assets_select_available_scope', 'SELECT'),
   ('source_versions', 'source_versions_select_available_scope', 'SELECT'),
   ('chat_sessions', 'chat_sessions_select_own', 'SELECT'),
@@ -191,7 +196,6 @@ values
   ('batch_leader_assignments', 'SELECT'),
   ('requested_material_items', 'SELECT'),
   ('source_submissions', 'SELECT'),
-  ('source_submissions', 'INSERT'),
   ('source_assets', 'SELECT'),
   ('source_versions', 'SELECT'),
   ('chat_sessions', 'SELECT'),
@@ -563,7 +567,7 @@ select is(
       and privilege_type = 'EXECUTE'
   ),
   2::bigint,
-  'authenticated receives only the two private execution grants required by stored seams'
+  'authenticated receives only the two private execution grants required by caller seams'
 );
 
 select ok(
@@ -1413,34 +1417,30 @@ select is(
   0::bigint,
   'Batch Leader cannot read requested items from another campaign'
 );
-insert into public.source_submissions (
-  id, campaign_id, curriculum_unit_id, cohort_id, submitted_by,
-  client_idempotency_key, source_name, declared_format, declared_rights
-)
-values (
-  '32000000-0000-0000-0000-000000000004',
-  '30000000-0000-0000-0000-000000000001',
-  '20000000-0000-0000-0000-000000000007',
-  '20000000-0000-0000-0000-000000000006',
-  '10000000-0000-0000-0000-000000000002',
-  'synthetic-matrix-allow', 'Synthetic Matrix Allowed Source',
-  'application/pdf', 'DECLARED'
+select throws_ok(
+  $$insert into public.source_submissions (
+    id, campaign_id, curriculum_unit_id, cohort_id, submitted_by,
+    client_idempotency_key, source_name, declared_format, declared_rights
+  ) values (
+    '32000000-0000-0000-0000-000000000004',
+    '30000000-0000-0000-0000-000000000001',
+    '20000000-0000-0000-0000-000000000007',
+    '20000000-0000-0000-0000-000000000006',
+    '10000000-0000-0000-0000-000000000002',
+    'synthetic-matrix-allow', 'Synthetic Matrix Allowed Source',
+    'application/pdf', 'DECLARED'
+  )$$,
+  '42501',
+  null,
+  'Batch Leader cannot bypass the upload-finalization seam with a direct insert'
 );
 select is(
   (
     select count(*) from public.source_submissions
     where id = '32000000-0000-0000-0000-000000000004'
   ),
-  1::bigint,
-  'Batch Leader can create a submission in the assigned campaign and unit'
-);
-select is(
-  (
-    select source_name from public.source_submissions
-    where id = '32000000-0000-0000-0000-000000000004'
-  ),
-  'Synthetic Matrix Allowed Source',
-  'Batch Leader reads back the allowed submission content'
+  0::bigint,
+  'the rejected direct insert creates no submission'
 );
 select throws_ok(
   $$insert into public.source_submissions (

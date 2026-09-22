@@ -195,6 +195,34 @@ describe("agent execution policy", () => {
     expect(result.risk).toBe("R2");
   });
 
+  it("classifies normal application and proof artifacts without unknown widening", () => {
+    const result = deriveAgentExecution(policy, {
+      task: "WP03-T05",
+      pass: "proof-preflight",
+      declaredSurfaces: [],
+      changedPaths: [
+        ".impeccable/surfaces/collection.md",
+        "next-env.d.ts",
+        "src/app/batch-leader/collection-actions.ts",
+        "src/app/preview/batch-leader/preview-collection.server.ts",
+        "supabase/tests/27_batch_leader_collection_flow.sql",
+      ],
+    });
+
+    expect(result.surfaces).toEqual(["docs", "runtime", "data", "tooling"]);
+    expect(result.proofPreflight).toEqual(
+      expect.objectContaining({
+        status: "COMPLETE",
+        stableCandidateAllowed: true,
+      }),
+    );
+    expect(result.reasons).not.toEqual(
+      expect.arrayContaining([
+        expect.stringContaining("unknown path widened conservatively"),
+      ]),
+    );
+  });
+
   it("rejects a second worker and every nested worker", () => {
     expect(() =>
       deriveAgentExecution(policy, {
