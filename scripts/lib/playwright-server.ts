@@ -16,6 +16,7 @@ type ServerLock = Readonly<{
   pid: number;
   port: number;
   projectRoot: string;
+  detached?: boolean;
 }>;
 
 function normalize(value: string): string {
@@ -149,7 +150,39 @@ function isExpectedPlaywrightCommand(
   );
 }
 
-function terminateProcessTree(pid: number): void {
+function processTreePids(rootPid: number): number[] {
+  try {
+    const output = execFileSync("ps", ["-eo", "pid=,ppid="], {
+      encoding: "utf8",
+      windowsHide: true,
+    });
+    const children = new Map<number, number[]>();
+    for (const line of output.split(/\r?\n/u)) {
+      const match = line.trim().match(/^(\d+)\s+(\d+)$/u);
+      if (match === null) continue;
+      const pidText = match[1];
+      const parentPidText = match[2];
+      if (pidText === undefined || parentPidText === undefined) continue;
+      const pid = Number.parseInt(pidText, 10);
+      const parentPid = Number.parseInt(parentPidText, 10);
+      const siblings = children.get(parentPid) ?? [];
+      siblings.push(pid);
+      children.set(parentPid, siblings);
+    }
+
+    const result: number[] = [];
+    const visit = (pid: number): void => {
+      for (const childPid of children.get(pid) ?? []) visit(childPid);
+      result.push(pid);
+    };
+    visit(rootPid);
+    return result;
+  } catch {
+    return [rootPid];
+  }
+}
+
+function terminateProcessTree(pid: number, detached = false): void {
   try {
     if (process.platform === "win32") {
       execFileSync("taskkill.exe", ["/PID", String(pid), "/T", "/F"], {
@@ -158,10 +191,20 @@ function terminateProcessTree(pid: number): void {
       });
       return;
     }
-    try {
-      process.kill(-pid, "SIGTERM");
-    } catch {
-      process.kill(pid, "SIGTERM");
+    if (detached) {
+      try {
+        process.kill(-pid, "SIGTERM");
+        return;
+      } catch {
+        // Fall through to the direct owned-process signal.
+      }
+    }
+    for (const processId of processTreePids(pid)) {
+      try {
+        process.kill(processId, "SIGTERM");
+      } catch {
+        // The process may have exited between tree discovery and cleanup.
+      }
     }
   } catch {
     // The process may have exited between discovery and cleanup.
@@ -181,7 +224,7 @@ export function cleanupKnownStalePlaywrightServers(projectRoot: string): void {
       isTaskOwnedPlaywrightCommand(commandLine, projectRoot) ||
       (isLockedProcess && isExpectedPlaywrightCommand(commandLine))
     ) {
-      terminateProcessTree(pid);
+      terminateProcessTree(pid, isLockedProcess && lock?.detached !== false);
     }
   }
   removeLock(projectRoot);
@@ -217,7 +260,7 @@ export async function runOwnedPlaywrightServer(
     env: { ...process.env, UNIMIND_PLAYWRIGHT_SERVER: "1" },
     stdio: "inherit",
     windowsHide: true,
-    detached: !isWindows,
+    detached: false,
   });
   if (child.pid === undefined) {
     throw new Error("Unable to start the owned Playwright test server.");
@@ -225,7 +268,7 @@ export async function runOwnedPlaywrightServer(
 
   writeFileSync(
     lockPath(projectRoot),
-    `${JSON.stringify({ pid: child.pid, port: PLAYWRIGHT_SERVER_PORT, projectRoot }, null, 2)}\n`,
+    `${JSON.stringify({ pid: child.pid, port: PLAYWRIGHT_SERVER_PORT, projectRoot, detached: false }, null, 2)}\n`,
     "utf8",
   );
 
@@ -237,18 +280,21 @@ export async function runOwnedPlaywrightServer(
   };
   process.once("SIGINT", stop);
   process.once("SIGTERM", stop);
+  process.once("SIGHUP", stop);
 
   return await new Promise<number>((resolve) => {
     child.once("exit", (code, signal) => {
       removeLock(projectRoot);
       process.removeListener("SIGINT", stop);
       process.removeListener("SIGTERM", stop);
+      process.removeListener("SIGHUP", stop);
       resolve(code ?? (signal === null ? 1 : 1));
     });
     child.once("error", () => {
       removeLock(projectRoot);
       process.removeListener("SIGINT", stop);
       process.removeListener("SIGTERM", stop);
+      process.removeListener("SIGHUP", stop);
       resolve(1);
     });
   });
