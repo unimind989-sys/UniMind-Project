@@ -328,7 +328,9 @@ select throws_ok(
 
 reset role;
 update public.batch_leader_assignments
-set status = 'EXPIRED', expires_at = transaction_timestamp() - interval '1 minute'
+set status = 'REVOKED',
+    revoked_at = transaction_timestamp(),
+    reason = 'WP03-T05 immediate revocation proof'
 where id = '31000000-0000-0000-0000-000000000001';
 
 set local role authenticated;
@@ -343,7 +345,7 @@ select is(
     )
   ),
   0::bigint,
-  'an expired assignment immediately removes campaign visibility'
+  'a revoked assignment immediately removes campaign visibility'
 );
 
 reset role;
@@ -367,7 +369,7 @@ select throws_ok(
   )$$,
   '42501',
   'collection scope unavailable',
-  'the server registrar rechecks an expired assignee before writing evidence'
+  'the server registrar rechecks a revoked assignee before writing evidence'
 );
 
 select throws_ok(
