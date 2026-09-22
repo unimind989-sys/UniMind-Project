@@ -2,7 +2,7 @@
 
 **Task ID:** WP03-T04
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** An authenticated student can enter one server-authorized cohort/unit workspace, move among its truthful overview, chat, Studio, and quiz surfaces, and create or select a server-persisted mocked chat session without any child route trusting URL or layout state for authorization.
 
@@ -12,7 +12,7 @@
 
 **Branch:** `wp03/unit-workspace-shell`
 
-**Updated (UTC):** 2026-09-21T20:33:53Z
+**Updated (UTC):** 2026-09-21T21:41:00Z
 
 ## Derived execution envelope
 
@@ -71,16 +71,16 @@
 - [x] Implement localized overview and truthful feature placeholders with deliberate loading, error, and not-found boundaries.
 - [x] Diagnose and correct the systemic Arabic typography issue through font delivery/tokens or language-aware root styling.
 - [x] Exercise allowed/forbidden, stale-release, long-content, unavailable-quota, keyboard, zoom, narrow, RTL/LTR, and mixed-text paths.
-- [ ] Run the stable-candidate proof, protected delivery, affected production checks, durable closure, and branch cleanup.
+- [x] Run the stable-candidate proof, protected delivery, affected production checks, durable closure, and branch cleanup.
 
 ## Handoff
 
 **Changed:** Implemented the caller-authorized unit workspace RPC/application/adapter seam, scoped mocked chat sessions, localized overview/chat/Studio/quiz routes, safe boundaries, synthetic preview, Study Shelf handoff, and systemic Arabic typography correction. Rendered inspection established that the prior stack silently resolved Arabic through Manrope's fallback as Arial; the locale root now selects the already-loaded Noto Sans Arabic face and Arabic role tokens compensate for its perceived metrics without changing English hierarchy.
 
-**Commands:** Initial and actual-diff routing selected R3/protected with broad CI, Sol High floor, zero workers used, frontend/security/database/storage/exact-head/production proof, and an unverified active-model limitation. Focused domain/adapter contracts passed 7/7; security passed 24/24; the migration checker passed all 25 migrations; focused Playwright passed 5/5 after 44 px controls, skip-link focus, and immediate localized-root typography were finalized. The final broad `pnpm verify` gate passed formatting, lint, types, boundaries, SQL/policy/secret checks, 344 unit, 15 integration with 2 expected hosted-only skips, 24 security, 3 evaluation, 5 load, 24 E2E, optimized production build, and client-artifact scan. Rendered desktop/narrow English/Arabic inspection confirmed Manrope/Noto resolution, no overflow or clipping, and coherent RTL/LTR hierarchy. GitHub run `35653565111` exposed generated route-prop globals on a fresh checkout; explicit shared prop types replaced them and the complete local gate reran green. Replacement run `35654391802` passed application and all disposable database behavior/advisor checks, then found only generated RPC type parity; the checked-in type was synchronized exactly for the next run.
+**Commands:** Initial and actual-diff routing selected R3/protected with broad CI, Sol High floor, zero workers used, frontend/security/database/storage/exact-head/production proof, and an unverified active-model limitation. Focused domain/adapter contracts passed 7/7; security passed 24/24; the migration checker passed all 25 migrations; focused Playwright passed 5/5 after 44 px controls, skip-link focus, and immediate localized-root typography were finalized. The final broad `pnpm verify` gate passed formatting, lint, types, boundaries, SQL/policy/secret checks, 344 unit, 15 integration with 2 expected hosted-only skips, 24 security, 3 evaluation, 5 load, 24 E2E, optimized production build, and client-artifact scan. Rendered desktop/narrow English/Arabic inspection confirmed Manrope/Noto resolution, no overflow or clipping, and coherent RTL/LTR hierarchy. GitHub run `35653565111` exposed generated route-prop globals on a fresh checkout; explicit shared prop types replaced them and the complete local gate reran green. Replacement run `35654391802` passed application and all disposable database behavior/advisor checks, then found only generated RPC type parity; the checked-in type was synchronized exactly. Final exact-head run `35655296786` and merged-main run `35656053522` passed. PR #39 received owner approval on exact head `dda4069` and merged as `e85d5a2`. The guarded Supabase Preview migration `20260921190508` committed once and passed metadata, privilege, operational, and Security Advisor postflight. Vercel Production deployment `dpl_k6YpGerq6sT7JzbGacfrpQmYYGp9` built exact head `dda4069`, exposes release `wp03-t04-e85d5a2-preview`, serves `project-xwrez.vercel.app`, passed seven smoke checks, and had clean rendered/browser/runtime-log verification.
 
-**Remaining:** Deliver the reviewed candidate, run exact-head application/database CI, prove affected Supabase Preview and Vercel production state, close records, and clean the branch.
+**Remaining:** Merge this documentation-only closure, synchronize protected `main`, delete the task-created branches, and confirm ordinary selection advances to WP03-T05.
 
-**Next safe action:** Complete the stable-candidate proof and enter the enforced finalization workflow.
+**Next safe action:** Select WP03-T05 after the protected closure merge and cleanup are confirmed.
 
-**Reviewer action:** NONE unless a genuine product decision, unapproved external mutation, or real-money boundary emerges.
+**Reviewer action:** NONE.
