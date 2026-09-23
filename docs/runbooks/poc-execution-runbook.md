@@ -545,7 +545,7 @@ This narrowly scoped correction follows the approved Sol/Luna workflow correctio
 - [x] Implement explicit design disposition, traceable founder receipts, task preparation state, fingerprint freshness, and guarded stable verification.
 - [x] Make application and database CI independent and return all safe database diagnostics from one candidate.
 - [x] Recover bounded task facts through the existing record and reconcile Impeccable with the central worker policy.
-- [ ] Run the focused and final test matrix; record sanitized evidence and stop.
+- [x] Run the focused and final test matrix; record sanitized evidence and stop. This closure marker becomes authoritative only when PR #48's final head passes required CI and reaches protected `main`.
 
 **Pass:** all P1, P2, and P3 completion criteria in the approved correction plan are met without weakening existing proof, safety, or worker boundaries.
 

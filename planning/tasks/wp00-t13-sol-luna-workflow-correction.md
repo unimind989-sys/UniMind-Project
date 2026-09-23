@@ -2,7 +2,9 @@
 
 **Task ID:** WP00-T13
 
-**Status:** [~]
+**Status:** [x]
+
+This closure marker becomes authoritative only after PR #48's final head passes required CI and reaches protected `main`.
 
 **Outcome:** Founder design authority, stable verification readiness, independent database diagnostics, and bounded recovery follow the approved correction plan.
 
@@ -12,7 +14,7 @@
 
 **Branch:** `wp00/sol-luna-workflow-correction`
 
-**Updated (UTC):** 2026-09-23T14:36:00Z
+**Updated (UTC):** 2026-09-23T17:08:41Z
 
 ## Derived execution envelope
 
@@ -48,7 +50,7 @@
 
 **Pass:** P1, P2, and P3 completion criteria and the final test matrix pass without weakening listed mechanisms.
 
-**Evidence:** Pending sanitized `evidence/wp00-pilot/` report for this candidate.
+**Evidence:** `evidence/wp00-pilot/2026-09-23_sol-luna-workflow-correction_github_a181d9b.md`; final closure requires exact-head CI and protected merge of PR #48.
 
 **Rollback:** Revert this correction in one reviewable change; no database or production state is mutated.
 
@@ -73,7 +75,7 @@
 - [x] Implement P1 design authority and stable-candidate readiness.
 - [x] Implement P2 database diagnostics.
 - [x] Implement P3 recovery and worker/context reconciliation.
-- [ ] Run the final matrix and record evidence.
+- [x] Run the final matrix and record evidence, conditional on final exact-head CI and protected merge.
 
 ## Handoff
 
@@ -81,8 +83,8 @@
 
 **Commands:** Focused policy/CI tests 58/58 exit 0; `pnpm typecheck` exit 0; `pnpm verify:agent-policy` exit 0; `pnpm verify:ci-workflow` exit 0; agent readiness exit 0; isolated handoff exit 0; skill validator exit 0; format check exit 0; secret scan exit 0; `git diff --check` exit 0. Final guarded `pnpm verify` exit 0 on preparation fingerprint `572bf9172ebbc6e261463570b1dcc7b97cdc741d330d3904e77d6bf5c3ac89f4`: 380 unit, 15 integration, 26 security, 3 evaluation, 5 load, 31 E2E, and production build/client scan passed. Earlier guarded attempts failed at format check after a late receipt edit and at typecheck after restoring the selector test; both were corrected and the final gate rerun. An isolated context test rerun passed after a parallel timeout, and that test has a bounded 20-second limit.
 
-**Remaining:** Exact-head CI, final evidence, and protected delivery.
+**Remaining:** Final PR-head CI, exact-candidate delivery review, protected merge, clean-main synchronization, and task-created branch cleanup.
 
-**Next safe action:** Deliver the reviewed candidate for exact-head CI, then close this task with sanitized evidence.
+**Next safe action:** Run the final PR-head required checks, approve with accurate distinct-account provenance, merge through protection, then confirm clean `main`.
 
 **Reviewer action:** NONE
