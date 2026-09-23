@@ -12,6 +12,7 @@ import {
   inspectCollectionFileForBrowser,
 } from "@/lib/collection/collection-browser.application";
 import { getCollectionCopy } from "@/lib/i18n/collection-copy";
+import { formatCollectionDate } from "@/lib/i18n/collection-format";
 import { getTextDirection, type Locale } from "@/lib/i18n/locale";
 
 import styles from "../collection.module.css";
@@ -57,13 +58,6 @@ function statusLabel(
     REJECTED: text.rejected,
     COMPLETED: text.completed,
   }[status];
-}
-
-function formatDate(locale: Locale, value: string) {
-  return new Intl.DateTimeFormat(locale === "ar" ? "ar-EG" : "en", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(new Date(value));
 }
 
 function formatBytes(locale: Locale, value: number) {
@@ -311,11 +305,13 @@ export function CollectionFlow({
         <dl className={styles.dates}>
           <div>
             <dt>{text.due}</dt>
-            <dd>{formatDate(locale, campaign.closesAt)}</dd>
+            <dd>{formatCollectionDate(locale, campaign.closesAt)}</dd>
           </div>
           <div>
             <dt>{text.assignment}</dt>
-            <dd>{formatDate(locale, campaign.assignmentExpiresAt)}</dd>
+            <dd>
+              {formatCollectionDate(locale, campaign.assignmentExpiresAt)}
+            </dd>
           </div>
         </dl>
         <p className={styles.syntheticLock}>
