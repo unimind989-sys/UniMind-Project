@@ -2,7 +2,7 @@
 
 **Task ID:** WP03-T05
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** An authenticated Batch Leader can see only a currently assigned open campaign, submit one requested synthetic source through an accessible retryable flow, and receive one durable idempotent submission whose rights and upload evidence were revalidated server-side.
 
@@ -10,9 +10,9 @@
 
 **Reviewer:** Ahmed; D-22 standing authorization applies to protected non-financial delivery
 
-**Branch:** `wp03/batch-leader-collection`
+**Branch:** `wp03/batch-leader-collection`; release fix `wp03/batch-leader-collection-release-fix`; closure `wp03/batch-leader-collection-closure`
 
-**Updated (UTC):** 2026-09-22T21:57:58Z
+**Updated (UTC):** 2026-09-23T00:16:27Z
 
 ## Derived execution envelope
 
@@ -70,16 +70,16 @@
 - [x] Add the smallest durable finalization schema/function and deterministic synthetic upload-receipt seam.
 - [x] Implement authenticated and preview campaign reads, upload/finalize mutations, and the bilingual accessible collection surface inside the approved visual system.
 - [x] Exercise keyboard, mobile, RTL/LTR, progress/cancel/retry, validation summary, duplicate/replacement, safe lifecycle, and payload-exposure behavior.
-- [~] Run proof preflight, stable-candidate verification, protected delivery, affected production proof, durable closure, and branch cleanup.
+- [x] Run proof preflight, stable-candidate verification, protected delivery, affected production proof, durable closure, and branch cleanup.
 
 ## Handoff
 
-**Changed:** Implemented the complete synthetic Batch Leader collection slice: caller-scoped campaign reads; signature/type/size/checksum validation; deterministic upload evidence; service-role-only registration bound to verified identity; authenticated idempotent finalization; bilingual accessible upload, retry, cancel, replacement, and lifecycle UI; SQL/RLS matrix coverage; and policy v5 classification for normal task artifacts.
+**Changed:** Implemented and released the complete synthetic Batch Leader collection slice: caller-scoped campaign reads; signature/type/size/checksum validation; deterministic upload evidence; service-role-only registration and finalization bound to verified identity; bilingual accessible upload, retry, cancel, replacement, and lifecycle UI; SQL/RLS matrix coverage; deterministic Cairo campaign timestamps; and policy v5 classification for normal task artifacts.
 
-**Commands:** Proof preflight returned COMPLETE under policy v5. `pnpm verify` passed with 376 unit, 15 integration plus 2 hosted-only skips, 26 security, 3 evaluation, 5 load, and 31 Playwright cases plus the safe production build and client-artifact scan. Focused SQL conventions, collection tests, Impeccable detector, desktop/mobile LTR/RTL side-browser inspection, and agent readiness passed. Disposable database execution is intentionally Linux-CI-only and remains assigned to required database CI. One required finish-review worker found trust and state-binding defects that were corrected; its bounded re-review retry hit the host usage limit, so the executor completed the final full-diff review without claiming independent review.
+**Commands:** Proof preflight returned COMPLETE under policy v5. The implementation candidate passed `pnpm verify` with 376 unit, 15 integration plus 2 hosted-only skips, 26 security, 3 evaluation, 5 load, and 31 Playwright cases; the release correction passed `pnpm verify` with 378 unit and the same remaining layers. Focused SQL conventions, pgTAP, collection, security, accessibility, responsive, Impeccable, secret, diff, production smoke, browser-console, Supabase metadata/grant, Security Advisor, and Vercel runtime-log checks passed. PR #45 exact-head run `35796018638` merged as `00084ed`; merged-main run `35796944487` passed. Production proof found a time-zone hydration mismatch, corrected in PR #46; exact-head run `35799810641` and merged-main run `35800406837` passed before final deployment `dpl_F5kXv2WUEifs1nWC8RRh5d3uEpWt`. One required finish-review worker found trust and state-binding defects that were corrected; its bounded re-review retry hit the host usage limit, so the executor completed the final full-diff review without claiming independent review.
 
-**Remaining:** Commit the stable candidate, push and open the protected PR, obtain exact-head application/database CI and compliant review, merge, apply/verify the affected Supabase migration, verify/promote the affected Vercel production deployment, close evidence/runbook/task state, synchronize clean `main`, and remove the task branch.
+**Remaining:** None. These closure markers become authoritative when their exact reviewed closure head reaches protected `main`; task-created branch deletion is delivery cleanup, not product work.
 
-**Next safe action:** Commit and push the reviewed stable candidate for protected exact-head CI.
+**Next safe action:** After closure merge and cleanup, select WP03-T06.
 
 **Reviewer action:** NONE.

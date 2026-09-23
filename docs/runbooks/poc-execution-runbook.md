@@ -1299,13 +1299,13 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 #### WP03-T05 — Build Batch Leader collection flow
 
-- [~] Show only active assigned campaigns and requested items.
-- [ ] Generate the client idempotency key before upload and preserve it across UI retry.
-- [ ] Keep D-18 and per-source rights fail-closed: WP03 uses synthetic files and the deterministic storage/upload adapter only. Do not issue a real signed upload target or accept private source material until the exact storage and rights gates pass.
-- [ ] Validate file signature/type/size before requesting an upload target; treat client MIME as advisory.
-- [ ] Finalize through an authenticated server mutation that verifies campaign assignment, object metadata/checksum, rights declaration, and idempotency.
-- [ ] Provide accessible drag/drop and file-input paths, progress, cancel, recoverable retry, duplicate/replacement guidance, validation summaries, and safe submitted/processing/needs-information/accepted/rejected/completed states without job/provider/internal diagnostics.
-- [ ] Test keyboard-only and mobile/RTL submission, wrong campaign, expired assignment, duplicate selection, replayed finalize, cancelled/abandoned upload, checksum mismatch, oversized/forbidden type, offline/interrupted retry, and revoked or unknown rights.
+- [x] Show only active assigned campaigns and requested items.
+- [x] Generate the client idempotency key before upload and preserve it across UI retry.
+- [x] Keep D-18 and per-source rights fail-closed: WP03 uses synthetic files and the deterministic storage/upload adapter only. Do not issue a real signed upload target or accept private source material until the exact storage and rights gates pass.
+- [x] Validate file signature/type/size before requesting an upload target; treat client MIME as advisory.
+- [x] Finalize through an authenticated server mutation that verifies campaign assignment, object metadata/checksum, rights declaration, and idempotency.
+- [x] Provide accessible drag/drop and file-input paths, progress, cancel, recoverable retry, duplicate/replacement guidance, validation summaries, and safe submitted/processing/needs-information/accepted/rejected/completed states without job/provider/internal diagnostics.
+- [x] Test keyboard-only and mobile/RTL submission, wrong campaign, expired assignment, duplicate selection, replayed finalize, cancelled/abandoned upload, checksum mismatch, oversized/forbidden type, offline/interrupted retry, and revoked or unknown rights. PR #45 merged as `00084ed`; release correction PR #46 merged as `63d8e6a`; Supabase Preview migration `20260922143605` and Vercel production deployment `dpl_F5kXv2WUEifs1nWC8RRh5d3uEpWt` passed hosted postflight. Protected release evidence: `evidence/wp03-product-shell/2026-09-23_batch-leader-collection-release_production_63d8e6a.md`.
 
 #### WP03-T06 — Build audited admin actions, not table editors
 
