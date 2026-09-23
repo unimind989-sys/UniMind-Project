@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
 import path from "node:path";
 
 import { parse } from "yaml";
@@ -21,7 +22,6 @@ const activationRuleNames = [
   "routing",
   "model_routing",
   "worker_policy",
-  "context_routing",
   "verification_selection",
   "evidence_reuse",
   "automatic_finalization",
@@ -30,11 +30,9 @@ const activationRuleNames = [
 const agentExecutionFlagNames = [
   "architectureUncertainty",
   "authSemantics",
-  "designJudgment",
   "destructiveMigration",
   "domainUncertainty",
   "explicitPlaywrightCli",
-  "humanVisualDecision",
   "productionMutation",
   "rls",
   "securityUncertainty",
@@ -81,10 +79,19 @@ type ConditionalCiOutcome = "PASS" | "FAIL" | "CANCELLED" | "SKIPPED";
 
 export type ExecutionPass = "intent" | "actual-diff" | "proof-preflight";
 export type DesignAcceptanceStatus =
-  "NOT_REQUIRED" | "HUMAN_DESIGN_ACCEPTANCE_REQUIRED" | "ACCEPTED";
+  | "NOT_REQUIRED"
+  | "HUMAN_DESIGN_ACCEPTANCE_REQUIRED"
+  | "DESIGN_DISPOSITION_REQUIRED"
+  | "DESIGN_EVIDENCE_REQUIRED"
+  | "ACCEPTED";
 export type ProofPreflightStatus = "COMPLETE" | "INCOMPLETE" | "UNKNOWN";
-export type ContextRetrievalAction =
-  "reuse-prior-read" | "inspect-headings" | "targeted-ranges" | "full-read";
+export type DesignDisposition =
+  | "NOT_APPLICABLE"
+  | "NONVISUAL"
+  | "OBJECTIVE_PRESERVING"
+  | "APPROVED_REFERENCE"
+  | "MATERIAL"
+  | "UNKNOWN";
 
 export type ConditionalCiPrediction = {
   id: string;
@@ -119,11 +126,6 @@ export type AgentExecutionPolicy = {
     external_chrome_flags: string[];
     playwright_cli_flags: string[];
   };
-  context: {
-    large_file_chars: number;
-    bounded_read_chars: number;
-    truncated_action: "targeted-ranges";
-  };
   verification: { checks: VerificationCheck[] };
   conditional_ci: {
     evidence_schema_version: number;
@@ -150,7 +152,6 @@ export type AgentExecutionPolicy = {
     routing: ActivationState;
     model_routing: ActivationState;
     worker_policy: ActivationState;
-    context_routing: ActivationState;
     verification_selection: ActivationState;
     evidence_reuse: ActivationState;
     automatic_finalization: ActivationState;
@@ -162,11 +163,9 @@ export type AgentExecutionPolicy = {
 export type AgentExecutionFlags = {
   architectureUncertainty?: boolean;
   authSemantics?: boolean;
-  designJudgment?: boolean;
   destructiveMigration?: boolean;
   domainUncertainty?: boolean;
   explicitPlaywrightCli?: boolean;
-  humanVisualDecision?: boolean;
   productionMutation?: boolean;
   rls?: boolean;
   securityUncertainty?: boolean;
@@ -188,6 +187,11 @@ export type AgentExecutionInput = {
   nestedWorker?: boolean;
   proceduralSkills?: string[];
   explicitChecks?: string[];
+  designDisposition?: DesignDisposition;
+  designEvidence?: string;
+  designReceipt?: unknown;
+  candidateHead?: string;
+  changesSinceAcceptance?: string[];
 };
 
 export type AgentExecutionResult = {
@@ -215,6 +219,7 @@ export type AgentExecutionResult = {
     playwrightCli: boolean;
   };
   designAcceptance: {
+    disposition: DesignDisposition;
     required: boolean;
     retained: boolean;
     status: DesignAcceptanceStatus;
@@ -255,6 +260,11 @@ export type EvidenceProof = {
     pathPatterns: string[];
     semanticFacts?: EvidenceSemanticFact[];
   };
+  decisionActor?: "Ahmed" | "Ziad";
+  decisionReference?: string;
+  decisionTimestamp?: string;
+  acceptedCandidate?: string;
+  acceptedScope?: string;
 };
 
 export type EvidenceReceipt = {
@@ -280,22 +290,66 @@ export type ProofCompletenessPreflight = Readonly<{
   reasons: readonly string[];
 }>;
 
-export type ContextRetrievalInput = Readonly<{
-  path: string;
-  fileChars: number;
-  outputTruncated: boolean;
-  contentChanged: boolean;
-  newQuestion: boolean;
-  priorReadAvailable?: boolean;
-  fullReadJustified?: boolean;
-}>;
+export function selectLocalStableTask(
+  activeTaskIds: readonly string[],
+  explicitTask?: string,
+): string {
+  if (explicitTask !== undefined && activeTaskIds.includes(explicitTask))
+    return explicitTask;
+  if (explicitTask !== undefined || activeTaskIds.length !== 1) {
+    throw new Error(
+      `Stable verification needs one active task; found ${activeTaskIds.length}.`,
+    );
+  }
+  return activeTaskIds[0] as string;
+}
 
-export type ContextRetrievalPlan = Readonly<{
-  action: ContextRetrievalAction;
-  repeatFullRead: boolean;
-  maxChars?: number;
-  reason: string;
-}>;
+export function hashPreparation(
+  head: string,
+  candidatePairs: readonly [string, string][],
+  contract: string,
+): string {
+  const entries = candidatePairs
+    .map(([candidatePath, blob]) => `${candidatePath}\0${blob}`)
+    .sort();
+  const contractHash = createHash("sha256").update(contract).digest("hex");
+  return createHash("sha256")
+    .update([head, ...entries, contractHash].join("\n"))
+    .digest("hex");
+}
+
+export function assessLocalStablePreparation(input: {
+  commands: string;
+  review: string;
+  unresolvedFindings: string;
+  recordedFingerprint: string;
+  currentFingerprint: string;
+  proofPreflight: ProofCompletenessPreflight;
+  requiresIndependentReview?: boolean;
+}): string[] {
+  const failures: string[] = [];
+  if (input.commands === "NOT RUN" || !/\bexit\s+0\b/iu.test(input.commands))
+    failures.push("focused results are not recorded");
+  if (
+    input.review !== "COMPLETE_INLINE" &&
+    input.review !== "COMPLETE_INDEPENDENT"
+  )
+    failures.push("candidate-changing review is pending");
+  if (
+    input.requiresIndependentReview &&
+    input.review !== "COMPLETE_INDEPENDENT"
+  )
+    failures.push("the task requires independent preparation review");
+  if (input.unresolvedFindings !== "NONE")
+    failures.push("review findings remain unresolved");
+  if (input.recordedFingerprint !== input.currentFingerprint)
+    failures.push("preparation fingerprint is stale");
+  if (input.proofPreflight.status !== "COMPLETE")
+    failures.push(
+      `proof preflight is ${input.proofPreflight.status}: ${input.proofPreflight.missing.join(", ")}`,
+    );
+  return failures;
+}
 
 export type EvidenceAssessment = {
   id: string;
@@ -389,64 +443,6 @@ export function classifyChangedPaths(
   return {
     surfaces: policy.surface_order.filter((surface) => surfaces.has(surface)),
     reasons,
-  };
-}
-
-export function planContextRetrieval(
-  policy: AgentExecutionPolicy,
-  input: ContextRetrievalInput,
-): ContextRetrievalPlan {
-  if (
-    !Number.isFinite(input.fileChars) ||
-    input.fileChars < 0 ||
-    !Number.isInteger(input.fileChars)
-  ) {
-    throw new Error("Context file size must be a non-negative integer.");
-  }
-
-  if (input.outputTruncated) {
-    return {
-      action: policy.context.truncated_action,
-      repeatFullRead: false,
-      maxChars: policy.context.bounded_read_chars,
-      reason:
-        "The previous output was truncated; inspect targeted concepts and read bounded ranges instead of repeating the oversized read.",
-    };
-  }
-
-  if (
-    input.priorReadAvailable === true &&
-    input.contentChanged === false &&
-    input.newQuestion === false
-  ) {
-    return {
-      action: "reuse-prior-read",
-      repeatFullRead: false,
-      reason:
-        "The prior read is complete, unchanged, and answers the same question; avoid an unchanged-file reread.",
-    };
-  }
-
-  if (
-    input.fileChars >= policy.context.large_file_chars &&
-    input.fullReadJustified !== true
-  ) {
-    return {
-      action: "inspect-headings",
-      repeatFullRead: false,
-      maxChars: policy.context.bounded_read_chars,
-      reason:
-        "The file is large; inspect headings or targeted concepts before reading bounded ranges.",
-    };
-  }
-
-  return {
-    action: "full-read",
-    repeatFullRead: false,
-    reason:
-      input.fullReadJustified === true
-        ? "The task explicitly requires the complete file after bounded discovery."
-        : "The file is within the bounded context size; a complete read is proportionate.",
   };
 }
 
@@ -555,24 +551,6 @@ export function validateAgentExecutionPolicy(
   }
   if (policy.workers.nested !== false) {
     failures.push("nested workers must be disabled");
-  }
-  if (
-    !Number.isInteger(policy.context.large_file_chars) ||
-    policy.context.large_file_chars <= 0
-  ) {
-    failures.push("context.large_file_chars must be a positive integer");
-  }
-  if (
-    !Number.isInteger(policy.context.bounded_read_chars) ||
-    policy.context.bounded_read_chars <= 0 ||
-    policy.context.bounded_read_chars > policy.context.large_file_chars
-  ) {
-    failures.push(
-      "context.bounded_read_chars must be positive and no larger than the large-file threshold",
-    );
-  }
-  if (policy.context.truncated_action !== "targeted-ranges") {
-    failures.push("context.truncated_action must be targeted-ranges");
   }
   for (const rule of activationRuleNames) {
     const state = policy.activation[rule];
@@ -704,6 +682,10 @@ export function buildProofCompletenessPreflight(
     )
     .map((obligation) => obligation.id);
   if (designAcceptance.required) missing.push("human-design-acceptance");
+  if (designAcceptance.status === "DESIGN_DISPOSITION_REQUIRED")
+    missing.push("design-disposition");
+  if (designAcceptance.status === "DESIGN_EVIDENCE_REQUIRED")
+    missing.push("design-evidence");
 
   const unknownPaths =
     input.pass === "intent"
@@ -727,7 +709,9 @@ export function buildProofCompletenessPreflight(
   }
   const uniqueMissing = Array.from(new Set(missing));
   const status: ProofPreflightStatus =
-    unknownPaths.length > 0 || input.flags?.visualImpactUnknown === true
+    unknownPaths.length > 0 ||
+    input.flags?.visualImpactUnknown === true ||
+    designAcceptance.disposition === "UNKNOWN"
       ? "UNKNOWN"
       : input.pass !== "proof-preflight" || uniqueMissing.length > 0
         ? "INCOMPLETE"
@@ -840,34 +824,90 @@ export function deriveAgentExecution(
   const sortedSurfaces = policy.surface_order.filter((surface) =>
     surfaces.has(surface),
   );
-  const materialDesignChange =
-    flags.designJudgment === true && sortedSurfaces.includes("frontend");
-  const designAcceptance: AgentExecutionResult["designAcceptance"] =
-    materialDesignChange
-      ? flags.humanVisualDecision === true
-        ? {
-            required: false,
-            retained: false,
-            status: "ACCEPTED",
-            reason:
-              "The material subjective frontend candidate has a recorded founder visual decision.",
-          }
-        : {
-            required: true,
-            retained: false,
-            status: "HUMAN_DESIGN_ACCEPTANCE_REQUIRED",
-            reason:
-              "Material subjective frontend judgment requires a coherent candidate and founder hands-on design acceptance before stable broad verification.",
-          }
-      : {
-          required: false,
-          retained: flags.humanVisualDecision === true,
-          status: "NOT_REQUIRED",
-          reason:
-            flags.humanVisualDecision === true
-              ? "The current change preserves approved design intent; existing founder design acceptance remains valid."
-              : "No material unresolved subjective frontend design judgment is present.",
-        };
+  const disposition: DesignDisposition = sortedSurfaces.includes("frontend")
+    ? (input.designDisposition ?? "UNKNOWN")
+    : "NOT_APPLICABLE";
+  if (
+    !(
+      [
+        "NOT_APPLICABLE",
+        "NONVISUAL",
+        "OBJECTIVE_PRESERVING",
+        "APPROVED_REFERENCE",
+        "MATERIAL",
+        "UNKNOWN",
+      ] as string[]
+    ).includes(disposition)
+  ) {
+    throw new Error("Unsupported design disposition.");
+  }
+  const evidence = input.designEvidence?.trim();
+  const evidenceValid =
+    disposition === "NONVISUAL"
+      ? /^rationale:.{12,}/u.test(evidence ?? "") ||
+        /^receipt:[^;]+;\s*rationale:.{12,};\s*baseline:.+/u.test(
+          evidence ?? "",
+        )
+      : disposition === "OBJECTIVE_PRESERVING"
+        ? /^rationale:.{12,};\s*baseline:.+/u.test(evidence ?? "")
+        : disposition === "APPROVED_REFERENCE"
+          ? /^reference:(message:[^\s]+|[^\s]+#[^\s]+)$/u.test(evidence ?? "")
+          : true;
+  const receipt = parseEvidenceReceipt(input.designReceipt);
+  const acceptance = receipt?.proofs.find(
+    (proof) => proof.id === "human-design-acceptance",
+  );
+  const validReceipt =
+    receipt?.task === input.task &&
+    receipt.policyVersion === policy.policy_version &&
+    receipt.schemaVersion === policy.evidence.schema_version &&
+    acceptance !== undefined;
+  const changedFrontend = classifyChangedPaths(
+    policy,
+    input.changesSinceAcceptance ?? [],
+    true,
+  ).surfaces.includes("frontend");
+  const accepted =
+    validReceipt &&
+    !input.flags?.visualImpactUnknown &&
+    ((disposition === "MATERIAL" &&
+      input.candidateHead === acceptance.acceptedCandidate &&
+      !changedFrontend) ||
+      (disposition === "NONVISUAL" &&
+        evidenceValid &&
+        evidence?.includes("baseline:")));
+  const required = disposition === "MATERIAL" && !accepted;
+  const invalid =
+    (disposition === "UNKNOWN" ||
+      disposition === "NOT_APPLICABLE" ||
+      !evidenceValid) &&
+    sortedSurfaces.includes("frontend");
+  const designAcceptance: AgentExecutionResult["designAcceptance"] = {
+    disposition,
+    required,
+    retained: Boolean(
+      accepted &&
+      (disposition === "NONVISUAL" ||
+        (input.changesSinceAcceptance?.length ?? 0) > 0),
+    ),
+    status: accepted
+      ? "ACCEPTED"
+      : required
+        ? "HUMAN_DESIGN_ACCEPTANCE_REQUIRED"
+        : invalid
+          ? disposition === "UNKNOWN" || disposition === "NOT_APPLICABLE"
+            ? "DESIGN_DISPOSITION_REQUIRED"
+            : "DESIGN_EVIDENCE_REQUIRED"
+          : "NOT_REQUIRED",
+    reason:
+      disposition === "UNKNOWN"
+        ? "Frontend design disposition is missing or unknown."
+        : !evidenceValid
+          ? "The selected design disposition lacks a specific rationale and baseline/reference."
+          : required
+            ? "Material design requires a valid founder receipt for the presented candidate."
+            : "Design disposition is explicit and supported.",
+  };
   const risks = sortedSurfaces.map(
     (surface) => policy.surfaces[surface].risk_floor,
   );
@@ -937,10 +977,7 @@ export function deriveAgentExecution(
     };
   }
 
-  const capabilitySurfaces =
-    policy.activation.context_routing === "ENFORCED"
-      ? sortedSurfaces
-      : [...surfaceNames];
+  const capabilitySurfaces = sortedSurfaces;
   const capabilities = Array.from(
     new Set(
       capabilitySurfaces.flatMap(
@@ -949,7 +986,7 @@ export function deriveAgentExecution(
     ),
   ).sort();
   const proceduralSkills = new Set(input.proceduralSkills ?? []);
-  if (flags.designJudgment === true) {
+  if (disposition === "MATERIAL") {
     proceduralSkills.add("impeccable");
   }
 
@@ -1022,7 +1059,8 @@ export function deriveAgentExecution(
       internal: isFrontend ? policy.browser.internal : "none",
       externalChrome:
         isFrontend &&
-        (designAcceptance.required ||
+        ((designAcceptance.disposition === "MATERIAL" &&
+          designAcceptance.required) ||
           policy.browser.external_chrome_flags.some((flag) =>
             flagEnabled(flags, flag),
           )),
@@ -1276,10 +1314,27 @@ function parseEvidenceReceipt(value: unknown): EvidenceReceipt | undefined {
     const parsedSemanticFacts = (semanticFacts ?? []) as EvidenceSemanticFact[];
     if (
       proofValue.id === "human-design-acceptance" &&
-      !parsedSemanticFacts.some((fact) => fact.flag === "designJudgment")
-    ) {
+      value.policyVersion >= 6 &&
+      ((proofValue.decisionActor !== "Ahmed" &&
+        proofValue.decisionActor !== "Ziad") ||
+        typeof proofValue.decisionReference !== "string" ||
+        !/^(message:[^\s]+|docs\/decisions\/[a-z0-9-]+\.md#[^\s]+)$/u.test(
+          proofValue.decisionReference,
+        ) ||
+        typeof proofValue.decisionTimestamp !== "string" ||
+        !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$/u.test(
+          proofValue.decisionTimestamp,
+        ) ||
+        Number.isNaN(Date.parse(proofValue.decisionTimestamp)) ||
+        typeof proofValue.acceptedCandidate !== "string" ||
+        !/^[a-f0-9]{40}$/u.test(proofValue.acceptedCandidate) ||
+        proofValue.acceptedCandidate !== value.candidate ||
+        typeof proofValue.acceptedScope !== "string" ||
+        !/^routes:[^;]+;\s*surfaces:[^;]+;\s*states:[^;]+$/u.test(
+          proofValue.acceptedScope,
+        ))
+    )
       return undefined;
-    }
     proofs.push({
       id: proofValue.id,
       check: proofValue.check,
@@ -1291,6 +1346,15 @@ function parseEvidenceReceipt(value: unknown): EvidenceReceipt | undefined {
           ? {}
           : { semanticFacts: parsedSemanticFacts }),
       },
+      ...(proofValue.id === "human-design-acceptance"
+        ? {
+            decisionActor: proofValue.decisionActor as "Ahmed" | "Ziad",
+            decisionReference: proofValue.decisionReference as string,
+            decisionTimestamp: proofValue.decisionTimestamp as string,
+            acceptedCandidate: proofValue.acceptedCandidate as string,
+            acceptedScope: proofValue.acceptedScope as string,
+          }
+        : {}),
     });
   }
   return {
@@ -1310,6 +1374,8 @@ export function assessEvidenceReceipt(
     surfaces: Surface[];
     changedPaths: string[];
     flags?: AgentExecutionFlags;
+    designDisposition?: DesignDisposition;
+    designEvidence?: string;
   },
 ): EvidenceAssessment[] {
   const receipt = parseEvidenceReceipt(receiptValue);
@@ -1349,6 +1415,44 @@ export function assessEvidenceReceipt(
   }
 
   return receipt.proofs.map((proof) => {
+    if (
+      proof.id === "human-design-acceptance" &&
+      current.surfaces.includes("frontend") &&
+      current.changedPaths.length > 0
+    ) {
+      if (
+        current.flags?.visualImpactUnknown === true ||
+        current.designDisposition === "UNKNOWN" ||
+        current.designDisposition === undefined
+      ) {
+        return {
+          id: proof.id,
+          state: "MISSING" as const,
+          reason: "visual impact is unknown",
+          sourceCandidate: receipt.candidate,
+        };
+      }
+      if (current.designDisposition === "MATERIAL") {
+        return {
+          id: proof.id,
+          state: "INVALID" as const,
+          reason: "material visual change makes founder acceptance stale",
+          sourceCandidate: receipt.candidate,
+        };
+      }
+      if (
+        current.designDisposition !== "NONVISUAL" ||
+        !current.designEvidence?.includes("rationale:") ||
+        !current.designEvidence?.includes("baseline:")
+      ) {
+        return {
+          id: proof.id,
+          state: "MISSING" as const,
+          reason: "nonvisual correction lacks evidence",
+          sourceCandidate: receipt.candidate,
+        };
+      }
+    }
     const semanticResult = proof.invalidatedBy.semanticFacts?.find(
       (fact) => current.flags?.[fact.flag] === fact.equals,
     );
@@ -1356,7 +1460,12 @@ export function assessEvidenceReceipt(
       proof.id === "human-design-acceptance" &&
       current.surfaces.includes("frontend") &&
       unknownChangedPaths(policy, current.changedPaths).length > 0;
-    if (semanticResult?.result === "MISSING" || unknownVisualPath) {
+    if (
+      semanticResult?.result === "MISSING" ||
+      unknownVisualPath ||
+      (proof.id === "human-design-acceptance" &&
+        current.flags?.visualImpactUnknown === true)
+    ) {
       return {
         id: proof.id,
         state: "MISSING" as const,
@@ -1420,13 +1529,27 @@ export function buildEvidenceReceipt(
   result: AgentExecutionResult,
   candidate: string,
   passedCheckIds: readonly string[],
+  designDecision?: {
+    decisionActor: "Ahmed" | "Ziad";
+    decisionReference: string;
+    decisionTimestamp: string;
+    acceptedScope: string;
+  },
 ): EvidenceReceipt {
   if (!/^[a-f0-9]{7,40}$/u.test(candidate)) {
     throw new Error("Evidence receipt candidate must be a Git commit SHA.");
   }
   if (
     result.pass !== "proof-preflight" ||
-    result.proofPreflight.status !== "COMPLETE"
+    (result.proofPreflight.status !== "COMPLETE" &&
+      !(
+        designDecision !== undefined &&
+        result.designAcceptance.disposition === "MATERIAL" &&
+        result.proofPreflight.status === "INCOMPLETE" &&
+        result.proofPreflight.missing.every(
+          (item) => item === "human-design-acceptance",
+        )
+      ))
   ) {
     throw new Error(
       "Evidence receipts require a complete proof-preflight result.",
@@ -1451,28 +1574,45 @@ export function buildEvidenceReceipt(
       };
     },
   );
-  if (result.designAcceptance.status === "ACCEPTED") {
+  if (designDecision !== undefined) {
+    if (result.designAcceptance.disposition !== "MATERIAL")
+      throw new Error(
+        "Founder acceptance can only be issued for material design work.",
+      );
+    if (!/^[a-f0-9]{40}$/u.test(candidate))
+      throw new Error(
+        "Founder acceptance requires the full presented commit SHA.",
+      );
+    if (
+      designDecision.decisionActor !== "Ahmed" &&
+      designDecision.decisionActor !== "Ziad"
+    )
+      throw new Error("Founder actor must be Ahmed or Ziad.");
     proofs.push({
       id: "human-design-acceptance",
       check: "founder hands-on design acceptance",
       status: "PASS",
+      ...designDecision,
+      acceptedCandidate: candidate,
       invalidatedBy: {
         surfaces: [],
         pathPatterns: [],
         semanticFacts: [
-          { flag: "designJudgment", equals: true, result: "INVALID" },
           { flag: "visualImpactUnknown", equals: true, result: "MISSING" },
         ],
       },
     });
   }
-  return {
+  const receipt: EvidenceReceipt = {
     schemaVersion: policy.evidence.schema_version,
     policyVersion: policy.policy_version,
     task: result.task,
     candidate,
     proofs,
   };
+  if (parseEvidenceReceipt(receipt) === undefined)
+    throw new Error("Founder decision reference or scope is incomplete.");
+  return receipt;
 }
 
 export function classifyReviewProvenance(input: {

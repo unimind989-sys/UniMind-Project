@@ -53,7 +53,7 @@ jobs:
       - name: Run the credential-free zero-paid gate
         env:
           PLAYWRIGHT_HTML_OPEN: never
-        run: corepack pnpm verify
+        run: corepack pnpm verify:ci
       - name: Upload sanitized local reports
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -64,7 +64,6 @@ jobs:
           retention-days: 7
 
   database-ci:
-    needs: application
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     concurrency:
@@ -84,18 +83,31 @@ jobs:
       - name: Install from the immutable lockfile
         run: corepack pnpm install --frozen-lockfile
       - name: Start and verify the disposable database and Auth stack
+        id: database_setup
         run: |
           corepack pnpm db:ci:start
           corepack pnpm db:ci:upgrade
           corepack pnpm db:ci:reset
           corepack pnpm db:ci:reset
           corepack pnpm db:ci:migrations
-          corepack pnpm db:ci:test
-          corepack pnpm db:ci:advisors
-          corepack pnpm db:ci:types
-          corepack pnpm db:types:check
-          corepack pnpm test:integration:database
-          corepack pnpm test:security
+      - name: Run pgTAP and database contracts
+        if: ${{ always() && steps.database_setup.outcome == 'success' }}
+        run: corepack pnpm db:ci:test
+      - name: Run database advisors
+        if: ${{ always() && steps.database_setup.outcome == 'success' }}
+        run: corepack pnpm db:ci:advisors
+      - name: Generate database types
+        if: ${{ always() && steps.database_setup.outcome == 'success' }}
+        run: corepack pnpm db:ci:types
+      - name: Check generated-type parity
+        if: ${{ always() && steps.database_setup.outcome == 'success' }}
+        run: corepack pnpm db:types:check
+      - name: Run database integration
+        if: ${{ always() && steps.database_setup.outcome == 'success' }}
+        run: corepack pnpm test:integration:database
+      - name: Run security tests
+        if: ${{ always() && steps.database_setup.outcome == 'success' }}
+        run: corepack pnpm test:security
       - name: Remove the disposable stack and volumes
         if: always()
         run: corepack pnpm db:ci:stop

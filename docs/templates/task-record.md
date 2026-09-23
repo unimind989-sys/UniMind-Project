@@ -56,6 +56,24 @@ Complete this compact block for tasks created under the central execution policy
 
 **Hard stop:** <conditions that prohibit continuation>
 
+## Candidate preparation
+
+Required for active/new policy-v6 records. The review fingerprint is copied from router proof preflight after the last candidate-changing review.
+
+**Design disposition:** <NOT_APPLICABLE | NONVISUAL | OBJECTIVE_PRESERVING | APPROVED_REFERENCE | MATERIAL | UNKNOWN>
+
+**Design evidence:** <receipt/reference | NOT_REQUIRED | PENDING>
+
+Use `rationale:<why no rendered effect>` for `NONVISUAL`, `rationale:<why>; baseline:<approved baseline>` for `OBJECTIVE_PRESERVING`, and `reference:<exact path#section or message:id>` for `APPROVED_REFERENCE`. To retain an earlier material receipt after a demonstrated nonvisual correction, use `receipt:<path.json>; rationale:<why>; baseline:<accepted baseline>`.
+
+**Preparation review:** <PENDING | COMPLETE_INLINE | COMPLETE_INDEPENDENT>
+
+**Preparation fingerprint:** <sha256 | NOT_READY>
+
+**Unresolved findings:** <NONE | IDs/pointers>
+
+**Established facts:** <fact | source-path#heading-or-symbol | git-hash-object | reopen-condition, or NONE>
+
 ## Steps
 
 - [ ] <ordered implementation action>

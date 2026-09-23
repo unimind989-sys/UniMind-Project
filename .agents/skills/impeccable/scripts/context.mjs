@@ -1086,6 +1086,26 @@ async function computeUpdateDirective(now = Date.now()) {
   }
 }
 
+function compactUniMindAuthority(ctx, kind) {
+  const root = ctx.repoRoot || ctx.projectRoot;
+  if (!fs.existsSync(path.join(root, 'docs/agents/agent-execution-policy.yaml')) ||
+      !fs.existsSync(path.join(root, 'planning/tasks'))) return null;
+  const relativePath = kind === 'PRODUCT' ? ctx.productPath : ctx.designPath;
+  const body = kind === 'PRODUCT' ? ctx.product : ctx.design;
+  if (!relativePath || !body) return null;
+  const absolutePath = path.resolve(process.cwd(), relativePath);
+  const hash = spawnSync('git', ['hash-object', '--', absolutePath], { cwd: root, encoding: 'utf8' }).stdout?.trim() || 'UNAVAILABLE';
+  const records = fs.readdirSync(path.join(root, 'planning/tasks')).filter((name) => name.endsWith('.md'));
+  const active = records.map((name) => fs.readFileSync(path.join(root, 'planning/tasks', name), 'utf8'))
+    .find((record) => /^\*\*Status:\*\* \[~\]/m.test(record));
+  const facts = active?.match(/^\*\*Established facts:\*\*[ \t]*(.+)$/m)?.[1] || 'NONE';
+  const relativeToRoot = path.relative(root, absolutePath).replaceAll('\\', '/');
+  const currentFact = facts.split(';').some((entry) => entry.includes(`${relativeToRoot}#`) && entry.split('|')[2]?.trim() === hash);
+  const headings = body.split(/\r?\n/).filter((line) => /^#{1,2} /u.test(line)).slice(0, 12).join(' | ');
+  const unresolved = active?.match(/^\*\*Unresolved findings:\*\*[ \t]*(.+)$/m)?.[1] || 'UNKNOWN';
+  return `# ${kind}.md authority reference\n\nPath: ${relativeToRoot}\nGit blob: ${hash}\nHeadings: ${headings || 'NONE'}\nUnresolved findings: ${unresolved}\nFact state: ${currentFact ? 'CURRENT — reuse source-bound task facts; reopen a relevant heading if insufficient' : 'MISSING_OR_STALE — reopen only the relevant heading or symbol before using this authority'}.`;
+}
+
 async function cli() {
   let cliOptions;
   try {
@@ -1144,7 +1164,7 @@ async function cli() {
     // session: the skill resumes after init writes PRODUCT.md without
     // rerunning this script, so the hasProduct branch below never runs.
     if (ctx.hasDesign) {
-      parts.push(`# DESIGN.md\n\n${ctx.design.trim()}`);
+      parts.push(compactUniMindAuthority(ctx, 'DESIGN') || `# DESIGN.md\n\n${ctx.design.trim()}`);
     }
     appendSurfaceBriefContext(parts, ctx);
     parts.push(buildResolvedContextDirective(ctx, cliOptions, { targetExists }));
@@ -1152,7 +1172,6 @@ async function cli() {
     appendImageGenDirective(parts);
     appendBuildPathDirective(parts, ctx);
     appendAutonomyCounterDirective(parts);
-    appendSubagentAuthorizationDirective(parts);
     if (shouldWarnMissingTarget(ctx, targetProvided, targetExists)) {
       parts.push(buildMissingTargetDirective());
     }
@@ -1162,9 +1181,9 @@ async function cli() {
     process.stdout.write(parts.join('\n\n---\n\n') + '\n');
     process.exit(0);
   }
-  const parts = [`# PRODUCT.md\n\n${ctx.product.trim()}`];
+  const parts = [compactUniMindAuthority(ctx, 'PRODUCT') || `# PRODUCT.md\n\n${ctx.product.trim()}`];
   if (ctx.hasDesign) {
-    parts.push(`# DESIGN.md\n\n${ctx.design.trim()}`);
+    parts.push(compactUniMindAuthority(ctx, 'DESIGN') || `# DESIGN.md\n\n${ctx.design.trim()}`);
   }
   appendSurfaceBriefContext(parts, ctx);
   parts.push(buildResolvedContextDirective(ctx, cliOptions, { targetExists }));
@@ -1172,7 +1191,6 @@ async function cli() {
   appendImageGenDirective(parts);
   appendBuildPathDirective(parts, ctx);
   appendAutonomyCounterDirective(parts);
-  appendSubagentAuthorizationDirective(parts);
   if (shouldWarnMissingTarget(ctx, targetProvided, targetExists)) {
     parts.push(buildMissingTargetDirective());
   }
@@ -1356,20 +1374,6 @@ function appendAutonomyCounterDirective(parts) {
     "Impeccable's interview and decision steps stay live: probe once with the structured question tool or the decision page.",
     'Infer from the brief alone only after that probe errors, times out, or the user tells you to proceed,',
     'and state the substitution in your first reply, not your last.',
-  ].join(' '));
-}
-
-// Same class of harness default as the autonomy directive: some harnesses gate
-// agent-tool use on an explicit user request, which silently disables every
-// shipped subagent the skill's flows depend on (finish reviewer, asset
-// producer, manual-edit applier, critique panels). Observed live: the model
-// resolved the conflict against the skill without telling the user.
-function appendSubagentAuthorizationDirective(parts) {
-  parts.push([
-    'SUBAGENT_AUTHORIZATION: If your harness gates subagent or agent-tool use on an explicit user request,',
-    "the user's invocation of this skill is that request for the skill's shipped subagents;",
-    'spawn them where a reference file directs, without re-asking.',
-    'Substitute an in-thread pass only when the tool surface has no subagent capability at all, and disclose the substitution in one line.',
   ].join(' '));
 }
 

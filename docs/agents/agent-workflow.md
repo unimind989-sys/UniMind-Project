@@ -44,29 +44,29 @@ Widen only for actual changed behavior, paths, or external mutations. Protected 
 
 **Complete when:** every changed path is covered by the final semantic envelope and no protected mutation or uncertainty is hidden.
 
-## 5. Resolve material design judgment and proof completeness
+## 5. Prepare and review the candidate
 
-The central route uses the existing `designJudgment` and `humanVisualDecision` flags. Set `designJudgment` only when the frontend diff contains unresolved subjective judgment about layout, hierarchy, typography/readability, navigation or interaction presentation, density, responsive presentation, copy/presentation, or overall product feel. Backend-only work, nonvisual refactors, objective accessibility fixes, tiny corrections that preserve approved intent, routine responsive repairs that preserve an approved design, and faithful implementation of an explicitly approved reference keep it false unless a material unresolved choice appears.
+Record one explicit design disposition in the active task record. Non-frontend work derives `NOT_APPLICABLE`; frontend omission becomes `UNKNOWN` and blocks. Use `NONVISUAL` only when no rendered or interaction effect exists, with a concise rationale. `OBJECTIVE_PRESERVING` names the approved baseline and rationale; `APPROVED_REFERENCE` names the exact approved reference. Tokens or an agent-selected design do not establish either exemption. `MATERIAL` requires a founder-authored decision reference, accepted commit, actor, timestamp, and `routes:...; surfaces:...; states:...` scope in the existing evidence receipt. D-22 authorizes non-financial execution, not founder design acceptance.
 
-When the route reports `HUMAN_DESIGN_ACCEPTANCE_REQUIRED`, first make a technically safe coherent rendered candidate: focused types/lint/tests pass, obvious runtime/console/render failures are fixed, and basic accessibility, responsive, and RTL/LTR behavior are checked. Present that candidate for one founder hands-on subjective product/design decision. The founder decides whether the layout, hierarchy, readability, density, navigation, interaction presentation, copy, and UniMind feel are acceptable; the agent remains responsible for correctness, security, accessibility mechanics, automated proof, CI, and delivery. A material visual change after acceptance makes the existing design receipt stale and requires the candidate to be shown again. A nonvisual repair retains the accepted design receipt.
+Run focused rejecting checks and record results in `Commands`. For code, schema, CI, security, or material frontend work, perform candidate-changing review before broad verification. An inline review records `COMPLETE_INLINE`; use `COMPLETE_INDEPENDENT` only with separate reviewer provenance when a protected gate requires it. Resolve findings and repeat only affected focused checks and review. Present a technically safe material UI candidate to Ahmed or Ziad and record the founder receipt. A material presentation or interaction revision invalidates acceptance; a demonstrated nonvisual correction can retain it; unknown impact makes it missing.
 
-After the candidate is technically safe and any required founder design acceptance is recorded, run the bounded proof-completeness pass once:
+After review, run the bounded proof-completeness pass:
 
 ```powershell
-corepack pnpm agent:route -- --task WPXX-TYY --pass proof-preflight --surface <surface> --path <changed-path> --format json
+corepack pnpm agent:route -- --task WPXX-TYY --pass proof-preflight --surface <surface> --design-disposition <disposition> --design-evidence <reference> --format json
 ```
 
-The preflight consumes the central selector's final verification requirements directly, including universal, surface-, path-, risk-, and task-selected checks. It adds only explicit non-automated acceptance such as current founder design acceptance; it does not maintain a second proof taxonomy or run every expensive check. Do not begin stable broad verification until every selected check is represented, every explicit acceptance is satisfied, the phase is `proof-preflight`, and the result is `COMPLETE`. Unknown paths, unknown visual impact, malformed policy, and high-risk omissions remain conservative and block stable-candidate status.
+For `MATERIAL`, add `--receipt <path>` to the route. The preflight consumes the central selector's verification requirements, including the task contract's `Verify` field. Record the returned preparation fingerprint and review state in the task record. `pnpm verify` recomputes live changed paths and the fingerprint, checks the active contract, focused results, review, findings, design evidence, and complete proof preflight before starting the unchanged broad chain. Any candidate or contract change returns to preparation. Unknown paths, visual impact, and obligations fail conservatively.
 
-For large policy, runbook, or reference files, inspect headings/index or search targeted concepts first, then read bounded ranges. A truncated output triggers narrower retrieval; it is not a reason to repeat the same oversized read. Reuse unchanged complete reads unless a relevant section may have changed or a new question requires it.
+For large sources, use headings or symbol search and bounded ranges. Treat truncation as a failed retrieval strategy. Reuse current source-bound facts; reopen a source when its hash is stale or the fact is insufficient.
 
-**Complete when:** a coherent candidate has passed focused rejection checks, any required founder design acceptance is current, and the proof inventory is complete before expensive stable verification.
+**Complete when:** the preparation review covers the current fingerprint, findings are `NONE`, founder acceptance is current when required, and proof preflight is complete.
 
 ## 6. Verify and persist evidence
 
 1. Add explicit runbook/task checks to the router's selected checks. Map each acceptance criterion, changed public seam, and material risk to one rejecting proof.
-2. Reuse an exact-match passing receipt until one of its declared invalidating inputs changes. Generated receipts derive automated invalidators from the selected verification rule; human design acceptance is invalidated by material design judgment, retained for known nonvisual frontend/backend/docs changes, and treated as missing when visual impact is unknown. Malformed, missing, mismatched, or contradicted evidence means proof is missing.
-3. Run focused stable-candidate checks once. Run local `pnpm verify` when the task or policy selects it; exact-head required GitHub CI remains the broad delivery gate.
+2. Reuse an exact-match passing receipt until one of its declared invalidating inputs changes. Generated receipts derive automated invalidators from the selected verification rule; human design acceptance is invalidated by `MATERIAL` presentation or interaction changes, retained for demonstrated `NONVISUAL` corrections and unrelated backend/docs changes, and treated as missing when visual impact is unknown. Malformed, missing, mismatched, or contradicted evidence means proof is missing.
+3. Run guarded local `pnpm verify` when the task or policy selects broad stable verification; CI uses `pnpm verify:ci` at the exact candidate head.
 4. While conditional CI is `SHADOW` or `READY`, keep broad CI unchanged, retain the router's per-job run/would-skip predictions, and compare them with outcomes from that same broad run. READY requires the policy's complete regression coverage, run and would-skip observations for every job, and zero unsafe skip contradictions; a contradiction falls back only the affected job. ENFORCED requires a separate governed policy and CI workflow change.
 5. Inspect `git diff --check`, `git diff --stat`, the full diff, and changed-file secret/scope risk. Record results, invalidation/reuse, deviations, rollback, and unaffected checks/services in sanitized evidence.
 
@@ -74,7 +74,7 @@ For large policy, runbook, or reference files, inspect headings/index or search 
 
 ## 7. Deliver or honor the opt-out
 
-For ordinary selected tasks, enter the terminal `finalize` workflow automatically: push one reviewable branch, create/update one PR, wait for exact-head required CI, repair invalidated proof, satisfy branch protection, merge the reviewed candidate, verify only affected external/production state, close task/runbook evidence, synchronize clean `main`, and delete task-created branch/temp state. D-22 supplies standing non-financial authorization; stop only immediately before real-money exposure or a genuine access/external/safety blocker.
+For ordinary selected tasks, enter the terminal `finalize` workflow automatically: push one reviewable branch, create/update one PR, wait for exact-head required CI, perform exact-candidate delivery review, satisfy branch protection, merge the reviewed candidate, verify only affected external/production state, close task/runbook evidence, synchronize clean `main`, and delete task-created branch/temp state. A new delivery-review finding returns to preparation and invalidates affected evidence. D-22 supplies standing non-financial authorization; stop only immediately before real-money exposure or a genuine access/external/safety blocker.
 
 Record review provenance accurately. An executor switching to another authorized GitHub account provides distinct-account approval and may satisfy account/branch-protection separation, but it is not independent review. Claim independent review only when a separate human or separately executing review agent/process examines the exact candidate. Require that stronger provenance only when the task or protected gate already requires it.
 

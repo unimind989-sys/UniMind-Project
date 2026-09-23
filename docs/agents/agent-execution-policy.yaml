@@ -1,5 +1,5 @@
 schema_version: 1
-policy_version: 5
+policy_version: 6
 
 authority:
   - docs/plans/poc-master-plan.md
@@ -93,13 +93,8 @@ workers:
 
 browser:
   internal: side-browser
-  external_chrome_flags: [humanVisualDecision, userRequestedView]
+  external_chrome_flags: [userRequestedView]
   playwright_cli_flags: [specialistBrowserDebug, explicitPlaywrightCli]
-
-context:
-  large_file_chars: 16000
-  bounded_read_chars: 12000
-  truncated_action: targeted-ranges
 
 verification:
   checks:
@@ -222,7 +217,7 @@ conditional_ci:
     workflow_sha256: null
 
 evidence:
-  schema_version: 2
+  schema_version: 3
   malformed: missing
   policy_version_mismatch: missing
   default_invalidation:
@@ -235,7 +230,6 @@ activation:
   routing: ENFORCED
   model_routing: ENFORCED
   worker_policy: ENFORCED
-  context_routing: ENFORCED
   verification_selection: ENFORCED
   evidence_reuse: ENFORCED
   automatic_finalization: ENFORCED
@@ -249,5 +243,4 @@ self_correction:
   correction_scope: owning-rule-only
   background_process: false
   proof_preflight: required-before-stable-candidate
-  design_acceptance: material-subjective-frontend-only
-  context_truncation: targeted-ranges-no-repeat
+  design_acceptance: explicit-disposition-and-traceable-founder-receipt

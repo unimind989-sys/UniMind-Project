@@ -264,6 +264,9 @@ if (Test-Path -LiteralPath $taskTemplatePath -PathType Leaf) {
       Add-Failure "Task-record template lacks routing field: $field"
     }
   }
+  foreach ($field in @('Design disposition', 'Design evidence', 'Preparation review', 'Preparation fingerprint', 'Unresolved findings', 'Established facts')) {
+    if ($taskTemplate -notmatch "(?m)^\*\*$([regex]::Escape($field)):\*\*") { Add-Failure "Task-record template lacks preparation field: $field" }
+  }
 }
 
 $taskRecordRoot = Join-Path $projectRoot 'planning/tasks'
@@ -278,9 +281,27 @@ if (Test-Path -LiteralPath $taskRecordRoot -PathType Container) {
     }
     if ($taskRecord -match '(?m)^\*\*Policy version:\*\*') {
       foreach ($field in $routingFields) {
-        if ($taskRecord -notmatch "(?m)^\*\*$([regex]::Escape($field)):\*\*\s*\S") {
+        if ($taskRecord -notmatch "(?m)^\*\*$([regex]::Escape($field)):\*\*[ \t]*\S") {
           $relativePath = [System.IO.Path]::GetRelativePath($projectRoot, $taskRecordFile.FullName).Replace('\', '/')
           Add-Failure "Task record $relativePath lacks populated routing field: $field"
+        }
+      }
+    }
+    $versionMatch = [regex]::Match($taskRecord, '(?m)^\*\*Policy version:\*\*\s*(\d+)')
+    $statusMatch = [regex]::Match($taskRecord, '(?m)^\*\*Status:\*\*\s*(\[[^\]]\])')
+    if ($versionMatch.Success -and [int]$versionMatch.Groups[1].Value -ge 6 -and $statusMatch.Groups[1].Value -ne '[x]') {
+      foreach ($field in @('Design disposition', 'Design evidence', 'Preparation review', 'Preparation fingerprint', 'Unresolved findings', 'Established facts')) {
+        if ($taskRecord -notmatch "(?m)^\*\*$([regex]::Escape($field)):\*\*\s*\S") {
+          Add-Failure "Active policy-v6 task record $($taskRecordFile.Name) lacks populated preparation field: $field"
+        }
+      }
+      $factMatch = [regex]::Match($taskRecord, '(?m)^\*\*Established facts:\*\*[ \t]*(.+)$')
+      if ($factMatch.Success -and $factMatch.Groups[1].Value.Trim() -ne 'NONE') {
+        foreach ($entry in ($factMatch.Groups[1].Value -split ';')) {
+          $parts = @($entry.Split('|') | ForEach-Object { $_.Trim() })
+          if ($parts.Count -ne 4 -or [string]::IsNullOrWhiteSpace($parts[0]) -or $parts[1] -notmatch '^[^#\s]+#[^#\s]+$' -or $parts[2] -notmatch '^[a-f0-9]{40}$' -or [string]::IsNullOrWhiteSpace($parts[3])) {
+            Add-Failure "Active policy-v6 task record $($taskRecordFile.Name) has a malformed established fact."
+          }
         }
       }
     }

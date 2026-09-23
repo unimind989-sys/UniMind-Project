@@ -30,6 +30,7 @@ if ($LASTEXITCODE -ne 0) {
 if ($trackedFiles.Count -eq 0) {
   throw 'Committed snapshot contains no tracked files.'
 }
+$trackedFiles = @($trackedFiles + @($sourceWorkState.activeTaskRecords | Where-Object status -eq 'IN_PROGRESS' | ForEach-Object taskRecordPath) | Sort-Object -Unique)
 
 try {
   [void](New-Item -ItemType Directory -Path $rehearsalPath)
@@ -86,6 +87,14 @@ try {
     if ([string]::IsNullOrWhiteSpace($taskRecord.nextSafeAction)) {
       throw "Isolated task record lacks a next safe action: $($taskRecord.taskId)"
     }
+    if ([int]$taskRecord.routing.policyVersion -ge 6 -and $taskRecord.status -eq 'IN_PROGRESS') {
+      if ([string]::IsNullOrWhiteSpace($taskRecord.taskRecordPath) -or [string]::IsNullOrWhiteSpace($taskRecord.remaining) -or $null -eq $taskRecord.preparation) {
+        throw "Isolated policy-v6 task lacks bounded recovery state: $($taskRecord.taskId)"
+      }
+      foreach ($fact in @($taskRecord.establishedFacts)) {
+        if ($fact.status -notin @('CURRENT', 'STALE', 'MISSING')) { throw "Isolated fact has invalid source state: $($taskRecord.taskId)" }
+      }
+    }
   }
 
   $readinessOutput = @(& pwsh -NoProfile -File $readinessScript 2>&1)
@@ -99,6 +108,28 @@ try {
   }
   if ($gitStatus.Count -ne 0) {
     throw "Rehearsal commands modified the isolated repository: $($gitStatus -join ', ')"
+  }
+
+  $v6Record = @($workState.activeTaskRecords | Where-Object { $_.status -eq 'IN_PROGRESS' -and [int]$_.routing.policyVersion -ge 6 } | Select-Object -First 1)
+  if ($v6Record.Count -gt 0) {
+    $recordPath = Join-Path $rehearsalPath $v6Record[0].taskRecordPath
+    $productPath = Join-Path $rehearsalPath 'PRODUCT.md'
+    $productHash = (& git -C $rehearsalPath hash-object -- $productPath | Select-Object -First 1).Trim()
+    $recordText = Get-Content -LiteralPath $recordPath -Raw
+    $syntheticFact = "Fact requiring product authority | PRODUCT.md#Product | $productHash | when product scope changes"
+    $recordText = [regex]::Replace($recordText, '(?m)^\*\*Established facts:\*\* .+$', "**Established facts:** $syntheticFact")
+    Set-Content -LiteralPath $recordPath -Value $recordText -NoNewline
+    $currentState = (@(& pwsh -NoProfile -File $workStateScript -Format Json) -join [Environment]::NewLine) | ConvertFrom-Json -Depth 9
+    $currentFact = @($currentState.activeTaskRecords | Where-Object taskId -eq $v6Record[0].taskId)[0].establishedFacts[0]
+    if ($currentFact.status -cne 'CURRENT') { throw 'Isolated source-bound fact should be CURRENT.' }
+    Add-Content -LiteralPath $productPath -Value "`nSynthetic handoff drift."
+    $staleState = (@(& pwsh -NoProfile -File $workStateScript -Format Json) -join [Environment]::NewLine) | ConvertFrom-Json -Depth 9
+    $staleFact = @($staleState.activeTaskRecords | Where-Object taskId -eq $v6Record[0].taskId)[0].establishedFacts[0]
+    if ($staleFact.status -cne 'STALE') { throw 'Changed source must make an established fact STALE.' }
+    Remove-Item -LiteralPath $productPath
+    $missingState = (@(& pwsh -NoProfile -File $workStateScript -Format Json) -join [Environment]::NewLine) | ConvertFrom-Json -Depth 9
+    $missingFact = @($missingState.activeTaskRecords | Where-Object taskId -eq $v6Record[0].taskId)[0].establishedFacts[0]
+    if ($missingFact.status -cne 'MISSING') { throw 'Missing source must require reopening.' }
   }
 
   if ($expectedTaskId -ceq 'WP00-T09') {
