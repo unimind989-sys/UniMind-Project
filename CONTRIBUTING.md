@@ -65,7 +65,7 @@ Ahmed and Ziad intentionally use the approved shared GitHub/Supabase/Google serv
 4. Run `corepack pnpm install --frozen-lockfile`, confirm `corepack pnpm supabase --version` is `2.115.0`, and run `corepack pnpm exec playwright install chromium`. The Supabase CLI is a project dependency and is unavailable before installation; do not install another copy.
 5. Create the ignored `.env.local` from `.env.example`. The committed synthetic values are sufficient for the mock workstation app; do not replace them with Preview, Beta, or provider credentials.
 6. Do not obtain or use a persistent development/CI database profile for workstation work. The retired `.local/supabase/development.env` and `.local/supabase/ci.env` profiles must remain absent and must never be recreated or relabeled as Preview/Beta.
-7. Run `corepack pnpm verify`. Database/Auth changes are proved by the guarded disposable-CI job after a branch is pushed; do not reproduce that infrastructure on a founder computer.
+7. Run guarded `corepack pnpm verify` after the active task's preparation is complete. Database/Auth changes are proved by disposable CI after a branch is pushed; do not reproduce that infrastructure on a founder computer.
 
 Do not send credential values, profile files, or `.env.local` through a pull request, issue, evidence report, terminal transcript, or chat. Preview/Beta access is not a workstation-development prerequisite.
 
@@ -97,13 +97,13 @@ The application fails with variable names—not values—when configuration is m
 
 Derive the selected task's verification from its explicit contract and final execution envelope. Use the narrowest check that can reject the current edit; do not run the broad gate after every successful slice.
 
-The broad zero-cost application gate works without infrastructure or provider credentials and is required when the task or central policy selects it:
+The guarded broad zero-cost application gate runs only after the active task's design disposition, focused results, candidate review, fingerprint, and proof preflight are ready. The canonical lifecycle is in `docs/agents/agent-workflow.md`:
 
 ```powershell
 corepack pnpm verify
 ```
 
-`verify` formats nothing, makes no paid/provider call, runs the complete unit and architecture checks, and builds with synthetic CI configuration.
+`verify` formats nothing and makes no paid/provider call. After readiness passes, it runs the credential-free chain used by CI as `verify:ci`.
 
 The normal workstation loop is mock-only:
 
@@ -124,7 +124,7 @@ Keep the Next.js development server on the workstation and do not expose it to a
 
 ### 5.1 Database/Auth changes
 
-Push a review branch and let `.github/workflows/ci.yml` run the `application` gate before `database-ci`. The database job starts a runner-local Supabase stack, upgrades the populated WP01 schema through every pending migration, resets the complete schema twice, runs the pgTAP migration contracts and pinned database advisor, checks migration history and generated types, runs Auth/security tests, and removes the stack and volumes under `if: always()`.
+Push a review branch and let `.github/workflows/ci.yml` start `application` and `database-ci` independently. The database job starts a runner-local Supabase stack, upgrades the populated WP01 schema, resets twice, and checks migrations. After successful setup, pgTAP, advisors, generated types, type parity, integration, and security run as independent diagnostics. Required failures leave the job red; cleanup and report upload always run.
 
 The `db:ci:*` and `test:integration:database` commands fail closed outside the GitHub-hosted Linux lifecycle. A workstation run is not a substitute. Inspect the GitHub job result and its sanitized `database-ci-test-reports-*` artifact; the job must have no persistent database secret and no route to Preview or Beta.
 
@@ -136,9 +136,9 @@ Run `smoke:deployment` only for a task-selected Preview target and verified zero
 
 ## 6. End-of-session loop
 
-Stop any development server, clean only the named generated paths, then run the focused stable-candidate checks selected by the task and policy. Run `corepack pnpm verify` here only when selected; exact-head required CI remains the broad delivery gate.
+Stop any development server and clean only named generated paths. Follow `docs/agents/agent-workflow.md` for the final preparation review and guarded verification sequence. Exact-head required CI remains the delivery gate.
 
-For a final candidate, complete focused technical rejection checks and any required founder design checkpoint before running one `corepack pnpm agent:route -- --pass proof-preflight` inventory. Run broad verification only after that inventory is complete. The preflight identifies obligations; it does not replace their checks. `corepack pnpm typecheck:fresh` checks the application without `.next` generated route/type state and is included in the credential-free verify gate.
+`corepack pnpm typecheck:fresh` checks the application without `.next` generated route/type state and remains in the credential-free CI chain.
 
 ```powershell
 git clean -dfX -- .next/
@@ -201,7 +201,8 @@ Duration classes are workstation estimates: **instant** is normally under 10 sec
 | `pnpm db:types`                      | Retired hosted type-generation seam; no approved target exists                        | None; never Preview/Beta                                                | Do not run; use `db:ci:types` in the guarded CI lifecycle                 | N/A          |
 | `pnpm db:metadata`                   | Retired hosted metadata seam; no approved target exists                               | None                                                                    | Do not run; use sanitized CI artifacts or approved environment evidence   | N/A          |
 | `pnpm db:types:check`                | Reject a stale committed generated-type file                                          | None                                                                    | Types generated first                                                     | Instant      |
-| `pnpm verify`                        | Run the complete credential-free, zero-paid merge gate                                | None                                                                    | Installed Playwright Chromium                                             | Medium       |
+| `pnpm verify`                        | Check task readiness, then run the credential-free, zero-paid gate                    | None                                                                    | Reviewed task preparation and installed Chromium                          | Medium       |
+| `pnpm verify:ci`                     | CI-only complete credential-free verification chain                                   | None                                                                    | Exact-head CI candidate and installed Chromium                            | Medium       |
 
 In shell examples, invoke package commands as `corepack pnpm ...`. The shorter `pnpm ...` spelling in tables and the execution runbook refers to the same pinned project command.
 
@@ -213,20 +214,13 @@ corepack pnpm smoke:deployment -- --base-url https://approved-preview.example --
 
 ## 8. Make a reviewable change
 
-1. Preserve unrelated changes shown by `git status`.
-2. Select exactly one task and fill its task record.
-3. When a delivery branch is requested, use `wpNN/short-outcome`, for example:
+Use the canonical sequence in `docs/agents/agent-workflow.md`. When a delivery branch is requested, use `wpNN/short-outcome`, for example:
 
 ```powershell
 git switch -c wp01/provider-mocks
 ```
 
-4. Implement the smallest observable end-to-end result. Keep business rules out of React, route handlers, provider SDKs, and workflow tools.
-5. Run the narrowest focused check after each meaningful change.
-6. Reclassify the actual diff, run the selected stable-candidate proof once, and inspect the full diff.
-7. Commit the coherent candidate with an outcome-oriented message.
-8. Create sanitized evidence named `YYYY-MM-DD_<gate>_<environment>_<short-sha>.md` in the correct `evidence/wpNN-*` directory.
-9. Enter terminal delivery automatically unless the request explicitly narrowed scope. D-22 supplies standing non-financial authorization, including protected gates after technical proof; real-money exposure requires fresh exact confirmation.
+Keep business rules out of React, route handlers, provider SDKs, and workflow tools. Name sanitized evidence `YYYY-MM-DD_<gate>_<environment>_<short-sha>.md` in the owning `evidence/wpNN-*` directory. D-22 supplies standing non-financial execution authorization, not founder design acceptance; real-money exposure requires fresh exact confirmation.
 
 `$finalize` remains available to enter or resume terminal delivery manually. It is not required after an ordinary stable candidate.
 

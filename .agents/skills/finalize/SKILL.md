@@ -11,7 +11,7 @@ This skill refines, but never replaces, `AGENTS.md`, `docs/agents/agent-workflow
 
 ## Authorization boundary
 
-The approved D-22 project policy is Ahmed and Ziad's standing authorization for a selected task's complete non-financial lifecycle. It covers review, pull-request creation and updates, compliant GitHub review, merge, migrations, RLS, grants, raw deletion, rights actions, release/unlock, beta go-live, affected-service changes, production promotion, rollback or containment, evidence, and cleanup when those actions are within the task contract and their technical gates pass. Record the selected chat speaker and the standing authorization under D-22; provider account identity is not evidence of who authorized the workflow. Explicit `$finalize` is an entry signal, not a stronger authorization class.
+The approved D-22 project policy is Ahmed and Ziad's standing authorization for a selected task's complete non-financial lifecycle. It is not founder design acceptance. It covers review, pull-request creation and updates, compliant GitHub review, merge, migrations, RLS, grants, raw deletion, rights actions, release/unlock, beta go-live, affected-service changes, production promotion, rollback or containment, evidence, and cleanup when those actions are within the task contract and their technical gates pass. Record the selected chat speaker and the standing authorization under D-22; provider account identity is not evidence of who authorized the workflow. Explicit `$finalize` is an entry signal, not a stronger authorization class.
 
 Operate autonomously. Do not invent an extra project-approval checkpoint for a zero-cost action inside this scope. Use the authenticated accounts, tools, repository state, and service access already available; satisfy provider and branch-protection mechanics directly. When the host platform itself mandates an action-time confirmation, comply and record it as a runtime/tooling limitation rather than claiming zero-human completion. Invocation supplies human authorization, but it does not waive tests, exact-target checks, security/privacy rules, dependency order, provider terms, branch protection, platform safety controls, or evidence.
 
@@ -39,7 +39,7 @@ Compare the result with the intent pass recorded in the task. Widen only for new
 
 ## 3. Spend verification proportionally
 
-Before calling a test or service, build a verification map: each changed public seam, acceptance criterion, and material risk must point to one check or exact-match existing result. If a proposed check proves nothing unique, remove it. After focused rejection checks produce a coherent rendered candidate, resolve the central route's `HUMAN_DESIGN_ACCEPTANCE_REQUIRED` checkpoint when present, then run one `proof-preflight` pass. The preflight must inventory all applicable obligations before stable broad verification; it does not run every expensive check. Do not start stable broad verification while the inventory is incomplete, unknown, or waiting for current founder design acceptance.
+Before calling a test or service, build a verification map: each changed public seam, acceptance criterion, and material risk must point to one check or exact-match existing result. If a proposed check proves nothing unique, remove it. Follow the preparation and review sequence in `docs/agents/agent-workflow.md`. Finalization uses the same guarded `pnpm verify` readiness assertion for local broad proof; a complete proof inventory alone is insufficient.
 
 The local safety floor applies to every tier:
 

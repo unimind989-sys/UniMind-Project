@@ -1,16 +1,26 @@
-import { readFileSync } from "node:fs";
+import {
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
+import { execFileSync } from "node:child_process";
+import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
 import {
   assessConditionalCiEvidence,
   assessEvidenceReceipt,
+  assessLocalStablePreparation,
   buildEvidenceReceipt,
   classifyReviewProvenance,
   classifyChangedPaths,
   deriveAgentExecution,
+  hashPreparation,
   loadAgentExecutionPolicy,
-  planContextRetrieval,
+  selectLocalStableTask,
   validateAgentExecutionPolicy,
   type AgentExecutionInput,
 } from "../../scripts/lib/agent-execution-policy";
@@ -72,15 +82,31 @@ describe("agent execution policy", () => {
         );
       }
       if (expected.proceduralSkills !== undefined) {
-        expect(result.proceduralSkills).toEqual(
-          expect.arrayContaining(expected.proceduralSkills),
-        );
+        if (
+          historicalCase.name ===
+          "design direction selectively activates Impeccable"
+        ) {
+          expect(result.proceduralSkills).not.toContain("impeccable");
+          expect(result.designAcceptance.disposition).toBe("UNKNOWN");
+        } else {
+          expect(result.proceduralSkills).toEqual(
+            expect.arrayContaining(expected.proceduralSkills),
+          );
+        }
       }
       for (const absent of expected.proceduralSkillsAbsent ?? []) {
         expect(result.proceduralSkills).not.toContain(absent);
       }
       if (expected.browser !== undefined) {
-        expect(result.browser).toEqual(expected.browser);
+        if (
+          historicalCase.name ===
+          "founder visual decision opens external Chrome"
+        ) {
+          expect(result.browser.externalChrome).toBe(false);
+          expect(result.designAcceptance.disposition).toBe("UNKNOWN");
+        } else {
+          expect(result.browser).toEqual(expected.browser);
+        }
       }
     });
   }
@@ -412,7 +438,6 @@ describe("agent execution policy", () => {
     const fallbackPolicy = structuredClone(policy);
     fallbackPolicy.activation.routing = "FALLBACK";
     fallbackPolicy.activation.model_routing = "FALLBACK";
-    fallbackPolicy.activation.context_routing = "FALLBACK";
     fallbackPolicy.activation.verification_selection = "FALLBACK";
     fallbackPolicy.activation.automatic_finalization = "FALLBACK";
     const result = deriveAgentExecution(fallbackPolicy, {
@@ -661,149 +686,205 @@ describe("agent execution policy", () => {
     );
   });
 
-  it("requires founder design acceptance for a material frontend layout change", () => {
-    const result = deriveAgentExecution(policy, {
-      task: "WP00-T11",
-      pass: "actual-diff",
-      declaredSurfaces: ["frontend"],
-      changedPaths: ["src/app/learn/page.tsx"],
-      flags: { designJudgment: true },
-    });
-
-    expect(result.designAcceptance).toEqual(
-      expect.objectContaining({
-        required: true,
-        status: "HUMAN_DESIGN_ACCEPTANCE_REQUIRED",
-      }),
-    );
-  });
-
-  it("requires founder design acceptance for a material typography redesign", () => {
-    const result = deriveAgentExecution(policy, {
-      task: "WP00-T11",
-      pass: "actual-diff",
-      declaredSurfaces: ["frontend"],
-      changedPaths: ["src/app/globals.css"],
-      flags: { designJudgment: true },
-    });
-
-    expect(result.designAcceptance.status).toBe(
-      "HUMAN_DESIGN_ACCEPTANCE_REQUIRED",
-    );
-  });
-
-  it("does not require design acceptance for backend-only work", () => {
-    const result = deriveAgentExecution(policy, {
-      task: "WP00-T11",
-      pass: "actual-diff",
+  it("derives NOT_APPLICABLE for non-frontend and UNKNOWN for omitted frontend disposition", () => {
+    const backend = deriveAgentExecution(policy, {
+      task: "WP00-T13",
+      pass: "proof-preflight",
       declaredSurfaces: ["runtime"],
       changedPaths: ["src/lib/catalog/resolve-unit.ts"],
-      flags: { designJudgment: true },
     });
-
-    expect(result.designAcceptance).toEqual(
-      expect.objectContaining({ required: false, status: "NOT_REQUIRED" }),
-    );
-  });
-
-  it("does not add redundant acceptance for tiny or approved-intent visual changes", () => {
-    const tinyCorrection = deriveAgentExecution(policy, {
-      task: "WP00-T11",
-      pass: "actual-diff",
-      declaredSurfaces: ["frontend"],
-      changedPaths: ["src/app/learn/page.tsx"],
-      flags: { designJudgment: false, humanVisualDecision: true },
-    });
-    const approvedReference = deriveAgentExecution(policy, {
-      task: "WP00-T11",
-      pass: "actual-diff",
-      declaredSurfaces: ["frontend"],
-      changedPaths: ["src/app/learn/page.tsx"],
-      flags: { designJudgment: false },
-    });
-
-    expect(tinyCorrection.designAcceptance.required).toBe(false);
-    expect(tinyCorrection.designAcceptance.retained).toBe(true);
-    expect(approvedReference.designAcceptance.status).toBe("NOT_REQUIRED");
-  });
-
-  it("reports a completed founder acceptance when the current material candidate is approved", () => {
-    const result = deriveAgentExecution(policy, {
-      task: "WP00-T11",
-      pass: "actual-diff",
-      declaredSurfaces: ["frontend"],
-      changedPaths: ["src/app/learn/page.tsx"],
-      flags: { designJudgment: true, humanVisualDecision: true },
-    });
-
-    expect(result.designAcceptance).toEqual(
-      expect.objectContaining({ required: false, status: "ACCEPTED" }),
-    );
-  });
-
-  it("blocks stable verification until the material design gate is accepted", () => {
-    const pending = deriveAgentExecution(policy, {
-      task: "WP00-T11",
-      pass: "actual-diff",
-      declaredSurfaces: ["frontend"],
-      changedPaths: ["src/app/learn/page.tsx"],
-      flags: { designJudgment: true },
-    });
-
-    expect(pending.proofPreflight).toEqual(
-      expect.objectContaining({
-        status: "INCOMPLETE",
-        stableCandidateAllowed: false,
-        missing: expect.arrayContaining(["human-design-acceptance"]),
-      }),
-    );
-  });
-
-  it("does not mark an actual diff stable before the preflight pass runs", () => {
-    const result = deriveAgentExecution(policy, {
-      task: "WP00-T11",
-      pass: "actual-diff",
-      declaredSurfaces: ["docs"],
-      changedPaths: ["docs/agents/agent-workflow.md"],
-    });
-
-    expect(result.proofPreflight).toEqual(
-      expect.objectContaining({
-        status: "INCOMPLETE",
-        stableCandidateAllowed: false,
-      }),
-    );
-  });
-
-  it("inventories proof obligations before stable broad verification", () => {
-    const result = deriveAgentExecution(policy, {
-      task: "WP00-T11",
+    const frontend = deriveAgentExecution(policy, {
+      task: "WP00-T13",
       pass: "proof-preflight",
-      declaredSurfaces: ["frontend", "runtime"],
-      changedPaths: [
-        "src/app/learn/page.tsx",
-        "src/lib/catalog/resolve-unit.ts",
-      ],
-      flags: { designJudgment: true, humanVisualDecision: true },
+      declaredSurfaces: ["frontend"],
+      changedPaths: ["src/app/learn/page.tsx"],
     });
+    expect(backend.designAcceptance.disposition).toBe("NOT_APPLICABLE");
+    expect(backend.proofPreflight.status).toBe("COMPLETE");
+    expect(frontend.designAcceptance.disposition).toBe("UNKNOWN");
+    expect(frontend.proofPreflight.status).toBe("UNKNOWN");
+    expect(frontend.proofPreflight.missing).toContain("design-disposition");
+  });
 
-    expect(result.proofPreflight).toEqual(
-      expect.objectContaining({
-        status: "COMPLETE",
-        stableCandidateAllowed: true,
-      }),
+  it.each([
+    [
+      "NONVISUAL",
+      "rationale:internal type-only correction has no rendered or interaction effect",
+    ],
+    [
+      "OBJECTIVE_PRESERVING",
+      "rationale:fixes focus order without redesign; baseline:approved WP03-T04 shell",
+    ],
+    ["APPROVED_REFERENCE", "reference:docs/decisions/d-23-visual.md#candidate"],
+  ] as const)(
+    "requires evidence for %s and accepts specific evidence",
+    (disposition, evidence) => {
+      const input = {
+        task: "WP00-T13",
+        pass: "proof-preflight" as const,
+        declaredSurfaces: ["frontend"] as const,
+        changedPaths: ["src/app/learn/page.tsx"],
+        designDisposition: disposition,
+      };
+      expect(
+        deriveAgentExecution(policy, {
+          ...input,
+          declaredSurfaces: [...input.declaredSurfaces],
+        }).proofPreflight.status,
+      ).toBe("INCOMPLETE");
+      expect(
+        deriveAgentExecution(policy, {
+          ...input,
+          declaredSurfaces: [...input.declaredSurfaces],
+          designEvidence: evidence,
+        }).proofPreflight.status,
+      ).toBe("COMPLETE");
+    },
+  );
+
+  it("rejects NOT_APPLICABLE and old Boolean-only frontend acceptance", () => {
+    const base = {
+      task: "WP00-T13",
+      pass: "proof-preflight" as const,
+      declaredSurfaces: ["frontend"] as const,
+      changedPaths: ["src/app/learn/page.tsx"],
+    };
+    expect(
+      deriveAgentExecution(policy, {
+        ...base,
+        declaredSurfaces: [...base.declaredSurfaces],
+        designDisposition: "NOT_APPLICABLE",
+      }).proofPreflight.status,
+    ).toBe("INCOMPLETE");
+    expect(
+      deriveAgentExecution(policy, {
+        ...base,
+        declaredSurfaces: [...base.declaredSurfaces],
+        flags: { designJudgment: true, humanVisualDecision: true } as never,
+      }).proofPreflight.status,
+    ).toBe("UNKNOWN");
+  });
+
+  it("requires a traceable founder receipt for MATERIAL work and invalidates visual changes", () => {
+    const candidate = "a".repeat(40);
+    const pending = deriveAgentExecution(policy, {
+      task: "WP00-T13",
+      pass: "proof-preflight",
+      declaredSurfaces: ["frontend"],
+      changedPaths: ["src/app/learn/page.tsx"],
+      designDisposition: "MATERIAL",
+      candidateHead: candidate,
+    });
+    expect(pending.proofPreflight.missing).toContain("human-design-acceptance");
+    const decision = {
+      decisionActor: "Ahmed" as const,
+      decisionReference: "message:founder-approval-1",
+      decisionTimestamp: "2026-09-23T12:00:00Z",
+      acceptedScope:
+        "routes:/learn; surfaces:desktop,mobile; states:default,loading",
+    };
+    const receipt = buildEvidenceReceipt(
+      policy,
+      pending,
+      candidate,
+      [],
+      decision,
     );
-    expect(result.proofPreflight.obligations.map((item) => item.id)).toEqual(
-      expect.arrayContaining([
-        "diff-integrity",
-        "secret-scan",
-        "application-quality",
-        "fresh-checkout",
-        "frontend-behavior",
-        "exact-head-ci",
-        "human-design-acceptance",
-      ]),
+    expect(
+      receipt.proofs.find((proof) => proof.id === "human-design-acceptance"),
+    ).toEqual(
+      expect.objectContaining({ ...decision, acceptedCandidate: candidate }),
     );
+    const accepted = deriveAgentExecution(policy, {
+      task: "WP00-T13",
+      pass: "proof-preflight",
+      declaredSurfaces: ["frontend"],
+      changedPaths: ["src/app/learn/page.tsx"],
+      designDisposition: "MATERIAL",
+      candidateHead: candidate,
+      designReceipt: receipt,
+    });
+    expect(accepted.proofPreflight.status).toBe("COMPLETE");
+    expect(
+      deriveAgentExecution(policy, {
+        task: "WP00-T13",
+        pass: "proof-preflight",
+        declaredSurfaces: ["frontend"],
+        changedPaths: ["src/app/learn/page.tsx"],
+        designDisposition: "MATERIAL",
+        candidateHead: candidate,
+        designReceipt: receipt,
+        changesSinceAcceptance: ["src/app/learn/page.tsx"],
+      }).proofPreflight.status,
+    ).toBe("INCOMPLETE");
+    expect(
+      deriveAgentExecution(policy, {
+        task: "WP00-T13",
+        pass: "proof-preflight",
+        declaredSurfaces: ["frontend"],
+        changedPaths: ["src/app/learn/page.tsx"],
+        designDisposition: "MATERIAL",
+        candidateHead: candidate,
+        designReceipt: receipt,
+        changesSinceAcceptance: ["src/lib/internal.ts"],
+      }).designAcceptance.retained,
+    ).toBe(true);
+    expect(
+      deriveAgentExecution(policy, {
+        task: "WP00-T13",
+        pass: "proof-preflight",
+        declaredSurfaces: ["frontend"],
+        changedPaths: ["src/app/learn/page.tsx"],
+        designDisposition: "NONVISUAL",
+        designEvidence:
+          "receipt:design.json; rationale:type-only edit; baseline:accepted learn route",
+        candidateHead: "b".repeat(40),
+        designReceipt: receipt,
+        changesSinceAcceptance: ["src/app/learn/page.tsx"],
+      }).designAcceptance.retained,
+    ).toBe(true);
+    expect(
+      assessEvidenceReceipt(policy, receipt, {
+        task: "WP00-T13",
+        surfaces: ["frontend"],
+        changedPaths: ["src/app/learn/page.tsx"],
+        designDisposition: "NONVISUAL",
+        designEvidence:
+          "rationale:type-only correction; baseline:accepted learn route",
+      }).find((proof) => proof.id === "human-design-acceptance")?.state,
+    ).toBe("REUSE");
+    expect(
+      assessEvidenceReceipt(policy, receipt, {
+        task: "WP00-T13",
+        surfaces: ["frontend"],
+        changedPaths: ["src/app/learn/page.tsx"],
+      }).find((proof) => proof.id === "human-design-acceptance")?.state,
+    ).toBe("MISSING");
+    expect(
+      deriveAgentExecution(policy, {
+        task: "WP00-T13",
+        pass: "proof-preflight",
+        declaredSurfaces: ["frontend"],
+        changedPaths: ["src/app/learn/page.tsx"],
+        designDisposition: "MATERIAL",
+        candidateHead: candidate,
+        designReceipt: receipt,
+        flags: { visualImpactUnknown: true },
+      }).proofPreflight.status,
+    ).toBe("UNKNOWN");
+    const malformed = structuredClone(receipt);
+    delete malformed.proofs[0]?.decisionReference;
+    expect(
+      deriveAgentExecution(policy, {
+        task: "WP00-T13",
+        pass: "proof-preflight",
+        declaredSurfaces: ["frontend"],
+        changedPaths: ["src/app/learn/page.tsx"],
+        designDisposition: "MATERIAL",
+        candidateHead: candidate,
+        designReceipt: malformed,
+      }).proofPreflight.status,
+    ).toBe("INCOMPLETE");
   });
 
   it("tracks verification selector additions and removals without a second proof mapping", () => {
@@ -815,18 +896,14 @@ describe("agent execution policy", () => {
       surfaces: ["tooling"],
     });
 
-    const withRequirement = deriveAgentExecution(extendedPolicy, {
-      task: "WP00-T12",
-      pass: "proof-preflight",
+    const input: AgentExecutionInput = {
+      task: "WP00-T13",
+      pass: "proof-preflight" as const,
       declaredSurfaces: ["tooling"],
       changedPaths: ["scripts/lib/agent-execution-policy.ts"],
-    });
-    const withoutRequirement = deriveAgentExecution(policy, {
-      task: "WP00-T12",
-      pass: "proof-preflight",
-      declaredSurfaces: ["tooling"],
-      changedPaths: ["scripts/lib/agent-execution-policy.ts"],
-    });
+    };
+    const withRequirement = deriveAgentExecution(extendedPolicy, input);
+    const withoutRequirement = deriveAgentExecution(policy, input);
 
     expect(withRequirement.verification.map((check) => check.id)).toContain(
       "future-tooling-proof",
@@ -839,111 +916,194 @@ describe("agent execution policy", () => {
     ).not.toContain("future-tooling-proof");
   });
 
-  it("fails unknown high-risk proof obligations conservatively", () => {
+  it("keeps exact task checks in proof preflight", () => {
     const result = deriveAgentExecution(policy, {
-      task: "WP00-T11",
+      task: "WP00-T13",
+      pass: "proof-preflight",
+      declaredSurfaces: ["tooling"],
+      changedPaths: ["scripts/derive-agent-execution.ts"],
+      explicitChecks: ["focused policy tests", "isolated handoff"],
+    });
+    expect(result.proofPreflight.obligations.map((item) => item.id)).toEqual(
+      expect.arrayContaining(["focused policy tests", "isolated handoff"]),
+    );
+  });
+
+  it("keeps unknown paths conservative", () => {
+    const result = deriveAgentExecution(policy, {
+      task: "WP00-T13",
       pass: "proof-preflight",
       declaredSurfaces: ["auth"],
-      changedPaths: ["ops/unclassified-auth-change.ts"],
+      changedPaths: ["unclassified/auth-change.ts"],
       flags: { authSemantics: true },
     });
-
-    expect(result.proofPreflight).toEqual(
-      expect.objectContaining({
-        status: "UNKNOWN",
-        stableCandidateAllowed: false,
-      }),
-    );
+    expect(result.proofPreflight.status).toBe("UNKNOWN");
   });
 
-  it("fails known-path proof preflight when visual impact is explicitly unknown", () => {
-    const result = deriveAgentExecution(policy, {
-      task: "WP00-T12",
-      pass: "proof-preflight",
-      declaredSurfaces: ["frontend"],
-      changedPaths: ["src/app/learn/page.tsx"],
-      flags: { visualImpactUnknown: true },
-    });
-
-    expect(result.proofPreflight).toEqual(
-      expect.objectContaining({
-        status: "UNKNOWN",
-        stableCandidateAllowed: false,
-      }),
+  it("rejects absent or ambiguous active tasks and incomplete preparation", () => {
+    expect(() => selectLocalStableTask([])).toThrow();
+    expect(() => selectLocalStableTask(["WP00-T13", "WP03-T06"])).toThrow();
+    expect(selectLocalStableTask(["WP00-T13"])).toBe("WP00-T13");
+    expect(selectLocalStableTask(["WP00-T13", "WP03-T06"], "WP00-T13")).toBe(
+      "WP00-T13",
     );
-  });
-
-  it("generates and reuses real design receipts by semantic visual impact", () => {
-    const accepted = deriveAgentExecution(policy, {
-      task: "WP00-T12",
+    const complete = deriveAgentExecution(policy, {
+      task: "WP00-T13",
       pass: "proof-preflight",
-      declaredSurfaces: ["frontend"],
-      changedPaths: ["src/app/learn/page.tsx"],
-      flags: { designJudgment: true, humanVisualDecision: true },
-    });
-    const receipt = buildEvidenceReceipt(policy, accepted, "742e61e", [
-      "application-quality",
-      "frontend-behavior",
-    ]);
-    const assessDesign = (
-      surfaces: (typeof accepted.surfaces)[number][],
-      changedPaths: string[],
-      flags?: { designJudgment?: boolean; visualImpactUnknown?: boolean },
-    ) =>
-      assessEvidenceReceipt(policy, receipt, {
-        task: "WP00-T12",
-        surfaces,
-        changedPaths,
-        ...(flags === undefined ? {} : { flags }),
-      }).find((item) => item.id === "human-design-acceptance");
-
+      declaredSurfaces: ["tooling"],
+      changedPaths: ["scripts/derive-agent-execution.ts"],
+    }).proofPreflight;
+    const base = {
+      commands: "focused policy tests exit 0",
+      review: "COMPLETE_INLINE",
+      unresolvedFindings: "NONE",
+      recordedFingerprint: "a",
+      currentFingerprint: "a",
+      proofPreflight: complete,
+    };
+    expect(assessLocalStablePreparation(base)).toEqual([]);
     expect(
-      receipt.proofs.find((proof) => proof.id === "human-design-acceptance")
-        ?.invalidatedBy,
+      assessLocalStablePreparation({ ...base, review: "PENDING" }),
+    ).toContain("candidate-changing review is pending");
+    expect(
+      assessLocalStablePreparation({
+        ...base,
+        requiresIndependentReview: true,
+      }),
+    ).toContain("the task requires independent preparation review");
+    expect(
+      assessLocalStablePreparation({ ...base, unresolvedFindings: "F-1" }),
+    ).toContain("review findings remain unresolved");
+    expect(
+      assessLocalStablePreparation({ ...base, currentFingerprint: "b" }),
+    ).toContain("preparation fingerprint is stale");
+    expect(
+      assessLocalStablePreparation({ ...base, commands: "NOT RUN" }),
+    ).toContain("focused results are not recorded");
+    expect(
+      assessLocalStablePreparation({
+        ...base,
+        proofPreflight: { ...complete, status: "UNKNOWN" },
+      }),
     ).toEqual(
-      expect.objectContaining({
-        surfaces: [],
-        semanticFacts: expect.arrayContaining([
-          expect.objectContaining({
-            flag: "designJudgment",
-            result: "INVALID",
-          }),
-          expect.objectContaining({
-            flag: "visualImpactUnknown",
-            result: "MISSING",
-          }),
-        ]),
-      }),
-    );
-    expect(
-      assessDesign(["frontend"], ["src/app/learn/page.tsx"], {
-        designJudgment: false,
-      }),
-    ).toEqual(expect.objectContaining({ state: "REUSE" }));
-    expect(
-      assessDesign(["runtime"], ["src/lib/catalog/resolve-unit.ts"]),
-    ).toEqual(expect.objectContaining({ state: "REUSE" }));
-    expect(
-      assessDesign(["frontend"], ["src/app/learn/page.tsx"], {
-        designJudgment: true,
-      }),
-    ).toEqual(expect.objectContaining({ state: "INVALID" }));
-    expect(
-      assessEvidenceReceipt(policy, receipt, {
-        task: "WP00-T12",
-        surfaces: ["docs"],
-        changedPaths: ["evidence/wp00-pilot/2026-09-22_closure.md"],
-      }).map((item) => item.state),
-    ).toEqual(["REUSE", "REUSE", "REUSE"]);
-    expect(
-      assessDesign(["frontend"], ["src/app/learn/page.tsx"], {
-        visualImpactUnknown: true,
-      }),
-    ).toEqual(expect.objectContaining({ state: "MISSING" }));
-    expect(assessDesign(["frontend"], ["unknown/visual-change.asset"])).toEqual(
-      expect.objectContaining({ state: "MISSING" }),
+      expect.arrayContaining([
+        expect.stringContaining("proof preflight is UNKNOWN"),
+      ]),
     );
   });
+
+  it("binds preparation to HEAD, candidate blobs, and task contract regardless of path order", () => {
+    const head = "a".repeat(40);
+    const pairs: [string, string][] = [
+      ["scripts/b.ts", "2"],
+      ["scripts/a.ts", "1"],
+    ];
+    const original = hashPreparation(
+      head,
+      pairs,
+      "Task ID:WP00-T13\nVerify:policy\nPass:green\nHard stop:none",
+    );
+    expect(
+      hashPreparation(
+        head,
+        [...pairs].reverse(),
+        "Task ID:WP00-T13\nVerify:policy\nPass:green\nHard stop:none",
+      ),
+    ).toBe(original);
+    expect(
+      hashPreparation(
+        head,
+        [
+          ["scripts/b.ts", "changed"],
+          ["scripts/a.ts", "1"],
+        ],
+        "Task ID:WP00-T13\nVerify:policy\nPass:green\nHard stop:none",
+      ),
+    ).not.toBe(original);
+    expect(
+      hashPreparation(
+        head,
+        pairs,
+        "Task ID:WP00-T13\nVerify:policy+handoff\nPass:green\nHard stop:none",
+      ),
+    ).not.toBe(original);
+    expect(
+      hashPreparation(
+        "b".repeat(40),
+        pairs,
+        "Task ID:WP00-T13\nVerify:policy\nPass:green\nHard stop:none",
+      ),
+    ).not.toBe(original);
+  });
+
+  it("rejects incomplete founder metadata when issuing a receipt", () => {
+    const pending = deriveAgentExecution(policy, {
+      task: "WP00-T13",
+      pass: "proof-preflight",
+      declaredSurfaces: ["frontend"],
+      changedPaths: ["src/app/learn/page.tsx"],
+      designDisposition: "MATERIAL",
+    });
+    expect(() =>
+      buildEvidenceReceipt(policy, pending, "a".repeat(40), [], {
+        decisionActor: "Ahmed",
+        decisionReference: "",
+        decisionTimestamp: "2026-09-23T12:00:00Z",
+        acceptedScope: "learn route",
+      }),
+    ).toThrow();
+  });
+
+  it("emits compact current/stale UniMind authority while preserving standalone Impeccable output", () => {
+    const root = mkdtempSync(path.join(os.tmpdir(), "unimind-context-"));
+    try {
+      const script = path.resolve(
+        ".agents/skills/impeccable/scripts/context.mjs",
+      );
+      writeFileSync(
+        path.join(root, "PRODUCT.md"),
+        "# Product\n\nUnique product body marker\n",
+      );
+      writeFileSync(
+        path.join(root, "DESIGN.md"),
+        "# Design\n\nUnique design body marker\n",
+      );
+      const run = () =>
+        execFileSync(process.execPath, [script], {
+          cwd: root,
+          encoding: "utf8",
+          env: { ...process.env, IMPECCABLE_NO_UPDATE_CHECK: "1" },
+        });
+      expect(run()).toContain("Unique product body marker");
+      mkdirSync(path.join(root, "docs/agents"), { recursive: true });
+      mkdirSync(path.join(root, "planning/tasks"), { recursive: true });
+      writeFileSync(
+        path.join(root, "docs/agents/agent-execution-policy.yaml"),
+        "policy_version: 6\n",
+      );
+      const hash = execFileSync(
+        "git",
+        ["hash-object", path.join(root, "PRODUCT.md")],
+        { encoding: "utf8" },
+      ).trim();
+      writeFileSync(
+        path.join(root, "planning/tasks/active.md"),
+        `**Status:** [~]\n**Established facts:** Current product fact | PRODUCT.md#Product | ${hash} | when scope changes\n**Unresolved findings:** NONE\n`,
+      );
+      const compact = run();
+      expect(compact).toContain("Fact state: CURRENT");
+      expect(compact).not.toContain("Unique product body marker");
+      expect(compact).not.toContain("Unique design body marker");
+      expect(compact).not.toContain("SUBAGENT_AUTHORIZATION");
+      writeFileSync(
+        path.join(root, "PRODUCT.md"),
+        "# Product\n\nChanged product body marker\n",
+      );
+      expect(run()).toContain("Fact state: MISSING_OR_STALE");
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  }, 20_000);
 
   it("distinguishes executor-controlled account approval from independent review", () => {
     expect(
@@ -1009,23 +1169,6 @@ describe("agent execution policy", () => {
       }),
     ).toEqual(
       expect.objectContaining({ exactCandidate: false, status: "MISSING" }),
-    );
-  });
-
-  it("plans narrower retrieval after a large context read is truncated", () => {
-    expect(
-      planContextRetrieval(policy, {
-        path: "docs/runbooks/poc-execution-runbook.md",
-        fileChars: 120_000,
-        outputTruncated: true,
-        contentChanged: false,
-        newQuestion: true,
-      }),
-    ).toEqual(
-      expect.objectContaining({
-        action: "targeted-ranges",
-        repeatFullRead: false,
-      }),
     );
   });
 });

@@ -208,6 +208,78 @@ function hasExactRunner(job: UnknownRecord | undefined): boolean {
   return job?.["runs-on"] === "ubuntu-24.04";
 }
 
+const setupCommands = [
+  "db:ci:start",
+  "db:ci:upgrade",
+  "db:ci:reset",
+  "db:ci:reset",
+  "db:ci:migrations",
+];
+const diagnosticCommands = [
+  "db:ci:test",
+  "db:ci:advisors",
+  "db:ci:types",
+  "db:types:check",
+  "test:integration:database",
+  "test:security",
+];
+const setupSuccessCondition =
+  "${{ always() && steps.database_setup.outcome == 'success' }}";
+
+function databaseSteps(job: UnknownRecord): UnknownRecord[] {
+  return Array.isArray(job.steps) ? job.steps.filter(isRecord) : [];
+}
+
+function hasSafeDatabaseStages(job: UnknownRecord): boolean {
+  const steps = databaseSteps(job);
+  const setup = steps.find((step) => step.id === "database_setup");
+  if (
+    job["continue-on-error"] !== undefined ||
+    steps.some((step) => step["continue-on-error"] !== undefined)
+  )
+    return false;
+  if (
+    setup === undefined ||
+    typeof setup.run !== "string" ||
+    setup.if !== undefined ||
+    setup["continue-on-error"] !== undefined
+  )
+    return false;
+  const setupLines = setup.run
+    .split(/\r?\n/u)
+    .map((line) => line.trim())
+    .filter(Boolean);
+  if (
+    setupLines.join("\n") !==
+    setupCommands.map((command) => `corepack pnpm ${command}`).join("\n")
+  )
+    return false;
+  const allowedRuns = new Set([
+    "corepack enable",
+    "corepack pnpm install --frozen-lockfile",
+    setup.run.trim(),
+    ...diagnosticCommands.map((command) => `corepack pnpm ${command}`),
+    "corepack pnpm db:ci:stop",
+  ]);
+  if (
+    steps.some(
+      (step) =>
+        typeof step.run === "string" && !allowedRuns.has(step.run.trim()),
+    )
+  )
+    return false;
+  return diagnosticCommands.every((command) => {
+    const matching = steps.filter(
+      (step) => step.run === `corepack pnpm ${command}`,
+    );
+    return (
+      matching.length === 1 &&
+      matching[0]?.if === setupSuccessCondition &&
+      matching[0]?.["continue-on-error"] === undefined
+    );
+  });
+}
+
 export function auditCiWorkflow(source: string): string[] {
   let workflow: unknown;
   try {
@@ -249,7 +321,9 @@ export function auditCiWorkflow(source: string): string[] {
   if (!hasApplicationConcurrency(application)) {
     violations.push("APPLICATION_CONCURRENCY_MISSING");
   }
-  if (!hasCommand(application, "corepack pnpm verify")) {
+  if (
+    !runs(application).some((run) => run.trim() === "corepack pnpm verify:ci")
+  ) {
     violations.push("APPLICATION_GATE_MISSING");
   }
   if (
@@ -277,11 +351,17 @@ export function auditCiWorkflow(source: string): string[] {
   if (!hasExactRunner(databaseCi)) {
     violations.push("DATABASE_CI_RUNNER_UNSAFE");
   }
-  if (databaseCi.needs !== "application") {
-    violations.push("DATABASE_CI_DEPENDENCY_MISSING");
+  if (databaseCi.needs !== undefined) {
+    violations.push("DATABASE_CI_DEPENDENCY_PRESENT");
   }
   if (!hasDatabaseCiConcurrency(databaseCi)) {
     violations.push("DATABASE_CI_CONCURRENCY_MISSING");
+  }
+  if (
+    application?.["timeout-minutes"] !== 25 ||
+    databaseCi["timeout-minutes"] !== 30
+  ) {
+    violations.push("EXECUTION_TIMEOUT_UNSAFE");
   }
   if (Object.hasOwn(databaseCi, "environment")) {
     violations.push("DATABASE_CI_ENVIRONMENT_PRESENT");
@@ -317,6 +397,8 @@ export function auditCiWorkflow(source: string): string[] {
   if (commandCount(databaseCi, "db:ci:reset") !== 2) {
     violations.push("DATABASE_CI_RESET_COUNT_UNSAFE");
   }
+  if (!hasSafeDatabaseStages(databaseCi))
+    violations.push("DATABASE_CI_STAGES_UNSAFE");
   if (!hasCleanup(databaseCi)) {
     violations.push("DATABASE_CI_CLEANUP_MISSING");
   }

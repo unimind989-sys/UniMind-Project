@@ -14,7 +14,7 @@ function Get-BoldField {
   )
 
   $escapedName = [regex]::Escape($Name)
-  $match = [regex]::Match($Content, "(?m)^\*\*${escapedName}:\*\*\s*(?<value>.+)$")
+  $match = [regex]::Match($Content, "(?m)^\*\*${escapedName}:\*\*[ \t]*(?<value>.+)$")
   if (-not $match.Success) {
     return $null
   }
@@ -33,6 +33,37 @@ function Convert-TaskRecordStatus {
     '[ ]' { return 'NOT_STARTED' }
     default { return 'UNKNOWN' }
   }
+}
+
+function Get-EstablishedFacts {
+  param([string]$Value)
+  if ([string]::IsNullOrWhiteSpace($Value) -or $Value -eq 'NONE') { return @() }
+  $facts = [System.Collections.Generic.List[object]]::new()
+  foreach ($entry in ($Value -split ';')) {
+    $parts = @($entry.Split('|') | ForEach-Object { $_.Trim() })
+    if ($parts.Count -ne 4) {
+      $facts.Add([pscustomobject]@{ fact = $entry.Trim(); source = $null; sourceHash = $null; reopenCondition = $null; status = 'MALFORMED' })
+      continue
+    }
+    $sourcePath = ($parts[1] -split '#', 2)[0]
+    $fullPath = [System.IO.Path]::GetFullPath((Join-Path $projectRoot $sourcePath))
+    $inside = $fullPath.StartsWith($projectRoot.TrimEnd('\', '/') + [System.IO.Path]::DirectorySeparatorChar, [System.StringComparison]::OrdinalIgnoreCase)
+    $status = 'MISSING'
+    $currentHash = $null
+    if ($inside -and (Test-Path -LiteralPath $fullPath -PathType Leaf)) {
+      $currentHash = (& git -C $projectRoot hash-object -- $fullPath | Select-Object -First 1).Trim()
+      $status = if ($currentHash -ceq $parts[2]) { 'CURRENT' } else { 'STALE' }
+    }
+    $facts.Add([pscustomobject][ordered]@{
+      fact = $parts[0]
+      source = $parts[1]
+      sourceHash = $parts[2]
+      currentHash = $currentHash
+      reopenCondition = $parts[3]
+      status = $status
+    })
+  }
+  return @($facts)
 }
 
 $runbookPath = Join-Path $projectRoot 'docs/runbooks/poc-execution-runbook.md'
@@ -136,7 +167,18 @@ foreach ($file in Get-ChildItem -LiteralPath $taskRecordRoot -File -Filter '*.md
     outcome = Get-BoldField -Content $content -Name 'Outcome'
     owner = Get-BoldField -Content $content -Name 'Owner'
     reviewer = Get-BoldField -Content $content -Name 'Reviewer'
+    remaining = Get-BoldField -Content $content -Name 'Remaining'
     nextSafeAction = Get-BoldField -Content $content -Name 'Next safe action'
+    preparation = if ((Get-BoldField -Content $content -Name 'Design disposition')) {
+      [pscustomobject][ordered]@{
+        designDisposition = Get-BoldField -Content $content -Name 'Design disposition'
+        designEvidence = Get-BoldField -Content $content -Name 'Design evidence'
+        review = Get-BoldField -Content $content -Name 'Preparation review'
+        fingerprint = Get-BoldField -Content $content -Name 'Preparation fingerprint'
+        unresolvedFindings = Get-BoldField -Content $content -Name 'Unresolved findings'
+      }
+    } else { $null }
+    establishedFacts = @(Get-EstablishedFacts -Value (Get-BoldField -Content $content -Name 'Established facts'))
     routing = if ($null -ne (Get-BoldField -Content $content -Name 'Policy version')) {
       [pscustomobject][ordered]@{
         policyVersion = Get-BoldField -Content $content -Name 'Policy version'
@@ -153,6 +195,7 @@ foreach ($file in Get-ChildItem -LiteralPath $taskRecordRoot -File -Filter '*.md
       $null
     }
     record = [System.IO.Path]::GetRelativePath($projectRoot, $file.FullName).Replace('\', '/')
+    taskRecordPath = [System.IO.Path]::GetRelativePath($projectRoot, $file.FullName).Replace('\', '/')
   })
 }
 
@@ -229,6 +272,12 @@ if ($null -eq $state.recommendedTask) {
 Write-Output "Active task records: $($state.activeTaskRecords.Count)"
 foreach ($taskRecord in $state.activeTaskRecords) {
   Write-Output "- $($taskRecord.taskId) [$($taskRecord.status)]: $($taskRecord.nextSafeAction)"
+  Write-Output "  Record: $($taskRecord.taskRecordPath); Remaining: $($taskRecord.remaining)"
+  if ($null -ne $taskRecord.preparation) {
+    Write-Output "  Design: $($taskRecord.preparation.designDisposition); evidence $($taskRecord.preparation.designEvidence)"
+    Write-Output "  Preparation: $($taskRecord.preparation.review); fingerprint $($taskRecord.preparation.fingerprint); findings $($taskRecord.preparation.unresolvedFindings)"
+  }
+  foreach ($fact in $taskRecord.establishedFacts) { Write-Output "  Fact [$($fact.status)]: $($fact.fact) — $($fact.source); reopen when $($fact.reopenCondition)" }
   if ($null -ne $taskRecord.routing) {
     Write-Output "  Route: policy $($taskRecord.routing.policyVersion); $($taskRecord.routing.surfaces); $($taskRecord.routing.risk); $($taskRecord.routing.modelFloor); workers $($taskRecord.routing.workerBudget)"
   }

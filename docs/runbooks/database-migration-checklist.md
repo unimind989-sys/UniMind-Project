@@ -9,6 +9,11 @@ Use this checklist for every UniMind migration. Copy the applicable results into
 - [ ] Generate the migration filename with the pinned Supabase CLI. Do not rename or rewrite an already applied migration.
 - [ ] Name the rollback or disable action. For shared data, plan a forward repair migration rather than destructive rollback.
 - [ ] Use synthetic fixtures only. Stop before a protected rights, RLS, raw-deletion, budget, release/unlock, or beta gate lacks the required Ahmed and Ziad confirmations.
+- [ ] Trace caller role through the public wrapper to private schema, function, and table reachability; list the required grants.
+- [ ] Identify the verified actor and required audit and correlation context for each governed write.
+- [ ] Prove each synthetic fixture begins in a legal state and follows a legal transition.
+- [ ] Treat generated-type parity as required from the first available disposable database candidate.
+- [ ] Inspect every available diagnostic from a failed candidate before preparing another head.
 
 ## Schema and data rules
 

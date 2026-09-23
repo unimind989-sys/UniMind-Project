@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 
 import { describe, expect, it } from "vitest";
+import { parse } from "yaml";
 
 import { auditCiWorkflow } from "../../scripts/lib/ci-workflow-policy";
 
@@ -43,8 +44,8 @@ jobs:
   it("requires disposable database CI on pull requests", async () => {
     const workflow = await readFile(".github/workflows/ci.yml", "utf8");
     const unsafe = workflow.replace(
-      "    needs: application\n",
-      "    needs: application\n    if: github.ref == 'refs/heads/main'\n",
+      "  database-ci:\n",
+      "  database-ci:\n    if: github.ref == 'refs/heads/main'\n",
     );
 
     expect(auditCiWorkflow(unsafe)).toContain("DATABASE_CI_TRIGGER_UNSAFE");
@@ -167,11 +168,103 @@ jobs:
     expect(
       auditCiWorkflow(
         workflow.replace(
-          "        run: corepack pnpm verify\n",
+          "        run: corepack pnpm verify:ci\n",
           "        run: corepack pnpm typecheck\n",
         ),
       ),
     ).toContain("APPLICATION_GATE_MISSING");
+  });
+
+  it("schedules application and database independently and preserves required jobs", async () => {
+    const workflow = await readFile(".github/workflows/ci.yml", "utf8");
+    const parsed = parse(workflow) as {
+      jobs: Record<string, { needs?: string }>;
+    };
+    expect(Object.keys(parsed.jobs)).toEqual(
+      expect.arrayContaining(["application", "database-ci"]),
+    );
+    expect(parsed.jobs["database-ci"]?.needs).toBeUndefined();
+    expect(
+      auditCiWorkflow(
+        workflow.replace(
+          "  database-ci:\n",
+          "  database-ci:\n    needs: application\n",
+        ),
+      ),
+    ).toContain("DATABASE_CI_DEPENDENCY_PRESENT");
+  });
+
+  it("gates each independent diagnostic on setup success without advisory failure", async () => {
+    const workflow = await readFile(".github/workflows/ci.yml", "utf8");
+    const parsed = parse(workflow) as {
+      jobs: {
+        "database-ci": {
+          steps: Array<{
+            id?: string;
+            if?: string;
+            run?: string;
+            "continue-on-error"?: boolean;
+          }>;
+        };
+      };
+    };
+    const steps = parsed.jobs["database-ci"].steps;
+    const setup = steps.find((step) => step.id === "database_setup");
+    expect(setup?.run).toContain("db:ci:migrations");
+    const diagnostics = steps.filter((step) =>
+      step.if?.includes("database_setup.outcome"),
+    );
+    expect(diagnostics).toHaveLength(6);
+    expect(
+      diagnostics.every(
+        (step) =>
+          step.if ===
+            "${{ always() && steps.database_setup.outcome == 'success' }}" &&
+          step["continue-on-error"] === undefined,
+      ),
+    ).toBe(true);
+    expect(diagnostics.map((step) => step.run)).toEqual(
+      expect.arrayContaining([
+        "corepack pnpm db:ci:test",
+        "corepack pnpm db:ci:advisors",
+        "corepack pnpm db:ci:types",
+        "corepack pnpm db:types:check",
+        "corepack pnpm test:integration:database",
+        "corepack pnpm test:security",
+      ]),
+    );
+    expect(
+      auditCiWorkflow(
+        workflow.replace(
+          "steps.database_setup.outcome == 'success'",
+          "success()",
+        ),
+      ),
+    ).toContain("DATABASE_CI_STAGES_UNSAFE");
+    expect(
+      auditCiWorkflow(
+        workflow.replace(
+          "run: corepack pnpm db:ci:advisors",
+          "continue-on-error: true\n        run: corepack pnpm db:ci:advisors",
+        ),
+      ),
+    ).toContain("DATABASE_CI_STAGES_UNSAFE");
+    expect(
+      auditCiWorkflow(
+        workflow.replace(
+          "  database-ci:\n",
+          "  database-ci:\n    continue-on-error: true\n",
+        ),
+      ),
+    ).toContain("DATABASE_CI_STAGES_UNSAFE");
+    expect(
+      auditCiWorkflow(
+        workflow.replace(
+          "      - name: Remove the disposable stack and volumes",
+          "      - name: Hide an earlier failure\n        run: exit 0\n      - name: Remove the disposable stack and volumes",
+        ),
+      ),
+    ).toContain("DATABASE_CI_STAGES_UNSAFE");
   });
 
   it("requires Chromium and sanitized always-upload reports", async () => {

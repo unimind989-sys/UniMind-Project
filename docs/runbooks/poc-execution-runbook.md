@@ -218,16 +218,16 @@ Do not run `npm install` in a pnpm repository. If an accidental `package-lock.js
 
 ### 0.9 Exact branch, review, and delivery loop
 
-For every independently reviewable slice:
+For every independently reviewable slice, follow [the canonical agent workflow](../agents/agent-workflow.md) for lifecycle order. The task-specific requirements below add acceptance, not a second sequence:
 
 1. Update local main without discarding local work.
 2. Create a branch named `wpNN/short-outcome`, for example `wp02/catalog-rls`.
 3. Copy the applicable gate template to the evidence folder and leave its status `IN PROGRESS`.
 4. Implement the smallest end-to-end slice, including migration, service, UI, test, and telemetry where applicable.
 5. Map changed seams, acceptance criteria, and material risks to the smallest non-overlapping set of checks. Run the focused check after each meaningful change; repeat a passing check only after a relevant diff change or invalidating failure.
-6. For a material unresolved subjective frontend decision, make the candidate technically safe, present it through the existing `humanVisualDecision` route, and record `HUMAN_DESIGN_ACCEPTANCE_REQUIRED` plus one founder hands-on product/design decision. Keep that checkpoint out of backend-only, nonvisual, objective, tiny approved-intent, routine responsive, and faithful approved-reference work. A material visual revision makes the design receipt stale; a nonvisual repair retains it.
-7. Before stable broad verification, run one bounded proof-completeness preflight through `pnpm agent:route -- --pass proof-preflight`. Inventory every applicable obligation before running the expensive checks; unknown/high-risk omissions fail conservatively. A `COMPLETE` inventory does not itself pass any check.
-8. Before review, run the credential-free merge gate once for code, runtime, dependency, CI, build, environment-contract, migration, or executable-script changes. For documentation-, planning-, evidence-, and skill-only slices, run the affected focused checks locally and use required GitHub CI as the full merge gate unless the task contract explicitly requires local `pnpm verify`. Run hosted database commands only when the slice affects database/Auth behavior:
+6. Record the explicit design disposition and traceable founder acceptance where required, following the canonical workflow.
+7. Run candidate-changing review and focused checks, then use guarded `pnpm verify` when stable broad verification is required. The router's proof preflight inventories task requirements but does not pass them.
+8. Run hosted database commands only when the slice affects database/Auth behavior:
 
 ```powershell
 pnpm verify
@@ -537,6 +537,17 @@ This final bounded WP00-T11 audit repair removes the duplicate proof taxonomy, c
 - [x] Run focused proof first, one stable broad gate, exact-head CI, protected delivery, synchronized-main proof, evidence closure, cleanup, and confirm WP03-T05 remains next without implementing it. These closure markers become authoritative only when the exact reviewed PR #44 head reaches protected `main`.
 
 **Pass:** selected verification additions/removals flow into proof completeness automatically; generated evidence has correct semantic invalidation; uncertain visual impact cannot reuse acceptance; account separation is recorded without a false independence claim; the merged clean repository recommends WP03-T05.
+
+#### WP00-T13 — Correct Sol/Luna execution workflow
+
+This narrowly scoped correction follows the approved Sol/Luna workflow correction plan. It changes execution architecture only and stops before another product task.
+
+- [x] Implement explicit design disposition, traceable founder receipts, task preparation state, fingerprint freshness, and guarded stable verification.
+- [x] Make application and database CI independent and return all safe database diagnostics from one candidate.
+- [x] Recover bounded task facts through the existing record and reconcile Impeccable with the central worker policy.
+- [x] Run the focused and final test matrix; record sanitized evidence and stop. This closure marker becomes authoritative only when PR #48's final head passes required CI and reaches protected `main`.
+
+**Pass:** all P1, P2, and P3 completion criteria in the approved correction plan are met without weakening existing proof, safety, or worker boundaries.
 
 ### 3.1 Select exact pilot cohorts
 
