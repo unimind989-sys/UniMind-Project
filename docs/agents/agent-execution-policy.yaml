@@ -1,5 +1,5 @@
 schema_version: 1
-policy_version: 6
+policy_version: 7
 
 authority:
   - docs/plans/poc-master-plan.md
@@ -76,20 +76,13 @@ risk:
     R1: short
     R2: short
     R3: protected
-  model_floor:
-    R0: luna-max
-    R1: luna-max
-    R2: luna-max
-    R3: sol-high
   protected_flags: [authSemantics, rls, destructiveMigration, productionMutation]
-  deliberate_flags: [architectureUncertainty, domainUncertainty, visualImpactUnknown]
-  sol_flags: [architectureUncertainty, domainUncertainty, securityUncertainty, visualImpactUnknown]
+  deliberate_flags: [architectureUncertainty, domainUncertainty, securityUncertainty, visualImpactUnknown]
 
 workers:
   default: 0
   maximum: 1
   nested: false
-  default_model: luna-max
 
 browser:
   internal: side-browser
@@ -228,7 +221,6 @@ evidence:
 
 activation:
   routing: ENFORCED
-  model_routing: ENFORCED
   worker_policy: ENFORCED
   verification_selection: ENFORCED
   evidence_reuse: ENFORCED

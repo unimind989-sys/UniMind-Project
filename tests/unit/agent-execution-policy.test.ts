@@ -32,7 +32,6 @@ type HistoricalCase = {
     surfaces?: string[];
     risk?: string;
     planning?: string;
-    modelFloor?: string;
     capabilities?: string[];
     proceduralSkills?: string[];
     proceduralSkillsAbsent?: string[];
@@ -57,6 +56,9 @@ describe("agent execution policy", () => {
     expect(validateAgentExecutionPolicy(policy)).toEqual([]);
     expect(policy.activation.conditional_ci).toBe("SHADOW");
     expect(policy.activation.routing).toBe("ENFORCED");
+    expect(policy.risk).not.toHaveProperty("model_floor");
+    expect(policy.activation).not.toHaveProperty("model_routing");
+    expect(policy.workers).not.toHaveProperty("default_model");
   });
 
   for (const historicalCase of fixture.cases) {
@@ -72,9 +74,6 @@ describe("agent execution policy", () => {
       }
       if (expected.planning !== undefined) {
         expect(result.planning).toBe(expected.planning);
-      }
-      if (expected.modelFloor !== undefined) {
-        expect(result.modelFloor).toBe(expected.modelFloor);
       }
       if (expected.capabilities !== undefined) {
         expect(result.capabilities).toEqual(
@@ -111,48 +110,33 @@ describe("agent execution policy", () => {
     });
   }
 
-  it("keeps Sol sticky after escalation", () => {
+  it("keeps risk and verification independent of manual model assignment", () => {
     const result = deriveAgentExecution(policy, {
       task: "WP03-T04",
       pass: "actual-diff",
-      declaredSurfaces: ["frontend"],
-      changedPaths: ["src/app/unit/page.tsx"],
-      previousModelFloor: "sol-high",
+      declaredSurfaces: ["auth"],
+      changedPaths: ["src/lib/auth/resolve-session.ts"],
     });
 
-    expect(result.modelFloor).toBe("sol-high");
+    expect(result.risk).toBe("R3");
+    expect(result.verification.map((check) => check.id)).toContain(
+      "authorization-denial",
+    );
+    expect(result).not.toHaveProperty("modelFloor");
+    expect(result).not.toHaveProperty("modelRuntime");
   });
 
-  it("reports an unverifiable active model without pretending to switch it", () => {
-    const unverified = deriveAgentExecution(policy, {
-      task: "WP03-T04",
+  it("widens planning for security uncertainty without choosing a model", () => {
+    const result = deriveAgentExecution(policy, {
+      task: "WP00-T14",
       pass: "intent",
-      declaredSurfaces: ["frontend"],
+      declaredSurfaces: ["runtime"],
       changedPaths: [],
+      flags: { securityUncertainty: true },
     });
-    const insufficient = deriveAgentExecution(policy, {
-      task: "WP02-T08",
-      pass: "intent",
-      declaredSurfaces: ["auth"],
-      changedPaths: [],
-      activeModel: "luna-max",
-    });
-
-    expect(unverified.modelRuntime).toEqual(
-      expect.objectContaining({
-        requiredFloor: "luna-max",
-        status: "unverified",
-        action: "report-limitation",
-      }),
-    );
-    expect(insufficient.modelRuntime).toEqual(
-      expect.objectContaining({
-        requiredFloor: "sol-high",
-        activeModel: "luna-max",
-        status: "switch-required",
-        action: "request-switch",
-      }),
-    );
+    expect(result.risk).toBe("R2");
+    expect(result.planning).toBe("deliberate");
+    expect(result).not.toHaveProperty("modelFloor");
   });
 
   it("classifies receipt deltas without inheriting original task surfaces", () => {
@@ -437,7 +421,6 @@ describe("agent execution policy", () => {
   it("uses conservative behavior for non-enforced execution rules", () => {
     const fallbackPolicy = structuredClone(policy);
     fallbackPolicy.activation.routing = "FALLBACK";
-    fallbackPolicy.activation.model_routing = "FALLBACK";
     fallbackPolicy.activation.verification_selection = "FALLBACK";
     fallbackPolicy.activation.automatic_finalization = "FALLBACK";
     const result = deriveAgentExecution(fallbackPolicy, {
@@ -458,7 +441,6 @@ describe("agent execution policy", () => {
       "tooling",
     ]);
     expect(result.risk).toBe("R3");
-    expect(result.modelFloor).toBe("sol-high");
     expect(result.capabilities).toEqual(
       expect.arrayContaining(["trust-boundaries", "release-safety"]),
     );

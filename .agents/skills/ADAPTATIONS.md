@@ -214,3 +214,12 @@ This log records evidence-based changes to repo-scoped skills. It is not a recor
 - **Change:** Added exact package `@playwright/cli@0.1.18` and its byte-compatible skill/references. Always-on project rules require the local `pnpm browser:cli` wrapper, isolate credential-bearing artifacts under ignored `.playwright-cli/`, and keep Playwright Test as the automated gate without breaking the CLI's built-in skill drift check. The wrapper disables the mutable update notifier because upgrades are reviewed and pinned.
 - **Validation:** Local CLI version/help, automatic browser-task trigger, storage-state safety boundary, source license, and repository skill validation.
 - **Upstream:** Playwright CLI commit `2f85a94b7b885dbf4a5d34462f253a8746a690c9`.
+
+## 2026-09-24 — Manual model work blocks
+
+### `impeccable`
+
+- **Evidence:** Its new-work reviewer instruction still required a central model floor and a protected Sol floor after WP00-T14 removed executable model routing.
+- **Change:** The local reviewer instruction now follows the task record's manual block assignment and hands unresolved design or protected judgment to Sol High with the same block and evidence. Risk continues to select proof and approvals.
+- **Validation:** Repository skill validator, local instruction search, and the manual-handoff behavior case in `EVALS.md`.
+- **Upstream:** UniMind-only adaptation of Impeccable commit `f88b2837a7d7c3182e46307bbbb091a1ed547571`; upstream content and license remain pinned.

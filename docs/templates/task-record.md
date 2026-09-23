@@ -26,10 +26,6 @@ Complete this compact block for tasks created under the central execution policy
 
 **Planning:** <Minimal | Short | Deliberate | Protected>
 
-**Model floor:** <Luna Max | Sol High>
-
-**Model runtime:** <satisfied with verified active model | switch required from verified active model | active model unverified and limitation reported>
-
 **Worker budget:** <used, maximum, and nested-worker rule>
 
 **Capabilities:** <surface capabilities or NONE>
@@ -37,6 +33,18 @@ Complete this compact block for tasks created under the central execution policy
 **Procedural skills:** <selected methods or NONE>
 
 **Routing reason:** <one compact semantic reason; do not copy acceptance criteria>
+
+## Manual model work blocks
+
+Sol High plans these before implementation using `docs/agents/model-work-blocks.md`. Keep the fewest useful ordered blocks. The user selects the model in Codex Desktop and opens a fresh chat at each model boundary; this record does not verify that selection.
+
+| Block | Assigned model | Scope and governing inputs | Independent acceptance checks, including failure cases | Assignment reason | Status and evidence |
+| --- | --- | --- | --- | --- | --- |
+| 1 | <Sol High or Luna Max> | <coherent scope; authority/decision references> | <observable pass and failure/forbidden checks> | <why this model; for Luna, all four guide conditions> | <pending/in progress/complete/handoff; links> |
+
+**Next model:** <Sol High | Luna Max | NONE when complete>
+
+**Current block:** <number | NONE when complete>
 
 ## Execution contract
 
@@ -58,7 +66,7 @@ Complete this compact block for tasks created under the central execution policy
 
 ## Candidate preparation
 
-Required for active/new policy-v6 records. The review fingerprint is copied from router proof preflight after the last candidate-changing review.
+Required for active/new records under policy v6 or later. The review fingerprint is copied from router proof preflight after the last candidate-changing review.
 
 **Design disposition:** <NOT_APPLICABLE | NONVISUAL | OBJECTIVE_PRESERVING | APPROVED_REFERENCE | MATERIAL | UNKNOWN>
 

@@ -8,7 +8,7 @@ This repository contains the source-of-truth plan, executable delivery runbook, 
 - [Execution runbook](docs/runbooks/poc-execution-runbook.md) — tutorial-style implementation checklist, verification gates, rollback guidance, and delivery sequence.
 - [Agent instructions](AGENTS.md) — always-on repository rules for Codex and compatible coding agents.
 - [Agent workflow](docs/agents/agent-workflow.md) — deterministic path for selecting, executing, verifying, and handing off work.
-- [Agent execution policy](docs/agents/agent-execution-policy.yaml) — versioned routing, model/worker floors, verification selection, evidence invalidation, and activation state.
+- [Agent execution policy](docs/agents/agent-execution-policy.yaml) — versioned risk and worker rules, verification selection, evidence invalidation, and activation state.
 - [Contributing and operation tutorial](CONTRIBUTING.md) — workstation setup, daily commands, migrations, verification, troubleshooting, and handoff for humans and agents.
 - [Domain context](CONTEXT.md) — shared UniMind vocabulary and relationships for discussion, code, tests, and decisions.
 - [Product context](PRODUCT.md) — compact confirmed product truth for implementation and UI workflows.

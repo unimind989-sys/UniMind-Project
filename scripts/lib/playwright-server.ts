@@ -12,6 +12,15 @@ export const PLAYWRIGHT_SERVER_PORT = 3100;
 export const PLAYWRIGHT_SERVER_HOST = "127.0.0.1";
 const lockFileName = "playwright-server.json";
 
+export function resolvePlaywrightServerPort(value: string | undefined): number {
+  if (value === undefined) return PLAYWRIGHT_SERVER_PORT;
+  const port = Number(value);
+  if (!Number.isInteger(port) || port < 1024 || port > 65535) {
+    throw new Error("UNIMIND_E2E_PORT must be an integer from 1024 to 65535.");
+  }
+  return port;
+}
+
 type ServerLock = Readonly<{
   pid: number;
   port: number;
@@ -42,12 +51,16 @@ export function isTaskOwnedPlaywrightCommand(
   );
 }
 
-function lockPath(projectRoot: string): string {
-  return path.join(projectRoot, "test-results", "e2e", lockFileName);
+function lockPath(projectRoot: string, port: number): string {
+  const name =
+    port === PLAYWRIGHT_SERVER_PORT
+      ? lockFileName
+      : `playwright-server-${String(port)}.json`;
+  return path.join(projectRoot, "test-results", "e2e", name);
 }
 
-function readLock(projectRoot: string): ServerLock | undefined {
-  const filePath = lockPath(projectRoot);
+function readLock(projectRoot: string, port: number): ServerLock | undefined {
+  const filePath = lockPath(projectRoot, port);
   if (!existsSync(filePath)) return undefined;
   try {
     const value = JSON.parse(
@@ -57,7 +70,7 @@ function readLock(projectRoot: string): ServerLock | undefined {
       typeof value.pid !== "number" ||
       !Number.isInteger(value.pid) ||
       value.pid <= 0 ||
-      value.port !== PLAYWRIGHT_SERVER_PORT ||
+      value.port !== port ||
       value.projectRoot !== projectRoot
     ) {
       return undefined;
@@ -68,9 +81,9 @@ function readLock(projectRoot: string): ServerLock | undefined {
   }
 }
 
-function removeLock(projectRoot: string): void {
+function removeLock(projectRoot: string, port: number): void {
   try {
-    unlinkSync(lockPath(projectRoot));
+    unlinkSync(lockPath(projectRoot, port));
   } catch {
     // A missing lock is already clean.
   }
@@ -82,37 +95,6 @@ function processExists(pid: number): boolean {
     return true;
   } catch {
     return false;
-  }
-}
-
-function listeningPids(port: number): number[] {
-  try {
-    const output =
-      process.platform === "win32"
-        ? execFileSync(
-            "powershell.exe",
-            [
-              "-NoProfile",
-              "-Command",
-              `Get-NetTCPConnection -LocalPort ${String(port)} -State Listen -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess`,
-            ],
-            { encoding: "utf8", windowsHide: true },
-          )
-        : execFileSync(
-            "lsof",
-            ["-nP", `-iTCP:${String(port)}`, "-sTCP:LISTEN", "-t"],
-            { encoding: "utf8", windowsHide: true },
-          );
-    return Array.from(
-      new Set(
-        output
-          .split(/\r?\n/u)
-          .map((line) => Number.parseInt(line.trim(), 10))
-          .filter((pid) => Number.isInteger(pid) && pid > 0),
-      ),
-    );
-  } catch {
-    return [];
   }
 }
 
@@ -211,29 +193,32 @@ function terminateProcessTree(pid: number, detached = false): void {
   }
 }
 
-export function cleanupKnownStalePlaywrightServers(projectRoot: string): void {
-  const lock = readLock(projectRoot);
-  const candidatePids = new Set<number>(listeningPids(PLAYWRIGHT_SERVER_PORT));
-  if (lock !== undefined) candidatePids.add(lock.pid);
-
-  for (const pid of candidatePids) {
-    if (pid === process.pid || !processExists(pid)) continue;
-    const commandLine = processCommandLine(pid);
-    const isLockedProcess = lock?.pid === pid;
+export function cleanupKnownStalePlaywrightServers(
+  projectRoot: string,
+  port = PLAYWRIGHT_SERVER_PORT,
+): void {
+  const lock = readLock(projectRoot, port);
+  if (
+    lock !== undefined &&
+    lock.pid !== process.pid &&
+    processExists(lock.pid)
+  ) {
+    const commandLine = processCommandLine(lock.pid);
     if (
-      isTaskOwnedPlaywrightCommand(commandLine, projectRoot) ||
-      (isLockedProcess && isExpectedPlaywrightCommand(commandLine))
+      isTaskOwnedPlaywrightCommand(commandLine, projectRoot, port) ||
+      isExpectedPlaywrightCommand(commandLine, port)
     ) {
-      terminateProcessTree(pid, isLockedProcess && lock?.detached !== false);
+      terminateProcessTree(lock.pid, lock.detached !== false);
     }
   }
-  removeLock(projectRoot);
+  removeLock(projectRoot, port);
 }
 
 export async function runOwnedPlaywrightServer(
   projectRoot = process.cwd(),
 ): Promise<number> {
-  cleanupKnownStalePlaywrightServers(projectRoot);
+  const port = resolvePlaywrightServerPort(process.env.UNIMIND_E2E_PORT);
+  cleanupKnownStalePlaywrightServers(projectRoot, port);
   const resultDirectory = path.join(projectRoot, "test-results", "e2e");
   mkdirSync(resultDirectory, { recursive: true });
 
@@ -244,7 +229,7 @@ export async function runOwnedPlaywrightServer(
         "/d",
         "/s",
         "/c",
-        `corepack.cmd pnpm next dev --hostname ${PLAYWRIGHT_SERVER_HOST} --port ${String(PLAYWRIGHT_SERVER_PORT)}`,
+        `corepack.cmd pnpm next dev --hostname ${PLAYWRIGHT_SERVER_HOST} --port ${String(port)}`,
       ]
     : [
         "pnpm",
@@ -253,7 +238,7 @@ export async function runOwnedPlaywrightServer(
         "--hostname",
         PLAYWRIGHT_SERVER_HOST,
         "--port",
-        String(PLAYWRIGHT_SERVER_PORT),
+        String(port),
       ];
   const child = spawn(command, arguments_, {
     cwd: projectRoot,
@@ -267,8 +252,8 @@ export async function runOwnedPlaywrightServer(
   }
 
   writeFileSync(
-    lockPath(projectRoot),
-    `${JSON.stringify({ pid: child.pid, port: PLAYWRIGHT_SERVER_PORT, projectRoot, detached: false }, null, 2)}\n`,
+    lockPath(projectRoot, port),
+    `${JSON.stringify({ pid: child.pid, port, projectRoot, detached: false }, null, 2)}\n`,
     "utf8",
   );
 
@@ -284,14 +269,14 @@ export async function runOwnedPlaywrightServer(
 
   return await new Promise<number>((resolve) => {
     child.once("exit", (code, signal) => {
-      removeLock(projectRoot);
+      removeLock(projectRoot, port);
       process.removeListener("SIGINT", stop);
       process.removeListener("SIGTERM", stop);
       process.removeListener("SIGHUP", stop);
       resolve(code ?? (signal === null ? 1 : 1));
     });
     child.once("error", () => {
-      removeLock(projectRoot);
+      removeLock(projectRoot, port);
       process.removeListener("SIGINT", stop);
       process.removeListener("SIGTERM", stop);
       process.removeListener("SIGHUP", stop);

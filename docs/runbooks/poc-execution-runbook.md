@@ -267,7 +267,7 @@ Status: [ ] | [~] | [?] | [x] | [!]
 Outcome: Student A cannot read Student B's chat rows.
 Owner: <name>
 Reviewer: <selected Ahmed-or-Ziad checkpoint; D-22 standing authorization for protected non-financial delivery>
-Policy version / Surfaces / Risk / Planning / Model floor / Worker budget / Capabilities / Procedural skills / Routing reason
+Policy version / Surfaces / Risk / Planning / Worker budget / Capabilities / Procedural skills / Routing reason; ordered manual model work blocks and independent acceptance checks
 Dependencies: <earlier task IDs>
 Inputs: migration names, fixture users, policy decision
 Files: exact expected files
@@ -548,6 +548,17 @@ This narrowly scoped correction follows the approved Sol/Luna workflow correctio
 - [x] Run the focused and final test matrix; record sanitized evidence and stop. This closure marker becomes authoritative only when PR #48's final head passes required CI and reaches protected `main`.
 
 **Pass:** all P1, P2, and P3 completion criteria in the approved correction plan are met without weakening existing proof, safety, or worker boundaries.
+
+#### WP00-T14 — Replace automatic model routing with manual work blocks
+
+This workflow-maintenance task supersedes WP00-T09's model-floor mechanism while preserving its risk, verification, evidence, worker, and delivery rules. Historical completed task records remain evidence of their original runs.
+
+- [~] Remove model floors, sticky escalation, active-model/runtime switch claims, and worker default-model routing from executable policy, CLI, tests, and current instructions.
+- [~] Make Sol High plan every new task in the fewest useful ordered blocks, with durable model assignments and independently specified acceptance checks; assign substantial bounded implementation to Luna Max when all four guide conditions hold.
+- [~] Make each fresh chat execute contiguous assigned blocks, persist proof and remaining work, and name the next manual model; hand an unresolved Luna block to Sol without silently changing its requirements.
+- [~] Prove policy/CLI outputs no longer claim control of Codex Desktop and preserve risk classification, verification, approval, protected delivery, and unrelated work. Finish the requested non-financial lifecycle.
+
+**Pass:** the router has no model-selection output or switch claim; the task template and workflow support reproducible Sol/Luna handoffs; risk and proof remain independent of model choice; the final candidate passes required checks and protected delivery.
 
 ### 3.1 Select exact pilot cohorts
 

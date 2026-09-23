@@ -16,7 +16,6 @@ import {
   selectLocalStableTask,
   type AgentExecutionFlags,
   type AgentExecutionInput,
-  type ModelFloor,
   type Risk,
   type Surface,
   type DesignDisposition,
@@ -253,13 +252,21 @@ if (
   (pass !== "intent" && pass !== "actual-diff" && pass !== "proof-preflight")
 ) {
   throw new Error(
-    "Usage: pnpm agent:route -- --task WPXX-TYY --pass intent|actual-diff|proof-preflight --surface <surface> [--surface ...] [--flag <name>] [--path <path>] [--active-model luna-max|sol-high] [--receipt <path>] [--emit-receipt-candidate <sha> --passed-check <id> ...] [--ci-evidence <path>] [--format json|yaml]",
+    "Usage: pnpm agent:route -- --task WPXX-TYY --pass intent|actual-diff|proof-preflight --surface <surface> [--surface ...] [--flag <name>] [--path <path>] [--receipt <path>] [--emit-receipt-candidate <sha> --passed-check <id> ...] [--ci-evidence <path>] [--format json|yaml]",
   );
 }
 
 const flags = Object.fromEntries(
   valuesAfter("--flag").map((name) => [name, true]),
 ) as AgentExecutionFlags;
+if (
+  process.argv.includes("--previous-model") ||
+  process.argv.includes("--active-model")
+) {
+  throw new Error(
+    "Model selection is manual; record work-block assignments in the task record.",
+  );
+}
 if (
   valuesAfter("--flag").some(
     (name) => name === "designJudgment" || name === "humanVisualDecision",
@@ -309,12 +316,6 @@ const input: AgentExecutionInput = {
   ...(valueAfter("--risk") === undefined
     ? {}
     : { requestedRisk: valueAfter("--risk") as Risk }),
-  ...(valueAfter("--previous-model") === undefined
-    ? {}
-    : { previousModelFloor: valueAfter("--previous-model") as ModelFloor }),
-  ...(valueAfter("--active-model") === undefined
-    ? {}
-    : { activeModel: valueAfter("--active-model") as ModelFloor }),
   ...(workerCountValue === undefined
     ? {}
     : { workerCount: Number.parseInt(workerCountValue, 10) }),

@@ -16,11 +16,9 @@ const surfaceNames = [
 ] as const;
 const riskNames = ["R0", "R1", "R2", "R3"] as const;
 const planningNames = ["minimal", "short", "deliberate", "protected"] as const;
-const modelNames = ["luna-max", "sol-high"] as const;
 const activationStates = ["SHADOW", "READY", "ENFORCED", "FALLBACK"] as const;
 const activationRuleNames = [
   "routing",
-  "model_routing",
   "worker_policy",
   "verification_selection",
   "evidence_reuse",
@@ -44,7 +42,6 @@ const agentExecutionFlagNames = [
 export type Surface = (typeof surfaceNames)[number];
 export type Risk = (typeof riskNames)[number];
 export type Planning = (typeof planningNames)[number];
-export type ModelFloor = (typeof modelNames)[number];
 export type ActivationState = (typeof activationStates)[number];
 
 type SurfacePolicy = {
@@ -110,16 +107,13 @@ export type AgentExecutionPolicy = {
   risk: {
     order: Risk[];
     planning_floor: Record<Risk, Planning>;
-    model_floor: Record<Risk, ModelFloor>;
     protected_flags: string[];
     deliberate_flags: string[];
-    sol_flags: string[];
   };
   workers: {
     default: number;
     maximum: number;
     nested: boolean;
-    default_model: ModelFloor;
   };
   browser: {
     internal: "side-browser";
@@ -150,7 +144,6 @@ export type AgentExecutionPolicy = {
   };
   activation: Record<string, ActivationState> & {
     routing: ActivationState;
-    model_routing: ActivationState;
     worker_policy: ActivationState;
     verification_selection: ActivationState;
     evidence_reuse: ActivationState;
@@ -181,8 +174,6 @@ export type AgentExecutionInput = {
   changedPaths: string[];
   flags?: AgentExecutionFlags;
   requestedRisk?: Risk;
-  previousModelFloor?: ModelFloor;
-  activeModel?: ModelFloor;
   workerCount?: number;
   nestedWorker?: boolean;
   proceduralSkills?: string[];
@@ -201,15 +192,6 @@ export type AgentExecutionResult = {
   surfaces: Surface[];
   risk: Risk;
   planning: Planning;
-  modelFloor: ModelFloor;
-  modelRuntimeStatus: "unverified" | "satisfied" | "switch-required";
-  modelRuntime: {
-    requiredFloor: ModelFloor;
-    activeModel?: ModelFloor;
-    status: "unverified" | "satisfied" | "switch-required";
-    action: "report-limitation" | "proceed" | "request-switch";
-    message: string;
-  };
   worker: { default: number; maximum: number; used: number; nested: false };
   capabilities: string[];
   proceduralSkills: string[];
@@ -542,9 +524,6 @@ export function validateAgentExecutionPolicy(
     if (!planningNames.includes(policy.risk.planning_floor[risk])) {
       failures.push(`invalid planning floor for risk: ${risk}`);
     }
-    if (!modelNames.includes(policy.risk.model_floor[risk])) {
-      failures.push(`invalid model floor for risk: ${risk}`);
-    }
   }
   if (policy.workers.default !== 0 || policy.workers.maximum !== 1) {
     failures.push("worker policy must default to zero and allow at most one");
@@ -744,18 +723,6 @@ export function deriveAgentExecution(
   ) {
     throw new Error("Input contains an unsupported risk tier.");
   }
-  if (
-    input.previousModelFloor !== undefined &&
-    !modelNames.includes(input.previousModelFloor)
-  ) {
-    throw new Error("Input contains an unsupported previous model floor.");
-  }
-  if (
-    input.activeModel !== undefined &&
-    !modelNames.includes(input.activeModel)
-  ) {
-    throw new Error("Input contains an unsupported active model.");
-  }
   const workerCount = input.workerCount ?? policy.workers.default;
   if (!Number.isInteger(workerCount) || workerCount < 0) {
     throw new Error("Worker count must be a non-negative integer.");
@@ -927,55 +894,6 @@ export function deriveAgentExecution(
   ) {
     planning = "deliberate";
   }
-  let modelFloor = policy.risk.model_floor[risk];
-  if (policy.risk.sol_flags.some((flag) => flagEnabled(flags, flag))) {
-    modelFloor = "sol-high";
-    reasons.push("material uncertainty activated the Sol floor");
-  }
-  if (input.previousModelFloor === "sol-high") {
-    modelFloor = "sol-high";
-    reasons.push("sticky escalation preserved the Sol floor");
-  }
-  if (policy.activation.model_routing !== "ENFORCED") {
-    modelFloor = "sol-high";
-    reasons.push(
-      `model routing ${policy.activation.model_routing.toLowerCase()} used the Sol floor`,
-    );
-  }
-  let modelRuntimeStatus: AgentExecutionResult["modelRuntimeStatus"];
-  let modelRuntime: AgentExecutionResult["modelRuntime"];
-  if (input.activeModel === undefined) {
-    modelRuntimeStatus = "unverified";
-    modelRuntime = {
-      requiredFloor: modelFloor,
-      status: modelRuntimeStatus,
-      action: "report-limitation",
-      message:
-        "The runtime did not expose a verifiable active primary model; report the required floor without claiming a switch.",
-    };
-  } else if (
-    modelNames.indexOf(input.activeModel) < modelNames.indexOf(modelFloor)
-  ) {
-    modelRuntimeStatus = "switch-required";
-    modelRuntime = {
-      requiredFloor: modelFloor,
-      activeModel: input.activeModel,
-      status: modelRuntimeStatus,
-      action: "request-switch",
-      message:
-        "The verified active primary model is below the required floor; request a model switch before implementation.",
-    };
-  } else {
-    modelRuntimeStatus = "satisfied";
-    modelRuntime = {
-      requiredFloor: modelFloor,
-      activeModel: input.activeModel,
-      status: modelRuntimeStatus,
-      action: "proceed",
-      message:
-        "The verified active primary model satisfies the required floor.",
-    };
-  }
 
   const capabilitySurfaces = sortedSurfaces;
   const capabilities = Array.from(
@@ -1044,9 +962,6 @@ export function deriveAgentExecution(
     surfaces: sortedSurfaces,
     risk,
     planning,
-    modelFloor,
-    modelRuntimeStatus,
-    modelRuntime,
     worker: {
       default: policy.workers.default,
       maximum: workerMaximum,
