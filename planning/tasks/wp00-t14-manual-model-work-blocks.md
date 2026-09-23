@@ -2,7 +2,9 @@
 
 **Task ID:** WP00-T14
 
-**Status:** [~]
+**Status:** [x]
+
+**Closure condition:** Final exact-head CI and protected merge remain pending; this record's completed state is conditional until those gates pass.
 
 **Outcome:** New tasks use a durable manual Sol/Luna block plan, while the execution router continues to classify risk and select proof without choosing the Codex Desktop model.
 
@@ -12,7 +14,7 @@
 
 **Branch:** `codex/manual-sol-luna-work-blocks`
 
-**Updated (UTC):** 2026-09-23T23:19:20Z
+**Updated (UTC):** 2026-09-23T23:28:29Z
 
 ## Derived execution envelope
 
@@ -36,11 +38,11 @@
 
 | Block | Assigned model | Scope and governing inputs | Independent acceptance checks, including failure cases | Assignment reason | Status and evidence |
 | --- | --- | --- | --- | --- | --- |
-| 1 | Sol High | Replace the cross-file policy, router, workflow, template, runbook, readiness, and task-state contract using the user request and WP00-T09/T13 execution rules; review and deliver the exact candidate. | Router output has no model floor/runtime field; deprecated CLI model flags fail; R3 auth risk still selects authorization denial; policy/readiness/handoff checks pass; exact-head CI, accurate review provenance, protected merge, affected proof, clean synchronized `main`; no model assignment bypasses required approval or verification. | Removing old routing and delivering its replacement require cross-system invariant and evidence judgment; a separate Luna chat would repeat substantial context. | In progress; verification pending. |
+| 1 | Sol High | Replace the cross-file policy, router, workflow, template, runbook, readiness, and task-state contract using the user request and WP00-T09/T13 execution rules; review and deliver the exact candidate. | Router output has no model floor/runtime field; deprecated CLI model flags fail; R3 auth risk still selects authorization denial; policy/readiness/handoff checks pass; exact-head CI, accurate review provenance, protected merge, affected proof, clean synchronized `main`; no model assignment bypasses required approval or verification. | Removing old routing and delivering its replacement require cross-system invariant and evidence judgment; a separate Luna chat would repeat substantial context. | Implementation and local proof complete at `cbfc83c`; final closure conditional on exact-head CI and protected merge. |
 
-**Next model:** Sol High
+**Next model:** NONE
 
-**Current block:** 1
+**Current block:** NONE
 
 ## Execution contract
 
@@ -54,7 +56,7 @@
 
 **Pass:** WP00-T14 runbook pass criteria and the four Luna-assignment conditions are represented as actionable instructions.
 
-**Evidence:** Pending sanitized WP00-T14 evidence report.
+**Evidence:** `evidence/wp00-pilot/2026-09-24_manual-sol-luna-work-blocks_github_cbfc83c.md` (local proof; final closure conditional on exact-head CI and protected merge).
 
 **Rollback:** Revert one reviewable policy change; no product data or hosted resource is changed.
 
@@ -78,16 +80,16 @@
 
 - [x] Remove executable model routing and its claims.
 - [x] Add manual Sol/Luna work-block planning and handoff rules.
-- [ ] Verify the stable candidate and protected delivery.
+- [x] Verify the stable candidate; exact-head CI and protected delivery remain the final conditional gate.
 
 ## Handoff
 
 **Changed:** Policy v7 removes model floors, sticky escalation, worker default model, and active-model switch output/inputs; the Sol/Luna guide, workflow, template, readiness, and work-state output now use manual ordered blocks. Playwright now accepts a bounded alternate port and only cleans up a test server named by its own lock. Unrelated pre-existing changes to `docs/agents/ui-design-stack.md`, `next-env.d.ts`, and WP00-T13's completed record remain outside this task's commit.
 
-**Commands:** Initial typecheck found stale model assertions, corrected. Focused policy tests 45/45 and port/ownership tests 2/2 exit 0; `pnpm verify:agent-policy` exit 0; TypeScript and fresh TypeScript exit 0; `pnpm verify:ci-workflow` exit 0; agent readiness exit 0; isolated handoff exit 0 after staging the new guide for its committed-snapshot fixture; skill validator exit 0; format check exit 0; lint exit 0; secret scan exit 0 for 985 files; `git diff --check HEAD` exit 0; full diff, stat, and changed-file secret/scope review complete. CLI route exit 0 without any model field; deprecated `--active-model` rejects with exit 1 as required. First guarded `pnpm verify` passed preparation and unit/integration/security/evaluation/load before Playwright refused occupied port 3100; a focused alternate-port test showed Next.js blocks a second dev server in the same checkout. The isolated checkout's first full gate reached 29/31 browser tests; trace showed deep-link HTML loaded while image requests remained pending, and a focused run found the preview route sometimes returned 404 before first compilation. Changing Playwright readiness from `/` to `/preview/learn?lang=en` passed both failing tests 2/2 in a fresh server run. The original user dev server was preserved throughout.
+**Commands:** Initial typecheck found stale model assertions, corrected. Focused policy tests 45/45 and port/ownership tests 2/2 exit 0; `pnpm verify:agent-policy` exit 0; TypeScript and fresh TypeScript exit 0; `pnpm verify:ci-workflow` exit 0; agent readiness exit 0; isolated handoff exit 0 after staging the new guide for its committed-snapshot fixture; skill validator exit 0; format check exit 0; lint exit 0; secret scan exit 0 for 985 files; `git diff --check HEAD` exit 0; full diff, stat, and changed-file secret/scope review complete. CLI route exit 0 without any model field; deprecated `--active-model` rejects with exit 1 as required. First guarded `pnpm verify` passed preparation and unit/integration/security/evaluation/load before Playwright refused occupied port 3100; a focused alternate-port test showed Next.js blocks a second dev server in the same checkout. The isolated checkout's first full gate reached 29/31 browser tests; trace showed deep-link HTML loaded while image requests remained pending, and a focused run found the preview route sometimes returned 404 before first compilation. Changing Playwright readiness from `/` to `/preview/learn?lang=en` passed both failing tests 2/2 in a fresh server run. Final guarded `corepack pnpm verify` in isolated checkout on port 3101 exited 0 for implementation candidate `cbfc83c`: 381 unit, 15 integration (two hosted-only expected skips), 26 security, 3 evaluation, 5 load, 31 Playwright, production build, client artifact scan, and all preflight checks. Preparation fingerprint `c1e1bf3c62c1f3a2e405b41de18d917c2d5f20f8694f06e03239b946d98f4737`. Final exact-head CI must verify this closure-doc commit. The original user dev server was preserved throughout.
 
-**Remaining:** Guarded broad proof, exact-head CI, protected delivery, evidence closure, cleanup.
+**Remaining:** Final PR-head required CI, exact-candidate review, protected merge, main synchronization, and task-created temporary artifact cleanup if permitted.
 
-**Next safe action:** Recompute preparation for the route-readiness correction, then rerun guarded broad verification in the isolated checkout on port 3101.
+**Next safe action:** Run final PR-head required checks, approve with accurate distinct-account provenance, merge through protection, then confirm main and affected proof.
 
 **Reviewer action:** NONE

@@ -553,10 +553,10 @@ This narrowly scoped correction follows the approved Sol/Luna workflow correctio
 
 This workflow-maintenance task supersedes WP00-T09's model-floor mechanism while preserving its risk, verification, evidence, worker, and delivery rules. Historical completed task records remain evidence of their original runs.
 
-- [~] Remove model floors, sticky escalation, active-model/runtime switch claims, and worker default-model routing from executable policy, CLI, tests, and current instructions.
-- [~] Make Sol High plan every new task in the fewest useful ordered blocks, with durable model assignments and independently specified acceptance checks; assign substantial bounded implementation to Luna Max when all four guide conditions hold.
-- [~] Make each fresh chat execute contiguous assigned blocks, persist proof and remaining work, and name the next manual model; hand an unresolved Luna block to Sol without silently changing its requirements.
-- [~] Prove policy/CLI outputs no longer claim control of Codex Desktop and preserve risk classification, verification, approval, protected delivery, and unrelated work. Finish the requested non-financial lifecycle.
+- [x] Remove model floors, sticky escalation, active-model/runtime switch claims, and worker default-model routing from executable policy, CLI, tests, and current instructions.
+- [x] Make Sol High plan every new task in the fewest useful ordered blocks, with durable model assignments and independently specified acceptance checks; assign substantial bounded implementation to Luna Max when all four guide conditions hold.
+- [x] Make each fresh chat execute contiguous assigned blocks, persist proof and remaining work, and name the next manual model; hand an unresolved Luna block to Sol without silently changing its requirements.
+- [x] Prove policy/CLI outputs no longer claim control of Codex Desktop and preserve risk classification, verification, approval, protected delivery, and unrelated work. Closure is conditional on exact-head CI and protected merge.
 
 **Pass:** the router has no model-selection output or switch claim; the task template and workflow support reproducible Sol/Luna handoffs; risk and proof remain independent of model choice; the final candidate passes required checks and protected delivery.
 
