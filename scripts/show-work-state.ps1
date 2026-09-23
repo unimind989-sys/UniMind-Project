@@ -185,7 +185,8 @@ foreach ($file in Get-ChildItem -LiteralPath $taskRecordRoot -File -Filter '*.md
         surfaces = Get-BoldField -Content $content -Name 'Surfaces'
         risk = Get-BoldField -Content $content -Name 'Risk'
         planning = Get-BoldField -Content $content -Name 'Planning'
-        modelFloor = Get-BoldField -Content $content -Name 'Model floor'
+        nextModel = Get-BoldField -Content $content -Name 'Next model'
+        currentBlock = Get-BoldField -Content $content -Name 'Current block'
         workerBudget = Get-BoldField -Content $content -Name 'Worker budget'
         capabilities = Get-BoldField -Content $content -Name 'Capabilities'
         proceduralSkills = Get-BoldField -Content $content -Name 'Procedural skills'
@@ -279,7 +280,10 @@ foreach ($taskRecord in $state.activeTaskRecords) {
   }
   foreach ($fact in $taskRecord.establishedFacts) { Write-Output "  Fact [$($fact.status)]: $($fact.fact) — $($fact.source); reopen when $($fact.reopenCondition)" }
   if ($null -ne $taskRecord.routing) {
-    Write-Output "  Route: policy $($taskRecord.routing.policyVersion); $($taskRecord.routing.surfaces); $($taskRecord.routing.risk); $($taskRecord.routing.modelFloor); workers $($taskRecord.routing.workerBudget)"
+    Write-Output "  Route: policy $($taskRecord.routing.policyVersion); $($taskRecord.routing.surfaces); $($taskRecord.routing.risk); workers $($taskRecord.routing.workerBudget)"
+    if ($taskRecord.routing.nextModel) {
+      Write-Output "  Next assigned model: $($taskRecord.routing.nextModel); block $($taskRecord.routing.currentBlock)"
+    }
   }
 }
 Write-Output "Open/proposed decisions: $($state.openDecisions.Count)"

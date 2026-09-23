@@ -253,7 +253,6 @@ if (Test-Path -LiteralPath $taskTemplatePath -PathType Leaf) {
     'Surfaces'
     'Risk'
     'Planning'
-    'Model floor'
     'Worker budget'
     'Capabilities'
     'Procedural skills'
@@ -262,6 +261,11 @@ if (Test-Path -LiteralPath $taskTemplatePath -PathType Leaf) {
   foreach ($field in $routingFields) {
     if ($taskTemplate -notmatch "(?m)^\*\*$([regex]::Escape($field)):\*\*") {
       Add-Failure "Task-record template lacks routing field: $field"
+    }
+  }
+  foreach ($field in @('Next model', 'Current block')) {
+    if ($taskTemplate -notmatch "(?m)^\*\*$([regex]::Escape($field)):\*\*") {
+      Add-Failure "Task-record template lacks manual model field: $field"
     }
   }
   foreach ($field in @('Design disposition', 'Design evidence', 'Preparation review', 'Preparation fingerprint', 'Unresolved findings', 'Established facts')) {
@@ -289,6 +293,16 @@ if (Test-Path -LiteralPath $taskRecordRoot -PathType Container) {
     }
     $versionMatch = [regex]::Match($taskRecord, '(?m)^\*\*Policy version:\*\*\s*(\d+)')
     $statusMatch = [regex]::Match($taskRecord, '(?m)^\*\*Status:\*\*\s*(\[[^\]]\])')
+    if ($versionMatch.Success -and [int]$versionMatch.Groups[1].Value -ge 7 -and $statusMatch.Groups[1].Value -ne '[x]') {
+      foreach ($field in @('Next model', 'Current block')) {
+        if ($taskRecord -notmatch "(?m)^\*\*$([regex]::Escape($field)):\*\*\s*\S") {
+          Add-Failure "Active policy-v7 task record $($taskRecordFile.Name) lacks populated manual model field: $field"
+        }
+      }
+      if ($taskRecord -notmatch '(?m)^\|\s*1\s*\|\s*(Sol High|Luna Max)\s*\|') {
+        Add-Failure "Active policy-v7 task record $($taskRecordFile.Name) lacks an assigned work block."
+      }
+    }
     if ($versionMatch.Success -and [int]$versionMatch.Groups[1].Value -ge 6 -and $statusMatch.Groups[1].Value -ne '[x]') {
       foreach ($field in @('Design disposition', 'Design evidence', 'Preparation review', 'Preparation fingerprint', 'Unresolved findings', 'Established facts')) {
         if ($taskRecord -notmatch "(?m)^\*\*$([regex]::Escape($field)):\*\*\s*\S") {

@@ -7,7 +7,7 @@ Use this lifecycle for every repository task. Product truth stays in the master 
 1. Run `git status --short`, preserve every unrelated change, and read the root `README.md` map.
 2. Run `pwsh -NoProfile -File scripts/show-work-state.ps1`. Continue the earliest executable in-progress task, otherwise select the earliest executable task in runbook dependency order. A user-named outcome still maps to exactly one runbook task.
 3. Read only the selected task, its direct dependencies/evidence, and the product/domain/design authority triggered by the request.
-4. Create or update `planning/tasks/wpNN-tyy-short-outcome.md` from the controlled template. Record the selected speaker/checkpoint, files, acceptance, proof, evidence, rollback, and hard stops.
+4. Create or update `planning/tasks/wpNN-tyy-short-outcome.md` from the controlled template. Record the selected speaker/checkpoint, files, acceptance, proof, evidence, rollback, and hard stops. For a new task, the user opens a fresh GPT-6 Sol High chat. Sol reads the applicable authority, resolves governing behavior and boundaries, and plans the fewest useful ordered work blocks in that record before implementation. Use [the manual Sol/Luna guide](model-work-blocks.md) for assignments and handoffs.
 
 **Complete when:** one task is claimed, its readiness is proven, unrelated work is known, and no required context branch remains unread.
 
@@ -19,9 +19,9 @@ Give the central router a compact semantic classification:
 pnpm agent:route -- --task WP03-T04 --pass intent --surface frontend --surface runtime
 ```
 
-Record its policy version, surfaces, risk, planning/model floor, worker budget, capabilities, procedural skills, and reason in the task record. Read the router's model-runtime action before implementation: proceed when a verified active model satisfies the floor, request a switch only when a verified active model is below it, and record `unverified` as a runtime limitation when the active model cannot be established. Never mutate shared Codex configuration and treat that as proof that the live session changed. The router applies deterministic floors and widening; it does not define acceptance criteria.
+Record its policy version, surfaces, risk, planning floor, worker budget, capabilities, procedural skills, and reason in the task record. The router classifies risk and checks; it neither selects nor verifies the Codex Desktop model. Model assignments are Sol's manual plan in the task record, independent of this envelope. A model assignment does not change required verification or approval.
 
-**Complete when:** the task record contains one small execution envelope and every selected capability/skill has a concrete trigger.
+**Complete when:** the task record contains one small execution envelope, ordered work blocks with independent acceptance checks, and every selected capability/skill has a concrete trigger.
 
 ## 3. Execute recoverable slices
 
@@ -29,8 +29,9 @@ Record its policy version, surfaces, risk, planning/model floor, worker budget, 
 2. Use synthetic fixtures, deterministic mocks, and zero paid capacity unless the task records approved real inputs and the financial boundary.
 3. Run the smallest check able to reject the current slice. Fix recoverable failures proportionally; heavyweight diagnosis starts only for hard, unclear, reproduction-dependent, performance, or non-converging failures.
 4. Persist decisions, commands, blockers, and resumable state in repository artifacts. Chat is coordination, not project memory.
+5. Finish contiguous blocks assigned to the current model in the current chat. At a model boundary, record completed checks, current diff, remaining criteria, and the next assigned model, then tell the user which model to select in a fresh chat. Luna keeps a routine failure with a clear fix. For unresolved invariants, contradictory behavior, unclear protected rules, repeated acceptance failure, or growing repair effort, Luna records evidence and hands the same coherent block to Sol High; Sol revises the plan only from the task's governing requirements.
 
-**Complete when:** the observable allowed path works, applicable failure/forbidden paths are covered, and another agent can reproduce it from version control.
+**Complete when:** the observable allowed path works, applicable failure/forbidden paths are covered, and another chat can reproduce the state from version control.
 
 ## 4. Reclassify the actual diff
 

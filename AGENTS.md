@@ -3,7 +3,7 @@
 ## Authority and orientation
 
 - Start with `README.md`. Product, scope, architecture, safety, and operating policy live in the relevant section of `docs/plans/poc-master-plan.md`; task order and acceptance live in `docs/runbooks/poc-execution-runbook.md`; one selected task's durable state lives in its `planning/tasks/` record; code, tests, and evidence prove the result. `CONTEXT.md`, `DESIGN.md`, decisions, ADRs, and policies retain their named scopes. When derived metadata conflicts with an authority, the authority wins.
-- Follow `docs/agents/agent-workflow.md` for the execution lifecycle and `docs/agents/agent-execution-policy.yaml` for derived surfaces, risk/planning/model floors, worker limits, capabilities, verification selection, evidence invalidation, and rule state. The policy optimizes execution; it never defines product requirements or task status.
+- Follow `docs/agents/agent-workflow.md` for the execution lifecycle and manual Sol/Luna work blocks. Use `docs/agents/agent-execution-policy.yaml` for derived surfaces, risk/planning floors, worker limits, capabilities, verification selection, evidence invalidation, and rule state. The policy optimizes execution; it never defines product requirements, task status, or the Codex Desktop model.
 - At the first user message, select Ziad only when the user explicitly identifies himself as Ziad; otherwise select Ahmed. Keep that profile unless corrected. Apply `docs/agents/communication-profiles.md` to conversation only; service-account identity never proves which founder acted.
 
 ## Execution kernel

@@ -14,8 +14,7 @@
       "expected": {
         "surfaces": ["docs"],
         "risk": "R0",
-        "planning": "minimal",
-        "modelFloor": "luna-max"
+        "planning": "minimal"
       }
     },
     {
@@ -31,7 +30,6 @@
         "surfaces": ["frontend"],
         "risk": "R1",
         "planning": "short",
-        "modelFloor": "luna-max",
         "capabilities": ["frontend-quality-floor"],
         "proceduralSkillsAbsent": ["impeccable"],
         "browser": {
@@ -52,8 +50,7 @@
       "expected": {
         "surfaces": ["runtime"],
         "risk": "R2",
-        "planning": "short",
-        "modelFloor": "luna-max"
+        "planning": "short"
       }
     },
     {
@@ -68,7 +65,6 @@
         "surfaces": ["runtime", "auth"],
         "risk": "R3",
         "planning": "protected",
-        "modelFloor": "sol-high",
         "capabilities": ["trust-boundaries"]
       }
     },
@@ -87,12 +83,11 @@
         "surfaces": ["auth", "data"],
         "risk": "R3",
         "planning": "protected",
-        "modelFloor": "sol-high",
         "capabilities": ["trust-boundaries"]
       }
     },
     {
-      "name": "architecture uncertainty escalates without inventing protected risk",
+      "name": "architecture uncertainty requires deliberate planning without inventing protected risk",
       "input": {
         "task": "WP03-T04",
         "pass": "intent",
@@ -103,8 +98,7 @@
       "expected": {
         "surfaces": ["frontend", "runtime"],
         "risk": "R2",
-        "planning": "deliberate",
-        "modelFloor": "sol-high"
+        "planning": "deliberate"
       }
     },
     {
@@ -121,8 +115,7 @@
       "expected": {
         "surfaces": ["frontend", "runtime", "auth"],
         "risk": "R3",
-        "planning": "protected",
-        "modelFloor": "sol-high"
+        "planning": "protected"
       }
     },
     {

@@ -33,7 +33,7 @@ If the implementation is incomplete, finish only defects or omissions within the
 
 ## 2. Derive the final execution envelope
 
-Run the actual-diff pass through `pnpm agent:route` and the authoritative `docs/agents/agent-execution-policy.yaml`. Supply compact semantic surfaces and every changed path or external mutation. The policy owns surface definitions, risk/planning/model floors, worker limits, capabilities, verification metadata, evidence invalidation, and activation state; this skill does not keep a second taxonomy.
+Run the actual-diff pass through `pnpm agent:route` and the authoritative `docs/agents/agent-execution-policy.yaml`. Supply compact semantic surfaces and every changed path or external mutation. The policy owns surface definitions, risk/planning floors, worker limits, capabilities, verification metadata, evidence invalidation, and activation state; manual model assignments live in the task record under `docs/agents/model-work-blocks.md`.
 
 Compare the result with the intent pass recorded in the task. Widen only for newly changed behavior, paths, or external mutations. Protected classification cannot be downgraded. When classification is uncertain or malformed, use conservative proof. Service relevance follows real dependency paths, not the existence of a service in the stack.
 
@@ -137,7 +137,7 @@ Only after the merged `main` commit and every affected service are verified:
 
 Lead with `FINALIZED`, `BLOCKED`, or `NOT FINALIZED`, followed by:
 
-- final surfaces, risk, planning/model floors, and why;
+- final surfaces, risk, planning floor, and manual model work-block status;
 - implementation or fixes made during finalization;
 - commit, pull request, GitHub account roles, reviewer-process provenance, review requirement/result, checks, merge, and final `main` identity;
 - Supabase status or the precise reason it was skipped;
