@@ -535,9 +535,11 @@ select is(
   'the confirmed source activation is durable'
 );
 
+reset role;
 update public.source_versions
 set processing_status = 'NEEDS_REVIEW'
 where id = '41000000-0000-0000-0000-000000000002';
+set local role service_role;
 select is(
   (public.submit_admin_governance_action(
     p_actor_id => '10000000-0000-0000-0000-000000000001',
