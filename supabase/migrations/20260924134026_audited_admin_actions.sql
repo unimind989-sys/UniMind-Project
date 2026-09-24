@@ -450,7 +450,10 @@ begin
 
     when 'ENABLE_FLAG' then
       select jsonb_build_object(
-        'flag', jsonb_build_array(flags.id, flags.xmin::text),
+        'flag', jsonb_build_array(
+          flags.id, flags.xmin::text, flags.key, flags.enabled,
+          flags.governance_version, flags.config_json
+        ),
         'environment', p_runtime_environment,
         'approvals', (
           select coalesce(jsonb_agg(jsonb_build_array(
