@@ -66,7 +66,7 @@ describe("audited admin action trust boundaries", () => {
       /check \(processing_status <> 'READY' or accepted_at is not null\)/u,
     );
     expect(serviceAdapter).toMatch(/requireVerifiedIdentity\(\)/u);
-    expect(serviceAdapter).toMatch(/SUPABASE_SERVICE_ROLE_KEY/u);
+    expect(serviceAdapter).toMatch(/submitAdminGovernanceActionRpc\(/u);
   });
 
   it("returns scoped labels and predicate codes without raw keys or provider payloads", () => {
