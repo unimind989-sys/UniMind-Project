@@ -1,10 +1,10 @@
 import "server-only";
 
-import { createClient } from "@supabase/supabase-js";
-
 import { requireVerifiedIdentity } from "../auth/verified-identity.server";
-import { getServerEnvironment } from "../config/env.server";
-import type { Database } from "../../types/database.generated";
+import {
+  loadAdminActionQueueRpc,
+  submitAdminGovernanceActionRpc,
+} from "../db/supabase/admin.server";
 import {
   AdminActionBoundaryError,
   adminActionResultSchema,
@@ -25,21 +25,6 @@ function getRuntimeEnvironment(): RuntimeEnvironment {
   if (process.env.VERCEL_ENV === "preview") return "preview";
   if (process.env.NODE_ENV === "test") return "ci";
   return "local";
-}
-
-function createServiceClient() {
-  const environment = getServerEnvironment();
-  return createClient<Database>(
-    environment.NEXT_PUBLIC_SUPABASE_URL,
-    environment.SUPABASE_SERVICE_ROLE_KEY,
-    {
-      auth: {
-        autoRefreshToken: false,
-        detectSessionInUrl: false,
-        persistSession: false,
-      },
-    },
-  );
 }
 
 function mapRpcError(error: Readonly<{ code?: string; message?: string }>) {
@@ -64,8 +49,7 @@ async function verifiedActorId(expectedActorId?: string) {
 const actionRepository: AdminActionRepository = {
   async submit(actorId, request: AdminActionRequest) {
     const verifiedUserId = await verifiedActorId(actorId);
-    const client = createServiceClient();
-    const { data, error } = await client.rpc("submit_admin_governance_action", {
+    const { data, error } = await submitAdminGovernanceActionRpc({
       p_actor_id: verifiedUserId,
       p_action: request.action,
       p_target_id: request.targetId,
@@ -94,8 +78,7 @@ const actionRepository: AdminActionRepository = {
 const readinessRepository: AdminReadinessRepository = {
   async loadActionQueue(actorId) {
     const verifiedUserId = await verifiedActorId(actorId);
-    const client = createServiceClient();
-    const { data, error } = await client.rpc("current_admin_action_queue", {
+    const { data, error } = await loadAdminActionQueueRpc({
       p_actor_id: verifiedUserId,
       p_runtime_environment: getRuntimeEnvironment(),
     });

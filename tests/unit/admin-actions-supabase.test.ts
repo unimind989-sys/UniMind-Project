@@ -1,21 +1,18 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
-  createClient: vi.fn(),
-  getServerEnvironment: vi.fn(),
+  loadAdminActionQueueRpc: vi.fn(),
   requireVerifiedIdentity: vi.fn(),
-  rpc: vi.fn(),
+  submitAdminGovernanceActionRpc: vi.fn(),
 }));
 
 vi.mock("server-only", () => ({}));
-vi.mock("@supabase/supabase-js", () => ({
-  createClient: mocks.createClient,
-}));
 vi.mock("../../src/lib/auth/verified-identity.server", () => ({
   requireVerifiedIdentity: mocks.requireVerifiedIdentity,
 }));
-vi.mock("../../src/lib/config/env.server", () => ({
-  getServerEnvironment: mocks.getServerEnvironment,
+vi.mock("../../src/lib/db/supabase/admin.server", () => ({
+  loadAdminActionQueueRpc: mocks.loadAdminActionQueueRpc,
+  submitAdminGovernanceActionRpc: mocks.submitAdminGovernanceActionRpc,
 }));
 
 const adminId = "a0000000-0000-4000-8000-000000000005";
@@ -23,13 +20,8 @@ const targetId = "a0000000-0000-4000-8000-000000000001";
 
 beforeEach(() => {
   vi.clearAllMocks();
-  mocks.getServerEnvironment.mockReturnValue({
-    NEXT_PUBLIC_SUPABASE_URL: "http://synthetic.supabase.invalid",
-    SUPABASE_SERVICE_ROLE_KEY: "synthetic-server-only-key",
-  });
   mocks.requireVerifiedIdentity.mockResolvedValue({ userId: adminId });
-  mocks.createClient.mockReturnValue({ rpc: mocks.rpc });
-  mocks.rpc.mockResolvedValue({
+  mocks.submitAdminGovernanceActionRpc.mockResolvedValue({
     data: {
       commandId: "a0000000-0000-4000-8000-000000000004",
       status: "APPLIED",
@@ -58,14 +50,8 @@ describe("server-only audited admin RPC adapter", () => {
     });
 
     expect(mocks.requireVerifiedIdentity).toHaveBeenCalledTimes(2);
-    expect(mocks.createClient).toHaveBeenCalledWith(
-      "http://synthetic.supabase.invalid",
-      "synthetic-server-only-key",
-      expect.any(Object),
-    );
-    expect(mocks.rpc).toHaveBeenCalledOnce();
-    expect(mocks.rpc).toHaveBeenCalledWith(
-      "submit_admin_governance_action",
+    expect(mocks.submitAdminGovernanceActionRpc).toHaveBeenCalledOnce();
+    expect(mocks.submitAdminGovernanceActionRpc).toHaveBeenCalledWith(
       expect.objectContaining({
         p_actor_id: adminId,
         p_action: "HIDE_UNIT",
@@ -97,11 +83,11 @@ describe("server-only audited admin RPC adapter", () => {
         idempotencyKey: "a0000000-0000-4000-8000-000000000003",
       }),
     ).rejects.toMatchObject({ code: "FORBIDDEN" });
-    expect(mocks.rpc).not.toHaveBeenCalled();
+    expect(mocks.submitAdminGovernanceActionRpc).not.toHaveBeenCalled();
   });
 
   it("maps private database failures to a safe boundary code", async () => {
-    mocks.rpc.mockResolvedValue({
+    mocks.submitAdminGovernanceActionRpc.mockResolvedValue({
       data: null,
       error: { message: "secret diagnostic" },
     });
@@ -122,7 +108,7 @@ describe("server-only audited admin RPC adapter", () => {
   });
 
   it("maps database queue columns into the validated browser candidate", async () => {
-    mocks.rpc.mockResolvedValue({
+    mocks.loadAdminActionQueueRpc.mockResolvedValue({
       data: [
         {
           candidate_id: `unit:hide:${targetId}`,

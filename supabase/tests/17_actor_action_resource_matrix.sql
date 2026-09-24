@@ -3,6 +3,7 @@
 -- RLS-T04-FUNCTION-GRANTS, RLS-T04-CROSS-USER, RLS-T04-CROSS-SCOPE,
 -- RLS-T04-BATCH-LEADER, RLS-T04-REVOCATION, RLS-T04-SERVER-ONLY.
 -- WP03-T05-ANON-DENY, WP03-T05-SERVER-ONLY, WP03-T05-FUNCTION-GRANTS.
+-- WP03-T06-ANON-DENY, WP03-T06-CLIENT-DENY, WP03-T06-SERVER-ONLY.
 begin;
 select plan(121);
 
@@ -74,7 +75,9 @@ insert into reviewed_service_role_functions (function_signature)
 values
   ('record_privileged_auth_action(uuid, text, text, uuid, text, uuid, text)'),
   ('finalize_synthetic_source_submission(uuid, uuid, uuid, uuid, text, text, text, text)'),
-  ('register_synthetic_collection_upload(uuid, uuid, uuid, uuid, text, text, text, text, text, text, text, bigint)');
+  ('register_synthetic_collection_upload(uuid, uuid, uuid, uuid, text, text, text, text, text, text, text, bigint)'),
+  ('submit_admin_governance_action(uuid, text, uuid, integer, text, text, uuid, uuid, uuid, timestamp with time zone, boolean, text)'),
+  ('current_admin_action_queue(uuid, text)');
 
 create temporary table reviewed_private_functions (
   function_name text primary key
@@ -84,6 +87,11 @@ insert into reviewed_private_functions (function_name)
 values
   ('append_governance_audit'),
   ('activate_profile_after_email_confirmation'),
+  ('admin_candidate_fingerprint'),
+  ('admin_current_action_queue'),
+  ('admin_raw_safety_check'),
+  ('admin_source_predicates'),
+  ('admin_submit_governance_action'),
   ('assert_source_version_ready_prerequisites'),
   ('assert_valid_transition'),
   ('can_read_source_asset'),
@@ -96,6 +104,7 @@ values
   ('enforce_ready_quality_report_insert'),
   ('enforce_ready_source_segment_update'),
   ('enforce_incident_transition'),
+  ('enforce_admin_command_transition'),
   ('enforce_raw_object_transition'),
   ('enforce_source_segment_update'),
   ('enforce_source_version_update'),
