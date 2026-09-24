@@ -163,9 +163,9 @@ describe("WP02-T04 actor/action/resource matrix contract", () => {
       ({ action, actor_role: actor, resource }) =>
         `${actor}|${resource}|${action}`,
     );
-    expect(tables.size).toBe(57);
-    expect(functions.size).toBe(47);
-    expect(matrix).toHaveLength(1_650);
+    expect(tables.size).toBe(62);
+    expect(functions.size).toBe(55);
+    expect(matrix).toHaveLength(1_818);
     expect(new Set(actualKeys).size).toBe(matrix.length);
     expect(new Set(actualKeys)).toEqual(expectedKeys);
 
@@ -173,7 +173,7 @@ describe("WP02-T04 actor/action/resource matrix contract", () => {
       expect(actors).toContain(row.actor_role);
       expect(["ALLOW", "DENY", "SERVER_ONLY"]).toContain(row.expected);
       expect(row.policy_or_function.trim()).not.toBe("");
-      expect(row.test_id).toMatch(/^(?:RLS-T04|WP03-T05)-[A-Z-]+$/u);
+      expect(row.test_id).toMatch(/^(?:RLS-T04|WP03-T05|WP03-T06)-[A-Z-]+$/u);
       expect(row.automated_test).toContain(
         "supabase/tests/17_actor_action_resource_matrix.sql#",
       );

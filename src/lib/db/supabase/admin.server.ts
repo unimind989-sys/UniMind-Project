@@ -142,6 +142,18 @@ function createAdminClient() {
   );
 }
 
+export function submitAdminGovernanceActionRpc(
+  args: Database["public"]["Functions"]["submit_admin_governance_action"]["Args"],
+) {
+  return createAdminClient().rpc("submit_admin_governance_action", args);
+}
+
+export function loadAdminActionQueueRpc(
+  args: Database["public"]["Functions"]["current_admin_action_queue"]["Args"],
+) {
+  return createAdminClient().rpc("current_admin_action_queue", args);
+}
+
 type ProviderErrorShape = Readonly<{
   code?: string | undefined;
   status?: number | undefined;

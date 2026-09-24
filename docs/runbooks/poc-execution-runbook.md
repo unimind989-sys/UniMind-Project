@@ -1329,9 +1329,9 @@ External component catalogs and MCPs are optional implementation aids, never des
 - [x] Provide accessible drag/drop and file-input paths, progress, cancel, recoverable retry, duplicate/replacement guidance, validation summaries, and safe submitted/processing/needs-information/accepted/rejected/completed states without job/provider/internal diagnostics.
 - [x] Test keyboard-only and mobile/RTL submission, wrong campaign, expired assignment, duplicate selection, replayed finalize, cancelled/abandoned upload, checksum mismatch, oversized/forbidden type, offline/interrupted retry, and revoked or unknown rights. PR #45 merged as `00084ed`; release correction PR #46 merged as `63d8e6a`; Supabase Preview migration `20260922143605` and Vercel production deployment `dpl_F5kXv2WUEifs1nWC8RRh5d3uEpWt` passed hosted postflight. Protected release evidence: `evidence/wp03-product-shell/2026-09-23_batch-leader-collection-release_production_63d8e6a.md`.
 
-#### WP03-T06 — Build audited admin actions, not table editors
+#### WP03-T06 — Build audited admin actions, not table editors (in progress: Codex `/root`, `wp03/audited-admin-actions`)
 
-- [ ] Implement a typed server action/service for every action in section 6.4.
+- [~] Implement a typed server action/service for every action in section 6.4.
 - [ ] Require actor, target, expected prior version/state, reason, and correlation ID.
 - [ ] Use optimistic concurrency so a stale admin page cannot overwrite a newer decision.
 - [ ] Show the exact failed readiness predicate before publication/unlock. Model protected rights, release/unlock, raw-deletion, and budget-kill-switch transitions with the required separate Ahmed and Ziad confirmations; a shared service identity or one browser session never counts as both people. Keep enablement actions unavailable while their provider, rights, budget, or environment decision is open.
