@@ -41,6 +41,9 @@ create table unimind_private.founder_principals (
     check (nullif(btrim(verification_reason), '') is not null)
 );
 
+create index founder_principals_verified_by_idx
+  on unimind_private.founder_principals (verified_by);
+
 create table unimind_private.admin_mock_artifact_approvals (
   id uuid primary key default extensions.gen_random_uuid(),
   flag_key text not null,
@@ -62,6 +65,9 @@ create table unimind_private.admin_mock_artifact_approvals (
   constraint admin_mock_artifact_approvals_reason_check
     check (nullif(btrim(reason), '') is not null)
 );
+
+create index admin_mock_artifact_approvals_approved_by_idx
+  on unimind_private.admin_mock_artifact_approvals (approved_by);
 
 create table unimind_private.admin_action_commands (
   id uuid primary key default extensions.gen_random_uuid(),
@@ -105,6 +111,9 @@ create table unimind_private.admin_action_commands (
   constraint admin_action_commands_updated_check check (updated_at >= created_at)
 );
 
+create index admin_action_commands_pending_action_id_idx
+  on unimind_private.admin_action_commands (pending_action_id);
+
 create unique index admin_action_commands_one_pending_retry
   on unimind_private.admin_action_commands (target_id)
   where action = 'RETRY_SOURCE'
@@ -130,6 +139,9 @@ create table unimind_private.admin_action_confirmations (
   constraint admin_action_confirmations_reason_check
     check (char_length(btrim(reason)) between 8 and 500)
 );
+
+create index admin_action_confirmations_actor_id_idx
+  on unimind_private.admin_action_confirmations (actor_id);
 
 create table unimind_private.raw_data_holds (
   id uuid primary key default extensions.gen_random_uuid(),
@@ -157,6 +169,13 @@ create table unimind_private.raw_data_holds (
   constraint raw_data_holds_removed_after_placed_check
     check (removed_at is null or removed_at >= placed_at)
 );
+
+create index raw_data_holds_reviewed_by_idx
+  on unimind_private.raw_data_holds (reviewed_by);
+create index raw_data_holds_placed_by_idx
+  on unimind_private.raw_data_holds (placed_by);
+create index raw_data_holds_removed_by_idx
+  on unimind_private.raw_data_holds (removed_by);
 
 create unique index raw_data_holds_one_active_per_object
   on unimind_private.raw_data_holds (raw_object_id)
@@ -817,6 +836,7 @@ begin
       v_current_state := v_source_activation;
       v_next_state := 'ACTIVE';
       v_target_label_ar := v_target_label_en;
+      v_protected := true;
       v_failed_predicates := unimind_private.admin_source_predicates(
         p_target_id, v_cohort_edition, false
       );
