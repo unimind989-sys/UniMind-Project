@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 3,
+  "policyVersion": 7,
+  "task": "WP03-T06",
+  "candidate": "b67de4f300fbbae088bfca116452fbae013d259b",
+  "proofs": [
+    {
+      "id": "human-design-acceptance",
+      "check": "founder hands-on design acceptance",
+      "status": "PASS",
+      "decisionActor": "Ahmed",
+      "decisionReference": "message:wp03-t06-accept-20260924T172119Z",
+      "decisionTimestamp": "2026-09-24T17:21:19Z",
+      "acceptedScope": "routes:/admin,/preview/admin; surfaces:decision queue,scoped review; states:success,error,stale,pending,blocked,containment,EN/AR desktop/mobile",
+      "acceptedCandidate": "b67de4f300fbbae088bfca116452fbae013d259b",
+      "invalidatedBy": {
+        "surfaces": [],
+        "pathPatterns": [],
+        "semanticFacts": [
+          {
+            "flag": "visualImpactUnknown",
+            "equals": true,
+            "result": "MISSING"
+          }
+        ]
+      }
+    }
+  ]
+}
