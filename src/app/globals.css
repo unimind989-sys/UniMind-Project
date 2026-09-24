@@ -13,6 +13,7 @@
   --surface-focus: #2a3b51;
   --surface-active: #1e3557;
   --text-primary: #ecf3f9;
+  --on-action: #ffffff;
   --text-secondary: #c8d1d8;
   --text-muted: #9aa8b8;
   --accent: #3977f7;
@@ -23,6 +24,7 @@
   --line: #253a55;
   --radius-card: 0.875rem;
   --radius-control: 0.75rem;
+  --radius-pill: 999px;
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;

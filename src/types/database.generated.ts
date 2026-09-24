@@ -450,6 +450,7 @@ export type Database = {
           changed_by: string;
           cohort_id: string;
           created_at: string;
+          governance_version: number;
           id: string;
           reason: string;
           release_status: string;
@@ -459,6 +460,7 @@ export type Database = {
           changed_by: string;
           cohort_id: string;
           created_at?: string;
+          governance_version?: number;
           id?: string;
           reason: string;
           release_status?: string;
@@ -468,6 +470,7 @@ export type Database = {
           changed_by?: string;
           cohort_id?: string;
           created_at?: string;
+          governance_version?: number;
           id?: string;
           reason?: string;
           release_status?: string;
@@ -637,6 +640,7 @@ export type Database = {
           code: string;
           cohort_id: string;
           created_at: string;
+          governance_version: number;
           id: string;
           parent_unit_id: string | null;
           publication_status: string;
@@ -651,6 +655,7 @@ export type Database = {
           code: string;
           cohort_id: string;
           created_at?: string;
+          governance_version?: number;
           id?: string;
           parent_unit_id?: string | null;
           publication_status?: string;
@@ -665,6 +670,7 @@ export type Database = {
           code?: string;
           cohort_id?: string;
           created_at?: string;
+          governance_version?: number;
           id?: string;
           parent_unit_id?: string | null;
           publication_status?: string;
@@ -1169,6 +1175,8 @@ export type Database = {
           created_at: string;
           curriculum_edition: string;
           duration_ms: number | null;
+          governance_state: string;
+          governance_version: number;
           id: string;
           language_profile: string;
           mime_type: string;
@@ -1190,6 +1198,8 @@ export type Database = {
           created_at?: string;
           curriculum_edition: string;
           duration_ms?: number | null;
+          governance_state?: string;
+          governance_version?: number;
           id?: string;
           language_profile: string;
           mime_type: string;
@@ -1211,6 +1221,8 @@ export type Database = {
           created_at?: string;
           curriculum_edition?: string;
           duration_ms?: number | null;
+          governance_state?: string;
+          governance_version?: number;
           id?: string;
           language_profile?: string;
           mime_type?: string;
@@ -1636,6 +1648,27 @@ export type Database = {
         }[];
       };
       current_student_catalog_state: { Args: never; Returns: string };
+      current_admin_action_queue: {
+        Args: { p_actor_id: string; p_runtime_environment: string };
+        Returns: {
+          action: string;
+          candidate_id: string;
+          command_state: string | null;
+          correlation_id: string | null;
+          current_state: string;
+          expected_state: string;
+          expected_version: number;
+          failed_predicates: string[];
+          initiator_slot: string | null;
+          pending_action_id: string | null;
+          protected: boolean;
+          proposed_state: string;
+          reason: string | null;
+          target_id: string;
+          target_label_ar: string;
+          target_label_en: string;
+        }[];
+      };
       current_student_workspace: {
         Args: { target_cohort_id: string; target_curriculum_unit_id: string };
         Returns: {
@@ -1725,6 +1758,23 @@ export type Database = {
           upload_id: string;
           upload_mime_type: string;
         }[];
+      };
+      submit_admin_governance_action: {
+        Args: {
+          p_action: string;
+          p_actor_id: string;
+          p_correlation_id: string;
+          p_expected_state: string;
+          p_expected_version: number;
+          p_hold_expires_at?: string | null;
+          p_idempotency_key: string;
+          p_pending_action_id?: string | null;
+          p_reason: string;
+          p_review_attested?: boolean;
+          p_runtime_environment?: string;
+          p_target_id: string;
+        };
+        Returns: Json;
       };
     };
     Enums: {

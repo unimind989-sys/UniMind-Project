@@ -12,7 +12,7 @@
 
 **Branch:** `wp03/audited-admin-actions`
 
-**Updated (UTC):** 2026-09-24T13:42:43Z
+**Updated (UTC):** 2026-09-24T16:55:20Z
 
 ## Derived execution envelope
 
@@ -37,12 +37,12 @@
 | Block | Assigned model | Scope and governing inputs | Independent acceptance checks, including failure cases | Assignment reason | Status and evidence |
 | --- | --- | --- | --- | --- | --- |
 | 1 | Sol High | Resolve the action/state matrix, founder-confirmation identity boundary, open-decision gates, current schema/trigger behavior, and admin surface direction using runbook 6.4, master plan 7.2/8.2, D-04/D-05/D-18/D-19/D-22, `CONTEXT.md`, and `DESIGN.md`. Claim the task and leave a durable implementation contract. | Each of the six actions has allowed and rejected prior/next states, required authority, concurrency token, audit and replay behavior; the trust map identifies the public seam; no shared service login or D-22 delivery authorization is mistaken for two runtime approvals; provider and real-data enablement stay closed. | Cross-system trust and product interpretation need Sol judgment before coding. | Complete: action matrix and decision-queue direction below; no code or real enablement. |
-| 2 | Luna Max | Implement one coherent migration/domain/application/adapter/server-action/UI slice from Block 1's frozen matrix and selected surface brief, using synthetic fixtures and deterministic mocks only. | Focused allowed/forbidden tests cover every action; two-admin races and stale versions reject; one founder or duplicate confirmations never complete protected transitions; rights/READY/decision gates reject; emergency containment is audited and reversible; no non-admin mutation, leaked private payload, or preview membership. English/Arabic desktop/mobile keyboard, focus, and failure states work. | Large coherent implementation is suitable for Luna once behavior, boundaries, and independent checks are fixed; routine failures have observable causes. | Ready for a fresh Luna Max chat. |
-| 3 | Sol High | Review the actual protected diff and UI evidence, resolve findings, run proof preflight and required gates, deliver the exact candidate, verify affected production, close evidence, and clean the branch. | Focused tests and required broad gate pass on the final fingerprint; design acceptance is traceable if material; exact-head CI and branch protection pass; only affected production state is checked; task/runbook/evidence and clean `main` agree. | Protected release, final trust interpretation, and evidence judgment belong with Sol. | Pending Block 2. |
+| 2 | Luna Max (planned); current Codex thread by Ahmed's explicit continuation request | Implement one coherent migration/domain/application/adapter/server-action/UI slice from Block 1's frozen matrix and selected surface brief, using synthetic fixtures and deterministic mocks only. | Focused allowed/forbidden tests cover every action; two-admin races and stale versions reject; one founder or duplicate confirmations never complete protected transitions; rights/READY/decision gates reject; emergency containment is audited and reversible; no non-admin mutation, leaked private payload, or preview membership. English/Arabic desktop/mobile keyboard, focus, and failure states work. | Large coherent implementation is suitable for Luna once behavior, boundaries, and independent checks are fixed; routine failures have observable causes. | Implementation and focused checks delivered here. 50 unit tests, 5 security tests, fresh/current typecheck, targeted ESLint, SQL convention audit, agent-readiness, repository secret scan, formatting, and final Impeccable detector pass. Added a 68-assertion synthetic pgTAP suite, but the guarded disposable database runner only permits GitHub-hosted Linux, so that suite has not run here. Bilingual/mobile/keyboard browser proof and the material founder receipt remain for Block 3. |
+| 3 | Sol High | Review the actual protected diff and UI evidence, resolve findings, run proof preflight and required gates, deliver the exact candidate, verify affected production, close evidence, and clean the branch. | Focused tests and required broad gate pass on the final fingerprint; design acceptance is traceable if material; exact-head CI and branch protection pass; only affected production state is checked; task/runbook/evidence and clean `main` agree. | Protected release, final trust interpretation, and evidence judgment belong with Sol. | Active: selected-diff review resolved queue RPC shape, protected prerequisite drift, review/focus, unavailable-outcome wording, and boundary findings. Focused local and bilingual synthetic browser proof pass. Material founder receipt, guarded hosted pgTAP, proof preflight, broad verification, CI, and production proof remain pending. |
 
-**Next model:** Luna Max in a fresh chat for Block 2.
+**Next model:** Continue Block 3 in this task after the founder receipt.
 
-**Current block:** 2
+**Current block:** 3
 
 ## Execution contract
 
@@ -50,7 +50,7 @@
 
 **Inputs:** Runbook WP03-T06 and sections 6.4/6.6/6.7; master-plan admin journey, availability and audit rules; `CONTEXT.md`; `PRODUCT.md`; `DESIGN.md`; D-22; existing release/source/raw/feature-flag/job tables and audit triggers; synthetic fixtures.
 
-**Files:** One forward `supabase/migrations/20260924134026_audited_admin_actions.sql` migration and `src/types/database.generated.ts`; `src/lib/admin/admin-actions.domain.ts`, `admin-actions.application.ts`, `admin-actions.supabase.server.ts`, `admin-readiness.application.ts`; authenticated `src/app/admin/page.tsx`, `src/app/admin/actions.ts`, `src/app/admin/_components/admin-decision-queue.tsx`, `src/app/admin/admin.module.css`, and `src/lib/i18n/admin-copy.ts`; focused unit/security/integration/E2E/SQL tests; `.impeccable/surfaces/src-app-admin-page-tsx.md`; this record, runbook marker, and sanitized WP03 evidence. Existing preview routes may be used for the no-membership test.
+**Files:** One forward `supabase/migrations/20260924134026_audited_admin_actions.sql` migration and `src/types/database.generated.ts`; `src/lib/admin/admin-actions.domain.ts`, `admin-actions.application.ts`, `admin-actions.supabase.server.ts`, `admin-readiness.application.ts`; authenticated `src/app/admin/page.tsx`, `src/app/admin/actions.ts`, `src/app/admin/_components/admin-decision-queue.tsx`, `src/app/admin/admin.module.css`, and `src/lib/i18n/admin-copy.ts`; the no-write synthetic `src/app/preview/admin/` browser fixture; focused unit/security/E2E/SQL tests; opt-in local webpack E2E launch in `scripts/lib/playwright-server.ts`; `.impeccable/surfaces/src-app-admin-page-tsx.md`; this record, runbook marker, and sanitized WP03 evidence.
 
 **Verify:** Focused domain/application/adapter and SQL/RLS tests for all six actions and races; `corepack pnpm check:sql`; `corepack pnpm test:security`; hosted disposable reset/upgrade proof for a migration; English/Arabic admin Playwright and bounded side-browser inspection; Impeccable detector/audit; actual-diff routing and proof preflight; `corepack pnpm verify`; `git diff --check`, `git diff --stat`, full diff and changed-file secret/scope review; exact-head required CI and affected production proof.
 
@@ -95,33 +95,37 @@ Ahmed selected **decision queue first** on 2026-09-24 in this task conversation.
 
 ## Candidate preparation
 
-**Design disposition:** MATERIAL — decision-queue direction selected; rendered candidate and founder receipt remain pending before candidate proof.
+**Design disposition:** MATERIAL — decision-queue direction selected; rendered candidate captured with synthetic fixtures. Founder acceptance of the exact reviewed commit remains pending before proof preflight or stable broad verification.
 
-**Design evidence:** PENDING
+**Design evidence:** PENDING (material founder receipt required)
 
-**Preparation review:** PENDING
+**Preparation review:** COMPLETE_INLINE — all selected migration, application, UI, and test changes reviewed against the frozen action matrix; findings and focused corrections below. This does not claim independent or database review.
 
 **Preparation fingerprint:** NOT_READY
 
-**Unresolved findings:** Rendered material admin candidate and founder acceptance receipt remain pending; Block 2 must implement the fixed trust contract and cannot weaken it.
+**Unresolved findings:** NONE from current selected-diff and synthetic rendered review. The 71-assertion SQL fixture remains unexecuted because its repository guard permits only the GitHub-hosted Linux disposable Supabase runner; DB behavior is unproven until that run. Material founder acceptance, proof preflight, stable broad verification, exact-head CI, and affected production proof remain gates, not PASS claims.
 
 **Established facts:** NONE
 
 ## Steps
 
 - [x] Claim WP03-T06, establish the action/trust/design contract, and hand off a bounded implementation block.
-- [ ] Implement the six action paths with transaction-bound authorization, concurrency, confirmation, and audit.
-- [ ] Build the bilingual admin controls and prove safe loading, stale, pending, success, error, and containment states.
+- [x] Implement the six action paths with transaction-bound authorization, concurrency, confirmation, and audit; add synthetic focused and pgTAP coverage (hosted pgTAP execution remains pending).
+- [x] Build the bilingual admin controls, including localized state and founder-slot labels plus fail-closed loading/error states.
+- [x] Prove English/Arabic responsive, keyboard, stale, pending, success, error, and containment states with synthetic fixtures and deterministic mocks.
+- [ ] Obtain the material founder receipt for the exact rendered candidate.
 - [ ] Review the candidate, complete proof and design acceptance, deliver, verify affected production, and close.
 
 ## Handoff
 
-**Changed:** Created this controlled task record and the admin surface brief, marked WP03-T06 in progress, recorded Ahmed's decision-queue choice, and fixed six action contracts plus the founder trust boundary; no product behavior has changed.
+**Changed:** Block 2 added the forward audited-admin-actions migration, typed domain/application/Supabase seams, authenticated server action, and bilingual decision queue. Block 3 mapped snake-case queue RPC results to the typed safe candidate, added a second scoped review with consequence and predictable focus, corrected unknown-outcome copy, added no-write synthetic preview fixtures, and kept successful action feedback visible until an explicit refresh. Protected pending confirmations now bind a fingerprint of prerequisite row revisions and stale pending commands disappear from the current queue. The 71-assertion SQL fixture includes prerequisite drift checks; it has not run. Local E2E server webpack mode is opt-in for Windows Turbopack instability; default CI launch is unchanged. No production principals, provider approvals, real provider calls, private data, or spend were used.
 
-**Commands:** `scripts/show-work-state.ps1` selected WP03-T06; intent routing under policy v7 returned R3/protected and the listed surfaces; `scripts/verify-agent-readiness.ps1` passed after correcting the record's fact format; targeted Prettier check passed; `git diff --cached --check` passed; full staged diff and scope review completed; repository secret scan passed for 1178 files. Implementation checks NOT RUN.
+**Changed files:** `src/app/globals.css`; `src/types/database.generated.ts`; `src/lib/admin/admin-actions.domain.ts`; `src/lib/admin/admin-actions.application.ts`; `src/lib/admin/admin-actions.supabase.server.ts`; `src/lib/admin/admin-readiness.application.ts`; `src/lib/i18n/admin-copy.ts`; `src/app/admin/page.tsx`; `src/app/admin/actions.ts`; `src/app/admin/_components/admin-decision-queue.tsx`; `src/app/admin/admin.module.css`; `src/app/admin/[resource]/page.tsx`; `src/app/preview/admin/page.tsx`; `src/app/preview/admin/actions.ts`; `scripts/lib/playwright-server.ts`; `supabase/migrations/20260924134026_audited_admin_actions.sql`; `supabase/tests/28_audited_admin_actions.sql`; `tests/unit/admin-actions.test.ts`; `tests/unit/admin-actions-supabase.test.ts`; `tests/unit/admin-actions-form.test.ts`; `tests/unit/admin-copy.test.ts`; `tests/security/admin-actions-boundary.test.ts`; `tests/e2e/admin-decision-queue.spec.ts`; three synthetic candidate captures under `evidence/wp03-product-shell/wp03-t06-admin-candidate/`; this task record.
 
-**Remaining:** Blocks 2 and 3: implement the contract, prove allowed/forbidden paths and UI behavior, obtain material founder receipt, review/deliver/close.
+**Commands:** Current `corepack pnpm typecheck`, `corepack pnpm typecheck:fresh`, `corepack pnpm check:sql` (27 migrations), `corepack pnpm check:boundaries`, targeted ESLint and Prettier PASS. Focused Vitest 57/57 PASS (52 unit and 5 security). `corepack pnpm scan:secrets` PASS (1201 files); `pwsh -NoProfile -File scripts/verify-agent-readiness.ps1` PASS (206 names, 48 links, 23 decisions, 108 tasks); Impeccable detector PASS (`[]`). Opt-in webpack `corepack pnpm exec playwright test tests/e2e/admin-decision-queue.spec.ts --workers=1` PASS 8/8 with external requests blocked; EN/AR 1440/390 widths have no document overflow. Fresh in-app browser desktop EN queue/protected review and mobile AR pending/detail were inspected with synthetic fixtures; fresh console errors `[]`. The browser full-page RTL capture was discarded because it misframed the horizontally scrollable resource rail; direct viewport captures and DOM width measurement (`390 = 390`) passed. Staged `git diff --check` PASS for 27 selected files; staged stat, text diff, and changed-file scope/secret risk inspected. SQL pgTAP has exactly 71 assertions and was not run locally. No broad verify, proof preflight, hosted DB/CI, production proof, or release is claimed.
 
-**Next safe action:** Open a fresh GPT-6 Luna Max chat on this branch, read this record, and implement Block 2 with the fixed action matrix and synthetic fixtures.
+**Remaining:** Stage and inspect the exact selected diff, commit the rendered candidate, and present it for a traceable Ahmed/Ziad material design receipt naming that commit and `routes:...; surfaces:...; states:...` scope. Then run proof preflight and stable broad verification. Execute the 71-assertion SQL fixture only in guarded GitHub-hosted Linux disposable Supabase CI, resolve any resulting DB finding, and repeat affected proof/acceptance if the candidate changes materially. Deliver through exact-head required CI/branch protection, verify only affected production state, update runbook/evidence, and close/clean according to workflow. Keep all real-provider/private-data/financial actions closed.
 
-**Reviewer action:** Decision-queue composition was selected by Ahmed; material rendered candidate still needs traceable acceptance after technical proof.
+**Next safe action:** Stage only the WP03-T06 files listed above, inspect the full staged diff and secret/scope risk, then commit and show the exact synthetic rendered candidate for founder acceptance. Preserve unrelated pre-existing edits outside the staged diff.
+
+**Reviewer action:** Decision-queue composition was selected by Ahmed; the rendered material candidate now needs a founder-authored acceptance reference naming the presented commit, actor, timestamp, routes, surfaces, and states. The local synthetic preview is not an in-product founder confirmation.

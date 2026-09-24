@@ -223,18 +223,20 @@ export async function runOwnedPlaywrightServer(
   mkdirSync(resultDirectory, { recursive: true });
 
   const isWindows = process.platform === "win32";
+  const useWebpack = process.env.UNIMIND_E2E_USE_WEBPACK === "1";
   const command = isWindows ? (process.env.ComSpec ?? "cmd.exe") : "corepack";
   const arguments_ = isWindows
     ? [
         "/d",
         "/s",
         "/c",
-        `corepack.cmd pnpm next dev --hostname ${PLAYWRIGHT_SERVER_HOST} --port ${String(port)}`,
+        `corepack.cmd pnpm next dev ${useWebpack ? "--webpack " : ""}--hostname ${PLAYWRIGHT_SERVER_HOST} --port ${String(port)}`,
       ]
     : [
         "pnpm",
         "next",
         "dev",
+        ...(useWebpack ? ["--webpack"] : []),
         "--hostname",
         PLAYWRIGHT_SERVER_HOST,
         "--port",
