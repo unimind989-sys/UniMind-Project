@@ -1624,6 +1624,27 @@ export type Database = {
         Args: { target_curriculum_unit_id: string };
         Returns: boolean;
       };
+      current_admin_action_queue: {
+        Args: { p_actor_id: string; p_runtime_environment: string };
+        Returns: {
+          action: string;
+          candidate_id: string;
+          command_state: string;
+          correlation_id: string;
+          current_state: string;
+          expected_state: string;
+          expected_version: number;
+          failed_predicates: string[];
+          initiator_slot: string;
+          pending_action_id: string;
+          proposed_state: string;
+          protected: boolean;
+          reason: string;
+          target_id: string;
+          target_label_ar: string;
+          target_label_en: string;
+        }[];
+      };
       current_batch_leader_campaign: {
         Args: { target_campaign_id?: string };
         Returns: {
@@ -1648,27 +1669,6 @@ export type Database = {
         }[];
       };
       current_student_catalog_state: { Args: never; Returns: string };
-      current_admin_action_queue: {
-        Args: { p_actor_id: string; p_runtime_environment: string };
-        Returns: {
-          action: string;
-          candidate_id: string;
-          command_state: string | null;
-          correlation_id: string | null;
-          current_state: string;
-          expected_state: string;
-          expected_version: number;
-          failed_predicates: string[];
-          initiator_slot: string | null;
-          pending_action_id: string | null;
-          protected: boolean;
-          proposed_state: string;
-          reason: string | null;
-          target_id: string;
-          target_label_ar: string;
-          target_label_en: string;
-        }[];
-      };
       current_student_workspace: {
         Args: { target_cohort_id: string; target_curriculum_unit_id: string };
         Returns: {
@@ -1766,9 +1766,9 @@ export type Database = {
           p_correlation_id: string;
           p_expected_state: string;
           p_expected_version: number;
-          p_hold_expires_at?: string | null;
+          p_hold_expires_at?: string;
           p_idempotency_key: string;
-          p_pending_action_id?: string | null;
+          p_pending_action_id?: string;
           p_reason: string;
           p_review_attested?: boolean;
           p_runtime_environment?: string;

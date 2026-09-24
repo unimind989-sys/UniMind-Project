@@ -1392,15 +1392,15 @@ begin
   return query
   with action_candidates as (
     select
-      'unit:publish:' || units.id::text,
-      'PUBLISH_UNIT'::text,
-      units.id,
-      units.title_en || ' · ' || cohorts.name,
-      units.title_ar || ' · ' || cohorts.name,
-      units.publication_status,
-      'PUBLISHED'::text,
-      units.publication_status,
-      units.governance_version,
+      'unit:publish:' || units.id::text as candidate_id,
+      'PUBLISH_UNIT'::text as action,
+      units.id as target_id,
+      units.title_en || ' · ' || cohorts.name as target_label_en,
+      units.title_ar || ' · ' || cohorts.name as target_label_ar,
+      units.publication_status as current_state,
+      'PUBLISHED'::text as proposed_state,
+      units.publication_status as expected_state,
+      units.governance_version as expected_version,
       array_remove(array[
         case when cohorts.status <> 'ACTIVE' then 'cohort.active' end,
         case when not exists (
@@ -1439,12 +1439,12 @@ begin
               or versions.rights_valid_until > transaction_timestamp())
             and versions.curriculum_edition = cohorts.curriculum_edition
         ) then 'source.edition_matches' end
-      ], null::text),
-      true,
-      null::uuid,
-      null::text,
-      null::text,
-      null::text
+      ], null::text) as failed_predicates,
+      true as protected,
+      null::uuid as pending_action_id,
+      null::text as reason,
+      null::text as command_state,
+      null::text as initiator_slot
     from public.curriculum_units as units
     join public.cohorts as cohorts on cohorts.id = units.cohort_id
     where units.publication_status in ('DRAFT', 'WITHDRAWN')

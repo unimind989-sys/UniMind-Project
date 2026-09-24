@@ -58,9 +58,12 @@ const actionRepository: AdminActionRepository = {
       p_reason: request.reason,
       p_correlation_id: request.correlationId,
       p_idempotency_key: request.idempotencyKey,
-      p_pending_action_id: request.pendingActionId ?? null,
-      p_hold_expires_at:
-        request.action === "PLACE_RAW_HOLD" ? request.holdExpiresAt : null,
+      ...(request.pendingActionId === undefined
+        ? {}
+        : { p_pending_action_id: request.pendingActionId }),
+      ...(request.action === "PLACE_RAW_HOLD"
+        ? { p_hold_expires_at: request.holdExpiresAt }
+        : {}),
       p_review_attested:
         request.action === "PLACE_RAW_HOLD" && request.reviewAttested,
       p_runtime_environment: getRuntimeEnvironment(),
