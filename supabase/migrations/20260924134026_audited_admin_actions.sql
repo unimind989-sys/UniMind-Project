@@ -314,7 +314,7 @@ revoke all on function unimind_private.admin_raw_safety_check(uuid)
 create function unimind_private.admin_candidate_fingerprint(
   target_action text,
   target_id uuid,
-  runtime_environment text
+  p_runtime_environment text
 )
 returns text
 language plpgsql
@@ -432,7 +432,7 @@ begin
     when 'ENABLE_FLAG' then
       select jsonb_build_object(
         'flag', jsonb_build_array(flags.id, flags.xmin::text),
-        'environment', runtime_environment,
+        'environment', p_runtime_environment,
         'approvals', (
           select coalesce(jsonb_agg(jsonb_build_array(
             approvals.id, approvals.xmin::text,
@@ -443,7 +443,7 @@ begin
           join public.profiles as approvers on approvers.user_id = approvals.approved_by
           join public.user_roles as roles on roles.user_id = approvers.user_id
           where approvals.flag_key = flags.key
-            and approvals.runtime_environment = runtime_environment
+            and approvals.runtime_environment = p_runtime_environment
             and approvals.dependency_sha256 = flags.config_json ->> 'dependency_sha256'
         )
       ) into scope_rows
