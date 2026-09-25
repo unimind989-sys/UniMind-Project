@@ -564,12 +564,12 @@ This workflow-maintenance task supersedes WP00-T09's model-floor mechanism while
 
 This workflow-maintenance task follows the T04–T06 execution audit. It changes verification mechanics without selecting a product feature or relaxing required PR checks.
 
-- [~] Reject a local `pnpm verify` result when the candidate fingerprint changes before its broad chain finishes, even when every command exits successfully.
-- [~] Make the standalone proof preflight include the active task record's `Verify` checks and fail when that record is absent.
-- [~] Offer a manual branch dispatch that runs the existing guarded disposable database job before a PR; ordinary PR, push, and default manual runs retain their full required jobs.
-- [~] Prove the positive and rejecting cases, keep the guarded local and exact-head CI gates, document the feedback command, and deliver the reviewed change through protected `main`.
+- [x] Reject a local `pnpm verify` result when the candidate fingerprint at completion differs from its starting fingerprint, even when every command exits successfully.
+- [x] Make the standalone proof preflight include the active task record's `Verify` checks and fail when that record is absent.
+- [x] Offer a manual branch dispatch that runs the existing guarded disposable database job before a PR; ordinary PR, push, and default manual runs retain their full required jobs.
+- [x] Prove the positive and rejecting cases, keep the guarded local and exact-head CI gates, document the feedback command, and deliver the reviewed change through protected `main`.
 
-**Pass:** a changed candidate cannot receive a green local broad result; preflight and the local guard use the same task checks; database feedback uses only the existing GitHub-hosted synthetic runner; no manual feedback result substitutes for exact-head PR CI; required PR and push jobs remain unchanged.
+**Pass:** a candidate that differs at completion cannot receive a green local broad result; preflight and the local guard use the same task checks; database feedback uses only the existing GitHub-hosted synthetic runner; no manual feedback result substitutes for exact-head PR CI; required PR and push jobs remain unchanged.
 
 ### 3.1 Select exact pilot cohorts
 
