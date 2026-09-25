@@ -14,6 +14,7 @@ import {
   assessConditionalCiEvidence,
   assessEvidenceReceipt,
   assessLocalStablePreparation,
+  assessLocalStableCompletion,
   buildEvidenceReceipt,
   classifyReviewProvenance,
   classifyChangedPaths,
@@ -21,6 +22,7 @@ import {
   hashPreparation,
   loadAgentExecutionPolicy,
   selectLocalStableTask,
+  taskVerificationChecks,
   validateAgentExecutionPolicy,
   type AgentExecutionInput,
 } from "../../scripts/lib/agent-execution-policy";
@@ -971,6 +973,44 @@ describe("agent execution policy", () => {
       expect.arrayContaining([
         expect.stringContaining("proof preflight is UNKNOWN"),
       ]),
+    );
+  });
+
+  it("rejects broad proof when the candidate changes before the command finishes", () => {
+    expect(
+      assessLocalStableCompletion({
+        startingFingerprint: "candidate-a",
+        finalFingerprint: "candidate-a",
+        exitStatus: 0,
+      }),
+    ).toEqual([]);
+    expect(
+      assessLocalStableCompletion({
+        startingFingerprint: "candidate-a",
+        finalFingerprint: "candidate-b",
+        exitStatus: 0,
+      }),
+    ).toEqual(["candidate changed during broad verification"]);
+    expect(
+      assessLocalStableCompletion({
+        startingFingerprint: "candidate-a",
+        finalFingerprint: "candidate-b",
+        exitStatus: 1,
+      }),
+    ).toEqual([
+      "candidate changed during broad verification",
+      "broad verification exited 1",
+    ]);
+  });
+
+  it("includes the task contract in standalone proof preflight", () => {
+    expect(
+      taskVerificationChecks("focused unit; pnpm verify; focused unit", [
+        "database parity",
+      ]),
+    ).toEqual(["focused unit", "pnpm verify", "database parity"]);
+    expect(() => taskVerificationChecks(undefined, ["pnpm verify"])).toThrow(
+      "Active task record lacks Verify checks.",
     );
   });
 

@@ -54,6 +54,19 @@ function hasForbiddenTrigger(on: unknown): boolean {
   return isRecord(on) && Object.hasOwn(on, "pull_request_target");
 }
 
+function hasSafeDatabaseFeedbackDispatch(on: unknown): boolean {
+  if (!isRecord(on) || !isRecord(on.workflow_dispatch)) return false;
+  const dispatch = on.workflow_dispatch;
+  if (!isRecord(dispatch.inputs)) return false;
+  const input = dispatch.inputs.database_feedback;
+  return (
+    isRecord(input) &&
+    input.type === "boolean" &&
+    input.default === false &&
+    Object.keys(dispatch.inputs).length === 1
+  );
+}
+
 function hasWritePermission(workflow: UnknownRecord): boolean {
   return collectValues(workflow, "permissions").some(
     (permissions) =>
@@ -293,6 +306,8 @@ export function auditCiWorkflow(source: string): string[] {
 
   const violations: string[] = [];
   if (hasForbiddenTrigger(workflow.on)) violations.push("FORBIDDEN_TRIGGER");
+  if (!hasSafeDatabaseFeedbackDispatch(workflow.on))
+    violations.push("DATABASE_FEEDBACK_DISPATCH_UNSAFE");
   if (hasWritePermission(workflow)) violations.push("WRITE_PERMISSION");
   if (!hasPinnedActions(workflow)) violations.push("UNPINNED_ACTION");
   if (hasCacheConfiguration(workflow)) violations.push("CACHE_CONFIGURED");
@@ -320,6 +335,12 @@ export function auditCiWorkflow(source: string): string[] {
   }
   if (!hasApplicationConcurrency(application)) {
     violations.push("APPLICATION_CONCURRENCY_MISSING");
+  }
+  if (
+    application?.if !==
+    "github.event_name != 'workflow_dispatch' || !inputs.database_feedback"
+  ) {
+    violations.push("APPLICATION_TRIGGER_UNSAFE");
   }
   if (
     !runs(application).some((run) => run.trim() === "corepack pnpm verify:ci")

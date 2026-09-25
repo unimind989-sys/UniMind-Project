@@ -300,6 +300,21 @@ export function hashPreparation(
     .digest("hex");
 }
 
+export function taskVerificationChecks(
+  verifyField: string | undefined,
+  additionalChecks: readonly string[] = [],
+): string[] {
+  if (verifyField === undefined || verifyField.trim().length === 0)
+    throw new Error("Active task record lacks Verify checks.");
+  return Array.from(
+    new Set(
+      [...verifyField.split(";"), ...additionalChecks]
+        .map((item) => item.trim())
+        .filter(Boolean),
+    ),
+  );
+}
+
 export function assessLocalStablePreparation(input: {
   commands: string;
   review: string;
@@ -330,6 +345,19 @@ export function assessLocalStablePreparation(input: {
     failures.push(
       `proof preflight is ${input.proofPreflight.status}: ${input.proofPreflight.missing.join(", ")}`,
     );
+  return failures;
+}
+
+export function assessLocalStableCompletion(input: {
+  startingFingerprint: string;
+  finalFingerprint: string;
+  exitStatus: number | null;
+}): string[] {
+  const failures: string[] = [];
+  if (input.startingFingerprint !== input.finalFingerprint)
+    failures.push("candidate changed during broad verification");
+  if (input.exitStatus !== 0)
+    failures.push(`broad verification exited ${String(input.exitStatus)}`);
   return failures;
 }
 

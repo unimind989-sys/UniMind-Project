@@ -126,6 +126,8 @@ Keep the Next.js development server on the workstation and do not expose it to a
 
 Push a review branch and let `.github/workflows/ci.yml` start `application` and `database-ci` independently. The database job starts a runner-local Supabase stack, upgrades the populated WP01 schema, resets twice, and checks migrations. After successful setup, pgTAP, advisors, generated types, type parity, integration, and security run as independent diagnostics. Required failures leave the job red; cleanup and report upload always run.
 
+For early database feedback before opening a PR, push the work branch and run `gh workflow run ci.yml --ref <branch> -f database_feedback=true`. This manual dispatch runs the same guarded `database-ci` job and skips the application job. It uses synthetic runner-local data and is advisory: open the PR only after resolving its findings, then require the normal exact-head PR checks. A manual dispatch without `database_feedback=true`, and every PR or push run, keeps the complete application and database jobs.
+
 The `db:ci:*` and `test:integration:database` commands fail closed outside the GitHub-hosted Linux lifecycle. A workstation run is not a substitute. Inspect the GitHub job result and its sanitized `database-ci-test-reports-*` artifact; the job must have no persistent database secret and no route to Preview or Beta.
 
 ### 5.2 Preview and locked Beta
