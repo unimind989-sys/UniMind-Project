@@ -14,7 +14,7 @@ This closure marker becomes authoritative only after PR #48's final head passes 
 
 **Branch:** `wp00/sol-luna-workflow-correction`
 
-**Updated (UTC):** 2026-09-23T17:08:41Z
+**Updated (UTC):** 2026-09-23T20:20:09Z
 
 ## Derived execution envelope
 
@@ -26,9 +26,9 @@ This closure marker becomes authoritative only after PR #48's final head passes 
 
 **Planning:** Short
 
-**Model floor:** Sol High
+**Model floor:** GPT-6 Sol, high reasoning (Sol High)
 
-**Model runtime:** GPT-6 active; requested GPT-5.6 Sol cannot be selected within this turn
+**Model runtime:** GPT-6 active; future model assignments are limited to GPT-6 Sol or GPT-6 Luna.
 
 **Worker budget:** 0 used, maximum 1, nesting prohibited
 
