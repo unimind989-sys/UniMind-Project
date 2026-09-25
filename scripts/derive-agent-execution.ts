@@ -7,6 +7,7 @@ import { stringify } from "yaml";
 import {
   assessConditionalCiEvidence,
   assessLocalStablePreparation,
+  assessLocalStableCompletion,
   assessEvidenceReceipt,
   buildEvidenceReceipt,
   classifyChangedPaths,
@@ -14,6 +15,7 @@ import {
   hashPreparation,
   loadAgentExecutionPolicy,
   selectLocalStableTask,
+  taskVerificationChecks,
   type AgentExecutionFlags,
   type AgentExecutionInput,
   type Risk,
@@ -72,6 +74,30 @@ function field(record: string, name: string): string | undefined {
   return record
     .match(new RegExp(`^\\*\\*${name}:\\*\\*[ \\t]*(.+)$`, "mu"))?.[1]
     ?.trim();
+}
+
+function activeTaskRecord(task: string): { path: string; content: string } {
+  const state = JSON.parse(
+    execFileSync(
+      "pwsh",
+      ["-NoProfile", "-File", "scripts/show-work-state.ps1", "-Format", "Json"],
+      { encoding: "utf8", windowsHide: true },
+    ),
+  ) as {
+    activeTaskRecords: Array<{
+      taskId: string;
+      status: string;
+      record: string;
+    }>;
+  };
+  const active = state.activeTaskRecords.find(
+    (item) => item.taskId === task && item.status === "IN_PROGRESS",
+  );
+  if (active === undefined)
+    throw new Error(
+      `Proof preflight needs an in-progress task record for ${task}.`,
+    );
+  return { path: active.record, content: readFileSync(active.record, "utf8") };
 }
 
 function canonicalContract(record: string): string {
@@ -193,10 +219,7 @@ function verifyLocal(): never {
       encoding: "utf8",
       windowsHide: true,
     }).trim(),
-    explicitChecks: (field(record, "Verify") ?? "")
-      .split(";")
-      .map((item) => item.trim())
-      .filter(Boolean),
+    explicitChecks: taskVerificationChecks(field(record, "Verify")),
   });
   const fingerprint = preparationFingerprint(selected.record, record, changed);
   const failures = assessLocalStablePreparation({
@@ -238,7 +261,26 @@ function verifyLocal(): never {
       shell: true,
       windowsHide: true,
     });
-    process.exit(run.status ?? 1);
+    const finalRecord = readFileSync(selected.record, "utf8");
+    const finalFingerprint = preparationFingerprint(
+      selected.record,
+      finalRecord,
+      changedPaths("origin/main", false),
+    );
+    const completionFailures = assessLocalStableCompletion({
+      startingFingerprint: fingerprint,
+      finalFingerprint,
+      exitStatus: run.status,
+    });
+    if (run.error !== undefined) completionFailures.push(run.error.message);
+    if (completionFailures.length > 0) {
+      console.error(
+        `Stable verification is invalid: ${completionFailures.join("; ")}.`,
+      );
+      process.exit(1);
+    }
+    console.log(`Stable verification passed for ${finalFingerprint}.`);
+    process.exit(0);
   }
   process.exit(0);
 }
@@ -291,6 +333,8 @@ const acceptedCandidate =
 const designDispositionArg = valueAfter("--design-disposition");
 const designEvidenceArg = valueAfter("--design-evidence");
 const workerCountValue = valueAfter("--worker-count");
+const preflightRecord =
+  pass === "proof-preflight" ? activeTaskRecord(task) : undefined;
 const input: AgentExecutionInput = {
   task,
   pass,
@@ -298,7 +342,13 @@ const input: AgentExecutionInput = {
   changedPaths: changedPaths(),
   flags,
   proceduralSkills: valuesAfter("--skill"),
-  explicitChecks: valuesAfter("--check"),
+  explicitChecks:
+    preflightRecord === undefined
+      ? valuesAfter("--check")
+      : taskVerificationChecks(
+          field(preflightRecord.content, "Verify"),
+          valuesAfter("--check"),
+        ),
   ...(designDispositionArg === undefined
     ? {}
     : { designDisposition: designDispositionArg as DesignDisposition }),
@@ -411,34 +461,15 @@ const output =
         ),
       };
 if (pass === "proof-preflight") {
-  try {
-    const state = JSON.parse(
-      execFileSync(
-        "pwsh",
-        [
-          "-NoProfile",
-          "-File",
-          "scripts/show-work-state.ps1",
-          "-Format",
-          "Json",
-        ],
-        { encoding: "utf8", windowsHide: true },
-      ),
-    ) as { activeTaskRecords: Array<{ taskId: string; record: string }> };
-    const active = state.activeTaskRecords.find((item) => item.taskId === task);
-    if (active !== undefined) {
-      const record = readFileSync(active.record, "utf8");
-      Object.assign(output, {
-        preparationFingerprint: preparationFingerprint(
-          active.record,
-          record,
-          input.changedPaths,
-        ),
-      });
-    }
-  } catch {
-    /* A missing task record remains an explicit guard failure. */
-  }
+  if (preflightRecord === undefined)
+    throw new Error("Proof preflight lacks the active task record.");
+  Object.assign(output, {
+    preparationFingerprint: preparationFingerprint(
+      preflightRecord.path,
+      preflightRecord.content,
+      input.changedPaths,
+    ),
+  });
 }
 if (valueAfter("--format") === "json") {
   console.log(JSON.stringify(output, null, 2));

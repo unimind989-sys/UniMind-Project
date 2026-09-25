@@ -6,6 +6,11 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      database_feedback:
+        description: Run only the guarded disposable database job before opening a PR
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -30,6 +35,7 @@ jobs:
         run: corepack pnpm audit --audit-level high --prod
 
   application:
+    if: github.event_name != 'workflow_dispatch' || !inputs.database_feedback
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     concurrency:

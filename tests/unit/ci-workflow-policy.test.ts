@@ -51,6 +51,39 @@ jobs:
     expect(auditCiWorkflow(unsafe)).toContain("DATABASE_CI_TRIGGER_UNSAFE");
   });
 
+  it("offers database-only manual feedback without skipping required PR application proof", async () => {
+    const workflow = await readFile(".github/workflows/ci.yml", "utf8");
+    const parsed = parse(workflow) as {
+      on: {
+        workflow_dispatch: {
+          inputs: { database_feedback: { default: boolean } };
+        };
+      };
+      jobs: Record<string, { if?: string }>;
+    };
+    expect(parsed.on.workflow_dispatch.inputs.database_feedback.default).toBe(
+      false,
+    );
+    expect(parsed.jobs.application?.if).toBe(
+      "github.event_name != 'workflow_dispatch' || !inputs.database_feedback",
+    );
+    expect(parsed.jobs["database-ci"]?.if).toBeUndefined();
+    expect(auditCiWorkflow(workflow)).toEqual([]);
+    expect(
+      auditCiWorkflow(
+        workflow.replace(
+          "if: github.event_name != 'workflow_dispatch' || !inputs.database_feedback",
+          "if: inputs.database_feedback",
+        ),
+      ),
+    ).toContain("APPLICATION_TRIGGER_UNSAFE");
+    expect(
+      auditCiWorkflow(
+        workflow.replace("        default: false", "        default: true"),
+      ),
+    ).toContain("DATABASE_FEEDBACK_DISPATCH_UNSAFE");
+  });
+
   it("rejects secrets and protected environments in disposable database CI", async () => {
     const workflow = await readFile(".github/workflows/ci.yml", "utf8");
     const withSecret = workflow.replace(
