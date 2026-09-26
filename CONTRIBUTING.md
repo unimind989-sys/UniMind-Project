@@ -105,6 +105,8 @@ corepack pnpm verify
 
 `verify` formats nothing and makes no paid/provider call. After readiness passes, it runs the credential-free chain used by CI as `verify:ci`.
 
+PR CI uses the required `ci-selector` check to choose work from the exact changed paths. Safe Markdown-only changes run formatting, secret scanning, and readiness checks; application, dependency, and database jobs can report skipped success. Changes to policy/workflow files, documents consumed by tests, or unknown paths run all jobs. A selector failure runs the heavyweight jobs and blocks merge. Pushes to `main` keep full application and database checks.
+
 The normal workstation loop is mock-only:
 
 ```powershell

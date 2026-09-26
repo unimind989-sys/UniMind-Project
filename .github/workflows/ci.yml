@@ -16,8 +16,50 @@ permissions:
   contents: read
 
 jobs:
+  ci_selector:
+    name: ci-selector
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    outputs:
+      dependency_audit: ${{ steps.select.outputs.dependency_audit }}
+      application: ${{ steps.select.outputs.application }}
+      database_ci: ${{ steps.select.outputs.database_ci }}
+      all_skipped: ${{ steps.select.outputs.all_skipped }}
+    steps:
+      - name: Check out the exact candidate and its comparison commits
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Use the repository Node version
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+      - name: Activate the pinned package manager
+        run: corepack enable
+      - name: Install from the immutable lockfile
+        run: corepack pnpm install --frozen-lockfile
+      - name: Verify the governed selector and workflow
+        run: |
+          corepack pnpm verify:agent-policy
+          corepack pnpm verify:ci-workflow
+      - name: Select exact-head CI jobs
+        id: select
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          DATABASE_FEEDBACK: ${{ inputs.database_feedback }}
+        run: corepack pnpm exec tsx scripts/select-ci-jobs.ts
+      - name: Verify safe documentation without the heavyweight jobs
+        if: steps.select.outputs.all_skipped == 'true'
+        run: |
+          corepack pnpm exec prettier . --check
+          corepack pnpm scan:secrets
+          pwsh -NoProfile -File scripts/verify-agent-readiness.ps1
+
   dependency-audit:
-    if: github.event_name == 'pull_request'
+    needs: ci_selector
+    if: always() && github.event_name == 'pull_request' && (needs.ci_selector.result != 'success' || needs.ci_selector.outputs.dependency_audit == 'RUN')
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -35,7 +77,8 @@ jobs:
         run: corepack pnpm audit --audit-level high --prod
 
   application:
-    if: github.event_name != 'workflow_dispatch' || !inputs.database_feedback
+    needs: ci_selector
+    if: always() && (needs.ci_selector.result != 'success' || needs.ci_selector.outputs.application == 'RUN')
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     concurrency:
@@ -70,6 +113,8 @@ jobs:
           retention-days: 7
 
   database-ci:
+    needs: ci_selector
+    if: always() && (needs.ci_selector.result != 'success' || needs.ci_selector.outputs.database_ci == 'RUN')
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     concurrency:

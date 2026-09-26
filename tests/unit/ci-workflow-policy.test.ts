@@ -41,11 +41,11 @@ jobs:
     ).toContain("FORBIDDEN_TRIGGER");
   });
 
-  it("requires disposable database CI on pull requests", async () => {
+  it("requires fail-closed selector gating for disposable database CI", async () => {
     const workflow = await readFile(".github/workflows/ci.yml", "utf8");
     const unsafe = workflow.replace(
-      "  database-ci:\n",
-      "  database-ci:\n    if: github.ref == 'refs/heads/main'\n",
+      "if: always() && (needs.ci_selector.result != 'success' || needs.ci_selector.outputs.database_ci == 'RUN')",
+      "if: github.ref == 'refs/heads/main'",
     );
 
     expect(auditCiWorkflow(unsafe)).toContain("DATABASE_CI_TRIGGER_UNSAFE");
@@ -59,20 +59,22 @@ jobs:
           inputs: { database_feedback: { default: boolean } };
         };
       };
-      jobs: Record<string, { if?: string }>;
+      jobs: Record<string, { if?: string; needs?: string }>;
     };
     expect(parsed.on.workflow_dispatch.inputs.database_feedback.default).toBe(
       false,
     );
     expect(parsed.jobs.application?.if).toBe(
-      "github.event_name != 'workflow_dispatch' || !inputs.database_feedback",
+      "always() && (needs.ci_selector.result != 'success' || needs.ci_selector.outputs.application == 'RUN')",
     );
-    expect(parsed.jobs["database-ci"]?.if).toBeUndefined();
+    expect(parsed.jobs["database-ci"]?.if).toBe(
+      "always() && (needs.ci_selector.result != 'success' || needs.ci_selector.outputs.database_ci == 'RUN')",
+    );
     expect(auditCiWorkflow(workflow)).toEqual([]);
     expect(
       auditCiWorkflow(
         workflow.replace(
-          "if: github.event_name != 'workflow_dispatch' || !inputs.database_feedback",
+          "if: always() && (needs.ci_selector.result != 'success' || needs.ci_selector.outputs.application == 'RUN')",
           "if: inputs.database_feedback",
         ),
       ),
@@ -208,23 +210,49 @@ jobs:
     ).toContain("APPLICATION_GATE_MISSING");
   });
 
-  it("schedules application and database independently and preserves required jobs", async () => {
+  it("preserves required job names and runs independently after selection", async () => {
     const workflow = await readFile(".github/workflows/ci.yml", "utf8");
     const parsed = parse(workflow) as {
       jobs: Record<string, { needs?: string }>;
     };
     expect(Object.keys(parsed.jobs)).toEqual(
-      expect.arrayContaining(["application", "database-ci"]),
+      expect.arrayContaining(["ci_selector", "application", "database-ci"]),
     );
-    expect(parsed.jobs["database-ci"]?.needs).toBeUndefined();
+    expect(parsed.jobs["database-ci"]?.needs).toBe("ci_selector");
+    expect(parsed.jobs.application?.needs).toBe("ci_selector");
     expect(
       auditCiWorkflow(
         workflow.replace(
-          "  database-ci:\n",
+          "  database-ci:\n    needs: ci_selector\n",
           "  database-ci:\n    needs: application\n",
         ),
       ),
-    ).toContain("DATABASE_CI_DEPENDENCY_PRESENT");
+    ).toContain("DATABASE_CI_TRIGGER_UNSAFE");
+  });
+
+  it("rejects unbound, weak, or absent CI selection", async () => {
+    const workflow = await readFile(".github/workflows/ci.yml", "utf8");
+    expect(
+      auditCiWorkflow(
+        workflow.replace(
+          "          fetch-depth: 0",
+          "          fetch-depth: 1",
+        ),
+      ),
+    ).toContain("CI_SELECTOR_UNSAFE");
+    expect(
+      auditCiWorkflow(
+        workflow.replace(
+          "if: always() && (needs.ci_selector.result != 'success' || needs.ci_selector.outputs.database_ci == 'RUN')",
+          "if: needs.ci_selector.outputs.database_ci == 'RUN'",
+        ),
+      ),
+    ).toContain("DATABASE_CI_TRIGGER_UNSAFE");
+    expect(
+      auditCiWorkflow(
+        workflow.replace("  ci_selector:\n", "  removed_selector:\n"),
+      ),
+    ).toContain("CI_SELECTOR_UNSAFE");
   });
 
   it("gates each independent diagnostic on setup success without advisory failure", async () => {

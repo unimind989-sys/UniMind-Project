@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 
 import {
+  assessConditionalCiEvidence,
   deriveAgentExecution,
   loadAgentExecutionPolicy,
   validateAgentExecutionPolicy,
@@ -19,6 +20,25 @@ if (policy.activation.conditional_ci === "ENFORCED") {
   if (workflowSha256 !== policy.conditional_ci.enforcement.workflow_sha256) {
     failures.push(
       "conditional_ci ENFORCED workflow SHA-256 does not match the governed policy fingerprint",
+    );
+  }
+  try {
+    const evidence = JSON.parse(
+      readFileSync(
+        "evidence/wp00-pilot/conditional-ci-shadow-evidence.json",
+        "utf8",
+      ),
+    ) as unknown;
+    if (
+      assessConditionalCiEvidence(policy, evidence).recommendedState !== "READY"
+    ) {
+      failures.push(
+        "conditional_ci ENFORCED requires complete current-policy readiness evidence",
+      );
+    }
+  } catch {
+    failures.push(
+      "conditional_ci ENFORCED readiness evidence is missing or malformed",
     );
   }
 }
