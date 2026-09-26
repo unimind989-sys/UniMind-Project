@@ -575,10 +575,10 @@ This workflow-maintenance task follows the T04–T06 execution audit. It changes
 
 This workflow-maintenance task follows WP00-T15. Preserve required PR check names, protected delivery, and fail-closed behavior while avoiding broad jobs for demonstrably safe documentation changes.
 
-- [~] Reassess the current selector against exact-head broad CI outcomes for a dependency change, database change, workflow change, and documentation-only change; record candidates, paths, predictions, and outcomes without relabeling history as newly executed tests.
-- [~] Classify documentation that feeds tests, unknown paths, missing or malformed diffs, and selector errors conservatively; test both skip and run decisions.
-- [~] Activate conditional CI with a guarded workflow selection job, preserve manual database feedback and main push coverage, and keep existing required PR check names and branch protection.
-- [~] Prove exact-head PR outcomes for one safe documentation case and one change that requires application/database checks before protected delivery and closure.
+- [x] Reassess the current selector against exact-head broad CI outcomes for a dependency change, database change, workflow change, and documentation-only change; record candidates, paths, predictions, and outcomes without relabeling history as newly executed tests.
+- [x] Classify documentation that feeds tests, unknown paths, missing or malformed diffs, and selector errors conservatively; test both skip and run decisions.
+- [x] Activate conditional CI with a guarded workflow selection job, preserve manual database feedback and main push coverage, and keep existing required PR check names and branch protection.
+- [x] Prove exact-head PR outcomes for one safe documentation case and one change that requires application/database checks before protected delivery and closure.
 
 **Pass:** current-policy evidence supports every selected run and would-skip job without contradiction; the exact candidate controls a fail-closed selector; safe documentation omits heavyweight application/database work while required PR checks still report; code, database, dependency, unknown, and selector-error paths cannot silently skip required proof; main push and explicit manual feedback remain covered.
 
