@@ -166,7 +166,9 @@ function hasAlwaysUpload(job: UnknownRecord | undefined): boolean {
 
 function hasDependencyAudit(job: UnknownRecord | undefined): boolean {
   if (
-    job?.if !== "github.event_name == 'pull_request'" ||
+    job?.if !==
+      "always() && github.event_name == 'pull_request' && (needs.ci_selector.result != 'success' || needs.ci_selector.outputs.dependency_audit == 'RUN')" ||
+    job.needs !== "ci_selector" ||
     !Array.isArray(job.steps)
   ) {
     return false;
@@ -182,6 +184,60 @@ function hasDependencyAudit(job: UnknownRecord | undefined): boolean {
     actions.some((value) => value.startsWith("actions/setup-node@")) &&
     activationIndex >= 0 &&
     auditIndex > activationIndex
+  );
+}
+
+function hasGuardedSelector(job: UnknownRecord | undefined): boolean {
+  if (
+    job?.name !== "ci-selector" ||
+    job["runs-on"] !== "ubuntu-24.04" ||
+    job["timeout-minutes"] !== 10 ||
+    !isRecord(job.outputs) ||
+    !Array.isArray(job.steps) ||
+    job["continue-on-error"] !== undefined ||
+    Object.hasOwn(job, "environment") ||
+    containsSecretExpression(job)
+  )
+    return false;
+  for (const [key, expression] of Object.entries({
+    dependency_audit: "${{ steps.select.outputs.dependency_audit }}",
+    application: "${{ steps.select.outputs.application }}",
+    database_ci: "${{ steps.select.outputs.database_ci }}",
+    all_skipped: "${{ steps.select.outputs.all_skipped }}",
+  })) {
+    if (job.outputs[key] !== expression) return false;
+  }
+  const steps = job.steps.filter(isRecord);
+  const checkout = steps.find(
+    (step) =>
+      typeof step.uses === "string" &&
+      step.uses.startsWith("actions/checkout@"),
+  );
+  const selection = steps.find((step) => step.id === "select");
+  const docsCheck = steps.find(
+    (step) => step.if === "steps.select.outputs.all_skipped == 'true'",
+  );
+  return (
+    isRecord(checkout?.with) &&
+    checkout.with["fetch-depth"] === 0 &&
+    checkout.with["persist-credentials"] === false &&
+    hasExactRunner(job) &&
+    hasFrozenInstall(job) &&
+    hasCorepackActivationBeforeInstall(job) &&
+    runs(job).some(
+      (run) =>
+        run.includes("corepack pnpm verify:agent-policy") &&
+        run.includes("corepack pnpm verify:ci-workflow"),
+    ) &&
+    selection?.run === "corepack pnpm exec tsx scripts/select-ci-jobs.ts" &&
+    isRecord(selection.env) &&
+    selection.env.PR_BASE_SHA === "${{ github.event.pull_request.base.sha }}" &&
+    selection.env.PR_HEAD_SHA === "${{ github.event.pull_request.head.sha }}" &&
+    selection.env.DATABASE_FEEDBACK === "${{ inputs.database_feedback }}" &&
+    typeof docsCheck?.run === "string" &&
+    docsCheck.run.includes("corepack pnpm exec prettier . --check") &&
+    docsCheck.run.includes("corepack pnpm scan:secrets") &&
+    docsCheck.run.includes("scripts/verify-agent-readiness.ps1")
   );
 }
 
@@ -322,6 +378,7 @@ export function auditCiWorkflow(source: string): string[] {
   }
 
   const jobs = isRecord(workflow.jobs) ? workflow.jobs : {};
+  const ciSelector = isRecord(jobs.ci_selector) ? jobs.ci_selector : undefined;
   const dependencyAudit = isRecord(jobs["dependency-audit"])
     ? jobs["dependency-audit"]
     : undefined;
@@ -330,6 +387,9 @@ export function auditCiWorkflow(source: string): string[] {
     ? jobs["database-ci"]
     : undefined;
 
+  if (!hasGuardedSelector(ciSelector)) {
+    violations.push("CI_SELECTOR_UNSAFE");
+  }
   if (!hasDependencyAudit(dependencyAudit)) {
     violations.push("DEPENDENCY_AUDIT_MISSING");
   }
@@ -338,7 +398,8 @@ export function auditCiWorkflow(source: string): string[] {
   }
   if (
     application?.if !==
-    "github.event_name != 'workflow_dispatch' || !inputs.database_feedback"
+      "always() && (needs.ci_selector.result != 'success' || needs.ci_selector.outputs.application == 'RUN')" ||
+    application.needs !== "ci_selector"
   ) {
     violations.push("APPLICATION_TRIGGER_UNSAFE");
   }
@@ -366,14 +427,15 @@ export function auditCiWorkflow(source: string): string[] {
     violations.push("DATABASE_CI_JOB_MISSING");
     return violations;
   }
-  if (databaseCi.if !== undefined) {
+  if (
+    databaseCi.if !==
+      "always() && (needs.ci_selector.result != 'success' || needs.ci_selector.outputs.database_ci == 'RUN')" ||
+    databaseCi.needs !== "ci_selector"
+  ) {
     violations.push("DATABASE_CI_TRIGGER_UNSAFE");
   }
   if (!hasExactRunner(databaseCi)) {
     violations.push("DATABASE_CI_RUNNER_UNSAFE");
-  }
-  if (databaseCi.needs !== undefined) {
-    violations.push("DATABASE_CI_DEPENDENCY_PRESENT");
   }
   if (!hasDatabaseCiConcurrency(databaseCi)) {
     violations.push("DATABASE_CI_CONCURRENCY_MISSING");

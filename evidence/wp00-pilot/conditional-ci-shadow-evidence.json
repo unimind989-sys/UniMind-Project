@@ -1,63 +1,177 @@
 {
   "schemaVersion": 1,
-  "policyVersion": 2,
+  "policyVersion": 8,
   "regressionCases": [
     "docs-only",
     "dependency-change",
     "application-change",
     "database-change",
-    "unknown-path"
+    "unknown-path",
+    "security-document",
+    "load-profile",
+    "workflow-change"
   ],
   "observations": [
     {
-      "runId": "35590667885",
-      "candidate": "385d3f544085c210d710cf2f58ec676d48ffc85c",
+      "runId": "35799810641",
+      "candidate": "5cb38e01b96adf9eb100c3ec3d35ba4a2ad27686",
+      "sourcePr": 46,
+      "sourceUrl": "https://github.com/unimind989-sys/UniMind-Project/actions/runs/35799810641",
+      "replayedUnderPolicyVersion": 8,
       "input": {
-        "task": "WP00-T09",
+        "task": "WP03-T05",
         "pass": "actual-diff",
-        "declaredSurfaces": ["docs", "tooling"],
+        "declaredSurfaces": [],
         "changedPaths": [
-          ".agents/skills/ADAPTATIONS.md",
-          ".agents/skills/EVALS.md",
-          ".agents/skills/README.md",
-          ".agents/skills/codebase-design/DESIGN-IT-TWICE.md",
-          ".agents/skills/codebase-design/SKILL.md",
-          ".agents/skills/diagnosing-bugs/SKILL.md",
+          "src/app/batch-leader/_components/collection-flow.tsx",
+          "src/lib/i18n/collection-format.ts",
+          "tests/unit/collection-format.test.ts"
+        ]
+      },
+      "outcomes": {
+        "dependency-audit": "PASS",
+        "application": "PASS",
+        "database-ci": "PASS"
+      }
+    },
+    {
+      "runId": "35893819433",
+      "candidate": "bbc9380933b1adde438b7d2881587351d830cc8a",
+      "sourcePr": 48,
+      "sourceUrl": "https://github.com/unimind989-sys/UniMind-Project/actions/runs/35893819433",
+      "replayedUnderPolicyVersion": 8,
+      "input": {
+        "task": "WP00-T13",
+        "pass": "actual-diff",
+        "declaredSurfaces": [],
+        "changedPaths": [
           ".agents/skills/finalize/SKILL.md",
-          ".agents/skills/finalize/agents/openai.yaml",
-          ".agents/skills/image-to-code/SKILL.md",
-          ".agents/skills/impeccable/SKILL.md",
-          ".agents/skills/tdd/SKILL.md",
-          ".agents/skills/trust-boundaries/SKILL.md",
-          ".agents/skills/trust-boundaries/agents/openai.yaml",
-          "AGENTS.md",
-          "CONTEXT.md",
+          ".agents/skills/impeccable/reference/new-work.md",
+          ".agents/skills/impeccable/scripts/context.mjs",
+          ".github/workflows/ci.yml",
           "CONTRIBUTING.md",
-          "README.md",
           "docs/agents/agent-execution-policy.yaml",
           "docs/agents/agent-workflow.md",
           "docs/agents/frontend-quality-floor.md",
-          "docs/agents/skills-guide.md",
-          "docs/agents/ui-design-stack.md",
-          "docs/decisions/d-22-founder-authorization-and-shared-service-identity.md",
-          "docs/plans/poc-master-plan.md",
-          "docs/runbooks/environment-promotion.md",
+          "docs/runbooks/database-migration-checklist.md",
           "docs/runbooks/poc-execution-runbook.md",
-          "docs/templates/gate-report.md",
           "docs/templates/task-record.md",
-          "evidence/wp00-pilot/2026-09-21_autonomous-agent-execution_local_ff15002.md",
-          "evidence/wp00-pilot/agent-execution-receipt.json",
+          "evidence/wp00-pilot/2026-09-23_sol-luna-workflow-correction_github_a181d9b.md",
           "package.json",
-          "planning/decision-register.md",
-          "planning/tasks/wp00-t09-autonomous-agent-execution.md",
+          "planning/tasks/wp00-t13-sol-luna-workflow-correction.md",
           "scripts/derive-agent-execution.ts",
           "scripts/lib/agent-execution-policy.ts",
+          "scripts/lib/ci-workflow-policy.ts",
           "scripts/show-work-state.ps1",
           "scripts/test-agent-handoff.ps1",
-          "scripts/verify-agent-execution-policy.ts",
           "scripts/verify-agent-readiness.ps1",
-          "tests/fixtures/agent-execution/historical-cases.json",
-          "tests/unit/agent-execution-policy.test.ts"
+          "tests/unit/agent-execution-policy.test.ts",
+          "tests/unit/ci-workflow-policy.test.ts"
+        ]
+      },
+      "outcomes": {
+        "dependency-audit": "PASS",
+        "application": "PASS",
+        "database-ci": "PASS"
+      }
+    },
+    {
+      "runId": "36045288034",
+      "candidate": "190f6132914f443b50a1d460b5db32f7d96769eb",
+      "sourcePr": 50,
+      "sourceUrl": "https://github.com/unimind989-sys/UniMind-Project/actions/runs/36045288034",
+      "replayedUnderPolicyVersion": 8,
+      "input": {
+        "task": "WP03-T06",
+        "pass": "actual-diff",
+        "declaredSurfaces": [],
+        "changedPaths": [
+          ".impeccable/surfaces/src-app-admin-page-tsx.md",
+          "docs/runbooks/poc-execution-runbook.md",
+          "docs/security/rls-matrix.csv",
+          "evidence/wp03-product-shell/2026-09-24-wp03-t06-founder-design-receipt.json",
+          "evidence/wp03-product-shell/wp03-t06-admin-candidate/wp03-t06-admin-desktop-en.png",
+          "evidence/wp03-product-shell/wp03-t06-admin-candidate/wp03-t06-admin-mobile-ar-detail.png",
+          "evidence/wp03-product-shell/wp03-t06-admin-candidate/wp03-t06-admin-review-en.png",
+          "planning/tasks/wp03-t06-audited-admin-actions.md",
+          "scripts/lib/playwright-server.ts",
+          "src/app/admin/[resource]/page.tsx",
+          "src/app/admin/_components/admin-decision-queue.tsx",
+          "src/app/admin/actions.ts",
+          "src/app/admin/admin.module.css",
+          "src/app/admin/page.tsx",
+          "src/app/globals.css",
+          "src/app/preview/admin/actions.ts",
+          "src/app/preview/admin/page.tsx",
+          "src/lib/admin/admin-actions.application.ts",
+          "src/lib/admin/admin-actions.domain.ts",
+          "src/lib/admin/admin-actions.supabase.server.ts",
+          "src/lib/admin/admin-readiness.application.ts",
+          "src/lib/db/supabase/admin.server.ts",
+          "src/lib/i18n/admin-copy.ts",
+          "src/types/database.generated.ts",
+          "supabase/migrations/20260924134026_audited_admin_actions.sql",
+          "supabase/tests/17_actor_action_resource_matrix.sql",
+          "supabase/tests/28_audited_admin_actions.sql",
+          "tests/e2e/admin-decision-queue.spec.ts",
+          "tests/security/admin-actions-boundary.test.ts",
+          "tests/security/rls-matrix-contract.test.ts",
+          "tests/unit/admin-actions-form.test.ts",
+          "tests/unit/admin-actions-supabase.test.ts",
+          "tests/unit/admin-actions.test.ts",
+          "tests/unit/admin-copy.test.ts"
+        ]
+      },
+      "outcomes": {
+        "dependency-audit": "PASS",
+        "application": "PASS",
+        "database-ci": "PASS"
+      }
+    },
+    {
+      "runId": "36138168844",
+      "candidate": "c5d23ac6ebc5036eafb399e7db9c750032305215",
+      "sourcePr": 53,
+      "sourceUrl": "https://github.com/unimind989-sys/UniMind-Project/actions/runs/36138168844",
+      "replayedUnderPolicyVersion": 8,
+      "input": {
+        "task": "WP00-T15",
+        "pass": "actual-diff",
+        "declaredSurfaces": [],
+        "changedPaths": [
+          ".github/workflows/ci.yml",
+          "CONTRIBUTING.md",
+          "docs/agents/agent-workflow.md",
+          "docs/runbooks/poc-execution-runbook.md",
+          "evidence/wp00-pilot/2026-09-25_verification-feedback_local_d5f8923.md",
+          "planning/tasks/wp00-t15-verification-feedback.md",
+          "scripts/derive-agent-execution.ts",
+          "scripts/lib/agent-execution-policy.ts",
+          "scripts/lib/ci-workflow-policy.ts",
+          "tests/unit/agent-execution-policy.test.ts",
+          "tests/unit/ci-workflow-policy.test.ts"
+        ]
+      },
+      "outcomes": {
+        "dependency-audit": "PASS",
+        "application": "PASS",
+        "database-ci": "PASS"
+      }
+    },
+    {
+      "runId": "36139600120",
+      "candidate": "8c61cf92409de11c7dd6de687a78a786aed2ada0",
+      "sourcePr": 54,
+      "sourceUrl": "https://github.com/unimind989-sys/UniMind-Project/actions/runs/36139600120",
+      "replayedUnderPolicyVersion": 8,
+      "input": {
+        "task": "WP00-T15",
+        "pass": "actual-diff",
+        "declaredSurfaces": [],
+        "changedPaths": [
+          "docs/runbooks/poc-execution-runbook.md",
+          "evidence/wp00-pilot/2026-09-25_verification-feedback_local_d5f8923.md",
+          "planning/tasks/wp00-t15-verification-feedback.md"
         ]
       },
       "outcomes": {

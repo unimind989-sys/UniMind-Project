@@ -25,7 +25,7 @@
       "expected": {
         "dependency-audit": "RUN",
         "application": "RUN",
-        "database-ci": "WOULD_SKIP"
+        "database-ci": "RUN"
       }
     },
     {
@@ -65,7 +65,49 @@
         "changedPaths": ["ops/new-runtime.ts"]
       },
       "expected": {
-        "dependency-audit": "WOULD_SKIP",
+        "dependency-audit": "RUN",
+        "application": "RUN",
+        "database-ci": "RUN"
+      }
+    },
+    {
+      "id": "security-document",
+      "input": {
+        "task": "WP03-T06",
+        "pass": "actual-diff",
+        "declaredSurfaces": ["docs"],
+        "changedPaths": ["docs/security/rls-matrix.csv"]
+      },
+      "expected": {
+        "dependency-audit": "RUN",
+        "application": "RUN",
+        "database-ci": "RUN"
+      }
+    },
+    {
+      "id": "load-profile",
+      "input": {
+        "task": "WP00-T07",
+        "pass": "actual-diff",
+        "declaredSurfaces": ["docs"],
+        "changedPaths": ["planning/load-profile-100-students.yaml"]
+      },
+      "expected": {
+        "dependency-audit": "RUN",
+        "application": "RUN",
+        "database-ci": "RUN"
+      }
+    },
+    {
+      "id": "workflow-change",
+      "input": {
+        "task": "WP00-T16",
+        "pass": "actual-diff",
+        "declaredSurfaces": ["delivery"],
+        "changedPaths": [".github/workflows/ci.yml"]
+      },
+      "expected": {
+        "dependency-audit": "RUN",
         "application": "RUN",
         "database-ci": "RUN"
       }

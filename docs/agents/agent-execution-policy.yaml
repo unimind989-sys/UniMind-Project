@@ -1,5 +1,5 @@
 schema_version: 1
-policy_version: 7
+policy_version: 8
 
 authority:
   - docs/plans/poc-master-plan.md
@@ -178,6 +178,22 @@ verification:
 
 conditional_ci:
   evidence_schema_version: 1
+  safe_docs_only_patterns:
+    - '^(README|CONTRIBUTING|PRODUCT|DESIGN|CONTEXT|AGENTS)\.md$'
+    - '^docs/(?!security/|policies/).+\.md$'
+    - '^planning/.+\.md$'
+    - '^evidence/.+\.md$'
+    - '^\.impeccable/surfaces/.+\.md$'
+  force_full_patterns:
+    - '^\.github/workflows/'
+    - '^docs/agents/agent-execution-policy\.yaml$'
+    - '^scripts/'
+    - '^src/lib/db/'
+    - '^tests/(integration|security)/'
+    - '^(package\.json|pnpm-lock\.yaml|\.npmrc|\.nvmrc)$'
+    - '^tests/unit/(agent-execution-policy|ci-workflow-policy|conditional-ci-selector)\.test\.ts$'
+    - '^tests/fixtures/agent-execution/conditional-ci-cases\.json$'
+    - '^evidence/wp00-pilot/conditional-ci-shadow-evidence\.json$'
   jobs:
     - id: dependency-audit
       required_surfaces: []
@@ -201,13 +217,16 @@ conditional_ci:
       - application-change
       - database-change
       - unknown-path
+      - security-document
+      - load-profile
+      - workflow-change
     require_run_observation: true
     require_skip_observation: true
     zero_unsafe_skip_contradictions: true
   enforcement:
     requires_governed_workflow_change: true
     workflow_path: .github/workflows/ci.yml
-    workflow_sha256: null
+    workflow_sha256: 841a0d8381a41687776660eec787f73b4639dd27bd62ff707f3b4f8d987b1fce
 
 evidence:
   schema_version: 3
@@ -225,7 +244,7 @@ activation:
   verification_selection: ENFORCED
   evidence_reuse: ENFORCED
   automatic_finalization: ENFORCED
-  conditional_ci: SHADOW
+  conditional_ci: ENFORCED
 
 self_correction:
   safety_trigger: immediate

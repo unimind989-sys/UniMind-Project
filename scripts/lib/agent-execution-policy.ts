@@ -123,6 +123,8 @@ export type AgentExecutionPolicy = {
   verification: { checks: VerificationCheck[] };
   conditional_ci: {
     evidence_schema_version: number;
+    safe_docs_only_patterns: string[];
+    force_full_patterns: string[];
     jobs: ConditionalCiJob[];
     readiness: {
       required_regression_cases: string[];
@@ -472,6 +474,23 @@ export function predictConditionalCiJobs(
   const normalizedPaths = changedPaths.map((changedPath) =>
     changedPath.replaceAll("\\", "/"),
   );
+  const conservativePath = normalizedPaths.find((changedPath) => {
+    const pathSurfaces = classifyChangedPaths(policy, [changedPath]).surfaces;
+    return (
+      pathSurfaces.length === 0 ||
+      matchesAny(changedPath, policy.conditional_ci.force_full_patterns) ||
+      (pathSurfaces.length === 1 &&
+        pathSurfaces[0] === "docs" &&
+        !matchesAny(changedPath, policy.conditional_ci.safe_docs_only_patterns))
+    );
+  });
+  if (conservativePath !== undefined) {
+    return policy.conditional_ci.jobs.map((job) => ({
+      id: job.id,
+      action: "RUN",
+      reason: `conservative full CI for ${conservativePath}`,
+    }));
+  }
   const runJobs = new Set<string>();
   const reasons = new Map<string, string>();
   for (const job of policy.conditional_ci.jobs) {
@@ -567,6 +586,27 @@ export function validateAgentExecutionPolicy(
   }
   if (policy.conditional_ci.evidence_schema_version !== 1) {
     failures.push("conditional_ci evidence_schema_version must be 1");
+  }
+  for (const key of [
+    "safe_docs_only_patterns",
+    "force_full_patterns",
+  ] as const) {
+    const patterns = policy.conditional_ci[key];
+    if (!Array.isArray(patterns) || patterns.length === 0) {
+      failures.push(`conditional_ci ${key} must be non-empty`);
+      continue;
+    }
+    for (const pattern of patterns) {
+      if (typeof pattern !== "string") {
+        failures.push(`conditional_ci ${key} contains a non-string pattern`);
+        continue;
+      }
+      try {
+        new RegExp(pattern, "i");
+      } catch {
+        failures.push(`conditional_ci ${key} contains an invalid pattern`);
+      }
+    }
   }
   const conditionalJobIds = policy.conditional_ci.jobs.map((job) => job.id);
   const conditionalJobIdSet = new Set(conditionalJobIds);

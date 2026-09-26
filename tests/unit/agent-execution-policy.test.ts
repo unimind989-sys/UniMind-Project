@@ -54,9 +54,9 @@ const fixture = JSON.parse(
 ) as { cases: HistoricalCase[] };
 
 describe("agent execution policy", () => {
-  it("validates the authoritative policy and keeps conditional CI in shadow", () => {
+  it("validates the authoritative enforced conditional CI policy", () => {
     expect(validateAgentExecutionPolicy(policy)).toEqual([]);
-    expect(policy.activation.conditional_ci).toBe("SHADOW");
+    expect(policy.activation.conditional_ci).toBe("ENFORCED");
     expect(policy.activation.routing).toBe("ENFORCED");
     expect(policy.risk).not.toHaveProperty("model_floor");
     expect(policy.activation).not.toHaveProperty("model_routing");
@@ -468,7 +468,9 @@ describe("agent execution policy", () => {
   });
 
   it("keeps broad exact-head CI while conditional predictions shadow", () => {
-    const result = deriveAgentExecution(policy, {
+    const shadowPolicy = structuredClone(policy);
+    shadowPolicy.activation.conditional_ci = "SHADOW";
+    const result = deriveAgentExecution(shadowPolicy, {
       task: "WP00-T09",
       pass: "actual-diff",
       declaredSurfaces: ["docs", "tooling"],
@@ -488,10 +490,10 @@ describe("agent execution policy", () => {
         predictions: [
           expect.objectContaining({
             id: "dependency-audit",
-            action: "WOULD_SKIP",
+            action: "RUN",
           }),
           expect.objectContaining({ id: "application", action: "RUN" }),
-          expect.objectContaining({ id: "database-ci", action: "WOULD_SKIP" }),
+          expect.objectContaining({ id: "database-ci", action: "RUN" }),
         ],
       }),
     );
@@ -517,6 +519,7 @@ describe("agent execution policy", () => {
   it("rejects conditional-CI enforcement without a governed workflow fingerprint", () => {
     const enforcedPolicy = structuredClone(policy);
     enforcedPolicy.activation.conditional_ci = "ENFORCED";
+    enforcedPolicy.conditional_ci.enforcement.workflow_sha256 = null;
 
     expect(validateAgentExecutionPolicy(enforcedPolicy)).toContain(
       "conditional_ci ENFORCED requires the governed CI workflow SHA-256",
@@ -527,13 +530,8 @@ describe("agent execution policy", () => {
     const evidence = {
       schemaVersion: 1,
       policyVersion: policy.policy_version,
-      regressionCases: [
-        "docs-only",
-        "dependency-change",
-        "application-change",
-        "database-change",
-        "unknown-path",
-      ],
+      regressionCases:
+        policy.conditional_ci.readiness.required_regression_cases,
       observations: [
         {
           runId: "docs-run",
@@ -600,13 +598,8 @@ describe("agent execution policy", () => {
     const assessment = assessConditionalCiEvidence(policy, {
       schemaVersion: 1,
       policyVersion: policy.policy_version,
-      regressionCases: [
-        "docs-only",
-        "dependency-change",
-        "application-change",
-        "database-change",
-        "unknown-path",
-      ],
+      regressionCases:
+        policy.conditional_ci.readiness.required_regression_cases,
       observations: [
         {
           runId: "docs-run",
