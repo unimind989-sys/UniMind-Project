@@ -27,6 +27,8 @@
 }
 
 .skipLink {
+  max-width: calc(100vw - 1.5rem);
+  overflow-wrap: anywhere;
   position: fixed;
   z-index: 10;
   inset-block-start: 0.75rem;
@@ -35,7 +37,7 @@
   padding: 0.7rem 0.9rem;
   border-radius: var(--radius-control);
   color: var(--on-action);
-  background: var(--admin-cobalt);
+  background: var(--admin-cobalt-focus);
 }
 
 .skipLink:focus {
@@ -142,6 +144,8 @@
 
 .topBar {
   display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   min-height: 4.25rem;
   align-items: center;
   justify-content: space-between;
@@ -559,7 +563,7 @@
   border: 1px solid var(--admin-cobalt);
   border-radius: var(--radius-control);
   color: var(--on-action);
-  background: var(--admin-cobalt);
+  background: var(--admin-cobalt-focus);
   cursor: pointer;
   font: inherit;
   font-size: var(--type-label-size);
@@ -891,6 +895,20 @@
 }
 
 @media (max-width: 23rem) {
+  .pageHeading {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pageHeading h1 {
+    overflow-wrap: anywhere;
+  }
+
+  .queueCount {
+    justify-self: start;
+    width: fit-content;
+  }
+
   .decisionTopLine {
     align-items: start;
   }

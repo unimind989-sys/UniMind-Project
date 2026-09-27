@@ -123,7 +123,7 @@
 
 .languageSwitch a {
   min-width: 3.15rem;
-  min-height: 2.3rem;
+  min-height: 2.75rem;
   display: grid;
   place-items: center;
   border-radius: 999px;
@@ -415,7 +415,7 @@
   border: 0;
   border-radius: 0.65rem;
   padding-inline: 1rem;
-  background: var(--accent);
+  background: var(--accent-focus);
   color: #ffffff;
   font-weight: 750;
   cursor: pointer;
@@ -448,7 +448,10 @@
 }
 
 .secondaryActions a {
-  color: var(--accent);
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  color: var(--accent-text);
 }
 
 .consentBlock {
@@ -532,7 +535,7 @@
 }
 
 .safetyRail summary {
-  color: var(--accent);
+  color: var(--accent-text);
   cursor: pointer;
   list-style: none;
 }
