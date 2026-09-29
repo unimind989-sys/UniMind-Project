@@ -12,7 +12,7 @@
 
 **Branch:** codex/wp03-t08-product-shell-gate
 
-**Updated (UTC):** 2026-09-29T14:17:00Z
+**Updated (UTC):** 2026-09-29T15:07:00Z
 
 ## Derived execution envelope
 
@@ -97,6 +97,6 @@ Auth-verified caller plus current database membership, assignment, profile, righ
 
 **Remaining:** Disposable production-mode feedback, fresh final stable proof, exact-head protected CI/merge, affected production proof and closure/cleanup. Previous broad proof passed twice (latest 459 unit, 15 integration, 44 security, 51 browser, safe build), but subsequent runtime corrections invalidate its final-candidate status. The named Ahmed checkpoint is retained for demonstrated NONVISUAL changes; no fresh design acceptance is required.
 
-**Next safe action:** Run bounded disposable feedback for the catalog response capture. Run 36584275703 rejected a false landing-GET assumption: Next fetch actions can stream the destination inside their successful action response. Route.fetch now scans one real GET /learn response before forwarding unchanged status/headers/bytes; completed responses elsewhere remain mandatory and unknown failures reject. Only a fully scanned speculative payload cancelled with ERR_ABORTED may skip forwarding. Cutoff-bound audit hashes prove preservation without inventing a membership audit trigger. After feedback converges, renew final stable proof, deliver protected CI/merge, verify the merged Git-archive production artifact, close and clean.
+**Next safe action:** Complete the guarded local stable gate and all four exact-head checks on the task PR. Feedback 36586090020 passed seven journeys and all containment/audit/processed-retention checks; only two admin-prefetch body reads failed. Application GET responses now use one real server request and unchanged forwarding, as already proven for the catalog. POST mutations stay on the original browser path. No failure is waived; once all proof is green, obtain exact-head distinct-account approval, protect merge, stage/prove/promote the Git archive, close evidence/runbook, and clean. Passing final local proof will be recorded in the PR body and retained task preparation field, then committed with the production closure report.
 
 **Reviewer action:** Exact-head protected distinct-account technical approval. Ahmed's named visual checkpoint remains current; D-22 authorizes non-financial delivery.

@@ -241,9 +241,12 @@ test.beforeEach(async ({ page }) => {
     const url = new URL(request.url());
     if (!["127.0.0.1", "localhost"].includes(url.hostname))
       return route.abort("blockedbyclient");
-    if (url.pathname !== "/learn" || request.method() !== "GET")
+    if (
+      request.method() !== "GET" ||
+      !["document", "fetch", "xhr"].includes(request.resourceType())
+    )
       return route.continue();
-    // Chromium can discard the catalog prefetch body during navigation. Read
+    // Chromium can discard application prefetch bodies during navigation. Read
     // the one real server response before forwarding identical bytes/headers;
     // never repeat a mutation or manufacture a role/authorization response.
     const inspection = (async () => {
@@ -272,7 +275,7 @@ test.beforeEach(async ({ page }) => {
       }
     })().catch(async () => {
       exposure.push(
-        "catalog server response could not be inspected or forwarded",
+        "application GET response could not be inspected or forwarded",
       );
       await route.abort("failed").catch(() => undefined);
     });
