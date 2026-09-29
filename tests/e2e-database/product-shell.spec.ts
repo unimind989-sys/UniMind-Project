@@ -1,7 +1,12 @@
 import { execFileSync } from "node:child_process";
 import { randomUUID } from "node:crypto";
 import { createClient } from "@supabase/supabase-js";
-import { expect, test, type Page } from "@playwright/test";
+import {
+  expect,
+  test,
+  type Page,
+  type Request as BrowserRequest,
+} from "@playwright/test";
 import { assertGitHubHostedLinuxRunner } from "../../scripts/lib/ephemeral-supabase";
 
 assertGitHubHostedLinuxRunner(process.env);
@@ -16,6 +21,7 @@ let databaseContainer: string;
 let inspections: Promise<void>[] = [];
 let exposure: string[] = [];
 let inspectedDocuments = 0;
+let stopInspection: () => void;
 
 function sql(query: string): string {
   try {
@@ -183,7 +189,7 @@ test.beforeEach(async ({ page }) => {
   inspections = [];
   exposure = [];
   inspectedDocuments = 0;
-  page.on("requestfinished", (request) => {
+  const completedRequest = (request: BrowserRequest) => {
     inspections.push(
       (async () => {
         const response = await request.response();
@@ -199,8 +205,14 @@ test.beforeEach(async ({ page }) => {
         let body: string;
         try {
           body = await response.text();
-        } catch {
-          exposure.push("completed browser response could not be inspected");
+        } catch (error) {
+          const kind =
+            error instanceof Error && /closed/iu.test(error.message)
+              ? "context closed"
+              : "body unavailable";
+          exposure.push(
+            `completed response ${kind}: ${request.method()} ${new URL(response.url()).pathname} ${response.status()}`,
+          );
           return;
         }
         if (mime.includes("text/html")) inspectedDocuments += 1;
@@ -209,7 +221,18 @@ test.beforeEach(async ({ page }) => {
         exposure.push("completed browser response inspection failed");
       }),
     );
-  });
+  };
+  const consoleMessage = (message: { text(): string }) =>
+    inspect(message.text());
+  const pageError = (error: Error) => inspect(error.message);
+  page.on("requestfinished", completedRequest);
+  page.on("console", consoleMessage);
+  page.on("pageerror", pageError);
+  stopInspection = () => {
+    page.off("requestfinished", completedRequest);
+    page.off("console", consoleMessage);
+    page.off("pageerror", pageError);
+  };
   await page.route("**/*", async (route) => {
     if (
       ["127.0.0.1", "localhost"].includes(
@@ -225,10 +248,9 @@ test.afterEach(async ({ page }) => {
   test.setTimeout(15_000);
   // Read completed responses while their browser context is still available.
   // Unfinished speculative streams never enter this requestfinished queue.
+  stopInspection();
   await Promise.all(inspections);
   inspect(await page.content());
-  await page.close();
-  await Promise.all(inspections);
   expect(exposure).toEqual([]);
   expect(inspectedDocuments).toBeGreaterThan(0);
 });

@@ -12,7 +12,7 @@
 
 **Branch:** codex/wp03-t08-product-shell-gate
 
-**Updated (UTC):** 2026-09-29T01:00:00Z
+**Updated (UTC):** 2026-09-29T14:17:00Z
 
 ## Derived execution envelope
 
@@ -36,7 +36,7 @@
 
 | Block | Assigned model | Scope and governing inputs | Independent acceptance checks, including failure cases | Assignment reason | Status and evidence |
 | --- | --- | --- | --- | --- | --- |
-| 1 | Sol High | WP03-T08, prior WP03 evidence, master-plan 6.7/7/8.1/8.2; map acceptance and fill missing disposable browser and replay coverage. | Authenticated role matrix; next server operation denies lock/deactivation/revocation; all 12 admin actions replay without duplicate state/audit; upload finalization replay and conflicts remain safe. | One executor preserves cross-system fixture and evidence context. | In progress. |
+| 1 | Sol High | WP03-T08, prior WP03 evidence, master-plan 6.7/7/8.1/8.2; map acceptance and fill missing disposable browser and replay coverage. | Authenticated role matrix; next server operation denies lock/deactivation/revocation; all 12 admin actions replay without duplicate state/audit; upload finalization replay and conflicts remain safe. | One executor preserves cross-system fixture and evidence context. | Implemented; disposable feedback and final proof remain in block 2. |
 | 2 | Sol High | Stable candidate review, bilingual bounded inspection and audit, named founder checkpoint, local broad proof and exact-head protected CI. | Required checks execute with synthetic data/mock providers/storage and zero budget; payloads/audit/provenance are safe; no false PASS. | Integrated gate judgment and recovery remain with owner. | Pending. |
 | 3 | Sol High | Finalize, protected merge, affected-service proof or explicit unchanged-runtime rationale, closure and cleanup. | Reviewed head merges without bypass; evidence binds exact source; clean synchronized main; no task-created branch/temp residue. | Ahmed requested complete lifecycle. | Pending. |
 
@@ -74,7 +74,7 @@ Auth-verified caller plus current database membership, assignment, profile, righ
 
 **Preparation review:** COMPLETE_INLINE
 
-**Preparation fingerprint:** e39696f294e6b5a60fcc46345d7781e6da1cb0cfd8f00722e0c3c926edaf844c
+**Preparation fingerprint:** PENDING_FINAL_CANDIDATE
 
 **Unresolved findings:** NONE
 
@@ -95,8 +95,8 @@ Auth-verified caller plus current database membership, assignment, profile, righ
 
 **Commands:** Entry main `9d9eaba`; policy 8 R3/protected, zero workers; pinned Node v24.19.0/pnpm 10.34.5. Focused guard/workflow 20/20, production denial 18/18 and Auth header/proxy/client 12/12 passed (exit 0); typecheck, boundaries, SQL conventions, policy/workflow, formatting and secret scans exit 0. Full diff, diff-check/stat and changed-file secret/scope review completed inline. NONVISUAL named Ahmed checkpoint retained; bounded desktop EN/mobile AR inspection, configured Modules/Subjects and empty warning/error console recorded. Disposable failed attempts and audit dispositions are explicit in the gate report. Production-mode feedback `36573840755` at `fda875f` and broad/exact-head proof pending.
 
-**Remaining:** Disposable production-mode feedback, exact-head protected CI/merge, affected production proof and closure/cleanup. Frozen local broad proof exited 0 at fingerprint `7bbcf15db44a930207a50063121b5707590a7e1f74dab2f17b15a7b6fc1ad048` (458 unit, 15 integration, 44 security, 51 browser, safe build). The named Ahmed checkpoint is retained for demonstrated NONVISUAL changes; no fresh design acceptance is required.
+**Remaining:** Disposable production-mode feedback, fresh final stable proof, exact-head protected CI/merge, affected production proof and closure/cleanup. Previous broad proof passed twice (latest 459 unit, 15 integration, 44 security, 51 browser, safe build), but subsequent runtime corrections invalidate its final-candidate status. The named Ahmed checkpoint is retained for demonstrated NONVISUAL changes; no fresh design acceptance is required.
 
-**Next safe action:** Run bounded disposable feedback with RFC-valid browser fixtures. `36573840755` at `fda875f` passed anonymous/header checks but failed seven signed-in cases; response inspection afterEach stalled. Cancellation was requested after non-convergence; the failed browser report and successful security/cleanup stages are retained, never PASS. A seconds-long fixture UUID regression went red, then green 6/6 after consistently remapping the browser-only seed; the legacy SQL fixture is unchanged. Direct caller RPC preflight separates fixture authority from browser restoration; page content is inspected and then page closure settles speculative streams. Source changes invalidate relevant local/CI proof and require the next stable verification.
+**Next safe action:** Await bounded feedback `36581354224` at `ead0d33`. The prior run passed anonymous and student route/logout assertions but failed response-body inspection and two security tests due to SDK configuration coupling. Focused upload tests reproduced the security failure, then passed 5/5 after classifying the existing UNAUTHORIZED tag without importing the SDK; TypeScript and boundaries exit 0. Inspect finished non-redirect responses before closing the context; unknown read failures still reject. Direct caller RPC preflight and RFC-valid browser-only seeds preserve production validation. If feedback passes, freeze the final candidate, renew preparation and run the required broad proof. Stage production from the protected merged Git archive; root dry manifest included ignored local artifacts and was rejected before upload.
 
 **Reviewer action:** Exact-head protected distinct-account technical approval. Ahmed's named visual checkpoint remains current; D-22 authorizes non-financial delivery.

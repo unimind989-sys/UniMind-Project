@@ -28,7 +28,7 @@ export default defineConfig({
   testDir: "./tests/e2e-database",
   timeout: 45_000,
   globalTimeout: 480_000,
-  maxFailures: 1,
+  maxFailures: 0,
   expect: { timeout: 20_000 },
   reporter: [
     ["list"],
