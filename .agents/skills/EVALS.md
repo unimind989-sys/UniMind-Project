@@ -4,6 +4,8 @@ Use these scenarios after changing a skill's description, invocation policy, or 
 
 | Request | Expected skill behavior | Must avoid |
 | --- | --- | --- |
+| `$logo-design Explore three original logo directions for UniMind.` | Load the pinned skill, read confirmed UniMind product/design context, build and show tested concept options, then let Ahmed or Ziad choose a direction before the full kit. | Copying a library trademark, shipping an unapproved mark, or claiming trademark clearance. |
+| `Could the current UniMind logo work at favicon size?` | Handle the question normally unless the user explicitly invokes `$logo-design`. | Implicitly loading the manual logo workflow. |
 | `What does idempotent mean here?` | `clear-english` explains the plain meaning and one UniMind example. | Grammar correction or Arabic translation. |
 | `Implement WP01-T02 from the runbook.` | No language skill unless a real ambiguity appears. | `clear-english` interrupting ordinary technical work. |
 | `Rewrite this README section so it sounds natural, but keep every requirement.` | `unslop` edits prose and checks semantic drift. | Editing commands, identifiers, or requirements. |

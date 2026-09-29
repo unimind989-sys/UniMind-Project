@@ -1,5 +1,15 @@
 # Skill adaptations
 
+## 2026-09-29 — Manual logo-design skill
+
+### `logo-design`
+
+- **Source:** kaankiziltug/logo-design-skill commit `5a02a1ab650e7dfd0d1d06f4fd303e730311ce80`.
+- **Reason:** Ahmed requested the complete logo-design workflow in UniMind with explicit user invocation only.
+- **Change:** Kept the pinned references, scripts, templates, catalog, and SVG library; narrowed the skill description, added Codex manual invocation metadata, and added a UniMind preface that reads confirmed product/design context and keeps new brand concepts as proposals.
+- **Rights:** Preserved the MIT `logo-design/LICENSE` for skill code and text and `logo-design/TRADEMARKS.md` for third-party reference marks.
+- **Validation:** Repository skill validator, Python script syntax, and local smoke checks; see the task record for commands and results.
+
 ## 2026-09-22 — Review provenance accuracy
 
 ### `finalize`

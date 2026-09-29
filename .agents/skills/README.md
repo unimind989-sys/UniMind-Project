@@ -17,6 +17,7 @@ Third-party skills are copied into the repository at fixed commits. Review upstr
 | <https://github.com/VoltAgent/awesome-design-md> | `8147538b4226ae41e2487a9179e3bcc1f68e8554` | MIT, `AWESOME-DESIGN-MD-LICENSE.txt` |
 | <https://github.com/gekkos-tech/agency-os> | `87d202e56939ad9889960a96796fc33bb76c5de0` | MIT, `AGENCY-OS-LICENSE.txt` |
 | <https://github.com/microsoft/playwright-cli> | `2f85a94b7b885dbf4a5d34462f253a8746a690c9` | Apache-2.0, `PLAYWRIGHT-CLI-LICENSE.txt` |
+| <https://github.com/kaankiziltug/logo-design-skill> | `5a02a1ab650e7dfd0d1d06f4fd303e730311ce80` | MIT for skill, scripts, catalog and templates (`logo-design/LICENSE`); reference SVGs are third-party trademarks (`logo-design/TRADEMARKS.md`) |
 
 ## Skill inventory
 
@@ -44,5 +45,6 @@ Third-party skills are copied into the repository at fixed commits. Review upstr
 | `impeccable` | Paul Bakaus, adapted | Automatic | Design, critique, and audit distinctive production UI. |
 | `image-to-code` | Gekkos Tech, adapted | Automatic | Translate a selected screenshot or mockup into verified responsive UI. |
 | `playwright-cli` | Microsoft, adapted | Manual | Run explicitly requested CLI tracing, locator discovery, or Playwright test debugging; ordinary internal browser work uses the in-app side browser. |
+| `logo-design` | kaankiziltug, adapted | Manual | Explore, critique, test, and prepare logo assets when explicitly invoked. |
 
 "Automatic" means Codex may load the skill when a request matches its narrow description. It does not grant permission for external changes, paid calls, deployment, or destructive operations.

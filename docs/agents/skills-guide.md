@@ -21,6 +21,7 @@ Codex can use a repository skill in two ways:
 | `$awesome-design-md` | You want to consult one named brand reference before confirming a visual direction. | `$awesome-design-md Compare the Linear and Notion references for this student workspace; do not adopt either yet.` |
 | `$wizard` | You explicitly want an interactive PowerShell walkthrough for manual setup, credentials, signed-in dashboards, or irreversible approval steps. | `$wizard Create a PowerShell wizard for configuring the preview Supabase project and GitHub secrets.` |
 | `$playwright-cli` | You explicitly need the pinned CLI's trace, locator, or Playwright test-debugging workflow. Ordinary internal rendered inspection uses the in-app side browser. | `$playwright-cli Debug this failing Playwright test and capture one trace.` |
+| `$logo-design` | You want to explore or critique a logo, or export variants of an approved mark. It does not run for ordinary UniMind UI tasks. | `$logo-design Explore three original logo directions for UniMind using PRODUCT.md and DESIGN.md; show me the concept sheet before making a full kit.` |
 
 ## Skills that normally activate automatically
 

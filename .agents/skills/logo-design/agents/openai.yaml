@@ -1,0 +1,7 @@
+interface:
+  display_name: "Logo Design"
+  short_description: "Design and test a distinctive brand mark"
+  default_prompt: "Use $logo-design to explore logo directions for UniMind."
+
+policy:
+  allow_implicit_invocation: false
