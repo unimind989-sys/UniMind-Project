@@ -7,6 +7,7 @@ export const ephemeralSupabaseActions = [
   "advisors",
   "types",
   "auth",
+  "browser",
   "stop",
 ] as const;
 
@@ -48,7 +49,7 @@ export function assertGitHubHostedLinuxRunner(input: EnvironmentInput): void {
 }
 
 export function createEphemeralSupabaseArguments(
-  action: Exclude<EphemeralSupabaseAction, "auth" | "upgrade">,
+  action: Exclude<EphemeralSupabaseAction, "auth" | "browser" | "upgrade">,
 ): readonly string[] {
   switch (action) {
     case "start":

@@ -26,6 +26,7 @@
     "test:integration": "tsx scripts/run-vitest-layer.ts integration",
     "test:integration:hosted": "tsx scripts/run-hosted-auth-integration.ts --environment development",
     "test:integration:database": "tsx scripts/run-ephemeral-supabase.ts auth",
+    "test:e2e:database": "tsx scripts/run-ephemeral-supabase.ts browser",
     "test:auth:hosted": "tsx scripts/run-hosted-auth-integration.ts --environment development",
     "test:security": "tsx scripts/run-vitest-layer.ts security",
     "test:e2e": "playwright test",

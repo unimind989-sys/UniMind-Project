@@ -43,6 +43,7 @@ describe("ephemeral Supabase guard", () => {
 
   it("accepts only named lifecycle actions", () => {
     expect(parseEphemeralSupabaseAction(["reset"])).toBe("reset");
+    expect(parseEphemeralSupabaseAction(["browser"])).toBe("browser");
     expect(() => parseEphemeralSupabaseAction([])).toThrow();
     expect(() => parseEphemeralSupabaseAction(["reset", "preview"])).toThrow();
     expect(() => parseEphemeralSupabaseAction(["preview"])).toThrow();

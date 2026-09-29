@@ -275,7 +275,7 @@ jobs:
     const diagnostics = steps.filter((step) =>
       step.if?.includes("database_setup.outcome"),
     );
-    expect(diagnostics).toHaveLength(6);
+    expect(diagnostics).toHaveLength(8);
     expect(
       diagnostics.every(
         (step) =>
@@ -291,6 +291,8 @@ jobs:
         "corepack pnpm db:ci:types",
         "corepack pnpm db:types:check",
         "corepack pnpm test:integration:database",
+        "corepack pnpm exec playwright install --with-deps chromium",
+        "corepack pnpm test:e2e:database",
         "corepack pnpm test:security",
       ]),
     );
@@ -299,6 +301,14 @@ jobs:
         workflow.replace(
           "steps.database_setup.outcome == 'success'",
           "success()",
+        ),
+      ),
+    ).toContain("DATABASE_CI_STAGES_UNSAFE");
+    expect(
+      auditCiWorkflow(
+        workflow.replace(
+          "run: corepack pnpm test:e2e:database",
+          "run: corepack pnpm typecheck",
         ),
       ),
     ).toContain("DATABASE_CI_STAGES_UNSAFE");

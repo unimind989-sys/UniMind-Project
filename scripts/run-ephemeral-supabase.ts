@@ -549,7 +549,7 @@ function readStatus() {
   return parseEphemeralSupabaseStatus(runCli(["status", "-o", "env"]).stdout);
 }
 
-function runAuthIntegration(): void {
+function runAuthIntegration(browser = false): void {
   const status = readStatus();
   const inheritedNames = new Set([
     "CI",
@@ -592,10 +592,16 @@ function runAuthIntegration(): void {
     TRANSCRIPTION_PROVIDER_ENABLED: "false",
     UNIMIND_DATABASE_AUTH_TEST: "true",
   };
-  const vitestBinary = path.resolve("node_modules/vitest/vitest.mjs");
+  const testBinary = path.resolve(
+    browser
+      ? "node_modules/@playwright/test/cli.js"
+      : "node_modules/vitest/vitest.mjs",
+  );
   const result = spawnSync(
     process.execPath,
-    [vitestBinary, "run", "--project", "integration"],
+    browser
+      ? [testBinary, "test", "--config", "playwright.database.config.ts"]
+      : [testBinary, "run", "--project", "integration"],
     {
       cwd: process.cwd(),
       env: childEnvironment,
@@ -607,12 +613,16 @@ function runAuthIntegration(): void {
   }
   if (result.status !== 0) {
     throw new Error(
-      `Disposable Auth integration failed with status ${String(result.status)}.`,
+      `Disposable ${browser ? "browser" : "Auth integration"} gate failed with status ${String(result.status)}.`,
     );
   }
 }
 
 async function execute(action_: EphemeralSupabaseAction): Promise<void> {
+  if (action_ === "browser") {
+    runAuthIntegration(true);
+    return;
+  }
   if (action_ === "auth") {
     runAuthIntegration();
     return;
