@@ -101,6 +101,6 @@ Auth-verified caller plus current database membership, assignment, profile, righ
 
 **Remaining:** Submit and merge only this Markdown closure through exact-head protected CI and distinct-account review, then synchronize clean main and remove the two task branches and owned temporary artifacts. These changes do not alter production runtime; the authoritative production source remains `76e92c0`. Git/GitHub state records final closure PR/head/merge so this record avoids a self-referential commit.
 
-**Next safe action:** Complete protected Markdown closure and cleanup. Then inspect readiness and begin WP04-T01 in its own selected task; D-04/D-05/D-18/D-19 remain open blockers for real provider, financial, storage and retention decisions.
+**Next safe action:** Complete protected Markdown closure and cleanup. The readiness selector then recommends WP04-T02 in its own selected task; WP04-T01 is decision-blocked by proposed D-10. D-04/D-05/D-18/D-19 also remain open blockers for real provider, financial, storage and retention decisions.
 
 **Reviewer action:** Exact-head closure review through the authorized distinct GitHub account. Ahmed's named EN/AR visual checkpoint remains current for NONVISUAL changes; D-22 authorizes non-financial delivery, not founder design acceptance.
