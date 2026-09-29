@@ -22,6 +22,7 @@ let inspections: Promise<void>[] = [];
 let exposure: string[] = [];
 let inspectedDocuments = 0;
 let stopInspection: () => void;
+let capturedRequests: WeakSet<BrowserRequest>;
 
 function sql(query: string): string {
   try {
@@ -90,24 +91,12 @@ async function login(page: Page, role: Role) {
       new URL(response.url()).pathname === "/login",
     { timeout: 20_000 },
   );
-  const landingResponse = page.waitForResponse(
-    (response) =>
-      response.request().method() === "GET" &&
-      new URL(response.url()).pathname === "/learn" &&
-      response.status() === 200,
-    { timeout: 20_000 },
-  );
   await page.getByRole("button", { name: "Continue", exact: true }).click();
   const response = await actionResponse;
   expect(response.headers()["cache-control"]).toContain("no-store");
   expect(response.headers()["pragma"]).toBe("no-cache");
   expect(response.headers()["expires"]).toBe("0");
   await expect(page).toHaveURL(/\/learn(?:\?|$)/u);
-  // A Server Action can update the URL before its redirected RSC body ends.
-  // Finish and inspect that payload before a direct-route probe replaces it.
-  const landing = await landingResponse;
-  expect(await landing.finished()).toBeNull();
-  inspect(await landing.text());
 }
 
 test.beforeAll(async () => {
@@ -201,7 +190,9 @@ test.beforeEach(async ({ page }) => {
   inspections = [];
   exposure = [];
   inspectedDocuments = 0;
+  capturedRequests = new WeakSet();
   const completedRequest = (request: BrowserRequest) => {
+    if (capturedRequests.has(request)) return;
     inspections.push(
       (async () => {
         const response = await request.response();
@@ -246,13 +237,47 @@ test.beforeEach(async ({ page }) => {
     page.off("pageerror", pageError);
   };
   await page.route("**/*", async (route) => {
-    if (
-      ["127.0.0.1", "localhost"].includes(
-        new URL(route.request().url()).hostname,
-      )
-    )
+    const request = route.request();
+    const url = new URL(request.url());
+    if (!["127.0.0.1", "localhost"].includes(url.hostname))
+      return route.abort("blockedbyclient");
+    if (url.pathname !== "/learn" || request.method() !== "GET")
       return route.continue();
-    await route.abort("blockedbyclient");
+    // Chromium can discard the catalog prefetch body during navigation. Read
+    // the one real server response before forwarding identical bytes/headers;
+    // never repeat a mutation or manufacture a role/authorization response.
+    const inspection = (async () => {
+      const response = await route.fetch({ maxRedirects: 0, timeout: 10_000 });
+      const mime = response.headers()["content-type"] ?? "";
+      if (
+        /text\/html|text\/x-component|application\/json/iu.test(mime) &&
+        (response.status() < 300 || response.status() >= 400)
+      ) {
+        inspect(await response.text());
+        if (mime.includes("text/html")) inspectedDocuments += 1;
+      }
+      capturedRequests.add(request);
+      try {
+        await route.fulfill({ response });
+      } catch (error) {
+        // A speculative request may be cancelled after its complete payload
+        // was inspected. Any other forwarding/read failure still rejects.
+        if (
+          request.headers()["next-router-prefetch"] !== "1" ||
+          request.failure()?.errorText !== "net::ERR_ABORTED"
+        )
+          throw error;
+      } finally {
+        await response.dispose();
+      }
+    })().catch(async () => {
+      exposure.push(
+        "catalog server response could not be inspected or forwarded",
+      );
+      await route.abort("failed").catch(() => undefined);
+    });
+    inspections.push(inspection);
+    await inspection;
   });
 });
 
