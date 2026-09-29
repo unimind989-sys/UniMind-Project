@@ -191,6 +191,8 @@ test.beforeEach(async ({ page }) => {
           exposure.push("completed browser request has no response");
           return;
         }
+        // Redirects carry navigation instructions, not an inspectable page body.
+        if (response.status() >= 300 && response.status() < 400) return;
         const mime = response.headers()["content-type"] ?? "";
         if (!/text\/html|text\/x-component|application\/json/iu.test(mime))
           return;
@@ -221,8 +223,9 @@ test.beforeEach(async ({ page }) => {
 
 test.afterEach(async ({ page }) => {
   test.setTimeout(15_000);
-  // Include delivered partial HTML/React scripts, then abort speculative
-  // prefetch streams so response.finished cannot outlive the test forever.
+  // Read completed responses while their browser context is still available.
+  // Unfinished speculative streams never enter this requestfinished queue.
+  await Promise.all(inspections);
   inspect(await page.content());
   await page.close();
   await Promise.all(inspections);

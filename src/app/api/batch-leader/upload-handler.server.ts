@@ -1,7 +1,6 @@
 import "server-only";
 
 import { NextResponse } from "next/server";
-import { UnauthenticatedError } from "../../../lib/auth/verified-identity.server";
 
 import {
   CollectionBoundaryError,
@@ -11,7 +10,12 @@ import {
 import { prepareSyntheticCollectionUpload } from "@/lib/collection/collection-upload.server";
 
 function safeUploadStatus(error: unknown) {
-  if (error instanceof UnauthenticatedError) return 403;
+  if (
+    error instanceof Error &&
+    "code" in error &&
+    error.code === "UNAUTHORIZED"
+  )
+    return 403;
   if (!(error instanceof CollectionBoundaryError)) return 400;
   if (
     error.code === "CAMPAIGN_UNAVAILABLE" ||
