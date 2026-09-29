@@ -30,7 +30,7 @@
 
 **Procedural skills:** trust-boundaries; Impeccable audit; diagnosing-bugs; finalize; vercel deployments-cicd
 
-**Routing reason:** Package acceptance spans real disposable Auth/database operations, role/browser isolation, mutation replay and visual evidence. Only test/CI corrections are initially planned.
+**Routing reason:** Package acceptance spans real disposable Auth/database operations, role/browser isolation, mutation replay and visual evidence. Real execution required the Auth cache-header sink and unauthenticated upload status corrections in addition to tests/CI.
 
 ## Manual model work blocks
 
@@ -50,7 +50,7 @@
 
 **Inputs:** Runbook WP03-T08; master-plan 6.7/7/8.1/8.2; DESIGN.md and .impeccable/surfaces; disposable Supabase synthetic fixtures, pgTAP and browser contracts; D-22.
 
-**Files:** This record; disposable Playwright configuration/spec/fixtures; `scripts/run-ephemeral-supabase.ts`, its guard and CI-policy validator/tests; `.github/workflows/ci.yml` and governed workflow fingerprint; package scripts; `supabase/tests/28_audited_admin_actions.sql`; `src/lib/auth/auth-response-headers.application.ts`, `refresh-session.server.ts`, `supabase-auth.server.ts` and `src/lib/db/supabase/server.ts` with focused header/client/proxy tests for the observed real-login defect; WP03 evidence and runbook closure.
+**Files:** This record; disposable Playwright configuration/spec/fixtures; `scripts/run-ephemeral-supabase.ts`, its guard and CI-policy validator/tests; `.github/workflows/ci.yml` and governed workflow fingerprint; package scripts; `supabase/tests/28_audited_admin_actions.sql`; `src/lib/auth/auth-response-headers.application.ts`, `refresh-session.server.ts`, `supabase-auth.server.ts` and `src/lib/db/supabase/server.ts` with focused header/client/proxy tests; `src/app/api/batch-leader/upload-handler.server.ts` and its test for the observed unauthenticated 400/403 mapping; WP03 evidence and runbook closure.
 
 **Verify:** Focused guard/typecheck/SQL/browser harness checks; guarded disposable CI reset/seed, complete pgTAP/admin/upload replay and authenticated Playwright role/revocation tests; bounded side-browser inspection; Impeccable detector/audit disposition; `corepack pnpm scan:secrets`; `corepack pnpm verify`; `git diff --check`, `git diff --stat`, full diff and secret/scope review; exact-head required CI; named Ahmed package checkpoint.
 
@@ -74,7 +74,7 @@ Auth-verified caller plus current database membership, assignment, profile, righ
 
 **Preparation review:** COMPLETE_INLINE
 
-**Preparation fingerprint:** 7bbcf15db44a930207a50063121b5707590a7e1f74dab2f17b15a7b6fc1ad048
+**Preparation fingerprint:** e39696f294e6b5a60fcc46345d7781e6da1cb0cfd8f00722e0c3c926edaf844c
 
 **Unresolved findings:** NONE
 

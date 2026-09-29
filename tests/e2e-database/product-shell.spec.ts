@@ -183,12 +183,17 @@ test.beforeEach(async ({ page }) => {
   inspections = [];
   exposure = [];
   inspectedDocuments = 0;
-  page.on("response", (response) => {
-    const mime = response.headers()["content-type"] ?? "";
-    if (!/text\/html|text\/x-component|application\/json/iu.test(mime)) return;
+  page.on("requestfinished", (request) => {
     inspections.push(
       (async () => {
-        if ((await response.finished()) !== null) return;
+        const response = await request.response();
+        if (response === null) {
+          exposure.push("completed browser request has no response");
+          return;
+        }
+        const mime = response.headers()["content-type"] ?? "";
+        if (!/text\/html|text\/x-component|application\/json/iu.test(mime))
+          return;
         let body: string;
         try {
           body = await response.text();
@@ -198,7 +203,9 @@ test.beforeEach(async ({ page }) => {
         }
         if (mime.includes("text/html")) inspectedDocuments += 1;
         inspect(body);
-      })(),
+      })().catch(() => {
+        exposure.push("completed browser response inspection failed");
+      }),
     );
   });
   await page.route("**/*", async (route) => {
