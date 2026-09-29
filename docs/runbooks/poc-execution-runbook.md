@@ -586,10 +586,10 @@ This workflow-maintenance task follows WP00-T15. Preserve required PR check name
 
 This bounded tooling task installs a pinned third-party logo-design skill for deliberate UniMind brand exploration. It does not select a new logo or alter product UI.
 
-- [~] Copy and attribute the pinned skill, its scripts, references, templates, and reference library; preserve the MIT license and the separate trademark notice.
-- [~] Make `$logo-design` explicitly invoked only in Codex, and route UniMind work through confirmed product and design context.
-- [~] Document the command, validate skill metadata and supporting scripts, and prove ordinary logo-adjacent requests do not implicitly invoke it.
-- [~] Deliver the reviewed tooling change through protected `main` and return ordinary task selection to the existing runbook order.
+- [x] Copy and attribute the pinned skill, its scripts, references, templates, and reference library; preserve the MIT license and the separate trademark notice.
+- [x] Make `$logo-design` explicitly invoked only in Codex, and route UniMind work through confirmed product and design context.
+- [x] Document the command, validate skill metadata and supporting scripts, and prove ordinary logo-adjacent requests do not implicitly invoke it.
+- [x] Deliver the reviewed tooling change through protected `main` and return ordinary task selection to the existing runbook order. PR #62 merged as `41892f5`; merged-main run `36630701424` passed. Evidence: `evidence/wp00-pilot/2026-09-29_manual-logo-design-skill_github_41892f5.md`. These closure markers become authoritative only when this evidence update reaches protected `main`.
 
 **Pass:** `$logo-design` is available by explicit invocation, the upstream tools work from the pinned local copy, protected UniMind decisions remain human selected, and the added skill does not activate implicitly.
 

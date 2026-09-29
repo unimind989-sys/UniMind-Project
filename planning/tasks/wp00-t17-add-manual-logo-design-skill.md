@@ -2,7 +2,9 @@
 
 **Task ID:** WP00-T17
 
-**Status:** [~]
+**Status:** [x]
+
+This closure marker becomes authoritative only after this record reaches protected `main`.
 
 **Outcome:** A pinned `$logo-design` skill is available only by explicit user invocation, with working local tools and documented UniMind use.
 
@@ -10,9 +12,9 @@
 
 **Reviewer:** Ahmed or Ziad for any future logo direction; D-22 applies to this non-financial tooling delivery
 
-**Branch:** codex/manual-logo-design-skill
+**Branch:** codex/logo-design-closure (implementation: codex/manual-logo-design-skill)
 
-**Updated (UTC):** 2026-09-29 21:01 UTC
+**Updated (UTC):** 2026-09-29 21:10 UTC
 
 ## Derived execution envelope
 
@@ -37,11 +39,11 @@
 | Block | Assigned model | Scope and governing inputs | Independent acceptance checks, including failure cases | Assignment reason | Status and evidence |
 | --- | --- | --- | --- | --- | --- |
 | 1 | Sol High | Pin and adapt upstream skill, source policy, manual invocation, UniMind guide and task contract | Full copied skill has valid metadata and notices; `allow_implicit_invocation: false`; reference search, SVG audit and preview work; no product logo selected | One bounded task with source/licensing and project-policy judgment | Complete at `1440b8d`; skill validator and script smoke checks passed |
-| 2 | Sol High | Verify candidate and deliver through protected main | Focused and selected policy checks pass; exact-head required CI passes; merged main is clean | Same compact review and delivery block | In progress; local checks passing |
+| 2 | Sol High | Verify candidate and deliver through protected main | Focused and selected policy checks pass; exact-head required CI passes; merged main is clean | Same compact review and delivery block | PR #62 merged as `41892f5`; merged-main CI run `36630701424` passed; closure PR pending |
 
-**Next model:** Sol High
+**Next model:** NONE after protected closure
 
-**Current block:** 2
+**Current block:** NONE after protected closure
 
 ## Execution contract
 
@@ -55,7 +57,7 @@
 
 **Pass:** Explicit invocation loads the working skill; ordinary logo-adjacent requests do not; trademark references remain reference-only; no UniMind logo or product UI is changed.
 
-**Evidence:** This record plus exact-head GitHub checks and sanitized closure evidence if delivered
+**Evidence:** `evidence/wp00-pilot/2026-09-29_manual-logo-design-skill_github_41892f5.md` after merged-main proof
 
 **Rollback:** Revert this skill and documentation change through protected Git history.
 
@@ -69,7 +71,7 @@
 
 **Preparation review:** COMPLETE_INLINE
 
-**Preparation fingerprint:** 4a77789e1fbeb4cbed8324605da36be6d2f75e5b6efaf2a2e8f2891ccb7c3124
+**Preparation fingerprint:** NOT_READY (closure candidate; exact-head CI is required before merge)
 
 **Unresolved findings:** NONE
 
@@ -79,16 +81,16 @@
 
 - [x] Copy and adapt the complete pinned skill, preserving licenses and manual invocation.
 - [x] Validate skill metadata, references, Python syntax, and key tools.
-- [~] Review the full change, run selected checks, and deliver through protected main.
+- [x] Review the full change, run selected checks, and deliver through protected main. Closure evidence is subject to this record's protected merge.
 
 ## Handoff
 
-**Changed:** Copied all 1,462 upstream skill files, changed only `SKILL.md`, and added license, trademark notice, and manual Codex metadata. Updated source/use docs and WP00-T17 record. A byte comparison with the pinned source found no missing files and no other modified upstream files. No product assets or UI changed.
+**Changed:** Copied all 1,462 upstream skill files, changed only `SKILL.md`, and added license, trademark notice, and manual Codex metadata. Updated source/use docs and WP00-T17 record. A byte comparison with the pinned source found no missing files and no other modified upstream files. No product assets or UI changed. PR #62 merged the implementation as `41892f5` after exact-head CI and distinct-account approval.
 
 **Commands:** `git ls-remote` pinned `5a02a1a`; skill validator PASS (23 skills, references, JSON and syntax); 9 Python scripts AST PASS; reference search PASS (23 education matches); SVG audit PASS; preview-sheet HTML generation PASS; `scripts/verify-agent-readiness.ps1` PASS; `pnpm lint` PASS; `pnpm typecheck` PASS; `pnpm typecheck:fresh` PASS; `pnpm scan:secrets` PASS (2,516 files); `git diff --check` PASS; full adapted docs and skill entrypoint reviewed, copied upstream files byte-compared. Actual-diff router R0 docs/tooling after explicit task paths. The first actual-diff pass widened on transient unrelated `public/wp03-review.html`; isolation in the managed worktree removed it from this candidate.
 
-**Remaining:** Record fingerprint and proof preflight, exact-head CI, protected delivery, closure.
+**Remaining:** Exact-head CI and protected merge for the closure update; synchronize local main and clean task branches/worktree.
 
-**Next safe action:** Compute proof preflight for the isolated candidate and deliver the reviewed branch.
+**Next safe action:** Deliver the closure update, then prove clean synchronized main and ordinary task selection.
 
 **Reviewer action:** NONE for this tooling task; future logo selection is a separate founder decision.
