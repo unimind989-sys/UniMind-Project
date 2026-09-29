@@ -1362,16 +1362,16 @@ External component catalogs and MCPs are optional implementation aids, never des
 - [x] Make emergency disable/lock actions fast and reversible without deleting data; distinguish containment from later protected re-enable/unlock approval.
 - [x] Test a second admin race, stale version, non-admin invocation, one-founder-only protected approval, duplicate confirmation, source with invalid rights, unit with zero READY sources, preview without membership creation, and failure after the UI optimistically began a transition. PR #50 merged as `8110ab0`; guarded Preview migration `20260924134026` and Vercel Production deployment `dpl_41HGBsNRN5tM2MMoRdozeRRjLgpa` passed affected proof. Evidence: `evidence/wp03-product-shell/2026-09-24_audited-admin-actions-release_production_8110ab0.md`.
 
-#### WP03-T07 — Add UI and API contract tests
+#### WP03-T07 — Add UI and API contract tests (complete)
 
-- [~] Use mocked providers only.
-- [ ] Test each role's allowed navigation and forbidden direct URL/API access.
-- [ ] Verify no browser request or React payload contains a service key, worker diagnostics, raw object key, private source text, or another user's state.
-- [ ] Run automated accessibility checks plus keyboard/focus, zoom/reflow, reduced-motion, touch-target, and screen-reader smoke checks on auth, catalog, workspace, submission, and admin critical screens in English and Arabic.
-- [ ] Use Playwright Test for repeatable behavior and the Codex in-app side browser for one bounded internal desktop/mobile rendered inspection. Compare the implementation with the approved surface briefs, selected comp/wireframe, and `DESIGN.md`; inspect console and network output, overflow, long content, loading/error/empty states, and LTR/RTL direction changes. Use the project-pinned Playwright CLI only when explicitly invoked for its specialist trace or test-debugging workflow.
-- [ ] Run the Impeccable detector once after the changed UI is complete, then run one integrated Impeccable audit and resolve or explicitly record every material finding. Do not use a skill verdict, screenshot, or visual polish as proof of authorization, accessibility, privacy, or behavior.
-- [ ] Record the origin, exact version/commit, license, copied files, added dependencies, and local modifications for every imported component or asset; scan for hidden telemetry, remote fonts/assets, mutable CDN dependencies, incompatible licenses, and code that broadens Client Component or browser-data boundaries.
-- [ ] Capture sanitized screenshots or traces only as supplemental UI evidence; passing security, contract, accessibility, build, and E2E tests remain mandatory.
+- [x] Use mocked providers only.
+- [x] Test each role's allowed navigation and forbidden direct URL/API access.
+- [x] Verify no browser request or React payload contains a service key, worker diagnostics, raw object key, private source text, or another user's state.
+- [x] Run automated accessibility checks plus keyboard/focus, zoom/reflow, reduced-motion, touch-target, and screen-reader smoke checks on auth, catalog, workspace, submission, and admin critical screens in English and Arabic. Ahmed reported EN/AR spoken-smoke PASS on 2026-09-29 for unchanged candidate `1ee02de`; reader/version were not supplied and no executor-observed speech is claimed.
+- [x] Use Playwright Test for repeatable behavior and the Codex in-app side browser for one bounded internal desktop/mobile rendered inspection. Compare the implementation with the approved surface briefs, selected comp/wireframe, and `DESIGN.md`; inspect console and network output, overflow, long content, loading/error/empty states, and LTR/RTL direction changes. Use the project-pinned Playwright CLI only when explicitly invoked for its specialist trace or test-debugging workflow.
+- [x] Run the Impeccable detector once after the changed UI is complete, then run one integrated Impeccable audit and resolve or explicitly record every material finding. Do not use a skill verdict, screenshot, or visual polish as proof of authorization, accessibility, privacy, or behavior. Final detector exit 1 had 34 inherited advisories, explicitly dispositioned in the local evidence; no green detector verdict is claimed.
+- [x] Record the origin, exact version/commit, license, copied files, added dependencies, and local modifications for every imported component or asset; scan for hidden telemetry, remote fonts/assets, mutable CDN dependencies, incompatible licenses, and code that broadens Client Component or browser-data boundaries.
+- [x] Capture sanitized screenshots or traces only as supplemental UI evidence; passing security, contract, accessibility, build, and E2E tests remain mandatory. All 51 browser journeys and required exact-head CI passed; PR #58 merged as `ced163e`. Vercel production deployment `dpl_GWCQ2YxfubZxVsdeRigw4QXUQ5Kw` passed affected release, routing, render and error-signal proof. Evidence: `evidence/wp03-product-shell/2026-09-29_ui-api-contract-tests-release_production_ced163e.md`.
 
 #### WP03-T08 — Run the product-shell gate
 

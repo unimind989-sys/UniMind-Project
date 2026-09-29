@@ -1,5 +1,7 @@
 # WP03-T07 UI and API contracts — local candidate
 
+Historical candidate report: the pending handoff below records the 2026-09-27 state. Ahmed reported EN/AR spoken-smoke PASS on 2026-09-29; PR #58 merged as `ced163e` and affected production passed. The source-bound final result is `evidence/wp03-product-shell/2026-09-29_ui-api-contract-tests-release_production_ced163e.md`.
+
 Task WP03-T07; Ahmed; one Sol High executor, zero workers. D-22 authorizes the non-financial lifecycle. Policy 8: docs/frontend/runtime/auth/tooling, R3, protected. Entry base `7f89ed8`; branch `wp03/ui-api-contract-tests`. No paid resource/provider/cap was enabled.
 
 ## Acceptance map
