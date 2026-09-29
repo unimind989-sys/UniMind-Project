@@ -1375,14 +1375,14 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 #### WP03-T08 — Run the product-shell gate
 
-- [~] Reset/seed an isolated disposable CI Supabase stack through the guarded command.
-- [ ] Run the full role matrix in Playwright.
-- [ ] Demonstrate Human `Modules` and Veterinary `Subjects` from configuration.
-- [ ] Lock/deactivate/revoke access during an active browser session and confirm the next server operation fails safely.
-- [ ] Replay upload finalization and every admin action idempotently; prove one-founder-only protected transitions remain pending or denied and that emergency containment does not erase evidence.
-- [ ] Review audit rows, React/browser payloads, console/network output, external component provenance, and dependency/license changes; prove the gate used only synthetic data, mocked providers/storage, and zero paid UI services.
-- [ ] Review representative mobile and desktop English/Arabic flows against the approved visual direction, surface briefs, and final `DESIGN.md`; record the named founder checkpoint and keep screenshots supplemental to behavioral evidence.
-- [ ] Run `pnpm verify`, the Impeccable detector/audit disposition, `git diff --check`, `git diff --stat`, a full diff and secret/scope scan, and create the commit-specific WP03 evidence report before marking the package complete.
+- [x] Reset/seed an isolated disposable CI Supabase stack through the guarded command.
+- [x] Run the full role matrix in Playwright.
+- [x] Demonstrate Human `Modules` and Veterinary `Subjects` from configuration.
+- [x] Lock/deactivate/revoke access during an active browser session and confirm the next server operation fails safely.
+- [x] Replay upload finalization and every admin action idempotently; prove one-founder-only protected transitions remain pending or denied and that emergency containment does not erase evidence.
+- [x] Review audit rows, React/browser payloads, console/network output, external component provenance, and dependency/license changes; prove the gate used only synthetic data, mocked providers/storage, and zero paid UI services.
+- [x] Review representative mobile and desktop English/Arabic flows against the approved visual direction, surface briefs, and final `DESIGN.md`; record the named founder checkpoint and keep screenshots supplemental to behavioral evidence.
+- [x] Run `pnpm verify`, the Impeccable detector/audit disposition, `git diff --check`, `git diff --stat`, a full diff and secret/scope scan, and create the commit-specific WP03 evidence report before marking the package complete.
 
 ### 6.1 Routes
 
