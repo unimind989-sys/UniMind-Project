@@ -582,6 +582,17 @@ This workflow-maintenance task follows WP00-T15. Preserve required PR check name
 
 **Pass:** current-policy evidence supports every selected run and would-skip job without contradiction; the exact candidate controls a fail-closed selector; safe documentation omits heavyweight application/database work while required PR checks still report; code, database, dependency, unknown, and selector-error paths cannot silently skip required proof; main push and explicit manual feedback remain covered.
 
+#### WP00-T17 — Add manual logo design skill
+
+This bounded tooling task installs a pinned third-party logo-design skill for deliberate UniMind brand exploration. It does not select a new logo or alter product UI.
+
+- [~] Copy and attribute the pinned skill, its scripts, references, templates, and reference library; preserve the MIT license and the separate trademark notice.
+- [~] Make `$logo-design` explicitly invoked only in Codex, and route UniMind work through confirmed product and design context.
+- [~] Document the command, validate skill metadata and supporting scripts, and prove ordinary logo-adjacent requests do not implicitly invoke it.
+- [~] Deliver the reviewed tooling change through protected `main` and return ordinary task selection to the existing runbook order.
+
+**Pass:** `$logo-design` is available by explicit invocation, the upstream tools work from the pinned local copy, protected UniMind decisions remain human selected, and the added skill does not activate implicitly.
+
 ### 3.1 Select exact pilot cohorts
 
 Create one decision record for Human Medicine and one for Veterinary Medicine containing:
