@@ -60,7 +60,12 @@ test("the mock chat creates, persists, and switches caller-scoped sessions", asy
   );
   const secondSession = new URL(page.url()).searchParams.get("session");
   expect(secondSession).not.toBe(firstSession);
-  await page.getByRole("link", { name: /Session 1/u }).click();
+  // Other journeys can create sessions for the same synthetic caller. Select
+  // the session created here by its canonical ID, never its display ordinal.
+  await page
+    .getByRole("main")
+    .locator(`a[href$="session=${firstSession}"]`)
+    .click();
   await workspaceExpect(page).toHaveURL(new RegExp(`session=${firstSession}`));
 });
 

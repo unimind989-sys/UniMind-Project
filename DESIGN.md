@@ -14,6 +14,7 @@ colors:
   muted-ink: "#9aa8b8"
   cobalt-action: "#3977f7"
   cobalt-focus: "#336ae2"
+  cobalt-readable-ink: "#8db4ff"
   ready-mint: "#79dfb1"
   ready-field: "#10292a"
   error: "#ffb4ab"
@@ -72,7 +73,7 @@ spacing:
   7: "3rem"
 components:
   workspace-action:
-    backgroundColor: "{colors.cobalt-action}"
+    backgroundColor: "{colors.cobalt-focus}"
     textColor: "{colors.on-action}"
     typography: "{typography.label}"
     rounded: "0.65rem"

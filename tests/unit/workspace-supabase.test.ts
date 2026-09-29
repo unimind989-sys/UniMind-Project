@@ -47,6 +47,38 @@ beforeEach(() => {
 });
 
 describe("workspace Supabase adapter", () => {
+  it("strips private upstream fields before returning the public workspace DTO", async () => {
+    mocks.rpc.mockResolvedValue({
+      data: [
+        {
+          ...row,
+          rawObjectKey: "synthetic/private/key",
+          workerDiagnostics: "WP03_PRIVATE_SOURCE_CANARY",
+          otherUserState: "WP03_OTHER_USER_CANARY",
+        },
+      ],
+      error: null,
+    });
+    const { supabaseWorkspaceRepository } =
+      await import("../../src/lib/workspace/workspace.supabase.server");
+    const result = await supabaseWorkspaceRepository.loadScope(
+      row.cohort_id,
+      row.curriculum_unit_id,
+    );
+    const serialized = JSON.stringify(result);
+    expect(result).toMatchObject({ unitId: row.curriculum_unit_id });
+    for (const privateValue of [
+      "rawObjectKey",
+      "workerDiagnostics",
+      "otherUserState",
+      "synthetic/private/key",
+      "WP03_PRIVATE_SOURCE_CANARY",
+      "WP03_OTHER_USER_CANARY",
+    ]) {
+      expect(serialized).not.toContain(privateValue);
+    }
+  });
+
   it("loads one caller-scoped workspace through the protected RPC", async () => {
     const { supabaseWorkspaceRepository } =
       await import("../../src/lib/workspace/workspace.supabase.server");

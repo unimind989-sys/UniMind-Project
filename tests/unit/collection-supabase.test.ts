@@ -53,6 +53,37 @@ beforeEach(() => {
 });
 
 describe("collection Supabase adapter", () => {
+  it("strips private upload and another caller's state from the campaign DTO", async () => {
+    mocks.rpc.mockResolvedValue({
+      data: [
+        {
+          ...campaignRow,
+          object_key: "synthetic/private/key",
+          privateSourceText: "WP03_PRIVATE_SOURCE_CANARY",
+          otherUserState: "WP03_OTHER_USER_CANARY",
+        },
+      ],
+      error: null,
+    });
+    const { supabaseCollectionRepository } =
+      await import("../../src/lib/collection/collection.supabase.server");
+    const result = await supabaseCollectionRepository.loadCampaign(
+      campaignRow.campaign_id,
+    );
+    const serialized = JSON.stringify(result);
+    expect(result).toMatchObject({ id: campaignRow.campaign_id });
+    for (const privateValue of [
+      "object_key",
+      "privateSourceText",
+      "otherUserState",
+      "synthetic/private/key",
+      "WP03_PRIVATE_SOURCE_CANARY",
+      "WP03_OTHER_USER_CANARY",
+    ]) {
+      expect(serialized).not.toContain(privateValue);
+    }
+  });
+
   it("loads only rows returned by the caller-scoped campaign function", async () => {
     const { supabaseCollectionRepository } =
       await import("../../src/lib/collection/collection.supabase.server");

@@ -12,7 +12,7 @@
   inset-inline-start: 1rem;
   padding: 0.7rem 1rem;
   border-radius: var(--radius-control);
-  background: var(--accent);
+  background: var(--accent-focus);
   color: white;
 }
 .skipLink:focus {
@@ -302,7 +302,7 @@
 .openLink,
 .primaryAction {
   border: 0;
-  background: var(--accent);
+  background: var(--accent-focus);
   color: white;
   cursor: pointer;
 }

@@ -1364,7 +1364,7 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 #### WP03-T07 — Add UI and API contract tests
 
-- [ ] Use mocked providers only.
+- [~] Use mocked providers only.
 - [ ] Test each role's allowed navigation and forbidden direct URL/API access.
 - [ ] Verify no browser request or React payload contains a service key, worker diagnostics, raw object key, private source text, or another user's state.
 - [ ] Run automated accessibility checks plus keyboard/focus, zoom/reflow, reduced-motion, touch-target, and screen-reader smoke checks on auth, catalog, workspace, submission, and admin critical screens in English and Arabic.

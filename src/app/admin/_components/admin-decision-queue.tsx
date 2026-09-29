@@ -494,7 +494,7 @@ export function AdminDecisionQueue({
           <span>UniMind</span>
         </Link>
         <h2>{copy.resourceHeading}</h2>
-        <nav aria-label={copy.resourceHeading}>
+        <nav aria-label={copy.resourceHeading} tabIndex={0}>
           <ul>
             {resourceKeys.map((resource) => (
               <li key={resource}>

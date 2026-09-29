@@ -18,6 +18,7 @@
   --text-muted: #9aa8b8;
   --accent: #3977f7;
   --accent-focus: #336ae2;
+  --accent-text: #8db4ff;
   --ready: #79dfb1;
   --ready-surface: #10292a;
   --error: #ffb4ab;
@@ -94,7 +95,7 @@ html[lang="ar"] :where(h1, h2, h3),
 
 body {
   margin: 0;
-  min-width: 20rem;
+  min-width: 320px;
   min-height: 100svh;
   background: var(--canvas);
   color: var(--text-primary);
