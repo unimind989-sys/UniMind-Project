@@ -15,6 +15,7 @@ const users = new Map<Role, { id: string; email: string; password: string }>();
 let databaseContainer: string;
 let inspections: Promise<void>[] = [];
 let exposure: string[] = [];
+let inspectedDocuments = 0;
 
 function sql(query: string): string {
   try {
@@ -132,24 +133,28 @@ test.beforeEach(async ({ page }) => {
     update public.batch_leader_assignments set status = 'ACTIVE', revoked_at = null where user_id = '${users.get("leader")!.id}';`);
   inspections = [];
   exposure = [];
+  inspectedDocuments = 0;
   page.on("response", (response) => {
     const mime = response.headers()["content-type"] ?? "";
     if (!/text\/html|text\/x-component|application\/json/iu.test(mime)) return;
     inspections.push(
       (async () => {
+        if ((await response.finished()) !== null) return;
         let body: string;
         try {
           body = await response.text();
         } catch {
+          exposure.push("completed browser response could not be inspected");
           return;
         }
+        if (mime.includes("text/html")) inspectedDocuments += 1;
         const serverKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
         if (
           (serverKey !== undefined && body.includes(serverKey)) ||
           /synthetic\/raw\/|synthetic\/processed\/|UNIMIND_SYNTHETIC_CANARY_SOURCE_WP01/u.test(
             body,
           ) ||
-          /"(?:object_key|provider_payload|worker_diagnostics|source_text)"\s*:/u.test(
+          /\\?"(?:object_key|provider_payload|worker_diagnostics|source_text)\\?"\s*:/u.test(
             body,
           )
         ) {
@@ -172,6 +177,25 @@ test.beforeEach(async ({ page }) => {
 test.afterEach(async () => {
   await Promise.all(inspections);
   expect(exposure).toEqual([]);
+  expect(inspectedDocuments).toBeGreaterThan(0);
+});
+
+test("anonymous: protected routes and upload mutation remain unavailable", async ({
+  page,
+}) => {
+  await page.goto(workspace);
+  await expect(page).toHaveURL(/\/login\?/u);
+  await page.goto(`/batch-leader/campaigns/${campaign}?lang=en`);
+  await expect(
+    page.getByRole("heading", { name: "Synthetic collection campaign" }),
+  ).toHaveCount(0);
+  const upload = await page.request.post(
+    `/api/batch-leader/campaigns/${campaign}/uploads`,
+  );
+  expect(upload.status()).toBe(403);
+  expect(await upload.json()).toEqual({ error: "UPLOAD_REJECTED" });
+  await page.goto("/admin?lang=en");
+  await expect(page).toHaveURL(/\/login\?/u);
 });
 
 for (const role of roles) {
@@ -219,6 +243,13 @@ for (const role of roles) {
       await expect(
         page.getByRole("heading", { name: "Admin access required" }),
       ).toBeVisible();
+    }
+    if (role === "student") {
+      await page.goto("/learn?lang=en");
+      await page.getByRole("button", { name: "Sign out", exact: true }).click();
+      await expect(page).toHaveURL(/\/login\?/u);
+      await page.goto(workspace);
+      await expect(page).toHaveURL(/\/login\?/u);
     }
   });
 }

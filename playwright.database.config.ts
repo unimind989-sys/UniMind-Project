@@ -37,12 +37,13 @@ export default defineConfig({
   use: { ...base.use, trace: "off", screenshot: "off", video: "off" },
   webServer: {
     ...inheritedServer,
-    command: "corepack pnpm exec tsx scripts/run-playwright-server.ts",
+    command: "corepack pnpm exec tsx scripts/run-database-playwright-server.ts",
     url: "http://127.0.0.1:3100/login",
     reuseExistingServer: false,
-    timeout: 120_000,
+    timeout: 240_000,
     env: {
       ...inheritedServer.env,
+      NODE_ENV: "production",
       NEXT_PUBLIC_SUPABASE_URL: status.apiUrl,
       NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: status.publishableKey,
       SUPABASE_SERVICE_ROLE_KEY: status.serviceRoleKey,

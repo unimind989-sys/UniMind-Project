@@ -97,6 +97,6 @@ Auth-verified caller plus current database membership, assignment, profile, righ
 
 **Remaining:** Gate acceptance, review, proof, checkpoint, delivery and cleanup.
 
-**Next safe action:** Add authenticated disposable browser gate and exhaustive admin replay proof.
+**Next safe action:** Re-run disposable feedback with a guarded production-built browser server. Development-mode Next overwrites the cache policy; feedback `36572713497` at `a21845c` failed all seven login-header checks and is NOT PASS. Hardened payload inspection and added anonymous/logout coverage. Local header/proxy/client 12/12 and typecheck passed (exit 0).
 
 **Reviewer action:** Named Ahmed package checkpoint after candidate review; D-22 already authorizes non-financial delivery.
