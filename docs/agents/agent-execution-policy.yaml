@@ -226,7 +226,7 @@ conditional_ci:
   enforcement:
     requires_governed_workflow_change: true
     workflow_path: .github/workflows/ci.yml
-    workflow_sha256: 841a0d8381a41687776660eec787f73b4639dd27bd62ff707f3b4f8d987b1fce
+    workflow_sha256: de89ac6ef1d4cf851b99b2ebadfc6f52aac2f481e33d71b8a5e541782f82dfba
 
 evidence:
   schema_version: 3

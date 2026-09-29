@@ -1375,7 +1375,7 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 #### WP03-T08 — Run the product-shell gate
 
-- [ ] Reset/seed an isolated disposable CI Supabase stack through the guarded command.
+- [~] Reset/seed an isolated disposable CI Supabase stack through the guarded command.
 - [ ] Run the full role matrix in Playwright.
 - [ ] Demonstrate Human `Modules` and Veterinary `Subjects` from configuration.
 - [ ] Lock/deactivate/revoke access during an active browser session and confirm the next server operation fails safely.

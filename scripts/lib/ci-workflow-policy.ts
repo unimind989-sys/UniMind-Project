@@ -290,6 +290,8 @@ const diagnosticCommands = [
   "db:ci:types",
   "db:types:check",
   "test:integration:database",
+  "exec playwright install --with-deps chromium",
+  "test:e2e:database",
   "test:security",
 ];
 const setupSuccessCondition =

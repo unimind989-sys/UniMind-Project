@@ -7,10 +7,21 @@ export const ephemeralSupabaseActions = [
   "advisors",
   "types",
   "auth",
+  "browser",
   "stop",
 ] as const;
 
 export type EphemeralSupabaseAction = (typeof ephemeralSupabaseActions)[number];
+
+export function createProductShellSeed(seed: string): string {
+  // PostgreSQL accepts the legacy SQL fixture's version/variant-zero IDs.
+  // HTTP adapters enforce RFC UUIDs; map all references consistently for the
+  // separately reset browser stack without weakening production validation.
+  return seed.replace(
+    /([a-f0-9]{8}-[a-f0-9]{4})-0000-0000-([a-f0-9]{12})/gu,
+    "$1-4000-8000-$2",
+  );
+}
 
 type EnvironmentInput = Readonly<Record<string, string | undefined>>;
 
@@ -48,7 +59,7 @@ export function assertGitHubHostedLinuxRunner(input: EnvironmentInput): void {
 }
 
 export function createEphemeralSupabaseArguments(
-  action: Exclude<EphemeralSupabaseAction, "auth" | "upgrade">,
+  action: Exclude<EphemeralSupabaseAction, "auth" | "browser" | "upgrade">,
 ): readonly string[] {
   switch (action) {
     case "start":

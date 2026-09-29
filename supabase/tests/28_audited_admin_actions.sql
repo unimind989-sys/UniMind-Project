@@ -1,5 +1,5 @@
 begin;
-select plan(71);
+select plan(99);
 
 select ok(
   not has_schema_privilege('authenticated', 'unimind_private', 'USAGE'),
@@ -848,6 +848,82 @@ select ok(
   ),
   'the fresh candidate is available when an older pending approval becomes stale'
 );
+
+-- WP03-T08: replay every accepted action through the public server RPC.
+reset role;
+-- Snapshot durable effects after all transitions, including containment and
+-- stale approvals; an exact replay must never add audit/confirmation rows.
+create temporary table gate_replay_snapshot as
+select
+  (select count(*) from unimind_private.admin_action_commands) as commands,
+  (select count(*) from unimind_private.admin_action_confirmations) as confirmations,
+  (select count(*) from unimind_private.audit_events) as audits,
+  jsonb_build_object(
+    'units', (select jsonb_agg(to_jsonb(u) order by id) from public.curriculum_units u),
+    'releases', (select jsonb_agg(to_jsonb(r) order by id) from public.cohort_releases r),
+    'sources', (select jsonb_agg(to_jsonb(s) order by id) from public.source_versions s),
+    'holds', (select jsonb_agg(to_jsonb(h) order by id) from unimind_private.raw_data_holds h),
+    'flags', (select jsonb_agg(to_jsonb(f) order by id) from unimind_private.system_feature_flags f),
+    'raw', (select jsonb_agg(to_jsonb(o) order by id) from unimind_private.raw_objects o)
+  ) as governed_state;
+
+create temporary table gate_replay_results as
+select c.action, c.result_json as original,
+  public.submit_admin_governance_action(
+    p_actor_id => c.actor_id,
+    p_action => c.action,
+    p_target_id => c.target_id,
+    p_expected_version => c.expected_version,
+    p_expected_state => c.expected_state,
+    p_reason => c.reason,
+    p_correlation_id => c.correlation_id,
+    p_idempotency_key => c.idempotency_key,
+    p_pending_action_id => c.pending_action_id,
+    p_hold_expires_at => case when c.action = 'PLACE_RAW_HOLD'
+      then transaction_timestamp() + interval '30 days' else null end,
+    p_review_attested => c.action = 'PLACE_RAW_HOLD',
+    p_runtime_environment => 'ci'
+  ) as replay
+from unimind_private.admin_action_commands c;
+
+select ok(
+  exists (select 1 from gate_replay_results r where r.action = actions.action)
+    and not exists (select 1 from gate_replay_results r where r.action = actions.action
+      and r.replay ->> 'replayed' is distinct from 'true'),
+  actions.action || ' exact replay returns the accepted command'
+)
+from unnest(array[
+  'PUBLISH_UNIT', 'HIDE_UNIT', 'UNLOCK_COHORT', 'LOCK_COHORT',
+  'ACTIVATE_SOURCE', 'DEACTIVATE_SOURCE', 'QUARANTINE_SOURCE', 'RETRY_SOURCE',
+  'PLACE_RAW_HOLD', 'REMOVE_RAW_HOLD', 'ENABLE_FLAG', 'DISABLE_FLAG'
+]) actions(action);
+
+select ok(
+  not exists (select 1 from gate_replay_results r where r.action = actions.action
+    and (r.replay - 'replayed') is distinct from (r.original - 'replayed')),
+  actions.action || ' exact replay preserves its recorded result'
+)
+from unnest(array[
+  'PUBLISH_UNIT', 'HIDE_UNIT', 'UNLOCK_COHORT', 'LOCK_COHORT',
+  'ACTIVATE_SOURCE', 'DEACTIVATE_SOURCE', 'QUARANTINE_SOURCE', 'RETRY_SOURCE',
+  'PLACE_RAW_HOLD', 'REMOVE_RAW_HOLD', 'ENABLE_FLAG', 'DISABLE_FLAG'
+]) actions(action);
+
+select is((select count(*) from unimind_private.admin_action_commands),
+  (select commands from gate_replay_snapshot), 'all action replays create zero duplicate commands');
+select is((select count(*) from unimind_private.admin_action_confirmations),
+  (select confirmations from gate_replay_snapshot), 'all action replays create zero duplicate founder confirmations');
+select is((select count(*) from unimind_private.audit_events),
+  (select audits from gate_replay_snapshot), 'all action replays create zero duplicate audit events');
+select is(jsonb_build_object(
+    'units', (select jsonb_agg(to_jsonb(u) order by id) from public.curriculum_units u),
+    'releases', (select jsonb_agg(to_jsonb(r) order by id) from public.cohort_releases r),
+    'sources', (select jsonb_agg(to_jsonb(s) order by id) from public.source_versions s),
+    'holds', (select jsonb_agg(to_jsonb(h) order by id) from unimind_private.raw_data_holds h),
+    'flags', (select jsonb_agg(to_jsonb(f) order by id) from unimind_private.system_feature_flags f),
+    'raw', (select jsonb_agg(to_jsonb(o) order by id) from unimind_private.raw_objects o)
+  ), (select governed_state from gate_replay_snapshot),
+  'all action replays preserve governed state and historical raw/processed evidence');
 
 select * from finish();
 rollback;
