@@ -2,7 +2,7 @@
 
 **Task ID:** WP03-T08
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** One reproducible synthetic product-shell gate proves role isolation, active-session revocation, complete mutation replay, bilingual presentation, and audit/privacy boundaries before closing WP03.
 
@@ -10,9 +10,9 @@
 
 **Reviewer:** Ahmed named package checkpoint; D-22 standing non-financial lifecycle authorization
 
-**Branch:** codex/wp03-t08-product-shell-gate
+**Branch:** codex/wp03-t08-product-shell-gate (source, merged); codex/wp03-t08-gate-closure (Markdown-only protected closure)
 
-**Updated (UTC):** 2026-09-29T15:07:00Z
+**Updated (UTC):** 2026-09-29T16:38:00Z
 
 ## Derived execution envelope
 
@@ -36,13 +36,13 @@
 
 | Block | Assigned model | Scope and governing inputs | Independent acceptance checks, including failure cases | Assignment reason | Status and evidence |
 | --- | --- | --- | --- | --- | --- |
-| 1 | Sol High | WP03-T08, prior WP03 evidence, master-plan 6.7/7/8.1/8.2; map acceptance and fill missing disposable browser and replay coverage. | Authenticated role matrix; next server operation denies lock/deactivation/revocation; all 12 admin actions replay without duplicate state/audit; upload finalization replay and conflicts remain safe. | One executor preserves cross-system fixture and evidence context. | Implemented; disposable feedback and final proof remain in block 2. |
-| 2 | Sol High | Stable candidate review, bilingual bounded inspection and audit, named founder checkpoint, local broad proof and exact-head protected CI. | Required checks execute with synthetic data/mock providers/storage and zero budget; payloads/audit/provenance are safe; no false PASS. | Integrated gate judgment and recovery remain with owner. | Pending. |
-| 3 | Sol High | Finalize, protected merge, affected-service proof or explicit unchanged-runtime rationale, closure and cleanup. | Reviewed head merges without bypass; evidence binds exact source; clean synchronized main; no task-created branch/temp residue. | Ahmed requested complete lifecycle. | Pending. |
+| 1 | Sol High | WP03-T08, prior WP03 evidence, master-plan 6.7/7/8.1/8.2; map acceptance and fill missing disposable browser and replay coverage. | Authenticated role matrix; next server operation denies lock/deactivation/revocation; all 12 admin actions replay without duplicate state/audit; upload finalization replay and conflicts remain safe. | One executor preserves cross-system fixture and evidence context. | Complete; exact-head disposable CI passed real Auth/browser, database, replay and cleanup. |
+| 2 | Sol High | Stable candidate review, bilingual bounded inspection and audit, named founder checkpoint, local broad proof and exact-head protected CI. | Required checks execute with synthetic data/mock providers/storage and zero budget; payloads/audit/provenance are safe; no false PASS. | Integrated gate judgment and recovery remain with owner. | Complete; fingerprint `46b93886`, final local broad gate and PR CI `36587918801` passed; bounded audit/visual disposition retained. |
+| 3 | Sol High | Finalize, protected merge, affected-service proof or explicit unchanged-runtime rationale, closure and cleanup. | Reviewed head merges without bypass; evidence binds exact source; clean synchronized main; no task-created branch/temp residue. | Ahmed requested complete lifecycle. | Source merge `76e92c0`, production artifact/public proof and Markdown closure evidence complete; exact-head closure delivery and final cleanup are the remaining mechanical steps, verified by Git/GitHub state. |
 
 **Next model:** Sol High
 
-**Current block:** 2
+**Current block:** 3
 
 ## Execution contract
 
@@ -56,7 +56,7 @@
 
 **Pass:** All eight WP03-T08 criteria have executed or valid exactly bound proof. Human Modules and Veterinary Subjects derive from configuration; active sessions lose access on the next server operation; upload/admin replays do not duplicate durable effects; one-founder protected actions stay pending/denied; containment preserves history. All data is synthetic, storage/providers mocked, paid capacity zero. Browser previews are presentation proof, never real authorization proof.
 
-**Evidence:** `evidence/wp03-product-shell/2026-09-29_product-shell-gate_local_fda875f.md` plus sanitized CI reports and final production release report.
+**Evidence:** `evidence/wp03-product-shell/2026-09-29_product-shell-gate_local_fda875f.md`, PR CI runs `36587918801`/`36589939587`, and `evidence/wp03-product-shell/2026-09-29_product-shell-gate-release_production_76e92c0.md`.
 
 **Rollback:** Revert task-only tests/harness/CI and Auth cache-policy correction; restore verified production `ced163e` / deployment `dpl_GWCQ2YxfubZxVsdeRigw4QXUQ5Kw` if affected runtime proof fails. Preserve schema and all audit history.
 
@@ -74,7 +74,7 @@ Auth-verified caller plus current database membership, assignment, profile, righ
 
 **Preparation review:** COMPLETE_INLINE
 
-**Preparation fingerprint:** PENDING_FINAL_CANDIDATE
+**Preparation fingerprint:** 46b938863e83d902b4e609f19f64da544d4b7f613f43e0dc1da6882bbbde5661
 
 **Unresolved findings:** NONE
 
@@ -84,19 +84,23 @@ Auth-verified caller plus current database membership, assignment, profile, righ
 
 - [x] Select WP03-T08 from clean main and record scope/authorization/work blocks.
 - [x] Map acceptance and implement missing gate checks.
-- [ ] Execute focused and disposable proof; review bilingual render, audit and provenance.
-- [ ] Record named founder checkpoint and stable-candidate proof.
-- [ ] Deliver exact reviewed head through protected CI/merge and affected proof.
-- [ ] Close runbook/evidence and clean synchronized main.
+- [x] Execute focused and disposable proof; review bilingual render, audit and provenance.
+- [x] Record named founder checkpoint and stable-candidate proof.
+- [x] Deliver exact reviewed head through protected CI/merge and affected proof.
+- [x] Prepare the bounded Markdown-only task/runbook/evidence closure; final protected merge and cleanup are bound to Git/GitHub state.
 
 ## Handoff
 
-**Changed:** Added guarded disposable authenticated Playwright role/revocation gate, all-action SQL replay assertions and mandatory CI stages. Feedback found actual login cookie writes failed for missing provider response-header handling; repair installs the pinned no-store policy in the request proxy and validates action headers before cookie writes. No rendered/interaction design changed. Fixture reset now reuses its requested item.
+**Changed:** Added guarded disposable authenticated Playwright role/revocation gate, all-action SQL replay assertions and mandatory CI stages. Real Auth feedback found missing response-header handling on login cookie writes; the correction installs/validates the pinned private/no-store policy. Anonymous upload denial now maps to generic 403. Browser-only synthetic IDs use RFC UUIDs. No rendered/interaction design or production migration changed.
 
-**Commands:** Pinned Node 24.19.0/pnpm 10.34.5; guard/workflow 21, Auth header/proxy/client 12 and upload unit/security 5 focused checks passed (exit 0). Current TypeScript, boundaries and secret scan exit 0. Full source diff, diff-check/stat and changed-file secret/scope review COMPLETE_INLINE. Actual-diff envelope remains policy 8 R3/protected with all eight surfaces. Prior broad proof passed twice but later runtime changes invalidated it; final candidate is frozen for renewed guarded proof. Every failed disposable attempt is recorded, never PASS. Named Ahmed NONVISUAL checkpoint retained; bilingual bounded inspection and detector/audit disposition recorded.
+**Commands:** Pinned Node 24.19.0/pnpm 10.34.5; guard/workflow 21, Auth header/proxy/client 12 and upload unit/security 5 focused checks passed. Final frozen `corepack pnpm verify` exited 0 at fingerprint `46b93886`: 460 unit, 15 integration/2 hosted opt-in skips, 44 security, 3 evaluation/3 synthetic cases, 5 load-profile validation checks, 51 mock browser journeys, production build/artifact scan, formatting/lint/types/boundaries/SQL/workflow/policy/1048-file secret scan. All four exact-head required PR checks passed in `36587918801`; disposable integration 17/17 and real-Auth browsers 8/8 plus pgTAP/advisors/types/security/cleanup. Merged-main CI `36589939587` passed the selected jobs. Full source diff/check/stat and changed-file secret/scope review passed. Earlier failed feedback is retained as FAILED. Named Ahmed NONVISUAL checkpoint, bilingual inspection and detector/audit disposition recorded.
 
-**Remaining:** Disposable production-mode feedback, fresh final stable proof, exact-head protected CI/merge, affected production proof and closure/cleanup. Previous broad proof passed twice (latest 459 unit, 15 integration, 44 security, 51 browser, safe build), but subsequent runtime corrections invalidate its final-candidate status. The named Ahmed checkpoint is retained for demonstrated NONVISUAL changes; no fresh design acceptance is required.
+**Delivery:** PR #60 head `3f6bcf0ffc745355760969ba2bf65aa5e3a82860` passed four exact-head checks; `aboayman-oss` approved it under the same executor's control (distinct-account, not independent review). `unimind989-sys` authored/merged without bypass as `76e92c026ff3ba158fca1af7a6332e518f04dc08`; reviewed and merged tree `61eaa0ef90ef275d622ec26e6500b3f64bdf5358`. D-22 was the standing non-financial authorization.
 
-**Next safe action:** Complete the guarded local stable gate and all four exact-head checks on the task PR. Feedback 36586090020 passed seven journeys and all containment/audit/processed-retention checks; only two admin-prefetch body reads failed. Application GET responses now use one real server request and unchanged forwarding, as already proven for the catalog. POST mutations stay on the original browser path. No failure is waived; once all proof is green, obtain exact-head distinct-account approval, protect merge, stage/prove/promote the Git archive, close evidence/runbook, and clean. Passing final local proof will be recorded in the PR body and retained task preparation field, then committed with the production closure report.
+**Production:** Vercel Hobby project `unimind-preview`. Exact Git-archive upload passed byte-for-byte manifest review. READY artifact `dpl_CTwSM6GDsKsUns31ikVJxi5eFjP4` bound merge SHA/tree, production target and release `wp03-t08-76e92c0-production`; protected then public seven-smoke/six-fingerprint plus Auth cache and generic upload-denial probes passed. Alias `project-xwrez.vercel.app` resolves to that artifact. All 15 configuration names present; mock providers, zero budget, paid flags false. One post-probe log sample found 0 warning/error/HTTP 500 among 17 entries. No live Supabase schema/RLS/storage mutation. Rollback is previous verified artifact `dpl_GWCQ2YxfubZxVsdeRigw4QXUQ5Kw`.
 
-**Reviewer action:** Exact-head protected distinct-account technical approval. Ahmed's named visual checkpoint remains current; D-22 authorizes non-financial delivery.
+**Remaining:** Submit and merge only this Markdown closure through exact-head protected CI and distinct-account review, then synchronize clean main and remove the two task branches and owned temporary artifacts. These changes do not alter production runtime; the authoritative production source remains `76e92c0`. Git/GitHub state records final closure PR/head/merge so this record avoids a self-referential commit.
+
+**Next safe action:** Complete protected Markdown closure and cleanup. The readiness selector then recommends WP04-T02 in its own selected task; WP04-T01 is decision-blocked by proposed D-10. D-04/D-05/D-18/D-19 also remain open blockers for real provider, financial, storage and retention decisions.
+
+**Reviewer action:** Exact-head closure review through the authorized distinct GitHub account. Ahmed's named EN/AR visual checkpoint remains current for NONVISUAL changes; D-22 authorizes non-financial delivery, not founder design acceptance.
