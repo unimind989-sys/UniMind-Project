@@ -5,6 +5,7 @@ import { type NextRequest, NextResponse } from "next/server";
 
 import { clientEnvironment } from "../config/env.client";
 import type { Database } from "../../types/database.generated";
+import { authResponseHeaders } from "./auth-response-headers.application";
 
 export async function refreshSupabaseSession(
   request: NextRequest,
@@ -38,6 +39,12 @@ export async function refreshSupabaseSession(
   );
 
   await supabase.auth.getClaims();
+
+  // Also cover first sign-in and logout: those cookie writes happen later in
+  // Server Actions, after this proxy has already performed its refresh read.
+  for (const [name, value] of Object.entries(authResponseHeaders)) {
+    response.headers.set(name, value);
+  }
 
   return response;
 }

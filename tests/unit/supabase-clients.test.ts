@@ -194,4 +194,21 @@ describe("Supabase client factories", () => {
       ]),
     ).not.toThrow();
   });
+
+  it("rejects an unsupported header policy before writing a session cookie", async () => {
+    const { createServerSupabaseClient } =
+      await import("../../src/lib/db/supabase/server");
+    await createServerSupabaseClient({
+      applyResponseHeaders() {
+        throw new Error("Unsupported Auth response header.");
+      },
+    });
+    expect(() =>
+      capturedCookieAdapter().setAll(
+        [{ name: "synthetic-session", value: "updated-cookie", options: {} }],
+        { "Cache-Control": "public, max-age=3600" },
+      ),
+    ).toThrow("Unsupported Auth response header.");
+    expect(mocks.cookieSet).not.toHaveBeenCalled();
+  });
 });

@@ -50,7 +50,7 @@
 
 **Inputs:** Runbook WP03-T08; master-plan 6.7/7/8.1/8.2; DESIGN.md and .impeccable/surfaces; disposable Supabase synthetic fixtures, pgTAP and browser contracts; D-22.
 
-**Files:** This record; test-only disposable Playwright configuration/spec/fixture harness; `scripts/run-ephemeral-supabase.ts` and its guard; `.github/workflows/ci.yml` and governed workflow fingerprint if changed; package scripts; `supabase/tests/28_audited_admin_actions.sql` replay checks or a separate gate contract; WP03 evidence and runbook closure. Runtime files only for demonstrated acceptance defects.
+**Files:** This record; disposable Playwright configuration/spec/fixtures; `scripts/run-ephemeral-supabase.ts`, its guard and CI-policy validator/tests; `.github/workflows/ci.yml` and governed workflow fingerprint; package scripts; `supabase/tests/28_audited_admin_actions.sql`; `src/lib/auth/auth-response-headers.application.ts`, `refresh-session.server.ts`, `supabase-auth.server.ts` and `src/lib/db/supabase/server.ts` with focused header/client/proxy tests for the observed real-login defect; WP03 evidence and runbook closure.
 
 **Verify:** Focused guard/typecheck/SQL/browser harness checks; guarded disposable CI reset/seed, complete pgTAP/admin/upload replay and authenticated Playwright role/revocation tests; bounded side-browser inspection; Impeccable detector/audit disposition; `corepack pnpm scan:secrets`; `corepack pnpm verify`; `git diff --check`, `git diff --stat`, full diff and secret/scope review; exact-head required CI; named Ahmed package checkpoint.
 
@@ -58,7 +58,7 @@
 
 **Evidence:** `evidence/wp03-product-shell/2026-09-29_product-shell-gate_<source-short-sha>.md` plus sanitized CI reports.
 
-**Rollback:** Revert task-only test/harness/CI changes. No application/schema mutation planned; preserve last verified production `ced163e` / deployment `dpl_GWCQ2YxfubZxVsdeRigw4QXUQ5Kw` and all audit history.
+**Rollback:** Revert task-only tests/harness/CI and Auth cache-policy correction; restore verified production `ced163e` / deployment `dpl_GWCQ2YxfubZxVsdeRigw4QXUQ5Kw` if affected runtime proof fails. Preserve schema and all audit history.
 
 **Hard stop:** No real/private data, paid resource/provider/cap, local infrastructure service, shared-environment reset, weakened authorization/protection, founder principal provisioning in shared environments, or closure with missing/failed proof. Preserve unrelated work; none present at entry.
 
@@ -91,9 +91,9 @@ Auth-verified caller plus current database membership, assignment, profile, righ
 
 ## Handoff
 
-**Changed:** Task selected; implementation not started.
+**Changed:** Added guarded disposable authenticated Playwright role/revocation gate, all-action SQL replay assertions and mandatory CI stages. Feedback found actual login cookie writes failed for missing provider response-header handling; repair installs the pinned no-store policy in the request proxy and validates action headers before cookie writes. No rendered/interaction design changed. Fixture reset now reuses its requested item.
 
-**Commands:** Selector recommends WP03-T08; clean main `9d9eaba`; intent route policy 8 R3/protected, zero workers. `corepack pnpm exec node --version` v24.19.0 and pnpm 10.34.5. `gh` has authorized author and distinct reviewer accounts; no browser credential access.
+**Commands:** Entry main `9d9eaba`; policy 8 R3/protected, zero workers; pinned Node v24.19.0/pnpm 10.34.5. Focused guard/workflow 20/20 and security 18/18 passed; typecheck, boundaries, SQL conventions, policy/workflow, formatting and secret scans passed. Workstation browser/database refusal is an expected guard rejection. Disposable feedback run `36571293609` at `d7b3151` passed setup/reset/SQL/advisors/types/Auth/security/cleanup but browser failed on real login cookie-header handling and repeat-fixture uniqueness; NOT PASS. The repair passes 11 focused header/proxy/client tests before the added sink-before-cookie check. Rendered inspection in progress; broad/local/exact-head proof pending.
 
 **Remaining:** Gate acceptance, review, proof, checkpoint, delivery and cleanup.
 

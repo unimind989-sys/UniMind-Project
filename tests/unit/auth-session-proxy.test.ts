@@ -157,5 +157,8 @@ describe("Supabase session proxy", () => {
     expect(mocks.getClaims).toHaveBeenCalledOnce();
     expect(response.status).toBe(200);
     expect(response.cookies.getAll()).toEqual([]);
+    expect(response.headers.get("cache-control")).toContain("no-store");
+    expect(response.headers.get("pragma")).toBe("no-cache");
+    expect(response.headers.get("expires")).toBe("0");
   });
 });

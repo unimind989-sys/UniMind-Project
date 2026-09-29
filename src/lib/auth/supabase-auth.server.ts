@@ -2,6 +2,7 @@ import "server-only";
 
 import { getServerEnvironment } from "../config/env.server";
 import { createServerSupabaseClient } from "../db/supabase/server";
+import { assertAuthHeadersCoveredByProxy } from "./auth-response-headers.application";
 import {
   createAuthApplication,
   type AuthGateway,
@@ -37,14 +38,20 @@ async function safelyRunAuthCall(
 }
 
 export function createSupabaseAuthGateway(): AuthGateway {
+  // This gateway is used by the auth Server Actions. Their matched request
+  // proxy installs the exact pinned SSR cache policy on every response.
+  const createActionClient = () =>
+    createServerSupabaseClient({
+      applyResponseHeaders: assertAuthHeadersCoveredByProxy,
+    });
   return {
     async signIn(input) {
-      const client = await createServerSupabaseClient();
+      const client = await createActionClient();
       return safelyRunAuthCall(() => client.auth.signInWithPassword(input));
     },
 
     async signUp(input) {
-      const client = await createServerSupabaseClient();
+      const client = await createActionClient();
       return safelyRunAuthCall(() =>
         client.auth.signUp({
           email: input.email,
@@ -55,7 +62,7 @@ export function createSupabaseAuthGateway(): AuthGateway {
     },
 
     async resendVerification(input) {
-      const client = await createServerSupabaseClient();
+      const client = await createActionClient();
       return safelyRunAuthCall(() =>
         client.auth.resend({
           type: "signup",
@@ -66,7 +73,7 @@ export function createSupabaseAuthGateway(): AuthGateway {
     },
 
     async requestPasswordReset(input) {
-      const client = await createServerSupabaseClient();
+      const client = await createActionClient();
       return safelyRunAuthCall(() =>
         client.auth.resetPasswordForEmail(input.email, {
           redirectTo: input.redirectTo,
@@ -75,12 +82,12 @@ export function createSupabaseAuthGateway(): AuthGateway {
     },
 
     async updatePassword(password) {
-      const client = await createServerSupabaseClient();
+      const client = await createActionClient();
       return safelyRunAuthCall(() => client.auth.updateUser({ password }));
     },
 
     async signOut() {
-      const client = await createServerSupabaseClient();
+      const client = await createActionClient();
       return safelyRunAuthCall(() => client.auth.signOut({ scope: "local" }));
     },
   };

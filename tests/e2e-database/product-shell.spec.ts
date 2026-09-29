@@ -63,7 +63,16 @@ async function login(page: Page, role: Role) {
   await page.goto("/login?lang=en");
   await page.getByLabel("Email address", { exact: true }).fill(user.email);
   await page.getByLabel("Password", { exact: true }).fill(user.password);
+  const actionResponse = page.waitForResponse(
+    (response) =>
+      response.request().method() === "POST" &&
+      new URL(response.url()).pathname === "/login",
+  );
   await page.getByRole("button", { name: "Continue", exact: true }).click();
+  const response = await actionResponse;
+  expect(response.headers()["cache-control"]).toContain("no-store");
+  expect(response.headers()["pragma"]).toBe("no-cache");
+  expect(response.headers()["expires"]).toBe("0");
   await expect(page).toHaveURL(/\/learn(?:\?|$)/u);
 }
 
@@ -112,7 +121,8 @@ test.beforeAll(async () => {
     insert into public.user_roles (user_id, role, granted_by, grant_reason)
     values ('${users.get("admin")!.id}', 'ADMIN', '10000000-0000-0000-0000-000000000001', 'Synthetic product-shell gate administrator');
     insert into public.requested_material_items (campaign_id, curriculum_unit_id, title, expected_type, required, status)
-    values ('${campaign}', '${unit}', 'Synthetic gate document', 'DOCUMENT', true, 'REQUESTED');`);
+    select '${campaign}', '${unit}', 'Synthetic gate document', 'DOCUMENT', true, 'REQUESTED'
+    where not exists (select 1 from public.requested_material_items where campaign_id = '${campaign}' and curriculum_unit_id = '${unit}');`);
 });
 
 test.beforeEach(async ({ page }) => {

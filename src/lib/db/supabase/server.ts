@@ -42,6 +42,8 @@ export async function createServerSupabaseClient(
             throw new SupabaseResponseHeadersRequiredError();
           }
 
+          options.applyResponseHeaders?.(responseHeaders);
+
           try {
             for (const { name, value, options } of cookiesToSet) {
               cookieStore.set(name, value, options);
@@ -51,8 +53,6 @@ export async function createServerSupabaseClient(
             // Refresh writes for those renders must be handled by the request proxy.
             return;
           }
-
-          options.applyResponseHeaders?.(responseHeaders);
         },
       },
     },
