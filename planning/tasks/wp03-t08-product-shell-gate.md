@@ -28,7 +28,7 @@
 
 **Capabilities:** frontend-quality-floor, trust-boundaries, data-integrity, storage-safety, release-safety
 
-**Procedural skills:** trust-boundaries; Impeccable audit; finalize
+**Procedural skills:** trust-boundaries; Impeccable audit; diagnosing-bugs; finalize; vercel deployments-cicd
 
 **Routing reason:** Package acceptance spans real disposable Auth/database operations, role/browser isolation, mutation replay and visual evidence. Only test/CI corrections are initially planned.
 
@@ -42,7 +42,7 @@
 
 **Next model:** Sol High
 
-**Current block:** 1
+**Current block:** 2
 
 ## Execution contract
 
@@ -56,7 +56,7 @@
 
 **Pass:** All eight WP03-T08 criteria have executed or valid exactly bound proof. Human Modules and Veterinary Subjects derive from configuration; active sessions lose access on the next server operation; upload/admin replays do not duplicate durable effects; one-founder protected actions stay pending/denied; containment preserves history. All data is synthetic, storage/providers mocked, paid capacity zero. Browser previews are presentation proof, never real authorization proof.
 
-**Evidence:** `evidence/wp03-product-shell/2026-09-29_product-shell-gate_<source-short-sha>.md` plus sanitized CI reports.
+**Evidence:** `evidence/wp03-product-shell/2026-09-29_product-shell-gate_local_fda875f.md` plus sanitized CI reports and final production release report.
 
 **Rollback:** Revert task-only tests/harness/CI and Auth cache-policy correction; restore verified production `ced163e` / deployment `dpl_GWCQ2YxfubZxVsdeRigw4QXUQ5Kw` if affected runtime proof fails. Preserve schema and all audit history.
 
@@ -70,20 +70,20 @@ Auth-verified caller plus current database membership, assignment, profile, righ
 
 **Design disposition:** NONVISUAL
 
-**Design evidence:** rationale:test and CI proof only; no rendered or interaction behavior change; baseline:DESIGN.md and approved WP03-T02–T06 surface evidence
+**Design evidence:** rationale:Auth cache policy and test/CI corrections preserve presentation and interaction design; baseline:DESIGN.md and approved WP03 surfaces; Ahmed 2026-09-29 five-screen EN/AR checkpoint retained under agent-workflow section 6
 
-**Preparation review:** PENDING
+**Preparation review:** COMPLETE_INLINE
 
-**Preparation fingerprint:** NOT_READY
+**Preparation fingerprint:** 7bbcf15db44a930207a50063121b5707590a7e1f74dab2f17b15a7b6fc1ad048
 
-**Unresolved findings:** Pending acceptance mapping and focused proof.
+**Unresolved findings:** NONE
 
 **Established facts:** NONE
 
 ## Steps
 
 - [x] Select WP03-T08 from clean main and record scope/authorization/work blocks.
-- [ ] Map acceptance and implement missing gate checks.
+- [x] Map acceptance and implement missing gate checks.
 - [ ] Execute focused and disposable proof; review bilingual render, audit and provenance.
 - [ ] Record named founder checkpoint and stable-candidate proof.
 - [ ] Deliver exact reviewed head through protected CI/merge and affected proof.
@@ -93,10 +93,10 @@ Auth-verified caller plus current database membership, assignment, profile, righ
 
 **Changed:** Added guarded disposable authenticated Playwright role/revocation gate, all-action SQL replay assertions and mandatory CI stages. Feedback found actual login cookie writes failed for missing provider response-header handling; repair installs the pinned no-store policy in the request proxy and validates action headers before cookie writes. No rendered/interaction design changed. Fixture reset now reuses its requested item.
 
-**Commands:** Entry main `9d9eaba`; policy 8 R3/protected, zero workers; pinned Node v24.19.0/pnpm 10.34.5. Focused guard/workflow 20/20 and security 18/18 passed; typecheck, boundaries, SQL conventions, policy/workflow, formatting and secret scans passed. Workstation browser/database refusal is an expected guard rejection. Disposable feedback run `36571293609` at `d7b3151` passed setup/reset/SQL/advisors/types/Auth/security/cleanup but browser failed on real login cookie-header handling and repeat-fixture uniqueness; NOT PASS. The repair passes 11 focused header/proxy/client tests before the added sink-before-cookie check. Rendered inspection in progress; broad/local/exact-head proof pending.
+**Commands:** Entry main `9d9eaba`; policy 8 R3/protected, zero workers; pinned Node v24.19.0/pnpm 10.34.5. Focused guard/workflow 20/20, production denial 18/18 and Auth header/proxy/client 12/12 passed (exit 0); typecheck, boundaries, SQL conventions, policy/workflow, formatting and secret scans exit 0. Full diff, diff-check/stat and changed-file secret/scope review completed inline. NONVISUAL named Ahmed checkpoint retained; bounded desktop EN/mobile AR inspection, configured Modules/Subjects and empty warning/error console recorded. Disposable failed attempts and audit dispositions are explicit in the gate report. Production-mode feedback `36573840755` at `fda875f` and broad/exact-head proof pending.
 
-**Remaining:** Gate acceptance, review, proof, checkpoint, delivery and cleanup.
+**Remaining:** Disposable production-mode feedback, exact-head protected CI/merge, affected production proof and closure/cleanup. Frozen local broad proof exited 0 at fingerprint `7bbcf15db44a930207a50063121b5707590a7e1f74dab2f17b15a7b6fc1ad048` (458 unit, 15 integration, 44 security, 51 browser, safe build). The named Ahmed checkpoint is retained for demonstrated NONVISUAL changes; no fresh design acceptance is required.
 
-**Next safe action:** Re-run disposable feedback with a guarded production-built browser server. Development-mode Next overwrites the cache policy; feedback `36572713497` at `a21845c` failed all seven login-header checks and is NOT PASS. Hardened payload inspection and added anonymous/logout coverage. Local header/proxy/client 12/12 and typecheck passed (exit 0).
+**Next safe action:** Run bounded disposable feedback with RFC-valid browser fixtures. `36573840755` at `fda875f` passed anonymous/header checks but failed seven signed-in cases; response inspection afterEach stalled. Cancellation was requested after non-convergence; the failed browser report and successful security/cleanup stages are retained, never PASS. A seconds-long fixture UUID regression went red, then green 6/6 after consistently remapping the browser-only seed; the legacy SQL fixture is unchanged. Direct caller RPC preflight separates fixture authority from browser restoration; page content is inspected and then page closure settles speculative streams. Source changes invalidate relevant local/CI proof and require the next stable verification.
 
-**Reviewer action:** Named Ahmed package checkpoint after candidate review; D-22 already authorizes non-financial delivery.
+**Reviewer action:** Exact-head protected distinct-account technical approval. Ahmed's named visual checkpoint remains current; D-22 authorizes non-financial delivery.

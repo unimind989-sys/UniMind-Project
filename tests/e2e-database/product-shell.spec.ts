@@ -5,9 +5,9 @@ import { expect, test, type Page } from "@playwright/test";
 import { assertGitHubHostedLinuxRunner } from "../../scripts/lib/ephemeral-supabase";
 
 assertGitHubHostedLinuxRunner(process.env);
-const cohort = "20000000-0000-0000-0000-000000000006";
-const unit = "20000000-0000-0000-0000-000000000007";
-const campaign = "30000000-0000-0000-0000-000000000001";
+const cohort = "20000000-0000-4000-8000-000000000006";
+const unit = "20000000-0000-4000-8000-000000000007";
+const campaign = "30000000-0000-4000-8000-000000000001";
 const workspace = `/learn/${cohort}/${unit}/chat?lang=en`;
 const roles = ["student", "leader", "admin"] as const;
 type Role = (typeof roles)[number];
@@ -39,7 +39,7 @@ function sql(query: string): string {
           "ON_ERROR_STOP=1",
         ],
         {
-          input: `begin; select set_config('unimind.actor_id', '10000000-0000-0000-0000-000000000001', true);
+          input: `begin; select set_config('unimind.actor_id', '10000000-0000-4000-8000-000000000001', true);
         select set_config('unimind.audit_reason', 'WP03-T08 disposable browser fixture', true);
         select set_config('unimind.correlation_id', '${randomUUID()}', true); ${query} commit;`,
           encoding: "utf8",
@@ -58,6 +58,20 @@ function sql(query: string): string {
   }
 }
 
+function inspect(body: string): void {
+  const serverKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (
+    (serverKey !== undefined && body.includes(serverKey)) ||
+    /synthetic\/raw\/|synthetic\/processed\/|UNIMIND_SYNTHETIC_CANARY_SOURCE_WP01/u.test(
+      body,
+    ) ||
+    /\\?"(?:object_key|provider_payload|worker_diagnostics|source_text)\\?"\s*:/u.test(
+      body,
+    )
+  )
+    exposure.push("private data in browser response");
+}
+
 async function login(page: Page, role: Role) {
   const user = users.get(role);
   if (user === undefined) throw new Error("Synthetic role fixture is missing.");
@@ -68,6 +82,7 @@ async function login(page: Page, role: Role) {
     (response) =>
       response.request().method() === "POST" &&
       new URL(response.url()).pathname === "/login",
+    { timeout: 20_000 },
   );
   await page.getByRole("button", { name: "Continue", exact: true }).click();
   const response = await actionResponse;
@@ -115,20 +130,54 @@ test.beforeAll(async () => {
   }
   sql(`insert into public.cohort_memberships (user_id, cohort_id, status, starts_at, ends_at, granted_by, grant_reason)
     values ('${users.get("student")!.id}', '${cohort}', 'ACTIVE', now() - interval '1 day', now() + interval '1 day',
-      '10000000-0000-0000-0000-000000000001', 'Synthetic product-shell gate membership');
+      '10000000-0000-4000-8000-000000000001', 'Synthetic product-shell gate membership');
     insert into public.batch_leader_assignments (campaign_id, user_id, status, expires_at, invited_by, accepted_at)
     values ('${campaign}', '${users.get("leader")!.id}', 'ACTIVE', now() + interval '1 day',
-      '10000000-0000-0000-0000-000000000001', now());
+      '10000000-0000-4000-8000-000000000001', now());
     insert into public.user_roles (user_id, role, granted_by, grant_reason)
-    values ('${users.get("admin")!.id}', 'ADMIN', '10000000-0000-0000-0000-000000000001', 'Synthetic product-shell gate administrator');
+    values ('${users.get("admin")!.id}', 'ADMIN', '10000000-0000-4000-8000-000000000001', 'Synthetic product-shell gate administrator');
     insert into public.requested_material_items (campaign_id, curriculum_unit_id, title, expected_type, required, status)
     select '${campaign}', '${unit}', 'Synthetic gate document', 'DOCUMENT', true, 'REQUESTED'
     where not exists (select 1 from public.requested_material_items where campaign_id = '${campaign}' and curriculum_unit_id = '${unit}');`);
+  // Diagnose fixture authority before browser/session behavior. Never log
+  // credentials or returned rows; these are the same caller RPCs used by pages.
+  const caller = createClient(
+    url,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+    {
+      auth: { persistSession: false, autoRefreshToken: false },
+    },
+  );
+  for (const role of ["student", "leader"] as const) {
+    const user = users.get(role)!;
+    const signedIn = await caller.auth.signInWithPassword({
+      email: user.email,
+      password: user.password,
+    });
+    expect(signedIn.error?.code ?? "none", `${role} fixture sign-in`).toBe(
+      "none",
+    );
+    const result =
+      role === "student"
+        ? await caller.rpc("current_student_workspace", {
+            target_cohort_id: cohort,
+            target_curriculum_unit_id: unit,
+          })
+        : await caller.rpc("current_batch_leader_campaign", {
+            target_campaign_id: campaign,
+          });
+    expect(result.error?.code ?? "none", `${role} fixture RPC`).toBe("none");
+    expect(
+      result.data?.length ?? 0,
+      `${role} fixture authorized scope`,
+    ).toBeGreaterThan(0);
+    await caller.auth.signOut({ scope: "local" });
+  }
 });
 
 test.beforeEach(async ({ page }) => {
   sql(`update public.cohort_releases set release_status = 'UNLOCKED', reason = 'Restore synthetic browser fixture' where cohort_id = '${cohort}';
-    update public.source_versions set activation_status = 'ACTIVE' where id = '41000000-0000-0000-0000-000000000001';
+    update public.source_versions set activation_status = 'ACTIVE' where id = '41000000-0000-4000-8000-000000000001';
     update public.cohort_memberships set status = 'ACTIVE' where user_id = '${users.get("student")!.id}';
     update public.batch_leader_assignments set status = 'ACTIVE', revoked_at = null where user_id = '${users.get("leader")!.id}';`);
   inspections = [];
@@ -148,18 +197,7 @@ test.beforeEach(async ({ page }) => {
           return;
         }
         if (mime.includes("text/html")) inspectedDocuments += 1;
-        const serverKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-        if (
-          (serverKey !== undefined && body.includes(serverKey)) ||
-          /synthetic\/raw\/|synthetic\/processed\/|UNIMIND_SYNTHETIC_CANARY_SOURCE_WP01/u.test(
-            body,
-          ) ||
-          /\\?"(?:object_key|provider_payload|worker_diagnostics|source_text)\\?"\s*:/u.test(
-            body,
-          )
-        ) {
-          exposure.push("private data in browser response");
-        }
+        inspect(body);
       })(),
     );
   });
@@ -174,7 +212,12 @@ test.beforeEach(async ({ page }) => {
   });
 });
 
-test.afterEach(async () => {
+test.afterEach(async ({ page }) => {
+  test.setTimeout(15_000);
+  // Include delivered partial HTML/React scripts, then abort speculative
+  // prefetch streams so response.finished cannot outlive the test forever.
+  inspect(await page.content());
+  await page.close();
   await Promise.all(inspections);
   expect(exposure).toEqual([]);
   expect(inspectedDocuments).toBeGreaterThan(0);
@@ -275,7 +318,7 @@ for (const transition of ["lock", "deactivate", "revoke"] as const) {
       );
     if (transition === "deactivate")
       sql(
-        "update public.source_versions set activation_status = 'DEACTIVATED' where id = '41000000-0000-0000-0000-000000000001';",
+        "update public.source_versions set activation_status = 'DEACTIVATED' where id = '41000000-0000-4000-8000-000000000001';",
       );
     if (transition === "revoke")
       sql(
@@ -296,7 +339,7 @@ for (const transition of ["lock", "deactivate", "revoke"] as const) {
     ).toBeGreaterThan(auditBefore);
     expect(
       sql(
-        "select count(*) from unimind_private.processed_documents where source_version_id = '41000000-0000-0000-0000-000000000001';",
+        "select count(*) from unimind_private.processed_documents where source_version_id = '41000000-0000-4000-8000-000000000001';",
       ),
     ).toBe("1");
   });

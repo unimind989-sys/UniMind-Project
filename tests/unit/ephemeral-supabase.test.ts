@@ -1,8 +1,11 @@
 import { describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
+import { z } from "zod";
 
 import {
   assertGitHubHostedLinuxRunner,
   createEphemeralSupabaseArguments,
+  createProductShellSeed,
   parseEphemeralSupabaseAction,
   parseEphemeralSupabaseStatus,
 } from "../../scripts/lib/ephemeral-supabase";
@@ -13,6 +16,25 @@ const localDatabaseUrl = [
 ].join(":");
 
 describe("ephemeral Supabase guard", () => {
+  it("seeds browser routes with RFC UUIDs while preserving fixture identity references", () => {
+    const seed = readFileSync("supabase/fixtures/wp02-synthetic.sql", "utf8");
+    const pattern = /[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}/gu;
+    const original = [...seed.matchAll(pattern)].map(([value]) => value);
+    const prepared = [...createProductShellSeed(seed).matchAll(pattern)].map(
+      ([value]) => value,
+    );
+    expect(prepared.length).toBe(original.length);
+    expect(new Set(prepared).size).toBe(new Set(original).size);
+    expect(
+      prepared.every((value) => z.string().uuid().safeParse(value).success),
+    ).toBe(true);
+    for (const value of new Set(original)) {
+      const mapped = new Set(
+        prepared.filter((_, index) => original[index] === value),
+      );
+      expect(mapped.size).toBe(1);
+    }
+  });
   it("accepts only the GitHub-hosted Linux runner contract", () => {
     expect(() =>
       assertGitHubHostedLinuxRunner({

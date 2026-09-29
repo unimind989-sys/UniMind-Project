@@ -1,0 +1,50 @@
+# Gate report: WP03-T08 product shell
+
+**Status:** IN PROGRESS — local stable proof passed; disposable production-mode browser and delivery proof pending.
+
+**Candidate:** `fda875f`; base `9d9eaba`. The final reviewed PR head, merge, deployment and closure will supersede this preparation identity.
+
+**Executor:** Codex `/root`, one Sol High owner, zero workers, Ahmed selected. Policy 8: docs/frontend/runtime/auth/data/storage/delivery/tooling; R3/protected. D-22 authorizes the task-scoped non-financial lifecycle. No real data, shared-environment reset, paid capacity or provider enablement is authorized by this gate.
+
+## Acceptance map
+
+| Runbook requirement | Rejecting proof and current result |
+| --- | --- |
+| Disposable reset/seed | Guarded GitHub-hosted Linux setup performs migration upgrade and repeat reset/seed. Both feedback runs passed setup and cleanup. Workstation `test:e2e:database` refuses before starting infrastructure. |
+| Complete role matrix | Existing 51 mock browser contracts plus new production-built disposable Auth browsers: anonymous, student, assigned leader and admin, with direct cross-role routes and real upload denials. Final result pending. Preview fixtures never establish authorization. |
+| Human Modules / Veterinary Subjects | Existing deterministic catalog contracts and fresh side-browser selection of each configured faculty/year/term show Modules and Subjects; Arabic Veterinary region shows مواد. |
+| Active-session lock/deactivation/revocation | Three new real Auth cases submit the already-rendered chat form after durable predicate changes; leader revocation denies campaign/upload access in the same session. Chat count must stay fixed, audit count increase, processed document remain. Pending disposable result. |
+| Idempotence, founder gate, containment | All 12 accepted admin action types are replayed through the public RPC: saved results match; command, confirmation and audit counts and governed state stay fixed. Complete pgTAP including the expanded 99-assertion admin suite passed both feedback runs. Existing upload-finalization suites reject duplicate/conflicting requests; protected first-founder transitions remain pending/denied and containment preserves evidence. |
+| Audit / payload / provenance / cost | SQL compares durable audit counts and state. New real-browser HTML/RSC/JSON scanner rejects service-key/private-field/source canaries and unreadable completed responses; completed HTML coverage is mandatory. Existing contract suite scans requests/responses and console. Storage credentials are synthetic, providers mocked, budget zero, flags false, network limited to loopback. No dependency/lockfile, imported UI, media or license change. |
+| Bilingual visual / founder checkpoint | NONVISUAL correction: server Auth cache policy and test/CI changes preserve approved presentation and interaction design. Ahmed's named five-screen EN/AR checkpoint from 2026-09-29 is retained under agent-workflow section 6; documented in the T07 production report at `ced163e`. It is human-reported and not executor-observed speech. Fresh representative desktop EN and mobile AR inspection is supplemental behavioral/geometry evidence. |
+| Stable proof / evidence | Focused checks and full diff review passed; broad `pnpm verify`, exact-head CI, protected merge and affected production proof pending. This report does not mark the package complete. |
+
+## Auth defect and rejecting feedback
+
+Real sign-in initially failed because `@supabase/ssr` 0.12.4 emits response cache headers with cookie writes while the Server Action gateway had no response-header sink. The correction installs the pinned private/no-store/pragma/expires policy in the matched request proxy and validates action-emitted headers before writing cookies. Unsupported/weaker policies fail closed. Callback routes retain their explicit response sink. No role, membership, grant, storage or source-availability semantics changed.
+
+| Feedback | Result and disposition |
+| --- | --- |
+| `36571293609`, source `d7b3151` | FAILED: real login lacked a header sink; worker restart hit a unique fixture item. Setup, SQL, advisors, types, integration, security and cleanup passed. Both defects corrected. |
+| `36572713497`, source `a21845c` | FAILED: seven login-header checks observed Next development mode's `no-cache, must-revalidate` override. Pinned `base-server.js` explains this development-only override. Moved disposable tests to guarded `next build` / `next start`; retained the no-store assertion. |
+| `36573840755`, source `fda875f` | Browser FAILED: anonymous and login/no-store passed, seven signed-in cases failed; afterEach waited indefinitely on speculative streams. Cancellation was requested after non-convergence; SQL/security/cleanup passed and the failed browser report was retained. Never PASS. |
+
+Diagnosis minimised the scope symptom to fixture IDs. The SQL seed uses version/variant-zero UUIDs accepted by PostgreSQL but rejected by the pinned Zod UUID grammar used by production route adapters. A focused regression over the complete seed went red (`ephemeral-supabase.test.ts`, 1 failed/5 passed, ~1s), then green (6/6) after mapping every browser-seed reference to RFC UUIDs. Browser action now revalidates loopback and resets only the disposable stack with a generated synthetic seed, removed in `finally`; the legacy SQL fixture and production validation are unchanged. New direct authenticated caller RPC preflight verifies fixture authority before browser tests. Delivered DOM/scripts are inspected before page closure settles interrupted speculative streams; completed body failures still reject. A global bound and first-failure stop keep feedback finite. These harness changes invalidate their earlier stable/CI inputs; fresh proof is required. The slower external loop is unavoidable under the approved GitHub-only infrastructure floor, while the root-cause regression runs in seconds locally.
+
+Focused results: guard/workflow 20/20; production access/upload/admin 18/18; Auth header/proxy/client 12/12; current TypeScript, boundaries, SQL conventions, workflow/policy, formatting and secret scanning exited 0 before stable proof. No failed run is labeled PASS.
+
+Frozen local `corepack pnpm verify` exited 0 with unchanged fingerprint `7bbcf15db44a930207a50063121b5707590a7e1f74dab2f17b15a7b6fc1ad048`: formatting/lint/current and fresh TypeScript, boundaries, 27 migration conventions, workflow/policy, secret scanning (1048 files); 458 unit, 15 integration with 2 hosted opt-in skips, 44 security, 3 evaluation plus 3 versioned synthetic cases, 5 load-profile validation tests, 51 browser journeys, safe production build and client-artifact secret scan. Load validation did not execute a workload. Tracked inputs remained frozen until completion. Later evidence-only edits reuse these results; final PR CI must still bind the reviewed head.
+
+## Bounded Impeccable audit
+
+Fresh synthetic side-browser inspection used 1280×900 desktop and 390×844 mobile. Auth, catalog, workspace, collection and admin controls/headings were inspected in EN and AR; Arabic direction was evaluated after hydration. Selected Human and Veterinary catalog paths derive region labels from configuration. Desktop document widths were 1270–1280px; mobile 380px at a 390px viewport. No document overflow was observed. Auth shelf, material selector and admin decision rails intentionally scroll within their containers. Arabic synthetic canonical titles retain their source language and are metadata, not untranslated UI copy. Browser warning/error log was empty. Screenshots are supplemental and were displayed in the task; no private/session capture is retained.
+
+The one bounded detector scan found 34 inherited advisory findings: 20 type-size, 7 radius, 7 color metadata mismatches. Detector exit 1 is explicitly dispositioned, not claimed as clean. Every reported declaration is unchanged from the T07 source; approved compositions and its P3 disposition remain valid. The existing DESIGN sidecar and auth brief contain inherited metadata drift; product/master-plan and approved surfaces remain authoritative. No unrelated metadata repair was folded into this gate.
+
+The integrated audit retains the source-bound 18/20 disposition (accessibility 3/4, performance 4/4, responsive behavior 4/4, theming 3/4, implementation integrity 4/4). Automated axe, keyboard, visible focus, reflow, text scaling, target size, reduced-motion and semantic-language proof comes from the current required browser suite. This is bounded gate evidence, not a claim of complete WCAG conformance. Existing component/tool provenance and licenses remain unchanged; Google font acquisition is build-time and delivered assets are self-hosted.
+
+## Delivery and rollback
+
+Runtime Auth changes require a fresh exact-source production artifact and focused cache/access smoke after protected merge. Live Supabase schema/grants/RLS/storage changes are unnecessary: all fixtures/mutations run in disposable CI and no migration was added. Production tests must remain anonymous/synthetic and must not provision a founder or real student.
+
+Rollback: restore verified `ced163e` artifact `dpl_GWCQ2YxfubZxVsdeRigw4QXUQ5Kw` to `project-xwrez.vercel.app`, recheck alias/release/smoke and revert only task Auth/harness changes if needed. Preserve schema and audit history. Closure requires passing exact-head protected CI, compliant distinct-account review, affected production proof, synchronized clean main and removal of task-created temporary/branch state.

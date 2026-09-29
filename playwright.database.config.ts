@@ -26,7 +26,9 @@ const status = parseEphemeralSupabaseStatus(
 export default defineConfig({
   ...base,
   testDir: "./tests/e2e-database",
-  timeout: 90_000,
+  timeout: 45_000,
+  globalTimeout: 480_000,
+  maxFailures: 1,
   expect: { timeout: 20_000 },
   reporter: [
     ["list"],
