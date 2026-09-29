@@ -90,12 +90,24 @@ async function login(page: Page, role: Role) {
       new URL(response.url()).pathname === "/login",
     { timeout: 20_000 },
   );
+  const landingResponse = page.waitForResponse(
+    (response) =>
+      response.request().method() === "GET" &&
+      new URL(response.url()).pathname === "/learn" &&
+      response.status() === 200,
+    { timeout: 20_000 },
+  );
   await page.getByRole("button", { name: "Continue", exact: true }).click();
   const response = await actionResponse;
   expect(response.headers()["cache-control"]).toContain("no-store");
   expect(response.headers()["pragma"]).toBe("no-cache");
   expect(response.headers()["expires"]).toBe("0");
   await expect(page).toHaveURL(/\/learn(?:\?|$)/u);
+  // A Server Action can update the URL before its redirected RSC body ends.
+  // Finish and inspect that payload before a direct-route probe replaces it.
+  const landing = await landingResponse;
+  expect(await landing.finished()).toBeNull();
+  inspect(await landing.text());
 }
 
 test.beforeAll(async () => {
@@ -344,6 +356,15 @@ for (const transition of ["lock", "deactivate", "revoke"] as const) {
     const auditBefore = Number(
       sql("select count(*) from unimind_private.audit_events;"),
     );
+    const auditCutoff = sql(
+      "select extract(epoch from transaction_timestamp());",
+    );
+    if (!/^\d+(?:\.\d+)?$/u.test(auditCutoff))
+      throw new Error("Invalid synthetic audit cutoff.");
+    const preservedAudit = () =>
+      sql(`select md5(coalesce(string_agg(to_jsonb(event)::text, '' order by id), ''))
+      from unimind_private.audit_events event where created_at <= to_timestamp(${auditCutoff});`);
+    const auditHashBefore = preservedAudit();
     if (transition === "lock")
       sql(
         `update public.cohort_releases set release_status = 'LOCKED', reason = 'Synthetic session containment' where cohort_id = '${cohort}';`,
@@ -366,9 +387,14 @@ for (const transition of ["lock", "deactivate", "revoke"] as const) {
         `select count(*) from public.chat_sessions where user_id = '${caller}';`,
       ),
     ).toBe(count);
-    expect(
-      Number(sql("select count(*) from unimind_private.audit_events;")),
-    ).toBeGreaterThan(auditBefore);
+    const auditAfter = Number(
+      sql("select count(*) from unimind_private.audit_events;"),
+    );
+    expect(preservedAudit()).toBe(auditHashBefore);
+    expect(auditAfter).toBeGreaterThanOrEqual(auditBefore);
+    // Only release/source fixture updates have governance audit triggers.
+    if (transition !== "revoke")
+      expect(auditAfter).toBeGreaterThan(auditBefore);
     expect(
       sql(
         "select count(*) from unimind_private.processed_documents where source_version_id = '41000000-0000-4000-8000-000000000001';",
