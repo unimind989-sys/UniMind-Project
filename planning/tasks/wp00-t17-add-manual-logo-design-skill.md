@@ -12,7 +12,7 @@
 
 **Branch:** codex/manual-logo-design-skill
 
-**Updated (UTC):** 2026-09-29 20:44 UTC
+**Updated (UTC):** 2026-09-29 21:01 UTC
 
 ## Derived execution envelope
 
@@ -36,12 +36,12 @@
 
 | Block | Assigned model | Scope and governing inputs | Independent acceptance checks, including failure cases | Assignment reason | Status and evidence |
 | --- | --- | --- | --- | --- | --- |
-| 1 | Sol High | Pin and adapt upstream skill, source policy, manual invocation, UniMind guide and task contract | Full copied skill has valid metadata and notices; `allow_implicit_invocation: false`; reference search, SVG audit and preview work; no product logo selected | One bounded task with source/licensing and project-policy judgment | In progress; source commit `5a02a1a` |
-| 2 | Sol High | Verify candidate and deliver through protected main | Focused and selected policy checks pass; exact-head required CI passes; merged main is clean | Same compact review and delivery block | Pending |
+| 1 | Sol High | Pin and adapt upstream skill, source policy, manual invocation, UniMind guide and task contract | Full copied skill has valid metadata and notices; `allow_implicit_invocation: false`; reference search, SVG audit and preview work; no product logo selected | One bounded task with source/licensing and project-policy judgment | Complete at `1440b8d`; skill validator and script smoke checks passed |
+| 2 | Sol High | Verify candidate and deliver through protected main | Focused and selected policy checks pass; exact-head required CI passes; merged main is clean | Same compact review and delivery block | In progress; local checks passing |
 
 **Next model:** Sol High
 
-**Current block:** 1
+**Current block:** 2
 
 ## Execution contract
 
@@ -67,9 +67,9 @@
 
 **Design evidence:** NOT_REQUIRED
 
-**Preparation review:** PENDING
+**Preparation review:** COMPLETE_INLINE
 
-**Preparation fingerprint:** NOT_READY
+**Preparation fingerprint:** 4a77789e1fbeb4cbed8324605da36be6d2f75e5b6efaf2a2e8f2891ccb7c3124
 
 **Unresolved findings:** NONE
 
@@ -77,18 +77,18 @@
 
 ## Steps
 
-- [~] Copy and adapt the complete pinned skill, preserving licenses and manual invocation.
-- [ ] Validate skill metadata, references, Python syntax, and key tools.
-- [ ] Review the full change, run selected checks, and deliver through protected main.
+- [x] Copy and adapt the complete pinned skill, preserving licenses and manual invocation.
+- [x] Validate skill metadata, references, Python syntax, and key tools.
+- [~] Review the full change, run selected checks, and deliver through protected main.
 
 ## Handoff
 
-**Changed:** Skill copy, manual invocation metadata, source and use docs, runbook entry; verification pending.
+**Changed:** Copied all 1,462 upstream skill files, changed only `SKILL.md`, and added license, trademark notice, and manual Codex metadata. Updated source/use docs and WP00-T17 record. A byte comparison with the pinned source found no missing files and no other modified upstream files. No product assets or UI changed.
 
-**Commands:** `git ls-remote` and clone pinned HEAD; intent router R0 docs/tooling; further checks pending.
+**Commands:** `git ls-remote` pinned `5a02a1a`; skill validator PASS (23 skills, references, JSON and syntax); 9 Python scripts AST PASS; reference search PASS (23 education matches); SVG audit PASS; preview-sheet HTML generation PASS; `scripts/verify-agent-readiness.ps1` PASS; `pnpm lint` PASS; `pnpm typecheck` PASS; `pnpm typecheck:fresh` PASS; `pnpm scan:secrets` PASS (2,516 files); `git diff --check` PASS; full adapted docs and skill entrypoint reviewed, copied upstream files byte-compared. Actual-diff router R0 docs/tooling after explicit task paths. The first actual-diff pass widened on transient unrelated `public/wp03-review.html`; isolation in the managed worktree removed it from this candidate.
 
-**Remaining:** Validation, review, exact-head CI, protected delivery, closure.
+**Remaining:** Record fingerprint and proof preflight, exact-head CI, protected delivery, closure.
 
-**Next safe action:** Run focused skill and script validation.
+**Next safe action:** Compute proof preflight for the isolated candidate and deliver the reviewed branch.
 
 **Reviewer action:** NONE for this tooling task; future logo selection is a separate founder decision.
