@@ -2,7 +2,9 @@
 
 **Task ID:** WP03-T11
 
-**Status:** [~]
+**Status:** [x]
+
+**Completion boundary:** Isolated review delivery only. This proposed record does not close an authoritative runbook task, integrate the application or authorize a main merge.
 
 **Outcome:** Deliver the approved Open Folio direction as a complete, verified logo kit on the isolated review branch; preserve prior exploration.
 
@@ -43,7 +45,7 @@ Initial production-kit instructions were narrowed to concept review. Ahmed has n
 | Block | Assigned model | Scope and governing inputs | Independent acceptance checks | Assignment reason | Status and evidence |
 | --- | --- | --- | --- | --- | --- |
 | 1 | Sol High | Isolate and develop concept proposals | Separate branch, preserved exploration, inspected four initial concepts and three reference-led concepts | Identity judgment remains with this executor | Complete for concept checkpoint; Ahmed selected Open Folio |
-| 2 | Sol High | Develop approved Open Folio into vector/raster/icon kit and concise usage/integration guide | Geometry bound to approved source; light/dark/mono/compact/small-size variants; rendered EN/AR contexts; transparency, dimensions, contrast, icon safe zones; exact asset manifest; scope and secret checks | Production artwork and original identity judgment | Kit built and focused proof passed; commit/push gate remains |
+| 2 | Sol High | Develop approved Open Folio into vector/raster/icon kit and concise usage/integration guide | Geometry bound to approved source; light/dark/mono/compact/small-size variants; rendered EN/AR contexts; transparency, dimensions, contrast, icon safe zones; exact asset manifest; scope and secret checks | Production artwork and original identity judgment | Complete at the review-delivery boundary; kit commit e6a7ce80e170dedd0dfeb8d2251cd4d847bacd07 pushed and remote verified |
 
 **Next model:** Sol High
 
@@ -61,7 +63,7 @@ Initial production-kit instructions were narrowed to concept review. Ahmed has n
 
 **Pass:** Approved Open Folio is delivered with horizontal/stacked/symbol/wordmark SVG masters, light/dark and monochrome treatments, small-size/icon assets, raster exports, relevant preview examples, provenance, usage guide and exact manifest on a separate reviewable branch. No application, shared authority or frontend-checkout mutation; no main merge or invented application acceptance.
 
-**Evidence:** `evidence/wp03-product-shell/2026-09-30_logo-concepts_local_595be3c.md`; overview, layout examples and SVG audit within the asset directory.
+**Evidence:** Current kit proof: `evidence/wp03-product-shell/2026-09-30_open-folio-kit_local_2bb133c.md`. Earlier concept proof is preserved separately; artifact manifest binds current geometry, guides and previews.
 
 **Rollback:** Abandon this review branch or remove only its scoped additions in this worktree. Existing frontend concepts remain preserved; no revert in that checkout.
 
@@ -89,7 +91,7 @@ Initial production-kit instructions were narrowed to concept review. Ahmed has n
 - [x] Inspect and verify concept assets and prepare separate review delivery; optional 320 px layout proof remains unverified and is not claimed.
 - [x] Receive Ahmed's direction selection before any full kit: Open Folio approved.
 - [x] Produce, inspect and verify the complete Open Folio kit.
-- [ ] Deliver exact asset paths, provenance, commit SHA and integration instructions on the isolated branch.
+- [x] Deliver exact asset paths, provenance, commit SHA and integration instructions on the isolated branch.
 
 ## Handoff
 
@@ -97,11 +99,13 @@ Initial production-kit instructions were narrowed to concept review. Ahmed has n
 
 **Commands:** See `evidence/wp03-product-shell/2026-09-30_open-folio-kit_local_2bb133c.md`. Digital kit proof passes; no application/physical-print proof or authoritative task closure is asserted.
 
-**Remaining:** Commit/push the separate kit review delivery. Application integration belongs to the frontend agent after review; runbook registration remains a proposed shared-document handoff.
+**Remaining:** No kit preparation work remains. Ahmed reviews the delivered kit; application integration belongs to the frontend agent after review. Runbook registration remains a proposed shared-document handoff.
 
-**Next safe action:** Complete the commit/push gate for the prepared kit on the isolated branch.
+**Next safe action:** Retain the branch/worktree for review; refine only if requested. The frontend owner imports selected production files after review.
 
 **Reviewer action:** Review the completed kit before frontend integration.
+
+**Delivered kit commit:** `e6a7ce80e170dedd0dfeb8d2251cd4d847bacd07`, pushed to `origin/codex/unimind-logo-concepts` and verified using `git ls-remote`. The subsequent delivery-record commit changes no kit bytes. Archive SHA-256: `5e17fbba8ba1b62de155d9be70807fd8019ac0622dd9a45634b73c75a6be7392`. Exact source paths are in `planning/design/unimind-logo/open-folio-kit/integration.md` and `asset-manifest.json`.
 
 ## Open Folio approval and kit authorization
 
