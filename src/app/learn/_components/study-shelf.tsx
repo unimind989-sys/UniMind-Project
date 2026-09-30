@@ -261,6 +261,7 @@ function UnitCard({
   edition,
   presentation,
   eager,
+  reviewMode,
   workspaceHref,
   onSelect,
 }: Readonly<{
@@ -271,6 +272,7 @@ function UnitCard({
   edition: string;
   presentation?: UnitPresentation | undefined;
   eager: boolean;
+  reviewMode: boolean;
   workspaceHref?: string | undefined;
   onSelect: (unitId: string) => void;
 }>) {
@@ -324,7 +326,13 @@ function UnitCard({
                 <strong className={styles.detailValue}>
                   {formatInteger(locale, unit.sourceCount ?? 1)}
                 </strong>
-                <span>{text.sourceCount}</span>
+                <span>
+                  {reviewMode
+                    ? locale === "ar"
+                      ? "مصادر تجريبية"
+                      : "sample sources"
+                    : text.sourceCount}
+                </span>
               </p>
               <p className={styles.detailLabel}>
                 <strong className={styles.detailValue}>
@@ -336,7 +344,11 @@ function UnitCard({
                 className={styles.workspaceAction}
                 href={workspaceHref as Route}
               >
-                {text.workspacePending}
+                {reviewMode
+                  ? locale === "ar"
+                    ? "فتح مساحة المراجعة"
+                    : "Open sample workspace"
+                  : text.workspacePending}
               </Link>
             </div>
             {description === undefined ? null : (
@@ -357,6 +369,7 @@ export function StudyShelf({
   state,
   basePath,
   synthetic = false,
+  reviewMode = false,
   showLogout = false,
   unitPresentationById = {},
 }: Readonly<{
@@ -365,6 +378,7 @@ export function StudyShelf({
   state: CatalogViewState;
   basePath: string;
   synthetic?: boolean;
+  reviewMode?: boolean;
   showLogout?: boolean;
   unitPresentationById?: Readonly<Record<string, UnitPresentation>>;
 }>) {
@@ -480,30 +494,47 @@ export function StudyShelf({
           }
         >
           <ul className={styles.navList}>
-            {navItems.map((item) => (
-              <li key={item.labelKey}>
-                {item.current ? (
-                  <a
-                    className={styles.navItem}
-                    href={`${basePath}?lang=${initialLocale}`}
-                    aria-current="page"
-                    data-current="true"
-                  >
-                    <Icon name={item.icon} className={styles.navIcon} />
-                    <span className={styles.navCopy}>
-                      {dictionary[item.labelKey]}
+            {navItems
+              .filter(
+                (item) =>
+                  !reviewMode || item.current || item.icon === "settings",
+              )
+              .map((item) => (
+                <li key={item.labelKey}>
+                  {item.current ? (
+                    <a
+                      className={styles.navItem}
+                      href={`${basePath}?lang=${initialLocale}`}
+                      aria-current="page"
+                      data-current="true"
+                    >
+                      <Icon name={item.icon} className={styles.navIcon} />
+                      <span className={styles.navCopy}>
+                        {dictionary[item.labelKey]}
+                      </span>
+                    </a>
+                  ) : reviewMode && item.icon === "settings" ? (
+                    <Link
+                      className={styles.navItem}
+                      href={
+                        `/preview/review/settings?lang=${initialLocale}` as Route
+                      }
+                    >
+                      <Icon name={item.icon} className={styles.navIcon} />
+                      <span className={styles.navCopy}>
+                        {dictionary[item.labelKey]}
+                      </span>
+                    </Link>
+                  ) : (
+                    <span className={styles.navItem} aria-disabled="true">
+                      <Icon name={item.icon} className={styles.navIcon} />
+                      <span className={styles.navCopy}>
+                        {dictionary[item.labelKey]}
+                      </span>
                     </span>
-                  </a>
-                ) : (
-                  <span className={styles.navItem} aria-disabled="true">
-                    <Icon name={item.icon} className={styles.navIcon} />
-                    <span className={styles.navCopy}>
-                      {dictionary[item.labelKey]}
-                    </span>
-                  </span>
-                )}
-              </li>
-            ))}
+                  )}
+                </li>
+              ))}
           </ul>
         </nav>
         <div className={styles.navFooter}>
@@ -585,7 +616,13 @@ export function StudyShelf({
           <div>
             <h1>{dictionary["catalog.heading"]}</h1>
             <p className={styles.summary}>
-              <span>{dictionary["catalog.summary"]}</span>
+              <span>
+                {reviewMode
+                  ? initialLocale === "ar"
+                    ? "منهج ومصادر تجريبية ثابتة؛ لا تقدم تعلّم أو وصول حقيقي."
+                    : "Fixed synthetic curriculum and sources; no real progress or access."
+                  : dictionary["catalog.summary"]}
+              </span>
               {synthetic ? (
                 <span className={styles.syntheticNotice} role="status">
                   {text.syntheticNotice}
@@ -603,7 +640,13 @@ export function StudyShelf({
             >
               <div className={styles.pathIntro}>
                 <h2 id="catalog-path-heading">{text.pathHeading}</h2>
-                <p>{text.pathSummary}</p>
+                <p>
+                  {reviewMode
+                    ? initialLocale === "ar"
+                      ? "اختر مسارًا من الكتالوج التجريبي للمراجعة."
+                      : "Choose a path from the synthetic catalog for review."
+                    : text.pathSummary}
+                </p>
               </div>
               <div className={styles.pathGrid}>
                 <PathSelect
@@ -724,6 +767,7 @@ export function StudyShelf({
                       unit={unit}
                       locale={initialLocale}
                       selected={journey.selection.unitId === unit.id}
+                      reviewMode={reviewMode}
                       pending={!hydrated || pending}
                       edition={journey.selectedCohort?.curriculumEdition ?? "—"}
                       presentation={unitPresentationById[unit.id]}

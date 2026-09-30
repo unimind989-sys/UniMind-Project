@@ -4,7 +4,7 @@
 
 **Owners:** Ahmed and Ziad
 
-**Last updated:** 27 August 2026
+**Last updated:** 30 September 2026
 
 **Rule:** Complete work in dependency order and attach the listed exit evidence before marking a package complete.
 
@@ -1394,6 +1394,36 @@ External component catalogs and MCPs are optional implementation aids, never des
 - [x] Review audit rows, React/browser payloads, console/network output, external component provenance, and dependency/license changes; prove the gate used only synthetic data, mocked providers/storage, and zero paid UI services.
 - [x] Review representative mobile and desktop English/Arabic flows against the approved visual direction, surface briefs, and final `DESIGN.md`; record the named founder checkpoint and keep screenshots supplemental to behavioral evidence.
 - [x] Run `pnpm verify`, the Impeccable detector/audit disposition, `git diff --check`, `git diff --stat`, a full diff and secret/scope scan, and create the commit-specific WP03 evidence report before marking the package complete.
+
+#### WP03-T09 — Complete the isolated synthetic frontend review
+
+**Dependencies:** WP03-T01–T08 retain their completed history. Ahmed's 2026-09-30 full-product mock request authorizes this follow-up before any further WP04 implementation. Product behavior comes from master-plan sections 6–8 and the relevant WP06/WP07/WP08 contracts; this task previews those journeys without implementing their backend packages.
+
+- [x] Independently inspect routes, source, rendered flows and the supplied audit; record additional gaps and the screen/state ownership matrix in `planning/tasks/wp03-t09-complete-synthetic-frontend.md`.
+- [x] Provide one bilingual, responsive review entry with role navigation, per-screen scenario controls, reset, direct links and explicit simulation boundaries. Review mutations use tab-local memory only: no real input, Auth refresh/cookies, accounts, database, uploads, protected mutations, provider calls or durable state. Existing protected WP03 flows remain intact.
+- [x] Connect fixture-only registration, verification, sign-in, consent and recovery, including new/unverified/verified/suspended accounts, current/outdated consent, expiry and replay. Simulated entry never grants real access.
+- [x] Connect the existing synthetic catalog to scoped overview, sources, sessions, fixed supported/partial/unavailable/conflicting answers, evidence, reports, all six Studio artifact types and quiz attempt/score/review. Show capacity and privacy modes without inventing numeric quotas or retention periods.
+- [x] Connect campaign list/invitation/assignment boundaries, fixed file/reference selection, validation, progress/cancel/retry and consistent submission tracking. Connect all eight admin resources, synthetic catalog/cohort/campaign drafts, invitation review, all twelve governed-action examples and readiness/pending/stale/error outcomes; no real authority or provider is enabled.
+- [x] Cover language, account and privacy Settings only where behavior is approved. Name open D-08/D-18/provider/policy decisions; exclude Calendar, global Progress, personal uploads and other unapproved destinations from the mock journey. Do not invent product behavior to fill a screen.
+- [~] Execute focused behavior/isolation/accessibility/responsive proof, candidate review, full diff/secret/scope inspection and required verification. Preserve the Study Shelf design; record a material interaction checkpoint before protected delivery when required by the frontend floor.
+
+**Verify:** `corepack pnpm exec playwright test tests/e2e/synthetic-review.spec.ts`; `corepack pnpm lint`; `corepack pnpm typecheck:fresh`; `corepack pnpm check:boundaries`; `corepack pnpm scan:secrets`; existing affected WP03 E2E contracts; bounded in-app desktop/mobile inspection; guarded `corepack pnpm verify`; exact-head CI and affected preview release proof.
+
+**Pass:** Every approved frontend journey is navigable without real information; every visible control either has a truthful synthetic outcome or a named decision boundary. Cross-tab/reset isolation and zero auth/provider/protected mutation are proven. Completed WP03 history and functional protected behavior are preserved.
+
+#### WP03-T10 — Run the complete frontend mock review gate
+
+**Dependencies:** WP03-T09 reviewed/delivered candidate; WP03-T01–T08 evidence remains valid for unchanged functional seams. This gate precedes continuing WP04, including WP04-T02; a backend package cannot substitute for it.
+
+- [ ] Select the delivered exact candidate and map every approved role/route/journey/state to executed synthetic proof; record coverage and exclusions without claiming live functionality.
+- [ ] Traverse access → catalog → scope/session → chat/evidence/report → Studio → quiz/review → Settings, campaign/invitation → submission/tracking, and admin resources → draft/campaign → governed decision → student preview in English and Arabic, with mixed study text, keyboard and desktop/tablet/320px mobile reflow.
+- [ ] Exercise loading, empty, error, offline/interruption, stale, forbidden/expired, disabled, pending and success states where relevant. Prove separate tabs and reset cannot share/retain synthetic records, preview cannot unlock protected routes, and no interaction requests Auth, storage, APIs, paid providers or protected mutations.
+- [ ] Review the complete rendered candidate against DESIGN.md and the frontend floor; record the named founder interaction/design checkpoint, remaining product decisions, automated test results, direct review URL and exact division between simulation and functional WP03 services.
+- [ ] Deliver any gate corrections through normal preparation, exact-head CI/protected merge and affected production proof, then close evidence and leave clean synchronized main. Only after this reviewed PASS may the selector continue WP04.
+
+**Verify:** Full mock review suite plus existing WP03 regression/isolation suites; bounded rendered EN/AR desktop/mobile review; applicable guarded `pnpm verify`, exact-head CI and affected production smoke.
+
+**Pass:** Complete experience independently reviewable with synthetic fixtures and no dead ends, misleading controls, missing approved journeys or false backend claims. Open decisions remain explicit and never become implementation approval.
 
 ### 6.1 Routes
 

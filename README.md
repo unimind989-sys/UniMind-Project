@@ -78,6 +78,12 @@ corepack pnpm check:boundaries
 corepack pnpm check:sql
 ```
 
+## Synthetic frontend review
+
+Run the local development server, then open `/preview/review` (or `/preview`). The review covers student, Batch Leader and admin journeys with fixed invented examples, English/Arabic navigation and selectable states. It requests no real account, credentials or files. All simulation state belongs to the current tab and disappears on reload or reset; it grants no real access and makes no provider or protected mutation calls.
+
+The review home distinguishes functional WP03 services from simulated future frontend behavior and names open product decisions. Its task order and review gate remain in the execution runbook.
+
 ## Notes
 
 This repository is intended to be used as the canonical project home for collaboration, versioning, and publication to GitHub.
