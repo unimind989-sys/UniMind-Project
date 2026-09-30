@@ -1,6 +1,6 @@
 # UniMind logo concepts — isolated review
 
-Current delivery: Ahmed approved 01 Open Folio and requested its full kit. Start with `open-folio-kit/previews/kit-overview.png` and `open-folio-kit/README.md`; exact asset copy paths and usage rules are in the kit's integration and usage guides. Application integration and main merge remain excluded.
+Current approval: Ahmed approved the complete Open Folio kit and authorized merging this logo branch into main. `adoption-handoff.md` records global usage instructions and supersedes the earlier review-only/no-merge wording. Start with `open-folio-kit/previews/kit-overview.png`; exact asset copy paths and usage rules are in the kit's integration and usage guides. Application integration remains with the frontend owner.
 
 Historical round-2 review: `round-2/concept-sheet-v2.png`, with three book-led proposals responding to Ahmed's reference. `round-2/README.md` preserves the selection-stage vector paths, font provenance and proof.
 
@@ -34,7 +34,7 @@ Do not cherry-pick this whole review branch into the frontend. Ahmed selected Op
 
 For eventual placement, use the supplied outlined lockup unchanged with its aspect ratio. Treat the Latin logo as one direction-isolated image in Arabic layouts; align its container using logical layout properties and never mirror or reorder the artwork. Give a linked brand image the accessible name UniMind; avoid duplicate accessible names when adjacent text already names the brand. Use symbol-only artwork below the approved lockup minimum size. The current examples validate proposal appearance, not final production minima.
 
-This branch will remain unmerged. Selecting D also requires explicit acceptance of its softer form language; it does not automatically change the accepted product palette.
+Open Folio is selected and the complete kit is approved for merge and global brand usage. D remains rejected historical exploration; no alternative concept changes the accepted product palette.
 
 ## Verification limits
 

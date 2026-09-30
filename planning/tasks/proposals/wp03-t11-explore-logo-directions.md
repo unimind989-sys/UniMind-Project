@@ -2,9 +2,9 @@
 
 **Task ID:** WP03-T11
 
-**Status:** [x]
+**Status:** [~]
 
-**Completion boundary:** Isolated review delivery only. This proposed record does not close an authoritative runbook task, integrate the application or authorize a main merge.
+**Completion boundary:** Ahmed has extended review delivery to a protected logo-only PR merge. This proposed record does not register or close an authoritative runbook task or own application integration.
 
 **Outcome:** Deliver the approved Open Folio direction as a complete, verified logo kit on the isolated review branch; preserve prior exploration.
 
@@ -26,17 +26,17 @@ Initial production-kit instructions were narrowed to concept review. Ahmed has n
 
 **Policy version:** 8
 
-**Surfaces:** docs
+**Surfaces:** docs, delivery
 
-**Risk:** R0
+**Risk:** R2
 
-**Planning:** Minimal
+**Planning:** Short
 
 **Worker budget:** 0 used; maximum 1; no nested workers; no delegation authorized.
 
-**Capabilities:** NONE
+**Capabilities:** release-safety
 
-**Procedural skills:** logo-design explicitly invoked by Ahmed.
+**Procedural skills:** logo-design explicitly invoked by Ahmed; finalize applied to the newly authorized protected PR merge.
 
 **Routing reason:** Review-only SVG/image/document artifacts; no application, runtime, Auth, database, storage, provider or deployment seam changes. Proposed registration cannot be represented as authoritative selector state.
 
@@ -104,6 +104,14 @@ Initial production-kit instructions were narrowed to concept review. Ahmed has n
 **Next safe action:** Retain the branch/worktree for review; refine only if requested. The frontend owner imports selected production files after review.
 
 **Reviewer action:** Review the completed kit before frontend integration.
+
+## Merge authorization and finalization block
+
+Ahmed's direct user message: "ok I approve merge the pr of the logo branch and leave the other branch of the frontend work intact". He also requested instructions for other agents to use the assets globally. Receipt observed at 2026-09-30T19:19:54Z. This approves the complete kit at source commit `4388b9823353317e723cc8687b71b0b83f291d9d`, revokes the prior no-merge boundary for this logo branch, and preserves the frontend ownership boundary.
+
+Block 3, Sol High: protected logo-only PR creation, exact-head required CI, technical review and required distinct-account approval, main merge, remote artifact proof and isolated-checkout cleanup. Do not mutate the frontend checkout, its local branch, remote branch or server. Source asset checks are reusable because adoption/merge notes change no kit bytes. Required GitHub CI will provide the merge gate; no runtime, database or deployment seam changes.
+
+The main selector still excludes this proposed task; preserve its runbook proposal as an unapplied coordination handoff. Actual-diff policy classification is available for WP03-T11 without pretending an authoritative active contract exists. Do not select WP04 work or waive protected GitHub checks. The frontend local branch was observed at `c7b86793b181f1defaf1c97e9437544224d9a5f5`, its remote at `6babaa770d845c2fed2716f1027516ed616cca73`; its owner may continue advancing them independently.
 
 **Delivered kit commit:** `e6a7ce80e170dedd0dfeb8d2251cd4d847bacd07`, pushed to `origin/codex/unimind-logo-concepts` and verified using `git ls-remote`. The subsequent delivery-record commit changes no kit bytes. Archive SHA-256: `5e17fbba8ba1b62de155d9be70807fd8019ac0622dd9a45634b73c75a6be7392`. Exact source paths are in `planning/design/unimind-logo/open-folio-kit/integration.md` and `asset-manifest.json`.
 

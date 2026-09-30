@@ -1,0 +1,13 @@
+# Approved UniMind logo — adoption handoff
+
+Ahmed approved the complete Open Folio kit and authorized merging the logo branch into main in this thread. Receipt observed at 2026-09-30T19:19:54Z. Approved kit source: `4388b9823353317e723cc8687b71b0b83f291d9d`; original kit asset commit: `e6a7ce80e170dedd0dfeb8d2251cd4d847bacd07`.
+
+Open Folio is the approved UniMind logo for global brand usage. Canonical assets: `planning/design/unimind-logo/open-folio-kit/`. Read its `usage-guide.md`, `integration.md`, `provenance/README.md`, and `asset-manifest.json`. Historical concepts and inspection iterations are not approved alternatives. The kit's earlier review-only delivery wording and the previous no-merge instruction are superseded by this direct founder approval. The artwork, palette, font provenance and artifact hashes remain unchanged.
+
+Use `svg/unimind-open-folio-horizontal-dark.svg` on night backgrounds and `svg/unimind-open-folio-horizontal-light.svg` on light backgrounds. Use the normal symbol at 32 px and larger, the `symbol-small` drawing at 16–24 px, and white artwork on focused/active surfaces where cobalt blends into the background. The icons directory contains favicons, Apple/PWA PNGs and a maskable icon. The Latin logo stays intact in Arabic layouts; use logical positioning without mirroring or rearranging it.
+
+The frontend owner integrates selected files into its own branch and uses one shared brand asset mapping/component across headers, access/authentication, study routes and other product branding. Centralize theme/size selection, maintain aspect ratio, clear space and accessible naming, and wire browser/app icons through the existing application configuration. Avoid independently redrawing, retyping, recoloring or inventing variants.
+
+Other agents should fetch origin/main and bring the approved asset directory into their own work without discarding unrelated changes. Do not blindly reset, clean, stash or switch an occupied checkout. Coordinate branch merges normally; avoid cherry-picking the old exploration by itself. The original frontend branch `codex/wp03-complete-synthetic-frontend` remains owned by its agent and is not merged, edited or deleted by the logo executor.
+
+Application integration and production deployment are separate frontend work. This logo PR ships assets, documentation and provenance only. Shared DESIGN/PRODUCT/runbook updates remain a proposed patch or owner handoff; no frontend working file is edited here. The ZIP remains a byte-verified snapshot of the delivered kit; use this adoption note for its current approval and merge disposition.
