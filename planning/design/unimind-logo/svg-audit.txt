@@ -1,0 +1,56 @@
+
+=== a-sourcefold.svg  (259 bytes)
+viewBox 0 0 256 256 · aspect 1.0 (square)
+colours 1: #111111 · gradients 0 · anchors 11
+margins L40.0 R40.0 T40.0 B40.0 · bbox fill 0.473
+✔ no issues found
+production-readiness score: 100/100 (heuristic)
+
+=== b-focus-shelf.svg  (235 bytes)
+viewBox 0 0 256 256 · aspect 1.0 (square)
+colours 1: #111111 · gradients 0 · anchors 20
+margins L40.0 R40.0 T40.0 B40.0 · bbox fill 0.473
+✔ no issues found
+production-readiness score: 100/100 (heuristic)
+
+=== c-common-ground.svg  (353 bytes)
+viewBox 0 0 256 256 · aspect 1.0 (square)
+colours 1: #111111 · gradients 0 · anchors 19
+margins L24.0 R24.0 T32.0 B32.0 · bbox fill 0.609
+✔ no issues found
+production-readiness score: 100/100 (heuristic)
+
+=== d-mindwave.svg  (411 bytes)
+viewBox 0 0 264 256 · aspect 1.031 (square)
+colours 1: #111111 · gradients 0 · anchors 22
+margins L24.0 R24.0 T32.0 B40.0 · bbox fill 0.588
+· INFO [off-centre-y] Vertical margins differ (top 32.0, bottom 40.0). Remember the optical centre sits slightly above the geometric centre.
+production-readiness score: 99/100 (heuristic)
+
+=== a-sourcefold-lockup.svg  (1353 bytes)
+viewBox 0 0 940 256 · aspect 3.672 (horizontal)
+colours 1: #111111 · gradients 0 · anchors 96
+margins L40.0 R20.4 T40.0 B40.0 · bbox fill 0.643
+✔ no issues found
+production-readiness score: 100/100 (heuristic)
+
+=== b-focus-shelf-lockup.svg  (1329 bytes)
+viewBox 0 0 940 256 · aspect 3.672 (horizontal)
+colours 1: #111111 · gradients 0 · anchors 105
+margins L40.0 R20.4 T40.0 B40.0 · bbox fill 0.643
+✔ no issues found
+production-readiness score: 100/100 (heuristic)
+
+=== c-common-ground-lockup.svg  (1447 bytes)
+viewBox 0 0 940 256 · aspect 3.672 (horizontal)
+colours 1: #111111 · gradients 0 · anchors 104
+margins L24.0 R20.4 T32.0 B32.0 · bbox fill 0.715
+✔ no issues found
+production-readiness score: 100/100 (heuristic)
+
+=== d-mindwave-lockup.svg  (1505 bytes)
+viewBox 0 0 940 256 · aspect 3.672 (horizontal)
+colours 1: #111111 · gradients 0 · anchors 107
+margins L24.0 R20.4 T32.0 B40.0 · bbox fill 0.685
+✔ no issues found
+production-readiness score: 100/100 (heuristic)

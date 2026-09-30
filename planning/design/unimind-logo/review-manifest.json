@@ -1,0 +1,23 @@
+{
+  "scope": "proposal artwork only; no final kit or approval",
+  "svgFiles": 8,
+  "transparentSymbolRenders": 4,
+  "contrastRatios": {
+    "#111111 on #ffffff": 18.88,
+    "#ffffff on #0c1823": 17.94
+  },
+  "sha256": {
+    "concepts/a-sourcefold.svg": "dc25af27ffac64479ea97d72b37d7e3dbcd9387b41f6c995849ca84a2f5d43f7",
+    "concepts/a-sourcefold-lockup.svg": "612fc6a485e318a50b2a58d00dfcc39b1f85969da575bc2526fadd9641190b6e",
+    "concepts/b-focus-shelf.svg": "f4c46122d404949465b2e918fa17d2057a07d9cd3705e7feb49626e8c5842e2d",
+    "concepts/b-focus-shelf-lockup.svg": "29b747a0153a2b7563eabbfbfc615647b430d1d83b17943d13467db6671901eb",
+    "concepts/c-common-ground.svg": "2b3de4b896f7b576f6e73887595ac62bf1510f9566caa4cb6f95d86e7fb3135b",
+    "concepts/c-common-ground-lockup.svg": "bebd7229c152e325c76fcb3caf47b01cc88351a09e52debc006e7ed8588c4c68",
+    "concepts/d-mindwave.svg": "e94201b525ec6a75d190be7e83b4fa68372ff1d9eebc96054acc4060f2abfdfc",
+    "concepts/d-mindwave-lockup.svg": "f56ab4973c469edfd8e31d5710c414f1dfcfc14f282b42e2ace733426fba5b41",
+    "concept-review.svg": "55e7996ac15bc07a59359985585cd4522a0f7648e0c9566837892d20470f21d9",
+    "concept-review.png": "827b26f29855df9ef6756a7b458ddc1b5f85c4ba4ee1282a6370d00f922aa7fb",
+    "layout-preview.html": "effa44fcc2d1f0a4f71e5089d40cd69c515cbebffe37b19e7060366f2a8ae81f",
+    "layout-preview.png": "e68fd8aeccee832b328bfcf704eaf92519a2689d4a7717c5f9136018ceaea7e9"
+  }
+}

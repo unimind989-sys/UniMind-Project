@@ -1,0 +1,17 @@
+diff --git a/docs/runbooks/poc-execution-runbook.md b/docs/runbooks/poc-execution-runbook.md
+--- a/docs/runbooks/poc-execution-runbook.md
++++ b/docs/runbooks/poc-execution-runbook.md
+@@ -1483,0 +1484,13 @@
++
++
++#### WP03-T11 — Prepare an isolated UniMind logo review
++
++**Coordination note:** Keep this independent task alongside frontend WP03-T09/T10 when combining branches. Ahmed authorized an independent logo branch on 2026-09-30. This task does not reopen WP03-T01, change accepted identity/palette, select WP04 or own the frontend overhaul.
++
++- [~] Preserve prior logo exploration, propose A–C plus one personal direction, and show all four before final kit work.
++- [ ] Record Ahmed's selected logo, then prepare only its production assets and relevant light/dark, compact and small-size variants.
++- [ ] Verify geometry, legibility, transparency, contrast, English/Arabic placement and provenance; deliver an isolated reviewable branch or draft PR with exact paths and integration instructions.
++
++**Verify:** SVG audit and rendered size/background/layout inspection; scoped secret/readiness/diff checks; exact-head delivery checks when applicable.
++
++**Pass:** Founder-selected logo assets are reviewable separately; the frontend agent integrates approved assets on its own branch. No merge or application integration by the logo executor during parallel work.
