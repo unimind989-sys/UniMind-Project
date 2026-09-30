@@ -1,0 +1,12 @@
+{
+  "authority": "accepted DESIGN.md palette; no palette change",
+  "digitalSpace": "sRGB",
+  "printNote": "CMYK values are unprofiled mathematical starting points. Printer ICC conversion and a physical proof are required; no Pantone match is specified.",
+  "colors": [
+    { "name": "night", "hex": "#0c1823", "rgb": [12, 24, 35], "cmykUnprofiled": [66, 31, 0, 86] },
+    { "name": "paper", "hex": "#ecf3f9", "rgb": [236, 243, 249], "cmykUnprofiled": [5, 2, 0, 2] },
+    { "name": "cobalt", "hex": "#3977f7", "rgb": [57, 119, 247], "cmykUnprofiled": [77, 52, 0, 3] },
+    { "name": "black-mono", "hex": "#000000", "rgb": [0, 0, 0], "cmykUnprofiled": [0, 0, 0, 100] },
+    { "name": "white-mono", "hex": "#ffffff", "rgb": [255, 255, 255], "cmykUnprofiled": [0, 0, 0, 0] }
+  ]
+}

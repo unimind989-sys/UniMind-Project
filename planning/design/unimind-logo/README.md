@@ -1,6 +1,8 @@
 # UniMind logo concepts — isolated review
 
-Current review: `round-2/concept-sheet-v2.png`, with three book-led proposals responding to Ahmed's reference. See `round-2/README.md` for exact vector paths, font provenance and current proof. No full kit or application integration is included.
+Current delivery: Ahmed approved 01 Open Folio and requested its full kit. Start with `open-folio-kit/previews/kit-overview.png` and `open-folio-kit/README.md`; exact asset copy paths and usage rules are in the kit's integration and usage guides. Application integration and main merge remain excluded.
+
+Historical round-2 review: `round-2/concept-sheet-v2.png`, with three book-led proposals responding to Ahmed's reference. `round-2/README.md` preserves the selection-stage vector paths, font provenance and proof.
 
 Historical first round: A Sourcefold, B Focus Shelf, C Common Ground, D Mindwave. Ahmed rejected all four; they remain preserved for continuity. Ahmed originally requested A–C within the accepted Study Shelf identity and D as a separate expression of the executor's own taste. The provenance and verification sections below describe that first round unless explicitly stated otherwise.
 
@@ -26,9 +28,9 @@ Bundled reference SVGs were studied for construction and compared visually; thei
 
 `build-review.py` reconstructs all four current proposal files and review/layout sheets using the repository-pinned logo-design utilities. The original A–C iterations and generator remain in `exploration/`. D has its own v1/v2 iterations.
 
-## Integration handoff — after approval
+## Integration handoff — after kit review
 
-Do not cherry-pick this whole review branch into the frontend. After Ahmed selects a logo, request the final kit in this logo worktree: final geometry/spacing, actual reversed artwork, compact/small-size cuts, palette-compatible light/dark assets, icons and usage guidance. The frontend agent then imports only the approved assets and metadata through its own branch.
+Do not cherry-pick this whole review branch into the frontend. Ahmed selected Open Folio; its final digital kit is in `open-folio-kit/`. The frontend owner should use `open-folio-kit/integration.md` to import only the reviewed production assets and metadata through its own branch.
 
 For eventual placement, use the supplied outlined lockup unchanged with its aspect ratio. Treat the Latin logo as one direction-isolated image in Arabic layouts; align its container using logical layout properties and never mirror or reorder the artwork. Give a linked brand image the accessible name UniMind; avoid duplicate accessible names when adjacent text already names the brand. Use symbol-only artwork below the approved lockup minimum size. The current examples validate proposal appearance, not final production minima.
 

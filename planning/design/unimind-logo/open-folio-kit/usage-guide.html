@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>UniMind Open Folio — one-page usage guide</title>
+<style>
+@page { size: A4; margin: 12mm; }
+* { box-sizing: border-box; }
+body { margin: 28px; color: #0c1823; font: 14px/1.45 Segoe UI, Arial, sans-serif; background: white; }
+main { max-width: 760px; margin: auto; }
+header { padding-bottom: 16px; border-bottom: 1px solid #c8d1d8; }
+header img { width: 300px; height: auto; }
+h1 { font-size: 26px; margin: 16px 0 4px; }
+h2 { font-size: 17px; margin: 18px 0 6px; }
+p { margin: 6px 0; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+td, th { padding: 6px 8px; text-align: left; border-bottom: 1px solid #ecf3f9; }
+.colors { display: flex; gap: 12px; }
+.colors span { padding: 10px 14px; border: 1px solid #c8d1d8; }
+.night { background: #0c1823; color: #ecf3f9; }
+.paper { background: #ecf3f9; }
+.blue { background: #3977f7; color: white; }
+footer { margin-top: 20px; color: #53606b; font-size: 12px; }
+@media print { body { margin: 0; font-size: 10pt; } main { max-width: none; } h1 { font-size: 20pt; } h2 { font-size: 12pt; } }
+</style>
+<main>
+<header><img src="svg/unimind-open-folio-horizontal-light.svg" alt="UniMind" width="944" height="256"><h1>Open Folio / usage guide</h1><p>Approved identifier: two open pages, one clear name.</p></header>
+<h2>Choose the right file</h2>
+<p>Use horizontal in headers, stacked on covers, and symbol-only in compact spaces. <b>Light</b> is for white/paper backgrounds; <b>dark</b> for night. Black, white and blue supply one-color options. SVG is the editable master; PNG is the fallback.</p>
+<h2>Give it room</h2>
+<p>Keep 32 master units of outside clear space beyond the artboard. At 200 px horizontal width this is 6.8 px per side. Platform tiles already include safe margins.</p>
+<table><tr><th>Version</th><th>Minimum screen width</th><th>Suggested print width</th></tr><tr><td>Horizontal</td><td>144 px</td><td>30 mm</td></tr><tr><td>Stacked</td><td>128 px</td><td>25 mm</td></tr><tr><td>Wordmark</td><td>96 px</td><td>20 mm</td></tr><tr><td>Normal symbol</td><td>32 px</td><td>7 mm</td></tr><tr><td>Small symbol</td><td>16 px; use at 16–24 px</td><td>Use normal symbol</td></tr></table>
+<h2>Keep the accepted colors</h2>
+<div class="colors"><span class="night">Night<br>#0c1823</span><span class="paper">Paper<br>#ecf3f9</span><span class="blue">Cobalt<br>#3977f7</span></div>
+<p>Use white on active/focused surfaces where cobalt blends into the background. Place the logo on a quiet solid field. RGB masters are for screens; a printer must convert and proof against its target profile. Print minima are starting points, not physical proof. No Pantone match is specified.</p>
+<h2>English and Arabic</h2>
+<p>Keep the Latin logo intact, with the book on the left and blue page on the right. Align its container using logical CSS in RTL; never mirror the artwork or reorder letters. Below 144 px available width, use the symbol with an accessible UniMind name.</p>
+<h2>Preserve the drawing</h2>
+<p>Scale uniformly. Keep exact colors, spacing and supplied lockups. Use the outlined wordmark instead of retyping it. Avoid shadows, gradients, extra outlines and rotation. The pure-white reverse is optically lighter; the small symbol has a wider gutter.</p>
+<footer>Source font: Manrope / SIL OFL 1.1. Full usage, provenance and copy paths: usage-guide.md, provenance/ and integration.md. Application typography stays Manrope / Noto Sans Arabic. Kit verification covers digital assets and standalone examples.</footer>
+</main>
+</html>

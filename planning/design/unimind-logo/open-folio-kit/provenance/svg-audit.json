@@ -1,0 +1,1070 @@
+[
+  {
+    "file": "unimind-open-folio-horizontal-black.svg",
+    "bytes": 2945,
+    "viewBox": [
+      0.0,
+      0.0,
+      944.0,
+      256.0
+    ],
+    "aspect": 3.688,
+    "aspect_class": "horizontal",
+    "colors": [
+      "#000000"
+    ],
+    "gradients": 0,
+    "anchors": 158,
+    "library_anchor_percentiles": {
+      "p10": 23.0,
+      "p25": 37.0,
+      "median": 75.0,
+      "p75": 155.0,
+      "p90": 257.8,
+      "p95": 379.45
+    },
+    "content_bbox": [
+      32.0,
+      48.0,
+      905.26,
+      208.0
+    ],
+    "margins": {
+      "left": 32.0,
+      "right": 38.7,
+      "top": 48.0,
+      "bottom": 48.0
+    },
+    "bbox_fill_ratio": 0.578,
+    "score": 99,
+    "findings": [
+      {
+        "level": "INFO",
+        "code": "complexity",
+        "message": "158 anchor points (library median 75.0, p75 155.0). Check every point earns its place."
+      }
+    ]
+  },
+  {
+    "file": "unimind-open-folio-horizontal-blue.svg",
+    "bytes": 2945,
+    "viewBox": [
+      0.0,
+      0.0,
+      944.0,
+      256.0
+    ],
+    "aspect": 3.688,
+    "aspect_class": "horizontal",
+    "colors": [
+      "#3977f7"
+    ],
+    "gradients": 0,
+    "anchors": 158,
+    "library_anchor_percentiles": {
+      "p10": 23.0,
+      "p25": 37.0,
+      "median": 75.0,
+      "p75": 155.0,
+      "p90": 257.8,
+      "p95": 379.45
+    },
+    "content_bbox": [
+      32.0,
+      48.0,
+      905.26,
+      208.0
+    ],
+    "margins": {
+      "left": 32.0,
+      "right": 38.7,
+      "top": 48.0,
+      "bottom": 48.0
+    },
+    "bbox_fill_ratio": 0.578,
+    "score": 99,
+    "findings": [
+      {
+        "level": "INFO",
+        "code": "complexity",
+        "message": "158 anchor points (library median 75.0, p75 155.0). Check every point earns its place."
+      }
+    ]
+  },
+  {
+    "file": "unimind-open-folio-horizontal-dark.svg",
+    "bytes": 2945,
+    "viewBox": [
+      0.0,
+      0.0,
+      944.0,
+      256.0
+    ],
+    "aspect": 3.688,
+    "aspect_class": "horizontal",
+    "colors": [
+      "#ecf3f9",
+      "#3977f7"
+    ],
+    "gradients": 0,
+    "anchors": 158,
+    "library_anchor_percentiles": {
+      "p10": 23.0,
+      "p25": 37.0,
+      "median": 75.0,
+      "p75": 155.0,
+      "p90": 257.8,
+      "p95": 379.45
+    },
+    "content_bbox": [
+      32.0,
+      48.0,
+      905.26,
+      208.0
+    ],
+    "margins": {
+      "left": 32.0,
+      "right": 38.7,
+      "top": 48.0,
+      "bottom": 48.0
+    },
+    "bbox_fill_ratio": 0.578,
+    "score": 99,
+    "findings": [
+      {
+        "level": "INFO",
+        "code": "complexity",
+        "message": "158 anchor points (library median 75.0, p75 155.0). Check every point earns its place."
+      }
+    ]
+  },
+  {
+    "file": "unimind-open-folio-horizontal-light.svg",
+    "bytes": 2945,
+    "viewBox": [
+      0.0,
+      0.0,
+      944.0,
+      256.0
+    ],
+    "aspect": 3.688,
+    "aspect_class": "horizontal",
+    "colors": [
+      "#0c1823",
+      "#3977f7"
+    ],
+    "gradients": 0,
+    "anchors": 158,
+    "library_anchor_percentiles": {
+      "p10": 23.0,
+      "p25": 37.0,
+      "median": 75.0,
+      "p75": 155.0,
+      "p90": 257.8,
+      "p95": 379.45
+    },
+    "content_bbox": [
+      32.0,
+      48.0,
+      905.26,
+      208.0
+    ],
+    "margins": {
+      "left": 32.0,
+      "right": 38.7,
+      "top": 48.0,
+      "bottom": 48.0
+    },
+    "bbox_fill_ratio": 0.578,
+    "score": 99,
+    "findings": [
+      {
+        "level": "INFO",
+        "code": "complexity",
+        "message": "158 anchor points (library median 75.0, p75 155.0). Check every point earns its place."
+      }
+    ]
+  },
+  {
+    "file": "unimind-open-folio-horizontal-white.svg",
+    "bytes": 3018,
+    "viewBox": [
+      0.0,
+      0.0,
+      944.0,
+      256.0
+    ],
+    "aspect": 3.688,
+    "aspect_class": "horizontal",
+    "colors": [
+      "#ffffff"
+    ],
+    "gradients": 0,
+    "anchors": 158,
+    "library_anchor_percentiles": {
+      "p10": 23.0,
+      "p25": 37.0,
+      "median": 75.0,
+      "p75": 155.0,
+      "p90": 257.8,
+      "p95": 379.45
+    },
+    "content_bbox": [
+      32.6,
+      48.6,
+      904.03,
+      206.8
+    ],
+    "margins": {
+      "left": 32.6,
+      "right": 40.0,
+      "top": 48.6,
+      "bottom": 49.2
+    },
+    "bbox_fill_ratio": 0.57,
+    "score": 99,
+    "findings": [
+      {
+        "level": "INFO",
+        "code": "complexity",
+        "message": "158 anchor points (library median 75.0, p75 155.0). Check every point earns its place."
+      }
+    ]
+  },
+  {
+    "file": "unimind-open-folio-stacked-black.svg",
+    "bytes": 3026,
+    "viewBox": [
+      0.0,
+      0.0,
+      664.0,
+      432.0
+    ],
+    "aspect": 1.537,
+    "aspect_class": "wide",
+    "colors": [
+      "#000000"
+    ],
+    "gradients": 0,
+    "anchors": 158,
+    "library_anchor_percentiles": {
+      "p10": 23.0,
+      "p25": 37.0,
+      "median": 75.0,
+      "p75": 155.0,
+      "p90": 257.8,
+      "p95": 379.45
+    },
+    "content_bbox": [
+      31.9,
+      49.0,
+      632.1,
+      382.91
+    ],
+    "margins": {
+      "left": 31.9,
+      "right": 31.9,
+      "top": 49.0,
+      "bottom": 49.1
+    },
+    "bbox_fill_ratio": 0.699,
+    "score": 99,
+    "findings": [
+      {
+        "level": "INFO",
+        "code": "complexity",
+        "message": "158 anchor points (library median 75.0, p75 155.0). Check every point earns its place."
+      }
+    ]
+  },
+  {
+    "file": "unimind-open-folio-stacked-blue.svg",
+    "bytes": 3026,
+    "viewBox": [
+      0.0,
+      0.0,
+      664.0,
+      432.0
+    ],
+    "aspect": 1.537,
+    "aspect_class": "wide",
+    "colors": [
+      "#3977f7"
+    ],
+    "gradients": 0,
+    "anchors": 158,
+    "library_anchor_percentiles": {
+      "p10": 23.0,
+      "p25": 37.0,
+      "median": 75.0,
+      "p75": 155.0,
+      "p90": 257.8,
+      "p95": 379.45
+    },
+    "content_bbox": [
+      31.9,
+      49.0,
+      632.1,
+      382.91
+    ],
+    "margins": {
+      "left": 31.9,
+      "right": 31.9,
+      "top": 49.0,
+      "bottom": 49.1
+    },
+    "bbox_fill_ratio": 0.699,
+    "score": 99,
+    "findings": [
+      {
+        "level": "INFO",
+        "code": "complexity",
+        "message": "158 anchor points (library median 75.0, p75 155.0). Check every point earns its place."
+      }
+    ]
+  },
+  {
+    "file": "unimind-open-folio-stacked-dark.svg",
+    "bytes": 3026,
+    "viewBox": [
+      0.0,
+      0.0,
+      664.0,
+      432.0
+    ],
+    "aspect": 1.537,
+    "aspect_class": "wide",
+    "colors": [
+      "#ecf3f9",
+      "#3977f7"
+    ],
+    "gradients": 0,
+    "anchors": 158,
+    "library_anchor_percentiles": {
+      "p10": 23.0,
+      "p25": 37.0,
+      "median": 75.0,
+      "p75": 155.0,
+      "p90": 257.8,
+      "p95": 379.45
+    },
+    "content_bbox": [
+      31.9,
+      49.0,
+      632.1,
+      382.91
+    ],
+    "margins": {
+      "left": 31.9,
+      "right": 31.9,
+      "top": 49.0,
+      "bottom": 49.1
+    },
+    "bbox_fill_ratio": 0.699,
+    "score": 99,
+    "findings": [
+      {
+        "level": "INFO",
+        "code": "complexity",
+        "message": "158 anchor points (library median 75.0, p75 155.0). Check every point earns its place."
+      }
+    ]
+  },
+  {
+    "file": "unimind-open-folio-stacked-light.svg",
+    "bytes": 3026,
+    "viewBox": [
+      0.0,
+      0.0,
+      664.0,
+      432.0
+    ],
+    "aspect": 1.537,
+    "aspect_class": "wide",
+    "colors": [
+      "#0c1823",
+      "#3977f7"
+    ],
+    "gradients": 0,
+    "anchors": 158,
+    "library_anchor_percentiles": {
+      "p10": 23.0,
+      "p25": 37.0,
+      "median": 75.0,
+      "p75": 155.0,
+      "p90": 257.8,
+      "p95": 379.45
+    },
+    "content_bbox": [
+      31.9,
+      49.0,
+      632.1,
+      382.91
+    ],
+    "margins": {
+      "left": 31.9,
+      "right": 31.9,
+      "top": 49.0,
+      "bottom": 49.1
+    },
+    "bbox_fill_ratio": 0.699,
+    "score": 99,
+    "findings": [
+      {
+        "level": "INFO",
+        "code": "complexity",
+        "message": "158 anchor points (library median 75.0, p75 155.0). Check every point earns its place."
+      }
+    ]
+  },
+  {
+    "file": "unimind-open-folio-stacked-white.svg",
+    "bytes": 3099,
+    "viewBox": [
+      0.0,
+      0.0,
+      664.0,
+      432.0
+    ],
+    "aspect": 1.537,
+    "aspect_class": "wide",
+    "colors": [
+      "#ffffff"
+    ],
+    "gradients": 0,
+    "anchors": 158,
+    "library_anchor_percentiles": {
+      "p10": 23.0,
+      "p25": 37.0,
+      "median": 75.0,
+      "p75": 155.0,
+      "p90": 257.8,
+      "p95": 379.45
+    },
+    "content_bbox": [
+      31.9,
+      49.6,
+      630.87,
+      382.91
+    ],
+    "margins": {
+      "left": 31.9,
+      "right": 33.1,
+      "top": 49.6,
+      "bottom": 49.1
+    },
+    "bbox_fill_ratio": 0.696,
+    "score": 99,
+    "findings": [
+      {
+        "level": "INFO",
+        "code": "complexity",
+        "message": "158 anchor points (library median 75.0, p75 155.0). Check every point earns its place."
+      }
+    ]
+  },
+  {
+    "file": "unimind-open-folio-symbol-black.svg",
+    "bytes": 326,
+    "viewBox": [
+      0.0,
+      0.0,
+      256.0,
+      256.0
+    ],
+    "aspect": 1.0,
+    "aspect_class": "square",
+    "colors": [
+      "#000000"
+    ],
+    "gradients": 0,
+    "anchors": 14,
+    "library_anchor_percentiles": {
+      "p10": 21.0,
+      "p25": 31.0,
+      "median": 53.0,
+      "p75": 95.5,
+      "p90": 194.0,
+      "p95": 274.0
+    },
+    "content_bbox": [
+      32.0,
+      48.0,
+      224.0,
+      208.0
+    ],
+    "margins": {
+      "left": 32.0,
+      "right": 32.0,
+      "top": 48.0,
+      "bottom": 48.0
+    },
+    "bbox_fill_ratio": 0.469,
+    "score": 100,
+    "findings": []
+  },
+  {
+    "file": "unimind-open-folio-symbol-blue.svg",
+    "bytes": 326,
+    "viewBox": [
+      0.0,
+      0.0,
+      256.0,
+      256.0
+    ],
+    "aspect": 1.0,
+    "aspect_class": "square",
+    "colors": [
+      "#3977f7"
+    ],
+    "gradients": 0,
+    "anchors": 14,
+    "library_anchor_percentiles": {
+      "p10": 21.0,
+      "p25": 31.0,
+      "median": 53.0,
+      "p75": 95.5,
+      "p90": 194.0,
+      "p95": 274.0
+    },
+    "content_bbox": [
+      32.0,
+      48.0,
+      224.0,
+      208.0
+    ],
+    "margins": {
+      "left": 32.0,
+      "right": 32.0,
+      "top": 48.0,
+      "bottom": 48.0
+    },
+    "bbox_fill_ratio": 0.469,
+    "score": 100,
+    "findings": []
+  },
+  {
+    "file": "unimind-open-folio-symbol-dark.svg",
+    "bytes": 326,
+    "viewBox": [
+      0.0,
+      0.0,
+      256.0,
+      256.0
+    ],
+    "aspect": 1.0,
+    "aspect_class": "square",
+    "colors": [
+      "#ecf3f9",
+      "#3977f7"
+    ],
+    "gradients": 0,
+    "anchors": 14,
+    "library_anchor_percentiles": {
+      "p10": 21.0,
+      "p25": 31.0,
+      "median": 53.0,
+      "p75": 95.5,
+      "p90": 194.0,
+      "p95": 274.0
+    },
+    "content_bbox": [
+      32.0,
+      48.0,
+      224.0,
+      208.0
+    ],
+    "margins": {
+      "left": 32.0,
+      "right": 32.0,
+      "top": 48.0,
+      "bottom": 48.0
+    },
+    "bbox_fill_ratio": 0.469,
+    "score": 100,
+    "findings": []
+  },
+  {
+    "file": "unimind-open-folio-symbol-light.svg",
+    "bytes": 326,
+    "viewBox": [
+      0.0,
+      0.0,
+      256.0,
+      256.0
+    ],
+    "aspect": 1.0,
+    "aspect_class": "square",
+    "colors": [
+      "#0c1823",
+      "#3977f7"
+    ],
+    "gradients": 0,
+    "anchors": 14,
+    "library_anchor_percentiles": {
+      "p10": 21.0,
+      "p25": 31.0,
+      "median": 53.0,
+      "p75": 95.5,
+      "p90": 194.0,
+      "p95": 274.0
+    },
+    "content_bbox": [
+      32.0,
+      48.0,
+      224.0,
+      208.0
+    ],
+    "margins": {
+      "left": 32.0,
+      "right": 32.0,
+      "top": 48.0,
+      "bottom": 48.0
+    },
+    "bbox_fill_ratio": 0.469,
+    "score": 100,
+    "findings": []
+  },
+  {
+    "file": "unimind-open-folio-symbol-small-black.svg",
+    "bytes": 326,
+    "viewBox": [
+      0.0,
+      0.0,
+      256.0,
+      256.0
+    ],
+    "aspect": 1.0,
+    "aspect_class": "square",
+    "colors": [
+      "#000000"
+    ],
+    "gradients": 0,
+    "anchors": 14,
+    "library_anchor_percentiles": {
+      "p10": 21.0,
+      "p25": 31.0,
+      "median": 53.0,
+      "p75": 95.5,
+      "p90": 194.0,
+      "p95": 274.0
+    },
+    "content_bbox": [
+      32.0,
+      48.0,
+      224.0,
+      208.0
+    ],
+    "margins": {
+      "left": 32.0,
+      "right": 32.0,
+      "top": 48.0,
+      "bottom": 48.0
+    },
+    "bbox_fill_ratio": 0.469,
+    "score": 100,
+    "findings": []
+  },
+  {
+    "file": "unimind-open-folio-symbol-small-blue.svg",
+    "bytes": 326,
+    "viewBox": [
+      0.0,
+      0.0,
+      256.0,
+      256.0
+    ],
+    "aspect": 1.0,
+    "aspect_class": "square",
+    "colors": [
+      "#3977f7"
+    ],
+    "gradients": 0,
+    "anchors": 14,
+    "library_anchor_percentiles": {
+      "p10": 21.0,
+      "p25": 31.0,
+      "median": 53.0,
+      "p75": 95.5,
+      "p90": 194.0,
+      "p95": 274.0
+    },
+    "content_bbox": [
+      32.0,
+      48.0,
+      224.0,
+      208.0
+    ],
+    "margins": {
+      "left": 32.0,
+      "right": 32.0,
+      "top": 48.0,
+      "bottom": 48.0
+    },
+    "bbox_fill_ratio": 0.469,
+    "score": 100,
+    "findings": []
+  },
+  {
+    "file": "unimind-open-folio-symbol-small-dark.svg",
+    "bytes": 326,
+    "viewBox": [
+      0.0,
+      0.0,
+      256.0,
+      256.0
+    ],
+    "aspect": 1.0,
+    "aspect_class": "square",
+    "colors": [
+      "#ecf3f9",
+      "#3977f7"
+    ],
+    "gradients": 0,
+    "anchors": 14,
+    "library_anchor_percentiles": {
+      "p10": 21.0,
+      "p25": 31.0,
+      "median": 53.0,
+      "p75": 95.5,
+      "p90": 194.0,
+      "p95": 274.0
+    },
+    "content_bbox": [
+      32.0,
+      48.0,
+      224.0,
+      208.0
+    ],
+    "margins": {
+      "left": 32.0,
+      "right": 32.0,
+      "top": 48.0,
+      "bottom": 48.0
+    },
+    "bbox_fill_ratio": 0.469,
+    "score": 100,
+    "findings": []
+  },
+  {
+    "file": "unimind-open-folio-symbol-small-light.svg",
+    "bytes": 326,
+    "viewBox": [
+      0.0,
+      0.0,
+      256.0,
+      256.0
+    ],
+    "aspect": 1.0,
+    "aspect_class": "square",
+    "colors": [
+      "#0c1823",
+      "#3977f7"
+    ],
+    "gradients": 0,
+    "anchors": 14,
+    "library_anchor_percentiles": {
+      "p10": 21.0,
+      "p25": 31.0,
+      "median": 53.0,
+      "p75": 95.5,
+      "p90": 194.0,
+      "p95": 274.0
+    },
+    "content_bbox": [
+      32.0,
+      48.0,
+      224.0,
+      208.0
+    ],
+    "margins": {
+      "left": 32.0,
+      "right": 32.0,
+      "top": 48.0,
+      "bottom": 48.0
+    },
+    "bbox_fill_ratio": 0.469,
+    "score": 100,
+    "findings": []
+  },
+  {
+    "file": "unimind-open-folio-symbol-small-white.svg",
+    "bytes": 326,
+    "viewBox": [
+      0.0,
+      0.0,
+      256.0,
+      256.0
+    ],
+    "aspect": 1.0,
+    "aspect_class": "square",
+    "colors": [
+      "#ffffff"
+    ],
+    "gradients": 0,
+    "anchors": 14,
+    "library_anchor_percentiles": {
+      "p10": 21.0,
+      "p25": 31.0,
+      "median": 53.0,
+      "p75": 95.5,
+      "p90": 194.0,
+      "p95": 274.0
+    },
+    "content_bbox": [
+      32.0,
+      48.0,
+      224.0,
+      208.0
+    ],
+    "margins": {
+      "left": 32.0,
+      "right": 32.0,
+      "top": 48.0,
+      "bottom": 48.0
+    },
+    "bbox_fill_ratio": 0.469,
+    "score": 100,
+    "findings": []
+  },
+  {
+    "file": "unimind-open-folio-symbol-white.svg",
+    "bytes": 406,
+    "viewBox": [
+      0.0,
+      0.0,
+      256.0,
+      256.0
+    ],
+    "aspect": 1.0,
+    "aspect_class": "square",
+    "colors": [
+      "#ffffff"
+    ],
+    "gradients": 0,
+    "anchors": 14,
+    "library_anchor_percentiles": {
+      "p10": 21.0,
+      "p25": 31.0,
+      "median": 53.0,
+      "p75": 95.5,
+      "p90": 194.0,
+      "p95": 274.0
+    },
+    "content_bbox": [
+      32.6,
+      48.6,
+      223.4,
+      206.8
+    ],
+    "margins": {
+      "left": 32.6,
+      "right": 32.6,
+      "top": 48.6,
+      "bottom": 49.2
+    },
+    "bbox_fill_ratio": 0.461,
+    "score": 100,
+    "findings": []
+  },
+  {
+    "file": "unimind-open-folio-wordmark-black.svg",
+    "bytes": 2766,
+    "viewBox": [
+      0.0,
+      0.0,
+      665.0,
+      182.0
+    ],
+    "aspect": 3.654,
+    "aspect_class": "horizontal",
+    "colors": [
+      "#000000"
+    ],
+    "gradients": 0,
+    "anchors": 144,
+    "library_anchor_percentiles": {
+      "p10": 23.0,
+      "p25": 37.0,
+      "median": 75.0,
+      "p75": 155.0,
+      "p90": 257.8,
+      "p95": 379.45
+    },
+    "content_bbox": [
+      32.0,
+      32.0,
+      632.2,
+      149.91
+    ],
+    "margins": {
+      "left": 32.0,
+      "right": 32.8,
+      "top": 32.0,
+      "bottom": 32.1
+    },
+    "bbox_fill_ratio": 0.585,
+    "score": 100,
+    "findings": []
+  },
+  {
+    "file": "unimind-open-folio-wordmark-blue.svg",
+    "bytes": 2766,
+    "viewBox": [
+      0.0,
+      0.0,
+      665.0,
+      182.0
+    ],
+    "aspect": 3.654,
+    "aspect_class": "horizontal",
+    "colors": [
+      "#3977f7"
+    ],
+    "gradients": 0,
+    "anchors": 144,
+    "library_anchor_percentiles": {
+      "p10": 23.0,
+      "p25": 37.0,
+      "median": 75.0,
+      "p75": 155.0,
+      "p90": 257.8,
+      "p95": 379.45
+    },
+    "content_bbox": [
+      32.0,
+      32.0,
+      632.2,
+      149.91
+    ],
+    "margins": {
+      "left": 32.0,
+      "right": 32.8,
+      "top": 32.0,
+      "bottom": 32.1
+    },
+    "bbox_fill_ratio": 0.585,
+    "score": 100,
+    "findings": []
+  },
+  {
+    "file": "unimind-open-folio-wordmark-dark.svg",
+    "bytes": 2766,
+    "viewBox": [
+      0.0,
+      0.0,
+      665.0,
+      182.0
+    ],
+    "aspect": 3.654,
+    "aspect_class": "horizontal",
+    "colors": [
+      "#ecf3f9"
+    ],
+    "gradients": 0,
+    "anchors": 144,
+    "library_anchor_percentiles": {
+      "p10": 23.0,
+      "p25": 37.0,
+      "median": 75.0,
+      "p75": 155.0,
+      "p90": 257.8,
+      "p95": 379.45
+    },
+    "content_bbox": [
+      32.0,
+      32.0,
+      632.2,
+      149.91
+    ],
+    "margins": {
+      "left": 32.0,
+      "right": 32.8,
+      "top": 32.0,
+      "bottom": 32.1
+    },
+    "bbox_fill_ratio": 0.585,
+    "score": 100,
+    "findings": []
+  },
+  {
+    "file": "unimind-open-folio-wordmark-light.svg",
+    "bytes": 2766,
+    "viewBox": [
+      0.0,
+      0.0,
+      665.0,
+      182.0
+    ],
+    "aspect": 3.654,
+    "aspect_class": "horizontal",
+    "colors": [
+      "#0c1823"
+    ],
+    "gradients": 0,
+    "anchors": 144,
+    "library_anchor_percentiles": {
+      "p10": 23.0,
+      "p25": 37.0,
+      "median": 75.0,
+      "p75": 155.0,
+      "p90": 257.8,
+      "p95": 379.45
+    },
+    "content_bbox": [
+      32.0,
+      32.0,
+      632.2,
+      149.91
+    ],
+    "margins": {
+      "left": 32.0,
+      "right": 32.8,
+      "top": 32.0,
+      "bottom": 32.1
+    },
+    "bbox_fill_ratio": 0.585,
+    "score": 100,
+    "findings": []
+  },
+  {
+    "file": "unimind-open-folio-wordmark-white.svg",
+    "bytes": 2759,
+    "viewBox": [
+      0.0,
+      0.0,
+      665.0,
+      182.0
+    ],
+    "aspect": 3.654,
+    "aspect_class": "horizontal",
+    "colors": [
+      "#ffffff"
+    ],
+    "gradients": 0,
+    "anchors": 144,
+    "library_anchor_percentiles": {
+      "p10": 23.0,
+      "p25": 37.0,
+      "median": 75.0,
+      "p75": 155.0,
+      "p90": 257.8,
+      "p95": 379.45
+    },
+    "content_bbox": [
+      32.0,
+      32.04,
+      630.97,
+      149.91
+    ],
+    "margins": {
+      "left": 32.0,
+      "right": 34.0,
+      "top": 32.0,
+      "bottom": 32.1
+    },
+    "bbox_fill_ratio": 0.583,
+    "score": 100,
+    "findings": []
+  }
+]

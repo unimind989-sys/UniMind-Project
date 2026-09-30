@@ -4,21 +4,21 @@
 
 **Status:** [~]
 
-**Outcome:** Reviewable UniMind logo concepts respond to founder feedback before a direction is selected; first-round proposals remain preserved.
+**Outcome:** Deliver the approved Open Folio direction as a complete, verified logo kit on the isolated review branch; preserve prior exploration.
 
 **Owner:** Codex `/root`; Ahmed is the selected speaker; no delegated workers.
 
-**Reviewer:** Ahmed chooses the logo; his accepted overall identity and colors remain the baseline for A–C.
+**Reviewer:** Ahmed approved 01 Open Folio and requested the full kit. Accepted overall identity and colors remain the baseline.
 
 **Branch:** codex/unimind-logo-concepts
 
-**Updated (UTC):** 2026-09-30T16:00:52Z
+**Updated (UTC):** 2026-09-30T17:55:28Z
 
 ## Registration and scope
 
 Ahmed explicitly separated logo work from the frontend overhaul and requested a dedicated worktree from current origin/main. The main snapshot has no logo task and predates the frontend agent's WP03-T09/T10 additions. WP03-T11 is reserved here as a proposed independent logo task; its runbook insertion is supplied as a handoff patch only. This proposal record is intentionally outside the authoritative selector's flat task directory until registration is coordinated. It does not reopen completed WP03-T01 or select WP04.
 
-Initial production-kit instructions were superseded by Ahmed's reply: show all three existing directions plus one based on the executor's own taste; do not build full kits before logo approval. No direction is approved. D is an explicitly requested personal alternative, not an adopted change to the existing identity.
+Initial production-kit instructions were narrowed to concept review. Ahmed has now approved 01 Open Folio from round 2 and explicitly requested its full kit. Kit work is authorized; application integration, main merge and changes in the frontend checkout remain excluded. D was a personal alternative and was rejected.
 
 ## Derived execution envelope
 
@@ -42,11 +42,12 @@ Initial production-kit instructions were superseded by Ahmed's reply: show all t
 
 | Block | Assigned model | Scope and governing inputs | Independent acceptance checks | Assignment reason | Status and evidence |
 | --- | --- | --- | --- | --- | --- |
-| 1 | Sol High | Isolate from frontend checkout; preserve existing exploration; source/product/design provenance; four directions and review-only proof | Exact remote base, independent branch, four distinct vectors, transparent artwork, small sizes, LTR/RTL/light/dark examples; no kit or integration | Identity judgment and scoped handoff remain with this executor | In progress; assets and evidence in own worktree |
+| 1 | Sol High | Isolate and develop concept proposals | Separate branch, preserved exploration, inspected four initial concepts and three reference-led concepts | Identity judgment remains with this executor | Complete for concept checkpoint; Ahmed selected Open Folio |
+| 2 | Sol High | Develop approved Open Folio into vector/raster/icon kit and concise usage/integration guide | Geometry bound to approved source; light/dark/mono/compact/small-size variants; rendered EN/AR contexts; transparency, dimensions, contrast, icon safe zones; exact asset manifest; scope and secret checks | Production artwork and original identity judgment | Kit built and focused proof passed; commit/push gate remains |
 
 **Next model:** Sol High
 
-**Current block:** 1
+**Current block:** 2
 
 ## Execution contract
 
@@ -58,7 +59,7 @@ Initial production-kit instructions were superseded by Ahmed's reply: show all t
 
 **Verify:** SVG structural audit; rendered overview and light/dark/English/Arabic examples; 16/32/64 px visual checks; transparency/contrast checks; readiness and secret scan; full diff/stat/check and scope review. Exact-head CI is reported separately for any draft PR. Application production proof and integration are outside scope.
 
-**Pass:** Four different original drawings with outlined UniMind lettering are available in the isolated review branch; A–C retain accepted identity context; D is visibly a personal alternative; no final kit, invented acceptance, application or shared frontend-checkout mutation.
+**Pass:** Approved Open Folio is delivered with horizontal/stacked/symbol/wordmark SVG masters, light/dark and monochrome treatments, small-size/icon assets, raster exports, relevant preview examples, provenance, usage guide and exact manifest on a separate reviewable branch. No application, shared authority or frontend-checkout mutation; no main merge or invented application acceptance.
 
 **Evidence:** `evidence/wp03-product-shell/2026-09-30_logo-concepts_local_595be3c.md`; overview, layout examples and SVG audit within the asset directory.
 
@@ -70,15 +71,15 @@ Initial production-kit instructions were superseded by Ahmed's reply: show all t
 
 **Design disposition:** MATERIAL
 
-**Design evidence:** PENDING — concepts are proposals; no shipped frontend is changed.
+**Design evidence:** `planning/design/unimind-logo/open-folio-kit/provenance/approval.md` records Ahmed's direction selection at exact concept commit. Derived kit variants are ready for review; no shipped frontend acceptance is asserted.
 
 **Preparation review:** COMPLETE_INLINE
 
-**Preparation fingerprint:** NOT_READY — direction approval and production proof are outside this concept checkpoint.
+**Preparation fingerprint:** ASSET_MANIFEST_BOUND — `open-folio-kit/asset-manifest.json` binds focused digital-asset proof. Authoritative selector registration and application CI are outside this review boundary.
 
 **Unresolved findings:** NONE
 
-**Established facts:** NONE
+**Established facts:** Open Folio direction approved; 30 vectors, 39 raster exports, three-resolution ICO, eight LTR/RTL containers and deterministic 94-file archive verified; see current kit evidence.
 
 ## Steps
 
@@ -86,19 +87,25 @@ Initial production-kit instructions were superseded by Ahmed's reply: show all t
 - [x] Preserve existing concepts and product/design provenance without changing the frontend checkout.
 - [x] Build fourth personal direction and four-concept overview.
 - [x] Inspect and verify concept assets and prepare separate review delivery; optional 320 px layout proof remains unverified and is not claimed.
-- [ ] Receive Ahmed's direction selection before any full kit.
+- [x] Receive Ahmed's direction selection before any full kit: Open Folio approved.
+- [x] Produce, inspect and verify the complete Open Folio kit.
+- [ ] Deliver exact asset paths, provenance, commit SHA and integration instructions on the isolated branch.
 
 ## Handoff
 
-**Changed:** Local concept and provenance assets only; own proposed task/evidence records.
+**Changed:** Complete digital logo kit with vector/raster/icon assets, provenance, guides and previews; own proposed task/evidence records.
 
-**Commands:** See own evidence record; no full-task PASS or production-ready kit is asserted.
+**Commands:** See `evidence/wp03-product-shell/2026-09-30_open-folio-kit_local_2bb133c.md`. Digital kit proof passes; no application/physical-print proof or authoritative task closure is asserted.
 
-**Remaining:** Founder logo selection, final kit, application integration by the frontend agent after review. Runbook registration is a proposed shared-document handoff.
+**Remaining:** Commit/push the separate kit review delivery. Application integration belongs to the frontend agent after review; runbook registration remains a proposed shared-document handoff.
 
-**Next safe action:** Present the new book-led concept sheet and the separate review branch; wait for direction selection.
+**Next safe action:** Complete the commit/push gate for the prepared kit on the isolated branch.
 
-**Reviewer action:** Select or refine a book-led direction. Approval of the overall identity does not select a logo.
+**Reviewer action:** Review the completed kit before frontend integration.
+
+## Open Folio approval and kit authorization
+
+Founder-authored message: "I approve 01 open folio now we need to create the full kit". Actor: Ahmed (selected communication profile). Recorded observation time: 2026-09-30T16:13:22Z; this is receipt time, not an inferred message timestamp. Accepted source commit: `2bb133c7a6621e61ebc7e1279df6c672ff706ea8`. Scope: routes:none; surfaces:logo assets; states:01 Open Folio in the round-2 sheet. Sheet SHA-256: `0086a43889d06405a7aa85dfef97e2cea90524b4214091f2eab5bb301a4812aa`. This approves the selected logo direction and kit execution; it does not claim application integration acceptance.
 
 ## Feedback iteration — book-led round
 
