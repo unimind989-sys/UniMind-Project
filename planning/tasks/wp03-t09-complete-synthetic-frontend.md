@@ -12,7 +12,7 @@
 
 **Branch:** codex/wp03-complete-synthetic-frontend
 
-**Updated (UTC):** 2026-09-30T14:55:26Z
+**Updated (UTC):** 2026-09-30T18:46:25Z
 
 ## Derived execution envelope
 
@@ -42,7 +42,7 @@
 
 **Next model:** Sol High
 
-**Current block:** 4
+**Current block:** 6
 
 ## Execution contract
 
@@ -154,3 +154,43 @@ Ahmed reviewed the native-flow candidate and rejected its frontend/product outco
 Continue from `codex/wp03-complete-synthetic-frontend`; keep PR #64 open as a draft. Preserve the normal product route/navigation approach, isolated synthetic services, complete data pack and useful rejecting tests. Rework the information architecture, visual direction and interaction quality against product authority and a new concrete founder checkpoint. Technical PASS for runtime `3347e15` proves its exercised behavior and isolation; it is not design approval and must not exempt changed frontend surfaces from renewed proof.
 
 **Current next safe action:** Keep the branch pushed and the server stopped, then hand this direction to Ahmed for his new overhaul chat. Do not start an unsolicited redesign in this handoff. Resume the selected WP03-T09 task on this branch when the overhaul begins; plan its next work block, preserve working real services and completed task history, and keep material acceptance, protected delivery, WP03-T10 and WP04 pending.
+
+## Authorized frontend overhaul — 30 September 2026
+
+Ahmed now explicitly resumes the comprehensive overhaul on this branch. The native product flow, isolated synthetic services, complete pack, useful tests, overall Study Shelf concept and palette remain approved foundations. The current execution remains rejected. Preserve PR #64 as draft/unmerged until the concrete revised candidate is accepted and delivery gates pass. WP04 remains on hold. This continuation supersedes the historical stop/handoff actions above without deleting their history or claiming design acceptance.
+
+Entry worktree contains unrelated logo exploration under `planning/design/` and its task-record section. Preserve those exact edits. No logo artwork is changed, staged or bundled with this frontend task; an approved replacement must arrive as a separately versioned dependency.
+
+| Block | Assigned model | Scope and dependencies | Rejecting verification / acceptance | Status |
+| --- | --- | --- | --- | --- |
+| 5 | Sol High | Independent code/render audit and product-flow map; authority and previous plans first | Full role/route inventory EN/AR at 1440/768/390/320; category-separated punch list with repro/expected/correction/acceptance; documented state gaps | Complete initial audit/plan; 23-route baseline, 42-state supplemental matrix and explicit remaining rollout proof |
+| 6 | Sol High | Shared primitive foundation and interactive unit shell/Chat/Studio sample; depends on block 5 | Native URLs, current palette/fonts/logo, scoped sessions/artifacts; no service bypass; first Send usable; locale preserves draft/state; keyboard/axe/focus/overflow/zoom, desktop/tablet/mobile; concrete founder checkpoint | Technically ready for presentation; 23/23 final native tests and bounded real seam regression; founder acceptance pending |
+| 7 | Sol High | Accepted-system rollout across access/shelf/Settings/quiz/sources/report, leader/admin; depends on block 6 founder acceptance | Every visible control purposeful; complete populated/failure states and role transitions EN/AR; affected real WP03 regression; pack/walkthrough updated | Not started; checkpoint dependency |
+| 8 | Sol High | Stable candidate review/proof and draft delivery; depends on block 7 and current material receipt | Diff check/stat/full diff, secret/scope review; actual-diff route, preflight, guarded verification, exact-head CI; candidate remains draft/unmerged until accepted/gates pass | Not started; no merge/promotion/WP04 |
+
+**Intent envelope:** policy 8; frontend/runtime declared; existing R3 isolation/trust surfaces remain conservatively covered. Single executor, zero delegated workers. No change to real auth/storage/authorization semantics is intended; trust skill activates if a later diff materially touches those semantics.
+
+**Direction contract:** Operate inside the accepted Study Shelf world. One compact, persistent scope/navigation shell replaces duplicate preambles. Chat uses a readable transcript followed by its composer and quiet scoped history; Studio uses type selection/options beside a distinct reading surface. Palette, locale fonts, logo and product authority remain fixed. The user-requested interactive sample is the concrete design checkpoint; no alternate brand workshop or generated replacement identity is needed. Scope: normal unit routes, shell, empty/populated/progress/interrupted states, EN/AR/RTL and required device classes. The proposed layout is unaccepted until reviewed.
+
+**Additional files:** `docs/reviews/wp03-frontend-overhaul.md`, shared UI primitives, workspace frame/styles, product study, focused native tests and audit capture instrumentation; runbook/task/guide/evidence. Subsequent rollout files are authorized only after the sample acceptance dependency.
+
+**Current next safe action:** Complete the independent baseline audit, implement and technically inspect the concrete shell/Chat/Studio sample, then present it for the required founder checkpoint. Continue independent proof/documentation while awaiting that decision; do not extend unaccepted direction, fabricate a receipt, merge #64 or resume WP04.
+
+
+## Revised shared-shell, Chat and Studio checkpoint
+
+**Scope:** Block 5 audit/flow map/punch list is complete for planning. Block 6 implements the concrete three-surface native sample; block 7 remains behind its founder acceptance dependency. Shared line SVGs, full-name language select, compact one-scope header, responsive local navigation and keyboard account utility anchor the sample. Chat starts on first Send, keeps per-unit/session drafts, reads transcript before composer and scopes evidence/report links. Studio separates type/options from reading, retains per-unit configuration, supports cancellation and links Quiz only from MCQ. Real default services, proxy, guards and business rules are unchanged.
+
+**Additional rejecting finding:** Supplemental interruption audit exposed native Cancel → Send DOM reuse: click cancellation changed the same node into a submit button before browser default handling, submitting again. A native regression failed before the fix. Distinct button identities pass pointer/keyboard cancellation, draft retention, delayed no-result and retry in EN/AR. Earlier 21/21 proof is superseded for affected Chat behavior. Frozen-clock interruption captures and untargeted failure-entry forms were not treated as correct outcome proof; normal actions now reach asserted results.
+
+**Design disposition:** MATERIAL, awaiting concrete founder receipt. Impeccable finish review runs inline with explicitly non-independent provenance; `disposition: ship` applies only to presentation of this sample. The accepted Study Shelf world is extended directly; no new comp, logo asset or replacement-world approval is claimed. DESIGN's pending paragraph records scoped sample tokens, not accepted rollout rules.
+
+**Rendered coverage:** Baseline 23 protected destinations × EN/AR × 1440/768/390/320 = 184; supplemental 42 prepared access/study/leader/admin/progress/interruption states × the same matrix = 336; sample sixteen populated Chat/Studio full-page pictures individually inspected, plus live in-app native interaction/viewport inspection. Contact sheets and focused outcome images supplement geometry; zero document overflow in the state inventory does not prove visual correctness. N07 active access step after resize, N08 wrong student failure title, I09 cancellation and I10 stale confirmation controls were independently found. Old nonexistent/unsettled/false-interruption captures are excluded. Whole-platform visual fixes and final re-audit remain block 7/8.
+
+**Commands (revised sample):** Final native demo 23/23 PASS; synthetic gate/Auth proxy unit 45/45 PASS; affected upload/access security 13/13 PASS. Full lint, targeted generator lint, fresh TypeScript, boundaries and changed-source Prettier PASS. Default-runtime E2E initially 50 PASS/1 login-RTL timeout; the unmodified failing test replay passed 1/1 in 3.2s with its original 15-second timeout. No clean full-suite 51/51 PASS is claimed. Safe production build and privileged client-canary scan PASS after archiving a malformed generated `.next/dev/types/validator.ts`; application source unchanged. Final readiness, secret scan, normal TypeScript and diff/scope review are recorded in the checkpoint evidence. Earlier runtime/test results are retained as history, not reused as changed-view proof.
+
+**Evidence:** `evidence/wp03-product-shell/2026-09-30_overhaul-checkpoint_local_6babaa7.md`, source/capture/pack hash manifest, compact final native results, default regression with focused replay, 336-state inventory and four selected final screenshots. Raw pictures are retained in ignored `.local/wp03-audit/`; the complete synthetic ZIP contains nine supplied files, including README/walkthrough mirrors and the audit/map.
+
+**Actual-diff envelope:** Policy 8 remains R3/protected, zero workers. Unknown pack/config/Impeccable paths widen proof conservatively; unchanged real schema/storage/role services have no hosted-mutation proof obligation for this local presentation. MATERIAL is explicit and pending; no successful proof-preflight or guarded delivery gate is claimed.
+
+**Next safe action:** Present the live native shell/Chat/Studio checkpoint and request scoped founder acceptance. Use the normal prefilled login at port 3101 with the encoded unit Chat destination; Continue, accept the fictional commitments, then explore Chat/Studio and EN/AR. Keep the local server and draft PR available. After an actual receipt, execute block 7 across the remaining platform and verify block 8; no invented receipt or premature task closure. A “continue” message received before presentation is implementation steering, not a candidate receipt. No guarded verification, protected delivery, merge, promotion or WP04 until its genuine dependencies pass.

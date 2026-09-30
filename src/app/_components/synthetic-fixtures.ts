@@ -259,6 +259,7 @@ export const answerExamples: Record<ResponseKind, Localized> = {
 
 export type SampleAnswer = {
   kind: ResponseKind;
+  promptKind?: ResponseKind | "unmatched";
   language: "en" | "ar" | "mixed";
   sessionId: number;
   sharing: "shared" | "private";

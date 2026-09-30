@@ -1,4 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
+import { mkdir, writeFile } from "node:fs/promises";
+import nodePath from "node:path";
 import { expect, test, type Page } from "@playwright/test";
 import {
   promptExamples,
@@ -147,10 +149,10 @@ for (const locale of ["en", "ar"] as const) {
     const finish = isolation(page);
     await signIn(page, "student", locale, unit);
     await navigate(page, unit + "/studio", locale);
-    for (const [id] of artifactTypes) {
+    for (const [id, en, ar] of artifactTypes) {
       await page
-        .getByLabel(pick(locale, "Artifact type", "نوع المخرج"))
-        .selectOption(id);
+        .getByRole("radio", { name: pick(locale, en, ar), exact: true })
+        .check();
       await page
         .getByRole("combobox", {
           name: pick(locale, "Language", "اللغة"),
@@ -303,6 +305,46 @@ for (const locale of ["en", "ar"] as const) {
       await expect(page).toHaveURL(new RegExp(path!));
       for (const width of [1440, 768, 390, 320]) {
         await page.setViewportSize({ width, height: 900 });
+        if (process.env.UNIMIND_FRONTEND_AUDIT === "1") {
+          const directory = nodePath.resolve(
+            ".impeccable/review/baseline",
+            locale,
+            String(width),
+          );
+          await mkdir(directory, { recursive: true });
+          const name = path!.replaceAll("/", "_");
+          await page.screenshot({
+            path: `${directory}/${name}.png`,
+            fullPage: true,
+          });
+          const findings = await page
+            .locator("button, a, input, select, textarea")
+            .evaluateAll((elements) =>
+              elements
+                .filter((element) => element.getClientRects().length)
+                .map((element) => {
+                  const rect = element.getBoundingClientRect();
+                  const parent = element.parentElement!.getBoundingClientRect();
+                  return {
+                    tag: element.tagName,
+                    label:
+                      element.getAttribute("aria-label") ??
+                      element.textContent?.trim().slice(0, 100),
+                    width: Math.round(rect.width),
+                    height: Math.round(rect.height),
+                    contentOverflow:
+                      element.scrollWidth > element.clientWidth + 2,
+                    containerOverflow:
+                      rect.left < parent.left - 2 ||
+                      rect.right > parent.right + 2,
+                  };
+                }),
+            );
+          await writeFile(
+            `${directory}/${name}.json`,
+            JSON.stringify(findings, null, 2),
+          );
+        }
         expect(
           await page.evaluate(() => document.documentElement.scrollWidth),
         ).toBeLessThanOrEqual(width + 1);
@@ -770,6 +812,7 @@ test("normal sign-out changes roles without carrying the previous role's screen"
 }) => {
   const finish = isolation(page);
   await signIn(page, "student", "en", unit + "/chat");
+  await page.locator('[data-overhaul="checkpoint"] header summary').click();
   await page.getByRole("button", { name: "Sign out", exact: true }).click();
   await expect(page).toHaveURL(/\/login\?lang=en$/u);
   await page.getByLabel("Email address").fill("leader@example.invalid");
@@ -798,3 +841,314 @@ test("normal sign-out changes roles without carrying the previous role's screen"
   await expect(page).toHaveURL(/\/admin\?/u);
   finish();
 });
+
+for (const locale of ["en", "ar"] as const) {
+  test(`${locale}: revised sample supports direct Send, locale-preserved drafts, history and Studio interruption`, async ({
+    page,
+  }) => {
+    const finish = isolation(page);
+    await signIn(page, "student", locale, unit + "/chat");
+    await expect(page.locator('[data-overhaul="checkpoint"]')).toHaveCount(1);
+    const account = page.locator('[data-overhaul="checkpoint"] header summary');
+    await account.focus();
+    await account.press("Enter");
+    await expect(
+      page.getByRole("link", {
+        name: pick(locale, "Settings", "الإعدادات"),
+        exact: true,
+      }),
+    ).toBeVisible();
+    await account.press("Escape");
+    await expect(account).toBeFocused();
+    await expect(
+      page.getByRole("link", {
+        name: pick(locale, "Settings", "الإعدادات"),
+        exact: true,
+      }),
+    ).toHaveCount(0);
+    await expect(
+      page.getByLabel(pick(locale, "Switch unit", "تغيير الوحدة"), {
+        exact: true,
+      }),
+    ).toHaveCount(1);
+    await expect(
+      page.getByRole("button", {
+        name: pick(locale, "Send", "إرسال"),
+        exact: true,
+      }),
+    ).toBeDisabled();
+    const prompt = promptExamples.supported[locale === "ar" ? 1 : 0];
+    await page
+      .getByLabel(pick(locale, "Message", "السؤال"), { exact: true })
+      .fill(prompt);
+    await page
+      .getByLabel(pick(locale, "Study language", "لغة المذاكرة"), {
+        exact: true,
+      })
+      .selectOption("mixed");
+    const nextLocale = locale === "en" ? "ar" : "en";
+    await page
+      .getByLabel(pick(locale, "Interface language", "لغة الواجهة"), {
+        exact: true,
+      })
+      .focus();
+    await page
+      .getByLabel(pick(locale, "Interface language", "لغة الواجهة"), {
+        exact: true,
+      })
+      .selectOption(nextLocale);
+    await expect(page).toHaveURL(new RegExp(`lang=${nextLocale}`));
+    await expect(
+      page.getByLabel(pick(nextLocale, "Message", "السؤال"), { exact: true }),
+    ).toHaveValue(prompt);
+    await expect(
+      page.getByLabel(pick(nextLocale, "Study language", "لغة المذاكرة"), {
+        exact: true,
+      }),
+    ).toHaveValue("mixed");
+    await expect(
+      page.getByLabel(pick(nextLocale, "Interface language", "لغة الواجهة"), {
+        exact: true,
+      }),
+    ).toBeFocused();
+    await page
+      .getByLabel(pick(nextLocale, "Message", "السؤال"), { exact: true })
+      .press("Enter");
+    await expect(page.locator("article")).toHaveCount(1);
+    await expect(
+      page.getByLabel(pick(nextLocale, "Message", "السؤال"), { exact: true }),
+    ).toHaveValue("");
+    await page
+      .getByRole("button", {
+        name: pick(nextLocale, "New session", "جلسة جديدة"),
+        exact: true,
+      })
+      .click();
+    await expect(page.locator("article")).toHaveCount(0);
+    await page
+      .getByRole("button", {
+        name: new RegExp(pick(nextLocale, "Session 1", "جلسة [١1]")),
+      })
+      .click();
+    await expect(page.locator("article")).toHaveCount(1);
+    await page
+      .getByRole("link", {
+        name: pick(nextLocale, "Privacy settings", "إعدادات الخصوصية"),
+        exact: true,
+      })
+      .click();
+    await page
+      .getByRole("link", {
+        name: pick(nextLocale, "Back to study", "العودة للمذاكرة"),
+        exact: true,
+      })
+      .click();
+    await expect(page.locator("article")).toHaveCount(1);
+    await navigate(page, unit + "/studio", nextLocale);
+    await page
+      .getByRole("radio", {
+        name: pick(nextLocale, "Flashcards", "بطاقات مراجعة"),
+        exact: true,
+      })
+      .check();
+    await page
+      .getByRole("button", {
+        name: pick(nextLocale, "Generate", "إنشاء"),
+        exact: true,
+      })
+      .click();
+    await page
+      .getByRole("button", {
+        name: pick(nextLocale, "Cancel preparation", "إلغاء الإعداد"),
+        exact: true,
+      })
+      .click();
+    await expect(
+      page.getByRole("heading", {
+        name: new RegExp(pick(nextLocale, "Simulated artifact", "مخرج محاكى")),
+      }),
+    ).toHaveCount(0);
+    await page
+      .getByRole("button", {
+        name: pick(nextLocale, "Generate", "إنشاء"),
+        exact: true,
+      })
+      .click();
+    await expect(
+      page.getByRole("heading", {
+        name: new RegExp(pick(nextLocale, "Simulated artifact", "مخرج محاكى")),
+      }),
+    ).toBeVisible();
+    await page
+      .getByRole("button", {
+        name: pick(nextLocale, "Flip card", "اقلب البطاقة التجريبية"),
+        exact: true,
+      })
+      .click();
+    await expect(
+      page.getByRole("link", {
+        name: pick(nextLocale, "Open quiz", "فتح الاختبار التجريبي"),
+        exact: true,
+      }),
+    ).toHaveCount(0);
+    finish();
+  });
+}
+
+for (const locale of ["en", "ar"] as const) {
+  test(`${locale}: populated checkpoint reflows with accessible controls and enlarged text`, async ({
+    page,
+  }) => {
+    const finish = isolation(page);
+    await signIn(page, "student", locale, unit + "/chat");
+    await send(page, "supported", locale);
+    for (const screen of ["chat", "studio"] as const) {
+      if (screen === "studio") {
+        await navigate(page, unit + "/studio", locale);
+        await page
+          .getByRole("radio", {
+            name: pick(locale, "Flashcards", "بطاقات مراجعة"),
+            exact: true,
+          })
+          .check();
+        await page
+          .getByRole("button", {
+            name: pick(locale, "Generate", "إنشاء"),
+            exact: true,
+          })
+          .click();
+        await expect(
+          page.getByRole("heading", {
+            name: new RegExp(pick(locale, "Simulated artifact", "مخرج محاكى")),
+          }),
+        ).toBeVisible();
+      }
+      for (const width of [1440, 768, 390, 320]) {
+        await page.setViewportSize({ width, height: 900 });
+        await expect(
+          page.getByRole("navigation").getByRole("link"),
+        ).toHaveCount(5);
+        const inspect = async () =>
+          page.evaluate(() => ({
+            overflow: document.documentElement.scrollWidth > innerWidth + 1,
+            controls: [
+              ...document.querySelectorAll(
+                '[data-overhaul="checkpoint"] button, [data-overhaul="checkpoint"] a, [data-overhaul="checkpoint"] select, [data-overhaul="checkpoint"] textarea, [data-overhaul="checkpoint"] summary',
+              ),
+            ]
+              .filter((element) => {
+                const rect = element.getBoundingClientRect();
+                return (
+                  rect.width > 0 &&
+                  rect.height > 0 &&
+                  getComputedStyle(element).visibility !== "hidden"
+                );
+              })
+              .filter((element) => {
+                const rect = element.getBoundingClientRect();
+                return (
+                  rect.left < -1 ||
+                  rect.right > innerWidth + 1 ||
+                  rect.height < 43 ||
+                  (element.matches("button") &&
+                    element.scrollWidth > element.clientWidth + 2)
+                );
+              })
+              .map((element) => element.textContent?.trim().slice(0, 80)),
+          }));
+        expect(await inspect()).toEqual({ overflow: false, controls: [] });
+        const axe = await new AxeBuilder({ page })
+          .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+          .analyze();
+        expect(axe.violations).toEqual([]);
+        const directory = nodePath.join(".impeccable/review/overhaul", locale);
+        await mkdir(directory, { recursive: true });
+        await page.screenshot({
+          path: nodePath.join(directory, `${screen}-${width}.png`),
+          fullPage: true,
+          animations: "disabled",
+        });
+        if (width === 320) {
+          await page.evaluate(() => {
+            document.documentElement.style.fontSize = "200%";
+          });
+          expect(await inspect()).toEqual({ overflow: false, controls: [] });
+          await page.evaluate(() => {
+            document.documentElement.style.fontSize = "";
+          });
+        }
+      }
+    }
+    finish();
+  });
+}
+
+for (const locale of ["en", "ar"] as const) {
+  test(`${locale}: cancelling Chat does not submit or complete a reply`, async ({
+    page,
+  }) => {
+    const finish = isolation(page);
+    await signIn(page, "student", locale, unit + "/chat");
+    const input = page.getByLabel(pick(locale, "Message", "السؤال"), {
+      exact: true,
+    });
+    const prompt = promptExamples.supported[locale === "ar" ? 1 : 0];
+    await input.fill(prompt);
+    await page
+      .getByRole("button", { name: pick(locale, "Send", "إرسال"), exact: true })
+      .click();
+    await page
+      .getByRole("button", {
+        name: pick(locale, "Cancel stream", "إلغاء البث"),
+        exact: true,
+      })
+      .click();
+    await expect(
+      page.getByText(
+        pick(
+          locale,
+          "Sample stream cancelled. Send again to retry.",
+          "تم إلغاء بث المثال. أرسل مجددًا للمحاولة.",
+        ),
+        { exact: true },
+      ),
+    ).toBeVisible();
+    await expect(input).toHaveValue(prompt);
+    // Observe beyond the one-second completion window: a cancelled timer must
+    // not create a late exchange or evidence action.
+    await page.waitForTimeout(1200);
+    await expect(
+      page.getByRole("link", {
+        name: pick(locale, "Inspect evidence", "فحص الأدلة"),
+        exact: true,
+      }),
+    ).toHaveCount(0);
+    await page
+      .getByRole("button", { name: pick(locale, "Send", "إرسال"), exact: true })
+      .click();
+    await expect(
+      page.getByRole("link", {
+        name: pick(locale, "Inspect evidence", "فحص الأدلة"),
+        exact: true,
+      }),
+    ).toHaveCount(1);
+    await input.fill(prompt);
+    await input.press("Enter");
+    const cancel = page.getByRole("button", {
+      name: pick(locale, "Cancel stream", "إلغاء البث"),
+      exact: true,
+    });
+    await cancel.focus();
+    await cancel.press("Enter");
+    await expect(input).toBeFocused();
+    await page.waitForTimeout(1200);
+    await expect(
+      page.getByRole("link", {
+        name: pick(locale, "Inspect evidence", "فحص الأدلة"),
+        exact: true,
+      }),
+    ).toHaveCount(1);
+    await expect(input).toHaveValue(prompt);
+    finish();
+  });
+}

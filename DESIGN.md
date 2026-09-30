@@ -289,6 +289,16 @@ Motion is limited to the unit-width transition and the small image hover scale, 
 
 ## Do's and Don'ts
 
+### Pending WP03-T09 shared-shell checkpoint
+
+The 30 September overhaul preserves this palette, fonts and existing logo. Its revised shell, Chat and Studio are a **MATERIAL candidate awaiting founder acceptance**, limited to those synthetic surfaces. Their implementation does not change the approved shelf or access composition, and the revised navigation must not be rolled out before the checkpoint receipt.
+
+The candidate uses one 224px desktop unit rail (192px on tablet), one scope switcher, five local study destinations and a compact header with unit context, a labeled native interface-language select and account disclosure. Mobile places scope/navigation above content; at 320px the five destinations form a three-column grid. Every destination remains visible. Escape closes the account disclosure and restores its trigger focus.
+
+Chat separates unit history from the question/reply transcript and lower composer. Studio separates a six-choice native radio group and configuration from the reading area. Secondary actions inspect evidence or sources; only MCQ offers a quiz transition. Completed synthetic records and drafts remain in the document, with explicit cancellation/retry. Interface language preserves the chosen output language.
+
+Candidate typography tokens are scoped to `FrontendShell`: `--type-workspace-title-size` = 1.5rem for unit/page identity; `--type-study-invitation-size` = 1.65rem, reduced to `--type-study-invitation-mobile-size` = 1.35rem on mobile, for Chat's empty invitation; `--type-artifact-title-size` = 1.25rem for generated output. Existing body/compact tokens, logical spacing, control/card radii and local 24px line SVGs remain the common grammar. The [audit and flow map](docs/reviews/wp03-frontend-overhaul.md) and controlled task record own candidate coverage and remaining work; these notes record implementation, not acceptance.
+
 The WP03-T09 synthetic runtime follows normal product routes and shares the existing Access Shelf, Study Shelf, workspace, collection and decision-queue components. Its small simulation banner identifies the service boundary; role/scenario selectors and manual completion controls are excluded from the product journey. Fixed future study and resource views reuse these tokens and Operate conventions. This replaces the unaccepted review wrapper; founder acceptance of the concrete replacement remains pending.
 
 ### Do:

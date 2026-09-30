@@ -1,0 +1,4964 @@
+{
+  "kind": "audit inventory, not blanket visual PASS",
+  "parent": "6babaa770d845c2fed2716f1027516ed616cca73",
+  "languages": [
+    "en",
+    "ar"
+  ],
+  "widths": [
+    1440,
+    768,
+    390,
+    320
+  ],
+  "cases": 42,
+  "captures": 336,
+  "excluded": "8 nonexistent recovery-route captures; superseded unsettled transition and false interruption captures",
+  "limits": "Route and state captures audited with contact sheets and focused full images. Existing legacy defects remain in punch list; no platform rollout acceptance. Progress uses stopped test timers; interruption uses real cancellation with asserted notice and no result.",
+  "inventory": [
+    {
+      "locale": "en",
+      "capture": "access-consent-1440",
+      "path": "/consent?lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Review commitments",
+        "Review before you learn",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "944ef1f78e8b43107b183f6ea3f12a7c1229733036b7202ed3ca5bb02640ba89"
+    },
+    {
+      "locale": "en",
+      "capture": "access-consent-320",
+      "path": "/consent?lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Review commitments",
+        "Review before you learn",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "e29544bf3c107183e1b62fd8eceb1af067cb18f6e37309df62ddeb7eb01575a9"
+    },
+    {
+      "locale": "en",
+      "capture": "access-consent-390",
+      "path": "/consent?lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Review commitments",
+        "Review before you learn",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "48b4e575c90c897e8c8aca8b23254b1b06bbc932085a7692aeb073e551562d60"
+    },
+    {
+      "locale": "en",
+      "capture": "access-consent-768",
+      "path": "/consent?lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Review commitments",
+        "Review before you learn",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "c3077a809eea4e709194d95e712cd9ba34d912aaaaa039f3aaed97ed4af6b56c"
+    },
+    {
+      "locale": "en",
+      "capture": "access-forgot-password-1440",
+      "path": "/forgot-password?lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Reset your password",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "7cdd2af16be83cd50bb139b3fd58f5609b416d5f06dda5989af2557a9d1496ee"
+    },
+    {
+      "locale": "en",
+      "capture": "access-forgot-password-320",
+      "path": "/forgot-password?lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Reset your password",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "21c40d5080dfb1ba05f79dea97dd0d7e1abdc541afa1a99cb623c3e6c4818dfd"
+    },
+    {
+      "locale": "en",
+      "capture": "access-forgot-password-390",
+      "path": "/forgot-password?lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Reset your password",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "b49d0cb044445c720fbe7e28ebba14c1e8fbcc27f49d6224e8e39493cf77f071"
+    },
+    {
+      "locale": "en",
+      "capture": "access-forgot-password-768",
+      "path": "/forgot-password?lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Reset your password",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "e68c55b441af3dfe8e9f2458cbd9ebf3cdd777d0c9c7b86034c783528fba25c0"
+    },
+    {
+      "locale": "en",
+      "capture": "access-login-1440",
+      "path": "/login?lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Sign in to UniMind",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "4be8372eb2f8b07ea566957f4a53f56b8b71c5ff6e9c1c2b5f9c2649f634f14e"
+    },
+    {
+      "locale": "en",
+      "capture": "access-login-320",
+      "path": "/login?lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Sign in to UniMind",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "b9c3ec89c5d6a0f1735313ffd01b6fdee207755ff5831b8c81fbbdb3f57811ab"
+    },
+    {
+      "locale": "en",
+      "capture": "access-login-390",
+      "path": "/login?lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Sign in to UniMind",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "f9c0a82c3b5d32a347d48884c0f8233d9b3e8bb8db313f65dbd12f4625f7d175"
+    },
+    {
+      "locale": "en",
+      "capture": "access-login-768",
+      "path": "/login?lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Sign in to UniMind",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "e084ce01fcca4c319cf02e30cd42f679d28ec03ba0fa98636df0185ce6132eb9"
+    },
+    {
+      "locale": "en",
+      "capture": "access-login-suspended-1440",
+      "path": "/login?lang=en&fixture=suspended",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "2804d0f25ed2b41dec80aad9ae73fa7e449e5f7548f12be11ed9cc7df2e22b09"
+    },
+    {
+      "locale": "en",
+      "capture": "access-login-suspended-320",
+      "path": "/login?lang=en&fixture=suspended",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "3b3438c7304e8234dd1b522b8f8f1a705a59e6d7370a972bcef421bda951228d"
+    },
+    {
+      "locale": "en",
+      "capture": "access-login-suspended-390",
+      "path": "/login?lang=en&fixture=suspended",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "1a3eccabf33baa5beb011ed3a4647d149620d527e72d57c66956816dbe40e9e0"
+    },
+    {
+      "locale": "en",
+      "capture": "access-login-suspended-768",
+      "path": "/login?lang=en&fixture=suspended",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "aad71f32b040e064d61e45a3a2eca56aab7407e8fe6ca3adef59a5b50a8a19a1"
+    },
+    {
+      "locale": "en",
+      "capture": "access-register-1440",
+      "path": "/register?lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Create your account",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "f6f4d51e65f89bf8d444953c2d67568914e0ace51f36b00a3f7c943a2e4db436"
+    },
+    {
+      "locale": "en",
+      "capture": "access-register-320",
+      "path": "/register?lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Create your account",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "c0b0370547145f42e6a21e9970bf193f48527b402c3cb1d206e90df481e325d9"
+    },
+    {
+      "locale": "en",
+      "capture": "access-register-390",
+      "path": "/register?lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Create your account",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "32d02cc19ecc7cd95d28e07251f71b468552000559d1b1ceb84783b90bddcfd5"
+    },
+    {
+      "locale": "en",
+      "capture": "access-register-768",
+      "path": "/register?lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Create your account",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "eb4f35a40390fb8368942466d7614c83f2b978e59d93ff125155f265582349e4"
+    },
+    {
+      "locale": "en",
+      "capture": "access-reset-password-1440",
+      "path": "/reset-password?lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "2804d0f25ed2b41dec80aad9ae73fa7e449e5f7548f12be11ed9cc7df2e22b09"
+    },
+    {
+      "locale": "en",
+      "capture": "access-reset-password-320",
+      "path": "/reset-password?lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "3b3438c7304e8234dd1b522b8f8f1a705a59e6d7370a972bcef421bda951228d"
+    },
+    {
+      "locale": "en",
+      "capture": "access-reset-password-390",
+      "path": "/reset-password?lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "1a3eccabf33baa5beb011ed3a4647d149620d527e72d57c66956816dbe40e9e0"
+    },
+    {
+      "locale": "en",
+      "capture": "access-reset-password-768",
+      "path": "/reset-password?lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "aad71f32b040e064d61e45a3a2eca56aab7407e8fe6ca3adef59a5b50a8a19a1"
+    },
+    {
+      "locale": "en",
+      "capture": "access-reset-password-expired-1440",
+      "path": "/reset-password?lang=en&fixture=expired",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "db4b5a35fe4ad733bae2be5a8851f158172bcb7040ef38ce049f21b17a7b3f38"
+    },
+    {
+      "locale": "en",
+      "capture": "access-reset-password-expired-320",
+      "path": "/reset-password?lang=en&fixture=expired",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "d08888f646754020fbf729be5d6baddbaa6cc6cc7ff64f9263fdcc63c4bb9e51"
+    },
+    {
+      "locale": "en",
+      "capture": "access-reset-password-expired-390",
+      "path": "/reset-password?lang=en&fixture=expired",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "44fe3679cef109dc7f15fe150a696cb1f103f438a876c33e5bbc00dd308189ea"
+    },
+    {
+      "locale": "en",
+      "capture": "access-reset-password-expired-768",
+      "path": "/reset-password?lang=en&fixture=expired",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "97667129059e138150dd582e7044b94af6d5d52873a794721799dde1c3e15da4"
+    },
+    {
+      "locale": "en",
+      "capture": "access-reset-password-replayed-1440",
+      "path": "/reset-password?lang=en&fixture=replayed",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "373acb2d6931b5f40a675885b0809806a3323b94d4d5fc9c32aabdf7871e81d2"
+    },
+    {
+      "locale": "en",
+      "capture": "access-reset-password-replayed-320",
+      "path": "/reset-password?lang=en&fixture=replayed",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "3b3438c7304e8234dd1b522b8f8f1a705a59e6d7370a972bcef421bda951228d"
+    },
+    {
+      "locale": "en",
+      "capture": "access-reset-password-replayed-390",
+      "path": "/reset-password?lang=en&fixture=replayed",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "1a3eccabf33baa5beb011ed3a4647d149620d527e72d57c66956816dbe40e9e0"
+    },
+    {
+      "locale": "en",
+      "capture": "access-reset-password-replayed-768",
+      "path": "/reset-password?lang=en&fixture=replayed",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "f0e36a7ca7d7fa001b1d45342d3d33920cd3bac56d80ce1519cb73cba9c723cf"
+    },
+    {
+      "locale": "en",
+      "capture": "access-reset-valid-1440",
+      "path": "/reset-password?lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Choose a new password",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "d71179b2dae39cdefb71eb0290fd760a24f93a43d3275088a0185e220e431f0d"
+    },
+    {
+      "locale": "en",
+      "capture": "access-reset-valid-320",
+      "path": "/reset-password?lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Choose a new password",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "58d35233358fceeefd728f8d4cd4afc57dcc28fa2211fae67d364bab9e0e0c10"
+    },
+    {
+      "locale": "en",
+      "capture": "access-reset-valid-390",
+      "path": "/reset-password?lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Choose a new password",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "a04bb1860d5526b5667f6880c7bff17cf3820a2a10cf19954accbb590a80cc6f"
+    },
+    {
+      "locale": "en",
+      "capture": "access-reset-valid-768",
+      "path": "/reset-password?lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Choose a new password",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "1c43941ca4d183a5d77349f588ba0c5d0ca62bcce8b5b13b790d7979611f1335"
+    },
+    {
+      "locale": "en",
+      "capture": "access-verify-email-1440",
+      "path": "/verify-email?lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Check your inbox",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "c21109be9f54d96664a5d210de462505d42fffacc72d7ebff2dd130c4d4651ca"
+    },
+    {
+      "locale": "en",
+      "capture": "access-verify-email-320",
+      "path": "/verify-email?lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Check your inbox",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "9d22d9ae6af320b44a9dca7aaa5909d30d97512f91245cad0a4ac08bf950c403"
+    },
+    {
+      "locale": "en",
+      "capture": "access-verify-email-390",
+      "path": "/verify-email?lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Check your inbox",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "9dc9b20433799cf7d8267b9e309600c5d71110558da08be077c0ed92d78dd0d7"
+    },
+    {
+      "locale": "en",
+      "capture": "access-verify-email-768",
+      "path": "/verify-email?lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Check your inbox",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "4dc72e02b1cb3d66c1abe30cc4d0f8f691a2c1d6a03adea37a334450bbb0cd5b"
+    },
+    {
+      "locale": "en",
+      "capture": "access-verify-email-expired-1440",
+      "path": "/verify-email?lang=en&fixture=expired",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "42fe8014bafaefa8129ea18b04d55fc5d0658f507b814b12839032ea32268210"
+    },
+    {
+      "locale": "en",
+      "capture": "access-verify-email-expired-320",
+      "path": "/verify-email?lang=en&fixture=expired",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "da141ce144ec24ad586de838eea29cadabf6d1c05ead42023f1fb4bc34287269"
+    },
+    {
+      "locale": "en",
+      "capture": "access-verify-email-expired-390",
+      "path": "/verify-email?lang=en&fixture=expired",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "ea201d2ac9aa7f0f805a34894d681488843c333752c8da1b839f4b1706211ba2"
+    },
+    {
+      "locale": "en",
+      "capture": "access-verify-email-expired-768",
+      "path": "/verify-email?lang=en&fixture=expired",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "6fae7345d88765e99b34c477761e1f1eea14446aaa9683bd3e47026e63b64b76"
+    },
+    {
+      "locale": "en",
+      "capture": "access-verify-email-replayed-1440",
+      "path": "/verify-email?lang=en&fixture=replayed",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "42fe8014bafaefa8129ea18b04d55fc5d0658f507b814b12839032ea32268210"
+    },
+    {
+      "locale": "en",
+      "capture": "access-verify-email-replayed-320",
+      "path": "/verify-email?lang=en&fixture=replayed",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "da141ce144ec24ad586de838eea29cadabf6d1c05ead42023f1fb4bc34287269"
+    },
+    {
+      "locale": "en",
+      "capture": "access-verify-email-replayed-390",
+      "path": "/verify-email?lang=en&fixture=replayed",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "ea201d2ac9aa7f0f805a34894d681488843c333752c8da1b839f4b1706211ba2"
+    },
+    {
+      "locale": "en",
+      "capture": "access-verify-email-replayed-768",
+      "path": "/verify-email?lang=en&fixture=replayed",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Your access path",
+        "Account",
+        "Verify email",
+        "Review commitments",
+        "Enter shelf"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "6fae7345d88765e99b34c477761e1f1eea14446aaa9683bd3e47026e63b64b76"
+    },
+    {
+      "locale": "en",
+      "capture": "admin-blocked-1440",
+      "path": "/admin?fixture=blocked&lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Resources",
+        "Admin decision queue",
+        "Decisions needing action",
+        "Hide unit · synthetic Anatomy scope",
+        "Readiness checks"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "0e91155ed17ae5fcd8502f05a5ba3153994f4f4bc3c1635d70df35f791975383"
+    },
+    {
+      "locale": "en",
+      "capture": "admin-blocked-320",
+      "path": "/admin?fixture=blocked&lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Resources",
+        "Admin decision queue",
+        "Decisions needing action",
+        "Hide unit · synthetic Anatomy scope",
+        "Readiness checks"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "396879dce5fa534b1442a8d9cd5c369086f68150887bae89c8788cacc3384482"
+    },
+    {
+      "locale": "en",
+      "capture": "admin-blocked-390",
+      "path": "/admin?fixture=blocked&lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Resources",
+        "Admin decision queue",
+        "Decisions needing action",
+        "Hide unit · synthetic Anatomy scope",
+        "Readiness checks"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "ba8b6174551738180da0a1c698b2ca19d79c978850d7633da9a3bc751bb6145a"
+    },
+    {
+      "locale": "en",
+      "capture": "admin-blocked-768",
+      "path": "/admin?fixture=blocked&lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Resources",
+        "Admin decision queue",
+        "Decisions needing action",
+        "Hide unit · synthetic Anatomy scope",
+        "Readiness checks"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "38a24d96c25ee229ac8ca207b2b4d7dade8191faa5dc70e28f1fbf8159e7b127"
+    },
+    {
+      "locale": "en",
+      "capture": "admin-error-1440",
+      "path": "/admin?fixture=error&lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Resources",
+        "Admin decision queue",
+        "Decisions needing action",
+        "Hide unit · synthetic Anatomy scope",
+        "Readiness checks",
+        "Review before recording"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "ab5153533d8ae9e6f0540a1fd1d49b4b116f58a25422e85e5efe6c9010cb3fe8"
+    },
+    {
+      "locale": "en",
+      "capture": "admin-error-320",
+      "path": "/admin?fixture=error&lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Resources",
+        "Admin decision queue",
+        "Decisions needing action",
+        "Hide unit · synthetic Anatomy scope",
+        "Readiness checks",
+        "Review before recording"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "6f6de2418a12de64faf5130f4707e4840d86b25f24c274af6c5b0b78a4cfe3f8"
+    },
+    {
+      "locale": "en",
+      "capture": "admin-error-390",
+      "path": "/admin?fixture=error&lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Resources",
+        "Admin decision queue",
+        "Decisions needing action",
+        "Hide unit · synthetic Anatomy scope",
+        "Readiness checks",
+        "Review before recording"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "a6b062efd4cb5c9e036d9e4f1ddde37be602b9639d14d7f8e7b884ca6bb70ecf"
+    },
+    {
+      "locale": "en",
+      "capture": "admin-error-768",
+      "path": "/admin?fixture=error&lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Resources",
+        "Admin decision queue",
+        "Decisions needing action",
+        "Hide unit · synthetic Anatomy scope",
+        "Readiness checks",
+        "Review before recording"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "5dff0d0e951c9b52ec4edf13623c1302e9fd375abc4d41e7aa84f66a6aff3f30"
+    },
+    {
+      "locale": "en",
+      "capture": "admin-pending-1440",
+      "path": "/admin?fixture=pending&lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Resources",
+        "Admin decision queue",
+        "Decisions needing action",
+        "Publish unit · synthetic Anatomy scope",
+        "Readiness checks"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "81b66e13e8eb25fac28dd17cb84624ad5d66291953d431a49c026f3a52a4bd93"
+    },
+    {
+      "locale": "en",
+      "capture": "admin-pending-320",
+      "path": "/admin?fixture=pending&lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Resources",
+        "Admin decision queue",
+        "Decisions needing action",
+        "Publish unit · synthetic Anatomy scope",
+        "Readiness checks"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "dbe357c979ec29ce01f4fa60031ee788545a705dc4242c3f319d515edd74bd44"
+    },
+    {
+      "locale": "en",
+      "capture": "admin-pending-390",
+      "path": "/admin?fixture=pending&lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Resources",
+        "Admin decision queue",
+        "Decisions needing action",
+        "Publish unit · synthetic Anatomy scope",
+        "Readiness checks"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "67dafa38d068151835250dbb243e2059295421cfc1bc5b1260dfdd8edf402b1a"
+    },
+    {
+      "locale": "en",
+      "capture": "admin-pending-768",
+      "path": "/admin?fixture=pending&lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Resources",
+        "Admin decision queue",
+        "Decisions needing action",
+        "Publish unit · synthetic Anatomy scope",
+        "Readiness checks"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "cac48dba3ae8d22731b2de94a2d1d410737fc63e6c88300fce55b111541c83e5"
+    },
+    {
+      "locale": "en",
+      "capture": "admin-stale-1440",
+      "path": "/admin?fixture=stale&lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Resources",
+        "Admin decision queue",
+        "Decisions needing action",
+        "Hide unit · synthetic Anatomy scope",
+        "Readiness checks",
+        "Review before recording"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "8cc20645385e031db8e15915a1a433d5e225290279f04340bb39354d50be5404"
+    },
+    {
+      "locale": "en",
+      "capture": "admin-stale-320",
+      "path": "/admin?fixture=stale&lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Resources",
+        "Admin decision queue",
+        "Decisions needing action",
+        "Hide unit · synthetic Anatomy scope",
+        "Readiness checks",
+        "Review before recording"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "4ad3e93f19603e7cb94ac2e1943e66563eb35191c05e7e6cf0968c79fdc978d4"
+    },
+    {
+      "locale": "en",
+      "capture": "admin-stale-390",
+      "path": "/admin?fixture=stale&lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Resources",
+        "Admin decision queue",
+        "Decisions needing action",
+        "Hide unit · synthetic Anatomy scope",
+        "Readiness checks",
+        "Review before recording"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "f455b29042a13c80f4cd08455210c2b0310f96b5af5f5c54493de943fb852411"
+    },
+    {
+      "locale": "en",
+      "capture": "admin-stale-768",
+      "path": "/admin?fixture=stale&lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Resources",
+        "Admin decision queue",
+        "Decisions needing action",
+        "Hide unit · synthetic Anatomy scope",
+        "Readiness checks",
+        "Review before recording"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "38b950263ae8e1a98413f2d4ce9dae15167ab39183db4e60eb2a0ae717b8d1c7"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-capacity-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=capacity&lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Capacity is temporarily unavailable. Try again later."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "e50fe0320682c3da8fc5e1c3e9362fea777647e60446f71ddc02466349e3bff7"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-capacity-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=capacity&lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Capacity is temporarily unavailable. Try again later."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "1fa4772a3916d0466088cb90bb5c859453ce58612541bb440e715a67d0dcfb1a"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-capacity-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=capacity&lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Capacity is temporarily unavailable. Try again later."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "80dbf04d3c51912fafe17bc880458fea2112990c6fbaabe821687becfccc9141"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-capacity-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=capacity&lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Capacity is temporarily unavailable. Try again later."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "c49c1a8e3485e683f34777ec79caf61fd11cb6947e38e5292123e72871f81ed8"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-empty-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=empty&lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Nothing to show yet. No assigned or available records."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "166659a878968d0347f31e17e58917c750f8a1397220795502aa447902c61b76"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-empty-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=empty&lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Nothing to show yet. No assigned or available records."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "01247b7db4a35e45d537dc7aa863367fec23dd72c7ea9fb129762dba2c08336b"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-empty-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=empty&lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Nothing to show yet. No assigned or available records."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "22f4e630e69dd5413199e8160c85da7ebd71555394c75730f6f66a55d846cbcb"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-empty-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=empty&lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Nothing to show yet. No assigned or available records."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "6066445c896de60a392d40e53de83bd9471786934e72a97fe2ee0f6eb8eb76bd"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-error-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=error&lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "This view could not be loaded. Please retry."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "5b7a2a4d3a1534d6b5cdf182dd640583c1f04404f63f743a3b01828c8998c021"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-error-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=error&lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "This view could not be loaded. Please retry."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "6e957347033fc908f86a8999944d7e49e10531912d0c8f59e315a04feadcfb0f"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-error-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=error&lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "This view could not be loaded. Please retry."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "c87e6999164df59c5c5daedd4a14ed458dfc8e1bf73dac8ddd592b5734ab6d6e"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-error-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=error&lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "This view could not be loaded. Please retry."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "fa87c5d7b71d56f8fc48e5bdd06c4ef7b43e53b0970fb8fae16043989e6152da"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-expired-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=expired&lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "This link or assignment has expired or was already used. Return and request a fresh link."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "f50ad3d84b45ed3ebf88baa31208d931034d14bae79e59393d7750c7aeb673e2"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-expired-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=expired&lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "This link or assignment has expired or was already used. Return and request a fresh link."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "ea29789bcebabe47e8f1819beb5149da2faa87ed64c415b7a2d30ac61cb3bd3e"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-expired-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=expired&lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "This link or assignment has expired or was already used. Return and request a fresh link."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "ee0286e09b206472e8e9ce50f1cff49ab7b4089b014555b532ef28257b959fd0"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-expired-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=expired&lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "This link or assignment has expired or was already used. Return and request a fresh link."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "55e826d420762a67f5074bdf826483bfeeb91cb6ae98bc717d3500a10e960f58"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-forbidden-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=forbidden&lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Access unavailable for this account or scope."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "2b584b7053c2e405fcf830776ce665249893d2950c68583e904bc5ed6b42f66c"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-forbidden-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=forbidden&lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Access unavailable for this account or scope."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "bee22dc82ea8dc96268c0c424250c4d5d96c77925210ac108d60a44e4c4a1a81"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-forbidden-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=forbidden&lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Access unavailable for this account or scope."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "7a99855d148628773ec4abafd031d1004a1ca7d61b904f8a063d7c01e794e369"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-forbidden-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=forbidden&lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Access unavailable for this account or scope."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "408a8d26aaae9046bc89f6fb5ed87eb655692106a23341951399ce290bf61885"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-interrupted-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Chat",
+        "What would you like to understand?"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "6dcb786f7a45c850fac7679c9b37b950be08d65227d38095b8c4f170d9252edc"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-interrupted-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Chat",
+        "What would you like to understand?"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "45899e8148b877e5831f26075ac32585ad4458cde338959d5f6db2cc1689b4f8"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-interrupted-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Chat",
+        "What would you like to understand?"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "34d5a9cce750a61fbf38c31b02c5abda1f54e2fd1878893c6c85e80d5f524e57"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-interrupted-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Chat",
+        "What would you like to understand?"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "1e8646fa8e5dcaca80e5d7a400a9af18c2298f3675a163e72924ad6ab91bced6"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-locked-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=locked&lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "This unit is unavailable. Its cohort, publication or approved sources do not meet availability requirements."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "4c7fb5b1e096b452708ca68a0cfa26a95711077a9192d67607d24af843a621c7"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-locked-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=locked&lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "This unit is unavailable. Its cohort, publication or approved sources do not meet availability requirements."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "156fed407f1a67c334d598d8ceab555dfd02b4958c799edd7a2996a31d09228e"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-locked-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=locked&lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "This unit is unavailable. Its cohort, publication or approved sources do not meet availability requirements."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "d22e5d68709b36f6263cf8663936cd78df51e563234289a7b952fdc4fb62b260"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-locked-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=locked&lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "This unit is unavailable. Its cohort, publication or approved sources do not meet availability requirements."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "e0c4b2ad228ebf091c6a89d858d15a8d0f3ce1417c12a8893026a5bb25d6c1ac"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-no-ready-source-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=no-ready-source&lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "This unit is unavailable. Its cohort, publication or approved sources do not meet availability requirements."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "4c7fb5b1e096b452708ca68a0cfa26a95711077a9192d67607d24af843a621c7"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-no-ready-source-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=no-ready-source&lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "This unit is unavailable. Its cohort, publication or approved sources do not meet availability requirements."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "156fed407f1a67c334d598d8ceab555dfd02b4958c799edd7a2996a31d09228e"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-no-ready-source-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=no-ready-source&lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "This unit is unavailable. Its cohort, publication or approved sources do not meet availability requirements."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "d22e5d68709b36f6263cf8663936cd78df51e563234289a7b952fdc4fb62b260"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-no-ready-source-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=no-ready-source&lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "This unit is unavailable. Its cohort, publication or approved sources do not meet availability requirements."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "e0c4b2ad228ebf091c6a89d858d15a8d0f3ce1417c12a8893026a5bb25d6c1ac"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-offline-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=offline&lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Connection interrupted. Your current demo records remain in this tab."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "b275d6f154f9ffc2584a2cba277bff121b8a3452fe5fd38319ce6eead199dbbb"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-offline-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=offline&lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Connection interrupted. Your current demo records remain in this tab."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "1f3dd93aed119bc49f036b388d78a8fce690c0d635a4a412a22a8b6475f1b071"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-offline-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=offline&lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Connection interrupted. Your current demo records remain in this tab."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "c4573838175ec17eeda7744c8ac91a41ec950176ba79203eca506449a5523af9"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-offline-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=offline&lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Connection interrupted. Your current demo records remain in this tab."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "695ca3f77dfccdc5b57d3607ac5dc3f482bfd76a862c356c069078ea1cbbea26"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-quota-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=quota&lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Allowance unavailable. Try again later; no numeric limit is approved."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "e79cdbd344b1fe9e4205add0f2d6de5ea67c15831e28c7d183b74d5391058ad1"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-quota-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=quota&lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Allowance unavailable. Try again later; no numeric limit is approved."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "d2e035425df7dda8a32904964ed4668e60a0588c0d338e601181a1ac6478e09c"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-quota-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=quota&lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Allowance unavailable. Try again later; no numeric limit is approved."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "3204727e55afbc0afc64f6d6034f84822538f27bc46f5faa7503cf14a05555de"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-quota-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=quota&lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Allowance unavailable. Try again later; no numeric limit is approved."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "24207334f308b2b8b6d3af89d538e19c01b2f3ae7af1fa7080ca0b1556157b62"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-replayed-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=replayed&lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "This link or assignment has expired or was already used. Return and request a fresh link."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "f50ad3d84b45ed3ebf88baa31208d931034d14bae79e59393d7750c7aeb673e2"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-replayed-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=replayed&lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "This link or assignment has expired or was already used. Return and request a fresh link."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "ea29789bcebabe47e8f1819beb5149da2faa87ed64c415b7a2d30ac61cb3bd3e"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-replayed-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=replayed&lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "This link or assignment has expired or was already used. Return and request a fresh link."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "ee0286e09b206472e8e9ce50f1cff49ab7b4089b014555b532ef28257b959fd0"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-replayed-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=replayed&lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "This link or assignment has expired or was already used. Return and request a fresh link."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "55e826d420762a67f5074bdf826483bfeeb91cb6ae98bc717d3500a10e960f58"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-stale-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=stale&lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "This view changed. Reload its current state before continuing."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "38b982ef69d6831906433a9fbe3f280c32552d6a7e3a370375b429d4b8efd0b1"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-stale-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=stale&lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "This view changed. Reload its current state before continuing."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "0e252acd3e8e0af714d9794cc21c10b63cb90a4c514f53cfec6ab0fa3be65712"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-stale-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=stale&lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "This view changed. Reload its current state before continuing."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "0bc2704dabb62d8808ed7c6b56ec21eda743bfc80719b447bce00d0489636a49"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-stale-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=stale&lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "This view changed. Reload its current state before continuing."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "1bc4b8df4441b9097e4aa85ca7d2aaaff550bbb9c007710e57ca56b4812ce5a3"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-streaming-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Chat"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "d5c32cb8ab5f85010ea3e61216dc43f7b219684a92de6968bffb60d0343d6034"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-streaming-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Chat"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "0a4beda064dba38afdacc4a03959ed6ffb9589955aaaf9f6f9fa1591376f1c57"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-streaming-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Chat"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "0bade28f148a5d50bd2866fa8d6025479cf0943e58970cf13aac3fd1f82dc82d"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-streaming-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Chat"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "9472fd525208935bf2121c5414f72a61adb5285697738fcedc77592d97f45ed6"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-unpublished-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=unpublished&lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "This unit is unavailable. Its cohort, publication or approved sources do not meet availability requirements."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "4c7fb5b1e096b452708ca68a0cfa26a95711077a9192d67607d24af843a621c7"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-unpublished-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=unpublished&lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "This unit is unavailable. Its cohort, publication or approved sources do not meet availability requirements."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "156fed407f1a67c334d598d8ceab555dfd02b4958c799edd7a2996a31d09228e"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-unpublished-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=unpublished&lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "This unit is unavailable. Its cohort, publication or approved sources do not meet availability requirements."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "d22e5d68709b36f6263cf8663936cd78df51e563234289a7b952fdc4fb62b260"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-unpublished-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=unpublished&lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "This unit is unavailable. Its cohort, publication or approved sources do not meet availability requirements."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "e0c4b2ad228ebf091c6a89d858d15a8d0f3ce1417c12a8893026a5bb25d6c1ac"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-wrong-scope-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=wrong-scope&lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Access unavailable for this account or scope."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "2b584b7053c2e405fcf830776ce665249893d2950c68583e904bc5ed6b42f66c"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-wrong-scope-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=wrong-scope&lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Access unavailable for this account or scope."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "bee22dc82ea8dc96268c0c424250c4d5d96c77925210ac108d60a44e4c4a1a81"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-wrong-scope-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=wrong-scope&lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Access unavailable for this account or scope."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "7a99855d148628773ec4abafd031d1004a1ca7d61b904f8a063d7c01e794e369"
+    },
+    {
+      "locale": "en",
+      "capture": "chat-wrong-scope-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=wrong-scope&lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Access unavailable for this account or scope."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "408a8d26aaae9046bc89f6fb5ed87eb655692106a23341951399ce290bf61885"
+    },
+    {
+      "locale": "en",
+      "capture": "collection-checksum-1440",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=checksum&lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "Requested material",
+        "Prepare one source",
+        "Validation summary",
+        "What each status means"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "c28c4fca3bc984c1363013bb4cbd3cee803bd5fb0f27eb97604790433aaec7ea"
+    },
+    {
+      "locale": "en",
+      "capture": "collection-checksum-320",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=checksum&lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "Requested material",
+        "Prepare one source",
+        "Validation summary",
+        "What each status means"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "d77c6480a0314bab112066540031fd11436bfe8c5323cb8f051ac20c513a4e6e"
+    },
+    {
+      "locale": "en",
+      "capture": "collection-checksum-390",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=checksum&lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "Requested material",
+        "Prepare one source",
+        "Validation summary",
+        "What each status means"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "a67a2fd8f80b5c811fe353f294575992df4eb8ac58d2f65b70a2816fd4880e48"
+    },
+    {
+      "locale": "en",
+      "capture": "collection-checksum-768",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=checksum&lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "Requested material",
+        "Prepare one source",
+        "Validation summary",
+        "What each status means"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "5c875a10d913c488294030d75b0caac437d2d54c607b0bfc02fa77ddcee08b88"
+    },
+    {
+      "locale": "en",
+      "capture": "collection-duplicate-1440",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=duplicate&lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "Requested material",
+        "Prepare one source",
+        "Validation summary",
+        "What each status means"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "c28c4fca3bc984c1363013bb4cbd3cee803bd5fb0f27eb97604790433aaec7ea"
+    },
+    {
+      "locale": "en",
+      "capture": "collection-duplicate-320",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=duplicate&lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "Requested material",
+        "Prepare one source",
+        "Validation summary",
+        "What each status means"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "d77c6480a0314bab112066540031fd11436bfe8c5323cb8f051ac20c513a4e6e"
+    },
+    {
+      "locale": "en",
+      "capture": "collection-duplicate-390",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=duplicate&lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "Requested material",
+        "Prepare one source",
+        "Validation summary",
+        "What each status means"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "a67a2fd8f80b5c811fe353f294575992df4eb8ac58d2f65b70a2816fd4880e48"
+    },
+    {
+      "locale": "en",
+      "capture": "collection-duplicate-768",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=duplicate&lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "Requested material",
+        "Prepare one source",
+        "Validation summary",
+        "What each status means"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "c5edfd38a6fe1602fe4119b187ca6c3f4a879ee70f2be846190d39f724df8430"
+    },
+    {
+      "locale": "en",
+      "capture": "collection-offline-1440",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=offline&lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "Requested material",
+        "Prepare one source",
+        "Validation summary",
+        "What each status means"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "21cd7af68cb989509379d69e6f5b927f79e971fa56012543c396083e557fcb7f"
+    },
+    {
+      "locale": "en",
+      "capture": "collection-offline-320",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=offline&lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "Requested material",
+        "Prepare one source",
+        "Validation summary",
+        "What each status means"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "17793ddf8ad2726603e6ba94da599b8918b13a7dc19814bef4960f69896b0e20"
+    },
+    {
+      "locale": "en",
+      "capture": "collection-offline-390",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=offline&lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "Requested material",
+        "Prepare one source",
+        "Validation summary",
+        "What each status means"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "5b765705e6d6114660eb0c41176bc54e39a81c2241d28d3e9de441d9e7c2beb5"
+    },
+    {
+      "locale": "en",
+      "capture": "collection-offline-768",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=offline&lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "Requested material",
+        "Prepare one source",
+        "Validation summary",
+        "What each status means"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "c63655f7975c845c3b962f35fe1d9a7902d065bc602b1a073a54b1afc97b2827"
+    },
+    {
+      "locale": "en",
+      "capture": "collection-oversize-1440",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=oversize&lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "Requested material",
+        "Prepare one source",
+        "Validation summary",
+        "What each status means"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "c28c4fca3bc984c1363013bb4cbd3cee803bd5fb0f27eb97604790433aaec7ea"
+    },
+    {
+      "locale": "en",
+      "capture": "collection-oversize-320",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=oversize&lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "Requested material",
+        "Prepare one source",
+        "Validation summary",
+        "What each status means"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "d77c6480a0314bab112066540031fd11436bfe8c5323cb8f051ac20c513a4e6e"
+    },
+    {
+      "locale": "en",
+      "capture": "collection-oversize-390",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=oversize&lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "Requested material",
+        "Prepare one source",
+        "Validation summary",
+        "What each status means"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "a67a2fd8f80b5c811fe353f294575992df4eb8ac58d2f65b70a2816fd4880e48"
+    },
+    {
+      "locale": "en",
+      "capture": "collection-oversize-768",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=oversize&lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "Requested material",
+        "Prepare one source",
+        "Validation summary",
+        "What each status means"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "c5edfd38a6fe1602fe4119b187ca6c3f4a879ee70f2be846190d39f724df8430"
+    },
+    {
+      "locale": "en",
+      "capture": "collection-rights-1440",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=rights&lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "Requested material",
+        "Prepare one source",
+        "Validation summary",
+        "What each status means"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "c28c4fca3bc984c1363013bb4cbd3cee803bd5fb0f27eb97604790433aaec7ea"
+    },
+    {
+      "locale": "en",
+      "capture": "collection-rights-320",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=rights&lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "Requested material",
+        "Prepare one source",
+        "Validation summary",
+        "What each status means"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "d77c6480a0314bab112066540031fd11436bfe8c5323cb8f051ac20c513a4e6e"
+    },
+    {
+      "locale": "en",
+      "capture": "collection-rights-390",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=rights&lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "Requested material",
+        "Prepare one source",
+        "Validation summary",
+        "What each status means"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "a67a2fd8f80b5c811fe353f294575992df4eb8ac58d2f65b70a2816fd4880e48"
+    },
+    {
+      "locale": "en",
+      "capture": "collection-rights-768",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=rights&lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "Requested material",
+        "Prepare one source",
+        "Validation summary",
+        "What each status means"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "c5edfd38a6fe1602fe4119b187ca6c3f4a879ee70f2be846190d39f724df8430"
+    },
+    {
+      "locale": "en",
+      "capture": "invitation-expired-1440",
+      "path": "/batch-leader/invitation?fixture=expired&lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Campaign invitation"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "a04567e0b2dfeba769f71849dabfb8150fed22a9f964f889f03961938a6ff443"
+    },
+    {
+      "locale": "en",
+      "capture": "invitation-expired-320",
+      "path": "/batch-leader/invitation?fixture=expired&lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Campaign invitation"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "39eee50af1392502ff68328f102ab392c51a0680ac4790c02b8dc1bf21d6e84f"
+    },
+    {
+      "locale": "en",
+      "capture": "invitation-expired-390",
+      "path": "/batch-leader/invitation?fixture=expired&lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Campaign invitation"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "8be9d64b20af1566ec6417c6723507fe09d9219194f8c52cdd01ac63afca4522"
+    },
+    {
+      "locale": "en",
+      "capture": "invitation-expired-768",
+      "path": "/batch-leader/invitation?fixture=expired&lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Campaign invitation"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "7dc9ebf55349797d0152cac4eaa9c8bc31611d744dfeac5b2710b56c05e62405"
+    },
+    {
+      "locale": "en",
+      "capture": "invitation-replayed-1440",
+      "path": "/batch-leader/invitation?fixture=replayed&lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Campaign invitation"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "a04567e0b2dfeba769f71849dabfb8150fed22a9f964f889f03961938a6ff443"
+    },
+    {
+      "locale": "en",
+      "capture": "invitation-replayed-320",
+      "path": "/batch-leader/invitation?fixture=replayed&lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Campaign invitation"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "39eee50af1392502ff68328f102ab392c51a0680ac4790c02b8dc1bf21d6e84f"
+    },
+    {
+      "locale": "en",
+      "capture": "invitation-replayed-390",
+      "path": "/batch-leader/invitation?fixture=replayed&lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Campaign invitation"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "8be9d64b20af1566ec6417c6723507fe09d9219194f8c52cdd01ac63afca4522"
+    },
+    {
+      "locale": "en",
+      "capture": "invitation-replayed-768",
+      "path": "/batch-leader/invitation?fixture=replayed&lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Campaign invitation"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "7dc9ebf55349797d0152cac4eaa9c8bc31611d744dfeac5b2710b56c05e62405"
+    },
+    {
+      "locale": "en",
+      "capture": "shelf-empty-1440",
+      "path": "/learn?fixture=empty&lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Assigned campaigns",
+        "Nothing to show yet. No assigned or available records."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "f42594a45077a5ec0fe874a70ec8957e1c4466252fdacc7b4157a16b868805db"
+    },
+    {
+      "locale": "en",
+      "capture": "shelf-empty-320",
+      "path": "/learn?fixture=empty&lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Assigned campaigns",
+        "Nothing to show yet. No assigned or available records."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "14c4e607f0bbdf21e498bc5f14be37a249cc6df50a948043d9aa68db468050ab"
+    },
+    {
+      "locale": "en",
+      "capture": "shelf-empty-390",
+      "path": "/learn?fixture=empty&lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Assigned campaigns",
+        "Nothing to show yet. No assigned or available records."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "f2f88badb9240882ce9197381128a7ffd39db5c171fdf1b3bf9bf2245daac676"
+    },
+    {
+      "locale": "en",
+      "capture": "shelf-empty-768",
+      "path": "/learn?fixture=empty&lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Assigned campaigns",
+        "Nothing to show yet. No assigned or available records."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "0eb891e6eff9b0432355168409a4839a7257816c618fad09ef51077c4f3a20a0"
+    },
+    {
+      "locale": "en",
+      "capture": "shelf-no-membership-1440",
+      "path": "/learn?fixture=no-membership&lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Assigned campaigns",
+        "Nothing to show yet. No assigned or available records."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "f42594a45077a5ec0fe874a70ec8957e1c4466252fdacc7b4157a16b868805db"
+    },
+    {
+      "locale": "en",
+      "capture": "shelf-no-membership-320",
+      "path": "/learn?fixture=no-membership&lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Assigned campaigns",
+        "Nothing to show yet. No assigned or available records."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "14c4e607f0bbdf21e498bc5f14be37a249cc6df50a948043d9aa68db468050ab"
+    },
+    {
+      "locale": "en",
+      "capture": "shelf-no-membership-390",
+      "path": "/learn?fixture=no-membership&lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Assigned campaigns",
+        "Nothing to show yet. No assigned or available records."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "f2f88badb9240882ce9197381128a7ffd39db5c171fdf1b3bf9bf2245daac676"
+    },
+    {
+      "locale": "en",
+      "capture": "shelf-no-membership-768",
+      "path": "/learn?fixture=no-membership&lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Assigned campaigns",
+        "Nothing to show yet. No assigned or available records."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "0eb891e6eff9b0432355168409a4839a7257816c618fad09ef51077c4f3a20a0"
+    },
+    {
+      "locale": "en",
+      "capture": "studio-interrupted-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Studio",
+        "Your study aid appears here"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "bf42cfc9d9353a9a595806df982f2d701f3134b6990f8e85a3e5a0db76f20ce8"
+    },
+    {
+      "locale": "en",
+      "capture": "studio-interrupted-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Studio",
+        "Your study aid appears here"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "8b326011c9eb5fc2445ec7e631c9dd368e9e64c5255efd40a0e9ad65a782a9c9"
+    },
+    {
+      "locale": "en",
+      "capture": "studio-interrupted-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Studio",
+        "Your study aid appears here"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "78d80971a9587e6bf2aca783989e37deae690e6a9853bfc844b9fa5a014c7fc5"
+    },
+    {
+      "locale": "en",
+      "capture": "studio-interrupted-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Studio",
+        "Your study aid appears here"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "8485ad93cb40d778656f91d271844e9f50455959658fff7b4bdc4867de2da690"
+    },
+    {
+      "locale": "en",
+      "capture": "studio-preparing-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=en",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Studio",
+        "Your study aid appears here"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "b81319e35dfc2f13997181a70cb215e9a6f198b20bfc8514bcaa6fb61e862050"
+    },
+    {
+      "locale": "en",
+      "capture": "studio-preparing-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=en",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Studio",
+        "Your study aid appears here"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "49d84476481ac2513f94063f3c8a72508c222650ebe8c1ca8d2f4bfc9cbbacbc"
+    },
+    {
+      "locale": "en",
+      "capture": "studio-preparing-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=en",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Studio",
+        "Your study aid appears here"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "1e2e872fb22b1207d015811b92c6733201e01f2277dfca98125777dff09b3b1a"
+    },
+    {
+      "locale": "en",
+      "capture": "studio-preparing-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=en",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Anatomy",
+        "Studio",
+        "Your study aid appears here"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "2d86dba241537411ec5df1e79ad05d764f4a16e85141910ed7c08bc46adbcd14"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-consent-1440",
+      "path": "/consent?lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "راجع قبل بدء التعلّم",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "e106923c2b3e1c8655b4ffd104b1b36a8eb4bc4b4d0803f6195a3ccc060c0f4b"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-consent-320",
+      "path": "/consent?lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "راجع قبل بدء التعلّم",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "1657a4614ef94610c295367ca4690e5a74a994f326826bd66bce717b39cfab26"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-consent-390",
+      "path": "/consent?lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "راجع قبل بدء التعلّم",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "af27545d0815bb3b8158138c3939959c1417e7f4ddc003aae09a54d4acef3f8a"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-consent-768",
+      "path": "/consent?lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "راجع قبل بدء التعلّم",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "fe3d6a8ee450515da7ff9b19315553c09e217307c4f9184262a208f52bc31884"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-forgot-password-1440",
+      "path": "/forgot-password?lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "إعادة تعيين كلمة المرور",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "403abd4f538ef7600a199f94120ca011f96b3ba662958e3a53f03db4188fd636"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-forgot-password-320",
+      "path": "/forgot-password?lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "إعادة تعيين كلمة المرور",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "bcc20723973dc074f10b716c0837d1a52c17897e0a910cc43312b6b3a5a2cc7b"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-forgot-password-390",
+      "path": "/forgot-password?lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "إعادة تعيين كلمة المرور",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "3fb0542dd4c97cfe47c8af092609510e9f0580cf5176629fb932748223752000"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-forgot-password-768",
+      "path": "/forgot-password?lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "إعادة تعيين كلمة المرور",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "a1b283750fff098804fbf1f5997f25b65130c27b35cc28efd802c11bcf4b44a3"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-login-1440",
+      "path": "/login?lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تسجيل الدخول إلى UniMind",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "1fead8bfd68acd1136f6768e5494820d7eed276aa826a557d206e594855a24ea"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-login-320",
+      "path": "/login?lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تسجيل الدخول إلى UniMind",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "416b6c624908184ca52116849b71127424b373cf78ba148a369016004191df9b"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-login-390",
+      "path": "/login?lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تسجيل الدخول إلى UniMind",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "26ebb393d69e70f7a3db3c7a889a673f3ecc7e16ffcaeee0b037bf398b138444"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-login-768",
+      "path": "/login?lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تسجيل الدخول إلى UniMind",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "57435ee8a0ee23eb2effa15f4704499936fd3fcb027a8705f3c85a4a5ce4d4ca"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-login-suspended-1440",
+      "path": "/login?lang=ar&fixture=suspended",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "461f20d93d16233f7794eba015ad38b6f975e50fc8b47309030921a1ac84bcb9"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-login-suspended-320",
+      "path": "/login?lang=ar&fixture=suspended",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "259f916cb8cbc5a5fc07f59970c70a7404fe849f8253dd0fab261f41df9a1da4"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-login-suspended-390",
+      "path": "/login?lang=ar&fixture=suspended",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "87c88936fb3f841ea4cadf5ce3f15acc31fe5e974973726e8b9ff5c8503277d1"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-login-suspended-768",
+      "path": "/login?lang=ar&fixture=suspended",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "6a24599a0bfc62f8d533176f996da517aa70c775be5305942fda92f066570f31"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-register-1440",
+      "path": "/register?lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "إنشاء حسابك",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "8538e820b4a156a74ffa422cbd44852d3b2f6b4b05248ec0594b1d7650a635e1"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-register-320",
+      "path": "/register?lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "إنشاء حسابك",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "b977a84a454c8a81318674887b07eac3dde4b8c07927dc18f7cbb984f859cf52"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-register-390",
+      "path": "/register?lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "إنشاء حسابك",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "c3bfb9fcda05a6a353b07fbb03fd34cf96162cb3960cb8b048ae676990bc46b3"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-register-768",
+      "path": "/register?lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "إنشاء حسابك",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "5a282f9ea601a529afeaed927e56e95700708ceb37163b7214729dda520d121d"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-reset-password-1440",
+      "path": "/reset-password?lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "461f20d93d16233f7794eba015ad38b6f975e50fc8b47309030921a1ac84bcb9"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-reset-password-320",
+      "path": "/reset-password?lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "259f916cb8cbc5a5fc07f59970c70a7404fe849f8253dd0fab261f41df9a1da4"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-reset-password-390",
+      "path": "/reset-password?lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "87c88936fb3f841ea4cadf5ce3f15acc31fe5e974973726e8b9ff5c8503277d1"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-reset-password-768",
+      "path": "/reset-password?lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "6a24599a0bfc62f8d533176f996da517aa70c775be5305942fda92f066570f31"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-reset-password-expired-1440",
+      "path": "/reset-password?lang=ar&fixture=expired",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "461f20d93d16233f7794eba015ad38b6f975e50fc8b47309030921a1ac84bcb9"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-reset-password-expired-320",
+      "path": "/reset-password?lang=ar&fixture=expired",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "259f916cb8cbc5a5fc07f59970c70a7404fe849f8253dd0fab261f41df9a1da4"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-reset-password-expired-390",
+      "path": "/reset-password?lang=ar&fixture=expired",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "87c88936fb3f841ea4cadf5ce3f15acc31fe5e974973726e8b9ff5c8503277d1"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-reset-password-expired-768",
+      "path": "/reset-password?lang=ar&fixture=expired",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "6a24599a0bfc62f8d533176f996da517aa70c775be5305942fda92f066570f31"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-reset-password-replayed-1440",
+      "path": "/reset-password?lang=ar&fixture=replayed",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "461f20d93d16233f7794eba015ad38b6f975e50fc8b47309030921a1ac84bcb9"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-reset-password-replayed-320",
+      "path": "/reset-password?lang=ar&fixture=replayed",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "259f916cb8cbc5a5fc07f59970c70a7404fe849f8253dd0fab261f41df9a1da4"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-reset-password-replayed-390",
+      "path": "/reset-password?lang=ar&fixture=replayed",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "87c88936fb3f841ea4cadf5ce3f15acc31fe5e974973726e8b9ff5c8503277d1"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-reset-password-replayed-768",
+      "path": "/reset-password?lang=ar&fixture=replayed",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "6a24599a0bfc62f8d533176f996da517aa70c775be5305942fda92f066570f31"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-reset-valid-1440",
+      "path": "/reset-password?lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "اختر كلمة مرور جديدة",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "2e59f39e5d425009ed6b606acdc462e89a9fd0702f9ea55b0fa62aa88511c816"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-reset-valid-320",
+      "path": "/reset-password?lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "اختر كلمة مرور جديدة",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "67cb6a754f1b26396302a4b40f0bb11cbdb724c2433a0a8087b50c9a8e87bd0f"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-reset-valid-390",
+      "path": "/reset-password?lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "اختر كلمة مرور جديدة",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "cb96de45d576cd28de2fa43bf7c25c6a63b5a6a5a8dacf161b470de007b0b46a"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-reset-valid-768",
+      "path": "/reset-password?lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "اختر كلمة مرور جديدة",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "f8aedbcd79a076b86ffec2ed01768e4a830b8189e4c4fa01428051309a4f8665"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-verify-email-1440",
+      "path": "/verify-email?lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "راجع بريدك الإلكتروني",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "216fb2ed0489df1d0cef623f8568dd64c32a64a8c201a8b91946754f6eb7ecda"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-verify-email-320",
+      "path": "/verify-email?lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "راجع بريدك الإلكتروني",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "9f402c5c9fae6bd6271e8e81767d38e7e5c6dd4e9909b7eda0ef57b27a6bbabd"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-verify-email-390",
+      "path": "/verify-email?lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "راجع بريدك الإلكتروني",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "e6e1d2250c1b86f90a7abf5f59655a2ce384de275560b74ae97a4fc4312f1aaf"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-verify-email-768",
+      "path": "/verify-email?lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "راجع بريدك الإلكتروني",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "62c69fbb04cc4cdcae1aab91d273ffc062a5c2771b5b1146ecba6ef337b36da0"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-verify-email-expired-1440",
+      "path": "/verify-email?lang=ar&fixture=expired",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "f8331a4ee36d27885b114cc45a4e654fa265220f4f3b1e781a84d0cade9a65d3"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-verify-email-expired-320",
+      "path": "/verify-email?lang=ar&fixture=expired",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "1b0a7c42628d3458492c31827f20ea7a0e5cfdb3dc70d2a62bd432ca1a952009"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-verify-email-expired-390",
+      "path": "/verify-email?lang=ar&fixture=expired",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "7f44979b46b2bb0c3734d591ec0fd99924d5d27f675fc533b55d1fc8f8ada30e"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-verify-email-expired-768",
+      "path": "/verify-email?lang=ar&fixture=expired",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "03209e370cf60d7aa17c10cf0cc519f50f4fce76581991c6f53b47d276a76e57"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-verify-email-replayed-1440",
+      "path": "/verify-email?lang=ar&fixture=replayed",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "6e13a94d900b285cbc5f774c666ec3e673f72d41d90df0adfb250ca8b13d2f09"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-verify-email-replayed-320",
+      "path": "/verify-email?lang=ar&fixture=replayed",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "1b0a7c42628d3458492c31827f20ea7a0e5cfdb3dc70d2a62bd432ca1a952009"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-verify-email-replayed-390",
+      "path": "/verify-email?lang=ar&fixture=replayed",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "7f44979b46b2bb0c3734d591ec0fd99924d5d27f675fc533b55d1fc8f8ada30e"
+    },
+    {
+      "locale": "ar",
+      "capture": "access-verify-email-replayed-768",
+      "path": "/verify-email?lang=ar&fixture=replayed",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "مسار الوصول",
+        "الحساب",
+        "تأكيد البريد",
+        "مراجعة الالتزامات",
+        "دخول المكتبة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "03209e370cf60d7aa17c10cf0cc519f50f4fce76581991c6f53b47d276a76e57"
+    },
+    {
+      "locale": "ar",
+      "capture": "admin-blocked-1440",
+      "path": "/admin?fixture=blocked&lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "الموارد",
+        "قائمة قرارات الإدارة",
+        "قرارات تحتاج إلى إجراء",
+        "إخفاء الوحدة · نطاق تشريح تجريبي",
+        "فحوص الجاهزية"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "e30b96dac57a6ca8bf70a0c27771eeedcd49189f6536a216781fc0c8b527631e"
+    },
+    {
+      "locale": "ar",
+      "capture": "admin-blocked-320",
+      "path": "/admin?fixture=blocked&lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "الموارد",
+        "قائمة قرارات الإدارة",
+        "قرارات تحتاج إلى إجراء",
+        "إخفاء الوحدة · نطاق تشريح تجريبي",
+        "فحوص الجاهزية"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "5a635b5042f6fdd862052d3f7f6a3b08f2e8de398818491c18aa19c8c0d65c9b"
+    },
+    {
+      "locale": "ar",
+      "capture": "admin-blocked-390",
+      "path": "/admin?fixture=blocked&lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "الموارد",
+        "قائمة قرارات الإدارة",
+        "قرارات تحتاج إلى إجراء",
+        "إخفاء الوحدة · نطاق تشريح تجريبي",
+        "فحوص الجاهزية"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "c8efc726ba5d7ffd52d92e54ba733948d812efd2f7ea3911969e01744a51531d"
+    },
+    {
+      "locale": "ar",
+      "capture": "admin-blocked-768",
+      "path": "/admin?fixture=blocked&lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "الموارد",
+        "قائمة قرارات الإدارة",
+        "قرارات تحتاج إلى إجراء",
+        "إخفاء الوحدة · نطاق تشريح تجريبي",
+        "فحوص الجاهزية"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "1e16a40e4d5a950778de4491185056728e9b9d8816ffcff0770f105f429ad5cc"
+    },
+    {
+      "locale": "ar",
+      "capture": "admin-error-1440",
+      "path": "/admin?fixture=error&lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "الموارد",
+        "قائمة قرارات الإدارة",
+        "قرارات تحتاج إلى إجراء",
+        "إخفاء الوحدة · نطاق تشريح تجريبي",
+        "فحوص الجاهزية",
+        "راجع قبل التسجيل"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "3d7a0e046426e62befc6f0e57b2b31c2610bb3a3e28c59a7c50c2d4f1218c8f8"
+    },
+    {
+      "locale": "ar",
+      "capture": "admin-error-320",
+      "path": "/admin?fixture=error&lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "الموارد",
+        "قائمة قرارات الإدارة",
+        "قرارات تحتاج إلى إجراء",
+        "إخفاء الوحدة · نطاق تشريح تجريبي",
+        "فحوص الجاهزية",
+        "راجع قبل التسجيل"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "10d7e56608fc74b94bdd2ab2e3eba6f1861e2ad464566a6bcf85708ae64278a4"
+    },
+    {
+      "locale": "ar",
+      "capture": "admin-error-390",
+      "path": "/admin?fixture=error&lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "الموارد",
+        "قائمة قرارات الإدارة",
+        "قرارات تحتاج إلى إجراء",
+        "إخفاء الوحدة · نطاق تشريح تجريبي",
+        "فحوص الجاهزية",
+        "راجع قبل التسجيل"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "b7516fbabb30d5fcb4982d69ec64f229bb9902e13e984abf4bef1dcd7b557abc"
+    },
+    {
+      "locale": "ar",
+      "capture": "admin-error-768",
+      "path": "/admin?fixture=error&lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "الموارد",
+        "قائمة قرارات الإدارة",
+        "قرارات تحتاج إلى إجراء",
+        "إخفاء الوحدة · نطاق تشريح تجريبي",
+        "فحوص الجاهزية",
+        "راجع قبل التسجيل"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "cb935544a6bd30ca2e8ecab1e1809d5a40f9a0845b1c122e304b18d77be42e49"
+    },
+    {
+      "locale": "ar",
+      "capture": "admin-pending-1440",
+      "path": "/admin?fixture=pending&lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "الموارد",
+        "قائمة قرارات الإدارة",
+        "قرارات تحتاج إلى إجراء",
+        "نشر الوحدة · نطاق تشريح تجريبي",
+        "فحوص الجاهزية"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "8c64565e5999906f6040bdfb215fcbfae1000e73fe1e7b34bc6e7371f90c8d08"
+    },
+    {
+      "locale": "ar",
+      "capture": "admin-pending-320",
+      "path": "/admin?fixture=pending&lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "الموارد",
+        "قائمة قرارات الإدارة",
+        "قرارات تحتاج إلى إجراء",
+        "نشر الوحدة · نطاق تشريح تجريبي",
+        "فحوص الجاهزية"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "4d63a5704c1b6fa2f0b8ccf772d64beccff1b9b528c078dda2e1399f0303d5b5"
+    },
+    {
+      "locale": "ar",
+      "capture": "admin-pending-390",
+      "path": "/admin?fixture=pending&lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "الموارد",
+        "قائمة قرارات الإدارة",
+        "قرارات تحتاج إلى إجراء",
+        "نشر الوحدة · نطاق تشريح تجريبي",
+        "فحوص الجاهزية"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "0e1883ad961cd442f22e74cbaeb8c61a0cb53dd218a53130664f4657e7a36b7a"
+    },
+    {
+      "locale": "ar",
+      "capture": "admin-pending-768",
+      "path": "/admin?fixture=pending&lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "الموارد",
+        "قائمة قرارات الإدارة",
+        "قرارات تحتاج إلى إجراء",
+        "نشر الوحدة · نطاق تشريح تجريبي",
+        "فحوص الجاهزية"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "e412859840fbffff5667193e3e34f11e4ae644bc4238d424911a42bc51e07cd3"
+    },
+    {
+      "locale": "ar",
+      "capture": "admin-stale-1440",
+      "path": "/admin?fixture=stale&lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "الموارد",
+        "قائمة قرارات الإدارة",
+        "قرارات تحتاج إلى إجراء",
+        "إخفاء الوحدة · نطاق تشريح تجريبي",
+        "فحوص الجاهزية",
+        "راجع قبل التسجيل"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "ae1753942555853867c014d60df42f320dfd9479081bc31ceb7b5ffc49248711"
+    },
+    {
+      "locale": "ar",
+      "capture": "admin-stale-320",
+      "path": "/admin?fixture=stale&lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "الموارد",
+        "قائمة قرارات الإدارة",
+        "قرارات تحتاج إلى إجراء",
+        "إخفاء الوحدة · نطاق تشريح تجريبي",
+        "فحوص الجاهزية",
+        "راجع قبل التسجيل"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "2b2d34a38c5ced6768b868485a8bb891e1620fa8557dd3bad9f97fd0be67489b"
+    },
+    {
+      "locale": "ar",
+      "capture": "admin-stale-390",
+      "path": "/admin?fixture=stale&lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "الموارد",
+        "قائمة قرارات الإدارة",
+        "قرارات تحتاج إلى إجراء",
+        "إخفاء الوحدة · نطاق تشريح تجريبي",
+        "فحوص الجاهزية",
+        "راجع قبل التسجيل"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "0d2db31393b7d3bcf5ae335015a03d03c3782e116a15680d72160011392dd370"
+    },
+    {
+      "locale": "ar",
+      "capture": "admin-stale-768",
+      "path": "/admin?fixture=stale&lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "الموارد",
+        "قائمة قرارات الإدارة",
+        "قرارات تحتاج إلى إجراء",
+        "إخفاء الوحدة · نطاق تشريح تجريبي",
+        "فحوص الجاهزية",
+        "راجع قبل التسجيل"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "03cafa8f0048af14da90ecfdd6e02740500127c0548220185a266ca25dd9d59f"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-capacity-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=capacity&lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "السعة غير متاحة مؤقتًا. حاول لاحقًا."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "635d9ff4d36f8fcefe74af7cf7df2bcd5fdaa3c5f367f0fdbd6c10b5158b18b8"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-capacity-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=capacity&lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "السعة غير متاحة مؤقتًا. حاول لاحقًا."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "d7e9f016b3d3dc4458b648788234d3eea980d0d082f9f1a726521cb219a320eb"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-capacity-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=capacity&lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "السعة غير متاحة مؤقتًا. حاول لاحقًا."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "775abf9f0ce4cccdebea20704c514aa2d7b64040a49d9c89d023064de056f3fa"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-capacity-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=capacity&lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "السعة غير متاحة مؤقتًا. حاول لاحقًا."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "581e2c7534c35379b03191faf283b1152f01b70d33a355546d13ef3417c81f0c"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-empty-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=empty&lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "لا توجد سجلات متاحة أو مسندة للعرض بعد."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "d9e1c8ebbf7343a993f190575ddfcc48b351ff80c468e557336c24c900f1b2a4"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-empty-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=empty&lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "لا توجد سجلات متاحة أو مسندة للعرض بعد."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "bd4da1020120deba9bdceb03cd739c05be484ac816e4ebc1df582538182d8109"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-empty-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=empty&lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "لا توجد سجلات متاحة أو مسندة للعرض بعد."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "719e818ca500cc33ca34e4e4f5fd49426b658364a489cb7e1a9fed4ce18e7853"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-empty-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=empty&lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "لا توجد سجلات متاحة أو مسندة للعرض بعد."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "806017b5e074a4ce8029faf4840fc3240896ae02955a27b552c8cc1d650b673a"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-error-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=error&lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "تعذر تحميل هذا العرض. أعد المحاولة."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "a9fa11cd1faba1b988041086adc433ce068bf835b4bb3349545d422130bf235e"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-error-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=error&lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "تعذر تحميل هذا العرض. أعد المحاولة."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "1f345297f4f4b1397ef65a57931109e6c38bc3752aa9b4abb7c308a31dbb8fe2"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-error-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=error&lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "تعذر تحميل هذا العرض. أعد المحاولة."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "e65ccc07d75d4a86ab8ef2efb6bf773bb233935b9fcfb6dbd8d88fb52fa9cc88"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-error-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=error&lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "تعذر تحميل هذا العرض. أعد المحاولة."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "04b43967f22917b732a088cac8ae8dec0527b5e3f990b67a92db27eedd498dff"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-expired-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=expired&lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "انتهى الرابط أو التكليف أو استخدم سابقًا. ارجع واطلب رابطًا جديدًا."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "027ff9a31321d69d55050243e744ab56e8b60803b63031cf3427cb95f0a44ef8"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-expired-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=expired&lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "انتهى الرابط أو التكليف أو استخدم سابقًا. ارجع واطلب رابطًا جديدًا."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "6505e99f122b2997d661988afd4dac49d9f6b5a9a7508513f36fdd9b53b6c995"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-expired-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=expired&lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "انتهى الرابط أو التكليف أو استخدم سابقًا. ارجع واطلب رابطًا جديدًا."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "ea989566b23dbb3a884846d6a43e7fba7d2abbb640f1c6100476761ed3263ab4"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-expired-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=expired&lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "انتهى الرابط أو التكليف أو استخدم سابقًا. ارجع واطلب رابطًا جديدًا."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "c185414389b4e921df957d209eefcea5b1a7833455d382751c3f8e69f5347c38"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-forbidden-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=forbidden&lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "الوصول غير متاح لهذا الحساب أو النطاق."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "d2a39ed54e4366feaeb08eb7729552cb424201fede6311fc07a1ee0291308906"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-forbidden-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=forbidden&lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "الوصول غير متاح لهذا الحساب أو النطاق."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "4f9d201d9fef508c485ab578b53f3adf93d457a1368824f593890237d24e2e11"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-forbidden-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=forbidden&lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "الوصول غير متاح لهذا الحساب أو النطاق."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "411f3a586589d8cef0a879f5b3f318600ba794392c60bef2d41c278869cba808"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-forbidden-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=forbidden&lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "الوصول غير متاح لهذا الحساب أو النطاق."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "8ee39d3f7204e304539c1f492aa61540bd5ca8503f5de42e55719a637530601f"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-interrupted-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "المحادثة",
+        "ما الذي تريد فهمه؟"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "1b650414250f3c3627afe1bc7df770b36c92d1356804137e8bb88e06eb1bbf28"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-interrupted-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "المحادثة",
+        "ما الذي تريد فهمه؟"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "39224c12a75f5543824151c64dc8766ee0a8cf2b3be0ee6dc7b941f1407935c5"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-interrupted-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "المحادثة",
+        "ما الذي تريد فهمه؟"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "825b775c20c22615af820b1cfae279a886451740422eadba30aa65780ed0e959"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-interrupted-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "المحادثة",
+        "ما الذي تريد فهمه؟"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "0d0b427b584fa9c6580b5f9643064d506d73fc6f56b0fb5a50f6d4ada4b93d4e"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-locked-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=locked&lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "هذه الوحدة غير متاحة. المجموعة أو النشر أو المصادر المعتمدة لا تستوفي شروط الإتاحة."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "3ca45509731823ce978cba757ddeb83946c15cfdd20a3d8341c5b6ae3abb20c4"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-locked-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=locked&lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "هذه الوحدة غير متاحة. المجموعة أو النشر أو المصادر المعتمدة لا تستوفي شروط الإتاحة."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "1f58b88d704cafa005f9aff230881e2004c9939cb0ebca469cffd04d2fbc5b1b"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-locked-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=locked&lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "هذه الوحدة غير متاحة. المجموعة أو النشر أو المصادر المعتمدة لا تستوفي شروط الإتاحة."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "39fd27219db294f222f2f52035e8003d19f7c169c1ee5b3edd3f6edb9f1b4f7a"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-locked-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=locked&lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "هذه الوحدة غير متاحة. المجموعة أو النشر أو المصادر المعتمدة لا تستوفي شروط الإتاحة."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "7df3cde8ac49e9a398e602ffede29dfa5058501bc2a2e4444d7cc389cfeb4044"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-no-ready-source-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=no-ready-source&lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "هذه الوحدة غير متاحة. المجموعة أو النشر أو المصادر المعتمدة لا تستوفي شروط الإتاحة."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "3ca45509731823ce978cba757ddeb83946c15cfdd20a3d8341c5b6ae3abb20c4"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-no-ready-source-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=no-ready-source&lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "هذه الوحدة غير متاحة. المجموعة أو النشر أو المصادر المعتمدة لا تستوفي شروط الإتاحة."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "1f58b88d704cafa005f9aff230881e2004c9939cb0ebca469cffd04d2fbc5b1b"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-no-ready-source-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=no-ready-source&lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "هذه الوحدة غير متاحة. المجموعة أو النشر أو المصادر المعتمدة لا تستوفي شروط الإتاحة."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "39fd27219db294f222f2f52035e8003d19f7c169c1ee5b3edd3f6edb9f1b4f7a"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-no-ready-source-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=no-ready-source&lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "هذه الوحدة غير متاحة. المجموعة أو النشر أو المصادر المعتمدة لا تستوفي شروط الإتاحة."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "7df3cde8ac49e9a398e602ffede29dfa5058501bc2a2e4444d7cc389cfeb4044"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-offline-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=offline&lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "توقف الاتصال. سجلات العرض الحالية تبقى في هذا التبويب."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "86f64afb0fb597a8d205cc407d3ad4e80c52b63889fbbf34c003602393ed00a8"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-offline-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=offline&lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "توقف الاتصال. سجلات العرض الحالية تبقى في هذا التبويب."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "773c26bd582fffd2d9c57bad93f0ce25bf7c111b5e29c6fdcbd88681ad952b46"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-offline-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=offline&lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "توقف الاتصال. سجلات العرض الحالية تبقى في هذا التبويب."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "6de8462fa5ecb030ea73742c8b45b11dadc3f77fd8a57e9bbdb3fd15d807e36b"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-offline-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=offline&lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "توقف الاتصال. سجلات العرض الحالية تبقى في هذا التبويب."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "59bc0147765758ca892edcfc1523c74aba6a825edbfa9dce1f3b970bfaf55cb6"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-quota-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=quota&lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "الرصيد غير متاح. حاول لاحقًا؛ لم يعتمد حد رقمي."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "724ac9ba622e8c293decd0587410313a3d920515522f4e09c24b29ae5d0bd792"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-quota-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=quota&lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "الرصيد غير متاح. حاول لاحقًا؛ لم يعتمد حد رقمي."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "331e8829cf0a1d451f04ac778b9f838d2808dc553ac76634a0095b021872f306"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-quota-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=quota&lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "الرصيد غير متاح. حاول لاحقًا؛ لم يعتمد حد رقمي."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "0a0d51ff01f263d70d632e81b82e4530b7491a4be09625b8f6521d462a8157f5"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-quota-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=quota&lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "الرصيد غير متاح. حاول لاحقًا؛ لم يعتمد حد رقمي."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "47c6917ca132be8d437cd3ab92590add62330f5beac92b59612d458564e41d88"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-replayed-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=replayed&lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "انتهى الرابط أو التكليف أو استخدم سابقًا. ارجع واطلب رابطًا جديدًا."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "027ff9a31321d69d55050243e744ab56e8b60803b63031cf3427cb95f0a44ef8"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-replayed-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=replayed&lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "انتهى الرابط أو التكليف أو استخدم سابقًا. ارجع واطلب رابطًا جديدًا."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "6505e99f122b2997d661988afd4dac49d9f6b5a9a7508513f36fdd9b53b6c995"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-replayed-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=replayed&lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "انتهى الرابط أو التكليف أو استخدم سابقًا. ارجع واطلب رابطًا جديدًا."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "ea989566b23dbb3a884846d6a43e7fba7d2abbb640f1c6100476761ed3263ab4"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-replayed-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=replayed&lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "انتهى الرابط أو التكليف أو استخدم سابقًا. ارجع واطلب رابطًا جديدًا."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "c185414389b4e921df957d209eefcea5b1a7833455d382751c3f8e69f5347c38"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-stale-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=stale&lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "تغيرت هذه الصفحة. أعد تحميل حالتها الحالية قبل المتابعة."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "c1439b954ea240bfd9f94224a7e2d4eca7ff5bb9ea062294b2964acd553df077"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-stale-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=stale&lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "تغيرت هذه الصفحة. أعد تحميل حالتها الحالية قبل المتابعة."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "a69eca2ffe922152a82b12e4ebe0b31354ec51e46f5826c65ca2cd01daf81b4b"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-stale-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=stale&lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "تغيرت هذه الصفحة. أعد تحميل حالتها الحالية قبل المتابعة."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "db10f332ab5704b619f07e03884e427992c53070618984d3bf41a516359d398a"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-stale-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=stale&lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "تغيرت هذه الصفحة. أعد تحميل حالتها الحالية قبل المتابعة."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "6067ca09749870045685edd0ca26a199d76b834c4409dbea3f0af1729b366b34"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-streaming-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "المحادثة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "46a1ca285b38930e8ccb8d8b1a0f6fda5e8cd9ca278c978e88016a51f70ae5dc"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-streaming-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "المحادثة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "4f0ca8e8ffd7d13bc912cc8bed6744f5691ce3baa3d5d22aff85d0cb99867511"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-streaming-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "المحادثة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "1ae01e464bb75df7585c9586516e9acc4e6c293b02cffc3aebb9e2665568d309"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-streaming-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "المحادثة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "678830bff1b308df4ef3b3f83f2bebfda096c07241e6b82ca1e27bd14be78289"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-unpublished-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=unpublished&lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "هذه الوحدة غير متاحة. المجموعة أو النشر أو المصادر المعتمدة لا تستوفي شروط الإتاحة."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "3ca45509731823ce978cba757ddeb83946c15cfdd20a3d8341c5b6ae3abb20c4"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-unpublished-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=unpublished&lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "هذه الوحدة غير متاحة. المجموعة أو النشر أو المصادر المعتمدة لا تستوفي شروط الإتاحة."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "1f58b88d704cafa005f9aff230881e2004c9939cb0ebca469cffd04d2fbc5b1b"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-unpublished-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=unpublished&lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "هذه الوحدة غير متاحة. المجموعة أو النشر أو المصادر المعتمدة لا تستوفي شروط الإتاحة."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "39fd27219db294f222f2f52035e8003d19f7c169c1ee5b3edd3f6edb9f1b4f7a"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-unpublished-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=unpublished&lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "هذه الوحدة غير متاحة. المجموعة أو النشر أو المصادر المعتمدة لا تستوفي شروط الإتاحة."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "7df3cde8ac49e9a398e602ffede29dfa5058501bc2a2e4444d7cc389cfeb4044"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-wrong-scope-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=wrong-scope&lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "الوصول غير متاح لهذا الحساب أو النطاق."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "d2a39ed54e4366feaeb08eb7729552cb424201fede6311fc07a1ee0291308906"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-wrong-scope-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=wrong-scope&lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "الوصول غير متاح لهذا الحساب أو النطاق."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "4f9d201d9fef508c485ab578b53f3adf93d457a1368824f593890237d24e2e11"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-wrong-scope-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=wrong-scope&lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "الوصول غير متاح لهذا الحساب أو النطاق."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "411f3a586589d8cef0a879f5b3f318600ba794392c60bef2d41c278869cba808"
+    },
+    {
+      "locale": "ar",
+      "capture": "chat-wrong-scope-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=wrong-scope&lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "الوصول غير متاح لهذا الحساب أو النطاق."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "8ee39d3f7204e304539c1f492aa61540bd5ca8503f5de42e55719a637530601f"
+    },
+    {
+      "locale": "ar",
+      "capture": "collection-checksum-1440",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=checksum&lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "المواد المطلوبة",
+        "جهّز مصدرًا واحدًا",
+        "ملخص الفحص",
+        "معنى كل حالة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "bb2c95014603d253db18a8b38da38047ad57803f0e88a579aae0a2e23cfa398c"
+    },
+    {
+      "locale": "ar",
+      "capture": "collection-checksum-320",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=checksum&lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "المواد المطلوبة",
+        "جهّز مصدرًا واحدًا",
+        "ملخص الفحص",
+        "معنى كل حالة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "7c409608ffc49446628abff80fc50e63dac6aa05ba4fc9ac67d28c929be01386"
+    },
+    {
+      "locale": "ar",
+      "capture": "collection-checksum-390",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=checksum&lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "المواد المطلوبة",
+        "جهّز مصدرًا واحدًا",
+        "ملخص الفحص",
+        "معنى كل حالة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "47431f2801bf32673f3b241fa264a44aba60503d417a834c57dfc2339d56acb6"
+    },
+    {
+      "locale": "ar",
+      "capture": "collection-checksum-768",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=checksum&lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "المواد المطلوبة",
+        "جهّز مصدرًا واحدًا",
+        "ملخص الفحص",
+        "معنى كل حالة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "733b6f1abd006cc2ef88d77373c43595cdbf9888ab90a40ebbe3581e705575f9"
+    },
+    {
+      "locale": "ar",
+      "capture": "collection-duplicate-1440",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=duplicate&lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "المواد المطلوبة",
+        "جهّز مصدرًا واحدًا",
+        "ملخص الفحص",
+        "معنى كل حالة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "bb2c95014603d253db18a8b38da38047ad57803f0e88a579aae0a2e23cfa398c"
+    },
+    {
+      "locale": "ar",
+      "capture": "collection-duplicate-320",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=duplicate&lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "المواد المطلوبة",
+        "جهّز مصدرًا واحدًا",
+        "ملخص الفحص",
+        "معنى كل حالة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "7c409608ffc49446628abff80fc50e63dac6aa05ba4fc9ac67d28c929be01386"
+    },
+    {
+      "locale": "ar",
+      "capture": "collection-duplicate-390",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=duplicate&lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "المواد المطلوبة",
+        "جهّز مصدرًا واحدًا",
+        "ملخص الفحص",
+        "معنى كل حالة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "47431f2801bf32673f3b241fa264a44aba60503d417a834c57dfc2339d56acb6"
+    },
+    {
+      "locale": "ar",
+      "capture": "collection-duplicate-768",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=duplicate&lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "المواد المطلوبة",
+        "جهّز مصدرًا واحدًا",
+        "ملخص الفحص",
+        "معنى كل حالة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "733b6f1abd006cc2ef88d77373c43595cdbf9888ab90a40ebbe3581e705575f9"
+    },
+    {
+      "locale": "ar",
+      "capture": "collection-offline-1440",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=offline&lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "المواد المطلوبة",
+        "جهّز مصدرًا واحدًا",
+        "ملخص الفحص",
+        "معنى كل حالة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "c05da17fe4a3fcb7ff70744a40fe6d208ff4f201838517b79069f5b53f657b03"
+    },
+    {
+      "locale": "ar",
+      "capture": "collection-offline-320",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=offline&lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "المواد المطلوبة",
+        "جهّز مصدرًا واحدًا",
+        "ملخص الفحص",
+        "معنى كل حالة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "f8cc3e53545cc50a743de6ddec3ede8151177e0eee1df08369333fcf31adebb2"
+    },
+    {
+      "locale": "ar",
+      "capture": "collection-offline-390",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=offline&lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "المواد المطلوبة",
+        "جهّز مصدرًا واحدًا",
+        "ملخص الفحص",
+        "معنى كل حالة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "9f60b3c6759f94990369ef7dbf38ad7a70ea3b6c81abda7049213967d883805b"
+    },
+    {
+      "locale": "ar",
+      "capture": "collection-offline-768",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=offline&lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "المواد المطلوبة",
+        "جهّز مصدرًا واحدًا",
+        "ملخص الفحص",
+        "معنى كل حالة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "dd8f62a8397d3597cbd8f3a63a39962466741c238fd260f59c64319b5f2b80b4"
+    },
+    {
+      "locale": "ar",
+      "capture": "collection-oversize-1440",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=oversize&lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "المواد المطلوبة",
+        "جهّز مصدرًا واحدًا",
+        "ملخص الفحص",
+        "معنى كل حالة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "bb2c95014603d253db18a8b38da38047ad57803f0e88a579aae0a2e23cfa398c"
+    },
+    {
+      "locale": "ar",
+      "capture": "collection-oversize-320",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=oversize&lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "المواد المطلوبة",
+        "جهّز مصدرًا واحدًا",
+        "ملخص الفحص",
+        "معنى كل حالة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "7c409608ffc49446628abff80fc50e63dac6aa05ba4fc9ac67d28c929be01386"
+    },
+    {
+      "locale": "ar",
+      "capture": "collection-oversize-390",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=oversize&lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "المواد المطلوبة",
+        "جهّز مصدرًا واحدًا",
+        "ملخص الفحص",
+        "معنى كل حالة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "47431f2801bf32673f3b241fa264a44aba60503d417a834c57dfc2339d56acb6"
+    },
+    {
+      "locale": "ar",
+      "capture": "collection-oversize-768",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=oversize&lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "المواد المطلوبة",
+        "جهّز مصدرًا واحدًا",
+        "ملخص الفحص",
+        "معنى كل حالة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "0dadd4a71377e96efa76ef9df05c5099379a99134f28bb85cd20553a92338e09"
+    },
+    {
+      "locale": "ar",
+      "capture": "collection-rights-1440",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=rights&lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "المواد المطلوبة",
+        "جهّز مصدرًا واحدًا",
+        "ملخص الفحص",
+        "معنى كل حالة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "bb2c95014603d253db18a8b38da38047ad57803f0e88a579aae0a2e23cfa398c"
+    },
+    {
+      "locale": "ar",
+      "capture": "collection-rights-320",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=rights&lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "المواد المطلوبة",
+        "جهّز مصدرًا واحدًا",
+        "ملخص الفحص",
+        "معنى كل حالة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "7c409608ffc49446628abff80fc50e63dac6aa05ba4fc9ac67d28c929be01386"
+    },
+    {
+      "locale": "ar",
+      "capture": "collection-rights-390",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=rights&lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "المواد المطلوبة",
+        "جهّز مصدرًا واحدًا",
+        "ملخص الفحص",
+        "معنى كل حالة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "47431f2801bf32673f3b241fa264a44aba60503d417a834c57dfc2339d56acb6"
+    },
+    {
+      "locale": "ar",
+      "capture": "collection-rights-768",
+      "path": "/batch-leader/campaigns/sample-campaign?fixture=rights&lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "Synthetic Anatomy source call",
+        "المواد المطلوبة",
+        "جهّز مصدرًا واحدًا",
+        "ملخص الفحص",
+        "معنى كل حالة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "0dadd4a71377e96efa76ef9df05c5099379a99134f28bb85cd20553a92338e09"
+    },
+    {
+      "locale": "ar",
+      "capture": "invitation-expired-1440",
+      "path": "/batch-leader/invitation?fixture=expired&lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "دعوة حملة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "07bc278cfd9e5f4d5c80599dbc1a693bfca8a6e6655407786fc68923d1d0ca8d"
+    },
+    {
+      "locale": "ar",
+      "capture": "invitation-expired-320",
+      "path": "/batch-leader/invitation?fixture=expired&lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "دعوة حملة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "933778b2b636881473f9c225139a72db1fd6b398af0556dd3b5eeba972663da1"
+    },
+    {
+      "locale": "ar",
+      "capture": "invitation-expired-390",
+      "path": "/batch-leader/invitation?fixture=expired&lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "دعوة حملة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "d83dc80aa6733630d20ed11713641be2d34a596420a9dd1b5cab8a6dcfca23b2"
+    },
+    {
+      "locale": "ar",
+      "capture": "invitation-expired-768",
+      "path": "/batch-leader/invitation?fixture=expired&lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "دعوة حملة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "0e7c59135ef35234838b44eb818a8686db8326545a9fbddc608cfc6fff26145e"
+    },
+    {
+      "locale": "ar",
+      "capture": "invitation-replayed-1440",
+      "path": "/batch-leader/invitation?fixture=replayed&lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "دعوة حملة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "07bc278cfd9e5f4d5c80599dbc1a693bfca8a6e6655407786fc68923d1d0ca8d"
+    },
+    {
+      "locale": "ar",
+      "capture": "invitation-replayed-320",
+      "path": "/batch-leader/invitation?fixture=replayed&lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "دعوة حملة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "933778b2b636881473f9c225139a72db1fd6b398af0556dd3b5eeba972663da1"
+    },
+    {
+      "locale": "ar",
+      "capture": "invitation-replayed-390",
+      "path": "/batch-leader/invitation?fixture=replayed&lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "دعوة حملة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "d83dc80aa6733630d20ed11713641be2d34a596420a9dd1b5cab8a6dcfca23b2"
+    },
+    {
+      "locale": "ar",
+      "capture": "invitation-replayed-768",
+      "path": "/batch-leader/invitation?fixture=replayed&lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "دعوة حملة"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "0e7c59135ef35234838b44eb818a8686db8326545a9fbddc608cfc6fff26145e"
+    },
+    {
+      "locale": "ar",
+      "capture": "shelf-empty-1440",
+      "path": "/learn?fixture=empty&lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "الحملات المسندة",
+        "لا توجد سجلات متاحة أو مسندة للعرض بعد."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "2c6bfb467a1906849742f0152bd87b6a0cafe7aa1143778a39fbada9c06ef945"
+    },
+    {
+      "locale": "ar",
+      "capture": "shelf-empty-320",
+      "path": "/learn?fixture=empty&lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "الحملات المسندة",
+        "لا توجد سجلات متاحة أو مسندة للعرض بعد."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "82200d69474944dca3dd29d6c60c3a3dc0ad6cf6c028d81543b6004470167fbb"
+    },
+    {
+      "locale": "ar",
+      "capture": "shelf-empty-390",
+      "path": "/learn?fixture=empty&lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "الحملات المسندة",
+        "لا توجد سجلات متاحة أو مسندة للعرض بعد."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "3c165c71e93538998006867d49c835b3518afe718c6b542b1b59adb3bd7ef9ba"
+    },
+    {
+      "locale": "ar",
+      "capture": "shelf-empty-768",
+      "path": "/learn?fixture=empty&lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "الحملات المسندة",
+        "لا توجد سجلات متاحة أو مسندة للعرض بعد."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "fd690cb5aa05262dc8a90b1ee1c1347ba41136493da5902a0f04ba33c09f6f81"
+    },
+    {
+      "locale": "ar",
+      "capture": "shelf-no-membership-1440",
+      "path": "/learn?fixture=no-membership&lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "الحملات المسندة",
+        "لا توجد سجلات متاحة أو مسندة للعرض بعد."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "4b569df68b530794c18add0038a2c9b574bfd377fcbcad682c0d424d563bb073"
+    },
+    {
+      "locale": "ar",
+      "capture": "shelf-no-membership-320",
+      "path": "/learn?fixture=no-membership&lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "الحملات المسندة",
+        "لا توجد سجلات متاحة أو مسندة للعرض بعد."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "82200d69474944dca3dd29d6c60c3a3dc0ad6cf6c028d81543b6004470167fbb"
+    },
+    {
+      "locale": "ar",
+      "capture": "shelf-no-membership-390",
+      "path": "/learn?fixture=no-membership&lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "الحملات المسندة",
+        "لا توجد سجلات متاحة أو مسندة للعرض بعد."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "3c165c71e93538998006867d49c835b3518afe718c6b542b1b59adb3bd7ef9ba"
+    },
+    {
+      "locale": "ar",
+      "capture": "shelf-no-membership-768",
+      "path": "/learn?fixture=no-membership&lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "الحملات المسندة",
+        "لا توجد سجلات متاحة أو مسندة للعرض بعد."
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "fd690cb5aa05262dc8a90b1ee1c1347ba41136493da5902a0f04ba33c09f6f81"
+    },
+    {
+      "locale": "ar",
+      "capture": "studio-interrupted-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "الاستوديو",
+        "أداة مذاكرتك تظهر هنا"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "4b7fd75fe62b3a71d87a9ab1a81ed345387013dfe0fcff570e070a98acbbef4c"
+    },
+    {
+      "locale": "ar",
+      "capture": "studio-interrupted-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "الاستوديو",
+        "أداة مذاكرتك تظهر هنا"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "3e0568f4f044bcb60c797209643cd2d73d0c87ad51bf1bebf1367349461d9cf2"
+    },
+    {
+      "locale": "ar",
+      "capture": "studio-interrupted-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "الاستوديو",
+        "أداة مذاكرتك تظهر هنا"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "d173202d974c4ff3a3d1d2cb49bf5be04945da01c477cdbaa4a4c1015dfa84d3"
+    },
+    {
+      "locale": "ar",
+      "capture": "studio-interrupted-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "الاستوديو",
+        "أداة مذاكرتك تظهر هنا"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "149e8bcfedaf016c9b4e8225b4af8bf46ea78a4789a01ccda44fe5e56903e421"
+    },
+    {
+      "locale": "ar",
+      "capture": "studio-preparing-1440",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=ar",
+      "width": 1440,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "الاستوديو",
+        "أداة مذاكرتك تظهر هنا"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "42f5ae636f58c07eaff24ceecfa52cc4c3239d90000ab53c126a5890c337a29c"
+    },
+    {
+      "locale": "ar",
+      "capture": "studio-preparing-320",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=ar",
+      "width": 320,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "الاستوديو",
+        "أداة مذاكرتك تظهر هنا"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "8de4be44d5db1fa0d6d39e33a7b08ae4aa4d48f0ab688c32707a28275e9224e0"
+    },
+    {
+      "locale": "ar",
+      "capture": "studio-preparing-390",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=ar",
+      "width": 390,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "الاستوديو",
+        "أداة مذاكرتك تظهر هنا"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "ac413094aa4b2e63fe049a0fdc8ceac1eb86af4dc81f88988397d0a936ce9a92"
+    },
+    {
+      "locale": "ar",
+      "capture": "studio-preparing-768",
+      "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=ar",
+      "width": 768,
+      "pageOverflow": false,
+      "headings": [
+        "علم التشريح",
+        "الاستوديو",
+        "أداة مذاكرتك تظهر هنا"
+      ],
+      "controlTextOverflow": [],
+      "imageSha256": "e3e37b0c71f2e1ec6430870d6a275e67d424f540e7e84f3cd61be007e5225886"
+    }
+  ]
+}

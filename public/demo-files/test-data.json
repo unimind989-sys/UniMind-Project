@@ -1,5 +1,14 @@
 {
   "simulated": true,
+  "designCheckpoint": {
+    "status": "awaiting-founder-acceptance",
+    "surfaces": ["shared unit shell", "Chat", "Studio"],
+    "entry": "/login?lang=en&next=%2Flearn%2Fzagazig-university-human-medicine-year-1-term-1-cohort%2Fzagazig-university-human-medicine-y1-t1-anatomy%2Fchat",
+    "instructions": "walkthrough.md",
+    "chat": "First Send starts a session. Enter sends; Shift+Enter adds a line. Interface language preserves the draft and study-output language.",
+    "studio": "Choose an artifact using the radio group. Generate prepares a fixed example; Cancel preparation interrupts it. Only MCQ offers Open quiz.",
+    "remainingPlatform": "Existing approved native journeys remain available; shared-system rollout awaits acceptance of this sample."
+  },
   "credentials": "accounts.csv",
   "sourceTitle": "Synthetic study source",
   "sourceDescription": "Invented source for the UniMind synthetic product flow.",

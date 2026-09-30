@@ -5,7 +5,11 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import type { Route } from "next";
 import { StudyShelf } from "@/app/learn/_components/study-shelf";
 import { WorkspaceFrame } from "@/app/learn/_components/workspace-frame";
-import { ProductStudy } from "@/app/learn/_components/product-study";
+import {
+  ProductStudy,
+  UnitSwitch,
+} from "@/app/learn/_components/product-study";
+import { FrontendShell } from "./frontend-system";
 import { syntheticUnitPresentationById } from "@/app/learn/synthetic-catalog";
 import {
   parseCatalogSelectionHints,
@@ -120,6 +124,8 @@ export function ProductNativePage({
       account: "NEW",
       consent: false,
       verified: true,
+      chatDrafts: {},
+      lastStudyPath: null,
     }));
     router.push(`/login?lang=${locale}` as Route);
   };
@@ -306,6 +312,28 @@ export function ProductNativePage({
     !loading &&
     !blocked &&
     (special || !general.includes(fixture));
+  if (scope && ["chat", "studio"].includes(screen)) {
+    return (
+      <FrontendShell
+        locale={locale}
+        title={locale === "ar" ? scope.unitTitleAr : scope.unitTitleEn}
+        context={`${locale === "ar" ? scope.programNameAr : scope.programNameEn} · ${locale === "ar" ? scope.levelNameAr : scope.levelNameEn} · ${locale === "ar" ? scope.termNameAr : scope.termNameEn}`}
+        base={`/learn/${scope.cohortId}/${scope.unitId}`}
+        scopeControl={
+          <UnitSwitch
+            scope={scope}
+            locale={locale}
+            base={`/learn/${scope.cohortId}/${scope.unitId}`}
+          />
+        }
+        available={!blocked && !general.includes(fixture)}
+        account={`${state.role}@example.invalid`}
+        signOut={signedOut}
+      >
+        <div className={styles.studyBody}>{content}</div>
+      </FrontendShell>
+    );
+  }
   return (
     <>
       {boundary}
@@ -429,6 +457,11 @@ function ProductSettings({
   const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
   return (
     <>
+      {state.lastStudyPath ? (
+        <ProductLink href={state.lastStudyPath} locale={locale}>
+          {t("Back to study", "العودة للمذاكرة")}
+        </ProductLink>
+      ) : null}
       <section className={styles.panel}>
         <Select
           id="interface-language"

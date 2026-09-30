@@ -6,18 +6,29 @@ Run `corepack pnpm demo` from the repository if the review server is stopped. Th
 
 All demo account state, preferences, sessions, reports, submissions, artifacts, attempts and admin changes belong to the current browser document. Product links, language changes and browser Back preserve them. **Reload, entering a URL in the address bar, or opening another tab starts fresh.** A deep link then asks you to sign in and accept commitments before returning to that screen. Nothing issues authentication cookies, writes browser storage or contacts Auth, database, storage, queue, email or model providers. Every demo POST/API/server-action request is rejected.
 
+## Revised design checkpoint: shell, Chat and Studio
+
+Start at [the revised Chat sample](http://127.0.0.1:3101/login?lang=en&next=%2Flearn%2Fzagazig-university-human-medicine-year-1-term-1-cohort%2Fzagazig-university-human-medicine-y1-t1-anatomy%2Fchat). Continue with the prefilled fictional student account and accept the simulated commitments. This checkpoint covers the shared unit shell, Chat and Studio. Other native journeys remain available in their preceding layout; extending the revised direction depends on founder acceptance. PR #64 remains draft/unmerged and WP04 remains on hold.
+
+1. In Chat, press **Explain the study sequence**, then **Send**. The first Send starts a session automatically. Read the question and grounded fixed reply, then inspect evidence or report the example through the normal links.
+2. Type another supplied prompt, select **Mixed Arabic and English**, and switch **Interface language** to Arabic. The draft, selected unit, session and study-output language stay intact. Enter sends; Shift+Enter inserts a line. Cancel the simulated stream, then retry. **New session** starts a fresh conversation; history returns to earlier exchanges.
+3. Open **Studio** in the unit navigation. Select **Flashcards**, choose output options and press **Generate**. Cancel preparation and retry; flip the completed sample card. Try the other five types. Only the MCQ artifact offers **Open quiz**.
+4. Use **Account → Settings**, or Chat's **Privacy settings**, then **Back to study**. Check the retained session or Studio output. Compare English and Arabic at desktop, tablet, 390px and 320px widths. Navigation, scope and account exits remain reachable.
+
+The accepted Study Shelf palette, fonts and existing logo are retained. The separately versioned logo replacement is outside this checkpoint. The pack's `frontend-overhaul.md` contains the flow map, categorized punch list and rollout plan; this sample is not whole-platform acceptance.
+
 ## Download the complete synthetic data
 
 Download [the test pack](http://127.0.0.1:3101/demo-files/unimind-synthetic-test-pack.zip), or use the individual [accounts CSV](http://127.0.0.1:3101/demo-files/accounts.csv), [complete test-data JSON](http://127.0.0.1:3101/demo-files/test-data.json), [PDF](http://127.0.0.1:3101/demo-files/synthetic-handout.pdf), [WAV](http://127.0.0.1:3101/demo-files/synthetic-recording.wav), [PNG](http://127.0.0.1:3101/demo-files/synthetic-diagram.png) and [rejected TXT](http://127.0.0.1:3101/demo-files/synthetic-rejected.txt).
 
 These files are invented byte fixtures: a one-page synthetic PDF, silent audio and a one-pixel image. They exercise file validation; the app does not process them. Evidence passages, page 3/timestamp 02:10 and source statuses are separate fixed fictional records, not extraction results from those files.
 
-| Account | Password | Journey |
-| --- | --- | --- |
-| `student@example.invalid` | `Synthetic-study-2026!` | Study Shelf, all study screens and Settings |
-| `leader@example.invalid` | `Synthetic-study-2026!` | Assigned campaign, invitation and source submission |
-| `admin@example.invalid` | `Synthetic-study-2026!` | Admin resources, first founder simulation and containment |
-| `second-admin@example.invalid` | `Synthetic-study-2026!` | Distinct second founder simulation |
+| Account                        | Password                | Journey                                                   |
+| ------------------------------ | ----------------------- | --------------------------------------------------------- |
+| `student@example.invalid`      | `Synthetic-study-2026!` | Study Shelf, all study screens and Settings               |
+| `leader@example.invalid`       | `Synthetic-study-2026!` | Assigned campaign, invitation and source submission       |
+| `admin@example.invalid`        | `Synthetic-study-2026!` | Admin resources, first founder simulation and containment |
+| `second-admin@example.invalid` | `Synthetic-study-2026!` | Distinct second founder simulation                        |
 
 Ready accounts begin verified, with current commitments awaiting acceptance. Email/password inputs are prefilled with the student fixture. Replace the email to try another role. Unknown credentials are rejected; use no real details. Sign out and sign in through normal controls to change accounts while preserving this document's shared synthetic records.
 
@@ -41,17 +52,17 @@ Sources lists the eight invented source records with title/format/locator and ex
 
 ## 3. Chat, evidence, reports and privacy
 
-Press **New session**, paste one prompt below into **Message**, choose English/Arabic/mixed study language, then **Send**. The response appears automatically after a short simulated stream. **Cancel stream** interrupts it; sending again retries. New sessions and scope switching must not mix exchanges between units or sessions. Arbitrary text is not retained; unmatched questions return the unavailable-information fixture.
+Paste one prompt below into **Message**, choose English/Arabic/mixed study language, then **Send**. The first Send creates a session; **New session** starts another. The response appears automatically after a short simulated stream. **Cancel stream** interrupts it; sending again retries. New sessions and scope switching must not mix exchanges between units or sessions. Typed text lives only in a document-local draft; sending retains fixture classification, never arbitrary prompt text. Unmatched questions return the unavailable-information fixture.
 
-| Outcome | English prompt | Arabic prompt |
-| --- | --- | --- |
-| Supported | `Explain the sample unit's study sequence.` | `اشرح ترتيب المذاكرة في الوحدة التجريبية.` |
-| Partial | `Explain the sequence and its missing timing.` | `اشرح الترتيب والتوقيت غير الموجود.` |
-| Unavailable | `What is not covered by these sample sources?` | `ما المعلومات غير الموجودة في المصادر التجريبية؟` |
-| Conflict | `Do the two sample sources agree?` | `هل المصدران التجريبيان متفقان؟` |
-| Professor hint | `What did the sample professor emphasize?` | `ما النقطة التي أكد عليها المحاضر التجريبي؟` |
-| Fictional educational case | `In this fictional teaching case, what is the study sequence?` | `في حالة تعليمية خيالية، ما ترتيب الدراسة؟` |
-| Real-patient boundary | `Treat an identifiable real patient.` | `عالج مريضًا حقيقيًا محدد الهوية.` |
+| Outcome                    | English prompt                                                 | Arabic prompt                                     |
+| -------------------------- | -------------------------------------------------------------- | ------------------------------------------------- |
+| Supported                  | `Explain the sample unit's study sequence.`                    | `اشرح ترتيب المذاكرة في الوحدة التجريبية.`        |
+| Partial                    | `Explain the sequence and its missing timing.`                 | `اشرح الترتيب والتوقيت غير الموجود.`              |
+| Unavailable                | `What is not covered by these sample sources?`                 | `ما المعلومات غير الموجودة في المصادر التجريبية؟` |
+| Conflict                   | `Do the two sample sources agree?`                             | `هل المصدران التجريبيان متفقان؟`                  |
+| Professor hint             | `What did the sample professor emphasize?`                     | `ما النقطة التي أكد عليها المحاضر التجريبي؟`      |
+| Fictional educational case | `In this fictional teaching case, what is the study sequence?` | `في حالة تعليمية خيالية، ما ترتيب الدراسة؟`       |
+| Real-patient boundary      | `Treat an identifiable real patient.`                          | `عالج مريضًا حقيقيًا محدد الهوية.`                |
 
 For every exchange follow **Inspect evidence** and **Report example**. On the report screen choose Poor answer, Source problem or Conflict, confirm the selected exchange and submit. A simulated receipt appears; submitting the same report again is disabled. Reports never leave memory. Exact real payload, disclosure and retention remain D-08 decisions.
 
@@ -59,7 +70,7 @@ In Settings change **Sharing mode** to Private / no sharing. Return with browser
 
 ## 4. Studio and quizzes
 
-Try all six artifact types: structured summary, study guide, practice questions, flashcards, revision pack and MCQ quiz. Choose Study sequence or Diagram comparison; English, Arabic or mixed; concise or detailed; short or extended. Press **Generate** and wait for the fixed illustrative artifact. Flip a flashcard; inspect the missing/conflicting evidence notice and source navigation. Every type stays bound to the selected unit. No generation or durable artifact service runs.
+Try all six artifact types using the radio choices: structured summary, study guide, practice questions, flashcards, revision pack and MCQ quiz. Choose Study sequence or Diagram comparison; English, Arabic or mixed; concise or detailed; short or extended. Press **Generate** and wait for the fixed illustrative artifact, or **Cancel preparation** and retry. Configuration and completed output survive ordinary navigation and locale changes. Flip a flashcard; inspect the missing/conflicting evidence notice and source navigation. Every type stays bound to the selected unit. No generation or durable artifact service runs.
 
 Open Quiz. Choose Untimed or Timed, then **Start quiz**. Starting opens `/quiz/sample-attempt`. Submission is disabled until both answers are selected. Correct answers are **Identify labels** and **No duration is supplied**; these give an illustrative **2 / 2**. **Compare diagrams** and **An exact duration** give **0 / 2**. Mixed selections give **1 / 2**. Submit to open `/quiz/sample-attempt/review`, with selected answers and grounded explanations. Repeated submission cannot change a scored fixture. Start a new attempt from Quiz.
 
@@ -69,15 +80,15 @@ Timed mode uses an explicitly illustrative 60-second fixture, not an approved pr
 
 Sign out, use `leader@example.invalid`, and accept commitments. Open the assigned **Synthetic Anatomy source call**. There are three upload requests and fixed historical tracking examples for Processing, Needs information, Accepted, Rejected and Completed.
 
-| Field/request | Synthetic input |
-| --- | --- |
-| Source title | `Synthetic study source` |
-| Professor or source description | `Invented source for the UniMind synthetic product flow.` |
-| Anatomy handout | `synthetic-handout.pdf` |
-| Anatomy recording | `synthetic-recording.wav` |
-| Anatomy diagram | `synthetic-diagram.png` |
-| Rights | Check the declaration for the supplied fixture |
-| Approved storage reference | Choose the fixed synthetic handout reference; no URL or real storage is used |
+| Field/request                   | Synthetic input                                                              |
+| ------------------------------- | ---------------------------------------------------------------------------- |
+| Source title                    | `Synthetic study source`                                                     |
+| Professor or source description | `Invented source for the UniMind synthetic product flow.`                    |
+| Anatomy handout                 | `synthetic-handout.pdf`                                                      |
+| Anatomy recording               | `synthetic-recording.wav`                                                    |
+| Anatomy diagram                 | `synthetic-diagram.png`                                                      |
+| Rights                          | Check the declaration for the supplied fixture                               |
+| Approved storage reference      | Choose the fixed synthetic handout reference; no URL or real storage is used |
 
 Choose the matching requested item and supplied file, enter the exact metadata, declare rights, **Validate and upload**, then **Finalize submission**. Progress runs automatically. After the receipt, that requested-item card changes to Submitted; it must no longer show Awaiting file. Navigate away and back through product links: submitted metadata/status remain in the same document. Submit a replacement using a new selection/client key; the old demo record remains in memory. Real raw deletion/processing never runs.
 
@@ -93,20 +104,20 @@ The synthetic campaign has a fixed cohort/unit, handout/recording/diagram reques
 
 Use reason **`Synthetic readiness review.`**, or Arabic **`مراجعة جاهزية تجريبية.`**. Inspect readiness predicates and current/proposed state, press **Review exact change**, then the normal confirmation button.
 
-| Decision | Expected synthetic behavior |
-| --- | --- |
-| Hide unit | Applies; Anatomy disappears from student availability |
-| Publish unit | Already published initially; Hide first, then propose publication; needs distinct second confirmation |
-| Lock cohort | Applies; cohort becomes unavailable in student view |
-| Unlock cohort | Already unlocked initially; Lock first, then propose unlock; needs distinct second confirmation |
-| Deactivate source | Applies; the handout becomes inactive. Seven other source rows remain READY, so the unit remains available. New handout-dependent answers/artifacts/attempts are unavailable until reactivation |
-| Activate source | Already active initially; Deactivate first, then propose activation; needs distinct second confirmation |
-| Quarantine source | Failed fixture becomes Quarantined |
-| Retry source | Owner-review request becomes pending; source stays failed and no worker runs |
-| Place raw-data hold | Use `2026-10-03T16:00` as the supplied illustrative expiry, check review attestation, and obtain second founder confirmation; no raw object changes |
-| Remove raw-data hold | Requires second founder confirmation |
-| Enable provider/artifact | Blocked by approval/budget boundary; never enables a provider |
-| Disable provider/artifact | Applies only to the fixed mock flag |
+| Decision                  | Expected synthetic behavior                                                                                                                                                                     |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Hide unit                 | Applies; Anatomy disappears from student availability                                                                                                                                           |
+| Publish unit              | Already published initially; Hide first, then propose publication; needs distinct second confirmation                                                                                           |
+| Lock cohort               | Applies; cohort becomes unavailable in student view                                                                                                                                             |
+| Unlock cohort             | Already unlocked initially; Lock first, then propose unlock; needs distinct second confirmation                                                                                                 |
+| Deactivate source         | Applies; the handout becomes inactive. Seven other source rows remain READY, so the unit remains available. New handout-dependent answers/artifacts/attempts are unavailable until reactivation |
+| Activate source           | Already active initially; Deactivate first, then propose activation; needs distinct second confirmation                                                                                         |
+| Quarantine source         | Failed fixture becomes Quarantined                                                                                                                                                              |
+| Retry source              | Owner-review request becomes pending; source stays failed and no worker runs                                                                                                                    |
+| Place raw-data hold       | Use `2026-10-03T16:00` as the supplied illustrative expiry, check review attestation, and obtain second founder confirmation; no raw object changes                                             |
+| Remove raw-data hold      | Requires second founder confirmation                                                                                                                                                            |
+| Enable provider/artifact  | Blocked by approval/budget boundary; never enables a provider                                                                                                                                   |
+| Disable provider/artifact | Applies only to the fixed mock flag                                                                                                                                                             |
 
 To confirm a pending change, **Sign out**, replace the email with `second-admin@example.invalid`, **Continue**, accept commitments, select the same pending candidate and confirm. These are two invented accounts representing the frontend rule; no real founder identity or authorization is asserted. The first account cannot provide its own distinct second confirmation. Repeat an applied action: it is blocked as already applied.
 
@@ -116,17 +127,17 @@ Use **Preview student** to see containment in the same document. Returning throu
 
 These are test setup, not product navigation controls. Start a fresh test using a normal URL with `?fixture=CASE` (add `&lang=ar` to repeat Arabic). A protected deep link first requests normal sign-in/consent and then returns to the prepared screen. The downloadable JSON lists every fixture and scope path. Use the correct synthetic role.
 
-| Screen | Fixture values | Expected result |
-| --- | --- | --- |
-| `/login` | `unverified`, `outdated-consent`, `suspended` | Verification/consent gate or unavailable account |
-| `/verify-email`, `/reset-password?token=sample-recovery` | `expired`, `replayed` | Unavailable link; fresh-link recovery is offered |
-| `/learn` | `loading`, `empty`, `error`, `offline`, `forbidden`, `no-membership`, `locked`, `unpublished`, `no-ready-source` | Automatic loading completion, empty/unavailable/error copy, normal Retry/Back |
-| Any unit overview/chat/Studio/Quiz | `loading`, `empty`, `error`, `offline`, `stale`, `forbidden`, `quota`, `capacity`, `wrong-scope` | Safe recovery, no invented limit or provider request |
-| `/batch-leader` | `empty`, `error`, `forbidden`, `expired` | No assignment, unavailable view or expired assignment |
-| `/batch-leader/invitation` | `expired`, `replayed` | Acceptance unavailable; campaign recovery link |
-| Campaign submission | `offline`, `checksum`, `duplicate`, `oversize`, `rights`, `expired`, `wrong-scope` | Interrupted/rejected validation or unavailable assignment; no new submission |
-| `/admin` | `empty`, `forbidden`, `error-page`, `blocked`, `pending`, `stale`, `error` | Empty/unavailable queue, readiness block, distinct confirmation, stale/error action result |
-| Any admin resource | `loading`, `empty`, `error`, `offline`, `forbidden` | Same normal state/recovery contract |
+| Screen                                                   | Fixture values                                                                                                   | Expected result                                                                            |
+| -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `/login`                                                 | `unverified`, `outdated-consent`, `suspended`                                                                    | Verification/consent gate or unavailable account                                           |
+| `/verify-email`, `/reset-password?token=sample-recovery` | `expired`, `replayed`                                                                                            | Unavailable link; fresh-link recovery is offered                                           |
+| `/learn`                                                 | `loading`, `empty`, `error`, `offline`, `forbidden`, `no-membership`, `locked`, `unpublished`, `no-ready-source` | Automatic loading completion, empty/unavailable/error copy, normal Retry/Back              |
+| Any unit overview/chat/Studio/Quiz                       | `loading`, `empty`, `error`, `offline`, `stale`, `forbidden`, `quota`, `capacity`, `wrong-scope`                 | Safe recovery, no invented limit or provider request                                       |
+| `/batch-leader`                                          | `empty`, `error`, `forbidden`, `expired`                                                                         | No assignment, unavailable view or expired assignment                                      |
+| `/batch-leader/invitation`                               | `expired`, `replayed`                                                                                            | Acceptance unavailable; campaign recovery link                                             |
+| Campaign submission                                      | `offline`, `checksum`, `duplicate`, `oversize`, `rights`, `expired`, `wrong-scope`                               | Interrupted/rejected validation or unavailable assignment; no new submission               |
+| `/admin`                                                 | `empty`, `forbidden`, `error-page`, `blocked`, `pending`, `stale`, `error`                                       | Empty/unavailable queue, readiness block, distinct confirmation, stale/error action result |
+| Any admin resource                                       | `loading`, `empty`, `error`, `offline`, `forbidden`                                                              | Same normal state/recovery contract                                                        |
 
 For example, paste `http://127.0.0.1:3101/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=offline&lang=en`, then sign in and consent. Use Retry to restore the normal chat screen in the same document. No hidden scenario picker is needed.
 
@@ -143,3 +154,11 @@ Already functional WP03 seams: real Auth/verification/consent/recovery, authoriz
 Simulated here: all account state and every review interaction; automatic chat replies/streams, evidence/report receipt, all artifacts, scoring/timer, files/progress/reference acceptance, tracking transitions, campaign/draft/invitation state, admin decisions, resource operations and preference changes. Future real backend work remains in WP04/WP06/WP07/WP08. Reload durability is intentionally absent.
 
 Open decisions remain D-08 saving/retention and exact report disclosure/payload, D-18 reference/storage policy, paid provider/budget approval, detailed broad management editors and invitation delivery contracts. This frontend review neither approves those decisions nor verifies live academic/provider behavior. WP03-T10's final named founder review remains before continuing WP04.
+
+### Checkpoint coverage and boundaries
+
+The audit map and prioritized corrections are in `docs/reviews/wp03-frontend-overhaul.md`, also supplied as `frontend-overhaul.md` in the pack. Prepared access, study failure, collection failure and admin recovery cases use the normal URLs and forms above; EN/AR/RTL, 1440/768/390/320, focus, enlarged text and accessible controls are checked. The revised shell applies to Chat and Studio only until its checkpoint is accepted. Earlier platform layouts and their documented defects remain visible elsewhere; this is not a claim that the comprehensive rollout is finished.
+
+Chat Cancel is a real working simulated control: after cancellation the typed draft remains, no reply/evidence is added later, and Send retries. Both pointer and keyboard behavior are covered. All review answers, artifacts, sessions, scoring, uploads, receipts and governed examples use deterministic document-local services. Existing default WP03 identity/access/catalog/collection/governance services remain the functional protected implementation when demo mode is absent; later generation backends, persistence, email/invitation delivery and paid providers are not supplied by this sample.
+
+Remaining decisions: D-08 retention/report payload and disclosure; D-18 real storage reference; financial/provider enablement and caps; broad management/invitation delivery; sample acceptance; separately approved logo version. No review choice decides those policies.

@@ -1,0 +1,388 @@
+"use client";
+import { useEffect, useState } from "react";
+import { useProductServices } from "@/app/_components/product-services";
+import {
+  Button,
+  Notice,
+  ProductLink,
+  Select,
+} from "@/app/_components/product-ui";
+import {
+  artifactTypes,
+  defaultScope,
+  text,
+} from "@/app/_components/synthetic-fixtures";
+import {
+  FrontendIcon,
+  type FrontendIconName,
+} from "@/app/_components/frontend-system";
+import type { ProductStudyProps } from "./product-study";
+import styles from "@/app/_components/product.module.css";
+import studyStyles from "./product-study.module.css";
+export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
+  const { state, update } = useProductServices();
+  const draft = state.studioDrafts[scope.unitId] ?? {
+    type: "summary",
+    language: locale,
+    topic: "sequence",
+    depth: "concise",
+    size: "short",
+  };
+  const { type, language, topic, depth, size } = draft;
+  useEffect(() => {
+    update((current) =>
+      current.studioDrafts[scope.unitId]
+        ? current
+        : {
+            ...current,
+            studioDrafts: {
+              ...current.studioDrafts,
+              [scope.unitId]: {
+                type: "summary",
+                language: locale,
+                topic: "sequence",
+                depth: "concise",
+                size: "short",
+              },
+            },
+          },
+    );
+  }, [locale, scope.unitId, update]);
+  const setOption = (key: keyof typeof draft, value: string) =>
+    update((current) => ({
+      ...current,
+      studioDrafts: {
+        ...current.studioDrafts,
+        [scope.unitId]: { ...draft, [key]: value },
+      },
+    }));
+  const [flipped, setFlipped] = useState(false);
+  const [notice, setNotice] = useState("");
+  const [request, setRequest] = useState<{
+    type: string;
+    language: string;
+    topic: string;
+    depth: string;
+    size: string;
+  } | null>(null);
+  useEffect(() => {
+    if (!request) return;
+    const timer = setTimeout(() => {
+      update((current) => ({
+        ...current,
+        artifacts: { ...current.artifacts, [scope.unitId]: request },
+      }));
+      setRequest(null);
+      setFlipped(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [request, scope.unitId, update]);
+  const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
+  const artifact = state.artifacts[scope.unitId];
+  const handoutAvailable =
+    scope.unitId !== defaultScope.unitId || state.availability.sourceActive;
+  return (
+    <div className={studyStyles.studio}>
+      <div className={studyStyles.sectionHeading}>
+        <h2>{t("Studio", "الاستوديو")}</h2>
+        <ProductLink href={base + "/sources"} locale={locale}>
+          <FrontendIcon name="sources" />
+          {t("Unit sources", "مصادر الوحدة")}
+        </ProductLink>
+      </div>
+      <p className={studyStyles.intro}>
+        {t(
+          "Turn this unit’s sources into a study aid. This demo prepares fixed examples from the same sample pool.",
+          "حوّل مصادر هذه الوحدة لأداة مذاكرة. العرض يجهز أمثلة ثابتة من نفس مجموعة المصادر التجريبية.",
+        )}
+      </p>
+      <div className={studyStyles.studioLayout}>
+        <form
+          className={studyStyles.studioControls}
+          onSubmit={(event) => {
+            event.preventDefault();
+            if (!request && handoutAvailable) {
+              setNotice("");
+              setRequest({ type, language, topic, depth, size });
+            }
+          }}
+        >
+          {!handoutAvailable ? (
+            <Notice error>
+              {t(
+                "The handout needed by this artifact fixture is inactive. Other unit sources remain available; choose another unit or reactivate the source through governed review.",
+                "الملزمة اللازمة لمثال المخرج غير نشطة. المصادر الأخرى متاحة؛ اختر وحدة أخرى أو أعد تفعيل المصدر بمراجعة منضبطة.",
+              )}
+            </Notice>
+          ) : null}
+          <fieldset
+            className={studyStyles.artifactTypes}
+            disabled={request !== null}
+          >
+            <legend>{t("Artifact type", "نوع المخرج")}</legend>
+            {artifactTypes.map(([id, en, ar]) => (
+              <label key={id} data-selected={type === id}>
+                <input
+                  type="radio"
+                  name="artifact-type"
+                  value={id}
+                  checked={type === id}
+                  onChange={() => setOption("type", id)}
+                />
+                <FrontendIcon
+                  name={
+                    (
+                      {
+                        summary: "summary",
+                        guide: "studio",
+                        practice: "chat",
+                        flashcards: "cards",
+                        revision: "sources",
+                        quiz: "quiz",
+                      } as Record<string, FrontendIconName>
+                    )[id]!
+                  }
+                />
+                <span>{t(en, ar)}</span>
+              </label>
+            ))}
+          </fieldset>
+          <div className={studyStyles.configuration}>
+            <Select
+              id="artifact-topic"
+              label={t("Topic", "الموضوع")}
+              value={topic}
+              onChange={(value) => setOption("topic", value)}
+              options={[
+                ["sequence", t("Study sequence", "ترتيب الدراسة")],
+                ["comparison", t("Diagram comparison", "مقارنة الرسوم")],
+              ]}
+            />
+            <Select
+              id="artifact-language"
+              label={t("Language", "اللغة")}
+              value={language}
+              onChange={(value) => setOption("language", value)}
+              options={[
+                ["en", t("English", "الإنجليزية")],
+                ["ar", t("Arabic", "العربية")],
+                ["mixed", t("Mixed", "مختلط")],
+              ]}
+            />
+            <Select
+              id="artifact-depth"
+              label={t("Depth", "التفصيل")}
+              value={depth}
+              onChange={(value) => setOption("depth", value)}
+              options={[
+                ["concise", t("Concise", "موجز")],
+                ["detailed", t("Detailed", "مفصل")],
+              ]}
+            />
+            <Select
+              id="artifact-size"
+              label={t("Size", "الحجم")}
+              value={size}
+              onChange={(value) => setOption("size", value)}
+              options={[
+                ["short", t("Short sample", "مثال قصير")],
+                ["extended", t("Extended sample", "مثال موسع")],
+              ]}
+            />
+          </div>
+          <Button
+            primary
+            type="submit"
+            disabled={request !== null || !handoutAvailable}
+          >
+            {t("Generate", "إنشاء")}
+          </Button>
+          <p className={studyStyles.caption}>
+            {t(
+              "Fixed examples · kept only until reload",
+              "أمثلة ثابتة · تبقى حتى إعادة التحميل فقط",
+            )}
+          </p>
+        </form>
+        <div className={studyStyles.artifactArea} aria-busy={request !== null}>
+          {request ? (
+            <div className={studyStyles.artifactLoading}>
+              <Notice>
+                {t("Preparing artifact… · Simulated", "إعداد المخرج… · محاكاة")}
+              </Notice>
+              <Button
+                onClick={() => {
+                  setRequest(null);
+                  setNotice(
+                    t(
+                      "Preparation cancelled. Your previous artifact is unchanged; Generate to retry.",
+                      "تم إلغاء الإعداد. المخرج السابق كما هو؛ اضغط إنشاء للمحاولة.",
+                    ),
+                  );
+                }}
+              >
+                {t("Cancel preparation", "إلغاء الإعداد")}
+              </Button>
+            </div>
+          ) : null}
+          {notice ? <Notice>{notice}</Notice> : null}
+          {artifact ? (
+            <section className={studyStyles.artifactOutput}>
+              <h2>
+                {t("Simulated artifact", "مخرج محاكى")}:{" "}
+                {text(
+                  (
+                    artifactTypes.find(([id]) => id === artifact.type) ??
+                    artifactTypes[0]
+                  ).slice(1) as [string, string],
+                  locale,
+                )}
+              </h2>
+              <p>
+                {t("Selected topic", "الموضوع المختار")}:{" "}
+                {artifact.topic === "comparison"
+                  ? t("Diagram comparison", "مقارنة الرسوم")
+                  : t("Study sequence", "ترتيب الدراسة")}{" "}
+                ·{" "}
+                {artifact.depth === "detailed"
+                  ? t("Detailed", "مفصل")
+                  : t("Concise", "موجز")}{" "}
+                ·{" "}
+                {artifact.size === "extended"
+                  ? t("Extended sample", "مثال موسع")
+                  : t("Short sample", "مثال قصير")}
+              </p>
+              <div
+                lang={artifact.language === "en" ? "en" : "ar"}
+                dir={artifact.language === "en" ? "ltr" : "rtl"}
+              >
+                {artifact.type === "flashcards" ? (
+                  <>
+                    <p>
+                      {flipped
+                        ? artifact.language === "en"
+                          ? "Identify labels, then compare diagrams."
+                          : "حدد الأسماء ثم قارن الرسوم."
+                        : artifact.language === "en"
+                          ? "What sequence does the sample handout use?"
+                          : "ما ترتيب الملزمة التجريبية؟"}
+                    </p>
+                    <Button onClick={() => setFlipped(!flipped)}>
+                      {t("Flip card", "اقلب البطاقة التجريبية")}
+                    </Button>
+                  </>
+                ) : artifact.type === "quiz" ? (
+                  <p>
+                    {artifact.language === "en"
+                      ? "Two sample questions about evidence and the study sequence."
+                      : "سؤالان تجريبيان عن الأدلة وترتيب الدراسة."}
+                  </p>
+                ) : (
+                  <>
+                    <p>
+                      {artifact.type === "practice"
+                        ? artifact.language === "en"
+                          ? "Question: Which step comes first in the sample handout?"
+                          : "سؤال: ما الخطوة الأولى في الملزمة التجريبية؟"
+                        : artifact.topic === "comparison"
+                          ? artifact.language === "en"
+                            ? "Compare the two labelled diagrams using the sample handout."
+                            : "قارن الرسمين المسميين باستخدام الملزمة التجريبية."
+                          : artifact.language === "en"
+                            ? "Identify the labelled structures before comparing the diagrams."
+                            : "حدد الأجزاء المسماة قبل مقارنة الرسمين."}
+                    </p>
+                    {artifact.type === "guide" ||
+                    artifact.type === "revision" ? (
+                      <ol>
+                        <li>
+                          {artifact.language === "en"
+                            ? "Read the sample labels."
+                            : "اقرأ أسماء المثال."}
+                        </li>
+                        <li>
+                          {artifact.language === "en"
+                            ? "Explain the comparison using the source."
+                            : "اشرح المقارنة بالمصدر."}
+                        </li>
+                      </ol>
+                    ) : null}
+                    {artifact.type === "practice" ? (
+                      <details>
+                        <summary>
+                          {t(
+                            "Reveal grounded explanation",
+                            "إظهار الشرح من المصدر",
+                          )}
+                        </summary>
+                        <p>
+                          {artifact.language === "en"
+                            ? "Identification comes first in the sample handout (sample page 3)."
+                            : "التحديد أولًا في الملزمة التجريبية (صفحة تجريبية ٣)."}
+                        </p>
+                      </details>
+                    ) : null}
+                    {artifact.depth === "detailed" ? (
+                      <p>
+                        {artifact.language === "en"
+                          ? "The first step establishes labels; the second compares the labelled diagrams. This is a fixed elaboration of the sample passage."
+                          : "الخطوة الأولى تحدد الأسماء، والثانية تقارن الرسوم المسماة. هذا شرح ثابت لنص المثال."}
+                      </p>
+                    ) : null}
+                    {artifact.size === "extended" ? (
+                      <p>
+                        {artifact.language === "en"
+                          ? "Review prompt: describe the two steps and identify what the sources leave unspecified."
+                          : "سؤال مراجعة: صف الخطوتين وحدد ما لم توضحه المصادر."}
+                      </p>
+                    ) : null}
+                  </>
+                )}
+                {artifact.language === "mixed" ? (
+                  <p>
+                    <bdi lang="en">Identify → Compare · synthetic sequence</bdi>
+                  </p>
+                ) : null}
+              </div>
+              <p>
+                {t(
+                  "Missing: no timing is supplied. Conflict: the recording reverses the sequence. This fixed example does not resolve that disagreement.",
+                  "الناقص: لا يوجد توقيت. التعارض: التسجيل يعكس الترتيب. المثال الثابت لا يحسم هذا الخلاف.",
+                )}
+              </p>
+              <p>
+                {t(
+                  "Evidence: Synthetic sequence handout · PDF · sample page 3; Synthetic comparison recording · AUDIO · sample timestamp 02:10.",
+                  "الأدلة: ملزمة الترتيب التجريبية · PDF · صفحة تجريبية ٣؛ تسجيل المقارنة التجريبي · AUDIO · توقيت تجريبي ٠٢:١٠.",
+                )}
+              </p>
+              <div className={styles.actions}>
+                <ProductLink href={base + "/sources"} locale={locale}>
+                  {t("Inspect source pool", "فحص مجموعة المصادر")}
+                </ProductLink>
+                {artifact.type === "quiz" ? (
+                  <ProductLink href={base + "/quiz"} locale={locale}>
+                    {t("Open quiz", "فتح الاختبار التجريبي")}
+                  </ProductLink>
+                ) : null}
+              </div>
+            </section>
+          ) : (
+            <div className={studyStyles.artifactEmpty}>
+              <FrontendIcon name="studio" />
+              <h3>
+                {t("Your study aid appears here", "أداة مذاكرتك تظهر هنا")}
+              </h3>
+              <p>
+                {t(
+                  "Choose a type, set your options, then Generate. You can inspect its sources and any missing or conflicting evidence.",
+                  "اختر النوع والمعايير ثم اضغط إنشاء. يمكنك فحص المصادر والأدلة الناقصة أو المتعارضة.",
+                )}
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}

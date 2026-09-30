@@ -1,0 +1,305 @@
+.shell {
+  --type-workspace-title-size: 1.5rem;
+  --type-study-invitation-size: 1.65rem;
+  --type-study-invitation-mobile-size: 1.35rem;
+  --type-artifact-title-size: 1.25rem;
+  display: grid;
+  grid-template-columns: 14rem minmax(0, 1fr);
+  min-height: 100svh;
+  background: var(--canvas);
+  color: var(--text-primary);
+}
+.icon {
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  flex: none;
+}
+[dir="rtl"] .icon[data-directional] {
+  transform: scaleX(-1);
+}
+.skip {
+  position: fixed;
+  inset-block-start: -5rem;
+  inset-inline-start: 1rem;
+  z-index: 50;
+  background: var(--accent-focus);
+  color: var(--on-action);
+  padding: 1rem;
+}
+.skip:focus-visible {
+  inset-block-start: 1rem;
+}
+.rail {
+  padding: 1.5rem 1rem;
+  background: var(--canvas-deep);
+  border-inline-end: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-width: 0;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: var(--type-workspace-title-size);
+  font-weight: 750;
+  text-decoration: none;
+  min-height: 44px;
+}
+.brandMark {
+  display: flex;
+  gap: 0.15rem;
+  width: 2.2rem;
+  flex: none;
+}
+.brandMark span {
+  width: 1rem;
+  height: 1.35rem;
+  background: var(--text-primary);
+  clip-path: polygon(0 0, 100% 12%, 100% 100%, 0 84%);
+}
+.brandMark span:first-child {
+  background: var(--accent-text);
+  transform: scaleX(-1);
+}
+.back {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  min-height: 44px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: var(--type-body-compact-size);
+}
+.scopeControl {
+  min-width: 0;
+}
+.scopeControl label {
+  font-size: var(--type-body-compact-size);
+  color: var(--text-muted);
+}
+.scopeControl select {
+  font-size: var(--type-body-compact-size);
+  padding: 0.65rem 0.5rem;
+}
+.navigation {
+  display: grid;
+  gap: 0.35rem;
+}
+.navigation a {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 48px;
+  min-width: 0;
+  padding: 0.65rem 0.75rem;
+  border-radius: var(--radius-control);
+  color: var(--text-secondary);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.navigation a[aria-current] {
+  background: var(--surface-active);
+  color: var(--accent-text);
+}
+.navigation a:hover,
+.back:hover {
+  background: var(--surface);
+  color: var(--text-primary);
+}
+.railFoot {
+  margin-block-start: auto;
+  font-size: var(--type-body-compact-size);
+  color: var(--text-muted);
+}
+.railFoot p:first-child {
+  color: var(--ready);
+}
+.stage {
+  min-width: 0;
+}
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 2rem;
+  border-block-end: 1px solid var(--line);
+}
+.unitTitle {
+  min-width: 0;
+  flex: 1 1 16rem;
+}
+.unitTitle h1 {
+  font-size: var(--type-workspace-title-size);
+  line-height: 1.4;
+  margin: 0;
+  font-weight: 700;
+}
+.unitTitle p {
+  color: var(--text-muted);
+  font-size: var(--type-body-compact-size);
+  margin: 0.15rem 0 0;
+  overflow-wrap: anywhere;
+}
+.utilities {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.language {
+  display: grid;
+  gap: 0.15rem;
+  font-size: var(--type-body-compact-size);
+}
+.language > span {
+  color: var(--text-muted);
+}
+.language select {
+  font: inherit;
+  color: var(--text-primary);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  padding: 0.5rem 0.75rem;
+  min-height: 44px;
+  max-width: 100%;
+}
+.account {
+  position: relative;
+}
+.account summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-control);
+  list-style: none;
+  border: 1px solid var(--line);
+}
+.account summary::-webkit-details-marker {
+  display: none;
+}
+.account > div {
+  position: absolute;
+  z-index: 35;
+  inset-inline-end: 0;
+  inset-block-start: calc(100% + 0.5rem);
+  inline-size: min(18rem, calc(100vw - 2rem));
+  display: grid;
+  padding: 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+}
+.account p {
+  margin: 0.5rem;
+  overflow-wrap: anywhere;
+  color: var(--text-muted);
+  font-size: var(--type-body-compact-size);
+}
+.account a,
+.account button {
+  font: inherit;
+  color: var(--text-primary);
+  text-decoration: none;
+  text-align: start;
+  background: transparent;
+  border: 0;
+  min-height: 44px;
+  padding: 0.5rem;
+  cursor: pointer;
+  border-radius: var(--radius-control);
+}
+.account a:hover,
+.account button:hover {
+  background: var(--surface-active);
+}
+.simulation {
+  margin: 0;
+  padding: 0.4rem 2rem;
+  color: var(--text-muted);
+  font-size: var(--type-body-compact-size);
+  border-block-end: 1px solid var(--line);
+}
+.content {
+  min-width: 0;
+  padding: 1.5rem 2rem 2rem;
+}
+@media (max-width: 68rem) {
+  .shell {
+    grid-template-columns: 12rem minmax(0, 1fr);
+  }
+  .header,
+  .content {
+    padding-inline: 1.25rem;
+  }
+  .simulation {
+    padding-inline: 1.25rem;
+  }
+}
+@media (max-width: 47.99rem) {
+  .shell {
+    display: block;
+  }
+  .rail {
+    padding: 0.75rem 1rem;
+    gap: 0.65rem;
+    border-inline-end: 0;
+    border-block-end: 1px solid var(--line);
+  }
+  .brand {
+    display: none;
+  }
+  .back {
+    font-size: var(--type-body-compact-size);
+  }
+  .scopeControl {
+    max-width: 100%;
+  }
+  .navigation {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.2rem;
+  }
+  .navigation a {
+    display: grid;
+    justify-items: center;
+    align-content: start;
+    gap: 0.25rem;
+    padding: 0.65rem 0.1rem;
+    font-size: var(--type-body-compact-size);
+    text-align: center;
+    line-height: 1.5;
+  }
+  .railFoot {
+    display: none;
+  }
+  .header {
+    padding: 0.75rem 1rem;
+    gap: 0.65rem;
+  }
+  .unitTitle {
+    flex-basis: 100%;
+  }
+  .utilities {
+    width: 100%;
+    justify-content: space-between;
+    align-items: end;
+  }
+  .simulation {
+    padding: 0.4rem 1rem;
+  }
+  .content {
+    padding: 1rem;
+  }
+}
+@media (max-width: 23rem) {
+  .navigation {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

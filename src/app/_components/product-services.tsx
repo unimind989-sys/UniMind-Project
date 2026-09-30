@@ -21,6 +21,12 @@ export type ProductState = Omit<ReviewState, "attempts"> & {
   invitationUsed: boolean;
   returnPath: string | null;
   pendingActors: Record<string, "AHMED" | "ZIAD">;
+  chatDrafts: Record<
+    string,
+    { message: string; language: "en" | "ar" | "mixed" }
+  >;
+  lastStudyPath: string | null;
+  studioDrafts: ProductState["artifacts"];
 };
 export function initialProductState(): ProductState {
   return {
@@ -32,6 +38,9 @@ export function initialProductState(): ProductState {
     invitationUsed: false,
     returnPath: null,
     pendingActors: {},
+    chatDrafts: {},
+    lastStudyPath: null,
+    studioDrafts: {},
   };
 }
 type Services = {

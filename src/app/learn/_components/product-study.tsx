@@ -6,18 +6,16 @@ import type { Route } from "next";
 import type { WorkspaceScope } from "@/lib/workspace/workspace.application";
 import {
   answerExamples,
-  artifactTypes,
   defaultScope,
-  promptExamples,
-  reviewBase,
   scopeChoices,
   sampleScopeAvailable,
   text,
   type Locale,
   type ResponseKind,
-  type SampleAnswer,
 } from "@/app/_components/synthetic-fixtures";
 import styles from "@/app/_components/product.module.css";
+import { ProductChat } from "./product-chat";
+import { ProductStudio } from "./product-studio";
 import { useProductServices } from "@/app/_components/product-services";
 import {
   Button,
@@ -27,13 +25,14 @@ import {
   Select,
 } from "@/app/_components/product-ui";
 
-type Props = {
+export type ProductStudyProps = {
   screen: string;
   scope: WorkspaceScope;
   locale: Locale;
   base: string;
   scenario: string;
 };
+type Props = ProductStudyProps;
 const kindNames: Record<ResponseKind, readonly [string, string]> = {
   supported: ["Supported", "مدعوم"],
   partial: ["Partial support", "دعم جزئي"],
@@ -47,79 +46,96 @@ const kindNames: Record<ResponseKind, readonly [string, string]> = {
 export function ProductStudy(props: Props) {
   const { scope, locale, base, screen } = props;
   const router = useRouter();
-  const { state } = useProductServices();
+  const { state, update } = useProductServices();
   const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
+  useEffect(() => {
+    if (["chat", "studio"].includes(screen)) {
+      update((current) =>
+        current.lastStudyPath === `${base}/${screen}`
+          ? current
+          : { ...current, lastStudyPath: `${base}/${screen}` },
+      );
+    }
+  }, [base, screen, update]);
   return (
     <>
-      <div className={styles.scope}>
-        <nav
-          className={styles.breadcrumb}
-          aria-label={t("Curriculum scope", "نطاق المنهج")}
-        >
-          {[
-            locale === "ar" ? scope.institutionNameAr : scope.institutionNameEn,
-            locale === "ar" ? scope.programNameAr : scope.programNameEn,
-            locale === "ar" ? scope.levelNameAr : scope.levelNameEn,
-            locale === "ar" ? scope.termNameAr : scope.termNameEn,
-          ].map((name, index) => (
-            <bdi key={index}>
-              {name}
-              {index < 3 ? " / " : ""}
-            </bdi>
-          ))}
-        </nav>
-        <p>
-          <strong>
-            {locale === "ar"
-              ? scope.unitLabelSingularAr
-              : scope.unitLabelSingularEn}
-            :{" "}
-            <bdi>{locale === "ar" ? scope.unitTitleAr : scope.unitTitleEn}</bdi>
-          </strong>
-        </p>
-        <p>
-          <bdi>{scope.curriculumEdition}</bdi> ·{" "}
-          {t(
-            "Synthetic available unit · one knowledge pool",
-            "وحدة تجريبية متاحة · مجموعة معرفة واحدة",
-          )}
-        </p>
-        <Select
-          id="unit-scope"
-          label={t("Switch unit", "تغيير الوحدة")}
-          value={base}
-          options={[
-            [
-              base,
-              `${locale === "ar" ? scope.programNameAr : scope.programNameEn} · ${locale === "ar" ? scope.unitTitleAr : scope.unitTitleEn}`,
-            ],
-            ...scopeChoices
-              .filter(
-                (choice) =>
-                  choice.path !== base &&
-                  sampleScopeAvailable(
-                    state,
-                    choice.scope.cohortId,
-                    choice.scope.unitId,
-                  ),
-              )
-              .map(
-                (choice) =>
-                  [
-                    choice.path,
-                    `${locale === "ar" ? choice.scope.programNameAr : choice.scope.programNameEn} · ${locale === "ar" ? choice.scope.unitTitleAr : choice.scope.unitTitleEn}`,
-                  ] as const,
-              ),
-          ]}
-          onChange={(value) => router.push(`${value}?lang=${locale}` as Route)}
-        />
-      </div>
+      {!["chat", "studio"].includes(screen) ? (
+        <div className={styles.scope}>
+          <nav
+            className={styles.breadcrumb}
+            aria-label={t("Curriculum scope", "نطاق المنهج")}
+          >
+            {[
+              locale === "ar"
+                ? scope.institutionNameAr
+                : scope.institutionNameEn,
+              locale === "ar" ? scope.programNameAr : scope.programNameEn,
+              locale === "ar" ? scope.levelNameAr : scope.levelNameEn,
+              locale === "ar" ? scope.termNameAr : scope.termNameEn,
+            ].map((name, index) => (
+              <bdi key={index}>
+                {name}
+                {index < 3 ? " / " : ""}
+              </bdi>
+            ))}
+          </nav>
+          <p>
+            <strong>
+              {locale === "ar"
+                ? scope.unitLabelSingularAr
+                : scope.unitLabelSingularEn}
+              :{" "}
+              <bdi>
+                {locale === "ar" ? scope.unitTitleAr : scope.unitTitleEn}
+              </bdi>
+            </strong>
+          </p>
+          <p>
+            <bdi>{scope.curriculumEdition}</bdi> ·{" "}
+            {t(
+              "Synthetic available unit · one knowledge pool",
+              "وحدة تجريبية متاحة · مجموعة معرفة واحدة",
+            )}
+          </p>
+          <Select
+            id="unit-scope"
+            label={t("Switch unit", "تغيير الوحدة")}
+            value={base}
+            options={[
+              [
+                base,
+                `${locale === "ar" ? scope.programNameAr : scope.programNameEn} · ${locale === "ar" ? scope.unitTitleAr : scope.unitTitleEn}`,
+              ],
+              ...scopeChoices
+                .filter(
+                  (choice) =>
+                    choice.path !== base &&
+                    sampleScopeAvailable(
+                      state,
+                      choice.scope.cohortId,
+                      choice.scope.unitId,
+                    ),
+                )
+                .map(
+                  (choice) =>
+                    [
+                      choice.path,
+                      `${locale === "ar" ? choice.scope.programNameAr : choice.scope.programNameEn} · ${locale === "ar" ? choice.scope.unitTitleAr : choice.scope.unitTitleEn}`,
+                    ] as const,
+                ),
+            ]}
+            onChange={(value) =>
+              router.push(`${value}?lang=${locale}` as Route)
+            }
+          />
+        </div>
+      ) : null}
       {screen === "overview" ? (
         <Overview {...props} />
       ) : screen === "chat" ? (
-        <Chat {...props} />
+        <ProductChat {...props} />
       ) : screen === "studio" ? (
-        <Studio {...props} />
+        <ProductStudio {...props} />
       ) : ["quiz", "attempt", "quiz-review"].includes(screen) ? (
         <Quiz {...props} />
       ) : screen === "sources" || screen === "evidence" ? (
@@ -244,238 +260,6 @@ function Overview({ scope, locale, base }: Props) {
           )}
         </p>
       </Row>
-    </>
-  );
-}
-
-function Chat({ scope, locale, base }: Props) {
-  const { state, update } = useProductServices();
-  const [message, setMessage] = useState(
-    text(promptExamples.supported, locale),
-  );
-  const [language, setLanguage] = useState<"en" | "ar" | "mixed">(locale);
-  const [sending, setSending] = useState<SampleAnswer | null>(null);
-  const [notice, setNotice] = useState("");
-  const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
-  const sessions = state.sessions.filter(
-    (session) => session.scope === scope.unitId,
-  );
-  const selected = sessions.find(
-    (session) => session.id === state.activeSessions[scope.unitId],
-  );
-  const handoutAvailable =
-    scope.unitId !== defaultScope.unitId || state.availability.sourceActive;
-  useEffect(() => {
-    if (!sending) return;
-    const timer = setTimeout(() => {
-      update((current) => ({
-        ...current,
-        sessions: current.sessions.map((session) =>
-          session.id === sending.sessionId && session.scope === scope.unitId
-            ? { ...session, answers: [...session.answers, sending] }
-            : session,
-        ),
-      }));
-      setSending(null);
-      setMessage("");
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [sending, scope.unitId, update]);
-  function start() {
-    const id =
-      state.sessions.reduce(
-        (maximum, session) => Math.max(maximum, session.id),
-        0,
-      ) + 1;
-    update((current) => ({
-      ...current,
-      sessions: [...current.sessions, { id, scope: scope.unitId, answers: [] }],
-      activeSessions: { ...current.activeSessions, [scope.unitId]: id },
-    }));
-    setSending(null);
-    setNotice(
-      t(
-        "New simulated session in this unit only.",
-        "جلسة محاكاة جديدة داخل هذه الوحدة فقط.",
-      ),
-    );
-  }
-  return (
-    <>
-      <div className={styles.actions}>
-        <Button primary onClick={start}>
-          {t("New session", "جلسة جديدة")}
-        </Button>
-        <ProductLink href={reviewBase + "/settings"} locale={locale}>
-          {t("Privacy settings", "إعدادات الخصوصية")}
-        </ProductLink>
-      </div>
-      {sessions.length ? (
-        <Select
-          id="sample-session"
-          label={t("Session", "الجلسة في هذه الوحدة")}
-          value={String(selected?.id ?? "")}
-          options={sessions.map((session) => [
-            String(session.id),
-            t("Session ", "جلسة ") +
-              new Intl.NumberFormat(locale).format(session.id),
-          ])}
-          onChange={(value) => {
-            update((current) => ({
-              ...current,
-              activeSessions: {
-                ...current.activeSessions,
-                [scope.unitId]: Number(value),
-              },
-            }));
-            setSending(null);
-          }}
-        />
-      ) : (
-        <p>
-          {t(
-            "No sessions in this scope. Start one to try the fixed composer.",
-            "لا جلسات في هذا النطاق. ابدأ جلسة لتجربة مثال المحادثة.",
-          )}
-        </p>
-      )}
-      <section className={styles.panel}>
-        <h2>{t("Ask about this unit", "اسأل عن هذه الوحدة")}</h2>
-        <div className={styles.form}>
-          <div className={styles.field}>
-            <label htmlFor="message">{t("Message", "السؤال")}</label>
-            <textarea
-              id="message"
-              name="message"
-              rows={3}
-              maxLength={1000}
-              autoComplete="off"
-              value={message}
-              onChange={(event) => setMessage(event.target.value)}
-              disabled={sending !== null}
-            />
-          </div>
-          <Select
-            id="study-language"
-            label={t("Study language", "لغة المذاكرة")}
-            value={language}
-            options={[
-              ["en", "English"],
-              ["ar", "العربية"],
-              ["mixed", t("Mixed Arabic and English", "عربي وإنجليزي مختلط")],
-            ]}
-            onChange={(value) => setLanguage(value as typeof language)}
-          />
-          <p>
-            {t("Future sample exchange mode", "وضع المحادثة التجريبية القادمة")}
-            :{" "}
-            {state.sharing === "private"
-              ? t("Private / no sharing", "خاص / عدم مشاركة")
-              : t("Founder-visible by default", "ظاهر للمؤسسين افتراضيًا")}
-          </p>
-          <Button
-            primary
-            disabled={!selected || sending !== null || !message.trim()}
-            onClick={() => {
-              const kind = (Object.entries(promptExamples).find(([, prompts]) =>
-                prompts.some(
-                  (prompt) =>
-                    prompt.toLowerCase() === message.trim().toLowerCase(),
-                ),
-              )?.[0] ?? "unavailable") as ResponseKind;
-              if (selected)
-                setSending({
-                  kind:
-                    !handoutAvailable && !["patient", "hint"].includes(kind)
-                      ? "unavailable"
-                      : kind,
-                  language,
-                  sessionId: selected.id,
-                  sharing: state.sharing,
-                });
-            }}
-          >
-            {t("Send", "إرسال")}
-          </Button>
-        </div>
-        {sending ? (
-          <div role="status">
-            <p>
-              {t(
-                "Simulated stream · sample passage being revealed…",
-                "بث محاكى · إظهار نص المثال…",
-              )}
-            </p>
-            <p>
-              {
-                text(
-                  answerExamples[sending.kind],
-                  sending.language === "ar" ? "ar" : "en",
-                ).split(".")[0]
-              }
-              …
-            </p>
-            <div className={styles.actions}>
-              <Button
-                onClick={() => {
-                  setSending(null);
-                  setNotice(
-                    t(
-                      "Sample stream cancelled. Retry by sending the fixed prompt.",
-                      "تم إلغاء بث المثال. أعد المحاولة بإرسال السؤال الثابت.",
-                    ),
-                  );
-                }}
-              >
-                {t("Cancel stream", "إلغاء البث")}
-              </Button>
-            </div>
-          </div>
-        ) : null}
-        {notice ? <Notice>{notice}</Notice> : null}
-      </section>
-      {selected?.answers.map((answer, index) => (
-        <article className={styles.answer} key={index}>
-          <h2>{text(kindNames[answer.kind], locale)}</h2>
-          <p
-            lang={
-              answer.language === "ar" || answer.language === "mixed"
-                ? "ar"
-                : "en"
-            }
-            dir={answer.language === "en" ? "ltr" : "rtl"}
-          >
-            {answer.language === "mixed" ? (
-              <>
-                {text(answerExamples[answer.kind], "ar")}{" "}
-                <bdi lang="en">Synthetic source · study sequence</bdi>
-              </>
-            ) : (
-              text(answerExamples[answer.kind], answer.language)
-            )}
-          </p>
-          <p>
-            {t("Recorded sample sharing mode", "وضع مشاركة المثال المسجل")}:{" "}
-            {answer.sharing === "private"
-              ? t("Private", "خاص")
-              : t("Shared", "مشارك")}
-          </p>
-          <div className={styles.actions}>
-            <ProductLink
-              href={`${base}/evidence?exchange=${index + 1}&session=${selected.id}`}
-              locale={locale}
-            >
-              {t("Inspect evidence", "فحص الأدلة")}
-            </ProductLink>
-            <ProductLink
-              href={`${base}/report?exchange=${index + 1}&session=${selected.id}`}
-              locale={locale}
-            >
-              {t("Report example", "الإبلاغ عن المثال")}
-            </ProductLink>
-          </div>
-        </article>
-      ))}
     </>
   );
 }
@@ -723,267 +507,6 @@ function Report({ scope, locale, base }: Props) {
         </ProductLink>
       </div>
     </section>
-  );
-}
-
-function Studio({ scope, locale, base }: Props) {
-  const { state, update } = useProductServices();
-  const [type, setType] = useState("summary");
-  const [language, setLanguage] = useState<string>(locale);
-  const [topic, setTopic] = useState("sequence");
-  const [depth, setDepth] = useState("concise");
-  const [size, setSize] = useState("short");
-  const [flipped, setFlipped] = useState(false);
-  const [request, setRequest] = useState<{
-    type: string;
-    language: string;
-    topic: string;
-    depth: string;
-    size: string;
-  } | null>(null);
-  useEffect(() => {
-    if (!request) return;
-    const timer = setTimeout(() => {
-      update((current) => ({
-        ...current,
-        artifacts: { ...current.artifacts, [scope.unitId]: request },
-      }));
-      setRequest(null);
-      setFlipped(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [request, scope.unitId, update]);
-  const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
-  const artifact = state.artifacts[scope.unitId];
-  const handoutAvailable =
-    scope.unitId !== defaultScope.unitId || state.availability.sourceActive;
-  return (
-    <>
-      <p>
-        {t(
-          "Select parameters to load a fixed fixture. No artifact is generated or stored. Every type uses this unit's same sample pool.",
-          "اختر المعايير لعرض مثال ثابت. لا يتم توليد أو حفظ مخرج. كل الأنواع تستخدم نفس مجموعة الوحدة التجريبية.",
-        )}
-      </p>
-      <div className={styles.form}>
-        {!handoutAvailable ? (
-          <Notice error>
-            {t(
-              "The handout needed by this artifact fixture is inactive. Other unit sources remain available; choose another unit or reactivate the source through governed review.",
-              "الملزمة اللازمة لمثال المخرج غير نشطة. المصادر الأخرى متاحة؛ اختر وحدة أخرى أو أعد تفعيل المصدر بمراجعة منضبطة.",
-            )}
-          </Notice>
-        ) : null}
-        <Select
-          id="artifact-type"
-          label={t("Artifact type", "نوع المخرج")}
-          value={type}
-          onChange={setType}
-          options={artifactTypes.map(([id, en, ar]) => [id, t(en, ar)])}
-        />
-        <div className={styles.grid}>
-          <Select
-            id="artifact-topic"
-            label={t("Topic", "الموضوع")}
-            value={topic}
-            onChange={setTopic}
-            options={[
-              ["sequence", t("Study sequence", "ترتيب الدراسة")],
-              ["comparison", t("Diagram comparison", "مقارنة الرسوم")],
-            ]}
-          />
-          <Select
-            id="artifact-language"
-            label={t("Language", "اللغة")}
-            value={language}
-            onChange={setLanguage}
-            options={[
-              ["en", "English"],
-              ["ar", "العربية"],
-              ["mixed", t("Mixed", "مختلط")],
-            ]}
-          />
-          <Select
-            id="artifact-depth"
-            label={t("Depth", "التفصيل")}
-            value={depth}
-            onChange={setDepth}
-            options={[
-              ["concise", t("Concise", "موجز")],
-              ["detailed", t("Detailed", "مفصل")],
-            ]}
-          />
-          <Select
-            id="artifact-size"
-            label={t("Size", "الحجم")}
-            value={size}
-            onChange={setSize}
-            options={[
-              ["short", t("Short sample", "مثال قصير")],
-              ["extended", t("Extended sample", "مثال موسع")],
-            ]}
-          />
-        </div>
-        <Button
-          primary
-          disabled={request !== null || !handoutAvailable}
-          onClick={() => setRequest({ type, language, topic, depth, size })}
-        >
-          {t("Generate", "إنشاء")}
-        </Button>
-      </div>
-      {request ? (
-        <Notice>
-          {t("Preparing artifact… · Simulated", "إعداد المخرج… · محاكاة")}
-        </Notice>
-      ) : null}
-      {artifact ? (
-        <section className={styles.panel}>
-          <h2>
-            {t("Simulated artifact", "مخرج محاكى")}:{" "}
-            {text(
-              (
-                artifactTypes.find(([id]) => id === artifact.type) ??
-                artifactTypes[0]
-              ).slice(1) as [string, string],
-              locale,
-            )}
-          </h2>
-          <p>
-            {t("Selected topic", "الموضوع المختار")}:{" "}
-            {artifact.topic === "comparison"
-              ? t("Diagram comparison", "مقارنة الرسوم")
-              : t("Study sequence", "ترتيب الدراسة")}{" "}
-            ·{" "}
-            {artifact.depth === "detailed"
-              ? t("Detailed", "مفصل")
-              : t("Concise", "موجز")}{" "}
-            ·{" "}
-            {artifact.size === "extended"
-              ? t("Extended sample", "مثال موسع")
-              : t("Short sample", "مثال قصير")}
-          </p>
-          <div
-            lang={artifact.language === "en" ? "en" : "ar"}
-            dir={artifact.language === "en" ? "ltr" : "rtl"}
-          >
-            {artifact.type === "flashcards" ? (
-              <>
-                <p>
-                  {flipped
-                    ? artifact.language === "en"
-                      ? "Identify labels, then compare diagrams."
-                      : "حدد الأسماء ثم قارن الرسوم."
-                    : artifact.language === "en"
-                      ? "What sequence does the sample handout use?"
-                      : "ما ترتيب الملزمة التجريبية؟"}
-                </p>
-                <Button onClick={() => setFlipped(!flipped)}>
-                  {t("Flip card", "اقلب البطاقة التجريبية")}
-                </Button>
-              </>
-            ) : artifact.type === "quiz" ? (
-              <p>
-                {artifact.language === "en"
-                  ? "Two sample questions about evidence and the study sequence."
-                  : "سؤالان تجريبيان عن الأدلة وترتيب الدراسة."}
-              </p>
-            ) : (
-              <>
-                <p>
-                  {artifact.type === "practice"
-                    ? artifact.language === "en"
-                      ? "Question: Which step comes first in the sample handout?"
-                      : "سؤال: ما الخطوة الأولى في الملزمة التجريبية؟"
-                    : artifact.topic === "comparison"
-                      ? artifact.language === "en"
-                        ? "Compare the two labelled diagrams using the sample handout."
-                        : "قارن الرسمين المسميين باستخدام الملزمة التجريبية."
-                      : artifact.language === "en"
-                        ? "Identify the labelled structures before comparing the diagrams."
-                        : "حدد الأجزاء المسماة قبل مقارنة الرسمين."}
-                </p>
-                {artifact.type === "guide" || artifact.type === "revision" ? (
-                  <ol>
-                    <li>
-                      {artifact.language === "en"
-                        ? "Read the sample labels."
-                        : "اقرأ أسماء المثال."}
-                    </li>
-                    <li>
-                      {artifact.language === "en"
-                        ? "Explain the comparison using the source."
-                        : "اشرح المقارنة بالمصدر."}
-                    </li>
-                  </ol>
-                ) : null}
-                {artifact.type === "practice" ? (
-                  <details>
-                    <summary>
-                      {t(
-                        "Reveal grounded explanation",
-                        "إظهار الشرح من المصدر",
-                      )}
-                    </summary>
-                    <p>
-                      {artifact.language === "en"
-                        ? "Identification comes first in the sample handout (sample page 3)."
-                        : "التحديد أولًا في الملزمة التجريبية (صفحة تجريبية ٣)."}
-                    </p>
-                  </details>
-                ) : null}
-                {artifact.depth === "detailed" ? (
-                  <p>
-                    {artifact.language === "en"
-                      ? "The first step establishes labels; the second compares the labelled diagrams. This is a fixed elaboration of the sample passage."
-                      : "الخطوة الأولى تحدد الأسماء، والثانية تقارن الرسوم المسماة. هذا شرح ثابت لنص المثال."}
-                  </p>
-                ) : null}
-                {artifact.size === "extended" ? (
-                  <p>
-                    {artifact.language === "en"
-                      ? "Review prompt: describe the two steps and identify what the sources leave unspecified."
-                      : "سؤال مراجعة: صف الخطوتين وحدد ما لم توضحه المصادر."}
-                  </p>
-                ) : null}
-              </>
-            )}
-            {artifact.language === "mixed" ? (
-              <p>
-                <bdi lang="en">Identify → Compare · synthetic sequence</bdi>
-              </p>
-            ) : null}
-          </div>
-          <p>
-            {t(
-              "Missing: no timing is supplied. Conflict: the recording reverses the sequence. This fixed example does not resolve that disagreement.",
-              "الناقص: لا يوجد توقيت. التعارض: التسجيل يعكس الترتيب. المثال الثابت لا يحسم هذا الخلاف.",
-            )}
-          </p>
-          <p>
-            {t(
-              "Evidence: Synthetic sequence handout · PDF · sample page 3; Synthetic comparison recording · AUDIO · sample timestamp 02:10.",
-              "الأدلة: ملزمة الترتيب التجريبية · PDF · صفحة تجريبية ٣؛ تسجيل المقارنة التجريبي · AUDIO · توقيت تجريبي ٠٢:١٠.",
-            )}
-          </p>
-          <div className={styles.actions}>
-            <ProductLink href={base + "/sources"} locale={locale}>
-              {t("Inspect source pool", "فحص مجموعة المصادر")}
-            </ProductLink>
-            <ProductLink href={base + "/quiz"} locale={locale}>
-              {t("Open quiz", "فتح الاختبار التجريبي")}
-            </ProductLink>
-          </div>
-        </section>
-      ) : (
-        <p>
-          {t(
-            "No artifact loaded in this unit. Choose parameters and load a fixed example.",
-            "لم تحمل مخرجًا في هذه الوحدة. اختر المعايير وحمل مثالًا ثابتًا.",
-          )}
-        </p>
-      )}
-    </>
   );
 }
 
@@ -1261,5 +784,42 @@ function Quiz({ scope, locale, base, screen }: Props) {
         </ProductLink>
       </div>
     </>
+  );
+}
+
+export function UnitSwitch({
+  scope,
+  locale,
+  base,
+}: Pick<ProductStudyProps, "scope" | "locale" | "base">) {
+  const router = useRouter();
+  const { state } = useProductServices();
+  return (
+    <Select
+      id="unit-scope"
+      label={locale === "ar" ? "تغيير الوحدة" : "Switch unit"}
+      value={base}
+      options={[
+        [base, locale === "ar" ? scope.unitTitleAr : scope.unitTitleEn],
+        ...scopeChoices
+          .filter(
+            (choice) =>
+              choice.path !== base &&
+              sampleScopeAvailable(
+                state,
+                choice.scope.cohortId,
+                choice.scope.unitId,
+              ),
+          )
+          .map(
+            (choice) =>
+              [
+                choice.path,
+                `${locale === "ar" ? choice.scope.programNameAr : choice.scope.programNameEn} · ${locale === "ar" ? choice.scope.unitTitleAr : choice.scope.unitTitleEn}`,
+              ] as const,
+          ),
+      ]}
+      onChange={(value) => router.push(`${value}?lang=${locale}` as Route)}
+    />
   );
 }

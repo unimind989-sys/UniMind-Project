@@ -1,4 +1,4 @@
-import { mkdirSync, writeFileSync } from "node:fs";
+import { copyFileSync, mkdirSync, writeFileSync } from "node:fs";
 import { syntheticFiles } from "../src/app/_components/synthetic-files";
 import {
   promptExamples,
@@ -10,6 +10,15 @@ import {
 
 const directory = "public/demo-files";
 mkdirSync(directory, { recursive: true });
+for (const name of ["README.md", "walkthrough.md"])
+  copyFileSync(
+    "docs/reviews/wp03-synthetic-frontend-review.md",
+    `${directory}/${name}`,
+  );
+copyFileSync(
+  "docs/reviews/wp03-frontend-overhaul.md",
+  `${directory}/frontend-overhaul.md`,
+);
 for (const [name, file] of Object.entries(syntheticFiles))
   writeFileSync(`${directory}/${name}`, file.bytes());
 writeFileSync(
@@ -29,6 +38,17 @@ writeFileSync(
   JSON.stringify(
     {
       simulated: true,
+      designCheckpoint: {
+        status: "awaiting-founder-acceptance",
+        surfaces: ["shared unit shell", "Chat", "Studio"],
+        entry: `/login?lang=en&next=${encodeURIComponent(scopeChoices[0]!.path + "/chat")}`,
+        instructions: "walkthrough.md",
+        chat: "First Send starts a session. Enter sends; Shift+Enter adds a line. Interface language preserves the draft and study-output language.",
+        studio:
+          "Choose an artifact using the radio group. Generate prepares a fixed example; Cancel preparation interrupts it. Only MCQ offers Open quiz.",
+        remainingPlatform:
+          "Existing approved native journeys remain available; shared-system rollout awaits acceptance of this sample.",
+      },
       credentials: "accounts.csv",
       sourceTitle: "Synthetic study source",
       sourceDescription:
