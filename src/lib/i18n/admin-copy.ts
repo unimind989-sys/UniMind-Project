@@ -8,6 +8,7 @@ const resourceNames = {
   en: {
     catalog: "Catalog",
     cohorts: "Cohorts",
+    campaigns: "Campaigns",
     sources: "Sources",
     jobs: "Jobs",
     quality: "Quality",
@@ -17,6 +18,7 @@ const resourceNames = {
   ar: {
     catalog: "الفهرس",
     cohorts: "المجموعات الدراسية",
+    campaigns: "الحملات",
     sources: "المصادر",
     jobs: "المهام",
     quality: "الجودة",

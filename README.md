@@ -80,9 +80,9 @@ corepack pnpm check:sql
 
 ## Synthetic frontend review
 
-Run the local development server, then open `/preview/review` (or `/preview`). The review covers student, Batch Leader and admin journeys with fixed invented examples, English/Arabic navigation and selectable states. It requests no real account, credentials or files. All simulation state belongs to the current tab and disappears on reload or reset; it grants no real access and makes no provider or protected mutation calls.
+Run `corepack pnpm demo`, then open `http://127.0.0.1:3101/login?lang=en` in Chrome. This isolated development runtime uses normal product routes, forms and shared frontend components with synthetic services. It covers student, Batch Leader and admin journeys in English/Arabic without a separate review interface. Normal navigation preserves document-local memory; reload starts fresh. It grants no real access and makes no Auth, upload, email, provider or protected mutation calls.
 
-The review home distinguishes functional WP03 services from simulated future frontend behavior and names open product decisions. Its task order and review gate remain in the execution runbook.
+The [complete synthetic test pack](public/demo-files/README.md) supplies invented credentials, callback/invitation links, bilingual prompts, quiz answers, PDF/WAV/PNG files, submission metadata, admin reasons and prepared failure cases. Ordinary development/production behavior retains its real guards and services; query parameters cannot enable demo mode. Task order and the final named founder review gate remain in the execution runbook before WP04.
 
 Use the [Chrome screen-by-screen review guide](docs/reviews/wp03-synthetic-frontend-review.md) for the complete synthetic review, expected outcomes, failure states and isolation checks.
 

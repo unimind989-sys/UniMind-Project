@@ -245,9 +245,12 @@ function SafeState({
         <p>{body}</p>
       </div>
       {state === "ERROR" ? (
-        <a className={styles.retryAction} href={`${basePath}?lang=${locale}`}>
+        <Link
+          className={styles.retryAction}
+          href={`${basePath}?lang=${locale}` as Route}
+        >
           {text.retry}
-        </a>
+        </Link>
       ) : null}
     </section>
   );
@@ -261,7 +264,7 @@ function UnitCard({
   edition,
   presentation,
   eager,
-  reviewMode,
+  completeNavigation,
   workspaceHref,
   onSelect,
 }: Readonly<{
@@ -272,7 +275,7 @@ function UnitCard({
   edition: string;
   presentation?: UnitPresentation | undefined;
   eager: boolean;
-  reviewMode: boolean;
+  completeNavigation: boolean;
   workspaceHref?: string | undefined;
   onSelect: (unitId: string) => void;
 }>) {
@@ -327,7 +330,7 @@ function UnitCard({
                   {formatInteger(locale, unit.sourceCount ?? 1)}
                 </strong>
                 <span>
-                  {reviewMode
+                  {completeNavigation
                     ? locale === "ar"
                       ? "مصادر تجريبية"
                       : "sample sources"
@@ -344,7 +347,7 @@ function UnitCard({
                 className={styles.workspaceAction}
                 href={workspaceHref as Route}
               >
-                {reviewMode
+                {completeNavigation
                   ? locale === "ar"
                     ? "فتح مساحة المراجعة"
                     : "Open sample workspace"
@@ -369,7 +372,7 @@ export function StudyShelf({
   state,
   basePath,
   synthetic = false,
-  reviewMode = false,
+  completeNavigation = false,
   showLogout = false,
   unitPresentationById = {},
 }: Readonly<{
@@ -378,7 +381,7 @@ export function StudyShelf({
   state: CatalogViewState;
   basePath: string;
   synthetic?: boolean;
-  reviewMode?: boolean;
+  completeNavigation?: boolean;
   showLogout?: boolean;
   unitPresentationById?: Readonly<Record<string, UnitPresentation>>;
 }>) {
@@ -497,14 +500,16 @@ export function StudyShelf({
             {navItems
               .filter(
                 (item) =>
-                  !reviewMode || item.current || item.icon === "settings",
+                  !completeNavigation ||
+                  item.current ||
+                  item.icon === "settings",
               )
               .map((item) => (
                 <li key={item.labelKey}>
                   {item.current ? (
-                    <a
+                    <Link
                       className={styles.navItem}
-                      href={`${basePath}?lang=${initialLocale}`}
+                      href={`${basePath}?lang=${initialLocale}` as Route}
                       aria-current="page"
                       data-current="true"
                     >
@@ -512,13 +517,11 @@ export function StudyShelf({
                       <span className={styles.navCopy}>
                         {dictionary[item.labelKey]}
                       </span>
-                    </a>
-                  ) : reviewMode && item.icon === "settings" ? (
+                    </Link>
+                  ) : completeNavigation && item.icon === "settings" ? (
                     <Link
                       className={styles.navItem}
-                      href={
-                        `/preview/review/settings?lang=${initialLocale}` as Route
-                      }
+                      href={`/settings?lang=${initialLocale}` as Route}
                     >
                       <Icon name={item.icon} className={styles.navIcon} />
                       <span className={styles.navCopy}>
@@ -617,7 +620,7 @@ export function StudyShelf({
             <h1>{dictionary["catalog.heading"]}</h1>
             <p className={styles.summary}>
               <span>
-                {reviewMode
+                {completeNavigation
                   ? initialLocale === "ar"
                     ? "منهج ومصادر تجريبية ثابتة؛ لا تقدم تعلّم أو وصول حقيقي."
                     : "Fixed synthetic curriculum and sources; no real progress or access."
@@ -641,7 +644,7 @@ export function StudyShelf({
               <div className={styles.pathIntro}>
                 <h2 id="catalog-path-heading">{text.pathHeading}</h2>
                 <p>
-                  {reviewMode
+                  {completeNavigation
                     ? initialLocale === "ar"
                       ? "اختر مسارًا من الكتالوج التجريبي للمراجعة."
                       : "Choose a path from the synthetic catalog for review."
@@ -767,7 +770,7 @@ export function StudyShelf({
                       unit={unit}
                       locale={initialLocale}
                       selected={journey.selection.unitId === unit.id}
-                      reviewMode={reviewMode}
+                      completeNavigation={completeNavigation}
                       pending={!hydrated || pending}
                       edition={journey.selectedCohort?.curriculumEdition ?? "—"}
                       presentation={unitPresentationById[unit.id]}

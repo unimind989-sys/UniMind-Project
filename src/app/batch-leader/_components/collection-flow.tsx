@@ -1,6 +1,8 @@
 "use client";
 
 import { useActionState, useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
+import type { Route } from "next";
 
 import type { CollectionActionState } from "../collection-actions";
 import type {
@@ -36,6 +38,13 @@ type FinalizeAction = (
   previousState: CollectionActionState,
   formData: FormData,
 ) => Promise<CollectionActionState>;
+export type CollectionUploadClient = (
+  file: File,
+  itemId: string,
+  clientKey: string,
+  progress: (value: number) => void,
+  signal: AbortSignal,
+) => Promise<UploadReceipt>;
 
 const statusOrder: readonly CollectionSubmissionStatus[] = [
   "RECEIVED",
@@ -75,6 +84,10 @@ export function CollectionFlow({
   initialActionState,
   initialClientKey,
   syntheticPreview = false,
+  uploadClient,
+  allowFile,
+  reference,
+  homeHref,
 }: Readonly<{
   campaign: CollectionCampaign;
   locale: Locale;
@@ -83,6 +96,10 @@ export function CollectionFlow({
   initialActionState: CollectionActionState;
   initialClientKey: string;
   syntheticPreview?: boolean;
+  uploadClient?: CollectionUploadClient;
+  allowFile?: (file: File) => Promise<boolean>;
+  reference?: Readonly<{ name: string; file: () => File }>;
+  homeHref?: string;
 }>) {
   const text = getCollectionCopy(locale);
   const direction = getTextDirection(locale);
@@ -108,6 +125,15 @@ export function CollectionFlow({
   const uploadAttemptRef = useRef(0);
   const formRef = useRef<HTMLFormElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const localAbort = useRef<AbortController | null>(null);
+  const [inputMode, setInputMode] = useState("file");
+  useEffect(
+    () => () => {
+      localAbort.current?.abort();
+      xhrRef.current?.abort();
+    },
+    [],
+  );
 
   const selectedItem = useMemo(
     () => campaign.requestedItems.find((item) => item.id === selectedItemId)!,
@@ -122,6 +148,7 @@ export function CollectionFlow({
   async function selectFile(file: File | undefined) {
     const selectionAttempt = ++uploadAttemptRef.current;
     xhrRef.current?.abort();
+    localAbort.current?.abort();
     xhrRef.current = null;
     setReceipt(null);
     setProgress(0);
@@ -133,6 +160,16 @@ export function CollectionFlow({
       setInspection(null);
       return;
     }
+    if (allowFile && !(await allowFile(file))) {
+      setInspection(null);
+      setFileError(
+        locale === "ar"
+          ? "استخدم الملفات التجريبية المتاحة في دليل الاختبار فقط."
+          : "Use only the synthetic files supplied in the test pack.",
+      );
+      return;
+    }
+    if (uploadAttemptRef.current !== selectionAttempt) return;
     if (file.size > COLLECTION_BROWSER_MAX_FILE_BYTES) {
       setInspection(null);
       setFileError(
@@ -182,6 +219,7 @@ export function CollectionFlow({
   function resetForItem(itemId: string) {
     uploadAttemptRef.current += 1;
     xhrRef.current?.abort();
+    localAbort.current?.abort();
     xhrRef.current = null;
     formRef.current?.reset();
     setSelectedItemId(itemId);
@@ -203,6 +241,47 @@ export function CollectionFlow({
     setFileError(null);
     setProgress(0);
     setUploadState("UPLOADING");
+    if (uploadClient) {
+      const controller = new AbortController();
+      localAbort.current = controller;
+      const attempt = ++uploadAttemptRef.current;
+      void uploadClient(
+        inspection.file,
+        selectedItem.id,
+        clientKey,
+        (value) => {
+          if (uploadAttemptRef.current === attempt) setProgress(value);
+        },
+        controller.signal,
+      )
+        .then((next) => {
+          if (uploadAttemptRef.current !== attempt || controller.signal.aborted)
+            return;
+          if (
+            next.mimeType !== inspection.mimeType ||
+            next.byteSize !== inspection.byteSize ||
+            typeof next.uploadId !== "string"
+          )
+            throw new Error("VALIDATION_REJECTED");
+          setReceipt(next);
+          setProgress(100);
+          setUploadState("UPLOADED");
+        })
+        .catch((error: unknown) => {
+          if (uploadAttemptRef.current !== attempt) return;
+          setUploadState("INTERRUPTED");
+          const rejected =
+            error instanceof Error && error.message === "VALIDATION_REJECTED";
+          setFileError(
+            rejected
+              ? locale === "ar"
+                ? "رفض التحقق من الملف. لم ينشأ إرسال."
+                : "File validation rejected. No submission created."
+              : text.offlineError,
+          );
+        });
+      return;
+    }
     const body = new FormData();
     body.set("requestedItemId", selectedItem.id);
     body.set("clientIdempotencyKey", clientKey);
@@ -279,10 +358,11 @@ export function CollectionFlow({
         {locale === "ar" ? "انتقل إلى نموذج الجمع" : "Skip to collection form"}
       </a>
       <aside className={styles.campaignRail} aria-label={text.campaignScope}>
-        <a
+        <Link
           className={styles.brand}
           href={
-            (syntheticPreview ? "/preview/learn" : "/learn") + `?lang=${locale}`
+            ((homeHref ?? (syntheticPreview ? "/preview/learn" : "/learn")) +
+              `?lang=${locale}`) as Route
           }
         >
           <svg viewBox="0 0 44 44" aria-hidden="true">
@@ -296,7 +376,7 @@ export function CollectionFlow({
             />
           </svg>
           <span translate="no">UniMind</span>
-        </a>
+        </Link>
         <div className={styles.scopeBlock}>
           <p>{text.pageTitle}</p>
           <h1>{campaign.name}</h1>
@@ -322,18 +402,18 @@ export function CollectionFlow({
           {text.syntheticBoundary}
         </p>
         <div className={styles.localeSwitch} role="group" aria-label="Language">
-          <a
+          <Link
             aria-current={locale === "en" ? "page" : undefined}
             href="?lang=en"
           >
             EN
-          </a>
-          <a
+          </Link>
+          <Link
             aria-current={locale === "ar" ? "page" : undefined}
             href="?lang=ar"
           >
             عربي
-          </a>
+          </Link>
         </div>
       </aside>
 
@@ -455,21 +535,51 @@ export function CollectionFlow({
                 void selectFile(event.dataTransfer.files[0]);
               }}
             >
+              {reference ? (
+                <label className={styles.field}>
+                  {locale === "ar" ? "طريقة الإرسال" : "Submission method"}
+                  <select
+                    value={inputMode}
+                    onChange={(event) => {
+                      const mode = event.target.value;
+                      setInputMode(mode);
+                      void selectFile(
+                        mode === "reference" ? reference.file() : undefined,
+                      );
+                    }}
+                  >
+                    <option value="file">
+                      {locale === "ar" ? "ملف" : "File"}
+                    </option>
+                    <option value="reference">
+                      {locale === "ar"
+                        ? "مرجع تخزين معتمد"
+                        : "Approved storage reference"}
+                    </option>
+                  </select>
+                </label>
+              ) : null}
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5" />
                 <path d="M5 14v5h14v-5" />
               </svg>
               <strong>{text.dropTitle}</strong>
               <span>{text.dropBody}</span>
-              <label className={styles.fileAction}>
-                {text.chooseFile}
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept=".pdf,.wav,.png,application/pdf,audio/wav,image/png"
-                  onChange={(event) => void selectFile(event.target.files?.[0])}
-                />
-              </label>
+              {inputMode === "file" ? (
+                <label className={styles.fileAction}>
+                  {text.chooseFile}
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept=".pdf,.wav,.png,application/pdf,audio/wav,image/png"
+                    onChange={(event) =>
+                      void selectFile(event.target.files?.[0])
+                    }
+                  />
+                </label>
+              ) : (
+                <p>{reference?.name}</p>
+              )}
               {inspection === null ? null : (
                 <div className={styles.fileSelection} role="status">
                   <bdi>{inspection.file.name}</bdi>
@@ -549,7 +659,10 @@ export function CollectionFlow({
                 <button
                   className={styles.secondaryAction}
                   type="button"
-                  onClick={() => xhrRef.current?.abort()}
+                  onClick={() => {
+                    xhrRef.current?.abort();
+                    localAbort.current?.abort();
+                  }}
                 >
                   {text.cancel}
                 </button>

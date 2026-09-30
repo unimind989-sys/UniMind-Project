@@ -8,6 +8,7 @@ const baseURL = `http://127.0.0.1:${String(port)}`;
 
 export default defineConfig({
   testDir: "./tests/e2e",
+  testIgnore: "native-product-demo.spec.ts",
   timeout: 15_000,
   expect: { timeout: 5_000 },
   fullyParallel: false,

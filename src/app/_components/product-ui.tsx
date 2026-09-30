@@ -3,10 +3,10 @@
 import type { Route } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { text, type Locale, type Localized } from "../review-fixtures";
-import styles from "../review.module.css";
+import { text, type Locale, type Localized } from "./synthetic-fixtures";
+import styles from "./product.module.css";
 
-export function ReviewLink({
+export function ProductLink({
   href,
   locale,
   children,
@@ -65,8 +65,8 @@ export function Select({
   id: string;
 }) {
   return (
-    <label className={styles.field} htmlFor={id}>
-      {label}
+    <div className={styles.field}>
+      <label htmlFor={id}>{label}</label>
       <select
         id={id}
         name={id}
@@ -79,7 +79,7 @@ export function Select({
           </option>
         ))}
       </select>
-    </label>
+    </div>
   );
 }
 export function Notice({

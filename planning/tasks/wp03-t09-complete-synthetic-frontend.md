@@ -12,7 +12,7 @@
 
 **Branch:** codex/wp03-complete-synthetic-frontend
 
-**Updated (UTC):** 2026-09-30T10:15:00Z
+**Updated (UTC):** 2026-09-30T13:48:00Z
 
 ## Derived execution envelope
 
@@ -42,7 +42,7 @@
 
 **Next model:** Sol High
 
-**Current block:** 3
+**Current block:** 4
 
 ## Execution contract
 
@@ -50,21 +50,21 @@
 
 **Inputs:** Supplied audit (starting point, not exhaustive); master-plan 6–8; runbook WP03/06/07/08; CONTEXT; DESIGN and approved Study Shelf surfaces; fixture catalog; D-08/D-18/provider decisions remain open.
 
-**Files:** Runbook and this record; `src/app/preview/review/` pages/layout/components/styles/fixtures; preview entry/layout/links; `public/wp03-review.html`; `src/proxy.ts`; focused preview-isolation tests and `tests/e2e/synthetic-review.spec.ts`; evidence under `evidence/wp03-product-shell/`. Existing real auth, collection and governance services remain unchanged.
+**Files:** Runbook, DESIGN, this record and the review guide; shared product components and injected client ports under `src/app/_components/` and `src/app/learn/_components/product-study.tsx`; optional adapters in AuthForm, StudyShelf, WorkspaceFrame, CollectionFlow and AdminDecisionQueue; `src/app/layout.tsx`, `src/app/synthetic-runtime/`, `src/lib/demo/`, `src/proxy.ts`; retired T09 wrapper and legacy entry notice; demo runner, data-pack generator, `public/demo-files/`, demo Playwright config and native-flow/unit tests; evidence under `evidence/wp03-product-shell/`. Existing real Auth, collection and governance services remain unchanged.
 
-**Verify:** `corepack pnpm lint`; `corepack pnpm typecheck`; `corepack pnpm typecheck:fresh`; `corepack pnpm check:boundaries`; `corepack pnpm scan:secrets`; `corepack pnpm test:security`; `pwsh -NoProfile -File scripts/verify-agent-readiness.ps1`; focused preview-isolation unit tests; `corepack pnpm exec playwright test tests/e2e/synthetic-review.spec.ts`; existing affected WP03 E2E contracts; in-app rendered inspection; guarded `corepack pnpm verify`; diff check/stat/full diff; exact-head CI and affected deployment proof. Conservative database/storage obligations reuse unchanged schema/role/lifecycle seams and require full CI; no hosted mutation is necessary for this fixture-only diff.
+**Verify:** `corepack pnpm lint`; `corepack pnpm typecheck`; `corepack pnpm typecheck:fresh`; `corepack pnpm check:boundaries`; `corepack pnpm scan:secrets`; `corepack pnpm test:security`; `pwsh -NoProfile -File scripts/verify-agent-readiness.ps1`; focused synthetic-demo-runtime and Auth proxy unit tests; `corepack pnpm test:e2e:demo`; existing real-mode `corepack pnpm test:e2e`; safe production build; bounded in-app rendered inspection; guarded `corepack pnpm verify` after material acceptance; diff check/stat/full diff; exact-head CI and affected deployment proof. Conservative database/storage obligations reuse unchanged schema/role/lifecycle seams; no hosted mutation is necessary for this fixture-only diff.
 
 **Pass:** All approved journeys traversable using fixed synthetic choices only, including evidence/report/quiz/operations and failure recovery; no auth, API mutation, paid provider, real upload, persistence or protected access; EN/AR/RTL/mixed study copy and responsive accessibility proven. Runbook history remains intact and final WP03-T10 gate owns permission to resume WP04.
 
 **Evidence:** `evidence/wp03-product-shell/2026-09-30_synthetic-frontend-audit_local_595be3c.md`; commit-bound verification/release evidence when candidate exists.
 
-**Rollback:** Revert task-only preview routes/links/proxy public-preview branch; real WP03 flows and database/audit history remain unchanged. Restore previous verified Vercel artifact if affected release proof fails.
+**Rollback:** Stop the owned demo process or omit its explicit development flag to restore ordinary composition. Revert task-scoped demo/adapters/native views; real WP03 services and database/audit history remain unchanged. Restore the previous verified Vercel artifact if affected release proof fails.
 
 **Hard stop:** Real accounts/student/private data; protected preview mutations; financial exposure; invented product policy; lost unrelated work; weakened real authorization; false gate closure or missing material design acceptance.
 
 ## Trust map
 
-Authoritative real identity remains server-verified Auth plus current database authorization; simulation has no identity. Query/path/scenario/role choices are untrusted presentation inputs drawn from an allowlisted fixture set. Real routes continue through unchanged verified guards. Preview routes bypass session refresh only and never authorize real routes. Every interaction uses a React provider instance per document; no cookies, local/session storage, global server store, fetch or real action invocation. The reused Study Shelf imports its real logout action for existing protected flows; review mode hides that control and never invokes it. Reload resets; separate tabs are independent. Expiry, replay, revocation and stale outcomes are selectable examples only. No arbitrary URL/email/password/file input, no raw object keys or privileged details. Allow: a fixed simulated registration and answer/collection/governance transition. Deny: no real session/cookie changes, no network mutations, no real protected entry after simulated consent.
+Authoritative real identity remains server-verified Auth plus current database authorization; the demo has only fictional account memory. The server recomputes its fail-closed development gate from exact synthetic service markers and loopback origin, never from query/path/role input. Normal routes retain verified guards when the flag is absent. Demo requests rewrite to a separately gated composition; all mutations and APIs are rejected. Each document owns its React service instance: no cookies, browser storage, global server store, fetch or real action invocation. The Study Shelf's real logout action remains the default; demo composition injects a local sign-out instead. Fixed credentials/metadata and generated pack files are checked; arbitrary/private file names/sizes are rejected before content is read, renamed bytes cannot pass. Paths, next destinations, exchange IDs and item metadata remain untrusted and scope checked. Reload resets; tabs are independent. Expiry/replay/stale fixtures demonstrate presentation only. Allow: normal login/consent and fixed answer/file/admin transitions in local memory. Deny: a forged query cannot change real-mode authorization; production/foreign-host/mixed service configuration fails closed; demo credentials cannot issue real sessions or perform protected actions. Public pack data is invented, and logs/evidence contain no submitted private input.
 
 ## Scope and screen ownership
 
@@ -95,7 +95,7 @@ Calendar, personal Workspace, global Sources and Progress have no approved stand
 
 **Established facts:** NONE
 
-No established-fact receipt is asserted before a commit-bound proof exists. Local executed checks above prove the simulation boundary; founder design acceptance, guarded broad verification, exact-head CI and delivery remain unsatisfied gates.
+No established-fact receipt is asserted before a commit-bound proof exists. The inline candidate review covers native composition, optional shared ports, zero service mutations, synthetic-only input checks, record/scope isolation, normal navigation and corrected source availability. Technical proof is recorded below. Founder design acceptance, guarded broad verification, exact-head CI and delivery remain unsatisfied gates; the preparation fingerprint stays NOT_READY until the required founder receipt and proof preflight exist.
 
 ## Steps
 
@@ -105,7 +105,7 @@ No established-fact receipt is asserted before a commit-bound proof exists. Loca
 - [~] Present concrete candidate and record founder interaction checkpoint.
 - [ ] Complete protected delivery/affected proof, then select WP03-T10.
 
-## Handoff
+## Historical handoff — superseded review wrapper
 
 **Changed:** Runbook schedules T09/T10 without reopening completed T01–T08. Canonical `/preview/review`, `/preview` redirect and relative legacy board connect all approved fixture journeys. Additional audit findings include real-auth links, Auth refresh, shared preview maps, exchange identity, recovery completion and cross-journey availability. Existing protected services remain intact.
 
@@ -118,3 +118,31 @@ No established-fact receipt is asserted before a commit-bound proof exists. Loca
 **Next safe action:** User explicitly requested on 2026-09-30: finish the handoff, then stop until he reviews everything in Chrome. Leave the synthetic server and draft PR available. Resume only after that review/steering; record a genuine design receipt if accepted, then guarded verification and exact-head delivery. Do not interpret the pause request as acceptance. Production and WP04 remain unchanged.
 
 **Reviewer action:** Review the technically verified material candidate across student, Batch Leader and admin, EN/AR and responsive states. The frontend floor explicitly requires a traceable founder receipt; implementation authorization does not supply that receipt.
+
+## Approved product-flow replacement — 30 September 2026
+
+Ahmed rejected the separate review interface and explicitly approved approach 1: the actual product frontend, normal routes/navigation/forms and automatic interactions backed only by isolated synthetic services. This resumes task implementation, not acceptance of a yet-unseen candidate. The prior harness and its receipts remain historical evidence; its material acceptance was never granted. WP03-T09 remains the one selected task and WP04 still follows WP03-T10.
+
+| Block | Assigned model | Scope and governing inputs | Independent acceptance checks, including failure cases | Assignment reason | Status and evidence |
+| --- | --- | --- | --- | --- | --- |
+| 4 | Sol High | Shared product views and isolated loopback demo composition; actual AuthForm, StudyShelf, WorkspaceFrame, CollectionFlow and AdminDecisionQueue; no review wrapper | Normal deployed route shapes, same shared components and controls, automatic streams/progress, scoped state, no service calls or production mode bypass; EN/AR/responsive and real seam regressions | Material cross-journey correction follows explicit user approval | Complete technical slice; 17/17 final native and 51/51 real-mode E2E PASS; concrete founder acceptance pending |
+
+Additional task files: `src/app/_components/`, shared product view modules, `src/app/synthetic-runtime/`, `src/lib/demo/demo-runtime.application.ts`, `scripts/run-synthetic-demo.ts`, native demo tests/config and revised guide. Root composition and proxy are fail-closed: demo only in explicit development with entirely synthetic configuration on its exact loopback origin; no method/URL/query/client role enables it on the real runtime. All demo POST/actions/APIs are rejected. The injected client ports update per-document invented state only. Real guards/actions remain unchanged when demo mode is absent. Protected production runtime is not published as a demo.
+
+The review wrapper, role switches, scenario selectors and manual stream-completion controls are excluded from the new journey. External guide cases choose prepared initial fixtures; normal product forms/buttons drive the result. Synthetic files are supplied and validated locally: unknown names/sizes are rejected before reading content, matching metadata requires exact synthetic bytes, and no content is uploaded. Live backend packages remain unfinished and are never marked complete.
+
+**Current handoff override:** Finish block 4 and focused technical proof, then present the native-flow candidate for review. The previous review hold no longer blocks this explicitly approved implementation; no founder receipt is fabricated from approach approval. Candidate-changing proof and prior rendered/design results are invalidated for changed views. Maintain the draft until the concrete replacement is reviewed.
+
+## Native candidate handoff
+
+**Changed:** The normal `/login`, `/learn/...`, `/settings`, `/batch-leader/...` and `/admin/...` URLs now compose the complete synthetic frontend through an explicit loopback development runtime. Existing frontend components use optional synthetic ports; their real guards/actions/services retain their defaults. The old T09 wrapper is retired. The downloadable pack supplies all invented accounts, links, catalog paths, bilingual prompts, artifact choices, quiz answers, files/reference/rights/metadata, reasons/hold expiry and failure fixtures. WP03-T01–T08 completion history is preserved; T09/T10 still precede WP04.
+
+**Commands:** Final focused unit 45/45 PASS (33 demo-gate + 12 real Auth proxy); security 44/44 PASS; complete native E2E 17/17 PASS in 7.7 minutes; complete existing real-mode E2E 51/51 PASS. Native coverage includes 23 protected destinations in both languages at 1440/768/390/320px, axe AA, keyboard/RTL, 200% text scale/reduced motion, all seven answer outcomes/six Studio types/twelve admin examples, timer/interruptions/failed states, upload validation/cancel/retry and document isolation. Final rendered inspection exercised English access, Arabic workspace/chat/evidence, English campaign/collection and admin queue. It found and corrected the demo sign-out return-path race; the final regression switches student → leader → admin through normal forms. Lint, fresh TypeScript, boundaries, formatting and changed-file secret review PASS; final secret scan inspected 2562 files. Safe production build/type generation/client canary scan PASS. Readiness initially rejected the new evidence filenames; filenames were corrected to repository conventions; final readiness PASS checked 257 names, 53 local links, 23 decisions and 113 task contracts. Impeccable detector clean; inline full diff/scope review covers the current native candidate. No guarded local `pnpm verify`, merge, protected/hosted mutation, paid service or production promotion is claimed.
+
+**Evidence:** `evidence/wp03-product-shell/2026-09-30_wp03-t09_native-evidence_e8ab823.md`, final/preliminary/follow-up JSON summaries, three native rendered screenshots and `2026-09-30-native-source-manifest.json`. The dated report names the parent used during local preparation; the manifest binds the changed runtime/tests/pack bytes, and the commit carrying this handoff is the new draft candidate. Earlier wrapper and failing native results remain historical; final PASS comes from the observed complete 17-test run.
+
+**Review entry:** `http://127.0.0.1:3101/login?lang=en` via `corepack pnpm demo`. Pack: `http://127.0.0.1:3101/demo-files/unimind-synthetic-test-pack.zip`. Walkthrough: `docs/reviews/wp03-synthetic-frontend-review.md`. Draft PR remains https://github.com/unimind989-sys/UniMind-Project/pull/64. Exact-head CI must be observed on the replacement; old wrapper CI cannot prove it.
+
+**Remaining decisions/gates:** D-08 retention/report disclosure and payload; D-18 storage-reference policy; paid providers/budgets; broad management editors/invitation delivery contracts. All review interactions are mock; existing real WP03 services remain functional and separately protected. Founder acceptance of this material native candidate is pending. After review, record the genuine candidate/scope receipt, complete preparation fingerprint/proof preflight and guarded verification, then normal exact-head delivery/affected proof. WP03-T10 remains unselected and WP04 remains unstarted by this work.
+
+**Next safe action:** Leave the loopback runtime and draft available, then stop for Ahmed's Chrome review as requested. Do not merge, promote, continue WP04 or treat method approval as design acceptance. The review uses no real information and changes no real identity, permission, preference, source, report, credential or backend record.

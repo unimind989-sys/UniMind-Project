@@ -1,0 +1,17 @@
+{
+  "stage": "focused native corrections: responsive and admin/isolation passing; file rights ordering assertion still failed",
+  "stats": {
+    "startTime": "2026-09-30T13:09:50.568Z",
+    "duration": 22552.642,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "cases": [
+    {
+      "title": "all supplied file types, mismatch, byte rejection and cancel retry use only local state",
+      "status": "passed"
+    }
+  ]
+}

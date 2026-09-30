@@ -7,13 +7,13 @@ export type Localized = readonly [string, string];
 export const text = (value: Localized, locale: Locale) =>
   value[locale === "ar" ? 1 : 0];
 
-export const reviewBase = "/preview/review";
+export const reviewBase = "";
 export const defaultRow = syntheticCatalogRows[0]!;
 export const defaultScope = loadSyntheticWorkspaceScope(
   defaultRow.cohort.id,
   defaultRow.unit.id,
 )!;
-export const defaultUnitPath = `${reviewBase}/catalog/${defaultScope.cohortId}/${defaultScope.unitId}`;
+export const defaultUnitPath = `${reviewBase}/learn/${defaultScope.cohortId}/${defaultScope.unitId}`;
 const flexibleRow: AuthorizedCatalogRow = {
   ...defaultRow,
   program: {
@@ -44,10 +44,17 @@ const flexibleRow: AuthorizedCatalogRow = {
     nameAr: "دراسة أدلة تجريبية",
   },
 };
-export const reviewCatalogRows = [...syntheticCatalogRows, flexibleRow];
+export const reviewCatalogRows = [...syntheticCatalogRows, flexibleRow].map(
+  (row) => ({
+    ...row,
+    unit: { ...row.unit, sourceCount: 8 },
+  }),
+);
 export function loadReviewScope(cohortId: string, unitId: string) {
-  if (cohortId !== flexibleRow.cohort.id || unitId !== flexibleRow.unit.id)
-    return loadSyntheticWorkspaceScope(cohortId, unitId);
+  if (cohortId !== flexibleRow.cohort.id || unitId !== flexibleRow.unit.id) {
+    const scope = loadSyntheticWorkspaceScope(cohortId, unitId);
+    return scope ? { ...scope, sourceCount: 8 } : null;
+  }
   return {
     ...defaultScope,
     cohortId,
@@ -70,7 +77,7 @@ export const scopeChoices = reviewCatalogRows
       rows.findIndex((other) => other.program.id === row.program.id) === index,
   )
   .map((row) => ({
-    path: `${reviewBase}/catalog/${row.cohort.id}/${row.unit.id}`,
+    path: `${reviewBase}/learn/${row.cohort.id}/${row.unit.id}`,
     scope: loadReviewScope(row.cohort.id, row.unit.id)!,
   }));
 
@@ -137,7 +144,7 @@ export const actionFixtures = [
     id: "retry",
     label: ["Retry source", "إعادة محاولة المصدر"],
     before: "FAILED",
-    after: "QUEUED",
+    after: "PENDING_OWNER_REVIEW",
     protected: false,
   },
   {
@@ -323,10 +330,7 @@ export function sampleScopeAvailable(
 ) {
   if (cohortId !== defaultScope.cohortId) return true;
   if (!state.availability.unlocked) return false;
-  return (
-    unitId !== defaultScope.unitId ||
-    (state.availability.published && state.availability.sourceActive)
-  );
+  return unitId !== defaultScope.unitId || state.availability.published;
 }
 
 export function applySampleAvailability(

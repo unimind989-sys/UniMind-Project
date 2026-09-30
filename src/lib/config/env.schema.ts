@@ -238,3 +238,17 @@ export function createCachedEnvironmentReader<T>(parse: () => T): () => T {
     return cached;
   };
 }
+
+/** Only validates fixed demo markers; never creates a client or returns a credential. */
+export function hasSyntheticServiceConfiguration(
+  input: EnvironmentInput,
+): boolean {
+  return (
+    input.SUPABASE_SERVICE_ROLE_KEY === "synthetic-server-credential-only" &&
+    input.DATABASE_URL ===
+      "postgresql://synthetic:synthetic@db.synthetic.invalid:5432/synthetic_demo" &&
+    input.RAW_STORAGE_CREDENTIAL === "synthetic-server-credential-only" &&
+    input.PROCESSED_STORAGE_CREDENTIAL === "synthetic-server-credential-only" &&
+    input.QUEUE_SIGNING_SECRET === "synthetic-server-credential-only"
+  );
+}

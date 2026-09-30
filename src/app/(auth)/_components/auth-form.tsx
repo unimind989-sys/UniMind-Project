@@ -1,6 +1,7 @@
 "use client";
+import Link from "next/link";
 
-import { useActionState, useEffect, useRef } from "react";
+import { useActionState, useEffect, useRef, useSyncExternalStore } from "react";
 
 import type { CurrentTerms } from "@/lib/auth/auth-access.application";
 import type {
@@ -20,6 +21,10 @@ import {
   type AuthFormState,
 } from "../actions";
 import styles from "../auth.module.css";
+
+const subscribeToClient = () => () => {};
+const clientReady = () => true;
+const serverReady = () => false;
 
 export type AuthFormMode =
   "login" | "register" | "verify" | "forgot" | "reset" | "consent";
@@ -128,17 +133,31 @@ export function AuthForm({
   returnPath,
   notice,
   currentTerms,
+  actionOverride,
+  initialEmail,
+  initialPassword,
 }: Readonly<{
   mode: AuthFormMode;
   locale: Locale;
   returnPath: string;
   notice?: AuthNotice | undefined;
   currentTerms?: CurrentTerms | null | undefined;
+  actionOverride?: (
+    previous: AuthFormState,
+    data: FormData,
+  ) => Promise<AuthFormState>;
+  initialEmail?: string;
+  initialPassword?: string;
 }>) {
   const copy = getAuthCopy(locale);
   const direction = getTextDirection(locale);
+  const hydrated = useSyncExternalStore(
+    subscribeToClient,
+    clientReady,
+    serverReady,
+  );
   const [state, formAction, pending] = useActionState(
-    actions[mode],
+    actionOverride ?? actions[mode],
     initialState,
   );
   const summaryRef = useRef<HTMLDivElement>(null);
@@ -208,8 +227,9 @@ export function AuthForm({
                 id={`${mode}-email`}
                 name="email"
                 type="email"
+                defaultValue={initialEmail}
                 inputMode="email"
-                autoComplete="email"
+                autoComplete={actionOverride ? "off" : "email"}
                 aria-invalid={emailError !== null}
                 aria-describedby={
                   emailError === null ? undefined : `${mode}-email-error`
@@ -234,8 +254,13 @@ export function AuthForm({
                 id={`${mode}-password`}
                 name="password"
                 type="password"
+                defaultValue={initialPassword}
                 autoComplete={
-                  mode === "login" ? "current-password" : "new-password"
+                  actionOverride
+                    ? "off"
+                    : mode === "login"
+                      ? "current-password"
+                      : "new-password"
                 }
                 aria-invalid={passwordError !== null}
                 aria-describedby={
@@ -263,7 +288,8 @@ export function AuthForm({
                 id={`${mode}-password-confirmation`}
                 name="passwordConfirmation"
                 type="password"
-                autoComplete="new-password"
+                defaultValue={initialPassword}
+                autoComplete={actionOverride ? "off" : "new-password"}
                 aria-invalid={confirmationError !== null}
                 aria-describedby={
                   confirmationError === null
@@ -320,7 +346,11 @@ export function AuthForm({
         <button
           className={styles.primaryAction}
           type="submit"
-          disabled={pending || (mode === "consent" && currentTerms == null)}
+          disabled={
+            pending ||
+            (!!actionOverride && !hydrated) ||
+            (mode === "consent" && currentTerms == null)
+          }
         >
           <span>
             {pending
@@ -341,20 +371,22 @@ export function AuthForm({
       <div className={styles.secondaryActions}>
         {mode === "login" ? (
           <>
-            <a href={`/forgot-password?lang=${locale}`}>{copy.forgotLink}</a>
-            <a
+            <Link href={`/forgot-password?lang=${locale}`}>
+              {copy.forgotLink}
+            </Link>
+            <Link
               href={`/register?lang=${locale}&next=${encodeURIComponent(returnPath)}`}
             >
               {copy.registerLink}
-            </a>
+            </Link>
           </>
         ) : null}
         {mode !== "login" && mode !== "consent" ? (
-          <a
+          <Link
             href={`/login?lang=${locale}&next=${encodeURIComponent(returnPath)}`}
           >
             {copy.loginLink}
-          </a>
+          </Link>
         ) : null}
       </div>
     </section>

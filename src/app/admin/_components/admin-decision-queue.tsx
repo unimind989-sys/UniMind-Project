@@ -27,6 +27,7 @@ import styles from "../admin.module.css";
 const resourceKeys = [
   "catalog",
   "cohorts",
+  "campaigns",
   "sources",
   "jobs",
   "quality",
@@ -64,11 +65,13 @@ function ActionPanel({
   locale,
   submitAction,
   refreshing,
+  reloadAction,
 }: Readonly<{
   candidate: AdminActionCandidate;
   locale: Locale;
   submitAction: typeof submitAdminAction;
   refreshing: boolean;
+  reloadAction?: (() => void) | undefined;
 }>) {
   const copy = getAdminCopy(locale);
   const predicateLabels = copy.predicates as Readonly<Record<string, string>>;
@@ -340,7 +343,7 @@ function ActionPanel({
           <button
             className={styles.secondaryAction}
             type="button"
-            onClick={() => window.location.reload()}
+            onClick={reloadAction ?? (() => window.location.reload())}
           >
             {copy.reloadQueue}
           </button>
@@ -446,11 +449,13 @@ export function AdminDecisionQueue({
   queue,
   submitAction = submitAdminAction,
   syntheticPreview = false,
+  reloadAction,
 }: Readonly<{
   initialLocale: Locale;
   queue: AdminQueueState;
   submitAction?: typeof submitAdminAction;
   syntheticPreview?: boolean;
+  reloadAction?: () => void;
 }>) {
   const router = useRouter();
   const [refreshing, startRefresh] = useTransition();
@@ -663,6 +668,7 @@ export function AdminDecisionQueue({
                   locale={locale}
                   submitAction={submitAction}
                   refreshing={refreshing}
+                  reloadAction={reloadAction}
                 />
               )}
             </div>

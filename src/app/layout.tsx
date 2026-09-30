@@ -3,6 +3,8 @@ import { Manrope, Noto_Sans_Arabic } from "next/font/google";
 import type { ReactNode } from "react";
 
 import "./globals.css";
+import { resolveDemoRuntime } from "@/lib/demo/demo-runtime.application";
+import { SyntheticProductProvider } from "./_components/product-services";
 
 export const metadata: Metadata = {
   title: "UniMind",
@@ -44,7 +46,11 @@ export default function RootLayout({
           data-direction-contract="30b1cf13"
           dangerouslySetInnerHTML={{ __html: directionContract }}
         />
-        {children}
+        {resolveDemoRuntime(process.env) === "ENABLED" ? (
+          <SyntheticProductProvider>{children}</SyntheticProductProvider>
+        ) : (
+          children
+        )}
       </body>
     </html>
   );

@@ -2,6 +2,31 @@
   min-height: 100svh;
   background: var(--canvas);
 }
+.demoBadge {
+  padding: 0.4rem 1rem;
+  background: var(--canvas-deep);
+  border-block-end: 1px solid var(--line);
+  color: var(--ready);
+  font-size: var(--type-body-compact-size);
+}
+.accountUtility {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  align-items: center;
+  background: var(--canvas);
+}
+.studyBody {
+  min-width: 0;
+}
+.studyBody h2 {
+  font-size: var(--type-headline-size);
+}
+.studyBody p {
+  overflow-wrap: anywhere;
+}
 .boundary {
   padding: 1rem 1.5rem;
   border-block-end: 1px solid var(--line);
@@ -193,7 +218,7 @@
 }
 .primary:hover:not(:disabled) {
   color: var(--on-action);
-  background: var(--accent);
+  background: var(--accent-focus);
 }
 .button:disabled {
   opacity: 0.6;

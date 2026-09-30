@@ -12,6 +12,7 @@ import styles from "../admin.module.css";
 const resources = [
   "catalog",
   "cohorts",
+  "campaigns",
   "sources",
   "jobs",
   "quality",

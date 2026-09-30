@@ -17,6 +17,8 @@ type WorkspaceFrameProps = Readonly<{
   scope: WorkspaceScope;
   children: ReactNode;
   preview?: boolean;
+  completeNavigation?: boolean;
+  available?: boolean;
 }>;
 
 type IconName = "overview" | "chat" | "studio" | "quiz" | "back" | "check";
@@ -97,6 +99,8 @@ export function WorkspaceFrame({
   scope,
   children,
   preview = false,
+  completeNavigation = false,
+  available = true,
 }: WorkspaceFrameProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -121,6 +125,15 @@ export function WorkspaceFrame({
     { path: "/chat", label: text.chat, icon: "chat" as const },
     { path: "/studio", label: text.studio, icon: "studio" as const },
     { path: "/quiz", label: text.quiz, icon: "quiz" as const },
+    ...(completeNavigation
+      ? [
+          {
+            path: "/sources",
+            label: locale === "ar" ? "المصادر" : "Sources",
+            icon: "overview" as const,
+          },
+        ]
+      : []),
   ];
   const materialDate = new Intl.DateTimeFormat(
     locale === "ar" ? "ar-EG" : "en-GB",
@@ -185,9 +198,17 @@ export function WorkspaceFrame({
             })}
           </ul>
         </nav>
+        {completeNavigation ? (
+          <Link
+            className={styles.backLink}
+            href={`/settings?lang=${locale}` as Route}
+          >
+            {locale === "ar" ? "الإعدادات" : "Settings"}
+          </Link>
+        ) : null}
         <div className={styles.railStatus}>
           <Icon name="check" />
-          <span>{text.ready}</span>
+          <span>{available ? text.ready : text.unavailable}</span>
         </div>
       </aside>
 
@@ -243,7 +264,7 @@ export function WorkspaceFrame({
             </div>
             <div className={styles.readyBadge} role="status">
               <Icon name="check" />
-              {text.ready}
+              {available ? text.ready : text.unavailable}
             </div>
           </section>
 
@@ -251,7 +272,12 @@ export function WorkspaceFrame({
             <div>
               <dt>{text.sourceStatus}</dt>
               <dd>
-                {scope.sourceCount} {text.approvedSources}
+                {scope.sourceCount}{" "}
+                {completeNavigation
+                  ? locale === "ar"
+                    ? "سجلات مصادر تجريبية"
+                    : "synthetic source records"
+                  : text.approvedSources}
               </dd>
             </div>
             <div>

@@ -1,3 +1,5 @@
+import Link from "next/link";
+import type { Route } from "next";
 import type { ReactNode } from "react";
 
 import { getAuthCopy } from "@/lib/i18n/auth-copy";
@@ -121,10 +123,10 @@ export function AuthShell({
         </div>
         <p className={styles.tagline}>{copy.brandTagline}</p>
         <nav className={styles.identityNav} aria-label={copy.accountAccess}>
-          <a
+          <Link
             className={styles.identityNavItem}
             data-current="true"
-            href={languageHref[locale]}
+            href={languageHref[locale] as Route}
             aria-current="page"
           >
             <Icon name="account" />
@@ -132,7 +134,7 @@ export function AuthShell({
               <strong>{copy.accountAccess}</strong>
               <small>{copy.accountAccessSummary}</small>
             </span>
-          </a>
+          </Link>
           <span className={styles.identityNavItem}>
             <Icon name="learner" />
             <span>
@@ -147,18 +149,18 @@ export function AuthShell({
       <main className={styles.workspace}>
         <div className={styles.localeBar}>
           <nav className={styles.languageSwitch} aria-label={copy.language}>
-            <a
-              href={languageHref.en}
+            <Link
+              href={languageHref.en as Route}
               aria-current={locale === "en" ? "page" : undefined}
             >
               EN
-            </a>
-            <a
-              href={languageHref.ar}
+            </Link>
+            <Link
+              href={languageHref.ar as Route}
               aria-current={locale === "ar" ? "page" : undefined}
             >
               عربي
-            </a>
+            </Link>
           </nav>
         </div>
         <header className={styles.header}>

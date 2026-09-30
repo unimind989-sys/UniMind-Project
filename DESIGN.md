@@ -289,6 +289,8 @@ Motion is limited to the unit-width transition and the small image hover scale, 
 
 ## Do's and Don'ts
 
+The WP03-T09 synthetic runtime follows normal product routes and shares the existing Access Shelf, Study Shelf, workspace, collection and decision-queue components. Its small simulation banner identifies the service boundary; role/scenario selectors and manual completion controls are excluded from the product journey. Fixed future study and resource views reuse these tokens and Operate conventions. This replaces the unaccepted review wrapper; founder acceptance of the concrete replacement remains pending.
+
 ### Do:
 
 - **Do** keep application surfaces in Operate mode: scanability, state clarity, and familiar controls outrank expression.

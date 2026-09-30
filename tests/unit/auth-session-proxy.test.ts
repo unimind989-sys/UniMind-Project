@@ -98,7 +98,7 @@ describe("Supabase session proxy", () => {
   });
 
   it("keeps health probes independent from Auth refresh", async () => {
-    const { config } = await import("../../src/proxy");
+    const { config, proxy } = await import("../../src/proxy");
 
     expect(
       unstable_doesMiddlewareMatch({
@@ -106,14 +106,14 @@ describe("Supabase session proxy", () => {
         nextConfig: {},
         url: "/api/health/live",
       }),
-    ).toBe(false);
+    ).toBe(true);
     expect(
       unstable_doesMiddlewareMatch({
         config,
         nextConfig: {},
         url: "/api/health/ready",
       }),
-    ).toBe(false);
+    ).toBe(true);
     expect(
       unstable_doesMiddlewareMatch({
         config,
@@ -121,6 +121,11 @@ describe("Supabase session proxy", () => {
         url: "/dashboard",
       }),
     ).toBe(true);
+    await proxy(new NextRequest("https://app.unimind.invalid/api/health/live"));
+    await proxy(
+      new NextRequest("https://app.unimind.invalid/api/health/ready"),
+    );
+    expect(mocks.getClaims).not.toHaveBeenCalled();
   });
 
   it("refreshes request and response cookies with private no-cache headers", async () => {
