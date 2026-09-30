@@ -84,6 +84,8 @@ Run the local development server, then open `/preview/review` (or `/preview`). T
 
 The review home distinguishes functional WP03 services from simulated future frontend behavior and names open product decisions. Its task order and review gate remain in the execution runbook.
 
+Use the [Chrome screen-by-screen review guide](docs/reviews/wp03-synthetic-frontend-review.md) for the complete synthetic review, expected outcomes, failure states and isolation checks.
+
 ## Notes
 
 This repository is intended to be used as the canonical project home for collaboration, versioning, and publication to GitHub.
