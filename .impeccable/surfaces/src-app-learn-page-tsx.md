@@ -10,7 +10,11 @@ related_targets:
   ]
 ---
 
-# WP03 student catalog and workspace foundation
+# Current student overhaul brief
+
+Operate mode. [Root DESIGN](../../DESIGN.md) is the sole current system contract; its Phase 1 proposal awaits approval. Student navigation is Study, Subjects, Account. Preserve authorized catalog hierarchy, configuration-driven Module/Subject labels, scope/session isolation, six Studio types, viewer/evidence/report context and quiz review. Onboarding persists academic preference in the existing profile only after approved implementation; it never grants access. Mobile Materials/Chat/Studio/Quiz retain one unit identity. Render both themes, EN/AR and all relevant states. The [current audit](../../docs/reviews/wp03-frontend-overhaul.md) owns sequence and proof. Earlier imagery, six-tab navigation and palette values below are historical, not rollout requirements.
+
+# Historical WP03 student catalog and workspace foundation
 
 ## Scope and mode
 

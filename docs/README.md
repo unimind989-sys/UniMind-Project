@@ -26,6 +26,9 @@ This directory separates authoritative plans, executable procedures, and reusabl
 
 ## Working state
 
+- [Canonical design contract](../DESIGN.md) — system rules and explicit proposal/approval status.
+- [Frontend overhaul audit](reviews/wp03-frontend-overhaul.md) — role flows, preserved capabilities, concrete findings and design checkpoints.
+
 - [Planning workspace](../planning/README.md) — in-progress task records, the decision register, and controlled planning inputs. Approved direction moves to its owning document under `docs/`.
 
 ## Placement rules

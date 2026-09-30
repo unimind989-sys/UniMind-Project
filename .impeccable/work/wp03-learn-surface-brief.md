@@ -1,4 +1,8 @@
-# WP03 student catalog and workspace foundation
+# Historical working copy — WP03 student catalog
+
+This preserves the original shelf-composition decision. Current requirements and tokens live in [DESIGN](../../DESIGN.md); current surface intent lives in [the student brief](../surfaces/src-app-learn-page-tsx.md). Six-tab navigation, imagery production and navy-only rules below do not govern the 30 September two-phase proposal.
+
+# WP03 student catalog and workspace foundation (historical)
 
 ## Scope and mode
 

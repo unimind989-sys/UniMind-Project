@@ -9,7 +9,11 @@ related_targets:
   ]
 ---
 
-# WP03 Batch Leader collection desk
+# Current Batch Leader overhaul brief
+
+Operate mode. [Root DESIGN](../../DESIGN.md) governs the current proposed system; Phase 2 awaits approval. Navigation: Uploads, History, Account. Mobile-first mixed-file queue composes current PDF/WAV/PNG byte validation and per-file upload/finalize contracts. Auto-map a requested item only when authorized type/scope has one match; retain ambiguous choice and required rights/metadata. Preserve each retry key, campaign assignment/expiry/revocation and truthful received-versus-processing state. No new storage/provider/worker or cross-campaign permission. The [current audit](../../docs/reviews/wp03-frontend-overhaul.md) owns proof and the leader checkpoint. Earlier one-file/expanding-rail composition below is historical, not the current target.
+
+# Historical WP03 Batch Leader collection desk
 
 ## Scope and mode
 

@@ -16,6 +16,8 @@ This repository contains the source-of-truth plan, executable delivery runbook, 
 - [Repository skills](.agents/skills/README.md) — audited, pinned workflows available to Codex in this repository.
 - [Skills guide](docs/agents/skills-guide.md) — which skills run automatically, which to call, and copy-ready examples.
 - [UI design stack](docs/agents/ui-design-stack.md) — why Impeccable was selected, how DESIGN.md and the Vercel review fit, and the UI workflow.
+- [Design contract](DESIGN.md) — canonical visual and interaction rules, proposal status, paired themes and role navigation.
+- [Frontend audit and proposal](docs/reviews/wp03-frontend-overhaul.md) — concrete findings, preserved capabilities, role flows and checkpoint sequence.
 - [Communication profiles](docs/agents/communication-profiles.md) — chat-language and intent-support routing for Ahmed and Ziad; core execution remains shared.
 - [Planning workspace](planning/README.md) — durable in-progress task records, decision status, and controlled planning inputs.
 - [Evaluation assets](evals/README.md) — versioned synthetic datasets, manifests, schemas, and safe reports.

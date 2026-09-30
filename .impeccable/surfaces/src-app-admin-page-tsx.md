@@ -9,7 +9,11 @@ related_targets:
   ]
 ---
 
-# WP03 admin decision queue
+# Current admin overhaul brief
+
+Operate mode. [Root DESIGN](../../DESIGN.md) governs all current design rules; proposal acceptance is pending. Navigation: Overview, Content, Academics, Users, Operations. Group only existing decision/resource/assignment seams. Preserve audited target/version/readiness checks, exact consequences, distinct-principal confirmations, safe student preview and financial stops. No broad user editor, invitation delivery or live resource capability is invented. Use a usable narrow-width task list/detail flow and state-specific recovery. The [current audit](../../docs/reviews/wp03-frontend-overhaul.md) owns the Admin checkpoint and capability matrix. Prior navy/rail constraints below are historical baseline context.
+
+# Historical WP03 admin decision queue
 
 ## Scope and mode
 

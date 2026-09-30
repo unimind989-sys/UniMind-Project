@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f6f7f8" />
+    <title>UniMind · Phase 1 design proposal</title>
+    <script>
+      (() => {
+        let choice = "system";
+        try {
+          choice =
+            localStorage.getItem("unimind-design-preview-theme") || choice;
+        } catch {}
+        if (!["system", "light", "dark"].includes(choice)) choice = "system";
+        document.documentElement.dataset.theme =
+          choice === "system"
+            ? matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light"
+            : choice;
+        document.documentElement.dataset.preference = choice;
+      })();
+    </script>
+    <link rel="stylesheet" href="preview.css" />
+    <script type="module" src="preview.mjs"></script>
+  </head>
+  <body>
+    <!-- THESIS: Authorized study work stays in context from subject to source to artifact.
+    OWN-WORLD: Layered neutral greys, a restrained blue accent, Manrope/Noto Sans Arabic, quiet borders, flat reading surfaces.
+    STORY: Resume study, open materials, use the same pool in Chat or Studio, inspect the supporting resource, and return with context.
+    FIRST VIEWPORT: A 216px role rail, one unit heading, four local destinations; a 264px material list beside a readable working area.
+    FORM: Direct code-led sample of the user's explicitly pinned two-theme world and role navigation; no random direction or generated comp.
+    FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance -->
+    <a href="#content" class="skip" data-i18n="skip">Skip to content</a>
+    <div class="review-bar" role="note">
+      <span data-i18n="proposal"
+        >Phase 1 proposal · Fictional study content</span
+      >
+      <a href="#landing" data-i18n="public">Public page</a>
+      <label
+        ><span data-i18n="theme">Theme</span
+        ><select id="theme" name="theme">
+          <option value="system" data-i18n="system">System</option>
+          <option value="light" data-i18n="light">Light</option>
+          <option value="dark" data-i18n="dark">Dark</option>
+        </select></label
+      >
+      <label
+        ><span class="sr-only" data-i18n="language">Interface language</span
+        ><select id="language" name="language">
+          <option value="en">English</option>
+          <option value="ar">العربية</option>
+        </select></label
+      >
+      <label
+        ><span data-i18n="state">State</span
+        ><select id="state" name="state">
+          <option value="ready" data-i18n="ready">Ready</option>
+          <option value="loading" data-i18n="loading">Loading</option>
+          <option value="empty" data-i18n="empty">Empty</option>
+          <option value="error" data-i18n="error">Error</option>
+        </select></label
+      >
+    </div>
+    <div class="app">
+      <aside class="rail">
+        <a class="brand" href="#study" translate="no" dir="ltr"
+          >UniMind<span class="brand-note" data-i18n="brandPending"
+            >Wordmark preview</span
+          ></a
+        >
+        <nav class="global-nav" aria-label="Student navigation">
+          <a href="#study" data-nav="study"
+            ><svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M4 4h6v14H4zM14 4h6v14h-6zM2 21h20" /></svg
+            ><span data-i18n="study">Study</span></a
+          >
+          <a href="#subjects" data-nav="subjects"
+            ><svg aria-hidden="true" viewBox="0 0 24 24">
+              <path
+                d="M4 5h7v7H4zM14 5h6v7h-6zM4 15h7v6H4zM14 15h6v6h-6z"
+              /></svg
+            ><span data-i18n="subjects">Subjects</span></a
+          >
+          <a href="#account" data-nav="account"
+            ><svg aria-hidden="true" viewBox="0 0 24 24">
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 21v-2a8 8 0 0 1 16 0v2" /></svg
+            ><span data-i18n="account">Account</span></a
+          >
+        </nav>
+        <div class="rail-context">
+          <p data-i18n="contextTitle">Your academic context</p>
+          <strong data-i18n="faculty">Faculty of Medicine</strong>
+          <p data-i18n="year">First year · Term 1</p>
+          <a href="#account" data-i18n="academic">Academic settings</a>
+        </div>
+        <p class="slogan" lang="en" dir="ltr">Study deeper<br />Go further.</p>
+      </aside>
+      <div class="main-wrap">
+        <header class="topbar">
+          <span data-i18n="university">Zagazig University</span
+          ><a href="#account" class="account-link"
+            ><span class="avatar" aria-hidden="true">S</span
+            ><span data-i18n="student">Student account</span></a
+          >
+        </header>
+        <main id="content" tabindex="-1"></main>
+      </div>
+    </div>
+    <div
+      id="announcement"
+      class="sr-only"
+      role="status"
+      aria-live="polite"
+    ></div>
+  </body>
+</html>

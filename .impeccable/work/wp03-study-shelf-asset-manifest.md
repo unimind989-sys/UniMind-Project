@@ -1,5 +1,7 @@
 # WP03 Study Shelf production-asset manifest
 
+Historical asset provenance for the earlier shelf. [DESIGN](../../DESIGN.md) governs the current two-phase proposal. These assets remain preserved and reusable where purposeful; new imagery/atlas production is not required by the neutral list/reading direction.
+
 The approved mock is `.impeccable/mocks/decision/wp03-study-shelf.webp`. The generated atlases are retained only as review sources under `.impeccable/review/sources/`; no mock crop ships as a product asset.
 
 ## Produce

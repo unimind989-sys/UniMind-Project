@@ -37,7 +37,7 @@ The PoC begins with Human Medicine and Veterinary Medicine, while the same confi
 
 ## Evidence on Hand
 
-Product and architecture facts are defined in `docs/plans/poc-master-plan.md`, execution contracts in `docs/runbooks/poc-execution-runbook.md`, and shared domain language in `CONTEXT.md`. The repository has no approved visual identity, brand asset set, testimonials, customer claims, benchmark claims, pricing, or production deployment evidence; future surfaces must not fabricate them.
+Product and architecture facts are defined in `docs/plans/poc-master-plan.md`, execution contracts in `docs/runbooks/poc-execution-runbook.md`, and shared domain language in `CONTEXT.md`. Current visual rules and the two-phase overhaul proposal live in canonical `DESIGN.md`. Ahmed's 30 September 2026 brief names the approved Open Folio kit at `planning/design/unimind-logo/open-folio-kit/`; it is absent from this checkout, so the Phase 1 sample uses a plain wordmark pending the supplied assets. The exact slogan is two lines: “Study deeper” then “Go further.” This records the user brief, not approval of the proposed UI. Do not fabricate testimonials, commercial usage, benchmark claims or pricing. Deployment/task evidence remains in the owning runbook and evidence records.
 
 ## Product Principles
 

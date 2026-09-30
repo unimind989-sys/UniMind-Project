@@ -1,3 +1,7 @@
+# Historical finish review — fc95ebd presentation scope
+
+This review predates the current two-phase proposal. Its verdict authorizes presentation of the old sample only; it does not accept the new system or complete the platform. Current authority: [DESIGN](../../DESIGN.md), [audit](../../docs/reviews/wp03-frontend-overhaul.md) and the active WP03-T09 task record.
+
 disposition: ship
 
 Inline substitution with non-independent provenance: single executor, zero delegated workers. This disposition permits presenting the three-surface checkpoint; it is neither founder acceptance nor platform delivery. No catalog QUALITY BAR card or new seed exists for this directly shaped local extension; incumbent DESIGN and Operate/craft floor are the calibration. No new approved page comp is claimed.

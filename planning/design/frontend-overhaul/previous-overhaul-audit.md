@@ -1,7 +1,5 @@
 # WP03 frontend overhaul: audit, flows and implementation order
 
-Historical packaged snapshot for `fc95ebd`. Current proposed design authority is [DESIGN](../../DESIGN.md); current findings/sequence are in [the Phase 1 audit](../../docs/reviews/wp03-frontend-overhaul.md). The ZIP and its old palette-fixed sample are historical test data until the approved implementation updates the pack. This snapshot is not a second design contract.
-
 Selected task: WP03-T09. Baseline: `3347e15`, branch `codex/wp03-complete-synthetic-frontend`. Ahmed's 30 September 2026 instruction accepts the native synthetic flow, Study Shelf concept and palette, and rejects the execution. PR #64 stays draft/unmerged. WP04 stays on hold. This document is a working audit and plan, not a design acceptance receipt.
 
 ## Audit method and coverage

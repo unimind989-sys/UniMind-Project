@@ -1,5 +1,7 @@
 # UniMind: review the normal product flow with synthetic data
 
+Historical packaged walkthrough for the existing synthetic frontend. Current direction is [DESIGN](../../DESIGN.md) and [the Phase 1 audit](../../docs/reviews/wp03-frontend-overhaul.md). See [the current review guide](../../docs/reviews/wp03-synthetic-frontend-review.md) for checkpoint status. The ZIP is renewed after approved implementation; these instructions do not approve or govern the new visual system.
+
 This replaces the separate `/preview/review` interface. Start at **http://127.0.0.1:3101/login?lang=en** in Chrome. Use normal sign-in, consent, product navigation, forms and buttons. There is no role switcher, scenario selector or manual response-completion button. The small banner identifies simulated services.
 
 Run `corepack pnpm demo` from the repository if the review server is stopped. This launches an isolated, loopback-only development runtime and replaces all service configuration with invented markers. Ordinary `pnpm dev`, production builds, real guards and backend services retain their normal behavior. Do not run two Next development processes in the same checkout simultaneously.

@@ -1,4 +1,6 @@
-# WP03 shell, Chat and Studio checkpoint
+# Historical WP03 shell, Chat and Studio checkpoint
+
+This is the unaccepted `fc95ebd` sample's direction record. It is retained for provenance. [DESIGN](../../DESIGN.md) and [the current audit](../../docs/reviews/wp03-frontend-overhaul.md) supersede its fixed palette/rollout instructions for the two-phase overhaul; no founder acceptance is inherited.
 
 Mode: Operate. Local extension of the accepted Study Shelf world; code-led. The user fixes the concept, palette and incumbent logo and explicitly requests a native interactive sample. No replacement-world roll, comp round or asset generation applies; the earlier shelf comp is identity context, not a layout specification for Chat or Studio. No founder acceptance of this sample is recorded.
 

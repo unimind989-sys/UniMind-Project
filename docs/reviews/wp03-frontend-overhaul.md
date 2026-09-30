@@ -1,166 +1,169 @@
-# WP03 frontend overhaul: audit, flows and implementation order
+# UniMind frontend overhaul: Phase 1 audit and plan
 
-Selected task: WP03-T09. Baseline: `3347e15`, branch `codex/wp03-complete-synthetic-frontend`. Ahmed's 30 September 2026 instruction accepts the native synthetic flow, Study Shelf concept and palette, and rejects the execution. PR #64 stays draft/unmerged. WP04 stays on hold. This document is a working audit and plan, not a design acceptance receipt.
+Selected task **WP03-T09**, Ahmed, 30 September 2026. Baseline HEAD `c7b8679` on `codex/wp03-complete-synthetic-frontend`; local product checkpoint `fc95ebd`. PR #64 remains draft. This document is an audit/proposal, not design acceptance, task completion or live-provider proof. [DESIGN.md](../../DESIGN.md) is the canonical design contract. [Previous audit](../../planning/design/frontend-overhaul/previous-overhaul-audit.md) preserves historical findings and proof.
 
-## Audit method and coverage
+## Method, evidence and limits
 
-Read README, AGENTS, master-plan 6–8, runbook WP03-T09/T10, PRODUCT, CONTEXT, DESIGN, previous T09 plans/evidence, frontend floor, UI design stack and pinned Web Interface Guidelines. Inspect shared views, native composition, route guards, synthetic ports and existing tests independently. Use the actual loopback development runtime and normal forms; no review wrapper or role injection.
+Read README, master-plan 6–8, runbook WP03-T09/T10 and 6.1–6.6, current task/workflow/policy, PRODUCT/CONTEXT, frontend floor, design stack, skills inventory/guide, Impeccable new-work/audit/craft floor and pinned Web Interface Guidelines. Targeted reads cover actual route composition, guarded default services, role checks, synthetic state, profile schema, shared shells/CSS, source viewer, artifact/quiz/evidence/report flows, collection validation/progress/finalization and admin resources/actions.
 
-Baseline rendered route sweep: `/learn`; unit overview, Chat, Studio, Quiz, Sources, Evidence, Report, attempt and attempt review; Settings; Batch Leader campaign list, invitation and collection; admin queue and all eight resources. Repeat EN/AR at 1440, 768, 390 and 320px. Capture full-page images and visible-control geometry with `UNIMIND_FRONTEND_AUDIT=1 corepack pnpm test:e2e:demo` against the running 3101 demo. The local `.local/wp03-audit/baseline/` inventory preserves screenshots and measurements. Measurements flag candidates for inspection; intentionally scrollable rails, visually hidden file inputs and Next dev tools are not defects merely because they exceed parent bounds.
+The historical audit records 23 protected destinations, 42 prepared states, EN/AR at 1440/768/390/320 and sixteen inspected populated Chat/Studio captures. Its 23/23 native tests prove their exercised synthetic behavior; the ordinary E2E record is 50 passing plus one timeout with a passing focused replay, not a claimed clean 51/51 run. Those are source-bound historical proofs, not fresh whole-platform visual approval.
 
-Journey coverage also includes registration, verification, consent, password recovery, seven answer kinds, evidence/report binding, six artifact types, timed/untimed quiz and scoring, privacy transitions, independent scopes, three file types/reference, checksum/type/rights/cancel/retry, twelve governed examples and distinct second confirmation, availability, stale/error/forbidden recovery, sign-out/role transitions and document/reload isolation. Existing tests are evidence for these exercised interactions, not evidence of polish. Individual failure states must be reviewed after their owning correction; baseline route images alone do not prove every populated or failed-state layout. The final rollout gate requires the full state matrix, not only empty-route screenshots.
+This Phase 1 adds direct in-app inspection of normal synthetic login/consent, resolved catalog, Anatomy overview, populated Chat with Arabic/English output, account, Batch Leader and admin surfaces, plus a separately rendered proposal. Fresh captures and observed checks are recorded in the [proposal review record](../../planning/design/frontend-overhaul/README.md). No real user/source data or external provider is used. Every new proposal image is inspected before presentation. Findings below distinguish observation, source contract and historical evidence; no unsupported WCAG health score is asserted.
 
-Internal rendered inspection independently confirms excessive preamble and duplicate context in Chat/Studio; a disabled catalog search; inconsistent shell and locale treatments. The supplemental state matrix adds 42 prepared states × two languages × four widths: access, consent, valid/invalid recovery, thirteen study failure conditions, empty/no-membership shelf, five exercised collection failures, expired/replayed invitations, four exercised admin states and Chat/Studio progress/interruption. The driver uses only normal fictional login/consent, supplied files and simulated actions. Route/state measurements and local captures are retained under `.local/wp03-audit/`; selected review evidence is versioned separately. Earlier captures of a nonexistent recovery URL, unsettled consent/callback transitions and incorrectly asserted interruption are excluded. A passing harness assertion alone did not validate these pictures. The revised sample adds sixteen individually inspected populated Chat/Studio captures; this is sample proof, not a completed platform rollout.
+## Capabilities to preserve
 
-## Product-flow map
+| Area                     | Existing capability / honest limit                                                                                                                                             | Owning seams                                                                                   |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------- |
+| Identity                 | Working verified-identity, account, verification, consent, recovery and logout contracts; synthetic email/password/callback examples issue no session                          | `auth-actions.application`, `auth-access.application`, `verified-identity.server`, AuthForm    |
+| Catalog                  | Caller-scoped availability, dependent hierarchy, invalid-child clearing, canonical URL hints; Module/Subject and flexible-credit terminology                                   | `catalog-journey.domain`, catalog Supabase adapter, StudyShelf                                 |
+| Workspace                | Verified cohort/unit scope, source status/date/quota and scoped sessions; dedicated route layout                                                                               | `workspace.application`, Supabase adapter, WorkspaceFrame                                      |
+| Study review             | Seven answer kinds; first Send; scoped histories/drafts; output-language independence; cancellation/retry; exact exchange evidence/report                                      | ProductChat/ProductStudy; full service implementations remain later WP06                       |
+| Studio/quiz review       | Six types, topic/depth/size/language, progress/cancel, flashcard flip, timed/untimed quiz and grounded review                                                                  | ProductStudio/ProductStudy; generation/scoring/durable artifact services remain later WP07     |
+| Material/evidence review | Titles/formats and fictional reliable locators/excerpts, evidence bound to selected exchange                                                                                   | ProductStudy sources/evidence; no original PDF/audio/download service is implied               |
+| Collection               | Assignment expiry/scope, PDF/WAV/PNG byte detection, checksum/size/type/rights, per-item idempotency, upload progress/cancel/retry, finalize and tracking                      | CollectionFlow; collection domain/application/upload handler; storage remains mock/fail-closed |
+| Governance               | Real audited publish/hide, unlock/lock, activation/quarantine/retry, holds/flags with readiness, state/version and verified-principal checks; synthetic examples do not mutate | AdminDecisionQueue; admin actions domain/application/Supabase                                  |
+| Admin resources          | Eight normal resource routes with authorization and truthful unavailable state; simulation includes resource summaries/drafts                                                  | `/admin/[resource]`, ProductResource; broad real CRUD/invitation delivery is absent            |
+| Account review           | Interface locale, future-sharing choice, reset-password path and contextual study return                                                                                       | ProductSettings; demo is document memory; no ordinary `/settings` route yet                    |
+
+Neither logged-in UI nor a synthetic result proves live backend completion. Preserve existing guards, mock seams and rejecting tests instead of weakening them to fit a new composition.
+
+## Route inventory
+
+| Surface         | Current routes                                                                                                             | Proposed placement                                                                                                         |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Public          | `/` foundation report in ordinary mode; synthetic home redirects to login                                                  | Public landing; authenticated role-home routing                                                                            |
+| Auth            | `/login`, `/register`, `/verify-email`, `/consent`, `/forgot-password`, `/reset-password`, `/auth/callback`                | One identity layer; compact form/step status; validated deep-link return                                                   |
+| Student catalog | `/learn` with dependent URL hints                                                                                          | Study Shelf; Subjects listing filtered by saved academic preference                                                        |
+| Unit            | `/learn/[cohortId]/[unitId]`, `/chat`, `/studio`, `/quiz`                                                                  | One current-unit header with Materials, Chat, Studio, Quiz                                                                 |
+| Extended study  | Unit `/sources`, `/evidence`, `/report`, `/quiz/sample-attempt`, `/quiz/sample-attempt/review`                             | Preserve unit context and exact originating exchange/artifact/attempt; these are currently synthetic rewrites              |
+| Account         | `/settings` in synthetic composition only                                                                                  | Account containing Academic settings, Appearance, language, existing sharing/account controls; compatibility URL as needed |
+| Leader          | `/batch-leader`, `/batch-leader/campaigns/[campaignId]`; synthetic invitation route                                        | Uploads, History, Account; keep campaign URLs and expiry/assignment checks                                                 |
+| Admin           | `/admin`, `/admin/{catalog,cohorts,campaigns,sources,jobs,quality,usage,incidents}`                                        | Group existing resources under five requested sections; retain URLs/deep links and queue                                   |
+| Preview/runtime | `/preview/*`, `/preview/review` legacy notice, `/synthetic-runtime/[...path]` behind fail-closed explicit development gate | Preserve service isolation and guarded preview; standalone P1 artifact is not a new product route                          |
+| API/status      | Auth callback, batch upload handlers, `/api/health/{live,ready}`                                                           | Unchanged except a proven minimal frontend-driven seam need in Phase 2                                                     |
+| Failure         | Root/unit/campaign loading, error, not-found and synthetic prepared fixtures                                               | Role-correct PageState components with specific recovery                                                                   |
+
+## Concrete findings
+
+| ID / priority            | Problem, reproduction and evidence                                                                                                                                                                                                     | Correction / rejecting acceptance                                                                                                                                 |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| F01 P1 presentation      | Ordinary `/` exposes foundation/runtime/provider/release detail, no product explanation, preview or CTA (`src/app/page.tsx:8`)                                                                                                         | Public hero with exact slogan, actual approved UI preview, how it works, CTA/footer. Anonymous entry stays public; authenticated entry routes by verified role    |
+| F02 P1 workflow          | Catalog setup dominates every initial shelf entry; no profile academic preference (`learn/page.tsx:67`, `profiles_roles_terms.sql:1`)                                                                                                  | One-time authorized onboarding; persisted validated profile hint; editable Account; refresh/new-session and cross-user denial tests                               |
+| F03 P1 system            | Root CSS forces dark (`globals.css:8`); no theme selection/bootstrap                                                                                                                                                                   | Semantic paired themes; System/Light/Dark, pre-paint preference; actual computed contrast and loading/error/disabled review in both                               |
+| F04 P1 consistency       | Shelf, auth, legacy workspace, revised Chat/Studio, collection and admin each own shells; identity/Settings repeats above the shelf and overview                                                                                       | One role shell/identity layer; preserve local scope nav. Compare role/route transitions, phone focus and RTL                                                      |
+| F05 P1 mobile/navigation | Anatomy overview repeats breadcrumb/unit/edition/source/quota and switcher. At 390px the first meaningful action is far below the header. Its old five-link unit bar occupies four columns (`workspace-frame`, `workspace.module.css`) | One unit context; remove repeated scope/preamble; four local destinations, Sources presented as Materials. No clipped/hidden destination or fixed-bar obstruction |
+| F06 P2 presentation/copy | Shelf footer “A calmer path to a brighter you.” and access “Trusted sources. Deeper understanding.” compete with the requested identity (`study-shelf.tsx:545`, AuthShell)                                                             | Exact two-line slogan and task-specific copy; no generic aspirational taglines                                                                                    |
+| F07 P2 UX                | Catalog search is disabled before any units exist (`study-shelf.tsx:569`). It DOES filter after the path resolves, directly observed; old “dead search” finding is too broad                                                           | Preserve filtering; expose it when useful, otherwise explain setup prerequisite. Do not replace working search with a decorative field                            |
+| F08 P1 intake            | Picker/drop consume only `[0]`, no `multiple`; mixed selection silently loses other files (`collection-flow.tsx:535`, `:571`)                                                                                                          | Per-file queue over current one-file seam; all supported selected files visible; individual failure/retry and no duplicate finalization                           |
+| F09 P2 intake            | Requested item appears in both request rail and select; format is already inferred from bytes (`collection.domain.ts:30`)                                                                                                              | Unique scope/type match preselects item; ambiguous requested items require a choice. Keep rights/source metadata; never guess ownership/rights                    |
+| F10 P1 completeness      | Admin resource links leave the task shell; ordinary resources are guarded notices (`admin/[resource]/page.tsx:87`), synthetic drafts look richer                                                                                       | Group existing resources in a stable console; visibly honest unavailable actions. No user CRUD/invite delivery/provider enablement invented                       |
+| F11 P1 persistence       | Settings exists only under synthetic rewrite; preference/chat state resets intentionally (`product-services.tsx:57`)                                                                                                                   | Implement minimal real account preference seam for required academic settings; retain document-local demo isolation; do not claim demo proves persistence         |
+| F12 P1 failure semantics | Catalog empty/no-membership falls through to “Assigned campaigns” (`product-native-page.tsx:411–417`, historical N08)                                                                                                                  | Correct student title/recovery EN/AR. Retry does not bypass membership; no hidden private diagnostics                                                             |
+| F13 P2 visual weakness   | Several equally prominent panels/metadata grids turn overview/settings/admin into long preambles and a stack of generic cards; old workspace phone capture shows this clearly                                                          | Prefer useful rows and reading surfaces with one page/section hierarchy; expose next task before operational detail                                               |
+| F14 P2 consistency       | EN/عربي buttons, links and full-name select coexist; icons and branding are duplicated in role components                                                                                                                              | One locale interaction and Brand/icon vocabulary; preserve drafts, output language and current scope; never mirror logo                                           |
+| F15 P1 documentation     | Old briefs mandate navy palette, six tabs, expanding auth rail and palette-only extension; prior sample remains unapproved                                                                                                             | DESIGN governs new proposal; historical records remain clearly dated; no prior receipt reused as new design acceptance                                            |
+
+Existing fixes worth retaining: first Send starts a session, interface-language changes keep draft/output language, distinct Cancel/Send identities prevent cancellation resubmission, only MCQ offers quiz progression, evidence rejects wrong exchange, and Account can return to the last study path. These were fixed in `fc95ebd`; do not relabel them as currently broken.
+
+“AI slop” here is a design judgment tied to specific output: competing aspirational slogans, repeated unit disclaimers before the task, uniform icon-led cards instead of a clear work hierarchy, multiple identity treatments, and generic operations summaries in product context. It does not describe authorization or state-machine quality.
+
+## Target information architecture and user flows
+
+| Role         | Destinations and jobs                                                                                                                                                                                                                                                 |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Student      | **Study:** resume a valid current-unit session/artifact when available; current period. **Subjects:** authorized Modules/Subjects, useful filtering and readiness. **Account:** Academic settings, Appearance, interface language, existing sharing/recovery/sign-out |
+| Batch Leader | **Uploads:** assigned campaign requirements, invitation scope, file intake queue and finalize. **History:** existing submissions/statuses by campaign, needs-information/rejected recovery. **Account:** appearance/language and existing account controls            |
+| Admin        | **Overview:** decisions/blocked work. **Content:** Sources and Campaigns. **Academics:** Catalog and Cohorts. **Users:** existing assignment/access context only. **Operations:** Jobs, Quality, Usage and Incidents                                                  |
+
+No user directory, role-assignment editor, source processor, commercial metric, calendar, Telegram, global knowledge pool or new product feature is added. A “Users” label cannot authorize a new backend capability.
 
 ```mermaid
 flowchart TD
-  Entry[Product URL or scoped deep link] --> Login[Sign in]
-  Login -->|Create account| Register[Register]
-  Register --> Verify[Verify email]
-  Verify -->|Valid callback| Consent[Review commitments]
-  Verify -->|Expired or replayed| Fresh[Request fresh link]
-  Fresh --> Verify
-  Login -->|Unverified| Verify
-  Login -->|Current consent| Role{Account role}
-  Login -->|Missing or outdated consent| Consent
-  Login -->|Suspended or invalid| LoginError[Inline error and retry]
-  LoginError --> Login
-  Login -->|Forgot password| Recover[Request recovery link]
-  Recover --> Reset[Reset password]
-  Reset -->|Expired or replayed| Recover
-  Reset -->|Complete| Login
-  Consent -->|Accept| Role
-  Role -->|Student| Shelf[Study Shelf: configured catalog path]
-  Role -->|Batch Leader| Campaigns[Assigned campaigns]
-  Role -->|Admin| Queue[Governed decisions]
-  Shelf -->|Focus available unit and open| Unit[Unit overview]
-  Shelf -->|Unavailable or no membership| Safe[Safe unavailable state]
-  Unit --> Chat[Chat]
-  Unit --> Studio[Studio]
-  Unit --> Quiz[Quiz setup]
-  Unit --> Sources[Unit source pool]
-  Chat -->|Send: create session if needed| Answer[Supported / partial / missing / conflict / hint / safety reply]
-  Chat -->|New session or select history| Chat
-  Answer -->|Inspect evidence| Evidence[Exact exchange evidence]
-  Evidence -->|Back to Chat| Chat
-  Answer -->|Report| Report[Exchange-scoped reason and disclosure]
-  Report -->|Confirm and submit| Receipt[Local simulated receipt]
-  Receipt -->|Back to Chat| Chat
-  Studio -->|Choose type and options; Generate| Artifact[Fixed study artifact]
-  Artifact -->|Inspect source pool| Sources
-  Artifact -->|MCQ: open quiz| Quiz
-  Artifact -->|Flip / reveal explanation| Artifact
-  Quiz -->|Timed or untimed; Start| Attempt[Answer questions]
-  Attempt -->|Submit complete answers| Score[Score and grounded review]
-  Attempt -->|Expires| Expired[Unscored expiry; restart]
-  Expired --> Quiz
-  Score -->|New attempt| Quiz
-  Unit -->|Switch available unit| Unit
-  Unit -->|Back to Study Shelf| Shelf
-  Campaigns -->|Open assigned campaign| Collection[Requirements and tracking]
-  Invite[Invitation deep link] --> Login
-  Role -->|Leader returning to invitation| InviteReview[Invitation scope and expiry]
-  InviteReview -->|Accept simulated invitation| Campaigns
-  InviteReview -->|Expired or replayed; return| Campaigns
-  Collection -->|Select requested item| File[Supplied file or approved fixture reference]
-  File -->|Metadata and rights; validate| Upload[Simulated progress]
-  Upload -->|Cancel or failure| Retry[Correct input or retry]
-  Retry --> File
-  Upload -->|Finalize| Tracking[Receipt and consistent tracking]
-  Tracking --> Collection
-  Queue --> Resources[Catalog / Cohorts / Campaigns / Sources / Jobs / Quality / Usage / Incidents]
-  Resources -->|Open governed decisions| Queue
-  Resources -->|Approved fixed draft| Draft[Review fixed draft or invitation concept]
-  Draft --> Resources
-  Queue -->|Reason; review exact change| Confirm[Readiness and confirmation]
-  Confirm -->|Required distinct founder| Pending[Pending second confirmation]
-  Pending -->|Sign out; second synthetic admin signs in| Queue
-  Confirm -->|Allowed simulated decision| Applied[Local receipt and availability update]
-  Confirm -->|Stale, blocked, error or paid boundary| Denied[No mutation; explain recovery]
-  Denied --> Queue
-  Applied -->|Preview student| Shelf
-  Shelf -->|Admin return link| Queue
-  Chat --> Settings[Settings: language, privacy and account]
-  Studio --> Settings
-  Settings -->|Return to originating Chat| Chat
-  Settings -->|Return to originating Studio| Studio
-  Settings -->|Sign out| Login
-  Queue -->|Sign out| Login
-  Collection -->|Sign out| Login
-  Chat -->|Cancel stream| Chat
-  Safe -->|Back to role home| Role
-  Failure[Offline / error / capacity / stale] -->|Retry where meaningful| Unit
-  Failure -->|Back to role home| Role
+  Public[Public landing] --> Auth[Sign in or register]
+  Deep[Invitation or study deep link] --> Auth
+  Auth --> Verify[Verification and current consent when needed]
+  Verify --> Role{Verified active database role}
+  Role -->|Student| Context{Valid saved academic context?}
+  Context -->|No| Onboard[Select authorized academic path once]
+  Onboard --> Shelf[Study Shelf]
+  Context -->|Yes| Shelf
+  Shelf --> Subjects[Subjects / configured Modules]
+  Shelf --> Resume[Resume available recent study]
+  Subjects --> Unit[Unit context and Materials]
+  Resume --> Unit
+  Unit --> Chat[Chat and scoped history]
+  Unit --> Studio[Six Studio types]
+  Chat --> Evidence[Exact evidence / report]
+  Studio --> Viewer[Supporting material viewer]
+  Studio --> Quiz[MCQ attempt / review]
+  Evidence --> Chat
+  Viewer --> Studio
+  Role -->|Batch Leader| Uploads[Assigned campaigns and mixed-file intake]
+  Uploads --> Transfer[Per-file upload and finalize]
+  Transfer --> History[Received / processing / needs information / result]
+  History -->|Retry or correct| Uploads
+  Role -->|Admin| Overview[Decision queue]
+  Overview --> Groups[Content / Academics / Users / Operations]
+  Groups --> Action[Existing governed action with exact target and state]
+  Action --> Result[Success / blocked / stale / distinct confirmation]
+  Result --> Overview
+  Shelf --> Account[Account: Academic settings and Appearance]
+  Account --> Shelf
 ```
 
-Language switching is an in-place route transition: preserve query, selected scope, current session/artifact, entered values and focus; change interface language and direction only. Output language remains an explicit independent study choice. Browser Back follows history. Full reload deliberately clears the demo and returns through access; a different tab starts independently signed out. Neither is product persistence.
+Preserve URL role/scope validation, browser back/forward, selected material, output language, draft and originating exchange/artifact. Store only safe relative return paths and recompute authorization. No membership is created by onboarding, preview, a saved path or admin student-preview access.
 
-## Prioritized punch list
+## Persistence and backend budget
 
-### Visual defects
+**Nothing changed in Phase 1.** Phase 2 is frontend-first with these bounded needs:
 
-| ID  | Priority / location                                | Reproduction                                       | Expected / correction                                                                                                             | Acceptance                                                                          |
-| --- | -------------------------------------------------- | -------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| V01 | P1 workspace header and product study scope        | Open Chat or Studio                                | One compact scope header; remove repeated institution/unit/edition blocks; move metadata to overview/details                      | Composer or creation task visible in first desktop viewport; one scope control      |
-| V02 | P1 `workspace.module.css` mobile navigation        | Open Sources at 320/390px                          | Five destinations currently use four grid columns; use a single adaptable navigation row or mobile disclosure                     | Every destination reachable, no second clipped row, 44px targets, focus visible     |
-| V03 | P1 buttons across component CSS                    | Long Arabic action labels and narrow containers    | Intrinsic-width buttons with shrink/wrap rules; shared variants and icon sizing                                                   | No clipped text or container escape, including 200% text scale                      |
-| V04 | P1 native account utility and embedded shells      | Open any signed-in view                            | One account/locale utility area; remove duplicated Settings/sign-out and identity layers                                          | Exactly one purposeful global account treatment                                     |
-| V05 | P2 locale controls                                 | Compare shelf, workspace, resource screens         | One labeled, full-name English/العربية switch with selected state and bidi isolation                                              | Same appearance/keyboard behavior; route state and inputs retained                  |
-| V06 | P2 repeated SVG implementations                    | Compare nav and actions                            | Shared 24px line-icon vocabulary, 1.8 stroke; separate direction-aware arrows                                                     | No emoji/text glyph substitutes; names for icon-only controls                       |
-| V07 | P2 study form density                              | Studio at 768px                                    | Type choice leads; group options below; output has a distinct reading area                                                        | Creation and reading hierarchy remains clear on desktop/tablet/mobile               |
-| V08 | P2 feedback and labels                             | Compare error/receipt/disabled states              | Shared feedback language and spacing; local concise simulation disclosure                                                         | Text plus state cue; live updates announced without repeated notices                |
-| V10 | P2 brand placement across shells                   | Compare workspace, queue, resources and invitation | Different legacy badge/text/mark treatments fragment identity. Reuse the incumbent mark in the accepted shell, preserving artwork | Consistent placement/size; no logo artwork changes or replacement dependency staged |
-| V09 | P2 source, quiz, collection/admin detail hierarchy | Open populated detail screens                      | Align title/action/metadata rhythm with accepted shell                                                                            | Consistent type/spacing; long metadata wraps; no arbitrary nested panels            |
+1. **Academic preference:** profiles currently contain `display_name`, `preferred_language`, `chat_retention_mode`, account status and timestamps. Add a nullable, versioned `academic_context` preference to that same profile, or equivalent smallest fields after implementation review. Prefer validated catalog identifiers, not duplicated names. A narrow caller-scoped application/server seam validates the configured stage→institution→program→level→period→cohort relationship against the authorized catalog before saving. TERM_BASED and FLEXIBLE_CREDIT preserve their existing period rules. No new profile/settings table.
+2. **Reading preference:** local versioned theme key, validated values and before-paint application; no schema change needed. Reuse preferred-language field only through a safe existing/required account seam. Do not reinterpret retention as theme or academic state.
+3. **Account routing:** read current active roles from verified caller-scoped `user_roles`, after the current account/consent gate. Choose the highest-authority existing assigned role for default home (Admin, then Batch Leader, then Student); preserve legitimate explicit role destinations. No role chooser, client-granted role or new permission. Do not change role-grant semantics.
+4. **Resume:** reuse existing scoped session reads and synthetic `lastStudyPath`. If a real artifact/recent-study record is not exposed by an existing service, show available units without an invented “last studied” event. Do not build WP06/WP07 services in this frontend task.
+5. **Batch queue:** compose existing per-file upload/finalize seam; byte detector already determines PDF/WAV/PNG. No bulk API, new format, worker, provider or processing schema is required. Keep each idempotency key stable during retry and recheck assignment on upload/finalize.
+6. **Viewer/admin:** redesign presentation of existing excerpts/resource state. Real PDF/audio/download capability and broad management/invitation CRUD remain outside scope. Use current unavailable states where contracts are absent; no dummy live control.
 
-### Interaction bugs and friction
+Before preference/auth/storage mutation, apply trust-boundaries and record identity/scope inputs, recomputation, allowed/denied paths, revoked/stale behavior and exposure. Saved context cannot authorize a revoked/locked/unpublished unit. Tests must reject cross-user writes, forged catalog relationships, role parameters and stale access; synthetic state must remain per-document. Profile-only migration needs generated types, grants/RLS review and disposable database proof; no hosted data write or paid storage is necessary to approve the frontend.
 
-| ID  | Priority / location       | Reproduction                                        | Expected / correction                                                                                                                              | Acceptance                                                                                                                                        |
-| --- | ------------------------- | --------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| I01 | P1 Chat composer          | Arrive with no sessions                             | First Send creates a scoped session; New session remains an explicit reset                                                                         | Can send immediately; empty/whitespace blocked; no cross-unit/session leakage                                                                     |
-| I02 | P1 Chat transcript        | Send several questions                              | Transcript precedes composer; show fixed recognized prompt plus response; retain unrecognized text only in draft                                   | Reading order follows conversation; automatic progress and cancel/retry work                                                                      |
-| I03 | P1 locale transitions     | Type then switch EN/AR                              | Keep draft/session/artifact and focus; current query preserved                                                                                     | Neither locale loses draft; output language remains unchanged                                                                                     |
-| I04 | P2 Studio request         | Generate then navigate away/cancel                  | Explicit progress and interruption recovery; preserve completed artifact; no implied durability                                                    | Cancel never produces an artifact; completed unit artifact survives normal navigation                                                             |
-| I05 | P2 Studio output links    | Generate a summary                                  | Only quiz artifact offers Start/Open quiz; every artifact offers source inspection                                                                 | No unrelated quiz action on every result                                                                                                          |
-| I06 | P2 source evidence        | Open evidence without exchange or use wrong ID      | Explain missing context and offer Chat; exact exchange binding remains fail closed                                                                 | Recovery is usable; no previous exchange shown for forged IDs                                                                                     |
-| I07 | P2 search                 | Open shelf                                          | Provide approved local catalog filtering or remove dead disabled input                                                                             | Every displayed input works or explains a genuine prerequisite                                                                                    |
-| I10 | P1 admin failure recovery | Submit Hide unit with stale/error fixture           | Old confirmation and Submit remain alongside Reload. Disable/dismiss the obsolete confirmation until current state is reloaded                     | No apparently executable stale confirmation; reason retained; refreshed candidate reviewed before another simulated action; real checks unchanged |
-| I09 | P1 Chat cancellation      | Send then immediately cancel by pointer or keyboard | Reusing the Cancel DOM node as Send changes its type during browser click default handling and resubmits. Give Send and Cancel distinct identities | Cancellation notice and draft persist; no late reply/evidence; retry produces exactly one reply; EN/AR pointer and keyboard                       |
-| I08 | P2 failure controls       | Expired link, capacity, offline, empty              | Recovery action matches reason; Retry only for retryable states                                                                                    | No loop that grants forbidden access; safe role-home exit                                                                                         |
+## Design-document reconciliation
 
-### Navigation problems
+Scope of “every design-related Markdown”: all first-party current contracts, surface briefs, review guides, copies and design-history records discovered through Markdown path/content search. Vendored skill/reference-library DESIGN files are process/reference material, not UniMind contracts, and remain pinned. Historical task/evidence records preserve facts rather than retroactively changing approval.
 
-| ID  | Priority / location              | Reproduction                                                           | Expected / correction                                                                                                                 | Acceptance                                                                                                                   |
-| --- | -------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| N01 | P1 mobile workspace              | Try returning to shelf/settings                                        | Desktop-only links are hidden by current bottom rail CSS                                                                              | Persistent mobile shelf/account access; all five local destinations reachable                                                |
-| N02 | P1 role shell transitions        | Queue → resource → student preview → return                            | Admin queue and resource screens use different shells/nav sets                                                                        | Stable role navigation, explicit preview return, correct current location                                                    |
-| N03 | P1 Settings return               | Open privacy settings from Chat                                        | Settings only gives home; no explicit origin return                                                                                   | Carry validated relative return path; return restores context                                                                |
-| N04 | P2 unit switch                   | Switch from Chat to veterinary unit                                    | Existing select jumps to overview without clear task transition                                                                       | Label change explicitly; preserve current section where approved/available                                                   | Correct destination, no previous unit's exchanges/artifact |
-| N05 | P2 source/report exits           | Traverse Chat → Evidence/Report                                        | Exit names and placement vary                                                                                                         | Consistent Back to Chat and source-pool navigation                                                                           | Keyboard/browser history and explicit exits agree          |
-| N07 | P1 access rail after resize      | Open verification/consent at desktop width, then resize to 768/390/320 | Active stage becomes offscreen inside horizontal rail. Recompute active-stage position on reflow or use an accepted compact step flow | Active form and primary action remain visible/reachable after width/locale changes; keyboard focus reveals the correct stage |
-| N08 | P1 student catalog failure title | Student `/learn?fixture=empty` or `no-membership`                      | Generic title falls through to “Assigned campaigns.” Map catalog failure to Study Shelf with role-correct recovery                    | Both locales announce the correct student location; no leader destination or implied assignment                              |
-| N06 | P2 approved routes               | Inspect all role nav entries                                           | No Calendar/global Sources/Progress/personal uploads without policy                                                                   | Remove misleading entries; include only approved role destinations                                                           |
+| Document group                                                | Review / disposition                                                                                                                                               |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Root DESIGN                                                   | Replaced with explicit Phase 1 proposed canon; old contract archived without discarding provenance                                                                 |
+| PRODUCT / CONTEXT                                             | Product facts inspected; PRODUCT's “no approved brand” wording reconciled with requested Open Folio dependency and missing files; domain terms unchanged           |
+| Four `.impeccable/surfaces/*.md`                              | Current flow briefs refer to DESIGN; old comp/selection IDs retained only as historical baseline, no competing palette/navigation rule                             |
+| `.impeccable/work/wp03-learn-surface-brief.md`                | Historical working copy points to the current canonical contract and live surface brief                                                                            |
+| Shell/Chat/Studio work and finish review                      | Marked historical `fc95ebd` checkpoint; prior “ship” means presentation scope only, not this overhaul approval                                                     |
+| Study Shelf asset manifest                                    | Historical provenance retained; image production no longer a requirement for neutral list design                                                                   |
+| `docs/reviews/wp03-frontend-overhaul.md`                      | This current audit, contract map, role flows, sequence and limitations                                                                                             |
+| `docs/reviews/wp03-synthetic-frontend-review.md`              | Existing app-review instructions remain useful; header points to current Phase 1 proposal/contract                                                                 |
+| `public/demo-files/{frontend-overhaul,walkthrough,README}.md` | Static pack-era snapshots explicitly point to current docs; ZIP renewal deferred to approved stable implementation                                                 |
+| Agent frontend floor / UI stack / skills guide                | Guidance reviewed; new canon references added to design stack where useful. No skill/policy adaptation is justified                                                |
+| README / docs index / AGENTS / runbook                        | Authority/routes/workflow reviewed; entry/index/runbook continuation points to two-phase boundary, prior WP03 history preserved                                    |
+| Logo concept README                                           | Read-only unrelated exploration preserved; its earlier no-selected-kit claim is historical. User names an approved dependency, but actual kit/guides remain absent |
+| Historical WP03 task/evidence records                         | Reviewed relevant lineage and active task; no historical receipt or visual PASS rewritten as current acceptance                                                    |
 
-### Unresolved product decisions
+## Prioritized implementation and checkpoints
 
-| ID  | Owner / location                       | Decision required                                                | Interim correction                                                                    | Acceptance                                                            |
-| --- | -------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| D01 | Founders, D-08 Settings/report         | Retention, exact qualifying report payload/disclosure and access | Clearly describe existing sharing rule; no invented retention/deletion control        | No fake policy selector; reports remain explicitly simulated          |
-| D02 | Founders, D-18 collection              | Real approved storage-reference contract                         | Fixed supplied synthetic reference only                                               | No arbitrary URL acceptance or live storage access                    |
-| D03 | Both founders, provider/usage          | Provider enablement, exact financial exposure and numeric caps   | Block enablement, show capacity state without fabricated limits                       | No paid call/resource/cap change                                      |
-| D04 | Product owners, management/invitations | Broad editors and invitation delivery contract                   | Fixed draft concept; omit misleading Create/send controls                             | No real role/access/email mutation                                    |
-| D05 | Ahmed or Ziad, checkpoint              | Accept concrete revised shell/Chat/Studio interaction direction  | Present interactive native sample after technical floor; await receipt before rollout | Candidate, actor, timestamp and scoped receipt recorded               |
-| D06 | Separate logo owner                    | Approved versioned replacement asset                             | Current logo retained; no artwork diff in this task                                   | Asset version/provenance/approval recorded before a later integration |
+| Order | Deliverable                                                                                                                                | Rejecting proof / checkpoint                                                                                                                                                                                     |
+| ----- | ------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1     | Phase 1 audit, DESIGN reconciliation, role flows, separate rendered shell/student sample                                                   | Desktop/mobile Light/Dark EN/AR; source-bound findings; explicit **Phase 1 approval** before product edits                                                                                                       |
+| 2     | Shared semantic tokens, native primitives, theme bootstrap and supplied Brand/icons; stable role shell                                     | Contrast/focus/keyboard/storage-denied/reduced-motion/RTL; kit proportions/theme/RTL inspected                                                                                                                   |
+| 3     | Public/auth entry, real account academic preference, Study Shelf/Subjects and continuous workspace/Chat/Studio/viewer/quiz/evidence/report | Allowed/forbidden persistence/routing proof; no loss of six artifacts/session/evidence behavior; **student rendered checkpoint**                                                                                 |
+| 4     | Batch Leader campaign intake queue/History/Account                                                                                         | Mixed PDF/WAV/PNG, ambiguous request mapping, per-file failure/retry/cancel/finalize, assignment expiry/revocation; **Batch Leader rendered checkpoint**                                                         |
+| 5     | Task-oriented admin shell/resource grouping                                                                                                | Existing action/target/version/readiness/audit/financial gates, usable narrow-width detail; **Admin rendered checkpoint**                                                                                        |
+| 6     | Product-wide consistency, state coverage, pack/walkthrough renewal, stable candidate review                                                | Both themes, EN/AR, 1440/768/430/390/360/320 plus 200% text; **final consistency checkpoint**; current founder receipt                                                                                           |
+| 7     | Required broad proof and draft delivery workflow                                                                                           | Focused checks reused until invalidated; one guarded broad stable-candidate gate, exact-head CI, branch protection, affected production proof; T09 closure only when actual acceptance passes; T10 precedes WP04 |
 
-## Ordered implementation and proof
+Routine decisions are autonomous within this brief. Do not reopen WP00 or enable paid services to resolve presentation. Product implementation is blocked by Phase 1 approval; brand integration also needs supplied kit. Financial exposure, access failure or a real architecture conflict is a separate genuine stop.
 
-1. **Audit and plan:** preserve prior task history; bind findings to baseline routes/source; publish this map and category-separated punch list. Dependency: product authority and working synthetic composition. Proof: baseline rendered inventory and journey results with explicit gaps.
-2. **Concrete checkpoint sample:** retain palette/fonts/logo; implement shared controls/icon/locale primitives and one compact native unit shell; restructure Chat into session history + transcript + bottom composer, and Studio into type/configuration + reading area. Improve only sample-owned behavior. Dependency: audit. Proof: EN/AR/RTL, 1440/768/390/320, 200% text, keyboard, axe, overflow, direct Send, scoped history/evidence/report, all six types, interrupt/retry, draft-preserving locale transition, and isolation. Present sample in Chrome. **Wait for founder acceptance before extending direction.**
-3. **Accepted system rollout:** apply accepted shell/control/navigation rules to access, shelf, Settings, quiz, sources/report, campaigns/collection and admin. Dependency: genuine checkpoint receipt. Retain real default ports/guards, fixture pack and useful tests. Proof: complete role journeys and per-state rendered inspection; regress each changed real WP03 seam with demo absent.
-4. **Final candidate proof:** update walkthrough/pack, DESIGN confirmed system rules after acceptance, punch-list dispositions and coverage report. Review full diff/secret/scope risk; actual-diff route; preparation review/preflight; guarded verification. Dependency: stable complete candidate and current material acceptance. No route-only or inherited test result substitutes for populated/failure-state proof.
-5. **Draft delivery:** update only PR #64, keep it draft/unmerged until revised candidate accepted and exact-head delivery gates pass. Logo work stays separately versioned. WP03-T10 owns final mock review; WP04 stays blocked. No production promotion or protected mutation from this review.
+## Verification and out-of-scope record
 
-## Reference interpretation
+During edits run the narrowest rejecting check. For accepted stable implementation use task-selected E2E/demo/security/contract tests, lint/typecheck/boundaries, review/diff/secret checks and the guarded broad gate. Profile changes add disposable database proof. A later invalidation repeats only affected proof. Exact-head CI is mandatory for delivery; this Phase 1 proposal is not a released application candidate.
 
-Official public references consulted without external accounts or browser sessions: [ChatGPT Sources](https://openai.com/index/introducing-chatgpt-search/), [Claude artifacts](https://support.claude.com/en/articles/17153992-what-are-artifacts-and-how-do-i-use-them), [Gemini Canvas](https://support.google.com/gemini/answer/16047321?hl=en-GB). These support evidence adjacent to an answer and a distinct artifact work area. The proposed conversation reading order, quiet history and lower composer are design judgments for UniMind; no exact live competitor interface audit is claimed. UniMind retains its unit-scoped strict RAG, six approved artifact types and identity; no competitor web search, uploads or sharing behavior is imported.
+State matrix for implementation: public/auth verification/recovery/consent errors; shelf unconfigured/no-membership/locked/no-ready/error; study empty/populated/stream/cancel/offline/quota/capacity/evidence-missing/report receipt; all six artifact outputs/progress/cancel; quiz timed/untimed/expiry/score/review; upload queue/type/size/checksum/rights/expiry/cancel/retry/received; admin denied/loading/empty/readiness/confirmation/stale/success. Review both themes and relevant direction for every changed role.
+
+Unrelated/open issues stay separate: D-08 report/retention policy, D-18 storage references, paid provider/cap decisions, full admin editors/invitation delivery, real source viewing/generation, unchanged ordinary-runtime E2E timeout history and the missing Open Folio kit. None is silently solved by a visual redesign. No backend/schema/dependency/provider/worker change occurred in Phase 1.

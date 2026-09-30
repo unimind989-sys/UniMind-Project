@@ -4,6 +4,8 @@ Every frontend task starts with the lightweight `frontend-quality-floor.md`. Thi
 
 ## Decision
 
+Current UniMind visual authority is [root DESIGN](../../DESIGN.md). The 30 September two-phase brief supersedes old comp-specific palette/navigation constraints; new proposed tokens/compositions remain pending explicit Phase 1 approval. Surface/history documents refer to the root contract and retain old receipts only as provenance. This request authorizes neither additional tools/dependencies nor new workers.
+
 | Layer | Choice | Responsibility |
 | --- | --- | --- |
 | Design and refinement | `impeccable` | Product-aware UI direction, implementation, critique, visual verification, and anti-pattern detection. |

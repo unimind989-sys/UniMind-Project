@@ -1,0 +1,345 @@
+{
+  "schema": 1,
+  "task": "WP03-T09",
+  "baseHead": "c7b86793b181f1defaf1c97e9437544224d9a5f5",
+  "branch": "codex/wp03-complete-synthetic-frontend",
+  "reviewedUtc": "2026-09-30T21:12:47.348Z",
+  "scope": "Phase 1 local presentation; no product runtime/schema/dependency edits",
+  "founderAcceptance": "PENDING",
+  "reviewProvenance": "COMPLETE_INLINE; non-independent",
+  "sources": [
+    {
+      "path": "DESIGN.md",
+      "sha256": "dc94b43d6273d274618e517f16407ffeb8d456871a9d7052280e734b14e9d9b0",
+      "bytes": 14612
+    },
+    {
+      "path": "PRODUCT.md",
+      "sha256": "514608d09ac35bdb711867246b1d494191898bdc539bfdd695078578d003adf0",
+      "bytes": 4288
+    },
+    {
+      "path": "docs/reviews/wp03-frontend-overhaul.md",
+      "sha256": "df8bef8c55ac476f893f10b84966ec996afdd6e838ce9f9c4d47045a08048be5",
+      "bytes": 32568
+    },
+    {
+      "path": "planning/design/frontend-overhaul/preview.html",
+      "sha256": "5d0287eaff03543c7bb3343bfae4c2cfcc98ddf6029c98d7fe1011cadb9eb5ac",
+      "bytes": 5102
+    },
+    {
+      "path": "planning/design/frontend-overhaul/preview.css",
+      "sha256": "1f9d7aa04d62238312665c90f66b010e348cafba818b07c0d463524f0985a622",
+      "bytes": 15843
+    },
+    {
+      "path": "planning/design/frontend-overhaul/preview.mjs",
+      "sha256": "9e047c14cc1aa90d6d48553b63b7865a174a84147adf94a8168ad00423f22f7c",
+      "bytes": 26148
+    },
+    {
+      "path": "planning/design/frontend-overhaul/serve-preview.mjs",
+      "sha256": "160abef529093cf5c59887e6475338716a97eeb0d27aa8364089d74b65a6d82d",
+      "bytes": 1523
+    },
+    {
+      "path": "planning/design/frontend-overhaul/README.md",
+      "sha256": "cc09e927b230197a2c1f2644acf9b05943410969fb37a833d77dc8002e61e890",
+      "bytes": 8767
+    },
+    {
+      "path": "planning/design/frontend-overhaul/finish-review.md",
+      "sha256": "4e9404dbe16536ec4b4caae72f08bd96b35d0fcd641dce42ff5e68a615e48710",
+      "bytes": 4951
+    },
+    {
+      "path": "planning/design/frontend-overhaul/sample-checks.json",
+      "sha256": "9da9dc47047acb345e92a3b9af093bfa52c4a9c66fd650344a01935707d1ad2c",
+      "bytes": 16526
+    },
+    {
+      "path": "planning/design/frontend-overhaul/previous-design-contract.md",
+      "sha256": "37f30f22df7e2e02d86d2a8044194d322ebe17ad5247d3bc1d4917b85a7afeec",
+      "bytes": 19651
+    },
+    {
+      "path": "planning/design/frontend-overhaul/previous-overhaul-audit.md",
+      "sha256": "dcff7be2e56e4a5b88fe66c920650836b601430836cf7b1a3b2a50b5ef6e53de",
+      "bytes": 25471
+    }
+  ],
+  "captures": [
+    {
+      "path": "planning/design/frontend-overhaul/renders/baseline-account-mobile.jpg",
+      "sha256": "06a5ccb161b2494dfdabe6a1f5b494e7b31fab72a8f4ebf44a2fdf45ed352a7a",
+      "bytes": 59041,
+      "width": 380,
+      "height": 1386,
+      "mime": "image/jpeg",
+      "kind": "existing synthetic UI",
+      "inspection": "individually inspected"
+    },
+    {
+      "path": "planning/design/frontend-overhaul/renders/baseline-admin-mobile.jpg",
+      "sha256": "578783f2479fc5cc4ee3faad749198f717bacdea37c57c62265c0ee53c1f208c",
+      "bytes": 75270,
+      "width": 390,
+      "height": 1663,
+      "mime": "image/jpeg",
+      "kind": "existing synthetic UI",
+      "inspection": "individually inspected"
+    },
+    {
+      "path": "planning/design/frontend-overhaul/renders/baseline-admin-sources-ar-mobile.jpg",
+      "sha256": "34b50296fa29e24177b1121074427315a07b3a18ab9542faf83b5bbc1dded1da",
+      "bytes": 44824,
+      "width": 380,
+      "height": 1018,
+      "mime": "image/jpeg",
+      "kind": "existing synthetic UI",
+      "inspection": "individually inspected"
+    },
+    {
+      "path": "planning/design/frontend-overhaul/renders/baseline-leader-mobile.jpg",
+      "sha256": "403cbac998d203f962dff0351222df6690d96b8446fd7525b454fbc3ecb10981",
+      "bytes": 117199,
+      "width": 380,
+      "height": 2420,
+      "mime": "image/jpeg",
+      "kind": "existing synthetic UI",
+      "inspection": "individually inspected"
+    },
+    {
+      "path": "planning/design/frontend-overhaul/renders/baseline-study-desktop.jpg",
+      "sha256": "d713b13b5303b8dc4980e82ad5315d6b5304f9aecb611a8cdf2faeb94bb387da",
+      "bytes": 121561,
+      "width": 1430,
+      "height": 1098,
+      "mime": "image/jpeg",
+      "kind": "existing synthetic UI",
+      "inspection": "individually inspected"
+    },
+    {
+      "path": "planning/design/frontend-overhaul/renders/baseline-workspace-desktop.jpg",
+      "sha256": "e61823485e0648641c0794e2d2efd5e97348860fd571220bfbf094c666e0570f",
+      "bytes": 152823,
+      "width": 1430,
+      "height": 1708,
+      "mime": "image/jpeg",
+      "kind": "existing synthetic UI",
+      "inspection": "individually inspected"
+    },
+    {
+      "path": "planning/design/frontend-overhaul/renders/baseline-workspace-mobile.jpg",
+      "sha256": "383523edd6b48e663dd87bc7365f311316c2d8b4f8c3b1146e940e8e455a114e",
+      "bytes": 115132,
+      "width": 380,
+      "height": 2564,
+      "mime": "image/jpeg",
+      "kind": "existing synthetic UI",
+      "inspection": "individually inspected"
+    },
+    {
+      "path": "planning/design/frontend-overhaul/renders/proposal-ar-desktop-viewport.jpg",
+      "sha256": "4d1dfeffc9cbe2a7bb46d0b11a53de2797c4408ad0f7c481687e74f9fcaae731",
+      "bytes": 78985,
+      "width": 1430,
+      "height": 993,
+      "mime": "image/jpeg",
+      "kind": "proposed design",
+      "inspection": "individually inspected"
+    },
+    {
+      "path": "planning/design/frontend-overhaul/renders/proposal-empty-mobile.jpg",
+      "sha256": "f562a737974e89d70b9e8a317d9363b37961119d9e042c4942249351d8d223f5",
+      "bytes": 28031,
+      "width": 380,
+      "height": 822,
+      "mime": "image/jpeg",
+      "kind": "proposed design",
+      "inspection": "individually inspected"
+    },
+    {
+      "path": "planning/design/frontend-overhaul/renders/proposal-error-mobile.jpg",
+      "sha256": "bcd6064f1b494015e367708584333ee183223e71aea0efcdbdf8b6087189bce5",
+      "bytes": 26596,
+      "width": 380,
+      "height": 822,
+      "mime": "image/jpeg",
+      "kind": "proposed design",
+      "inspection": "individually inspected"
+    },
+    {
+      "path": "planning/design/frontend-overhaul/renders/proposal-loading-mobile.jpg",
+      "sha256": "bccb5aef91343fec3547a938084477a55ce3482a5f75b82390aa8f77b98ac20d",
+      "bytes": 24918,
+      "width": 380,
+      "height": 822,
+      "mime": "image/jpeg",
+      "kind": "proposed design",
+      "inspection": "individually inspected"
+    },
+    {
+      "path": "planning/design/frontend-overhaul/renders/proposal-phone-ar-dark.jpg",
+      "sha256": "d4862e3c4ffad7fe1276e8a043d6d62661c2e45ffb36aac51ff82a9c29bf6937",
+      "bytes": 26021,
+      "width": 390,
+      "height": 844,
+      "mime": "image/jpeg",
+      "kind": "proposed design",
+      "inspection": "individually inspected"
+    },
+    {
+      "path": "planning/design/frontend-overhaul/renders/proposal-phone-ar-light.jpg",
+      "sha256": "77c834db2fea01753836a95a4aed7800958280ac3d1ba6673cf5f2f17ff94173",
+      "bytes": 24255,
+      "width": 360,
+      "height": 800,
+      "mime": "image/jpeg",
+      "kind": "proposed design",
+      "inspection": "individually inspected"
+    },
+    {
+      "path": "planning/design/frontend-overhaul/renders/proposal-phone-en-light.jpg",
+      "sha256": "4ba35c60fceec722376d60c9a227a4f42da39306cb306b15cc50bef7a05369f5",
+      "bytes": 33085,
+      "width": 430,
+      "height": 932,
+      "mime": "image/jpeg",
+      "kind": "proposed design",
+      "inspection": "individually inspected"
+    },
+    {
+      "path": "planning/design/frontend-overhaul/renders/proposal-public-sketch.jpg",
+      "sha256": "e27a06443f9602e600aa38c787c2112758875b7c46f42488940a1a5bde85cba2",
+      "bytes": 115017,
+      "width": 1430,
+      "height": 1129,
+      "mime": "image/jpeg",
+      "kind": "proposed design",
+      "inspection": "individually inspected"
+    },
+    {
+      "path": "planning/design/frontend-overhaul/renders/proposal-shelf-mobile.jpg",
+      "sha256": "fb8f45a52cd3f728d8c7075c1c2d7543f8e5a1b4811cec5d2c63ebc37f3092c3",
+      "bytes": 48247,
+      "width": 380,
+      "height": 1348,
+      "mime": "image/jpeg",
+      "kind": "proposed design",
+      "inspection": "individually inspected"
+    },
+    {
+      "path": "planning/design/frontend-overhaul/renders/proposal-studio-ar-reading-mobile.jpg",
+      "sha256": "3c16bc17f6983ebce02faa1fb664348b739fc796bfb2d815c78bf7dce787b528",
+      "bytes": 34564,
+      "width": 380,
+      "height": 822,
+      "mime": "image/jpeg",
+      "kind": "proposed design",
+      "inspection": "individually inspected"
+    },
+    {
+      "path": "planning/design/frontend-overhaul/renders/proposal-studio-dark-ar-desktop.jpg",
+      "sha256": "dcfdd9d595f5228b143d0a28670e135a07b1cfc8477c530597ab202124be3e65",
+      "bytes": 81794,
+      "width": 1430,
+      "height": 993,
+      "mime": "image/jpeg",
+      "kind": "proposed design",
+      "inspection": "individually inspected"
+    },
+    {
+      "path": "planning/design/frontend-overhaul/renders/proposal-studio-dark-ar-mobile.jpg",
+      "sha256": "0eb735776f6fcd81eec2c8778c905c67b3e0c73a74c6dbb0c878fe081f796718",
+      "bytes": 23819,
+      "width": 380,
+      "height": 822,
+      "mime": "image/jpeg",
+      "kind": "proposed design",
+      "inspection": "individually inspected"
+    },
+    {
+      "path": "planning/design/frontend-overhaul/renders/proposal-studio-dark-desktop.jpg",
+      "sha256": "c7e16d0e2d95e205f97d3a811d316017741cd1086ca31508049e60b9d4cd9df7",
+      "bytes": 125525,
+      "width": 1430,
+      "height": 1207,
+      "mime": "image/jpeg",
+      "kind": "proposed design",
+      "inspection": "individually inspected"
+    },
+    {
+      "path": "planning/design/frontend-overhaul/renders/proposal-studio-dark-mobile.jpg",
+      "sha256": "de77bf9775b04b8a65188b16947f82f56edcab4f6e4a4315e35f171701397fc2",
+      "bytes": 75784,
+      "width": 380,
+      "height": 1662,
+      "mime": "image/jpeg",
+      "kind": "proposed design",
+      "inspection": "individually inspected"
+    },
+    {
+      "path": "planning/design/frontend-overhaul/renders/proposal-studio-light-ar-360.jpg",
+      "sha256": "ad76a7a0d4dfdf6ecceef8da4dc1934a6faed9e66f5db53a8838d835e1edab79",
+      "bytes": 22124,
+      "width": 350,
+      "height": 778,
+      "mime": "image/jpeg",
+      "kind": "proposed design",
+      "inspection": "individually inspected"
+    },
+    {
+      "path": "planning/design/frontend-overhaul/renders/proposal-studio-light-desktop.jpg",
+      "sha256": "41c049b0cd3d86aaa5541b844b5dafcd929d7379d7470ab9d9fba2471c03a95c",
+      "bytes": 122113,
+      "width": 1430,
+      "height": 1207,
+      "mime": "image/jpeg",
+      "kind": "proposed design",
+      "inspection": "individually inspected"
+    },
+    {
+      "path": "planning/design/frontend-overhaul/renders/proposal-studio-light-en-430.jpg",
+      "sha256": "4b45b9bf5fcb8b8250c50ae6a7414d02cca803b1ec697084230e7036cd6311e2",
+      "bytes": 72117,
+      "width": 420,
+      "height": 1566,
+      "mime": "image/jpeg",
+      "kind": "proposed design",
+      "inspection": "individually inspected"
+    },
+    {
+      "path": "planning/design/frontend-overhaul/renders/proposal-studio-light-tablet.jpg",
+      "sha256": "0f114e4336c6aae2c7df41cb671c3da713876d9d78b6d1ea6f049c2c1cf5f3bc",
+      "bytes": 113808,
+      "width": 758,
+      "height": 1635,
+      "mime": "image/jpeg",
+      "kind": "proposed design",
+      "inspection": "individually inspected"
+    },
+    {
+      "path": "planning/design/frontend-overhaul/renders/proposal-workspace-dark-desktop.jpg",
+      "sha256": "6ee60ab1621d88ed0dbbe4c0b21f60d843cb3ccb48dfdaae5b22e5af99e28e4f",
+      "bytes": 115376,
+      "width": 1430,
+      "height": 1067,
+      "mime": "image/jpeg",
+      "kind": "proposed design",
+      "inspection": "individually inspected"
+    },
+    {
+      "path": "planning/design/frontend-overhaul/renders/proposal-workspace-light-desktop.jpg",
+      "sha256": "db5a4034dfc48cfb6a03ce6b5a63c09c815646a5a5da564c0231f3398023b1fb",
+      "bytes": 112613,
+      "width": 1430,
+      "height": 1067,
+      "mime": "image/jpeg",
+      "kind": "proposed design",
+      "inspection": "individually inspected"
+    }
+  ],
+  "excluded": "Invalid RTL full-page crops were replaced; mislabeled desktop baseline captures and a scrolled transient Chat capture were removed. Unrelated logo concepts are outside this manifest."
+}
