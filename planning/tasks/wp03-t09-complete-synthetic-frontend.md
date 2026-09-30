@@ -12,7 +12,7 @@
 
 **Branch:** codex/wp03-complete-synthetic-frontend
 
-**Updated (UTC):** 2026-09-30T13:48:00Z
+**Updated (UTC):** 2026-09-30T14:55:26Z
 
 ## Derived execution envelope
 
@@ -91,7 +91,7 @@ Calendar, personal Workspace, global Sources and Progress have no approved stand
 
 **Preparation fingerprint:** NOT_READY
 
-**Unresolved findings:** NONE
+**Unresolved findings:** Founder rejected the frontend outcome; retain the native synthetic flow and revise the product presentation before acceptance.
 
 **Established facts:** NONE
 
@@ -146,3 +146,11 @@ The review wrapper, role switches, scenario selectors and manual stream-completi
 **Remaining decisions/gates:** D-08 retention/report disclosure and payload; D-18 storage-reference policy; paid providers/budgets; broad management editors/invitation delivery contracts. All review interactions are mock; existing real WP03 services remain functional and separately protected. Founder acceptance of this material native candidate is pending. After review, record the genuine candidate/scope receipt, complete preparation fingerprint/proof preflight and guarded verification, then normal exact-head delivery/affected proof. WP03-T10 remains unselected and WP04 remains unstarted by this work.
 
 **Next safe action:** Leave the loopback runtime and draft available, then stop for Ahmed's Chrome review as requested. Do not merge, promote, continue WP04 or treat method approval as design acceptance. The review uses no real information and changes no real identity, permission, preference, source, report, credential or backend record.
+
+## Founder review and continuation direction — 30 September 2026
+
+Ahmed reviewed the native-flow candidate and rejected its frontend/product outcome. He then explicitly requested retaining and pushing this branch so the next overhaul improves the frontend work while preserving the mock and synthetic flow: “the path was right but the destination is wrong.” This supersedes the suggestion to close the PR or start from clean main. It does not accept the current design or close WP03-T09/T10.
+
+Continue from `codex/wp03-complete-synthetic-frontend`; keep PR #64 open as a draft. Preserve the normal product route/navigation approach, isolated synthetic services, complete data pack and useful rejecting tests. Rework the information architecture, visual direction and interaction quality against product authority and a new concrete founder checkpoint. Technical PASS for runtime `3347e15` proves its exercised behavior and isolation; it is not design approval and must not exempt changed frontend surfaces from renewed proof.
+
+**Current next safe action:** Keep the branch pushed and the server stopped, then hand this direction to Ahmed for his new overhaul chat. Do not start an unsolicited redesign in this handoff. Resume the selected WP03-T09 task on this branch when the overhaul begins; plan its next work block, preserve working real services and completed task history, and keep material acceptance, protected delivery, WP03-T10 and WP04 pending.
