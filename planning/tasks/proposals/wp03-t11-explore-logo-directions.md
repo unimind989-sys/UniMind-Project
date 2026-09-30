@@ -4,7 +4,7 @@
 
 **Status:** [~]
 
-**Outcome:** Four independent UniMind logo directions are reviewable as vectors and one concept sheet before a direction is selected.
+**Outcome:** Reviewable UniMind logo concepts respond to founder feedback before a direction is selected; first-round proposals remain preserved.
 
 **Owner:** Codex `/root`; Ahmed is the selected speaker; no delegated workers.
 
@@ -12,7 +12,7 @@
 
 **Branch:** codex/unimind-logo-concepts
 
-**Updated (UTC):** 2026-09-30T15:08:24Z
+**Updated (UTC):** 2026-09-30T16:00:52Z
 
 ## Registration and scope
 
@@ -54,7 +54,7 @@ Initial production-kit instructions were superseded by Ahmed's reply: show all t
 
 **Inputs:** Latest origin/main `595be3ce91f20db635205ed914417288a93d4f8e`; preserved prior concept work; immutable accepted-design/product snapshots from frontend head `6babaa770d845c2fed2716f1027516ed616cca73`; current user instructions.
 
-**Files:** `planning/design/unimind-logo/`, this proposed record, and `evidence/wp03-product-shell/2026-09-30_logo-concepts_local_595be3c.md` only. Shared authority changes remain a proposal patch.
+**Files:** `planning/design/unimind-logo/`, this proposed record, and own logo evidence under `evidence/wp03-product-shell/` only. Shared authority changes remain a proposal patch.
 
 **Verify:** SVG structural audit; rendered overview and light/dark/English/Arabic examples; 16/32/64 px visual checks; transparency/contrast checks; readiness and secret scan; full diff/stat/check and scope review. Exact-head CI is reported separately for any draft PR. Application production proof and integration are outside scope.
 
@@ -96,6 +96,14 @@ Initial production-kit instructions were superseded by Ahmed's reply: show all t
 
 **Remaining:** Founder logo selection, final kit, application integration by the frontend agent after review. Runbook registration is a proposed shared-document handoff.
 
-**Next safe action:** Present all four concepts and the separate review branch; wait for direction selection.
+**Next safe action:** Present the new book-led concept sheet and the separate review branch; wait for direction selection.
 
-**Reviewer action:** Choose A, B, C or D, or request a refinement. Approval of the overall identity does not select a logo.
+**Reviewer action:** Select or refine a book-led direction. Approval of the overall identity does not select a logo.
+
+## Feedback iteration — book-led round
+
+Ahmed rejected A–D and supplied a raster reference with a white/blue open book and simple UniMind wordmark, calling it close but also incomplete. This supersedes the first-round direction-selection request. The source raster is identified by hash only; it is not copied into deliverable assets.
+
+Three new proposals are in `planning/design/unimind-logo/round-2/`: Open Folio, Page Turn and Bound U. Original book geometry is paired with outlined Manrope 650. The accepted palette remains intact; font source/license and reference provenance are recorded in that directory's README. V1 and V2 are preserved; V2 widens page gutters and balances the U binding. `concept-sheet-v2.png` is the current checkpoint.
+
+Current-round proof: `evidence/wp03-product-shell/2026-09-30_book-logo-concepts_local_00066e1.md`. New vectors, small-size readings, transparent symbol renders and contrast are verified separately from first-round assets. No responsive application proof, founder selection, final kit, integration, main merge or task completion is asserted.

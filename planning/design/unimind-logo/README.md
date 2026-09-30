@@ -1,8 +1,10 @@
 # UniMind logo concepts — isolated review
 
-Four proposals: A Sourcefold, B Focus Shelf, C Common Ground, D Mindwave. None is approved. No full kit or application integration is included. Ahmed requested A–C within the accepted Study Shelf identity and D as a separate expression of the executor's own taste.
+Current review: `round-2/concept-sheet-v2.png`, with three book-led proposals responding to Ahmed's reference. See `round-2/README.md` for exact vector paths, font provenance and current proof. No full kit or application integration is included.
 
-Start with `concept-review.png` or `concept-review.svg`. `layout-preview.html` and `layout-preview.png` show English/Arabic, light/dark and RTL placement. The vectors are in `concepts/`: each `a-sourcefold`, `b-focus-shelf`, `c-common-ground`, `d-mindwave` has a symbol `.svg` and horizontal `-lockup.svg`. These are proposal artwork, not final production variants.
+Historical first round: A Sourcefold, B Focus Shelf, C Common Ground, D Mindwave. Ahmed rejected all four; they remain preserved for continuity. Ahmed originally requested A–C within the accepted Study Shelf identity and D as a separate expression of the executor's own taste. The provenance and verification sections below describe that first round unless explicitly stated otherwise.
+
+First-round files: `concept-review.png` or `concept-review.svg`. `layout-preview.html` and `layout-preview.png` show English/Arabic, light/dark and RTL placement. The vectors are in `concepts/`: each `a-sourcefold`, `b-focus-shelf`, `c-common-ground`, `d-mindwave` has a symbol `.svg` and horizontal `-lockup.svg`. These are historical proposal artwork, not final production variants.
 
 ## Scope and isolation
 

@@ -1,0 +1,399 @@
+[
+ {
+  "file": "01-open-folio-lockup-v2.svg",
+  "bytes": 2877,
+  "viewBox": [
+   0.0,
+   0.0,
+   944.0,
+   256.0
+  ],
+  "aspect": 3.688,
+  "aspect_class": "horizontal",
+  "colors": [
+   "#ecf3f9",
+   "#3977f7"
+  ],
+  "gradients": 0,
+  "anchors": 158,
+  "library_anchor_percentiles": {
+   "p10": 23.0,
+   "p25": 37.0,
+   "median": 75.0,
+   "p75": 155.0,
+   "p90": 257.8,
+   "p95": 379.45
+  },
+  "content_bbox": [
+   32.0,
+   48.0,
+   905.26,
+   208.0
+  ],
+  "margins": {
+   "left": 32.0,
+   "right": 38.7,
+   "top": 48.0,
+   "bottom": 48.0
+  },
+  "bbox_fill_ratio": 0.578,
+  "score": 98,
+  "findings": [
+   {
+    "level": "INFO",
+    "code": "precision",
+    "message": "Coordinates with 4+ decimals: round to 0–2 decimals to reduce size and reveal misalignments."
+   },
+   {
+    "level": "INFO",
+    "code": "complexity",
+    "message": "158 anchor points (library median 75.0, p75 155.0). Check every point earns its place."
+   }
+  ]
+ },
+ {
+  "file": "01-open-folio-mono-v2.svg",
+  "bytes": 347,
+  "viewBox": [
+   0.0,
+   0.0,
+   256.0,
+   256.0
+  ],
+  "aspect": 1.0,
+  "aspect_class": "square",
+  "colors": [
+   "#111111"
+  ],
+  "gradients": 0,
+  "anchors": 14,
+  "library_anchor_percentiles": {
+   "p10": 21.0,
+   "p25": 31.0,
+   "median": 53.0,
+   "p75": 95.5,
+   "p90": 194.0,
+   "p95": 274.0
+  },
+  "content_bbox": [
+   32.0,
+   48.0,
+   224.0,
+   208.0
+  ],
+  "margins": {
+   "left": 32.0,
+   "right": 32.0,
+   "top": 48.0,
+   "bottom": 48.0
+  },
+  "bbox_fill_ratio": 0.469,
+  "score": 100,
+  "findings": []
+ },
+ {
+  "file": "01-open-folio-v2.svg",
+  "bytes": 347,
+  "viewBox": [
+   0.0,
+   0.0,
+   256.0,
+   256.0
+  ],
+  "aspect": 1.0,
+  "aspect_class": "square",
+  "colors": [
+   "#ecf3f9",
+   "#3977f7"
+  ],
+  "gradients": 0,
+  "anchors": 14,
+  "library_anchor_percentiles": {
+   "p10": 21.0,
+   "p25": 31.0,
+   "median": 53.0,
+   "p75": 95.5,
+   "p90": 194.0,
+   "p95": 274.0
+  },
+  "content_bbox": [
+   32.0,
+   48.0,
+   224.0,
+   208.0
+  ],
+  "margins": {
+   "left": 32.0,
+   "right": 32.0,
+   "top": 48.0,
+   "bottom": 48.0
+  },
+  "bbox_fill_ratio": 0.469,
+  "score": 100,
+  "findings": []
+ },
+ {
+  "file": "02-page-turn-lockup-v2.svg",
+  "bytes": 2875,
+  "viewBox": [
+   0.0,
+   0.0,
+   944.0,
+   256.0
+  ],
+  "aspect": 3.688,
+  "aspect_class": "horizontal",
+  "colors": [
+   "#ecf3f9",
+   "#3977f7"
+  ],
+  "gradients": 0,
+  "anchors": 158,
+  "library_anchor_percentiles": {
+   "p10": 23.0,
+   "p25": 37.0,
+   "median": 75.0,
+   "p75": 155.0,
+   "p90": 257.8,
+   "p95": 379.45
+  },
+  "content_bbox": [
+   32.0,
+   41.31,
+   905.26,
+   212.0
+  ],
+  "margins": {
+   "left": 32.0,
+   "right": 38.7,
+   "top": 41.3,
+   "bottom": 44.0
+  },
+  "bbox_fill_ratio": 0.617,
+  "score": 98,
+  "findings": [
+   {
+    "level": "INFO",
+    "code": "precision",
+    "message": "Coordinates with 4+ decimals: round to 0–2 decimals to reduce size and reveal misalignments."
+   },
+   {
+    "level": "INFO",
+    "code": "complexity",
+    "message": "158 anchor points (library median 75.0, p75 155.0). Check every point earns its place."
+   }
+  ]
+ },
+ {
+  "file": "02-page-turn-mono-v2.svg",
+  "bytes": 345,
+  "viewBox": [
+   0.0,
+   0.0,
+   256.0,
+   256.0
+  ],
+  "aspect": 1.0,
+  "aspect_class": "square",
+  "colors": [
+   "#111111"
+  ],
+  "gradients": 0,
+  "anchors": 14,
+  "library_anchor_percentiles": {
+   "p10": 21.0,
+   "p25": 31.0,
+   "median": 53.0,
+   "p75": 95.5,
+   "p90": 194.0,
+   "p95": 274.0
+  },
+  "content_bbox": [
+   32.0,
+   41.31,
+   224.0,
+   212.0
+  ],
+  "margins": {
+   "left": 32.0,
+   "right": 32.0,
+   "top": 41.3,
+   "bottom": 44.0
+  },
+  "bbox_fill_ratio": 0.5,
+  "score": 100,
+  "findings": []
+ },
+ {
+  "file": "02-page-turn-v2.svg",
+  "bytes": 345,
+  "viewBox": [
+   0.0,
+   0.0,
+   256.0,
+   256.0
+  ],
+  "aspect": 1.0,
+  "aspect_class": "square",
+  "colors": [
+   "#ecf3f9",
+   "#3977f7"
+  ],
+  "gradients": 0,
+  "anchors": 14,
+  "library_anchor_percentiles": {
+   "p10": 21.0,
+   "p25": 31.0,
+   "median": 53.0,
+   "p75": 95.5,
+   "p90": 194.0,
+   "p95": 274.0
+  },
+  "content_bbox": [
+   32.0,
+   41.31,
+   224.0,
+   212.0
+  ],
+  "margins": {
+   "left": 32.0,
+   "right": 32.0,
+   "top": 41.3,
+   "bottom": 44.0
+  },
+  "bbox_fill_ratio": 0.5,
+  "score": 100,
+  "findings": []
+ },
+ {
+  "file": "03-bound-u-lockup-v2.svg",
+  "bytes": 2862,
+  "viewBox": [
+   0.0,
+   0.0,
+   944.0,
+   256.0
+  ],
+  "aspect": 3.688,
+  "aspect_class": "horizontal",
+  "colors": [
+   "#ecf3f9"
+  ],
+  "gradients": 0,
+  "anchors": 157,
+  "library_anchor_percentiles": {
+   "p10": 23.0,
+   "p25": 37.0,
+   "median": 75.0,
+   "p75": 155.0,
+   "p90": 257.8,
+   "p95": 379.45
+  },
+  "content_bbox": [
+   32.0,
+   44.0,
+   905.26,
+   212.0
+  ],
+  "margins": {
+   "left": 32.0,
+   "right": 38.7,
+   "top": 44.0,
+   "bottom": 44.0
+  },
+  "bbox_fill_ratio": 0.607,
+  "score": 98,
+  "findings": [
+   {
+    "level": "INFO",
+    "code": "precision",
+    "message": "Coordinates with 4+ decimals: round to 0–2 decimals to reduce size and reveal misalignments."
+   },
+   {
+    "level": "INFO",
+    "code": "complexity",
+    "message": "157 anchor points (library median 75.0, p75 155.0). Check every point earns its place."
+   }
+  ]
+ },
+ {
+  "file": "03-bound-u-mono-v2.svg",
+  "bytes": 332,
+  "viewBox": [
+   0.0,
+   0.0,
+   256.0,
+   256.0
+  ],
+  "aspect": 1.0,
+  "aspect_class": "square",
+  "colors": [
+   "#111111"
+  ],
+  "gradients": 0,
+  "anchors": 13,
+  "library_anchor_percentiles": {
+   "p10": 21.0,
+   "p25": 31.0,
+   "median": 53.0,
+   "p75": 95.5,
+   "p90": 194.0,
+   "p95": 274.0
+  },
+  "content_bbox": [
+   32.0,
+   44.0,
+   224.0,
+   212.0
+  ],
+  "margins": {
+   "left": 32.0,
+   "right": 32.0,
+   "top": 44.0,
+   "bottom": 44.0
+  },
+  "bbox_fill_ratio": 0.492,
+  "score": 100,
+  "findings": []
+ },
+ {
+  "file": "03-bound-u-v2.svg",
+  "bytes": 332,
+  "viewBox": [
+   0.0,
+   0.0,
+   256.0,
+   256.0
+  ],
+  "aspect": 1.0,
+  "aspect_class": "square",
+  "colors": [
+   "#ecf3f9"
+  ],
+  "gradients": 0,
+  "anchors": 13,
+  "library_anchor_percentiles": {
+   "p10": 21.0,
+   "p25": 31.0,
+   "median": 53.0,
+   "p75": 95.5,
+   "p90": 194.0,
+   "p95": 274.0
+  },
+  "content_bbox": [
+   32.0,
+   44.0,
+   224.0,
+   212.0
+  ],
+  "margins": {
+   "left": 32.0,
+   "right": 32.0,
+   "top": 44.0,
+   "bottom": 44.0
+  },
+  "bbox_fill_ratio": 0.492,
+  "score": 100,
+  "findings": []
+ }
+]

@@ -1,0 +1,29 @@
+{
+  "scope": "round 2 concepts only; not approved or a production kit",
+  "svgFiles": 9,
+  "transparentSymbolRenders": 3,
+  "contrastRatios": {
+    "#ecf3f9 on #0c1823": 16.02,
+    "#0c1823 on #ffffff": 17.94,
+    "#3977f7 on #0c1823": 4.4,
+    "#3977f7 on #ffffff": 4.07
+  },
+  "sha256": {
+    "01-open-folio-v2.svg": "76ad56bc3c6d5f0041714c8da3b4346cfaa6e9f24f90de96a909a7b395e14d39",
+    "01-open-folio-mono-v2.svg": "25871380e56b1bd7916e742afac82b1fc84f6258b2d47fc93e14e208d6f49d30",
+    "01-open-folio-lockup-v2.svg": "50e48521af9ecda474e2ca93fc664d23e3ab0c93da1debdcc474cfc309e650ae",
+    "01-open-folio-transparency-inspection.png": "57aff3ac529cbb2d0077245a067ca9c38a9c22c3117442a3f794c5ff8a49a46d",
+    "02-page-turn-v2.svg": "2d43421f685a3b101c72b350d86c06532c09c7501d490436e072680cc4cc56d7",
+    "02-page-turn-mono-v2.svg": "d0b303e0eb03842bc4efeb5aa6625689d78870f69d2b49cb885adbd5bcf2bce9",
+    "02-page-turn-lockup-v2.svg": "117095e501db3b0f8e22c1966fdd0084d0aa13d79fec3be5a372d73c1642fddf",
+    "02-page-turn-transparency-inspection.png": "4d65c687aa024aed10ac17ae482bd851658e59ea96476daf8f0670c78ab270b9",
+    "03-bound-u-v2.svg": "cb055df069cf3626700404dacd7a95746f93ac7d60e529e04b0347828a56d4f1",
+    "03-bound-u-mono-v2.svg": "01267f6ae05c4970b5d113490ec9508158d1423458730f7abf4f0a576407dfb5",
+    "03-bound-u-lockup-v2.svg": "168d9551112e83d228f85cfcef71eafdbe7804a576beaea992b041a0463229bd",
+    "03-bound-u-transparency-inspection.png": "1b2eb13f9e5dbd321af149ebe292d27f8d064d08d75f5dc79dd5bc9795d38599",
+    "concept-sheet-v2.svg": "433f75680685a21f5bd3eab529777b679aa4fa3cf7082bb8f8f491a0a560e188",
+    "concept-sheet-v2.png": "0086a43889d06405a7aa85dfef97e2cea90524b4214091f2eab5bb301a4812aa",
+    "provenance/manrope-variable.ttf": "3ae11c49db0455a3cc33e37d380f20fdb8c7f8b41dc07625c177e3d87a9d6ae6",
+    "provenance/manrope-ofl.txt": "d6a309fcfb963d329a93baf9df66fa5f3c23a4be2b5f67edf24d6cafecde12ac"
+  }
+}
