@@ -20,7 +20,7 @@ export function ProductLink({
   return (
     <Link
       className={styles.link}
-      href={`${address.pathname}${address.search}` as Route}
+      href={`${address.pathname}${address.search}${address.hash}` as Route}
       prefetch={false}
     >
       {children}

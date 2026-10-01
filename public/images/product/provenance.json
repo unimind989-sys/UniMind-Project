@@ -1,0 +1,42 @@
+{
+  "scope": "Actual inspected synthetic student Studio screenshots, copied without editing; not generated artwork or live-provider output",
+  "capture": "In-app browser; nominal CSS viewport 1440 x 1000, raster dimensions recorded per file",
+  "files": [
+    {
+      "file": "studio-ar-dark.jpg",
+      "source": "planning/design/frontend-overhaul/student-checkpoint/studio-dark-ar-1440.jpg",
+      "sha256": "75513d59c18fc66e013aeb850f0c9a79f29200013f30353cd643c39179cab501",
+      "raster": {
+        "width": 1430,
+        "height": 993
+      }
+    },
+    {
+      "file": "studio-ar-light.jpg",
+      "source": "planning/design/frontend-overhaul/student-checkpoint/studio-light-ar-1440.jpg",
+      "sha256": "e01fba4bdcf40910700426ec7c9f7de512e596cd5956f508a716c9703cea7522",
+      "raster": {
+        "width": 1430,
+        "height": 993
+      }
+    },
+    {
+      "file": "studio-en-dark.jpg",
+      "source": "planning/design/frontend-overhaul/student-checkpoint/studio-dark-en-1440.jpg",
+      "sha256": "375dd6c1f3715c662f589d86e630d59a398c2d78abe990202f420d252785e2ae",
+      "raster": {
+        "width": 1430,
+        "height": 993
+      }
+    },
+    {
+      "file": "studio-en-light.jpg",
+      "source": "planning/design/frontend-overhaul/student-checkpoint/studio-light-en-1440.jpg",
+      "sha256": "e7c49a094be73012727d1f4e28e674fbe365a8dcb6985a4b0bc67b5f8d46e47a",
+      "raster": {
+        "width": 1430,
+        "height": 993
+      }
+    }
+  ]
+}

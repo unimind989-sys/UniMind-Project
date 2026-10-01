@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, type ReactNode } from "react";
 import { initialReviewState, type ReviewState } from "./synthetic-fixtures";
+import type { AcademicContext } from "@/lib/account/account.application";
 
 export type DemoRole = "student" | "leader" | "admin" | "second-admin";
 export type ProductState = Omit<ReviewState, "attempts"> & {
@@ -27,6 +28,7 @@ export type ProductState = Omit<ReviewState, "attempts"> & {
   >;
   lastStudyPath: string | null;
   studioDrafts: ProductState["artifacts"];
+  academicContext: AcademicContext | null;
 };
 export function initialProductState(): ProductState {
   return {
@@ -41,6 +43,7 @@ export function initialProductState(): ProductState {
     chatDrafts: {},
     lastStudyPath: null,
     studioDrafts: {},
+    academicContext: null,
   };
 }
 type Services = {

@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useProductServices } from "@/app/_components/product-services";
 import {
   Button,
@@ -12,10 +12,7 @@ import {
   defaultScope,
   text,
 } from "@/app/_components/synthetic-fixtures";
-import {
-  FrontendIcon,
-  type FrontendIconName,
-} from "@/app/_components/frontend-system";
+import { FrontendIcon } from "@/app/_components/frontend-system";
 import type { ProductStudyProps } from "./product-study";
 import styles from "@/app/_components/product.module.css";
 import studyStyles from "./product-study.module.css";
@@ -57,6 +54,8 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
       },
     }));
   const [flipped, setFlipped] = useState(false);
+  const outputHeading = useRef<HTMLHeadingElement>(null);
+  const completed = useRef(false);
   const [notice, setNotice] = useState("");
   const [request, setRequest] = useState<{
     type: string;
@@ -68,6 +67,7 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
   useEffect(() => {
     if (!request) return;
     const timer = setTimeout(() => {
+      completed.current = true;
       update((current) => ({
         ...current,
         artifacts: { ...current.artifacts, [scope.unitId]: request },
@@ -79,21 +79,27 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
   }, [request, scope.unitId, update]);
   const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
   const artifact = state.artifacts[scope.unitId];
+  useEffect(() => {
+    if (artifact && completed.current) {
+      completed.current = false;
+      outputHeading.current?.focus();
+    }
+  }, [artifact]);
   const handoutAvailable =
     scope.unitId !== defaultScope.unitId || state.availability.sourceActive;
   return (
     <div className={studyStyles.studio}>
       <div className={studyStyles.sectionHeading}>
         <h2>{t("Studio", "الاستوديو")}</h2>
-        <ProductLink href={base + "/sources"} locale={locale}>
+        <ProductLink href={base + "/sources?from=studio"} locale={locale}>
           <FrontendIcon name="sources" />
           {t("Unit sources", "مصادر الوحدة")}
         </ProductLink>
       </div>
       <p className={studyStyles.intro}>
         {t(
-          "Turn this unit’s sources into a study aid. This demo prepares fixed examples from the same sample pool.",
-          "حوّل مصادر هذه الوحدة لأداة مذاكرة. العرض يجهز أمثلة ثابتة من نفس مجموعة المصادر التجريبية.",
+          "Make a study aid from this subject’s sample materials.",
+          "أعد أداة مذاكرة من المواد التجريبية لهذه المادة.",
         )}
       </p>
       <div className={studyStyles.studioLayout}>
@@ -128,20 +134,6 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
                   value={id}
                   checked={type === id}
                   onChange={() => setOption("type", id)}
-                />
-                <FrontendIcon
-                  name={
-                    (
-                      {
-                        summary: "summary",
-                        guide: "studio",
-                        practice: "chat",
-                        flashcards: "cards",
-                        revision: "sources",
-                        quiz: "quiz",
-                      } as Record<string, FrontendIconName>
-                    )[id]!
-                  }
                 />
                 <span>{t(en, ar)}</span>
               </label>
@@ -228,7 +220,7 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
           {notice ? <Notice>{notice}</Notice> : null}
           {artifact ? (
             <section className={studyStyles.artifactOutput}>
-              <h2>
+              <h2 ref={outputHeading} tabIndex={-1}>
                 {t("Simulated artifact", "مخرج محاكى")}:{" "}
                 {text(
                   (
@@ -357,7 +349,10 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
                 )}
               </p>
               <div className={styles.actions}>
-                <ProductLink href={base + "/sources"} locale={locale}>
+                <ProductLink
+                  href={base + "/sources?from=studio"}
+                  locale={locale}
+                >
                   {t("Inspect source pool", "فحص مجموعة المصادر")}
                 </ProductLink>
                 {artifact.type === "quiz" ? (

@@ -303,7 +303,7 @@
 .primaryAction {
   border: 0;
   background: var(--accent-focus);
-  color: white;
+  color: var(--on-accent);
   cursor: pointer;
 }
 .unavailable,
@@ -432,7 +432,7 @@
   border-radius: 0.65rem;
   padding-inline: 1rem;
   background: var(--accent);
-  color: white;
+  color: var(--on-accent);
   font: inherit;
   font-weight: 700;
   text-decoration: none;

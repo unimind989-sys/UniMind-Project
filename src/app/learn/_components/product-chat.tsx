@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useProductServices } from "@/app/_components/product-services";
 import { Button, Notice, ProductLink } from "@/app/_components/product-ui";
 import { FrontendIcon } from "@/app/_components/frontend-system";
@@ -27,6 +28,21 @@ const kindNames: Record<ResponseKind, readonly [string, string]> = {
 
 export function ProductChat({ scope, locale, base }: ProductStudyProps) {
   const { state, update } = useProductServices();
+  const requestedSession = useSearchParams().get("session");
+  useEffect(() => {
+    if (!requestedSession) return;
+    const id = Number(requestedSession);
+    update((current) =>
+      current.sessions.some(
+        (session) => session.scope === scope.unitId && session.id === id,
+      ) && current.activeSessions[scope.unitId] !== id
+        ? {
+            ...current,
+            activeSessions: { ...current.activeSessions, [scope.unitId]: id },
+          }
+        : current,
+    );
+  }, [requestedSession, scope.unitId, update]);
   const [sending, setSending] = useState<SampleAnswer | null>(null);
   const [notice, setNotice] = useState("");
   const input = useRef<HTMLTextAreaElement>(null);
@@ -253,7 +269,11 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
             </div>
           ) : null}
           {selected?.answers.map((answer, index) => (
-            <article className={styles.exchange} key={index}>
+            <article
+              className={styles.exchange}
+              key={index}
+              id={`exchange-${index + 1}`}
+            >
               <div
                 className={styles.questionBubble}
                 dir={answer.language === "en" ? "ltr" : "rtl"}

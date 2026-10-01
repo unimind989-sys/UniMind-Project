@@ -6,6 +6,37 @@ import {
   resolveDemoRuntime,
 } from "./lib/demo/demo-runtime.application";
 
+const brandFiles = new Set([
+  "unimind-open-folio-horizontal-light.svg",
+  "unimind-open-folio-horizontal-dark.svg",
+  "unimind-open-folio-horizontal-white.svg",
+  "unimind-open-folio-symbol-light.svg",
+  "unimind-open-folio-symbol-dark.svg",
+  "unimind-open-folio-symbol-white.svg",
+  "unimind-open-folio-symbol-small-light.svg",
+  "unimind-open-folio-symbol-small-dark.svg",
+  "icons/favicon.svg",
+  "icons/favicon-light.svg",
+  "icons/favicon-dark.svg",
+  "icons/favicon.ico",
+  "icons/favicon-16.png",
+  "icons/favicon-32.png",
+  "icons/favicon-48.png",
+  "icons/apple-touch-icon.png",
+  "icons/icon-192.png",
+  "icons/icon-512.png",
+  "icons/maskable-512.png",
+  "icons/maskable-icon.svg",
+  "icons/app-icon.svg",
+  "icons/site.webmanifest",
+]);
+function publicBrandAsset(path: string) {
+  return (
+    path.startsWith("/brand/unimind/") &&
+    brandFiles.has(path.slice("/brand/unimind/".length))
+  );
+}
+
 export async function proxy(request: NextRequest) {
   const demo = resolveDemoRuntime(process.env);
   if (demo !== "DISABLED") {
@@ -48,8 +79,13 @@ export async function proxy(request: NextRequest) {
       !path.startsWith("/_next/") &&
       !path.startsWith("/demo-files/") &&
       !/^\/images\/study-shelf\/[a-z-]+\.png$/u.test(path) &&
+      !/^\/images\/product\/studio-(?:en|ar)-(?:light|dark)\.jpg$/u.test(
+        path,
+      ) &&
       path !== "/favicon.ico" &&
       path !== "/icon.svg" &&
+      path !== "/apple-icon.png" &&
+      !publicBrandAsset(path) &&
       !path.startsWith("/synthetic-runtime/")
     )
       return new NextResponse("Not found in the synthetic product.", {
@@ -72,6 +108,7 @@ export async function proxy(request: NextRequest) {
     path.startsWith("/_next/static") ||
     path.startsWith("/_next/image") ||
     path === "/favicon.ico" ||
+    publicBrandAsset(path) ||
     /\.(?:svg|png|jpg|jpeg|gif|webp)$/u.test(path)
   )
     return NextResponse.next();

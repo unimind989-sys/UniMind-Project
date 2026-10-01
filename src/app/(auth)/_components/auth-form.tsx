@@ -196,7 +196,7 @@ export function AuthForm({
 
   return (
     <section className={styles.formRegion} aria-labelledby={`${mode}-title`}>
-      <h3 id={`${mode}-title`}>{title}</h3>
+      <h1 id={`${mode}-title`}>{title}</h1>
       {mode === "verify" ? <p>{copy.verifyHelp}</p> : null}
       {mode === "forgot" ? <p>{copy.recoveryHelp}</p> : null}
       {mode === "register" || mode === "reset" ? (

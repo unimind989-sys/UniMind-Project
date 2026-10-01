@@ -92,6 +92,214 @@ async function send(
   ).toHaveCount(0);
 }
 for (const locale of ["en", "ar"] as const) {
+  test(`${locale}: academic setup, editable account settings and persistent appearance`, async ({
+    page,
+  }) => {
+    const finish = isolation(page);
+    await signIn(page, "student", locale);
+    await expect(
+      page.getByRole("heading", {
+        name: pick(locale, "Set up your Study Shelf", "إعداد رف المذاكرة"),
+      }),
+    ).toBeVisible();
+    await expect(page).toHaveTitle(/\S/u);
+    expect(
+      (
+        await new AxeBuilder({ page })
+          .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+          .analyze()
+      ).violations,
+    ).toEqual([]);
+    await page
+      .getByLabel(pick(locale, "Education stage", "المرحلة التعليمية"), {
+        exact: true,
+      })
+      .selectOption("university");
+    await page
+      .getByLabel(pick(locale, "University", "الجامعة"), { exact: true })
+      .selectOption("zagazig-university");
+    await page
+      .getByLabel(pick(locale, "Faculty", "الكلية"), { exact: true })
+      .selectOption("human-medicine");
+    await page
+      .getByLabel(pick(locale, "Academic year", "السنة الدراسية"), {
+        exact: true,
+      })
+      .selectOption("human-medicine-year-1");
+    await page
+      .getByLabel(pick(locale, "Study period", "الفترة الدراسية"), {
+        exact: true,
+      })
+      .selectOption("human-medicine-year-1-term-1");
+    await page
+      .getByRole("button", {
+        name: pick(locale, "Open Study Shelf", "فتح رف المذاكرة"),
+        exact: true,
+      })
+      .click();
+    await expect(
+      page.getByRole("heading", {
+        name: pick(locale, "Your Study Shelf", "رف المذاكرة"),
+        exact: true,
+      }),
+    ).toBeFocused();
+    await expect(
+      page.getByRole("link", {
+        name: pick(locale, "Open Anatomy", "فتح علم التشريح"),
+        exact: true,
+      }),
+    ).toBeVisible();
+    await navigate(page, "/settings", locale);
+    await expect(
+      page.getByRole("heading", {
+        name: pick(locale, "Account", "الحساب"),
+        exact: true,
+      }),
+    ).toBeVisible();
+    await expect(page).toHaveTitle(/\S/u);
+    expect(
+      (
+        await new AxeBuilder({ page })
+          .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+          .analyze()
+      ).violations,
+    ).toEqual([]);
+    await expect(
+      page.getByLabel(pick(locale, "Academic year", "السنة الدراسية"), {
+        exact: true,
+      }),
+    ).toHaveValue("human-medicine-year-1");
+    const appearance = page.getByLabel(pick(locale, "Theme", "السمة"), {
+      exact: true,
+    });
+    await appearance.selectOption("dark");
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+    await appearance.selectOption("light");
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+    await appearance.selectOption("system");
+    await page.emulateMedia({ colorScheme: "dark" });
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+    await page.emulateMedia({ colorScheme: "light" });
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+    await appearance.selectOption("dark");
+    await page
+      .getByLabel(pick(locale, "Academic year", "السنة الدراسية"), {
+        exact: true,
+      })
+      .selectOption("human-medicine-year-2");
+    await page
+      .getByLabel(pick(locale, "Study period", "الفترة الدراسية"), {
+        exact: true,
+      })
+      .selectOption("human-medicine-year-2-term-1");
+    await page
+      .getByRole("button", {
+        name: pick(locale, "Save academic settings", "حفظ الإعدادات الدراسية"),
+        exact: true,
+      })
+      .click();
+    await expect(
+      page.getByRole("status").filter({
+        hasText: pick(
+          locale,
+          "Academic settings saved.",
+          "تم حفظ الإعدادات الدراسية.",
+        ),
+      }),
+    ).toBeVisible();
+    await navigate(page, "/learn", locale);
+    await expect(
+      page.getByText(
+        pick(
+          locale,
+          "Faculty of Medicine · Second year · Term 1",
+          "كلية الطب البشري · السنة الثانية · الترم الأول",
+        ),
+        { exact: true },
+      ),
+    ).toBeVisible();
+    await expect(page).toHaveTitle(/\S/u);
+    expect(
+      (
+        await new AxeBuilder({ page })
+          .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+          .analyze()
+      ).violations,
+    ).toEqual([]);
+    // The isolated demo resets identity/profile memory on reload. Appearance
+    // alone persists; actual profile durability is proven at the SQL seam.
+    await page.reload();
+    await expect(page).toHaveURL(/\/login\?/u);
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+    finish();
+  });
+}
+for (const locale of ["en", "ar"] as const) {
+  test(`${locale}: public and identity surfaces reflow with AA contrast in both themes`, async ({
+    page,
+  }) => {
+    const finish = isolation(page);
+    for (const theme of ["light", "dark"] as const) {
+      await page.emulateMedia({ colorScheme: theme });
+      for (const width of [1440, 390, 320]) {
+        await page.setViewportSize({ width, height: 900 });
+        for (const path of [
+          "/",
+          "/login",
+          "/register",
+          "/verify-email?status=expired_link",
+          "/forgot-password?status=replayed_link",
+        ]) {
+          await page.goto(
+            `${path}${path.includes("?") ? "&" : "?"}lang=${locale}`,
+          );
+          await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+          await expect(page).toHaveTitle(/\S/u);
+          await expect(page.locator("html")).toHaveAttribute(
+            "data-theme",
+            theme,
+          );
+          expect(
+            await page.evaluate(
+              () => document.documentElement.scrollWidth <= innerWidth + 1,
+            ),
+          ).toBe(true);
+          expect(
+            (
+              await new AxeBuilder({ page })
+                .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+                .analyze()
+            ).violations,
+          ).toEqual([]);
+        }
+      }
+    }
+    finish();
+  });
+}
+test("appearance storage denial falls back to System and controls remain usable", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    Storage.prototype.getItem = () => {
+      throw new DOMException("Synthetic storage denied", "SecurityError");
+    };
+    Storage.prototype.setItem = () => {
+      throw new DOMException("Synthetic storage denied", "SecurityError");
+    };
+  });
+  await page.emulateMedia({ colorScheme: "dark" });
+  await page.goto("/");
+  await expect(
+    page.getByRole("heading", { name: "Study deeper Go further." }),
+  ).toBeVisible();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  await signIn(page, "student", "en", unit);
+  await navigate(page, "/settings");
+  await page.getByLabel("Theme", { exact: true }).selectOption("light");
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+});
+for (const locale of ["en", "ar"] as const) {
   test(`${locale}: normal student session, seven answer outcomes, evidence and report`, async ({
     page,
   }) => {
@@ -169,7 +377,7 @@ for (const locale of ["en", "ar"] as const) {
         page.getByRole("heading", {
           name: new RegExp(pick(locale, "Simulated artifact", "مخرج محاكى")),
         }),
-      ).toBeVisible();
+      ).toBeFocused();
       await expect(
         page.getByRole("button", {
           name: pick(locale, "Generate", "إنشاء"),
@@ -177,6 +385,39 @@ for (const locale of ["en", "ar"] as const) {
         }),
       ).toBeEnabled();
     }
+    await page
+      .getByRole("link", {
+        name: pick(locale, "Unit sources", "مصادر الوحدة"),
+        exact: true,
+      })
+      .click();
+    await page
+      .getByText(pick(locale, "View supporting excerpt", "عرض النص الداعم"), {
+        exact: true,
+      })
+      .first()
+      .click();
+    await expect(
+      page.getByText(
+        pick(
+          locale,
+          "Identify the labels, then compare the diagrams.",
+          "حدد الأسماء ثم قارن الرسوم.",
+        ),
+        { exact: true },
+      ),
+    ).toBeVisible();
+    await page
+      .getByRole("link", {
+        name: pick(locale, "Return to Studio", "العودة للاستوديو"),
+        exact: true,
+      })
+      .click();
+    await expect(
+      page.getByRole("heading", {
+        name: new RegExp(pick(locale, "Simulated artifact", "مخرج محاكى")),
+      }),
+    ).toBeVisible();
     await navigate(page, unit + "/quiz", locale);
     await page
       .getByRole("button", {
@@ -848,24 +1089,25 @@ for (const locale of ["en", "ar"] as const) {
   }) => {
     const finish = isolation(page);
     await signIn(page, "student", locale, unit + "/chat");
-    await expect(page.locator('[data-overhaul="checkpoint"]')).toHaveCount(1);
-    const account = page.locator('[data-overhaul="checkpoint"] header summary');
+    await expect(page.locator('[data-role="student"]')).toHaveCount(1);
+    const account = page.getByRole("link", {
+      name: pick(locale, "Account", "الحساب"),
+      exact: true,
+    });
     await account.focus();
     await account.press("Enter");
     await expect(
-      page.getByRole("link", {
-        name: pick(locale, "Settings", "الإعدادات"),
+      page.getByRole("heading", {
+        name: pick(locale, "Account", "الحساب"),
         exact: true,
       }),
     ).toBeVisible();
-    await account.press("Escape");
-    await expect(account).toBeFocused();
-    await expect(
-      page.getByRole("link", {
-        name: pick(locale, "Settings", "الإعدادات"),
+    await page
+      .getByRole("link", {
+        name: pick(locale, "Back to study", "العودة للمذاكرة"),
         exact: true,
-      }),
-    ).toHaveCount(0);
+      })
+      .click();
     await expect(
       page.getByLabel(pick(locale, "Switch unit", "تغيير الوحدة"), {
         exact: true,
@@ -1023,59 +1265,76 @@ for (const locale of ["en", "ar"] as const) {
           }),
         ).toBeVisible();
       }
-      for (const width of [1440, 768, 390, 320]) {
-        await page.setViewportSize({ width, height: 900 });
-        await expect(
-          page.getByRole("navigation").getByRole("link"),
-        ).toHaveCount(5);
-        const inspect = async () =>
-          page.evaluate(() => ({
-            overflow: document.documentElement.scrollWidth > innerWidth + 1,
-            controls: [
-              ...document.querySelectorAll(
-                '[data-overhaul="checkpoint"] button, [data-overhaul="checkpoint"] a, [data-overhaul="checkpoint"] select, [data-overhaul="checkpoint"] textarea, [data-overhaul="checkpoint"] summary',
-              ),
-            ]
-              .filter((element) => {
-                const rect = element.getBoundingClientRect();
-                return (
-                  rect.width > 0 &&
-                  rect.height > 0 &&
-                  getComputedStyle(element).visibility !== "hidden"
-                );
-              })
-              .filter((element) => {
-                const rect = element.getBoundingClientRect();
-                return (
-                  rect.left < -1 ||
-                  rect.right > innerWidth + 1 ||
-                  rect.height < 43 ||
-                  (element.matches("button") &&
-                    element.scrollWidth > element.clientWidth + 2)
-                );
-              })
-              .map((element) => element.textContent?.trim().slice(0, 80)),
-          }));
-        expect(await inspect()).toEqual({ overflow: false, controls: [] });
-        const axe = await new AxeBuilder({ page })
-          .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
-          .analyze();
-        expect(axe.violations).toEqual([]);
-        const directory = nodePath.join(".impeccable/review/overhaul", locale);
-        await mkdir(directory, { recursive: true });
-        await page.screenshot({
-          path: nodePath.join(directory, `${screen}-${width}.png`),
-          fullPage: true,
-          animations: "disabled",
-        });
-        if (width === 320) {
-          await page.evaluate(() => {
-            document.documentElement.style.fontSize = "200%";
-          });
+      for (const theme of ["light", "dark"]) {
+        await navigate(page, "/settings", locale);
+        await page
+          .getByLabel(pick(locale, "Theme", "السمة"), { exact: true })
+          .selectOption(theme);
+        await page
+          .getByRole("link", {
+            name: pick(locale, "Back to study", "العودة للمذاكرة"),
+            exact: true,
+          })
+          .click();
+        for (const width of [1440, 768, 430, 390, 360, 320]) {
+          await page.setViewportSize({ width, height: 900 });
+          await expect(
+            page.getByRole("navigation").getByRole("link"),
+          ).toHaveCount(7);
+          const inspect = async () =>
+            page.evaluate(() => ({
+              overflow: document.documentElement.scrollWidth > innerWidth + 1,
+              controls: [
+                ...document.querySelectorAll(
+                  '[data-role="student"] button, [data-role="student"] a, [data-role="student"] select, [data-role="student"] textarea, [data-role="student"] summary',
+                ),
+              ]
+                .filter((element) => {
+                  const rect = element.getBoundingClientRect();
+                  return (
+                    rect.width > 0 &&
+                    rect.height > 0 &&
+                    getComputedStyle(element).visibility !== "hidden"
+                  );
+                })
+                .filter((element) => {
+                  const rect = element.getBoundingClientRect();
+                  return (
+                    rect.left < -1 ||
+                    rect.right > innerWidth + 1 ||
+                    rect.height < 43 ||
+                    (element.matches("button") &&
+                      element.scrollWidth > element.clientWidth + 2)
+                  );
+                })
+                .map((element) => element.textContent?.trim().slice(0, 80)),
+            }));
           expect(await inspect()).toEqual({ overflow: false, controls: [] });
-          await page.evaluate(() => {
-            document.documentElement.style.fontSize = "";
+          await expect(page).toHaveTitle(/\S/u);
+          const axe = await new AxeBuilder({ page })
+            .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+            .analyze();
+          expect(axe.violations).toEqual([]);
+          const directory = nodePath.join(
+            ".local/phase2-student/automated",
+            locale,
+            theme,
+          );
+          await mkdir(directory, { recursive: true });
+          await page.screenshot({
+            path: nodePath.join(directory, `${screen}-${width}.png`),
+            fullPage: true,
+            animations: "disabled",
           });
+          if (width === 320) {
+            await page.evaluate(() => {
+              document.documentElement.style.fontSize = "200%";
+            });
+            expect(await inspect()).toEqual({ overflow: false, controls: [] });
+            await page.evaluate(() => {
+              document.documentElement.style.fontSize = "";
+            });
+          }
         }
       }
     }

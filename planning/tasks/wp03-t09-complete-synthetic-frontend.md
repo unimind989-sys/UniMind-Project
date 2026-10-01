@@ -12,7 +12,7 @@
 
 **Branch:** codex/wp03-complete-synthetic-frontend
 
-**Updated (UTC):** 2026-09-30T18:46:25Z
+**Updated (UTC):** 2026-10-01T00:11:28Z
 
 ## Derived execution envelope
 
@@ -30,7 +30,7 @@
 
 **Procedural skills:** Impeccable audit; trust-boundaries; browser; finalize when technically ready
 
-**Routing reason:** New simulation journeys preserve real services but require explicit public preview isolation from Auth refresh and protected actions. Policy v8 conservatively widens unknown `src/proxy.ts` and `public/wp03-review.html` paths; this changes neither real database nor storage semantics. All real service mutations remain out of the diff.
+**Routing reason:** The approved two-phase overhaul now includes material shared frontend, verified role routing and account academic preferences. R3/protected proof covers auth isolation, profile persistence and any minimal migration. Existing source, upload, availability and protected governance contracts remain authoritative. No worker is authorized.
 
 ## Manual model work blocks
 
@@ -42,29 +42,31 @@
 
 **Next model:** Sol High
 
-**Current block:** 6
+**Current block:** P2-S
 
 ## Execution contract
 
 **Dependencies:** WP03-T01–T08 completed evidence; clean main `595be3c`; user 2026-09-30 request schedules frontend follow-ups before continuing WP04.
 
-**Inputs:** Supplied audit (starting point, not exhaustive); master-plan 6–8; runbook WP03/06/07/08; CONTEXT; DESIGN and approved Study Shelf surfaces; fixture catalog; D-08/D-18/provider decisions remain open.
+**Inputs:** Approved Phase 1 candidate `ab568b6`, `planning/design/frontend-overhaul/phase-1-approval.md`, canonical DESIGN, current overhaul audit, supplied Open Folio kit, master-plan 6–8 and runbook WP03/06/07/08. Historical Study Shelf guidance remains historical. D-08/D-18/provider decisions remain open.
 
-**Files:** Runbook, DESIGN, this record and the review guide; shared product components and injected client ports under `src/app/_components/` and `src/app/learn/_components/product-study.tsx`; optional adapters in AuthForm, StudyShelf, WorkspaceFrame, CollectionFlow and AdminDecisionQueue; `src/app/layout.tsx`, `src/app/synthetic-runtime/`, `src/lib/demo/`, `src/proxy.ts`; retired T09 wrapper and legacy entry notice; demo runner, data-pack generator, `public/demo-files/`, demo Playwright config and native-flow/unit tests; evidence under `evidence/wp03-product-shell/`. Existing real Auth, collection and governance services remain unchanged.
+**Files:** DESIGN, task/review/design records; shared brand, theme, shell, public/auth, account, shelf and workspace components; verified Auth entry/callback adapters; `src/lib/account/`, `src/lib/theme/`, `src/proxy.ts`, metadata/public assets; one nullable academic-context extension to existing profiles with column-specific grant and caller-scoped trigger, generated types and rejecting SQL/unit/browser tests. Supplied kit originals and unrelated logo concepts remain untouched. Collection, source, generation, availability and governance business contracts remain unchanged.
 
-**Verify:** `corepack pnpm lint`; `corepack pnpm typecheck`; `corepack pnpm typecheck:fresh`; `corepack pnpm check:boundaries`; `corepack pnpm scan:secrets`; `corepack pnpm test:security`; `pwsh -NoProfile -File scripts/verify-agent-readiness.ps1`; focused synthetic-demo-runtime and Auth proxy unit tests; `corepack pnpm test:e2e:demo`; existing real-mode `corepack pnpm test:e2e`; safe production build; bounded in-app rendered inspection; guarded `corepack pnpm verify` after material acceptance; diff check/stat/full diff; exact-head CI and affected deployment proof. Conservative database/storage obligations reuse unchanged schema/role/lifecycle seams; no hosted mutation is necessary for this fixture-only diff.
+**Verify:** Narrow type/lint/boundary/SQL checks and affected academic/auth/workspace/isolation tests during edits; stable student browser flows, both-theme EN/AR/mobile/keyboard/axe/render proof for the student checkpoint. Migration/reset/upgrade, RLS/trigger pgTAP and generated-type parity require the repository's GitHub-hosted Linux ephemeral database runner. Full required verification, safe build, readiness, secrets, actual-diff routing, exact-head CI and affected production proof follow the stable accepted product-wide candidate. Do not repeat unaffected passing checks; do not treat mocks or source inspection as database proof.
 
-**Pass:** All approved journeys traversable using fixed synthetic choices only, including evidence/report/quiz/operations and failure recovery; no auth, API mutation, paid provider, real upload, persistence or protected access; EN/AR/RTL/mixed study copy and responsive accessibility proven. Runbook history remains intact and final WP03-T10 gate owns permission to resume WP04.
+**Pass:** Approved presentation preserves all existing journeys and authority. Theme choice applies before paint and tolerates storage denial; academic context persists through the existing caller-scoped profile, never grants access; verified roles determine entry without a chooser. Synthetic review remains fixed, isolated and non-mutating. EN/AR, both themes, mobile, keyboard and failure recovery receive rendered proof. Pause for student, leader, admin and final consistency approval. Required broad and exact-head delivery proof follow acceptance; WP03-T10 still owns permission to resume WP04.
 
 **Evidence:** `evidence/wp03-product-shell/2026-09-30_synthetic-frontend-audit_local_595be3c.md`; commit-bound verification/release evidence when candidate exists.
 
-**Rollback:** Stop the owned demo process or omit its explicit development flag to restore ordinary composition. Revert task-scoped demo/adapters/native views; real WP03 services and database/audit history remain unchanged. Restore the previous verified Vercel artifact if affected release proof fails.
+**Rollback:** Stop the owned demo process or omit its explicit development flag to restore ordinary composition. Revert task-scoped UI/Auth-entry/account adapters and restore the previous verified release if affected proof fails. Keep the nullable academic preference column/data when rolling back application code; any schema/grant rollback requires its own reviewed migration. Never alter membership, approved source state, audit history or unrelated branch work.
 
 **Hard stop:** Real accounts/student/private data; protected preview mutations; financial exposure; invented product policy; lost unrelated work; weakened real authorization; false gate closure or missing material design acceptance.
 
 ## Trust map
 
-Authoritative real identity remains server-verified Auth plus current database authorization; the demo has only fictional account memory. The server recomputes its fail-closed development gate from exact synthetic service markers and loopback origin, never from query/path/role input. Normal routes retain verified guards when the flag is absent. Demo requests rewrite to a separately gated composition; all mutations and APIs are rejected. Each document owns its React service instance: no cookies, browser storage, global server store, fetch or real action invocation. The Study Shelf's real logout action remains the default; demo composition injects a local sign-out instead. Fixed credentials/metadata and generated pack files are checked; arbitrary/private file names/sizes are rejected before content is read, renamed bytes cannot pass. Paths, next destinations, exchange IDs and item metadata remain untrusted and scope checked. Reload resets; tabs are independent. Expiry/replay/stale fixtures demonstrate presentation only. Allow: normal login/consent and fixed answer/file/admin transitions in local memory. Deny: a forged query cannot change real-mode authorization; production/foreign-host/mixed service configuration fails closed; demo credentials cannot issue real sessions or perform protected actions. Public pack data is invented, and logs/evidence contain no submitted private input.
+Authoritative identity remains verified Auth plus current database authorization. Role entry queries only the caller's unrevoked roles; client role hints never select authority. Academic writes require ACTIVE/current-consenting identity, a complete matching caller-authorized catalog hierarchy and own-profile RLS. Stored hints are re-resolved on each entry and cannot release a cohort or grant membership. The detailed preimplementation map and allow/deny obligations are in `planning/design/frontend-overhaul/phase-2-student.md`.
+
+The demo has fictional document-local account/session/academic state. Its development gate recomputes exact synthetic markers and loopback origin; all mutations/APIs remain blocked. Appearance alone uses a validated local System/Light/Dark key with storage-denial fallback and pre-paint application; it contains no identity, source or study data. Theme persistence never proves account persistence. Fixed files remain byte-validated before reading; paths, returns, exchanges and metadata stay untrusted and scoped. Foreign-host/mixed configuration and forged access remain fail-closed. Evidence contains only invented public material.
 
 ## Scope and screen ownership
 
@@ -91,7 +93,7 @@ Calendar, personal Workspace, global Sources and Progress have no approved stand
 
 **Preparation fingerprint:** NOT_READY
 
-**Unresolved findings:** Founder rejected the frontend outcome; retain the native synthetic flow and revise the product presentation before acceptance.
+**Unresolved findings:** Phase 1 approved; student implementation and focused/rendered proof are ready for the student checkpoint. Student acceptance, real database execution/type parity, remaining role milestones, broad stable verification and delivery proof remain pending. The Phase 1 receipt does not accept implementation states.
 
 **Established facts:** NONE
 
@@ -213,8 +215,8 @@ Ahmed explicitly resumes WP03-T09 with a two-phase frontend-first overhaul. This
 
 | Block | Model | Scope / governing input | Independent acceptance / failure proof | Status |
 | --- | --- | --- | --- | --- |
-| P1 | Sol High | Current brief; master-plan 6–8, runbook WP03-T09/T10, actual routes/contracts; all first-party design Markdown | Evidence-backed role/route/state inventory, working-vs-synthetic map, authoritative DESIGN reconciliation, mobile/desktop Light/Dark EN/AR rendered proposal, explicit gaps and approval boundary | Ready for explicit Phase 1 approval |
-| P2-S | Sol High | Approved P1 direction; shared tokens/brand/auth/account/shelf/workspace | Role derived from verified identity; authorized catalog persistence; all existing Chat/Studio/viewer/quiz/report behavior; mobile keyboard/AA/RTL/states; student rendered checkpoint | Awaiting P1 approval |
+| P1 | Sol High | Current brief; master-plan 6–8, runbook WP03-T09/T10, actual routes/contracts; all first-party design Markdown | Evidence-backed role/route/state inventory, working-vs-synthetic map, authoritative DESIGN reconciliation, mobile/desktop Light/Dark EN/AR rendered proposal, explicit gaps and approval boundary | Approved: `ab568b6`, direct Ahmed receipt in `planning/design/frontend-overhaul/phase-1-approval.md` |
+| P2-S | Sol High | Approved P1 direction; shared tokens/brand/auth/account/shelf/workspace | Role derived from verified identity; authorized catalog persistence; all existing Chat/Studio/viewer/quiz/report behavior; mobile keyboard/AA/RTL/states; student rendered checkpoint | Implemented for review; student acceptance pending; database execution/type parity requires CI |
 | P2-B | Sol High | Accepted shared system; campaign/upload contracts | Mixed-file intake/progress/retry; uploading separate from processing; campaign authorization and real-mode denial preserved; leader rendered checkpoint | Awaiting dependencies |
 | P2-A | Sol High | Accepted shared system; existing admin capabilities | Task-oriented grouping, real vs synthetic actions honest, no financial enablement; narrow layout and admin rendered checkpoint | Awaiting dependencies |
 | P2-F | Sol High | Stable approved role surfaces; task/runbook acceptance | Product consistency checkpoint, current receipt, focused rejecting checks, one required broad candidate gate, exact-head CI, branch protection and affected production proof | Awaiting dependencies |
@@ -240,3 +242,15 @@ Ahmed explicitly resumes WP03-T09 with a two-phase frontend-first overhaul. This
 **Actual-diff envelope:** central policy 8 conservatively widens historical Impeccable/public-document and new artifact paths to R3/protected with all surfaces. Workers remain 0. The router explicitly reports HUMAN_DESIGN_ACCEPTANCE_REQUIRED and stableCandidateAllowed=false. This overrides the narrow intent estimate for future proof selection; it does not mean auth/data/storage behavior changed. Broad checks, proof preflight, exact-head CI and finalization remain deferred behind this explicit Phase 1 presentation boundary. No policy exception, delivery readiness or false PASS is claimed.
 
 **Next safe action:** Present the documented proposal and wait for explicit Phase 1 approval. Then execute P2-S in the same task/branch, keeping the student/leader/Admin/final checkpoint sequence. Supplied Open Folio assets and both guides are still required before brand integration. The owned synthetic audit runtime at 3101 was stopped and its generated next-env change restored; the proposal server at 3103 remains available for review. Keep PR #64 draft/unmerged and WP04 held. Routine work does not bypass the user's design checkpoint.
+
+## Phase 2 student checkpoint — 1 October 2026
+
+Ahmed explicitly approved Phase 1 candidate `ab568b6` and supplied the copied Open Folio kit; the direct receipt is `planning/design/frontend-overhaul/phase-1-approval.md`. “Continue” resumes this authorized implementation without accepting an unseen student candidate. Single executor; no delegation.
+
+Implemented: unchanged supplied brand/icons, neutral paired tokens and local before-paint System/Light/Dark, public landing/compact auth with verified role defaults, real/synthetic academic onboarding and Account, focused Study/Subjects, continuous Materials/Chat/Studio/viewer/report/Quiz context. Preserve native/synthetic capability and current real planned-service boundaries. The smallest profile extension adds nullable catalog-validated `academic_context`; the trust map, full rationale, route changes, rollback/proof limits and follow-ups are in `planning/design/frontend-overhaul/phase-2-student.md`. No new dependency/provider/worker, hosted mutation or paid exposure.
+
+Focused proof: 110/110 unit tests plus 13/13 authenticated entry adapter checks after preserving exchange anchors; 24/24 normal browser checks and affected 7/7 auth style replay; initial 13/13 native student checks; 48 Chat/Studio geometry/axe combinations and 60 passing public/auth combinations. A supporting native run remains recorded as 6 passed/1 premature-title failure, followed by passing 3/3 affected replay and 3/3 final appearance replay; no failed run is relabeled. Changed-file ESLint, TypeScript, boundaries, SQL conventions and one owned-style detector passed. Computed normal text minimum Light 4.60/Dark 5.15; necessary control/focus minimum Light 3.54/Dark 4.06. Thirty inspected representative captures and runtime/source hashes are bound in the student packet. Asset proof: 31 supplied dependency hashes, 22 runtime copies and four exact screenshot copies. Manual keyboard, RTL logo, viewer return, streaming, disabled, empty/error/denied and quiz-ready states reviewed.
+
+Pending proof: Linux ephemeral database reset/upgrade, 12 pgTAP assertions and generated-type parity; broad stable product-wide verification; required exact-head CI; affected production proof. This Windows checkout cannot execute the repo's guarded Linux database runner. No hosted migration or real persistence PASS is claimed; migration must precede deployment of profile readers. Student/Batch Leader/Admin/final acceptance remain separate. Final source/diff/secret review and controlled local commit preserve unrelated logo concepts, root kit and the bounded logo task section.
+
+**Next safe action:** Present the live student/public/auth candidate and pause for explicit student approval. Then implement Batch Leader mixed upload/history, present its checkpoint, proceed to Admin and final consistency in order. Leave port 3101 and the historical proposal at 3103 available. Keep PR #64 draft/unmerged; no protected delivery, merge, production change, task closure or WP04 until all required acceptance and technical gates pass.

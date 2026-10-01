@@ -1,0 +1,239 @@
+{
+  "approvalCommit": "2bb133c7a6621e61ebc7e1279df6c672ff706ea8",
+  "pngExports": [
+    {
+      "source": "svg/unimind-open-folio-horizontal-light.svg",
+      "path": "png/unimind-open-folio-horizontal-light.png",
+      "width": 1888,
+      "height": 512
+    },
+    {
+      "source": "svg/unimind-open-folio-horizontal-dark.svg",
+      "path": "png/unimind-open-folio-horizontal-dark.png",
+      "width": 1888,
+      "height": 512
+    },
+    {
+      "source": "svg/unimind-open-folio-horizontal-black.svg",
+      "path": "png/unimind-open-folio-horizontal-black.png",
+      "width": 1888,
+      "height": 512
+    },
+    {
+      "source": "svg/unimind-open-folio-horizontal-white.svg",
+      "path": "png/unimind-open-folio-horizontal-white.png",
+      "width": 1888,
+      "height": 512
+    },
+    {
+      "source": "svg/unimind-open-folio-horizontal-blue.svg",
+      "path": "png/unimind-open-folio-horizontal-blue.png",
+      "width": 1888,
+      "height": 512
+    },
+    {
+      "source": "svg/unimind-open-folio-stacked-light.svg",
+      "path": "png/unimind-open-folio-stacked-light.png",
+      "width": 1328,
+      "height": 864
+    },
+    {
+      "source": "svg/unimind-open-folio-stacked-dark.svg",
+      "path": "png/unimind-open-folio-stacked-dark.png",
+      "width": 1328,
+      "height": 864
+    },
+    {
+      "source": "svg/unimind-open-folio-stacked-black.svg",
+      "path": "png/unimind-open-folio-stacked-black.png",
+      "width": 1328,
+      "height": 864
+    },
+    {
+      "source": "svg/unimind-open-folio-stacked-white.svg",
+      "path": "png/unimind-open-folio-stacked-white.png",
+      "width": 1328,
+      "height": 864
+    },
+    {
+      "source": "svg/unimind-open-folio-stacked-blue.svg",
+      "path": "png/unimind-open-folio-stacked-blue.png",
+      "width": 1328,
+      "height": 864
+    },
+    {
+      "source": "svg/unimind-open-folio-wordmark-light.svg",
+      "path": "png/unimind-open-folio-wordmark-light.png",
+      "width": 1330,
+      "height": 364
+    },
+    {
+      "source": "svg/unimind-open-folio-wordmark-dark.svg",
+      "path": "png/unimind-open-folio-wordmark-dark.png",
+      "width": 1330,
+      "height": 364
+    },
+    {
+      "source": "svg/unimind-open-folio-wordmark-black.svg",
+      "path": "png/unimind-open-folio-wordmark-black.png",
+      "width": 1330,
+      "height": 364
+    },
+    {
+      "source": "svg/unimind-open-folio-wordmark-white.svg",
+      "path": "png/unimind-open-folio-wordmark-white.png",
+      "width": 1330,
+      "height": 364
+    },
+    {
+      "source": "svg/unimind-open-folio-wordmark-blue.svg",
+      "path": "png/unimind-open-folio-wordmark-blue.png",
+      "width": 1330,
+      "height": 364
+    },
+    {
+      "source": "svg/unimind-open-folio-symbol-light.svg",
+      "path": "png/unimind-open-folio-symbol-light.png",
+      "width": 512,
+      "height": 512
+    },
+    {
+      "source": "svg/unimind-open-folio-symbol-dark.svg",
+      "path": "png/unimind-open-folio-symbol-dark.png",
+      "width": 512,
+      "height": 512
+    },
+    {
+      "source": "svg/unimind-open-folio-symbol-black.svg",
+      "path": "png/unimind-open-folio-symbol-black.png",
+      "width": 512,
+      "height": 512
+    },
+    {
+      "source": "svg/unimind-open-folio-symbol-white.svg",
+      "path": "png/unimind-open-folio-symbol-white.png",
+      "width": 512,
+      "height": 512
+    },
+    {
+      "source": "svg/unimind-open-folio-symbol-blue.svg",
+      "path": "png/unimind-open-folio-symbol-blue.png",
+      "width": 512,
+      "height": 512
+    },
+    {
+      "source": "svg/unimind-open-folio-symbol-small-light.svg",
+      "path": "png/unimind-open-folio-symbol-small-light-16.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "source": "svg/unimind-open-folio-symbol-small-light.svg",
+      "path": "png/unimind-open-folio-symbol-small-light-24.png",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "source": "svg/unimind-open-folio-symbol-small-light.svg",
+      "path": "png/unimind-open-folio-symbol-small-light-32.png",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "svg/unimind-open-folio-symbol-small-dark.svg",
+      "path": "png/unimind-open-folio-symbol-small-dark-16.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "source": "svg/unimind-open-folio-symbol-small-dark.svg",
+      "path": "png/unimind-open-folio-symbol-small-dark-24.png",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "source": "svg/unimind-open-folio-symbol-small-dark.svg",
+      "path": "png/unimind-open-folio-symbol-small-dark-32.png",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "svg/unimind-open-folio-symbol-small-black.svg",
+      "path": "png/unimind-open-folio-symbol-small-black-16.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "source": "svg/unimind-open-folio-symbol-small-black.svg",
+      "path": "png/unimind-open-folio-symbol-small-black-24.png",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "source": "svg/unimind-open-folio-symbol-small-black.svg",
+      "path": "png/unimind-open-folio-symbol-small-black-32.png",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "svg/unimind-open-folio-symbol-small-white.svg",
+      "path": "png/unimind-open-folio-symbol-small-white-16.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "source": "svg/unimind-open-folio-symbol-small-white.svg",
+      "path": "png/unimind-open-folio-symbol-small-white-24.png",
+      "width": 24,
+      "height": 24
+    },
+    {
+      "source": "svg/unimind-open-folio-symbol-small-white.svg",
+      "path": "png/unimind-open-folio-symbol-small-white-32.png",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "icons/favicon.svg",
+      "path": "icons/favicon-16.png",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "source": "icons/favicon.svg",
+      "path": "icons/favicon-32.png",
+      "width": 32,
+      "height": 32
+    },
+    {
+      "source": "icons/favicon.svg",
+      "path": "icons/favicon-48.png",
+      "width": 48,
+      "height": 48
+    },
+    {
+      "source": "icons/app-icon.svg",
+      "path": "icons/apple-touch-icon.png",
+      "width": 180,
+      "height": 180
+    },
+    {
+      "source": "icons/app-icon.svg",
+      "path": "icons/icon-192.png",
+      "width": 192,
+      "height": 192
+    },
+    {
+      "source": "icons/app-icon.svg",
+      "path": "icons/icon-512.png",
+      "width": 512,
+      "height": 512
+    },
+    {
+      "source": "icons/maskable-icon.svg",
+      "path": "icons/maskable-512.png",
+      "width": 512,
+      "height": 512
+    }
+  ]
+}

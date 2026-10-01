@@ -24,13 +24,10 @@ test("the overview exposes canonical scope, truthful state, and real child route
     page.getByRole("heading", { name: "Anatomy", level: 1 }),
   ).toBeVisible();
   await workspaceExpect(page.getByText("8 approved sources")).toBeVisible();
-  await workspaceExpect(
-    page.getByText("Not active in this mock"),
-  ).toBeVisible();
   await workspaceExpect(page.getByText("Planned capability")).toHaveCount(5);
-  await page.keyboard.press("Tab");
+  await page.getByRole("link", { name: "Skip to content" }).focus();
   await workspaceExpect(
-    page.getByRole("link", { name: "Overview" }).first(),
+    page.getByRole("link", { name: "Skip to content" }),
   ).toBeFocused();
   await page.keyboard.press("Enter");
   await workspaceExpect(page.getByRole("main")).toBeFocused();

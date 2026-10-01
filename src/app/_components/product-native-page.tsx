@@ -10,6 +10,11 @@ import {
   UnitSwitch,
 } from "@/app/learn/_components/product-study";
 import { FrontendShell } from "./frontend-system";
+import { AppShell } from "./app-shell";
+import { AcademicSettings } from "./academic-settings";
+import { Appearance } from "./appearance";
+import { Landing } from "./landing";
+import { authorizedAcademicContext } from "@/lib/account/account.application";
 import { syntheticUnitPresentationById } from "@/app/learn/synthetic-catalog";
 import {
   parseCatalogSelectionHints,
@@ -84,8 +89,9 @@ export function ProductNativePage({
       if (!auth) return;
       signingOut.current = false;
     }
-    if (screen === "home")
-      router.replace(`${state.role ? home : "/login"}?lang=${locale}` as Route);
+    if (screen === "home" && state.role)
+      router.replace(`${home}?lang=${locale}` as Route);
+    else if (screen === "home") return;
     else if (!auth && !state.role)
       router.replace(
         `/login?lang=${locale}&next=${encodeURIComponent(pathname + "?" + query.toString())}` as Route,
@@ -126,6 +132,7 @@ export function ProductNativePage({
       verified: true,
       chatDrafts: {},
       lastStudyPath: null,
+      academicContext: null,
     }));
     router.push(`/login?lang=${locale}` as Route);
   };
@@ -137,6 +144,7 @@ export function ProductNativePage({
       )}
     </div>
   );
+  if (screen === "home" && !state.role) return <Landing locale={locale} />;
   if (auth)
     return (
       <>
@@ -269,17 +277,41 @@ export function ProductNativePage({
     const rows = reviewCatalogRows.filter((row) =>
       sampleScopeAvailable(state, row.cohort.id, row.unit.id),
     );
+    if (
+      !authorizedAcademicContext(state.academicContext, rows) &&
+      !query.has("stage")
+    )
+      return (
+        <AppShell locale={locale} synthetic title={t("Study", "المذاكرة")}>
+          <h1>{t("Welcome to UniMind", "مرحبًا بك في UniMind")}</h1>
+          <AcademicSettings
+            locale={locale}
+            rows={rows}
+            initialContext={state.academicContext}
+            onboarding
+            save={async (context) => {
+              if (!authorizedAcademicContext(context, rows))
+                return { status: "INVALID" };
+              update((current) => ({ ...current, academicContext: context }));
+              return { status: "SAVED" };
+            }}
+          />
+        </AppShell>
+      );
     content = (
       <StudyShelf
         initialLocale={locale}
         journey={resolveCatalogJourney(
           rows,
-          parseCatalogSelectionHints(Object.fromEntries(query)),
+          query.has("stage")
+            ? parseCatalogSelectionHints(Object.fromEntries(query))
+            : (state.academicContext ?? {}),
         )}
         state="READY"
         basePath="/learn"
         synthetic
         completeNavigation
+        lastStudyPath={state.lastStudyPath}
         unitPresentationById={syntheticUnitPresentationById}
       />
     );
@@ -312,7 +344,7 @@ export function ProductNativePage({
     !loading &&
     !blocked &&
     (special || !general.includes(fixture));
-  if (scope && ["chat", "studio"].includes(screen)) {
+  if (scope) {
     return (
       <FrontendShell
         locale={locale}
@@ -334,6 +366,26 @@ export function ProductNativePage({
       </FrontendShell>
     );
   }
+  if (screen === "catalog" && standalone) return content;
+  if (state.role === "student" && !scope)
+    return (
+      <AppShell
+        locale={locale}
+        synthetic
+        title={
+          screen === "settings"
+            ? t("Account", "الحساب")
+            : t("Study", "المذاكرة")
+        }
+      >
+        <h1>
+          {screen === "settings"
+            ? t("Account", "الحساب")
+            : t("Your Study Shelf", "رف المذاكرة")}
+        </h1>
+        {content}
+      </AppShell>
+    );
   return (
     <>
       {boundary}
@@ -453,7 +505,6 @@ function ProductSettings({
   signOut: () => void;
 }) {
   const { state, update } = useProductServices();
-  const router = useRouter();
   const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
   return (
     <>
@@ -463,19 +514,27 @@ function ProductSettings({
         </ProductLink>
       ) : null}
       <section className={styles.panel}>
-        <Select
-          id="interface-language"
-          label={t("Interface language", "لغة الواجهة")}
-          value={locale}
-          options={[
-            ["en", "English"],
-            ["ar", "العربية"],
-          ]}
-          onChange={(value) =>
-            router.replace(`/settings?lang=${value}` as Route)
-          }
-        />
+        <h2>{t("Appearance", "المظهر")}</h2>
+        <Appearance locale={locale} />
       </section>
+      {state.role === "student" ? (
+        <AcademicSettings
+          locale={locale}
+          rows={reviewCatalogRows.filter((row) =>
+            sampleScopeAvailable(state, row.cohort.id, row.unit.id),
+          )}
+          initialContext={state.academicContext}
+          save={async (context) => {
+            const rows = reviewCatalogRows.filter((row) =>
+              sampleScopeAvailable(state, row.cohort.id, row.unit.id),
+            );
+            if (!authorizedAcademicContext(context, rows))
+              return { status: "INVALID" };
+            update((current) => ({ ...current, academicContext: context }));
+            return { status: "SAVED" };
+          }}
+        />
+      ) : null}
       <section className={styles.panel}>
         <h2>{t("Future exchange sharing", "مشاركة المحادثات القادمة")}</h2>
         <Select
@@ -498,8 +557,8 @@ function ProductSettings({
         />
         <p>
           {t(
-            "Earlier exchanges keep their recorded mode. Private mode is separate from saving and retention. Qualifying reports permit audited review of the reported exchange only; exact disclosure awaits D-08.",
-            "تحتفظ المحادثات السابقة بوضعها المسجل. الخصوصية منفصلة عن الحفظ والاحتفاظ. البلاغ المؤهل يسمح بمراجعة المحادثة المبلغ عنها فقط مع التدقيق؛ تفاصيل الإفصاح تنتظر D-08.",
+            "Earlier exchanges keep their recorded mode. Private mode is separate from saving and retention. Qualifying reports permit audited review of the reported exchange only; the disclosure wording is still being confirmed.",
+            "تحتفظ المحادثات السابقة بوضعها المسجل. الخصوصية منفصلة عن الحفظ والاحتفاظ. البلاغ المؤهل يسمح بمراجعة المحادثة المبلغ عنها فقط مع التدقيق؛ صياغة الإفصاح ما زالت قيد التأكيد.",
           )}
         </p>
       </section>
@@ -507,13 +566,13 @@ function ProductSettings({
         <h2>{t("Saving and retention", "الحفظ والاحتفاظ")}</h2>
         <Notice>
           {t(
-            "Retention settings await D-08. No period or deletion behavior has been approved.",
-            "إعدادات الاحتفاظ تنتظر D-08. لم تعتمد مدة أو طريقة حذف.",
+            "Retention settings are still being confirmed. No retention period or deletion action is available here yet.",
+            "إعدادات الاحتفاظ ما زالت قيد التأكيد. لا تتوفر هنا مدة احتفاظ أو إجراءات حذف بعد.",
           )}
         </Notice>
       </section>
       <section className={styles.panel}>
-        <h2>{t("Account", "الحساب")}</h2>
+        <h2>{t("Your account", "حسابك")}</h2>
         <div className={styles.actions}>
           <ProductLink href="/forgot-password" locale={locale}>
             {t("Reset password", "تغيير كلمة المرور")}

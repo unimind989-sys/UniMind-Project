@@ -2,7 +2,7 @@
 
 This is the canonical first-party visual and interaction contract. Product/security authority remains in the [master plan](docs/plans/poc-master-plan.md); acceptance and delivery remain in the [runbook](docs/runbooks/poc-execution-runbook.md). Surface briefs describe particular jobs and refer here for system rules.
 
-**Status: Phase 1 proposal, awaiting Ahmed's explicit approval before Phase 2.** The 30 September 2026 brief fixes the slogan, neutral Light/Dark direction, role navigation, brand dependency and checkpoints. Exact tokens and compositions below are rendered proposals, not a founder acceptance receipt. No product runtime changed. See the [audit, flows and rollout](docs/reviews/wp03-frontend-overhaul.md) and [proposal](planning/design/frontend-overhaul/README.md).
+**Status: Phase 1 approved; student implementation ready for rendered review.** Ahmed approved candidate `ab568b6` and authorized implementation in a direct message, recorded in the [approval receipt](planning/design/frontend-overhaul/phase-1-approval.md). The [student candidate](planning/design/frontend-overhaul/phase-2-student.md) implements the approved public/auth, brand/theme, account, shelf and workspace direction. Student, Batch Leader, Admin and final consistency approvals remain pending. See the [audit, flows and rollout](docs/reviews/wp03-frontend-overhaul.md) and [proposal](planning/design/frontend-overhaul/README.md).
 
 The [previous design contract](planning/design/frontend-overhaul/previous-design-contract.md) preserves the implemented dark Study Shelf and historical approval. Its navy-only palette, six-item mobile bar, expanding auth rail and mandatory imagery no longer govern this overhaul. Existing behavior and safety remain binding.
 
@@ -31,7 +31,7 @@ Keep this exact slogan in English; translate surrounding copy. Replace historica
 
 Brand dependency: `planning/design/unimind-logo/open-folio-kit/`. Read `usage-guide.md` and `integration.md` before integration. One shared `Brand` component uses supplied full/compact/small and Light/Dark variants. Preserve aspect ratio, palette and intrinsic proportions. Reserve dimensions; never mirror the logo in RTL. Wire supplied favicons/app icons through Next metadata and existing icon surfaces; no PWA functionality is implied.
 
-The kit is absent here. Ahmed agreed to continue Phase 1 with a plain wordmark; this is not alternate artwork or design approval. Phase 2 brand integration requires the supplied files. Unrelated logo concepts remain untouched.
+Ahmed supplied the kit in `unimind-open-folio-kit/` for Phase 2. Selected production files and guides are preserved under the canonical kit path; runtime copies live in `public/brand/unimind/`. Verify their hashes against the supplied manifest. The Phase 1 sample used a temporary plain wordmark. Unrelated logo concepts remain untouched.
 
 Use sentence case and concrete verbs: Open Module, Resume Anatomy, Upload files, Retry upload, View supporting material. Keep task IDs, provider internals and decision codes out of ordinary product flows. Synthetic review has one clear service-boundary label.
 
@@ -65,6 +65,8 @@ Normal/placeholder text ≥4.5:1; large text ≥3:1; focus and necessary non-tex
 Account → Appearance offers **System / Light / Dark**, default System. System follows OS changes; explicit Light/Dark overrides them. Set root theme, `color-scheme` and `theme-color` consistently. Current profiles have no theme field: use a validated, versioned local key and tolerate storage denial. Apply a minimal pre-paint bootstrap with a safe System fallback and scoped hydration handling. Do not add a settings table for appearance.
 
 Academic context must survive future account sessions. Reuse the existing profile with the smallest validated catalog-preference extension, because no current field persists it. Stored preference is a hint; caller-scoped catalog and availability remain authority. Never create membership or release from a saved selection. The [persistence plan](docs/reviews/wp03-frontend-overhaul.md#persistence-and-backend-budget) owns proposed changes and denial proof. Demo account data still resets per document; neither sample nor demo proves real persistence.
+
+The student candidate adds nullable `profiles.academic_context`, with own-caller catalog validation, column-specific grant and an invoker trigger. Its database execution/type-generation proof remains pending on Linux CI; apply the reviewed migration before deploying account readers. Real Shelf resume reuses the most recently created open chat session in the caller's current authorized cohort. It does not imply last-visited tracking or saved artifact progress. Failed/revoked reads omit the link. The synthetic runtime retains its existing document-local last study destination.
 
 ## Typography and geometry
 
@@ -134,4 +136,4 @@ Admin Overview leads with decisions; Content groups Sources/Campaigns; Academics
 
 Phase 1 approval covers this proposed system, role flows and sequence after the shell/student sample is shown. Phase 2 pauses at student, Batch Leader, Admin and final consistency rendered checkpoints. Record actual actor/time/candidate/route/state scope. An “okay” about missing assets is not design acceptance.
 
-The standalone proposal performs no real identity, upload, source, generation, account persistence or protected action. Its review toolbar is outside the proposed product flow. It neither replaces the full synthetic pack nor proves platform-wide WCAG/production PASS. Current evidence belongs in the [proposal README](planning/design/frontend-overhaul/README.md) and WP03-T09 record.
+The standalone proposal performs no real identity, upload, source, generation, account persistence or protected action. Its review toolbar is outside the proposed product flow. It neither replaces the full synthetic pack nor proves platform-wide WCAG/production PASS. Phase 1 evidence belongs in the [proposal README](planning/design/frontend-overhaul/README.md); implementation evidence belongs in the [student record](planning/design/frontend-overhaul/phase-2-student.md) and WP03-T09 record.

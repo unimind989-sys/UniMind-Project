@@ -44,10 +44,8 @@ const kindNames: Record<ResponseKind, readonly [string, string]> = {
 };
 
 export function ProductStudy(props: Props) {
-  const { scope, locale, base, screen } = props;
-  const router = useRouter();
-  const { state, update } = useProductServices();
-  const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
+  const { base, screen } = props;
+  const { update } = useProductServices();
   useEffect(() => {
     if (["chat", "studio"].includes(screen)) {
       update((current) =>
@@ -59,77 +57,6 @@ export function ProductStudy(props: Props) {
   }, [base, screen, update]);
   return (
     <>
-      {!["chat", "studio"].includes(screen) ? (
-        <div className={styles.scope}>
-          <nav
-            className={styles.breadcrumb}
-            aria-label={t("Curriculum scope", "نطاق المنهج")}
-          >
-            {[
-              locale === "ar"
-                ? scope.institutionNameAr
-                : scope.institutionNameEn,
-              locale === "ar" ? scope.programNameAr : scope.programNameEn,
-              locale === "ar" ? scope.levelNameAr : scope.levelNameEn,
-              locale === "ar" ? scope.termNameAr : scope.termNameEn,
-            ].map((name, index) => (
-              <bdi key={index}>
-                {name}
-                {index < 3 ? " / " : ""}
-              </bdi>
-            ))}
-          </nav>
-          <p>
-            <strong>
-              {locale === "ar"
-                ? scope.unitLabelSingularAr
-                : scope.unitLabelSingularEn}
-              :{" "}
-              <bdi>
-                {locale === "ar" ? scope.unitTitleAr : scope.unitTitleEn}
-              </bdi>
-            </strong>
-          </p>
-          <p>
-            <bdi>{scope.curriculumEdition}</bdi> ·{" "}
-            {t(
-              "Synthetic available unit · one knowledge pool",
-              "وحدة تجريبية متاحة · مجموعة معرفة واحدة",
-            )}
-          </p>
-          <Select
-            id="unit-scope"
-            label={t("Switch unit", "تغيير الوحدة")}
-            value={base}
-            options={[
-              [
-                base,
-                `${locale === "ar" ? scope.programNameAr : scope.programNameEn} · ${locale === "ar" ? scope.unitTitleAr : scope.unitTitleEn}`,
-              ],
-              ...scopeChoices
-                .filter(
-                  (choice) =>
-                    choice.path !== base &&
-                    sampleScopeAvailable(
-                      state,
-                      choice.scope.cohortId,
-                      choice.scope.unitId,
-                    ),
-                )
-                .map(
-                  (choice) =>
-                    [
-                      choice.path,
-                      `${locale === "ar" ? choice.scope.programNameAr : choice.scope.programNameEn} · ${locale === "ar" ? choice.scope.unitTitleAr : choice.scope.unitTitleEn}`,
-                    ] as const,
-                ),
-            ]}
-            onChange={(value) =>
-              router.push(`${value}?lang=${locale}` as Route)
-            }
-          />
-        </div>
-      ) : null}
       {screen === "overview" ? (
         <Overview {...props} />
       ) : screen === "chat" ? (
@@ -147,120 +74,23 @@ export function ProductStudy(props: Props) {
   );
 }
 
-function Overview({ scope, locale, base }: Props) {
-  const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
+function Overview(props: Props) {
+  const t = (en: string, ar: string) => (props.locale === "ar" ? ar : en);
   return (
-    <>
-      <section className={styles.panel}>
-        <h2>{t("Material and capacity", "المواد والسعة")}</h2>
-        <dl className={styles.definition}>
-          <div>
-            <dt>{t("Pool", "مجموعة المعرفة")}</dt>
-            <dd>
-              {new Intl.NumberFormat(locale).format(scope.sourceCount)}{" "}
-              {t(
-                "synthetic source fixtures; no real approval implied",
-                "مصادر تجريبية؛ لا تعني اعتمادًا حقيقيًا",
-              )}
-            </dd>
-          </div>
-          <div>
-            <dt>{t("Sample material date", "تاريخ مواد المثال")}</dt>
-            <dd>
-              {new Intl.DateTimeFormat(locale === "ar" ? "ar-EG" : "en-GB", {
-                dateStyle: "medium",
-                timeZone: "UTC",
-              }).format(new Date(scope.materialUpdatedAt))}{" "}
-              · {t("fixture date", "تاريخ تجريبي")}
-            </dd>
-          </div>
-          <div>
-            <dt>{t("Allowance", "الرصيد")}</dt>
-            <dd>
-              {t(
-                "Illustrative ready state. Numeric caps and resets are not approved. Try unavailable/capacity scenarios above.",
-                "حالة جاهزية توضيحية. الحدود الرقمية والتجديد لم يعتمدا. جرب سيناريو الرصيد غير المتاح أو السعة بالأعلى.",
-              )}
-            </dd>
-          </div>
-        </dl>
-      </section>
-      <Row
-        title={t("Chat", "المحادثة")}
-        action={
-          <ProductLink href={base + "/chat"} locale={locale}>
-            {t("Try fixed answers", "جرب إجابات ثابتة")}
-          </ProductLink>
-        }
-      >
-        <p>
-          {t(
-            "Start a unit-bound sample session and inspect supported, missing and conflicting evidence.",
-            "ابدأ جلسة تجريبية مرتبطة بالوحدة وراجع الأدلة المدعومة والناقصة والمتعارضة.",
-          )}
-        </p>
-      </Row>
-      <Row
-        title={t("Studio", "الاستوديو")}
-        action={
-          <ProductLink href={base + "/studio"} locale={locale}>
-            {t("Review artifacts", "مراجعة المخرجات")}
-          </ProductLink>
-        }
-      >
-        <p>
-          {t(
-            "Six fixed artifact examples from the same synthetic source pool.",
-            "ستة أمثلة مخرجات ثابتة من نفس مجموعة المصادر التجريبية.",
-          )}
-        </p>
-      </Row>
-      <Row
-        title={t("Quiz", "الاختبار")}
-        action={
-          <ProductLink href={base + "/quiz"} locale={locale}>
-            {t("Try sample quiz", "جرب الاختبار التجريبي")}
-          </ProductLink>
-        }
-      >
-        <p>
-          {t(
-            "Answer, submit and review an illustrative score with source explanations.",
-            "أجب وسلم وراجع نتيجة توضيحية مع شرح من المصادر.",
-          )}
-        </p>
-      </Row>
-      <Row
-        title={t("Sources and evidence", "المصادر والأدلة")}
-        action={
-          <ProductLink href={base + "/sources"} locale={locale}>
-            {t("Inspect sample sources", "فحص المصادر التجريبية")}
-          </ProductLink>
-        }
-      >
-        <p>
-          {t(
-            "Title, format and reliable sample locator; no private source or download.",
-            "العنوان والصيغة وموضع تجريبي موثوق؛ لا مصدر خاص أو تنزيل.",
-          )}
-        </p>
-      </Row>
-      <Row
-        title={t("Reporting", "الإبلاغ")}
-        action={
-          <ProductLink href={base + "/report"} locale={locale}>
-            {t("Review reporting", "مراجعة الإبلاغ")}
-          </ProductLink>
-        }
-      >
-        <p>
-          {t(
-            "A report needs an exchange. Create a fixed answer first; report details and retention policy remain undecided.",
-            "البلاغ يحتاج محادثة. أنشئ إجابة ثابتة أولًا؛ تفاصيل البلاغ وسياسة الاحتفاظ لم تعتمدا.",
-          )}
-        </p>
-      </Row>
-    </>
+    <section>
+      <h2>{t("Materials", "المواد الدراسية")}</h2>
+      <ProductLink href={props.base + "/sources"} locale={props.locale}>
+        {t("View material details", "عرض تفاصيل المواد")}
+      </ProductLink>
+      <p>
+        {new Intl.DateTimeFormat(props.locale === "ar" ? "ar-EG" : "en-GB", {
+          dateStyle: "medium",
+          timeZone: "UTC",
+        }).format(new Date(props.scope.materialUpdatedAt))}{" "}
+        · <bdi>{props.scope.curriculumEdition}</bdi>
+      </p>
+      <Evidence {...props} screen="sources" />
+    </section>
   );
 }
 
@@ -322,10 +152,22 @@ function Evidence({ scope, locale, base, screen }: Props) {
         : sources.slice(0, 1);
   return (
     <>
+      <ProductLink
+        href={
+          query.get("from") === "studio"
+            ? base + "/studio"
+            : `${base}/chat${session ? `?session=${session.id}#exchange-${exchange}` : ""}`
+        }
+        locale={locale}
+      >
+        {query.get("from") === "studio"
+          ? t("Return to Studio", "العودة للاستوديو")
+          : t("Return to Chat", "العودة للمحادثة")}
+      </ProductLink>
       <p>
         {t(
-          "Synthetic source titles and formats are metadata in one unit pool. Locators and excerpts below are fixtures, not real source access.",
-          "عناوين وصيغ المصادر التجريبية بيانات داخل مجموعة الوحدة الواحدة. المواضع والنصوص أدناه أمثلة وليست وصولًا لمصادر حقيقية.",
+          "Sample materials · Excerpts and page references below are illustrative.",
+          "مواد تجريبية · النصوص ومواضع الصفحات أدناه للتوضيح.",
         )}
       </p>
       {screen === "evidence" ? (
@@ -365,10 +207,6 @@ function Evidence({ scope, locale, base, screen }: Props) {
                           "حدد الأسماء ثم قارن الرسوم.",
                         )}
                   </p>
-                  <p>
-                    {t("Sample provenance", "تتبع تجريبي")}:{" "}
-                    <bdi>{source.segment}</bdi>
-                  </p>
                 </Row>
               ))
             )}
@@ -388,18 +226,39 @@ function Evidence({ scope, locale, base, screen }: Props) {
                     "INACTIVE sample · excluded from new requests",
                     "مثال غير نشط · مستبعد من الطلبات الجديدة",
                   )
-                : t(
-                    "READY sample · valid sample rights",
-                    "مثال جاهز · حقوق تجريبية سارية",
-                  )}
+                : t("Ready · Sample material", "جاهز · مادة تجريبية")}
             </span>
+            {sources.indexOf(source) < 2 &&
+            !(
+              scope.unitId === defaultScope.unitId &&
+              !state.availability.sourceActive &&
+              source.segment.endsWith(":1")
+            ) ? (
+              <details>
+                <summary>
+                  {t("View supporting excerpt", "عرض النص الداعم")}
+                </summary>
+                <p>
+                  {source.format === "AUDIO"
+                    ? t(
+                        "Compare first, then identify the labels.",
+                        "قارن أولًا ثم حدد الأسماء.",
+                      )
+                    : t(
+                        "Identify the labels, then compare the diagrams.",
+                        "حدد الأسماء ثم قارن الرسوم.",
+                      )}
+                </p>
+                <p>
+                  {t("Processed sample excerpt", "نص تجريبي معالج")} ·{" "}
+                  {source.locator}
+                </p>
+              </details>
+            ) : null}
           </Row>
         ))
       )}
       <div className={styles.actions}>
-        <ProductLink href={base + "/chat"} locale={locale}>
-          {t("Return to Chat", "العودة للمحادثة")}
-        </ProductLink>
         {answer ? (
           <ProductLink
             href={`${base}/report?exchange=${exchange}&session=${session?.id}`}
@@ -466,8 +325,8 @@ function Report({ scope, locale, base }: Props) {
       />
       <p>
         {t(
-          "This example submits only this exchange's sample reason to tab memory. In the real product, a qualifying report can permit audited founder review of that exchange even in private mode. Exact report payload, disclosure and retention await D-08; this sample does not decide them.",
-          "المثال يضيف سببًا تجريبيًا لهذه المحادثة فقط إلى ذاكرة التبويب. في المنتج الحقيقي، البلاغ المؤهل قد يسمح بمراجعة المؤسسين المدققة لهذه المحادثة حتى في الوضع الخاص. محتوى البلاغ والإفصاح والاحتفاظ بانتظار D-08؛ المثال لا يقررها.",
+          "This example submits only this exchange's sample reason to tab memory. In the real product, a qualifying report can permit audited founder review of that exchange even in private mode. Report details, disclosure and retention are still being confirmed.",
+          "المثال يضيف سببًا تجريبيًا لهذه المحادثة فقط إلى ذاكرة التبويب. في المنتج الحقيقي، البلاغ المؤهل قد يسمح بمراجعة المؤسسين المدققة لهذه المحادثة حتى في الوضع الخاص. تفاصيل البلاغ والإفصاح والاحتفاظ ما زالت قيد التأكيد.",
         )}
       </p>
       <label className={styles.check}>
@@ -502,7 +361,10 @@ function Report({ scope, locale, base }: Props) {
         </Notice>
       ) : null}
       <div className={styles.actions}>
-        <ProductLink href={base + "/chat"} locale={locale}>
+        <ProductLink
+          href={`${base}/chat${session ? `?session=${session.id}#exchange-${exchange}` : ""}`}
+          locale={locale}
+        >
           {t("Back to Chat", "العودة للمحادثة")}
         </ProductLink>
       </div>

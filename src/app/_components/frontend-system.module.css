@@ -1,3 +1,75 @@
+.subjectHeader {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  justify-content: space-between;
+  padding-block-end: 24px;
+}
+.subjectHeader h1 {
+  font-size: 1.75rem;
+  margin: 8px 0;
+}
+.subjectHeader p {
+  margin: 0;
+  color: var(--secondary);
+  font-size: 0.8125rem;
+}
+.subjectSwitch {
+  width: min(280px, 100%);
+}
+.subjectNav {
+  display: flex;
+  gap: 8px;
+  border-block-end: 1px solid var(--border);
+  margin-block-end: 24px;
+  flex-wrap: wrap;
+}
+.subjectNav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 12px 16px;
+  text-decoration: none;
+  color: var(--secondary);
+  border-block-end: 3px solid transparent;
+}
+.subjectNav a[aria-current] {
+  border-block-end-color: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+.subjectNav a:hover {
+  background: var(--hover);
+}
+.workspaceBody {
+  min-width: 0;
+}
+.unavailable {
+  color: var(--danger);
+}
+@media (max-width: 767px) {
+  .subjectHeader {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+  .subjectHeader h1 {
+    font-size: 1.625rem;
+  }
+  .subjectSwitch {
+    width: 100%;
+  }
+  .subjectNav {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+  }
+  .subjectNav a {
+    padding: 8px 4px;
+    justify-content: center;
+    font-size: 0.8125rem;
+  }
+}
 .shell {
   --type-workspace-title-size: 1.5rem;
   --type-study-invitation-size: 1.65rem;
@@ -162,7 +234,7 @@
   font: inherit;
   color: var(--text-primary);
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: 1px solid var(--control-border);
   border-radius: var(--radius-control);
   padding: 0.5rem 0.75rem;
   min-height: 44px;

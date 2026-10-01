@@ -6,7 +6,7 @@
   padding: 0.4rem 1rem;
   background: var(--canvas-deep);
   border-block-end: 1px solid var(--line);
-  color: var(--ready);
+  color: var(--muted);
   font-size: var(--type-body-compact-size);
 }
 .accountUtility {
@@ -169,6 +169,12 @@
   padding: 0.75rem;
   caret-color: var(--accent-text);
 }
+.field :is(select, input, textarea),
+.button,
+.link {
+  border-color: var(--control-border);
+  background: var(--surface);
+}
 .field textarea {
   min-height: 6rem;
   resize: vertical;
@@ -203,6 +209,7 @@
   cursor: pointer;
   text-decoration: none;
   touch-action: manipulation;
+  border-color: var(--control-border);
 }
 .button:hover:not(:disabled),
 .link:hover,
@@ -211,14 +218,14 @@
   color: var(--accent-text);
 }
 .primary {
-  background: var(--accent-focus);
+  background: var(--accent);
   color: var(--on-action);
-  border-color: var(--accent-focus);
+  border-color: transparent;
   font-weight: 700;
 }
 .primary:hover:not(:disabled) {
   color: var(--on-action);
-  background: var(--accent-focus);
+  background: var(--accent-hover);
 }
 .button:disabled {
   opacity: 0.6;
@@ -358,4 +365,9 @@
   .shell {
     scroll-behavior: auto;
   }
+}
+.row summary {
+  min-height: 44px;
+  padding-block: 0.5rem;
+  cursor: pointer;
 }

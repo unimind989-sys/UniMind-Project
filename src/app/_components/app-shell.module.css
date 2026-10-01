@@ -1,0 +1,217 @@
+.shell {
+  display: grid;
+  grid-template-columns: 216px minmax(0, 1fr);
+  min-height: 100svh;
+  background: var(--canvas);
+}
+.rail {
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  border-inline-end: 1px solid var(--border);
+  background: var(--surface);
+}
+.brand {
+  display: inline-flex;
+  position: relative;
+  direction: ltr;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 7px;
+  flex: none;
+  width: 184px;
+}
+.brand img {
+  display: block;
+  width: 170px;
+  height: auto;
+  transform: none;
+}
+.brand[data-variant="compact"],
+.brand[data-variant="small"] {
+  width: 48px;
+  padding: 6px;
+}
+.brand[data-variant="compact"] img {
+  width: 32px;
+}
+.brand[data-variant="small"] img {
+  width: 24px;
+}
+.brand img[data-brand-theme="dark"] {
+  display: none;
+}
+:global([data-theme="dark"]) .brand img[data-brand-theme="dark"] {
+  display: block;
+}
+:global([data-theme="dark"]) .brand img[data-brand-theme="light"] {
+  display: none;
+}
+.globalNav {
+  display: grid;
+  gap: 4px;
+}
+.globalNav a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  padding: 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--secondary);
+  font-size: 0.875rem;
+}
+.globalNav a[aria-current] {
+  color: var(--accent-ink);
+  background: var(--accent-soft);
+  font-weight: 600;
+}
+.globalNav a:hover {
+  background: var(--hover);
+}
+.slogan {
+  margin-block-start: auto;
+  padding: 12px;
+  color: var(--muted);
+  font:
+    0.8125rem/1.7 var(--font-unimind-latin),
+    sans-serif;
+}
+.stage {
+  min-width: 0;
+}
+.utility {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 72px;
+  padding: 12px 32px;
+  border-block-end: 1px solid var(--border);
+  background: var(--surface);
+}
+.location {
+  flex: 1;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.utility label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.utility label > span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.utility select {
+  min-height: 44px;
+  width: 115px;
+  border: 1px solid var(--control-border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+  padding: 8px;
+}
+.mobileBrand {
+  display: none;
+}
+.simulation {
+  margin: 0;
+  padding: 8px 32px;
+  font-size: 0.75rem;
+  color: var(--muted);
+  border-block-end: 1px solid var(--border);
+}
+.content {
+  width: min(100%, 1200px);
+  margin-inline: auto;
+  padding: 32px;
+  min-width: 0;
+}
+.skip {
+  position: fixed;
+  inset-inline-start: 16px;
+  inset-block-start: -100px;
+  z-index: 100;
+  padding: 12px 16px;
+  background: var(--surface);
+  color: var(--accent-ink);
+}
+.skip:focus {
+  inset-block-start: 16px;
+}
+@media (max-width: 1099px) and (min-width: 768px) {
+  .shell {
+    grid-template-columns: 184px minmax(0, 1fr);
+  }
+  .rail {
+    padding-inline: 8px;
+  }
+  .brand {
+    width: 168px;
+  }
+  .brand img {
+    width: 154px;
+  }
+  .content {
+    padding: 24px;
+  }
+}
+@media (max-width: 767px) {
+  .shell {
+    display: block;
+    padding-block-end: calc(76px + env(safe-area-inset-bottom));
+  }
+  .rail {
+    display: contents;
+  }
+  .rail > .brand,
+  .slogan {
+    display: none;
+  }
+  .globalNav {
+    position: fixed;
+    inset-block-end: 0;
+    inset-inline: 0;
+    z-index: 40;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    padding: 4px 8px calc(4px + env(safe-area-inset-bottom));
+    background: var(--surface);
+    border-block-start: 1px solid var(--border);
+  }
+  .globalNav a {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    justify-content: center;
+    padding: 8px 4px;
+    min-height: 60px;
+    font-size: 0.75rem;
+  }
+  .utility {
+    min-height: 64px;
+    padding: 8px 16px;
+    gap: 8px;
+  }
+  .mobileBrand {
+    display: block;
+  }
+  .content {
+    padding: 24px 16px;
+  }
+  .simulation {
+    padding: 8px 16px;
+  }
+  .shell[data-role="admin"] .globalNav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    position: static;
+  }
+}

@@ -13,6 +13,7 @@ import {
 } from "@/lib/auth/auth-access.supabase.server";
 import { getAuthApplication } from "@/lib/auth/supabase-auth.server";
 import { resolveLocale } from "@/lib/i18n/locale";
+import { currentRoleHome } from "@/lib/account/account.supabase.server";
 
 export type AuthFormState = AuthActionResult;
 
@@ -45,7 +46,19 @@ async function redirectAfterAuthentication(
     return { status: "UNAVAILABLE", returnPath };
   }
 
-  if (access.gate === "READY") redirect(trustedRoute(returnPath));
+  if (access.gate === "READY") {
+    let destination = returnPath;
+    if (["/", "/learn"].includes(returnPath)) {
+      try {
+        destination = await currentRoleHome();
+      } catch {
+        return { status: "UNAVAILABLE", returnPath };
+      }
+    }
+    const address = new URL(destination, "https://unimind.invalid");
+    address.searchParams.set("lang", resolveLocale(localeValue));
+    redirect(trustedRoute(address.pathname + address.search + address.hash));
+  }
   if (access.gate === "CONSENT_REQUIRED") {
     redirect(authPath("/consent", localeValue, { next: returnPath }));
   }
@@ -146,8 +159,9 @@ export async function acceptConsentAction(
     return { status: "UNAVAILABLE", returnPath: "/learn" };
   }
   if (access.gate === "READY") {
-    redirect(
-      trustedRoute(validatedInternalReturnPath(value(formData, "returnPath"))),
+    return redirectAfterAuthentication(
+      validatedInternalReturnPath(value(formData, "returnPath")),
+      value(formData, "locale"),
     );
   }
   if (access.gate === "SIGN_IN") {

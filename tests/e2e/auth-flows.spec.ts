@@ -11,13 +11,11 @@ test.beforeEach(async ({ page }) => {
   });
 });
 
-test("login presents the selected Access Shelf and supports RTL", async ({
-  page,
-}) => {
+test("login presents one identity form and supports RTL", async ({ page }) => {
   await page.goto("/login?lang=en&next=%2Flearn%2Frenal");
 
   await expect(
-    page.getByRole("heading", { name: "Your access path" }),
+    page.getByRole("link", { name: "UniMind", exact: true }),
   ).toBeVisible();
   await expect(
     page.getByRole("heading", { name: "Sign in to UniMind" }),
@@ -34,15 +32,11 @@ test("login presents the selected Access Shelf and supports RTL", async ({
   await expect(page.locator('input[name="returnPath"]')).toHaveValue(
     "/learn/renal",
   );
-  await expect(
-    page.locator('[data-surface-direction-contract="33cbfda3"]'),
-  ).toHaveCount(1);
-
-  await page.getByRole("link", { name: "عربي" }).click();
+  await page.getByRole("link", { name: "العربية", exact: true }).click();
   await expect(page.locator("html")).toHaveAttribute("lang", "ar");
   await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
   await expect(
-    page.getByRole("heading", { name: "مسار الوصول" }),
+    page.getByRole("heading", { name: "تسجيل الدخول إلى UniMind" }),
   ).toBeVisible();
   await expect(page.getByLabel("البريد الإلكتروني")).toBeVisible();
 });
@@ -125,7 +119,7 @@ test("an incomplete callback becomes a generic recoverable link state", async ({
   );
 });
 
-test("mobile routes center the active stage without page overflow", async ({
+test("mobile routes expose the current access step without page overflow", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
@@ -134,7 +128,8 @@ test("mobile routes center the active stage without page overflow", async ({
     page.getByRole("heading", { name: "راجع بريدك الإلكتروني" }),
   ).toBeVisible();
 
-  const activeStage = page.locator('[data-active="true"]');
+  const activeStage = page.locator('li[aria-current="step"]');
+  await expect(activeStage).toHaveCount(1);
   await expect
     .poll(async () => (await activeStage.boundingBox())?.x ?? -1)
     .toBeGreaterThanOrEqual(0);

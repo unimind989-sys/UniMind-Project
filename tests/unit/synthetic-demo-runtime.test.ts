@@ -94,6 +94,22 @@ describe("explicit synthetic runtime", () => {
     },
   );
   it.each([
+    ["/brand/unimind/unimind-open-folio-horizontal-light.svg", 200],
+    ["/brand/unimind/icons/site.webmanifest", 200],
+    ["/brand/unimind/private-profile.json", 404],
+    ["/brand/unimind/source.pdf", 404],
+  ])("allows only public kit asset %s (%s)", async (path, status) => {
+    for (const [key, value] of Object.entries(safe)) vi.stubEnv(key, value);
+    const { proxy } = await import("../../src/proxy");
+    const response = await proxy(
+      new NextRequest(`http://127.0.0.1:3102${path}`, {
+        headers: { host: "127.0.0.1:3102" },
+      }),
+    );
+    expect(response.status).toBe(status);
+    expect(refresh).not.toHaveBeenCalled();
+  });
+  it.each([
     "/api/batch-leader/campaigns/sample/uploads",
     "/api/preview/batch-leader/campaigns/sample/uploads",
     "/api/health/live",

@@ -5,6 +5,7 @@ import {
   type AuthCallbackGateway,
 } from "@/lib/auth/auth-callback.application";
 import { getCurrentAuthAccess } from "@/lib/auth/auth-access.supabase.server";
+import { currentRoleHome } from "@/lib/account/account.supabase.server";
 import { createServerSupabaseClient } from "@/lib/db/supabase/server";
 import { getServerEnvironment } from "@/lib/config/env.server";
 
@@ -95,7 +96,10 @@ export async function GET(request: NextRequest) {
   let destination: string;
   try {
     const access = await getCurrentAuthAccess();
-    if (access.gate === "READY") destination = result.next;
+    if (access.gate === "READY")
+      destination = ["/", "/learn"].includes(result.next)
+        ? await currentRoleHome()
+        : result.next;
     else if (access.gate === "CONSENT_REQUIRED") {
       destination = `/consent?next=${encodeURIComponent(result.next)}`;
     } else if (access.gate === "VERIFY_EMAIL") {

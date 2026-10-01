@@ -816,6 +816,7 @@ export type Database = {
       };
       profiles: {
         Row: {
+          academic_context: Json | null;
           account_status: string;
           chat_retention_mode: string;
           created_at: string;
@@ -825,6 +826,7 @@ export type Database = {
           user_id: string;
         };
         Insert: {
+          academic_context?: Json | null;
           account_status?: string;
           chat_retention_mode?: string;
           created_at?: string;
@@ -834,6 +836,7 @@ export type Database = {
           user_id: string;
         };
         Update: {
+          academic_context?: Json | null;
           account_status?: string;
           chat_retention_mode?: string;
           created_at?: string;

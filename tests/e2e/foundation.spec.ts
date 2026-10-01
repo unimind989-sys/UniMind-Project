@@ -19,7 +19,7 @@ test("health routes are minimal, uncached, and read-only", async ({
   }
 });
 
-test("foundation stays synthetic and mock-only in the browser", async ({
+test("anonymous entry shows the product landing and supplied brand without provider access", async ({
   page,
 }) => {
   await page.route("**/*", async (route) => {
@@ -33,12 +33,17 @@ test("foundation stays synthetic and mock-only in the browser", async ({
 
   await page.goto("/");
 
-  await expect(page.getByRole("heading", { name: "UniMind" })).toBeVisible();
-  await expect(page.getByText("Synthetic only", { exact: true })).toBeVisible();
-  await expect(page.getByText("Mock only", { exact: true })).toBeVisible();
   await expect(
-    page.getByText("Approved real mode", { exact: true }),
-  ).toHaveCount(0);
+    page.getByRole("heading", { name: "Study deeper Go further." }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: "Start studying" }),
+  ).toHaveAttribute("href", "/register?lang=en");
+  await expect(
+    page
+      .getByRole("banner")
+      .getByRole("link", { name: "Sign in", exact: true }),
+  ).toHaveAttribute("href", "/login?lang=en");
 
   const icon = await page.request.get("/icon.svg");
   expect(icon.status()).toBe(200);

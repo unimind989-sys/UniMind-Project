@@ -1,5 +1,7 @@
 # UniMind frontend overhaul: Phase 1 audit and plan
 
+**Current status:** Ahmed approved Phase 1 candidate `ab568b6`; the [receipt](../../planning/design/frontend-overhaul/phase-1-approval.md) authorizes Phase 2. The [student implementation record](../../planning/design/frontend-overhaul/phase-2-student.md) owns current changes, rendered evidence and the pending student checkpoint. The findings below describe the audited predecessor, not a fresh defect list for the new implementation. [DESIGN](../../DESIGN.md) remains canonical.
+
 Selected task **WP03-T09**, Ahmed, 30 September 2026. Baseline HEAD `c7b8679` on `codex/wp03-complete-synthetic-frontend`; local product checkpoint `fc95ebd`. PR #64 remains draft. This document is an audit/proposal, not design acceptance, task completion or live-provider proof. [DESIGN.md](../../DESIGN.md) is the canonical design contract. [Previous audit](../../planning/design/frontend-overhaul/previous-overhaul-audit.md) preserves historical findings and proof.
 
 ## Method, evidence and limits
@@ -158,7 +160,7 @@ Scope of “every design-related Markdown”: all first-party current contracts,
 | 6     | Product-wide consistency, state coverage, pack/walkthrough renewal, stable candidate review                                                | Both themes, EN/AR, 1440/768/430/390/360/320 plus 200% text; **final consistency checkpoint**; current founder receipt                                                                                           |
 | 7     | Required broad proof and draft delivery workflow                                                                                           | Focused checks reused until invalidated; one guarded broad stable-candidate gate, exact-head CI, branch protection, affected production proof; T09 closure only when actual acceptance passes; T10 precedes WP04 |
 
-Routine decisions are autonomous within this brief. Do not reopen WP00 or enable paid services to resolve presentation. Product implementation is blocked by Phase 1 approval; brand integration also needs supplied kit. Financial exposure, access failure or a real architecture conflict is a separate genuine stop.
+Routine decisions are autonomous within this brief. Do not reopen WP00 or enable paid services to resolve presentation. Phase 1 approval and the supplied kit are now recorded; student, Batch Leader, Admin and final implementation checkpoints remain required. Financial exposure, access failure or a real architecture conflict is a separate genuine stop.
 
 ## Verification and out-of-scope record
 
@@ -166,4 +168,4 @@ During edits run the narrowest rejecting check. For accepted stable implementati
 
 State matrix for implementation: public/auth verification/recovery/consent errors; shelf unconfigured/no-membership/locked/no-ready/error; study empty/populated/stream/cancel/offline/quota/capacity/evidence-missing/report receipt; all six artifact outputs/progress/cancel; quiz timed/untimed/expiry/score/review; upload queue/type/size/checksum/rights/expiry/cancel/retry/received; admin denied/loading/empty/readiness/confirmation/stale/success. Review both themes and relevant direction for every changed role.
 
-Unrelated/open issues stay separate: D-08 report/retention policy, D-18 storage references, paid provider/cap decisions, full admin editors/invitation delivery, real source viewing/generation, unchanged ordinary-runtime E2E timeout history and the missing Open Folio kit. None is silently solved by a visual redesign. No backend/schema/dependency/provider/worker change occurred in Phase 1.
+Unrelated/open issues stay separate: D-08 report/retention policy, D-18 storage references, paid provider/cap decisions, full admin editors/invitation delivery, real source viewing/generation and unchanged ordinary-runtime E2E timeout history. The previously missing Open Folio kit is supplied and integrated in Phase 2. No backend/schema/dependency/provider/worker change occurred in Phase 1; the minimal Phase 2 profile preference extension and its pending database proof are documented in the student record.

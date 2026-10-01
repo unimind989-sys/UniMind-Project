@@ -1,6 +1,6 @@
 # UniMind Phase 1 design review
 
-**30 September–1 October 2026 · WP03-T09 · Proposed, awaiting Ahmed's explicit approval.** This is a separate local review artifact. The product runtime, services, schema and dependencies are unchanged. The existing draft PR #64 remains unmerged. [DESIGN](../../../DESIGN.md) is the current canonical contract; the [audit](../../../docs/reviews/wp03-frontend-overhaul.md) contains the evidence inventory, role flows, document reconciliation and implementation sequence.
+**30 September–1 October 2026 · WP03-T09 · Phase 1 approved.** Ahmed approved candidate `ab568b6`; see the [receipt](phase-1-approval.md). This separate proposal changed no product runtime, schema or dependency. Phase 2 is now in progress; its [student record](phase-2-student.md) owns implementation proof and the next approval checkpoint. PR #64 remains draft/unmerged. [DESIGN](../../../DESIGN.md) is canonical; the [audit](../../../docs/reviews/wp03-frontend-overhaul.md) contains the inventory, role flows, reconciliation and sequence.
 
 ## Open the sample
 
@@ -12,7 +12,7 @@ The external review toolbar changes theme, interface language and representative
 
 The sample renders the proposed paired neutral system, student shell, mobile navigation, academic context, Material/Chat/Studio/viewer reading areas and state treatment. Source content is fictional. Four of eight illustrative source rows are shown; each opens a labeled processed excerpt. Studio deliberately displays one fixed summary for all six selection options, and Quiz explains the retained existing capability. No upload, role grant, real source retrieval, generation, quiz scoring or saved academic-account data is performed. The preview's local theme key is isolated from future product settings.
 
-The Open Folio kit and its guides are absent at the supplied path. The wordmark placeholder is explicitly temporary; Ahmed's “okay” permitted continuing this review, not accepting a design or replacing the supplied brand. Historical logo exploration is untouched.
+At the Phase 1 review, the Open Folio kit was absent and the wordmark was temporary; Ahmed's “okay” allowed that review to continue. The kit is now supplied and integrated through the shared Brand component in Phase 2. The proposal retains its historical placeholder. Unrelated logo exploration is untouched.
 
 ## Audit and rendered review
 
@@ -44,6 +44,6 @@ The [render/source manifest](review-manifest.json) binds the inspected capture b
 
 ## Approval scope and next work
 
-Approve the proposed information architecture, paired theme/component system, student shell/workspace composition and ordered rollout. Phase 2 then starts shared tokens/Brand/theme → student public/auth/account/study checkpoint → leader upload/history checkpoint → admin checkpoint → final consistency checkpoint → required stable verification/delivery. Routine decisions continue independently inside the approved scope. Actual kit integration waits for its supplied assets/guides; no replacement logo is approved here.
+Ahmed approved the proposed information architecture, paired theme/component system, student shell/workspace composition and ordered rollout. Phase 2 follows shared tokens/Brand/theme → student public/auth/account/study checkpoint → leader upload/history checkpoint → admin checkpoint → final consistency checkpoint → required stable verification/delivery. Routine decisions continue independently inside that scope. The supplied kit is now integrated in the student candidate; no substitute logo was created.
 
-**Receipt: pending.** This is the explicit Phase 1 boundary requested by Ahmed. No product implementation, merge, promotion, task closure or WP04 is authorized by presentation alone.
+**Receipt: [Phase 1 approved](phase-1-approval.md).** The [student implementation record](phase-2-student.md) owns the next rendered approval boundary. This historical proposal's presentation alone did not authorize merge, promotion, task closure or WP04.
