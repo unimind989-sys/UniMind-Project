@@ -2,7 +2,7 @@
 
 This is the canonical first-party visual and interaction contract. Product/security authority remains in the [master plan](docs/plans/poc-master-plan.md); acceptance and delivery remain in the [runbook](docs/runbooks/poc-execution-runbook.md). Surface briefs describe particular jobs and refer here for system rules.
 
-**Status: Phase 1 approved; student implementation ready for rendered review.** Ahmed approved candidate `ab568b6` and authorized implementation in a direct message, recorded in the [approval receipt](planning/design/frontend-overhaul/phase-1-approval.md). The [student candidate](planning/design/frontend-overhaul/phase-2-student.md) implements the approved public/auth, brand/theme, account, shelf and workspace direction. Student, Batch Leader, Admin and final consistency approvals remain pending. See the [audit, flows and rollout](docs/reviews/wp03-frontend-overhaul.md) and [proposal](planning/design/frontend-overhaul/README.md).
+**Status: Phase 1 and student implementation approved; Batch Leader ready for review.** Ahmed approved Phase 1 `ab568b6` and student candidate `3a2a95d`; see the [Phase 1 receipt](planning/design/frontend-overhaul/phase-1-approval.md) and [student receipt](planning/design/frontend-overhaul/student-approval.md). The [student record](planning/design/frontend-overhaul/phase-2-student.md) owns retained proof; the [Batch Leader record](planning/design/frontend-overhaul/phase-2-batch-leader.md) owns the current slice. Batch Leader, Admin and final consistency approvals remain pending. See the [audit, flows and rollout](docs/reviews/wp03-frontend-overhaul.md) and [proposal](planning/design/frontend-overhaul/README.md).
 
 The [previous design contract](planning/design/frontend-overhaul/previous-design-contract.md) preserves the implemented dark Study Shelf and historical approval. Its navy-only palette, six-item mobile bar, expanding auth rail and mandatory imagery no longer govern this overhaul. Existing behavior and safety remain binding.
 
@@ -72,16 +72,16 @@ The student candidate adds nullable `profiles.academic_context`, with own-caller
 
 Keep self-hosted **Manrope** (English) and **Noto Sans Arabic** (Arabic). Interface locale and output language stay independent. Arabic has neutral tracking; Latin technical text is isolated with `bdi` or explicit direction. Use `Intl` dates/numbers.
 
-| Role                     | Size / weight / leading                            |
-| ------------------------ | -------------------------------------------------- |
-| Public hero              | `clamp(2.25rem, 4.2vw, 3.75rem)` / 700 / 1.15–1.35 |
-| Page title               | 28px desktop, 26px phone / 700 / 1.35              |
-| Section title            | 20px / 650 / 1.35                                  |
-| Row/subsection title     | 16px / 650 / 1.4                                   |
-| Reading                  | 16px target, 15px compact preview / 400–450 / 1.6  |
-| Controls                 | 14–16px / 400 or 600 / 1.5                         |
-| Metadata                 | 13px / 400 / 1.6                                   |
-| Mobile navigation labels | 11–12px / 500 / 1.5, inside 60px targets           |
+| Role                     | Size / weight / leading                               |
+| ------------------------ | ----------------------------------------------------- |
+| Public hero              | `clamp(2.25rem, 4.2vw, 3.75rem)` / 700 / 1.15–1.35    |
+| Page title               | 28px desktop, 26px phone / 700 / 1.35                 |
+| Section title            | 20px standard, 18px compact form/history / 650 / 1.35 |
+| Row/subsection title     | 16px / 650 / 1.4                                      |
+| Reading                  | 16px target, 15px compact preview / 400–450 / 1.6     |
+| Controls                 | 14–16px / 400 or 600 / 1.5                            |
+| Metadata                 | 13px / 400 / 1.6                                      |
+| Mobile navigation labels | 11–12px / 500 / 1.5, inside 60px targets              |
 
 Arabic reading leading 1.7–1.8 and heading leading 1.5–1.55 use locale tokens, not scattered overrides. English tracking never below −0.04em.
 
@@ -118,6 +118,16 @@ Anonymous first-time entry sees the landing page. Authenticated entry routes by 
 Student onboarding resolves the existing academic hierarchy once; Account edits it and resets invalid dependent choices. Shelf shows current-period units, useful readiness and an available recent-study destination; no invented progress. Unit→Materials→Studio→Viewer retains title, navigation and contextual return. Preserve scoped Chat history/drafts, six Studio types, quiz attempts/review and exact evidence/report binding.
 
 Batch intake uses a native multiple-file picker and matching drop path. Infer format from bytes; infer requested item only when authorized scope/type uniquely match. Ask when ambiguous. Retain required source description/title and rights declaration. Each file owns state/key/progress/retry. **Uploaded/received is not processed/accepted/READY.** Add neither new formats nor processing infrastructure.
+
+The implemented intake prefers a unique outstanding compatible request; a unique
+compatible replacement is the fallback. Multiple candidates require a choice.
+One active file uploads and finalizes at a time through the existing endpoint and
+action, without waiting for processing. A failed finalizer retains its receipt;
+Retry submission does not upload again. Adding files clears the rights checkbox.
+Queue drafts stay in document memory. History shows only the existing latest
+submission per request in currently assigned active campaigns; it does not claim
+to be an archive. Uploads, History, campaign and Account share the role shell,
+semantic tokens and unmirrored brand; campaign workspace maximum is 58rem.
 
 Admin Overview leads with decisions; Content groups Sources/Campaigns; Academics groups Catalog/Cohorts; Operations groups Jobs/Quality/Usage/Incidents. Users exposes only existing assignment/membership context through authorized seams: no invented user directory/editor. Preserve consequences, stale checks, readiness predicates, audit and distinct-principal confirmation. Financial/provider boundaries remain fail-closed.
 

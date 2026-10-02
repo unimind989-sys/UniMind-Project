@@ -10,12 +10,18 @@ import {
 } from "../../src/lib/auth/auth-flow.domain";
 
 describe("auth return-path contract", () => {
-  it("keeps only authorized internal learning destinations", () => {
+  it("keeps bounded internal study and campaign destinations, whose routes reauthorize access", () => {
     expect(validatedInternalReturnPath("/learn")).toBe("/learn");
     expect(validatedInternalReturnPath("/learn/unit-a?tab=studio#quiz")).toBe(
       "/learn/unit-a?tab=studio#quiz",
     );
     expect(validatedInternalReturnPath(undefined)).toBe("/learn");
+    expect(
+      validatedInternalReturnPath("/batch-leader?view=history&lang=ar"),
+    ).toBe("/batch-leader?view=history&lang=ar");
+    expect(
+      validatedInternalReturnPath("/batch-leader/campaigns/campaign-1?lang=ar"),
+    ).toBe("/batch-leader/campaigns/campaign-1?lang=ar");
   });
 
   it.each([
@@ -26,6 +32,11 @@ describe("auth return-path contract", () => {
     "javascript:alert(1)",
     "/admin",
     "/login",
+    "/batch-leader-admin",
+    "/batch-leader/campaigns/id/uploads",
+    "/batch-leader/campaigns/%2f%2fattacker.invalid",
+    "/batch-leader/campaigns/../admin",
+    "/api/batch-leader/campaigns/id/uploads",
     "/learn\r\nLocation:https://attacker.invalid",
   ])("rejects forged destination %s", (destination) => {
     expect(validatedInternalReturnPath(destination)).toBe("/learn");

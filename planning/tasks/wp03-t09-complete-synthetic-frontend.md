@@ -12,7 +12,7 @@
 
 **Branch:** codex/wp03-complete-synthetic-frontend
 
-**Updated (UTC):** 2026-10-01T00:11:28Z
+**Updated (UTC):** 2026-10-02T22:44:06.079Z
 
 ## Derived execution envelope
 
@@ -34,25 +34,25 @@
 
 ## Manual model work blocks
 
-| Block | Assigned model | Scope and governing inputs | Independent acceptance checks, including failure cases | Assignment reason | Status and evidence |
-| --- | --- | --- | --- | --- | --- |
-| 1 | Sol High | Master-plan 6–8, DESIGN, WP03/06/07/08; independent route/render audit, follow-up scheduling and ownership | Original completed history intact; WP03 follow-ups precede WP04; unresolved product behaviors excluded/named | Cross-journey scope judgment remains with executor | Complete; audit evidence and T09/T10 scope |
-| 2 | Sol High | Isolated simulation shell, fixture access/Settings and complete student/leader/admin loops | No real inputs, auth/provider/protected mutation; scope/tab/reset isolation; deterministic outcomes including failures | Shared simulation boundary and UX judgment justify one coherent block | Complete; connected fixture-only routes and state |
-| 3 | Sol High | Candidate review, accessible EN/AR responsive proof, technical gate, founder design checkpoint and protected delivery | Complete coverage, regression proof, exact-head CI; no false PASS; affected public review artifact proven | Integrated acceptance and delivery remain with executor | In progress; focused proof passing, founder checkpoint pending |
+| Block | Assigned model | Scope and governing inputs                                                                                            | Independent acceptance checks, including failure cases                                                                 | Assignment reason                                                     | Status and evidence                                            |
+| ----- | -------------- | --------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- | -------------------------------------------------------------- |
+| 1     | Sol High       | Master-plan 6–8, DESIGN, WP03/06/07/08; independent route/render audit, follow-up scheduling and ownership            | Original completed history intact; WP03 follow-ups precede WP04; unresolved product behaviors excluded/named           | Cross-journey scope judgment remains with executor                    | Complete; audit evidence and T09/T10 scope                     |
+| 2     | Sol High       | Isolated simulation shell, fixture access/Settings and complete student/leader/admin loops                            | No real inputs, auth/provider/protected mutation; scope/tab/reset isolation; deterministic outcomes including failures | Shared simulation boundary and UX judgment justify one coherent block | Complete; connected fixture-only routes and state              |
+| 3     | Sol High       | Candidate review, accessible EN/AR responsive proof, technical gate, founder design checkpoint and protected delivery | Complete coverage, regression proof, exact-head CI; no false PASS; affected public review artifact proven              | Integrated acceptance and delivery remain with executor               | In progress; focused proof passing, founder checkpoint pending |
 
 **Next model:** Sol High
 
-**Current block:** P2-S
+**Current block:** P2-B
 
 ## Execution contract
 
 **Dependencies:** WP03-T01–T08 completed evidence; clean main `595be3c`; user 2026-09-30 request schedules frontend follow-ups before continuing WP04.
 
-**Inputs:** Approved Phase 1 candidate `ab568b6`, `planning/design/frontend-overhaul/phase-1-approval.md`, canonical DESIGN, current overhaul audit, supplied Open Folio kit, master-plan 6–8 and runbook WP03/06/07/08. Historical Study Shelf guidance remains historical. D-08/D-18/provider decisions remain open.
+**Inputs:** Approved Phase 1 candidate `ab568b6`, approved student candidate `3a2a95d`, their direct receipts in `planning/design/frontend-overhaul/`, canonical DESIGN, current overhaul audit, supplied Open Folio kit, master-plan 6–8 and runbook WP03/06/07/08. Historical Study Shelf guidance remains historical. D-08/D-18/provider decisions remain open.
 
-**Files:** DESIGN, task/review/design records; shared brand, theme, shell, public/auth, account, shelf and workspace components; verified Auth entry/callback adapters; `src/lib/account/`, `src/lib/theme/`, `src/proxy.ts`, metadata/public assets; one nullable academic-context extension to existing profiles with column-specific grant and caller-scoped trigger, generated types and rejecting SQL/unit/browser tests. Supplied kit originals and unrelated logo concepts remain untouched. Collection, source, generation, availability and governance business contracts remain unchanged.
+**Files:** DESIGN, task/review/design records; shared brand, theme, shell, public/auth, account, shelf and workspace components; verified Auth entry/callback adapters; `src/lib/account/`, `src/lib/theme/`, `src/proxy.ts`, metadata/public assets; one nullable academic-context extension to existing profiles with column-specific grant and caller-scoped trigger, generated types and rejecting SQL/unit/browser tests. P2-B adds leader list/History, collection queue and transport composition, preview list support, bounded leader Auth returns, native composition and rejecting unit/browser tests. Supplied kit originals and unrelated logo concepts remain untouched. Collection, source, generation, availability and governance business contracts remain unchanged.
 
-**Verify:** Narrow type/lint/boundary/SQL checks and affected academic/auth/workspace/isolation tests during edits; stable student browser flows, both-theme EN/AR/mobile/keyboard/axe/render proof for the student checkpoint. Migration/reset/upgrade, RLS/trigger pgTAP and generated-type parity require the repository's GitHub-hosted Linux ephemeral database runner. Full required verification, safe build, readiness, secrets, actual-diff routing, exact-head CI and affected production proof follow the stable accepted product-wide candidate. Do not repeat unaffected passing checks; do not treat mocks or source inspection as database proof.
+**Verify:** Narrow type/lint/boundary/SQL checks and affected academic/auth/workspace/isolation tests during edits; stable student and leader browser flows, both-theme EN/AR/mobile/keyboard/axe/render proof for their checkpoints. Leader proof covers mixed picker/drop, ambiguous requests, per-file progress/receipt, cancel/retry, preserved keys, no repeat upload on finalize retry, renewed rights, bytes/size/checksum and caller-scope denial. Migration/reset/upgrade, RLS/trigger pgTAP and generated-type parity require the repository's GitHub-hosted Linux ephemeral database runner. Full required verification, safe build, readiness, secrets, actual-diff routing, exact-head CI and affected production proof follow the stable accepted product-wide candidate. Do not repeat unaffected passing checks; do not treat mocks or source inspection as database proof.
 
 **Pass:** Approved presentation preserves all existing journeys and authority. Theme choice applies before paint and tolerates storage denial; academic context persists through the existing caller-scoped profile, never grants access; verified roles determine entry without a chooser. Synthetic review remains fixed, isolated and non-mutating. EN/AR, both themes, mobile, keyboard and failure recovery receive rendered proof. Pause for student, leader, admin and final consistency approval. Required broad and exact-head delivery proof follow acceptance; WP03-T10 still owns permission to resume WP04.
 
@@ -70,16 +70,16 @@ The demo has fictional document-local account/session/academic state. Its develo
 
 ## Scope and screen ownership
 
-| Journey | Authority and review ownership | Unfinished backend truth |
-| --- | --- | --- |
-| Access, verification, consent, recovery | WP03-T02 functional service; fixture harness T09 | Simulation cannot issue sessions or record consent |
-| Configurable Study Shelf and scope | WP03-T03/T04; existing fixture catalog retained | Real availability still database-derived |
-| Chat/session/evidence/report/privacy/capacity | Master-plan 6/7.1/8.6, WP06; deterministic examples T09 | No model, stream service, report storage or durability |
-| Six Studio artifacts and quiz attempt/review | Master-plan 8.7, WP07; fixed examples T09 | No generation, server scoring or artifact persistence |
-| Settings | WP03 6.1, master-plan 6.7; language/privacy/account fixtures T09 | D-08 durations/report retention undecided; no credentials changed |
-| Campaign assignment/invitation/collection/tracking | Master-plan 7.3, WP03-T05; fixture file/reference/status transitions T09 | No upload, access grant, processing or storage adapter |
-| Eight admin resources, catalog/cohort/campaign drafts and twelve decisions | Master-plan 7.2, WP03-T06/6.4, WP08; fixture summaries/drafts T09 | No protected audit/mutation, invitation email or real operations |
-| Full product proof and final founder review | WP03-T10 | WP04 remains after reviewed mock gate |
+| Journey                                                                    | Authority and review ownership                                           | Unfinished backend truth                                          |
+| -------------------------------------------------------------------------- | ------------------------------------------------------------------------ | ----------------------------------------------------------------- |
+| Access, verification, consent, recovery                                    | WP03-T02 functional service; fixture harness T09                         | Simulation cannot issue sessions or record consent                |
+| Configurable Study Shelf and scope                                         | WP03-T03/T04; existing fixture catalog retained                          | Real availability still database-derived                          |
+| Chat/session/evidence/report/privacy/capacity                              | Master-plan 6/7.1/8.6, WP06; deterministic examples T09                  | No model, stream service, report storage or durability            |
+| Six Studio artifacts and quiz attempt/review                               | Master-plan 8.7, WP07; fixed examples T09                                | No generation, server scoring or artifact persistence             |
+| Settings                                                                   | WP03 6.1, master-plan 6.7; language/privacy/account fixtures T09         | D-08 durations/report retention undecided; no credentials changed |
+| Campaign assignment/invitation/collection/tracking                         | Master-plan 7.3, WP03-T05; fixture file/reference/status transitions T09 | No upload, access grant, processing or storage adapter            |
+| Eight admin resources, catalog/cohort/campaign drafts and twelve decisions | Master-plan 7.2, WP03-T06/6.4, WP08; fixture summaries/drafts T09        | No protected audit/mutation, invitation email or real operations  |
+| Full product proof and final founder review                                | WP03-T10                                                                 | WP04 remains after reviewed mock gate                             |
 
 Calendar, personal Workspace, global Sources and Progress have no approved standalone product behavior and are excluded from the new journey. Settings does not invent deletion, billing or retention durations. Numeric quotas/costs remain unspecified. Provider enablement shows a decision boundary, never enables a provider.
 
@@ -93,7 +93,7 @@ Calendar, personal Workspace, global Sources and Progress have no approved stand
 
 **Preparation fingerprint:** NOT_READY
 
-**Unresolved findings:** Phase 1 approved; student implementation and focused/rendered proof are ready for the student checkpoint. Student acceptance, real database execution/type parity, remaining role milestones, broad stable verification and delivery proof remain pending. The Phase 1 receipt does not accept implementation states.
+**Unresolved findings:** Phase 1 and student implementation approved. Batch Leader implemented with focused/rendered proof and ready for its explicit checkpoint. Batch Leader/Admin/final acceptance, real database execution/type parity, broad stable verification and delivery proof remain pending. Earlier receipts do not accept later implementation states.
 
 **Established facts:** NONE
 
@@ -106,6 +106,15 @@ No established-fact receipt is asserted before a commit-bound proof exists. The 
 - [x] Execute rejecting behavior/security/a11y/responsive proof and inspect diff.
 - [~] Present concrete candidate and record founder interaction checkpoint.
 - [ ] Complete protected delivery/affected proof, then select WP03-T10.
+
+## Current next safe action — Batch Leader checkpoint
+
+Present the implemented Batch Leader candidate and wait for explicit approval
+before Admin. Canonical scope/proof: `planning/design/frontend-overhaul/phase-2-batch-leader.md`;
+34 inspected frames and final source hashes: `batch-leader-checkpoint/manifest.json`
+beside that record. The current action supersedes historical handoffs below.
+Keep PR #64 draft/unmerged and the owned synthetic review on port 3101 available.
+No broad/DB/CI/production proof or task closure is implied. WP04 remains after T10.
 
 ## Historical handoff — superseded review wrapper
 
@@ -125,9 +134,9 @@ No established-fact receipt is asserted before a commit-bound proof exists. The 
 
 Ahmed rejected the separate review interface and explicitly approved approach 1: the actual product frontend, normal routes/navigation/forms and automatic interactions backed only by isolated synthetic services. This resumes task implementation, not acceptance of a yet-unseen candidate. The prior harness and its receipts remain historical evidence; its material acceptance was never granted. WP03-T09 remains the one selected task and WP04 still follows WP03-T10.
 
-| Block | Assigned model | Scope and governing inputs | Independent acceptance checks, including failure cases | Assignment reason | Status and evidence |
-| --- | --- | --- | --- | --- | --- |
-| 4 | Sol High | Shared product views and isolated loopback demo composition; actual AuthForm, StudyShelf, WorkspaceFrame, CollectionFlow and AdminDecisionQueue; no review wrapper | Normal deployed route shapes, same shared components and controls, automatic streams/progress, scoped state, no service calls or production mode bypass; EN/AR/responsive and real seam regressions | Material cross-journey correction follows explicit user approval | Complete technical slice; 17/17 final native and 51/51 real-mode E2E PASS; concrete founder acceptance pending |
+| Block | Assigned model | Scope and governing inputs                                                                                                                                         | Independent acceptance checks, including failure cases                                                                                                                                              | Assignment reason                                                | Status and evidence                                                                                            |
+| ----- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| 4     | Sol High       | Shared product views and isolated loopback demo composition; actual AuthForm, StudyShelf, WorkspaceFrame, CollectionFlow and AdminDecisionQueue; no review wrapper | Normal deployed route shapes, same shared components and controls, automatic streams/progress, scoped state, no service calls or production mode bypass; EN/AR/responsive and real seam regressions | Material cross-journey correction follows explicit user approval | Complete technical slice; 17/17 final native and 51/51 real-mode E2E PASS; concrete founder acceptance pending |
 
 Additional task files: `src/app/_components/`, shared product view modules, `src/app/synthetic-runtime/`, `src/lib/demo/demo-runtime.application.ts`, `scripts/run-synthetic-demo.ts`, native demo tests/config and revised guide. Root composition and proxy are fail-closed: demo only in explicit development with entirely synthetic configuration on its exact loopback origin; no method/URL/query/client role enables it on the real runtime. All demo POST/actions/APIs are rejected. The injected client ports update per-document invented state only. Real guards/actions remain unchanged when demo mode is absent. Protected production runtime is not published as a demo.
 
@@ -163,12 +172,12 @@ Ahmed now explicitly resumes the comprehensive overhaul on this branch. The nati
 
 Entry worktree contains unrelated logo exploration under `planning/design/` and its task-record section. Preserve those exact edits. No logo artwork is changed, staged or bundled with this frontend task; an approved replacement must arrive as a separately versioned dependency.
 
-| Block | Assigned model | Scope and dependencies | Rejecting verification / acceptance | Status |
-| --- | --- | --- | --- | --- |
-| 5 | Sol High | Independent code/render audit and product-flow map; authority and previous plans first | Full role/route inventory EN/AR at 1440/768/390/320; category-separated punch list with repro/expected/correction/acceptance; documented state gaps | Complete initial audit/plan; 23-route baseline, 42-state supplemental matrix and explicit remaining rollout proof |
-| 6 | Sol High | Shared primitive foundation and interactive unit shell/Chat/Studio sample; depends on block 5 | Native URLs, current palette/fonts/logo, scoped sessions/artifacts; no service bypass; first Send usable; locale preserves draft/state; keyboard/axe/focus/overflow/zoom, desktop/tablet/mobile; concrete founder checkpoint | Technically ready for presentation; 23/23 final native tests and bounded real seam regression; founder acceptance pending |
-| 7 | Sol High | Accepted-system rollout across access/shelf/Settings/quiz/sources/report, leader/admin; depends on block 6 founder acceptance | Every visible control purposeful; complete populated/failure states and role transitions EN/AR; affected real WP03 regression; pack/walkthrough updated | Not started; checkpoint dependency |
-| 8 | Sol High | Stable candidate review/proof and draft delivery; depends on block 7 and current material receipt | Diff check/stat/full diff, secret/scope review; actual-diff route, preflight, guarded verification, exact-head CI; candidate remains draft/unmerged until accepted/gates pass | Not started; no merge/promotion/WP04 |
+| Block | Assigned model | Scope and dependencies                                                                                                        | Rejecting verification / acceptance                                                                                                                                                                                          | Status                                                                                                                    |
+| ----- | -------------- | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| 5     | Sol High       | Independent code/render audit and product-flow map; authority and previous plans first                                        | Full role/route inventory EN/AR at 1440/768/390/320; category-separated punch list with repro/expected/correction/acceptance; documented state gaps                                                                          | Complete initial audit/plan; 23-route baseline, 42-state supplemental matrix and explicit remaining rollout proof         |
+| 6     | Sol High       | Shared primitive foundation and interactive unit shell/Chat/Studio sample; depends on block 5                                 | Native URLs, current palette/fonts/logo, scoped sessions/artifacts; no service bypass; first Send usable; locale preserves draft/state; keyboard/axe/focus/overflow/zoom, desktop/tablet/mobile; concrete founder checkpoint | Technically ready for presentation; 23/23 final native tests and bounded real seam regression; founder acceptance pending |
+| 7     | Sol High       | Accepted-system rollout across access/shelf/Settings/quiz/sources/report, leader/admin; depends on block 6 founder acceptance | Every visible control purposeful; complete populated/failure states and role transitions EN/AR; affected real WP03 regression; pack/walkthrough updated                                                                      | Not started; checkpoint dependency                                                                                        |
+| 8     | Sol High       | Stable candidate review/proof and draft delivery; depends on block 7 and current material receipt                             | Diff check/stat/full diff, secret/scope review; actual-diff route, preflight, guarded verification, exact-head CI; candidate remains draft/unmerged until accepted/gates pass                                                | Not started; no merge/promotion/WP04                                                                                      |
 
 **Intent envelope:** policy 8; frontend/runtime declared; existing R3 isolation/trust surfaces remain conservatively covered. Single executor, zero delegated workers. No change to real auth/storage/authorization semantics is intended; trust skill activates if a later diff materially touches those semantics.
 
@@ -177,7 +186,6 @@ Entry worktree contains unrelated logo exploration under `planning/design/` and 
 **Additional files:** `docs/reviews/wp03-frontend-overhaul.md`, shared UI primitives, workspace frame/styles, product study, focused native tests and audit capture instrumentation; runbook/task/guide/evidence. Subsequent rollout files are authorized only after the sample acceptance dependency.
 
 **Current next safe action:** Complete the independent baseline audit, implement and technically inspect the concrete shell/Chat/Studio sample, then present it for the required founder checkpoint. Continue independent proof/documentation while awaiting that decision; do not extend unaccepted direction, fabricate a receipt, merge #64 or resume WP04.
-
 
 ## Revised shared-shell, Chat and Studio checkpoint
 
@@ -213,13 +221,13 @@ Ahmed explicitly resumes WP03-T09 with a two-phase frontend-first overhaul. This
 
 **Phase 1 envelope:** policy 8, docs/frontend, R1, short planning, frontend-quality-floor, zero workers used. Existing task-wide R3 real/synthetic trust obligations remain intact; this review-only slice changes no authorization/storage semantics. Apply Impeccable and the pinned frontend/audit guidance inline. Founder disposition MATERIAL/PENDING; no stable-delivery preflight claimed.
 
-| Block | Model | Scope / governing input | Independent acceptance / failure proof | Status |
-| --- | --- | --- | --- | --- |
-| P1 | Sol High | Current brief; master-plan 6–8, runbook WP03-T09/T10, actual routes/contracts; all first-party design Markdown | Evidence-backed role/route/state inventory, working-vs-synthetic map, authoritative DESIGN reconciliation, mobile/desktop Light/Dark EN/AR rendered proposal, explicit gaps and approval boundary | Approved: `ab568b6`, direct Ahmed receipt in `planning/design/frontend-overhaul/phase-1-approval.md` |
-| P2-S | Sol High | Approved P1 direction; shared tokens/brand/auth/account/shelf/workspace | Role derived from verified identity; authorized catalog persistence; all existing Chat/Studio/viewer/quiz/report behavior; mobile keyboard/AA/RTL/states; student rendered checkpoint | Implemented for review; student acceptance pending; database execution/type parity requires CI |
-| P2-B | Sol High | Accepted shared system; campaign/upload contracts | Mixed-file intake/progress/retry; uploading separate from processing; campaign authorization and real-mode denial preserved; leader rendered checkpoint | Awaiting dependencies |
-| P2-A | Sol High | Accepted shared system; existing admin capabilities | Task-oriented grouping, real vs synthetic actions honest, no financial enablement; narrow layout and admin rendered checkpoint | Awaiting dependencies |
-| P2-F | Sol High | Stable approved role surfaces; task/runbook acceptance | Product consistency checkpoint, current receipt, focused rejecting checks, one required broad candidate gate, exact-head CI, branch protection and affected production proof | Awaiting dependencies |
+| Block | Model    | Scope / governing input                                                                                        | Independent acceptance / failure proof                                                                                                                                                            | Status                                                                                                                |
+| ----- | -------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| P1    | Sol High | Current brief; master-plan 6–8, runbook WP03-T09/T10, actual routes/contracts; all first-party design Markdown | Evidence-backed role/route/state inventory, working-vs-synthetic map, authoritative DESIGN reconciliation, mobile/desktop Light/Dark EN/AR rendered proposal, explicit gaps and approval boundary | Approved: `ab568b6`, direct Ahmed receipt in `planning/design/frontend-overhaul/phase-1-approval.md`                  |
+| P2-S  | Sol High | Approved P1 direction; shared tokens/brand/auth/account/shelf/workspace                                        | Role derived from verified identity; authorized catalog persistence; all existing Chat/Studio/viewer/quiz/report behavior; mobile keyboard/AA/RTL/states; student rendered checkpoint             | Approved: `3a2a95d`, Ahmed receipt in `planning/design/frontend-overhaul/student-approval.md`; database proof pending |
+| P2-B  | Sol High | Accepted shared system; campaign/upload contracts                                                              | Mixed-file intake/progress/retry; uploading separate from processing; campaign authorization and real-mode denial preserved; leader rendered checkpoint                                           | Implemented with focused/rendered proof; explicit Batch Leader approval pending                                       |
+| P2-A  | Sol High | Accepted shared system; existing admin capabilities                                                            | Task-oriented grouping, real vs synthetic actions honest, no financial enablement; narrow layout and admin rendered checkpoint                                                                    | Awaiting dependencies                                                                                                 |
+| P2-F  | Sol High | Stable approved role surfaces; task/runbook acceptance                                                         | Product consistency checkpoint, current receipt, focused rejecting checks, one required broad candidate gate, exact-head CI, branch protection and affected production proof                      | Awaiting dependencies                                                                                                 |
 
 **Phase 1 files:** DESIGN.md; current first-party design surface briefs and review guidance; PRODUCT.md only to reconcile confirmed design facts; `docs/reviews/wp03-frontend-overhaul.md`; new bounded proposal/evidence under `planning/design/frontend-overhaul/`; this record; runbook continuation only. No src, backend, schema, dependencies or existing logo-artwork edits.
 
@@ -254,3 +262,48 @@ Focused proof: 110/110 unit tests plus 13/13 authenticated entry adapter checks 
 Pending proof: Linux ephemeral database reset/upgrade, 12 pgTAP assertions and generated-type parity; broad stable product-wide verification; required exact-head CI; affected production proof. This Windows checkout cannot execute the repo's guarded Linux database runner. No hosted migration or real persistence PASS is claimed; migration must precede deployment of profile readers. Student/Batch Leader/Admin/final acceptance remain separate. Final source/diff/secret review and controlled local commit preserve unrelated logo concepts, root kit and the bounded logo task section.
 
 **Next safe action:** Present the live student/public/auth candidate and pause for explicit student approval. Then implement Batch Leader mixed upload/history, present its checkpoint, proceed to Admin and final consistency in order. Leave port 3101 and the historical proposal at 3103 available. Keep PR #64 draft/unmerged; no protected delivery, merge, production change, task closure or WP04 until all required acceptance and technical gates pass.
+
+## Student approval and Batch Leader continuation — 3 October 2026 (Cairo)
+
+Ahmed explicitly replied 'yes I approve' to the student checkpoint presented at 3a2a95d. Receipt: planning/design/frontend-overhaul/student-approval.md. Continue P2-B: one leader shell, assigned campaigns and latest-submission History, mixed per-file upload/finalize with progress/cancel/retry, no processing wait, no new backend/schema/provider/dependency. Before edits, trust map and focused verification budget are in planning/design/frontend-overhaul/phase-2-batch-leader.md. Student proof remains valid except for demonstrated relevant invalidations. Single executor, no delegation. Preserve unrelated logo work and kit originals.
+
+Next safe action: implement and verify the Batch Leader slice, present rendered desktop/mobile both-theme EN/AR states, then wait for explicit Batch Leader approval before Admin. Database, broad final verification, exact-head CI and delivery remain pending; PR #64 stays draft/unmerged and WP04 held.
+
+## Phase 2 Batch Leader checkpoint — 3 October 2026 (Cairo)
+
+Implemented P2-B after the direct student receipt: shared Uploads/History/Account
+shell, assigned campaigns, native mixed picker/drop, PDF/WAV/PNG byte validation,
+unique compatible-request inference, required source context/rights, per-file
+progress/keys/receipts, cancel and upload/finalize retry. History truthfully exposes
+only existing latest submissions in currently assigned active campaigns. Invitation
+and Account controls are preserved; bounded campaign/History return paths keep
+context through sign-in. No backend API/schema/storage/provider/dependency/worker
+change. Detailed trust map, routes, limitations and proof:
+planning/design/frontend-overhaul/phase-2-batch-leader.md.
+
+Observed focused proof: initial 62/62 unit/security cases and 7/7 application-helper/
+format replay; 12 unique normal collection browser cases and 12 unique native
+leader cases passing across recorded runs. Earlier failures and corrected replays
+remain in batch-leader-checkpoint/checks.json; no single full-suite receipt claimed.
+Four locale/theme pairs, 1440/768/430/390/360/320 reflow, AA, 44px targets, keyboard,
+200% text, reduced motion and role/document isolation exercised. Thirty-four actual
+in-app JPEGs cover desktop/phone EN/AR Light/Dark, invitation decision, mixed queue,
+25% progress, individual receipts, History, Account, loading/empty/error/expired,
+invalid synthetic input and interruption. Manifest binds final sources and pixels.
+TypeScript and changed-file ESLint passed after the final source edits; module
+boundaries passed after moving the helper to application; the one owned detector
+returned zero findings. Secret scan passed at 2915 files before final documentation.
+
+Inline finish review: non-independent, disposition: ship for presenting this
+milestone only. Local completion gates passed: owned formatting, agent readiness (447 names,
+108 links, 23 decisions, 113 task contracts), 34 capture and 24 source hash bindings,
+full owned diff/whitespace/secret/scope review and final secret scan (2928 files). Candidate acceptance is still pending. No broad verify/build,
+database reset/upgrade/pgTAP/type parity, exact-head CI, hosted change or production
+proof is claimed. The earlier student migration must be proven and applied before
+deploying its account readers. Unchanged student proof is reused only where inputs
+remain unaffected.
+
+Next safe action: present the saved leader checkpoint, wait for explicit Batch
+Leader approval, then execute P2-A in this same task/branch. Keep PR #64 draft/
+unmerged, owned loopback review available, unrelated logo concepts/original kit/
+task-record block intact, WP03-T09 in progress and WP04 held behind T10.

@@ -13,18 +13,13 @@ import {
   syntheticFiles,
 } from "./synthetic-files";
 import type { Locale } from "./synthetic-fixtures";
+import type { ProductState } from "./product-services";
 
 export const demoCampaignId = "sample-campaign";
-export function ProductCollection({
-  locale,
-  fixture,
-}: {
-  locale: Locale;
-  fixture: string;
-}) {
-  const { state, update } = useProductServices();
-  const receipts = useRef(new Map<string, { itemId: string; key: string }>());
-  const finalized = useRef(new Map<string, string>());
+export function makeDemoCampaign(
+  state: ProductState,
+  locale: Locale,
+): CollectionCampaign {
   const types = ["DOCUMENT", "AUDIO", "IMAGE"] as const;
   const statuses = [
     "PROCESSING",
@@ -33,10 +28,16 @@ export function ProductCollection({
     "REJECTED",
     "COMPLETED",
   ] as const;
-  const campaign: CollectionCampaign = {
+  return {
     id: demoCampaignId,
-    name: "Synthetic Anatomy source call",
-    cohortName: "Human Medicine · Year 1 · Term 1",
+    name:
+      locale === "ar"
+        ? "حملة مصادر التشريح التجريبية"
+        : "Synthetic Anatomy source call",
+    cohortName:
+      locale === "ar"
+        ? "الطب البشري · السنة الأولى · الفصل الأول"
+        : "Human Medicine · Year 1 · Term 1",
     opensAt: "2026-09-01T00:00:00Z",
     closesAt: "2026-10-12T20:00:00Z",
     assignmentExpiresAt: "2026-10-10T20:00:00Z",
@@ -90,6 +91,21 @@ export function ProductCollection({
       })),
     ],
   };
+}
+
+export function ProductCollection({
+  locale,
+  fixture,
+}: {
+  locale: Locale;
+  fixture: string;
+}) {
+  const { state, update } = useProductServices();
+  const receipts = useRef(new Map<string, { itemId: string; key: string }>());
+  const finalized = useRef(new Map<string, string>());
+  const sequence = useRef(state.submissions.length);
+  const campaign = makeDemoCampaign(state, locale);
+  const types = ["DOCUMENT", "AUDIO", "IMAGE"] as const;
   const upload: CollectionUploadClient = async (
     file,
     itemId,
@@ -154,7 +170,7 @@ export function ProductCollection({
         requestedItemId,
         clientIdempotencyKey,
       };
-    const id = state.submissions.length + 1;
+    const id = ++sequence.current;
     update((current) => ({
       ...current,
       submissions: [
@@ -189,6 +205,10 @@ export function ProductCollection({
       finalizeAction={finalize}
       initialActionState={{ status: "IDLE" }}
       initialClientKey="sample-initial"
+      initialMetadata={{
+        title: "Synthetic study source",
+        description: "Invented source for the UniMind synthetic product flow.",
+      }}
       reference={{
         name: "Synthetic approved handout reference · no storage URL",
         file: () => makeSyntheticFile("synthetic-handout.pdf"),

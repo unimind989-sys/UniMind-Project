@@ -33,7 +33,9 @@ export function ProductCampaigns({ screen, locale, scenario }: Props) {
   if (screen === "invitation")
     return (
       <section className={styles.panel}>
-        <h2>{t("Campaign invitation", "دعوة حملة")}</h2>
+        <h2>
+          {t("Synthetic Anatomy source call", "حملة مصادر التشريح التجريبية")}
+        </h2>
         <p>
           {t(
             "Synthetic Anatomy source call · one cohort and unit · sample expiry date",
@@ -47,19 +49,24 @@ export function ProductCampaigns({ screen, locale, scenario }: Props) {
         </p>
         <p>
           {t(
-            "This invitation example does not create an assignment, grant permissions or send email. Batch Leaders cannot publish, unlock cohorts, inspect student chats or change providers/cost controls.",
-            "مثال الدعوة لا ينشئ تكليفًا أو يمنح صلاحيات أو يرسل بريدًا. منسق الدفعة لا ينشر أو يفتح مجموعات أو يطلع على محادثات الطلاب أو يغير المزودين والميزانية.",
+            "This is a synthetic invitation example. Accepting it only updates this demo.",
+            "هذا مثال دعوة تجريبية. قبولها يحدّث العرض التجريبي فقط.",
           )}
         </p>
-        <Button
-          primary
-          disabled={accepted}
-          onClick={() =>
-            update((current) => ({ ...current, invitationUsed: true }))
-          }
-        >
-          {t("Accept invitation", "قبول الدعوة")}
-        </Button>
+        <div className={styles.actions}>
+          <Button
+            primary
+            disabled={accepted}
+            onClick={() =>
+              update((current) => ({ ...current, invitationUsed: true }))
+            }
+          >
+            {t("Accept invitation", "قبول الدعوة")}
+          </Button>
+          <ProductLink href={reviewBase + "/batch-leader"} locale={locale}>
+            {t("View campaigns", "عرض الحملات")}
+          </ProductLink>
+        </div>
         {accepted ? (
           <Notice>
             {t(
@@ -68,11 +75,6 @@ export function ProductCampaigns({ screen, locale, scenario }: Props) {
             )}
           </Notice>
         ) : null}
-        <div className={styles.actions}>
-          <ProductLink href={reviewBase + "/batch-leader"} locale={locale}>
-            {t("View campaigns", "عرض الحملات")}
-          </ProductLink>
-        </div>
       </section>
     );
   return (

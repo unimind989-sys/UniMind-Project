@@ -1,80 +1,28 @@
 "use client";
 
-import { useActionState, useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import type { Route } from "next";
-
+import { AppShell } from "@/app/_components/app-shell";
+import { Button } from "@/app/_components/product-ui";
+import type { CollectionCampaign } from "@/lib/collection/collection.application";
 import type { CollectionActionState } from "../collection-actions";
-import type {
-  CollectionCampaign,
-  CollectionSubmissionStatus,
-} from "@/lib/collection/collection.application";
-import {
-  COLLECTION_BROWSER_MAX_FILE_BYTES,
-  inspectCollectionFileForBrowser,
-} from "@/lib/collection/collection-browser.application";
+import { compatibleCollectionItems } from "@/lib/collection/collection-queue.application";
 import { getCollectionCopy } from "@/lib/i18n/collection-copy";
 import { formatCollectionDate } from "@/lib/i18n/collection-format";
-import { getTextDirection, type Locale } from "@/lib/i18n/locale";
-
+import type { Locale } from "@/lib/i18n/locale";
+import {
+  collectionUploadClient,
+  type CollectionUploadClient,
+} from "./collection-upload-client";
+import {
+  useCollectionQueue,
+  type CollectionFinalizeAction,
+} from "./use-collection-queue";
+import { CollectionHistory } from "./leader-home";
 import styles from "../collection.module.css";
 
-type UploadReceipt = Readonly<{
-  uploadId: string;
-  checksum: string;
-  mimeType: string;
-  byteSize: number;
-}>;
-
-type ClientInspection = Readonly<{
-  file: File;
-  mimeType: string;
-  format: string;
-  expectedType: "DOCUMENT" | "AUDIO" | "IMAGE";
-  byteSize: number;
-}>;
-
-type FinalizeAction = (
-  previousState: CollectionActionState,
-  formData: FormData,
-) => Promise<CollectionActionState>;
-export type CollectionUploadClient = (
-  file: File,
-  itemId: string,
-  clientKey: string,
-  progress: (value: number) => void,
-  signal: AbortSignal,
-) => Promise<UploadReceipt>;
-
-const statusOrder: readonly CollectionSubmissionStatus[] = [
-  "RECEIVED",
-  "PROCESSING",
-  "NEEDS_INFORMATION",
-  "ACCEPTED",
-  "REJECTED",
-  "COMPLETED",
-];
-
-function statusLabel(
-  status: CollectionSubmissionStatus,
-  text: ReturnType<typeof getCollectionCopy>,
-) {
-  return {
-    RECEIVED: text.received,
-    PROCESSING: text.processing,
-    NEEDS_INFORMATION: text.needsInformation,
-    ACCEPTED: text.accepted,
-    REJECTED: text.rejected,
-    COMPLETED: text.completed,
-  }[status];
-}
-
-function formatBytes(locale: Locale, value: number) {
-  if (value < 1024) return locale === "ar" ? "أقل من ١" : "<1";
-  return new Intl.NumberFormat(locale === "ar" ? "ar-EG" : "en", {
-    maximumFractionDigits: 1,
-  }).format(value / 1024);
-}
+export type { CollectionUploadClient } from "./collection-upload-client";
 
 export function CollectionFlow({
   campaign,
@@ -82,17 +30,17 @@ export function CollectionFlow({
   uploadEndpoint,
   finalizeAction,
   initialActionState,
-  initialClientKey,
   syntheticPreview = false,
   uploadClient,
   allowFile,
   reference,
   homeHref,
+  initialMetadata,
 }: Readonly<{
   campaign: CollectionCampaign;
   locale: Locale;
   uploadEndpoint: string;
-  finalizeAction: FinalizeAction;
+  finalizeAction: CollectionFinalizeAction;
   initialActionState: CollectionActionState;
   initialClientKey: string;
   syntheticPreview?: boolean;
@@ -100,626 +48,489 @@ export function CollectionFlow({
   allowFile?: (file: File) => Promise<boolean>;
   reference?: Readonly<{ name: string; file: () => File }>;
   homeHref?: string;
+  initialMetadata?: Readonly<{ title: string; description: string }>;
 }>) {
   const text = getCollectionCopy(locale);
-  const direction = getTextDirection(locale);
-  const firstOpenItem =
-    campaign.requestedItems.find((item) => item.latestSubmission === null) ??
-    campaign.requestedItems[0]!;
-  const [selectedItemId, setSelectedItemId] = useState(firstOpenItem.id);
-  const [clientKey, setClientKey] = useState(initialClientKey);
-  const [inspection, setInspection] = useState<ClientInspection | null>(null);
-  const [fileError, setFileError] = useState<string | null>(null);
-  const [receipt, setReceipt] = useState<UploadReceipt | null>(null);
-  const [progress, setProgress] = useState(0);
-  const [uploadState, setUploadState] = useState<
-    "IDLE" | "UPLOADING" | "INTERRUPTED" | "UPLOADED"
-  >("IDLE");
-  const [dragActive, setDragActive] = useState(false);
-  const [rightsDeclared, setRightsDeclared] = useState(false);
-  const [actionState, formAction, finalizePending] = useActionState(
-    finalizeAction,
-    initialActionState,
+  const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
+  const upload = useMemo(
+    () => uploadClient ?? collectionUploadClient(uploadEndpoint),
+    [uploadClient, uploadEndpoint],
   );
-  const xhrRef = useRef<XMLHttpRequest | null>(null);
-  const uploadAttemptRef = useRef(0);
-  const formRef = useRef<HTMLFormElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const localAbort = useRef<AbortController | null>(null);
-  const [inputMode, setInputMode] = useState("file");
-  useEffect(
-    () => () => {
-      localAbort.current?.abort();
-      xhrRef.current?.abort();
-    },
-    [],
+  const queue = useCollectionQueue({
+    campaign,
+    upload,
+    finalize: finalizeAction,
+    initialState: initialActionState,
+    ...(allowFile ? { allowFile } : {}),
+    ...(initialMetadata ? { initialTitle: initialMetadata.title } : {}),
+  });
+  const [description, setDescription] = useState(
+    initialMetadata?.description ?? "",
   );
-
-  const selectedItem = useMemo(
-    () => campaign.requestedItems.find((item) => item.id === selectedItemId)!,
-    [campaign.requestedItems, selectedItemId],
+  const [rights, setRights] = useState(false);
+  const [drag, setDrag] = useState(false);
+  const picker = useRef<HTMLInputElement>(null);
+  const back =
+    homeHref ?? (syntheticPreview ? "/preview/batch-leader" : "/batch-leader");
+  const ready = queue.files.filter(
+    (row) =>
+      row.inspection &&
+      row.itemId &&
+      row.title.trim().length >= 3 &&
+      ["READY", "ERROR"].includes(row.state),
   );
-
-  useEffect(() => {
-    document.documentElement.lang = locale;
-    document.documentElement.dir = direction;
-  }, [direction, locale]);
-
-  async function selectFile(file: File | undefined) {
-    const selectionAttempt = ++uploadAttemptRef.current;
-    xhrRef.current?.abort();
-    localAbort.current?.abort();
-    xhrRef.current = null;
-    setReceipt(null);
-    setProgress(0);
-    setUploadState("IDLE");
-    setFileError(null);
-    setRightsDeclared(false);
-    setClientKey(crypto.randomUUID());
-    if (file === undefined) {
-      setInspection(null);
-      return;
-    }
-    if (allowFile && !(await allowFile(file))) {
-      setInspection(null);
-      setFileError(
-        locale === "ar"
-          ? "استخدم الملفات التجريبية المتاحة في دليل الاختبار فقط."
-          : "Use only the synthetic files supplied in the test pack.",
-      );
-      return;
-    }
-    if (uploadAttemptRef.current !== selectionAttempt) return;
-    if (file.size > COLLECTION_BROWSER_MAX_FILE_BYTES) {
-      setInspection(null);
-      setFileError(
-        locale === "ar"
-          ? "حجم الملف أكبر من 10 ميجابايت."
-          : "File exceeds 10 MB.",
-      );
-      return;
-    }
-    const bytes = new Uint8Array(await file.arrayBuffer());
-    if (uploadAttemptRef.current !== selectionAttempt) return;
-    const result = inspectCollectionFileForBrowser({
-      fileName: file.name,
-      clientMimeType: file.type,
-      bytes,
-    });
-    if (!result.ok) {
-      setInspection(null);
-      setFileError(
-        locale === "ar"
-          ? "توقيع الملف أو نوعه غير مسموح. استخدم PDF أو WAV أو PNG تجريبيًا."
-          : "File signature is not allowed. Use a synthetic PDF, WAV, or PNG.",
-      );
-      return;
-    }
-    if (
-      selectedItem.expectedType !== "OTHER" &&
-      selectedItem.expectedType !== result.expectedType
-    ) {
-      setInspection(null);
-      setFileError(
-        locale === "ar"
-          ? "نوع الملف لا يطابق المادة المطلوبة."
-          : "The file type does not match the requested item.",
-      );
-      return;
-    }
-    setInspection({
-      file,
-      mimeType: result.actualMimeType,
-      format: result.declaredFormat,
-      expectedType: result.expectedType,
-      byteSize: result.byteSize,
-    });
+  const canSubmit =
+    rights &&
+    description.trim().length >= 10 &&
+    description.trim().length <= 1000;
+  function add(files: readonly File[]) {
+    if (queue.running) return;
+    setRights(false);
+    void queue.add(files);
   }
-
-  function resetForItem(itemId: string) {
-    uploadAttemptRef.current += 1;
-    xhrRef.current?.abort();
-    localAbort.current?.abort();
-    xhrRef.current = null;
-    formRef.current?.reset();
-    setSelectedItemId(itemId);
-    setInspection(null);
-    setReceipt(null);
-    setFileError(null);
-    setProgress(0);
-    setUploadState("IDLE");
-    setRightsDeclared(false);
-    setClientKey(crypto.randomUUID());
-    if (fileInputRef.current !== null) fileInputRef.current.value = "";
-  }
-
-  function uploadFile() {
-    if (inspection === null) {
-      setFileError(text.noFile);
-      return;
-    }
-    setFileError(null);
-    setProgress(0);
-    setUploadState("UPLOADING");
-    if (uploadClient) {
-      const controller = new AbortController();
-      localAbort.current = controller;
-      const attempt = ++uploadAttemptRef.current;
-      void uploadClient(
-        inspection.file,
-        selectedItem.id,
-        clientKey,
-        (value) => {
-          if (uploadAttemptRef.current === attempt) setProgress(value);
-        },
-        controller.signal,
-      )
-        .then((next) => {
-          if (uploadAttemptRef.current !== attempt || controller.signal.aborted)
-            return;
-          if (
-            next.mimeType !== inspection.mimeType ||
-            next.byteSize !== inspection.byteSize ||
-            typeof next.uploadId !== "string"
-          )
-            throw new Error("VALIDATION_REJECTED");
-          setReceipt(next);
-          setProgress(100);
-          setUploadState("UPLOADED");
-        })
-        .catch((error: unknown) => {
-          if (uploadAttemptRef.current !== attempt) return;
-          setUploadState("INTERRUPTED");
-          const rejected =
-            error instanceof Error && error.message === "VALIDATION_REJECTED";
-          setFileError(
-            rejected
-              ? locale === "ar"
-                ? "رفض التحقق من الملف. لم ينشأ إرسال."
-                : "File validation rejected. No submission created."
-              : text.offlineError,
-          );
-        });
-      return;
-    }
-    const body = new FormData();
-    body.set("requestedItemId", selectedItem.id);
-    body.set("clientIdempotencyKey", clientKey);
-    body.set("file", inspection.file);
-    const xhr = new XMLHttpRequest();
-    const uploadAttempt = ++uploadAttemptRef.current;
-    xhrRef.current = xhr;
-    xhr.open("POST", uploadEndpoint);
-    xhr.upload.addEventListener("progress", (event) => {
-      if (uploadAttemptRef.current !== uploadAttempt) return;
-      if (event.lengthComputable) {
-        setProgress(
-          Math.max(1, Math.round((event.loaded / event.total) * 100)),
-        );
-      }
-    });
-    xhr.addEventListener("load", () => {
-      if (uploadAttemptRef.current !== uploadAttempt) return;
-      xhrRef.current = null;
-      if (xhr.status < 200 || xhr.status >= 300) {
-        setUploadState("INTERRUPTED");
-        setFileError(text.genericError);
-        return;
-      }
-      try {
-        const nextReceipt = JSON.parse(xhr.responseText) as UploadReceipt;
-        if (
-          typeof nextReceipt.uploadId !== "string" ||
-          nextReceipt.mimeType !== inspection.mimeType ||
-          nextReceipt.byteSize !== inspection.byteSize
-        ) {
-          throw new Error("mismatch");
-        }
-        setReceipt(nextReceipt);
-        setProgress(100);
-        setUploadState("UPLOADED");
-      } catch {
-        setUploadState("INTERRUPTED");
-        setFileError(text.genericError);
-      }
-    });
-    xhr.addEventListener("error", () => {
-      if (uploadAttemptRef.current !== uploadAttempt) return;
-      xhrRef.current = null;
-      setUploadState("INTERRUPTED");
-      setFileError(text.offlineError);
-    });
-    xhr.addEventListener("abort", () => {
-      if (uploadAttemptRef.current !== uploadAttempt) return;
-      xhrRef.current = null;
-      setProgress(0);
-      setUploadState("INTERRUPTED");
-      setFileError(text.offlineError);
-    });
-    xhr.send(body);
-  }
-
-  const currentActionState =
-    actionState.requestedItemId === selectedItem.id &&
-    actionState.clientIdempotencyKey === clientKey
-      ? actionState
-      : initialActionState;
-  const successful = currentActionState.status === "SUCCESS";
-  const actionError =
-    currentActionState.status === "ERROR"
-      ? currentActionState.message === "RIGHTS_REQUIRED"
-        ? text.rightsMissing
-        : text.genericError
-      : null;
-
+  const errorText = (code: string) =>
+    ({
+      UNSAFE_DEMO_FILE: t(
+        "Use the supplied synthetic files only. Private files are not accepted in this demo.",
+        "استخدم الملفات التجريبية المرفقة فقط. لا يقبل العرض ملفات خاصة.",
+      ),
+      FILE_TOO_LARGE: t(
+        "This file exceeds the 10 MB limit.",
+        "هذا الملف يتجاوز الحد الأقصى ١٠ ميجابايت.",
+      ),
+      EMPTY_FILE: t(
+        "This file is empty. Choose another file.",
+        "هذا الملف فارغ. اختر ملفًا آخر.",
+      ),
+      FORBIDDEN_TYPE: t(
+        "The file contents are not a supported PDF, WAV, or PNG.",
+        "محتوى الملف ليس PDF أو WAV أو PNG مدعومًا.",
+      ),
+      FILE_UNREADABLE: t(
+        "This file could not be read. Choose it again.",
+        "تعذرت قراءة الملف. اختره مرة أخرى.",
+      ),
+      UPLOAD_INTERRUPTED: text.offlineError,
+      UPLOAD_FAILED: text.offlineError,
+      FINALIZE_FAILED: t(
+        "The file was uploaded, but its submission could not be confirmed. Retry submission without uploading again.",
+        "تم رفع الملف، لكن تعذر تأكيد الإرسال. أعد محاولة الإرسال دون رفع الملف مجددًا.",
+      ),
+      VALIDATION_REJECTED: t(
+        "The server could not verify this file. Check the campaign and try again.",
+        "تعذر على الخادم التحقق من الملف. راجع الحملة وحاول مجددًا.",
+      ),
+      RIGHTS_REQUIRED: text.rightsMissing,
+    })[code] ?? text.genericError;
   return (
-    <div className={styles.shell} lang={locale} dir={direction}>
-      <a className={styles.skipLink} href="#collection-main">
-        {locale === "ar" ? "انتقل إلى نموذج الجمع" : "Skip to collection form"}
-      </a>
-      <aside className={styles.campaignRail} aria-label={text.campaignScope}>
-        <Link
-          className={styles.brand}
-          href={
-            ((homeHref ?? (syntheticPreview ? "/preview/learn" : "/learn")) +
-              `?lang=${locale}`) as Route
-          }
-        >
-          <svg viewBox="0 0 44 44" aria-hidden="true">
-            <path
-              d="M3 8.5c7.5 0 12.8 2.5 17 7.5v21c-4.2-4-9.5-6-17-6Z"
-              fill="currentColor"
-            />
-            <path
-              d="M41 8.5c-7.5 0-12.8 2.5-17 7.5v21c4.2-4 9.5-6 17-6Z"
-              fill="#ecf3f9"
-            />
-          </svg>
-          <span translate="no">UniMind</span>
+    <AppShell
+      locale={locale}
+      role="leader"
+      synthetic={syntheticPreview}
+      preview={syntheticPreview}
+      title={t("Uploads", "الرفع")}
+    >
+      <div className={styles.workspace}>
+        <Link className={styles.back} href={`${back}?lang=${locale}` as Route}>
+          {text.backToCampaigns}
         </Link>
-        <div className={styles.scopeBlock}>
-          <p>{text.pageTitle}</p>
+        <header className={styles.header}>
           <h1>{campaign.name}</h1>
-          <p className={styles.cohort}>{campaign.cohortName}</p>
-        </div>
-        <dl className={styles.dates}>
-          <div>
-            <dt>{text.due}</dt>
-            <dd>{formatCollectionDate(locale, campaign.closesAt)}</dd>
-          </div>
-          <div>
-            <dt>{text.assignment}</dt>
-            <dd>
+          <p>{campaign.cohortName}</p>
+          <p>
+            {t(
+              "Add the materials requested for your batch. Uploading finishes before processing begins.",
+              "أضف المواد المطلوبة لدفعتك. ينتهي الرفع قبل بدء المعالجة.",
+            )}
+          </p>
+          <div className={styles.dates}>
+            <span>
+              {text.due}: {formatCollectionDate(locale, campaign.closesAt)}
+            </span>
+            <span>
+              {text.assignment}:{" "}
               {formatCollectionDate(locale, campaign.assignmentExpiresAt)}
-            </dd>
+            </span>
           </div>
-        </dl>
-        <p className={styles.syntheticLock}>
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <rect x="5" y="10" width="14" height="11" rx="2" />
-            <path d="M8 10V7a4 4 0 0 1 8 0v3" />
-          </svg>
-          {text.syntheticBoundary}
-        </p>
-        <div className={styles.localeSwitch} role="group" aria-label="Language">
-          <Link
-            aria-current={locale === "en" ? "page" : undefined}
-            href="?lang=en"
-          >
-            EN
-          </Link>
-          <Link
-            aria-current={locale === "ar" ? "page" : undefined}
-            href="?lang=ar"
-          >
-            عربي
-          </Link>
-        </div>
-      </aside>
-
-      <main id="collection-main" className={styles.main} tabIndex={-1}>
-        <header className={styles.mainHeader}>
-          <div>
-            <h2>{text.requestQueue}</h2>
-            <p>{text.replaceGuidance}</p>
-          </div>
-          {syntheticPreview ? <span>{text.syntheticPreview}</span> : null}
         </header>
-
-        <section className={styles.requestStrip} aria-label={text.requestQueue}>
-          {campaign.requestedItems.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              aria-pressed={selectedItemId === item.id}
-              onClick={() => resetForItem(item.id)}
-            >
-              <span className={styles.requestMeta}>
-                {item.required ? text.required : text.optional} ·{" "}
-                {item.expectedType}
-              </span>
-              <strong>{item.title}</strong>
-              <bdi>{locale === "ar" ? item.unitTitleAr : item.unitTitleEn}</bdi>
-              <span
-                className={styles.requestStatus}
-                data-status={item.latestSubmission?.status ?? "REQUESTED"}
-              >
-                {item.latestSubmission === null
-                  ? item.status === "REQUESTED"
-                    ? locale === "ar"
-                      ? "في انتظار الملف"
-                      : "Awaiting file"
-                    : text.received
-                  : statusLabel(item.latestSubmission.status, text)}
-              </span>
-            </button>
-          ))}
-        </section>
-
-        <div className={styles.workGrid}>
-          <form ref={formRef} className={styles.formPanel} action={formAction}>
-            <input type="hidden" name="campaignId" value={campaign.id} />
-            <input
-              type="hidden"
-              name="requestedItemId"
-              value={selectedItem.id}
-            />
-            <input
-              type="hidden"
-              name="uploadId"
-              value={receipt?.uploadId ?? ""}
-            />
-            <input
-              type="hidden"
-              name="clientIdempotencyKey"
-              value={clientKey}
-            />
-            <header>
-              <h2>{text.formTitle}</h2>
-              <p>{text.formBody}</p>
-            </header>
-
-            <label className={styles.field}>
-              <span>{text.requestedItem}</span>
-              <select
-                value={selectedItem.id}
-                onChange={(event) => resetForItem(event.target.value)}
-                disabled={uploadState === "UPLOADING" || finalizePending}
-              >
-                {campaign.requestedItems.map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {item.title}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <div className={styles.fieldPair}>
-              <label className={styles.field}>
-                <span>{text.sourceTitle}</span>
-                <input
-                  name="sourceName"
-                  minLength={3}
-                  maxLength={200}
-                  required
-                  placeholder={text.sourceTitlePlaceholder}
-                />
-              </label>
-              <label className={styles.field}>
-                <span>{text.description}</span>
-                <textarea
-                  name="sourceDescription"
-                  minLength={10}
-                  maxLength={1000}
-                  required
-                  rows={3}
-                  placeholder={text.descriptionPlaceholder}
-                />
-              </label>
-            </div>
-
-            <div
-              className={styles.dropZone}
-              data-drag-active={dragActive}
-              onDragEnter={(event) => {
-                event.preventDefault();
-                setDragActive(true);
-              }}
-              onDragOver={(event) => event.preventDefault()}
-              onDragLeave={(event) => {
-                if (event.currentTarget === event.target) setDragActive(false);
-              }}
-              onDrop={(event) => {
-                event.preventDefault();
-                setDragActive(false);
-                void selectFile(event.dataTransfer.files[0]);
-              }}
-            >
-              {reference ? (
-                <label className={styles.field}>
-                  {locale === "ar" ? "طريقة الإرسال" : "Submission method"}
-                  <select
-                    value={inputMode}
-                    onChange={(event) => {
-                      const mode = event.target.value;
-                      setInputMode(mode);
-                      void selectFile(
-                        mode === "reference" ? reference.file() : undefined,
-                      );
-                    }}
-                  >
-                    <option value="file">
-                      {locale === "ar" ? "ملف" : "File"}
-                    </option>
-                    <option value="reference">
-                      {locale === "ar"
-                        ? "مرجع تخزين معتمد"
-                        : "Approved storage reference"}
-                    </option>
-                  </select>
-                </label>
-              ) : null}
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5" />
-                <path d="M5 14v5h14v-5" />
-              </svg>
-              <strong>{text.dropTitle}</strong>
-              <span>{text.dropBody}</span>
-              {inputMode === "file" ? (
-                <label className={styles.fileAction}>
-                  {text.chooseFile}
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept=".pdf,.wav,.png,application/pdf,audio/wav,image/png"
-                    onChange={(event) =>
-                      void selectFile(event.target.files?.[0])
-                    }
-                  />
-                </label>
-              ) : (
-                <p>{reference?.name}</p>
-              )}
-              {inspection === null ? null : (
-                <div className={styles.fileSelection} role="status">
-                  <bdi>{inspection.file.name}</bdi>
+        <details className={styles.requests}>
+          <summary>
+            {text.requestQueue} ·{" "}
+            {campaign.requestedItems.filter((item) => item.required).length}
+          </summary>
+          <ul>
+            {campaign.requestedItems
+              .filter((item) => item.required)
+              .map((item) => (
+                <li key={item.id}>
+                  <span>{item.title}</span>
                   <span>
-                    {formatBytes(locale, inspection.byteSize)} KB ·{" "}
-                    {inspection.format}
+                    {item.latestSubmission
+                      ? text.received
+                      : t("Awaiting file", "بانتظار ملف")}
                   </span>
-                  <button
-                    type="button"
-                    onClick={() => void selectFile(undefined)}
-                  >
-                    {text.removeFile}
-                  </button>
-                </div>
-              )}
-            </div>
-
-            <label className={styles.rightsRow}>
-              <input
-                type="checkbox"
-                name="declaredRights"
-                value="DECLARED"
-                checked={rightsDeclared}
-                onChange={(event) => setRightsDeclared(event.target.checked)}
-              />
-              <span>{text.rights}</span>
-            </label>
-
-            {uploadState === "UPLOADING" ? (
-              <div className={styles.progress} role="status" aria-live="polite">
-                <div>
-                  <span>{text.uploading}</span>
-                  <span>{progress}%</span>
-                </div>
-                <progress value={progress} max={100}>
-                  {progress}%
-                </progress>
-              </div>
-            ) : null}
-
-            {(fileError ?? actionError) ? (
-              <div className={styles.errorSummary} role="alert">
-                <strong>{text.validationTitle}</strong>
-                <p>{fileError ?? actionError}</p>
-              </div>
-            ) : null}
-
-            {successful ? (
-              <div className={styles.successSummary} role="status">
-                <strong>{text.submitted}</strong>
-                <p>{text.submittedBody}</p>
-              </div>
-            ) : null}
-
-            <div className={styles.actions}>
-              {receipt === null ? (
-                <button
-                  className={styles.primaryAction}
-                  type="button"
-                  disabled={inspection === null || uploadState === "UPLOADING"}
-                  onClick={uploadFile}
-                >
-                  {uploadState === "INTERRUPTED"
-                    ? text.uploadAgain
-                    : text.validateUpload}
-                </button>
-              ) : (
-                <button
-                  className={styles.primaryAction}
-                  type="submit"
-                  disabled={!rightsDeclared || finalizePending || successful}
-                >
-                  {finalizePending ? text.uploading : text.finalize}
-                </button>
-              )}
-              {uploadState === "UPLOADING" ? (
-                <button
-                  className={styles.secondaryAction}
-                  type="button"
-                  onClick={() => {
-                    xhrRef.current?.abort();
-                    localAbort.current?.abort();
-                  }}
-                >
-                  {text.cancel}
-                </button>
-              ) : null}
-            </div>
-          </form>
-
-          <aside
-            className={styles.proofPanel}
-            aria-label={text.validationTitle}
+                </li>
+              ))}
+          </ul>
+          <p>{text.replaceGuidance}</p>
+        </details>
+        <section className={styles.intake} aria-labelledby="collection-intake">
+          <h2 id="collection-intake">{t("Add files", "إضافة ملفات")}</h2>
+          <p className={styles.helper}>
+            {t(
+              "Only synthetic files are accepted at this stage.",
+              "في هذه المرحلة، تقبل الملفات التجريبية فقط.",
+            )}
+          </p>
+          <p className={styles.helper}>
+            {t(
+              "PDF, WAV and PNG · Up to 10 MB per file · Mixed files welcome",
+              "PDF وWAV وPNG · حتى ١٠ ميجابايت للملف · يمكنك اختيار أنواع مختلفة",
+            )}
+          </p>
+          <div
+            className={styles.drop}
+            data-drag={drag || undefined}
+            onDragOver={(event) => {
+              event.preventDefault();
+              if (!queue.running) setDrag(true);
+            }}
+            onDragLeave={() => setDrag(false)}
+            onDrop={(event) => {
+              event.preventDefault();
+              setDrag(false);
+              add(Array.from(event.dataTransfer.files));
+            }}
           >
-            <section>
-              <h2>{text.validationTitle}</h2>
-              {inspection === null ? (
-                <p>{text.noFile}</p>
-              ) : (
-                <dl>
-                  <div>
-                    <dt>{text.signature}</dt>
-                    <dd>{inspection.format}</dd>
-                  </div>
-                  <div>
-                    <dt>{text.type}</dt>
-                    <dd>{inspection.mimeType}</dd>
-                  </div>
-                  <div>
-                    <dt>{text.size}</dt>
-                    <dd>{formatBytes(locale, inspection.byteSize)} KB</dd>
-                  </div>
-                  <div>
-                    <dt>{text.rightsLabel}</dt>
-                    <dd>{rightsDeclared ? text.declared : text.pending}</dd>
-                  </div>
-                  <div>
-                    <dt>{text.upload}</dt>
-                    <dd>{receipt === null ? text.pending : text.uploaded}</dd>
-                  </div>
-                </dl>
+            <p>
+              {t(
+                "Drop files here, or choose them from your device.",
+                "ضع الملفات هنا، أو اخترها من جهازك.",
               )}
-            </section>
-            <section className={styles.stateGuide}>
-              <h2>{text.statesTitle}</h2>
-              <ol>
-                {statusOrder.map((status, index) => (
-                  <li key={status} data-status={status}>
-                    <span aria-hidden="true" />
-                    <div>
-                      <strong>{statusLabel(status, text)}</strong>
-                      <p>{text.stateDescriptions[index]}</p>
+            </p>
+            <Button
+              onClick={() => picker.current?.click()}
+              disabled={queue.running}
+            >
+              {t("Choose files", "اختيار ملفات")}
+            </Button>
+            <input
+              ref={picker}
+              className={styles.fileInput}
+              type="file"
+              multiple
+              accept=".pdf,.wav,.png"
+              aria-label={t("Choose files", "اختيار ملفات")}
+              disabled={queue.running}
+              onChange={(event) => {
+                add(Array.from(event.target.files ?? []));
+                event.target.value = "";
+              }}
+            />
+          </div>
+          {reference ? (
+            <div className={styles.reference}>
+              <span>{reference.name}</span>
+              <Button
+                variant="quiet"
+                disabled={queue.running}
+                onClick={() => add([reference.file()])}
+              >
+                {t("Add approved reference", "إضافة المرجع المعتمد")}
+              </Button>
+            </div>
+          ) : null}
+          {queue.duplicate ? (
+            <p role="status" className={styles.helper}>
+              {t(
+                "That file is already in your queue.",
+                "هذا الملف موجود بالفعل في قائمتك.",
+              )}
+            </p>
+          ) : null}
+          {queue.files.length ? (
+            <ul
+              className={styles.queue}
+              aria-label={t("Upload queue", "قائمة الرفع")}
+            >
+              {queue.files.map((row) => {
+                const item = campaign.requestedItems.find(
+                  (value) => value.id === row.itemId,
+                );
+                const choices = row.inspection
+                  ? compatibleCollectionItems(
+                      campaign.requestedItems,
+                      row.inspection.expectedType,
+                    )
+                  : [];
+                const busy =
+                  row.state === "UPLOADING" || row.state === "FINALIZING";
+                return (
+                  <li
+                    className={styles.file}
+                    key={row.id}
+                    data-state={row.state}
+                    aria-busy={busy}
+                  >
+                    <div className={styles.fileHeading}>
+                      <strong>
+                        <bdi>{row.file.name}</bdi>
+                      </strong>
+                      {row.inspection ? (
+                        <span>
+                          {row.inspection.declaredFormat} ·{" "}
+                          {new Intl.NumberFormat(
+                            locale === "ar" ? "ar-EG" : "en",
+                            { maximumFractionDigits: 1 },
+                          ).format(row.file.size / 1024)}{" "}
+                          KB
+                        </span>
+                      ) : null}
+                    </div>
+                    {row.inspection ? (
+                      <>
+                        {item ? (
+                          <p className={styles.destination}>
+                            {t("For", "لـ")}: {item.title}
+                            {item.latestSubmission
+                              ? ` · ${t("Replacement candidate", "نسخة بديلة")}`
+                              : ""}
+                          </p>
+                        ) : null}
+                        {!item ? (
+                          <label className={styles.field}>
+                            {text.requestedItem}
+                            <select
+                              value={row.itemId ?? ""}
+                              disabled={queue.running || !!row.receipt}
+                              onChange={(event) =>
+                                queue.edit(row.id, {
+                                  itemId: event.target.value || null,
+                                })
+                              }
+                            >
+                              <option value="">
+                                {t(
+                                  "Choose a requested material",
+                                  "اختر المادة المطلوبة",
+                                )}
+                              </option>
+                              {choices.map((choice) => (
+                                <option value={choice.id} key={choice.id}>
+                                  {choice.title}
+                                </option>
+                              ))}
+                            </select>
+                            {!choices.length ? (
+                              <span>
+                                {t(
+                                  "No compatible request is available for this file.",
+                                  "لا يوجد طلب مناسب لهذا الملف.",
+                                )}
+                              </span>
+                            ) : null}
+                          </label>
+                        ) : null}
+                        <details className={styles.fileDetails}>
+                          <summary>
+                            {t("Source details", "تفاصيل المصدر")}
+                          </summary>
+                          <label className={styles.field}>
+                            {text.sourceTitle}
+                            <input
+                              value={row.title}
+                              dir="auto"
+                              minLength={3}
+                              maxLength={200}
+                              disabled={
+                                queue.running ||
+                                !!row.receipt ||
+                                row.state === "RECEIVED"
+                              }
+                              onChange={(event) =>
+                                queue.edit(row.id, {
+                                  title: event.target.value,
+                                })
+                              }
+                            />
+                          </label>
+                          {item && choices.length > 1 ? (
+                            <label className={styles.field}>
+                              {t(
+                                "Change requested material",
+                                "تغيير المادة المطلوبة",
+                              )}
+                              <select
+                                value={row.itemId ?? ""}
+                                disabled={
+                                  queue.running ||
+                                  !!row.receipt ||
+                                  row.state === "RECEIVED"
+                                }
+                                onChange={(event) =>
+                                  queue.edit(row.id, {
+                                    itemId: event.target.value,
+                                  })
+                                }
+                              >
+                                {choices.map((choice) => (
+                                  <option value={choice.id} key={choice.id}>
+                                    {choice.title}
+                                  </option>
+                                ))}
+                              </select>
+                            </label>
+                          ) : null}
+                        </details>
+                      </>
+                    ) : null}
+                    <div className={styles.fileResult} role="status">
+                      {row.state === "CHECKING"
+                        ? t("Checking file…", "جارٍ فحص الملف…")
+                        : row.state === "READY"
+                          ? !row.itemId
+                            ? t(
+                                "Choose a requested material to continue.",
+                                "اختر المادة المطلوبة للمتابعة.",
+                              )
+                            : row.title.trim().length < 3
+                              ? t(
+                                  "Add a source title of at least 3 characters.",
+                                  "أضف عنوان مصدر من ٣ أحرف على الأقل.",
+                                )
+                              : t("Ready to upload", "جاهز للرفع")
+                          : row.state === "UPLOADING"
+                            ? `${t("Uploading", "جارٍ الرفع")} · ${row.progress}%`
+                            : row.state === "FINALIZING"
+                              ? t(
+                                  "Confirming submission…",
+                                  "جارٍ تأكيد الإرسال…",
+                                )
+                              : row.state === "RECEIVED"
+                                ? text.submitted
+                                : row.error
+                                  ? errorText(row.error)
+                                  : null}
+                    </div>
+                    {row.state === "UPLOADING" ? (
+                      <progress
+                        max={100}
+                        value={row.progress}
+                        aria-label={`${t("Upload progress", "تقدم الرفع")}: ${row.file.name}`}
+                      />
+                    ) : null}
+                    {row.state === "RECEIVED" ? (
+                      <p className={styles.helper}>
+                        {t(
+                          "Received safely. Processing will continue separately; you can upload the next file.",
+                          "تم الاستلام بأمان. تستمر المعالجة بشكل منفصل؛ يمكنك رفع الملف التالي.",
+                        )}
+                      </p>
+                    ) : null}
+                    <div className={styles.actions}>
+                      {row.state === "ERROR" && row.inspection && row.itemId ? (
+                        <Button
+                          variant="secondary"
+                          disabled={queue.running || !canSubmit}
+                          onClick={() =>
+                            void queue.submit([row.id], description, rights)
+                          }
+                        >
+                          {row.receipt
+                            ? t("Retry submission", "إعادة محاولة الإرسال")
+                            : text.uploadAgain}
+                        </Button>
+                      ) : null}
+                      {!queue.running && row.state !== "RECEIVED" ? (
+                        <Button
+                          variant="quiet"
+                          onClick={() => queue.remove(row.id)}
+                          aria-label={`${text.removeFile}: ${row.file.name}`}
+                        >
+                          {text.removeFile}
+                        </Button>
+                      ) : null}
                     </div>
                   </li>
-                ))}
-              </ol>
-            </section>
-          </aside>
-        </div>
-      </main>
-    </div>
+                );
+              })}
+            </ul>
+          ) : (
+            <p className={styles.helper}>
+              {t(
+                "Your queue is empty. Choose one or more files to get started.",
+                "قائمة الرفع فارغة. اختر ملفًا أو أكثر للبدء.",
+              )}
+            </p>
+          )}
+          {queue.files.some(
+            (row) => row.inspection && row.state !== "RECEIVED",
+          ) ? (
+            <div className={styles.context}>
+              <label className={styles.field}>
+                {text.description}
+                <textarea
+                  rows={3}
+                  minLength={10}
+                  maxLength={1000}
+                  value={description}
+                  placeholder={t(
+                    "Who prepared these materials, and what do they cover?",
+                    "من أعد هذه المواد، وما موضوعها؟",
+                  )}
+                  disabled={queue.running}
+                  onChange={(event) => setDescription(event.target.value)}
+                />
+                <span>
+                  {t(
+                    "This context will accompany each file. Minimum 10 characters.",
+                    "يرفق هذا الوصف بكل ملف. ١٠ أحرف على الأقل.",
+                  )}
+                </span>
+              </label>
+              <label className={styles.rights}>
+                <input
+                  type="checkbox"
+                  checked={rights}
+                  disabled={queue.running}
+                  onChange={(event) => setRights(event.target.checked)}
+                />
+                <span>
+                  {t(
+                    "I have permission to submit every selected file for this campaign.",
+                    "لدي صلاحية إرسال كل الملفات المختارة لهذه الحملة.",
+                  )}
+                </span>
+              </label>
+              <div className={styles.actions}>
+                <Button
+                  variant="primary"
+                  disabled={queue.running || !canSubmit || !ready.length}
+                  onClick={() =>
+                    void queue.submit(
+                      ready.map((row) => row.id),
+                      description,
+                      rights,
+                    )
+                  }
+                >
+                  {t("Upload files", "رفع الملفات")}
+                </Button>
+                {queue.running ? (
+                  <Button variant="secondary" onClick={queue.cancel}>
+                    {text.cancel}
+                  </Button>
+                ) : null}
+              </div>
+            </div>
+          ) : null}
+        </section>
+        <CollectionHistory
+          campaigns={[campaign]}
+          locale={locale}
+          heading={t("Latest submissions", "آخر الإرسالات")}
+        />
+      </div>
+    </AppShell>
   );
 }

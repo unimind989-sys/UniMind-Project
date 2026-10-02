@@ -24,7 +24,8 @@ import type { WorkspaceScope } from "@/lib/workspace/workspace.application";
 import { useProductServices } from "./product-services";
 import { ProductAuth } from "./product-auth";
 import { ProductAdmin } from "./product-admin";
-import { ProductCollection } from "./product-collection";
+import { ProductCollection, makeDemoCampaign } from "./product-collection";
+import { LeaderHome } from "@/app/batch-leader/_components/leader-home";
 import { ProductCampaigns, ProductResource } from "./product-operations";
 import { ProductLink, Button, Notice, Select } from "./product-ui";
 import {
@@ -35,6 +36,7 @@ import {
   type Locale,
 } from "./synthetic-fixtures";
 import styles from "./product.module.css";
+import accountStyles from "./student-account.module.css";
 
 const authModes = {
   login: "login",
@@ -196,6 +198,7 @@ export function ProductNativePage({
     (screen === "collection" &&
       ![
         "empty",
+        "error",
         "forbidden",
         "wrong-scope",
         "expired",
@@ -331,7 +334,16 @@ export function ProductNativePage({
     content = <ProductAdmin locale={locale} fixture={fixture} />;
   else if (screen === "collection")
     content = <ProductCollection locale={locale} fixture={fixture} />;
-  else if (screen === "campaign-list" || screen === "invitation")
+  else if (screen === "campaign-list")
+    content = (
+      <LeaderHome
+        campaigns={[makeDemoCampaign(state, locale)]}
+        locale={locale}
+        history={query.get("view") === "history"}
+        synthetic
+      />
+    );
+  else if (screen === "invitation")
     content = (
       <ProductCampaigns locale={locale} screen={screen} scenario={fixture} />
     );
@@ -367,6 +379,44 @@ export function ProductNativePage({
     );
   }
   if (screen === "catalog" && standalone) return content;
+  if (state.role === "leader" && !scope) {
+    if (
+      screen === "campaign-list" &&
+      !loading &&
+      !blocked &&
+      fixture === "empty"
+    )
+      return (
+        <LeaderHome
+          campaigns={[]}
+          locale={locale}
+          history={query.get("view") === "history"}
+          synthetic
+        />
+      );
+    if (
+      (screen === "collection" && standalone) ||
+      (screen === "campaign-list" &&
+        !loading &&
+        !blocked &&
+        !general.includes(fixture))
+    )
+      return content;
+    const leaderTitle =
+      screen === "settings"
+        ? t("Account", "الحساب")
+        : screen === "invitation"
+          ? t("Campaign invitation", "دعوة حملة")
+          : query.get("view") === "history"
+            ? t("History", "السجل")
+            : t("Uploads", "الرفع");
+    return (
+      <AppShell locale={locale} role="leader" synthetic title={leaderTitle}>
+        <h1>{leaderTitle}</h1>
+        {content}
+      </AppShell>
+    );
+  }
   if (state.role === "student" && !scope)
     return (
       <AppShell
@@ -506,6 +556,8 @@ function ProductSettings({
 }) {
   const { state, update } = useProductServices();
   const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
+  const sectionClass =
+    state.role === "leader" ? accountStyles.section : styles.panel;
   return (
     <>
       {state.lastStudyPath ? (
@@ -513,7 +565,7 @@ function ProductSettings({
           {t("Back to study", "العودة للمذاكرة")}
         </ProductLink>
       ) : null}
-      <section className={styles.panel}>
+      <section className={sectionClass}>
         <h2>{t("Appearance", "المظهر")}</h2>
         <Appearance locale={locale} />
       </section>
@@ -535,7 +587,7 @@ function ProductSettings({
           }}
         />
       ) : null}
-      <section className={styles.panel}>
+      <section className={sectionClass}>
         <h2>{t("Future exchange sharing", "مشاركة المحادثات القادمة")}</h2>
         <Select
           id="sharing-mode"
@@ -562,7 +614,7 @@ function ProductSettings({
           )}
         </p>
       </section>
-      <section className={styles.panel}>
+      <section className={sectionClass}>
         <h2>{t("Saving and retention", "الحفظ والاحتفاظ")}</h2>
         <Notice>
           {t(
@@ -571,7 +623,7 @@ function ProductSettings({
           )}
         </Notice>
       </section>
-      <section className={styles.panel}>
+      <section className={sectionClass}>
         <h2>{t("Your account", "حسابك")}</h2>
         <div className={styles.actions}>
           <ProductLink href="/forgot-password" locale={locale}>

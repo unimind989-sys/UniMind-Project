@@ -32,20 +32,25 @@ export function Button({
   onClick,
   disabled = false,
   primary = false,
+  variant,
+  "aria-label": ariaLabel,
   type = "button",
 }: {
   children: ReactNode;
   onClick?: () => void;
   disabled?: boolean;
   primary?: boolean;
+  variant?: "primary" | "secondary" | "quiet";
+  "aria-label"?: string;
   type?: "submit" | "button";
 }) {
   return (
     <button
-      className={`${styles.button} ${primary ? styles.primary : ""}`}
+      className={`${styles.button} ${primary || variant === "primary" ? styles.primary : ""} ${variant === "quiet" ? styles.quiet : ""}`}
       type={type}
       onClick={onClick}
       disabled={disabled}
+      aria-label={ariaLabel}
     >
       {children}
     </button>

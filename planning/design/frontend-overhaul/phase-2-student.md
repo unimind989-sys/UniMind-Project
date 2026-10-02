@@ -1,6 +1,6 @@
 # Phase 2 student implementation
 
-Status: ready for the student rendered checkpoint; explicit approval pending.
+Status: approved by Ahmed at candidate `3a2a95d`; see the [receipt](student-approval.md).
 Direction: [DESIGN.md](../../../DESIGN.md), approved candidate `ab568b6`.
 
 Task: WP03-T09, `codex/wp03-complete-synthetic-frontend`, single executor.
@@ -185,6 +185,7 @@ fictional account, accept the sample commitments and set academic context. Produ
 links preserve it until reload; Account switches theme and edits context. The
 ordinary runtime's real account persistence awaits database proof above.
 
-Required next action: present this student implementation and request explicit
-approval before starting Batch Leader. No current student approval receipt is
-invented. Keep the loopback review server and existing branch/draft PR available.
+Ahmed approved the presented student implementation. Continue the Batch Leader
+milestone under its [record](phase-2-batch-leader.md), preserving passing student
+proof until relevant inputs change. Keep the branch/draft PR and review runtime
+available; database and final delivery gates remain pending.

@@ -195,7 +195,12 @@ export function validatedInternalReturnPath(
     const url = new URL(value, "https://unimind.invalid");
     if (
       url.origin !== "https://unimind.invalid" ||
-      !/^\/learn(?:\/|$)/u.test(url.pathname)
+      !(
+        /^\/learn(?:\/|$)/u.test(url.pathname) ||
+        /^\/batch-leader(?:\/campaigns\/[a-zA-Z0-9_-]+)?\/?$/u.test(
+          url.pathname,
+        )
+      )
     ) {
       return fallback;
     }

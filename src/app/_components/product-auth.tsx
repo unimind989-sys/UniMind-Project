@@ -184,13 +184,22 @@ export function ProductAuth({
         next?.startsWith("/") && !next.startsWith("//") && !next.includes("\\")
           ? new URL(next, "https://synthetic.invalid")
           : null;
-      const returnPath =
+      const allowedReturn =
         requested &&
         /^\/(learn(?:\/[a-z0-9/-]+)?|settings|admin(?:\/[a-z-]+)?|batch-leader(?:\/campaigns\/sample-campaign|\/invitation)?)$/u.test(
           requested.pathname,
-        )
-          ? `${requested.pathname}${requested.searchParams.has("fixture") ? `?fixture=${encodeURIComponent(requested.searchParams.get("fixture")!)}` : ""}`
-          : target;
+        );
+      const returnQuery = new URLSearchParams();
+      if (requested?.searchParams.has("fixture"))
+        returnQuery.set("fixture", requested.searchParams.get("fixture")!);
+      if (
+        requested?.pathname === "/batch-leader" &&
+        requested.searchParams.get("view") === "history"
+      )
+        returnQuery.set("view", "history");
+      const returnPath = allowedReturn
+        ? requested.pathname + (returnQuery.size ? `?${returnQuery}` : "")
+        : target;
       update((current) => ({
         ...current,
         role: role!,

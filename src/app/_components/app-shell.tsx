@@ -41,8 +41,12 @@ export function AppShell({
         ]
       : role === "leader"
         ? [
-            ["/batch-leader", t("Uploads", "الرفع"), "plus"],
-            ["/batch-leader?view=history", t("History", "السجل"), "sources"],
+            [prefix + "/batch-leader", t("Uploads", "الرفع"), "plus"],
+            [
+              prefix + "/batch-leader?view=history",
+              t("History", "السجل"),
+              "sources",
+            ],
             ["/settings", t("Account", "الحساب"), "settings"],
           ]
         : [
@@ -77,7 +81,14 @@ export function AppShell({
                     : query.get("view") === "subjects"
                       ? 1
                       : 0)
-                : pathname === href?.split("?")[0];
+                : role === "leader"
+                  ? index ===
+                    (pathname === "/settings"
+                      ? 2
+                      : query.get("view") === "history"
+                        ? 1
+                        : 0)
+                  : pathname === href?.split("?")[0];
             return (
               <Link
                 key={href}

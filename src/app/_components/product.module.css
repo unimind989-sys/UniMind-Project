@@ -223,6 +223,12 @@
   border-color: transparent;
   font-weight: 700;
 }
+
+.quiet {
+  border-color: transparent;
+  background: transparent;
+  color: var(--accent-ink);
+}
 .primary:hover:not(:disabled) {
   color: var(--on-action);
   background: var(--accent-hover);

@@ -460,35 +460,27 @@ for (const locale of ["en", "ar"] as const) {
     page,
   }) => {
     const finish = isolation(page);
-    await signIn(page, "leader", locale);
-    await navigate(page, campaign, locale);
-    await page
-      .locator('input[name="sourceName"]')
-      .fill("Synthetic study source");
-    await page
-      .locator('textarea[name="sourceDescription"]')
-      .fill("Invented source for the UniMind synthetic product flow.");
-    await page
-      .getByRole("combobox", {
-        name: pick(locale, "Submission method", "طريقة الإرسال"),
-      })
-      .selectOption("reference");
-    await page.locator('input[name="declaredRights"]').check();
+    await signIn(page, "leader", locale, campaign);
+    await expect(page).toHaveURL(
+      new RegExp("/batch-leader/campaigns/sample-campaign"),
+    );
     await page
       .getByRole("button", {
-        name: pick(locale, "Validate and upload", "فحص ورفع الملف"),
+        name: pick(locale, "Add approved reference", "إضافة المرجع المعتمد"),
         exact: true,
       })
       .click();
     await expect(
-      page.getByRole("button", {
-        name: pick(locale, "Finalize submission", "تأكيد الإرسال"),
+      page.getByText(pick(locale, "Ready to upload", "جاهز للرفع"), {
         exact: true,
       }),
-    ).toBeEnabled();
+    ).toBeVisible();
+    await page
+      .getByLabel(pick(locale, "I have permission", "لدي صلاحية"))
+      .check();
     await page
       .getByRole("button", {
-        name: pick(locale, "Finalize submission", "تأكيد الإرسال"),
+        name: pick(locale, "Upload files", "رفع الملفات"),
         exact: true,
       })
       .click();
@@ -497,15 +489,34 @@ for (const locale of ["en", "ar"] as const) {
         exact: true,
       }),
     ).toBeVisible();
-    const item = page
-      .getByRole("button", {
-        name: new RegExp(pick(locale, "Anatomy handout", "ملزمة التشريح")),
+    await page
+      .getByRole("link", {
+        name: pick(locale, "History", "السجل"),
+        exact: true,
       })
-      .first();
-    await expect(item).toContainText(pick(locale, "Submitted", "تم الإرسال"));
-    await expect(item).not.toContainText(
-      pick(locale, "Awaiting file", "بانتظار ملف"),
-    );
+      .click();
+    await expect(
+      page.getByRole("heading", {
+        name: pick(locale, "History", "السجل"),
+        exact: true,
+      }),
+    ).toBeVisible();
+    const history = page.getByRole("region", {
+      name: pick(locale, "Your submissions", "إرسالاتك"),
+    });
+    await expect(
+      history.getByText(pick(locale, "Anatomy handout", "ملزمة التشريح"), {
+        exact: true,
+      }),
+    ).toBeVisible();
+    await expect(
+      history.getByText(pick(locale, "Submitted", "تم الإرسال"), {
+        exact: true,
+      }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("navigation").locator('[aria-current="page"]'),
+    ).toHaveCount(1);
     finish();
   });
   test(`${locale}: responsive routes, accessibility, RTL, keyboard and product navigation`, async ({
@@ -937,71 +948,270 @@ test("stale, failed readiness and unavailable admin actions never change the can
   }
   finish();
 });
-test("all supplied file types, mismatch, byte rejection and cancel retry use only local state", async ({
+test("all supplied mixed file types, private-byte rejection and cancel retry use only local state", async ({
   page,
 }) => {
   const finish = isolation(page);
-  await signIn(page, "leader");
-  await navigate(page, campaign);
-  await page.locator('input[name="sourceName"]').fill("Synthetic study source");
-  await page
-    .locator('textarea[name="sourceDescription"]')
-    .fill("Invented source for the UniMind synthetic product flow.");
-  await page.locator('input[name="declaredRights"]').check();
-  const upload = page.getByRole("button", {
-    name: "Validate and upload",
-    exact: true,
-  });
-  const finalize = page.getByRole("button", {
-    name: "Finalize submission",
-    exact: true,
-  });
-  await page
-    .locator('input[type="file"]')
-    .setInputFiles("public/demo-files/synthetic-recording.wav");
-  await expect(upload).toBeDisabled();
+  await signIn(page, "leader", "en", campaign);
   await page.locator('input[type="file"]').setInputFiles({
     name: "synthetic-handout.pdf",
     mimeType: "application/pdf",
     buffer: Buffer.from("%PDF-1.4 invented wrong bytes"),
   });
-  await expect(upload).toBeDisabled();
-  for (const [index, file] of [
-    "synthetic-handout.pdf",
-    "synthetic-recording.wav",
-    "synthetic-diagram.png",
-  ].entries()) {
-    await page
-      .getByLabel("Requested item")
-      .selectOption(`sample-item-${index + 1}`);
-    await page
-      .locator('input[name="sourceName"]')
-      .fill("Synthetic study source");
-    await page
-      .locator('textarea[name="sourceDescription"]')
-      .fill("Invented source for the UniMind synthetic product flow.");
-    await page.locator('input[name="declaredRights"]').check();
-    await page
-      .locator('input[type="file"]')
-      .setInputFiles(`public/demo-files/${file}`);
-    await expect(upload).toBeEnabled();
-    await page.locator('input[name="declaredRights"]').check();
-    await upload.click();
-    if (index === 0) {
+  await expect(
+    page.getByText(/Use the supplied synthetic files only/u),
+  ).toBeVisible();
+  await page
+    .locator('input[type="file"]')
+    .setInputFiles([
+      "public/demo-files/synthetic-handout.pdf",
+      "public/demo-files/synthetic-recording.wav",
+      "public/demo-files/synthetic-diagram.png",
+    ]);
+  const queue = page.getByRole("list", { name: "Upload queue" });
+  await expect(queue.getByText("Ready to upload", { exact: true })).toHaveCount(
+    3,
+  );
+  await page.getByLabel("I have permission").check();
+  await page.getByRole("button", { name: "Upload files", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Cancel upload", exact: true })
+    .click();
+  await expect(queue.getByText(/interrupted/u)).toBeVisible();
+  await expect(queue.getByText("Ready to upload", { exact: true })).toHaveCount(
+    2,
+  );
+  await page.getByRole("button", { name: "Upload files", exact: true }).click();
+  await expect(
+    queue.getByText("Submission received", { exact: true }),
+  ).toHaveCount(3);
+  await expect(
+    queue.getByText(/Use the supplied synthetic files only/u),
+  ).toBeVisible();
+  finish();
+});
+
+for (const locale of ["en", "ar"] as const)
+  for (const theme of ["light", "dark"] as const)
+    test(`leader ${locale} ${theme}: queue, History and Account reflow with accessible controls`, async ({
+      page,
+    }) => {
+      const finish = isolation(page);
+      await page.emulateMedia({ colorScheme: theme, reducedMotion: "reduce" });
+      await signIn(page, "leader", locale, campaign);
       await page
-        .getByRole("button", { name: "Cancel upload", exact: true })
+        .getByRole("button", {
+          name: pick(locale, "Add approved reference", "إضافة المرجع المعتمد"),
+          exact: true,
+        })
         .click();
-      await expect(finalize).toHaveCount(0);
+      await expect(
+        page.getByText(pick(locale, "Ready to upload", "جاهز للرفع"), {
+          exact: true,
+        }),
+      ).toBeVisible();
+      for (const width of [1440, 768, 430, 390, 360, 320]) {
+        await page.setViewportSize({ width, height: 844 });
+        expect(
+          await page.evaluate(
+            () => document.documentElement.scrollWidth <= innerWidth,
+          ),
+        ).toBe(true);
+        const short = await page
+          .locator("main button,main a,main summary,main select")
+          .evaluateAll((elements) =>
+            elements
+              .filter((element) => element.getClientRects().length)
+              .filter((element) => element.getBoundingClientRect().height < 44)
+              .map((element) => element.textContent),
+          );
+        expect(short).toEqual([]);
+        if (width === 360 || width === 1440)
+          expect(
+            (
+              await new AxeBuilder({ page })
+                .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+                .analyze()
+            ).violations,
+          ).toEqual([]);
+      }
+      await page.addStyleTag({ content: "html {font-size:200%}" });
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= innerWidth,
+        ),
+      ).toBe(true);
+      await page.addStyleTag({ content: "html {font-size:100%}" });
       await page
-        .getByRole("button", { name: "Retry upload", exact: true })
+        .getByRole("link", {
+          name: pick(locale, "History", "السجل"),
+          exact: true,
+        })
         .click();
-    }
-    await expect(finalize).toBeEnabled();
-    await finalize.click();
+      await expect(
+        page.getByRole("heading", {
+          name: pick(locale, "History", "السجل"),
+          exact: true,
+        }),
+      ).toBeVisible();
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      await navigate(page, "/settings", locale);
+      await expect(
+        page.getByRole("heading", {
+          name: pick(locale, "Account", "الحساب"),
+          exact: true,
+        }),
+      ).toBeVisible();
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      finish();
+    });
+
+test("leader campaign access and list failure states expose no upload action", async ({
+  page,
+}) => {
+  const finish = isolation(page);
+  for (const fixture of [
+    "empty",
+    "error",
+    "expired",
+    "forbidden",
+    "wrong-scope",
+  ]) {
+    await signIn(page, "leader", "en", `${campaign}?fixture=${fixture}`);
     await expect(
-      page.getByText("Submission received", { exact: true }),
+      page.getByRole("main").getByRole("heading").first(),
     ).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: "Upload files", exact: true }),
+    ).toHaveCount(0);
+    await expect(page.getByRole("main")).not.toContainText(
+      "Synthetic Anatomy source call",
+    );
   }
+  finish();
+});
+
+test("leader sign-in preserves History and its empty state", async ({
+  page,
+}) => {
+  const finish = isolation(page);
+  for (const locale of ["en", "ar"] as const) {
+    await signIn(
+      page,
+      "leader",
+      locale,
+      "/batch-leader?view=history&fixture=empty",
+    );
+    await expect(
+      page.getByRole("heading", {
+        name: pick(locale, "History", "السجل"),
+        exact: true,
+      }),
+    ).toBeVisible();
+    await expect(page.getByRole("main")).toContainText(
+      pick(locale, "No submissions yet", "لا توجد إرسالات بعد"),
+    );
+    await expect(page.locator('nav a[aria-current="page"]')).toHaveCount(1);
+  }
+  finish();
+});
+
+test("leader invitation preserves its decision and campaign return in both themes and languages", async ({
+  page,
+}) => {
+  const finish = isolation(page);
+  for (const locale of ["en", "ar"] as const)
+    for (const theme of ["light", "dark"] as const) {
+      await page.emulateMedia({ colorScheme: theme });
+      await signIn(page, "leader", locale, "/batch-leader/invitation");
+      await expect(
+        page.getByRole("heading", {
+          name: pick(locale, "Campaign invitation", "دعوة حملة"),
+          exact: true,
+        }),
+      ).toHaveCount(1);
+      for (const width of [1440, 360]) {
+        await page.setViewportSize({ width, height: 844 });
+        expect(
+          await page.evaluate(
+            () => document.documentElement.scrollWidth <= innerWidth,
+          ),
+        ).toBe(true);
+        expect(
+          (
+            await new AxeBuilder({ page })
+              .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+              .analyze()
+          ).violations,
+        ).toEqual([]);
+      }
+      const accept = page.getByRole("button", {
+        name: pick(locale, "Accept invitation", "قبول الدعوة"),
+        exact: true,
+      });
+      await accept.click();
+      await expect(accept).toBeDisabled();
+      await expect(page.getByRole("status")).toContainText(
+        pick(locale, "Invitation accepted", "تمت مراجعة الدعوة"),
+      );
+      await page
+        .getByRole("link", {
+          name: pick(locale, "View campaigns", "عرض الحملات"),
+          exact: true,
+        })
+        .click();
+      await expect(
+        page.getByRole("heading", {
+          name: pick(locale, "Uploads", "الرفع"),
+          exact: true,
+        }),
+      ).toBeVisible();
+    }
+  finish();
+});
+
+test("leader Account keeps existing controls readable in both themes and languages", async ({
+  page,
+}) => {
+  const finish = isolation(page);
+  for (const locale of ["en", "ar"] as const)
+    for (const theme of ["light", "dark"] as const) {
+      await page.emulateMedia({ colorScheme: theme });
+      await signIn(page, "leader", locale, "/settings");
+      await expect(
+        page.getByRole("heading", {
+          name: pick(locale, "Account", "الحساب"),
+          exact: true,
+        }),
+      ).toBeVisible();
+      for (const width of [1440, 360]) {
+        await page.setViewportSize({ width, height: 844 });
+        expect(
+          await page.evaluate(
+            () => document.documentElement.scrollWidth <= innerWidth,
+          ),
+        ).toBe(true);
+        expect(
+          (
+            await new AxeBuilder({ page })
+              .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+              .analyze()
+          ).violations,
+        ).toEqual([]);
+      }
+    }
   finish();
 });
 
@@ -1053,7 +1263,10 @@ test("normal sign-out changes roles without carrying the previous role's screen"
 }) => {
   const finish = isolation(page);
   await signIn(page, "student", "en", unit + "/chat");
-  await page.locator('[data-overhaul="checkpoint"] header summary').click();
+  await navigate(page, "/settings");
+  await expect(
+    page.getByRole("heading", { name: "Account", exact: true }),
+  ).toBeVisible();
   await page.getByRole("button", { name: "Sign out", exact: true }).click();
   await expect(page).toHaveURL(/\/login\?lang=en$/u);
   await page.getByLabel("Email address").fill("leader@example.invalid");
@@ -1067,6 +1280,10 @@ test("normal sign-out changes roles without carrying the previous role's screen"
     })
     .click();
   await expect(page).toHaveURL(/\/batch-leader\?/u);
+  await navigate(page, "/settings");
+  await expect(
+    page.getByRole("heading", { name: "Account", exact: true }),
+  ).toBeVisible();
   await page.getByRole("button", { name: "Sign out", exact: true }).click();
   await expect(page).toHaveURL(/\/login\?lang=en$/u);
   await page.getByLabel("Email address").fill("admin@example.invalid");
