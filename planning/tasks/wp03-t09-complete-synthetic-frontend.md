@@ -12,7 +12,7 @@
 
 **Branch:** codex/wp03-complete-synthetic-frontend
 
-**Updated (UTC):** 2026-10-03T06:56:47Z
+**Updated (UTC):** 2026-10-03T07:45:13Z
 
 ## Derived execution envelope
 
@@ -42,7 +42,7 @@
 
 **Next model:** Sol High
 
-**Current block:** P2-F
+**Current block:** P2-F delivery
 
 ## Execution contract
 
@@ -85,15 +85,15 @@ Calendar, personal Workspace, global Sources and Progress have no approved stand
 
 ## Candidate preparation
 
-**Design disposition:** MATERIAL
+**Design disposition:** NONVISUAL
 
-**Design evidence:** PENDING
+**Design evidence:** baseline:8ad3a9baaffe43bf89be09d404f921d2b3f9e714; receipt:evidence/wp03-product-shell/2026-10-03-wp03-t09-founder-design-receipt.json; final UI accepted by Ahmed; only nonvisual approval/delivery metadata changed since acceptance.
 
 **Preparation review:** COMPLETE_INLINE
 
 **Preparation fingerprint:** NOT_READY
 
-**Unresolved findings:** Phase 1, student, Batch Leader and Admin implementation approved. Final consistency is complete for presentation. Final acceptance, real database execution/type parity, broad stable verification and delivery proof remain pending. Earlier receipts do not accept later implementation states.
+**Unresolved findings:** Release gate comparison omits committed candidate work and public assets lack classification; proposed narrow correction awaits scope exception. Database, broad, exact-head CI, protected delivery and affected production proof remain pending. Final UI accepted at `8ad3a9b`.
 
 **Established facts:** NONE
 
@@ -107,9 +107,11 @@ No established-fact receipt is asserted before a commit-bound proof exists. The 
 - [~] Present concrete candidate and record founder interaction checkpoint.
 - [ ] Complete protected delivery/affected proof, then select WP03-T10.
 
-## Current next safe action — final consistency
+## Current next safe action — approved delivery
 
-**Next safe action:** Present the completed final product-wide consistency checkpoint, then wait for explicit acceptance before guarded broad verification and delivery. Ahmed accepted Admin `ec00466`; its direct receipt is `admin-approval.md`. `phase-2-final.md` owns this bounded review. Keep PR #64 draft/unmerged and port 3101 available. Database, broad verification, CI, delivery, T09 closure and the subsequent T10/WP04 gate remain pending.
+**Next safe action:** Final candidate `8ad3a9b` is accepted; see `final-approval.md` and `phase-2-delivery.md`. Record only genuine executed proof, run existing draft-PR/disposable database checks, and resolve the separately requested gate exception before guarded broad verification. Keep PR #64 draft/unmerged until gates pass. Complete the D-22 non-financial lifecycle, then close T09; T10/WP04 remain subsequent tasks. Original review/user work stays preserved.
+
+**Commands:** Final source-bound cross-role/navigation 3/3 PASS and affected populated study/interruption/reflow 4/4 PASS; 29 actual views inspected; current source static/readiness/policy/secret checks retained. Required broad/database/CI/delivery proof NOT RUN for this approved candidate. Gate defect reproduced in isolated checkout: wrong comparison yields zero committed changes; actual candidate comparison yields 399 paths. No gate waiver or independent review claimed.
 
 **Admin checkpoint proof:** Four unit files passed 52 tests; unchanged protected Admin security boundary passed 5. Eight unique normal browser cases passed across retained 7/8 plus visible-target 1/1 replay. Nine unique affected native cases passed across retained runs; final four theme/language matrices passed 4/4, followed by Arabic localized-target 2/2. Source/capture manifest binds 36 inspected JPEG views, including all eight desktop/phone language/theme pairs and loading, empty, blocked, forbidden, stale and unverified states. Fresh TypeScript, changed-file lint, boundaries and policy checks passed. Final packet-aware readiness passed (488 names, 119 links, 23 decisions, 113 task contracts); final secret scan passed for 2970 files. One detector pass found one status side border, corrected to a quiet full 1px border and inspected. Failures and replay limits remain recorded in `admin-checkpoint/checks.json`. No Admin backend, schema or durable persistence change; no broad, build, database, CI or production PASS asserted. Owned local staging verifies formatting, full diff and bindings; unrelated bounded-logo task text stays only in the worktree. Admin is now accepted; the next required stop is final product-wide acceptance.
 

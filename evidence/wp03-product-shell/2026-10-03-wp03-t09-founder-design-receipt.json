@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 3,
+  "policyVersion": 8,
+  "task": "WP03-T09",
+  "candidate": "8ad3a9baaffe43bf89be09d404f921d2b3f9e714",
+  "proofs": [
+    {
+      "id": "human-design-acceptance",
+      "check": "founder hands-on design acceptance",
+      "status": "PASS",
+      "decisionActor": "Ahmed",
+      "decisionReference": "message:wp03-t09-final-approval-20261003T074513Z",
+      "decisionTimestamp": "2026-10-03T07:45:13Z",
+      "acceptedScope": "routes:/,/login,/register,/verify-email,/consent,/forgot-password,/reset-password,/learn,/learn/[cohort]/[unit]/*,/settings,/batch-leader/*,/admin/*; surfaces:public and identity,student study and Account,Batch Leader uploads and History,Admin console,shared brand and paired themes; states:desktop/mobile English/Arabic Light/Dark,normal,loading,empty,error,interrupted,retry,stale,forbidden,pending,uncertain",
+      "acceptedCandidate": "8ad3a9baaffe43bf89be09d404f921d2b3f9e714",
+      "invalidatedBy": {
+        "surfaces": [],
+        "pathPatterns": [],
+        "semanticFacts": [
+          { "flag": "visualImpactUnknown", "equals": true, "result": "MISSING" }
+        ]
+      }
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Final product consistency checkpoint
 
-Status: ready for explicit final product-wide approval. Admin candidate `ec00466` is accepted; see the
+Status: approved by Ahmed at `8ad3a9b`; see [the direct final receipt](final-approval.md). The review contract and checks below describe the presented candidate; [delivery](phase-2-delivery.md) now owns pending technical gates. Admin candidate `ec00466` is accepted; see the
 [direct receipt](admin-approval.md). This is WP03-T09 P2-F on the existing branch,
 single executor, zero workers. [DESIGN](../../../DESIGN.md) remains canonical.
 
