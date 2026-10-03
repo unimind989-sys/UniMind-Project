@@ -97,7 +97,11 @@ async function login(page: Page, role: Role) {
   expect(response.headers()["pragma"]).toBe("no-cache");
   expect(response.headers()["expires"]).toBe("0");
   await expect(page).toHaveURL(
-    role === "admin" ? /\/admin(?:\?|$)/u : /\/learn(?:\?|$)/u,
+    role === "admin"
+      ? /\/admin(?:\?|$)/u
+      : role === "leader"
+        ? /\/batch-leader(?:\?|$)/u
+        : /\/learn(?:\?|$)/u,
   );
 }
 
@@ -144,7 +148,8 @@ test.beforeAll(async () => {
     values ('${campaign}', '${users.get("leader")!.id}', 'ACTIVE', now() + interval '1 day',
       '10000000-0000-4000-8000-000000000001', now());
     insert into public.user_roles (user_id, role, granted_by, grant_reason)
-    values ('${users.get("admin")!.id}', 'ADMIN', '10000000-0000-4000-8000-000000000001', 'Synthetic product-shell gate administrator');
+    values ('${users.get("admin")!.id}', 'ADMIN', '10000000-0000-4000-8000-000000000001', 'Synthetic product-shell gate administrator'),
+      ('${users.get("leader")!.id}', 'BATCH_LEADER', '10000000-0000-4000-8000-000000000001', 'Synthetic product-shell gate Batch Leader');
     insert into public.requested_material_items (campaign_id, curriculum_unit_id, title, expected_type, required, status)
     select '${campaign}', '${unit}', 'Synthetic gate document', 'DOCUMENT', true, 'REQUESTED'
     where not exists (select 1 from public.requested_material_items where campaign_id = '${campaign}' and curriculum_unit_id = '${unit}');`);

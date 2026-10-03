@@ -1,5 +1,8 @@
 begin;
 select plan(12);
+set local unimind.actor_id = '10000000-0000-0000-0000-000000000001';
+set local unimind.audit_reason = 'WP03-T09 synthetic academic preference scope proof';
+set local unimind.correlation_id = '90000000-0000-0000-0000-000000000009';
 
 select ok(has_column_privilege('authenticated', 'public.profiles', 'academic_context', 'UPDATE'), 'caller may update the guarded preference column');
 select ok(not has_column_privilege('anon', 'public.profiles', 'academic_context', 'UPDATE'), 'anonymous caller cannot write preferences');
@@ -26,6 +29,9 @@ update public.profiles set account_status = 'SUSPENDED' where user_id = '1000000
 set local role authenticated;
 set local request.jwt.claim.sub = '10000000-0000-0000-0000-000000000002';
 select throws_ok($q$update public.profiles set academic_context = '{}'::jsonb$q$, '42501', 'Academic preference unavailable.', 'suspended caller cannot change preferences');
-select is((select count(*) from public.available_catalog_entries()), 0::bigint, 'a saved preference cannot override revoked account access');
+reset role;
+update public.cohort_memberships set status = 'REVOKED' where user_id = '10000000-0000-0000-0000-000000000002';
+set local role authenticated;
+select is((select count(*) from public.available_catalog_entries()), 0::bigint, 'a saved preference cannot override revoked membership access');
 select * from finish();
 rollback;

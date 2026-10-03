@@ -78,14 +78,6 @@
 .drop p {
   margin: 0 0 0.875rem;
 }
-.fileInput {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-  overflow: hidden;
-  clip-path: inset(50%);
-}
 .drop:focus-within {
   outline: 2px solid var(--accent);
   outline-offset: 3px;

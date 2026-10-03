@@ -67,7 +67,54 @@ Overview heading and Account sign-out flow. Response inspection captures action
 POST bodies before navigation discards them, forwarding the original response
 once with redirects and retries disabled. It retains private-data rejection and
 all allowed/forbidden, revocation and stale-session checks. Execution of the
-repaired Linux database/browser gate remains pending; compilation cannot prove it.
+repaired Linux database/browser gate was subsequently observed as eight passing
+cases in run 37108899217; later fixture changes below require fresh proof.
+
+## Second release-check result and affected repairs
+
+Run [37108899217](https://github.com/unimind989-sys/UniMind-Project/actions/runs/37108899217)
+at `cdf1b7f` passed dependency audit and selector. Application and database jobs
+failed; neither is a release PASS. Normal browser coverage passed 53 of 56 cases.
+The remaining cases exposed an offscreen 1px file input still in keyboard
+navigation, Arabic collection pages leaving document language/direction in English,
+and a privacy test still addressing the previous two-step upload form.
+
+The shared shell now synchronizes the requested document locale/direction. The
+native hidden picker is opened by the existing visible 44px Choose files button,
+without a second invisible keyboard stop. The privacy test follows file selection,
+Source details, permission and Upload files through the actual approved flow,
+retaining response and receipt private-data rejection. These repairs restore the
+accepted baseline's accessibility and language contract; they introduce no new
+design direction or upload behavior. Focused normal browser replay passed all four
+affected cases, including mixed-file receipts and both languages. The patched
+runtime's cross-role responsive/navigation proof passed three cases before these
+repairs; unaffected results are retained. Changed-file lint and fresh types passed.
+The repaired Arabic upload page was also inspected in the in-app browser. Four
+phone queue renders at 390px (EN/AR, Light/Dark) were individually inspected;
+captures remain in the release checkout's ignored `.local/phase2-delivery/` folder.
+Readiness passed (489 names, 145 links, 23 decisions, 113 task contracts), secret
+scan passed (2861 files), and the complete repair diff/whitespace/scope was reviewed.
+
+The same Linux run passed the security inventory and authenticated browser gate,
+database upgrade/reset, migrations, advisors and generated-type parity. The new
+profile test passed eleven of twelve assertions. Its last assertion incorrectly
+equated account suspension with cohort-membership revocation. It now revokes the
+actual membership and retains the independent suspended-preference-write denial.
+The authenticated leader fixture also grants the existing authoritative
+BATCH_LEADER role, so its entry assertion exercises role routing rather than an
+assignment-only student identity. Both changes await fresh Linux execution.
+
+### Separate existing authorization finding
+
+Observed in run 37108899217: an authenticated suspended profile with an otherwise
+active cohort membership still receives one synthetic catalog entry from
+`available_catalog_entries()`. Existing `has_active_membership()` checks membership
+status and dates, without checking profile account status. This behavior predates
+the preference migration. The new preference validator rejects the suspended
+caller, and the application account guard is unchanged. This finding is not a
+claim about access to private source contents. Review the existing RPC suspension
+contract with its authorization owner as a separate follow-up; this frontend task
+does not silently broaden or change catalog authorization.
 
 ## Next safe action
 

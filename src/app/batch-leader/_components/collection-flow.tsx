@@ -216,8 +216,8 @@ export function CollectionFlow({
             </Button>
             <input
               ref={picker}
-              className={styles.fileInput}
               type="file"
+              hidden
               multiple
               accept=".pdf,.wav,.png"
               aria-label={t("Choose files", "اختيار ملفات")}

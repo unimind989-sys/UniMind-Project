@@ -12,7 +12,7 @@
 
 **Branch:** codex/wp03-complete-synthetic-frontend
 
-**Updated (UTC):** 2026-10-03T08:08:02Z
+**Updated (UTC):** 2026-10-03T08:37:00Z
 
 ## Derived execution envelope
 
@@ -85,9 +85,9 @@ Calendar, personal Workspace, global Sources and Progress have no approved stand
 
 ## Candidate preparation
 
-**Design disposition:** NONVISUAL
+**Design disposition:** OBJECTIVE_PRESERVING
 
-**Design evidence:** baseline:8ad3a9baaffe43bf89be09d404f921d2b3f9e714; receipt:evidence/wp03-product-shell/2026-10-03-wp03-t09-founder-design-receipt.json; final UI accepted by Ahmed; only nonvisual approval/delivery metadata changed since acceptance.
+**Design evidence:** baseline:8ad3a9baaffe43bf89be09d404f921d2b3f9e714; receipt:evidence/wp03-product-shell/2026-10-03-wp03-t09-founder-design-receipt.json; final UI accepted by Ahmed. Post-acceptance security patch and bounded accessibility repairs restore the approved document locale/direction and 44px keyboard-target contract; focused normal browser replay and rendered Arabic upload inspection retain the accepted design direction. No new product flow or palette is proposed.
 
 **Preparation review:** COMPLETE_INLINE
 
@@ -97,21 +97,21 @@ Calendar, personal Workspace, global Sources and Progress have no approved stand
 
 **Established facts:** NONE
 
-No established-fact receipt is asserted before a commit-bound proof exists. The inline candidate review covers native composition, optional shared ports, zero service mutations, synthetic-only input checks, record/scope isolation, normal navigation and corrected source availability. Technical proof is recorded below. Founder design acceptance, guarded broad verification, exact-head CI and delivery remain unsatisfied gates; the preparation fingerprint stays NOT_READY until the required founder receipt and proof preflight exist.
+No established-fact receipt is asserted before a commit-bound proof exists. The inline candidate review covers native composition, optional shared ports, zero service mutations, synthetic-only input checks, record/scope isolation, normal navigation and corrected source availability. Technical proof is recorded below. Founder design acceptance is satisfied at the named baseline. Guarded broad verification, exact-head CI and delivery remain unsatisfied gates; the preparation fingerprint stays NOT_READY until correct proof preflight exists.
 
 ## Steps
 
 - [x] Inspect product/code/rendered routes and schedule T09/T10 before WP04.
 - [x] Implement complete isolated synthetic journeys and connect entry points.
 - [x] Execute rejecting behavior/security/a11y/responsive proof and inspect diff.
-- [~] Present concrete candidate and record founder interaction checkpoint.
+- [x] Present concrete candidate and record founder interaction checkpoint.
 - [ ] Complete protected delivery/affected proof, then select WP03-T10.
 
 ## Current next safe action — approved delivery
 
 **Next safe action:** Final candidate `8ad3a9b` is accepted; see `final-approval.md` and `phase-2-delivery.md`. Record only genuine executed proof, run existing draft-PR/disposable database checks, and resolve the separately requested gate exception before guarded broad verification. Keep PR #64 draft/unmerged until gates pass. Complete the D-22 non-financial lifecycle, then close T09; T10/WP04 remain subsequent tasks. Original review/user work stays preserved.
 
-**Commands:** Final UI accepted at 8ad3a9b; final browser proof 7/7 PASS and 29 inspected views retained. Hosted run 37107608541 FAIL at 80f6d18: critical Next.js advisory, missing academic validator/column inventory, invalid profile test CTE, old browser route/sign-out expectations and unavailable action response inspection. Existing Next.js/lint family patched to 16.3.6; production audit PASS (no known vulnerabilities), security 44/44 PASS, SQL 28 migrations PASS. Required repaired Linux database/browser proof and guarded broad remain pending; no protected gate waived. See phase-2-delivery.md.
+**Commands:** Final UI accepted at 8ad3a9b; final browser proof 7/7 PASS and 29 inspected views retained. Hosted run 37107608541 FAIL at 80f6d18; targeted runtime/security/test repairs followed. Run 37108899217 at cdf1b7f: dependency audit and selector PASS; application FAIL (53/56 normal browser cases), database FAIL (11/12 new preference assertions). Its existing authenticated browser gate passed 8/8; later authoritative leader-fixture change awaits replay. Next.js/lint 16.3.6 production audit PASS, security 44/44 PASS, SQL 28 migrations PASS. Corrected upload document language, hidden picker and current privacy-test flow: affected normal browser 4/4 PASS, changed-file lint and fresh types PASS; in-app Arabic upload rendered review. pgTAP now checks actual membership revocation while retaining suspended-write denial; fresh Linux execution pending. The pre-existing suspension/catalog RPC finding is separately recorded in phase-2-delivery.md. Guarded broad, protected delivery and affected production proof remain pending; no gate waived.
 
 **Admin checkpoint proof:** Four unit files passed 52 tests; unchanged protected Admin security boundary passed 5. Eight unique normal browser cases passed across retained 7/8 plus visible-target 1/1 replay. Nine unique affected native cases passed across retained runs; final four theme/language matrices passed 4/4, followed by Arabic localized-target 2/2. Source/capture manifest binds 36 inspected JPEG views, including all eight desktop/phone language/theme pairs and loading, empty, blocked, forbidden, stale and unverified states. Fresh TypeScript, changed-file lint, boundaries and policy checks passed. Final packet-aware readiness passed (488 names, 119 links, 23 decisions, 113 task contracts); final secret scan passed for 2970 files. One detector pass found one status side border, corrected to a quiet full 1px border and inspected. Failures and replay limits remain recorded in `admin-checkpoint/checks.json`. No Admin backend, schema or durable persistence change; no broad, build, database, CI or production PASS asserted. Owned local staging verifies formatting, full diff and bindings; unrelated bounded-logo task text stays only in the worktree. Admin is now accepted; the next required stop is final product-wide acceptance.
 
@@ -228,7 +228,7 @@ Ahmed explicitly resumes WP03-T09 with a two-phase frontend-first overhaul. This
 | P2-S  | Sol High | Approved P1 direction; shared tokens/brand/auth/account/shelf/workspace                                        | Role derived from verified identity; authorized catalog persistence; all existing Chat/Studio/viewer/quiz/report behavior; mobile keyboard/AA/RTL/states; student rendered checkpoint             | Approved: `3a2a95d`, Ahmed receipt in `planning/design/frontend-overhaul/student-approval.md`; database proof pending |
 | P2-B  | Sol High | Accepted shared system; campaign/upload contracts                                                              | Mixed-file intake/progress/retry; uploading separate from processing; campaign authorization and real-mode denial preserved; leader rendered checkpoint                                           | Approved: `4c03b80`, direct Ahmed receipt in `planning/design/frontend-overhaul/batch-leader-approval.md`             |
 | P2-A  | Sol High | Accepted shared system; existing admin capabilities                                                            | Task-oriented grouping, real vs synthetic actions honest, no financial enablement; narrow layout and admin rendered checkpoint                                                                    | Approved: `ec00466`, direct Ahmed receipt in `planning/design/frontend-overhaul/admin-approval.md`                    |
-| P2-F  | Sol High | Stable approved role surfaces; task/runbook acceptance                                                         | Product consistency checkpoint, current receipt, focused rejecting checks, one required broad candidate gate, exact-head CI, branch protection and affected production proof                      | Ready for explicit final approval; focused proof and source-bound rendered packet                                     |
+| P2-F  | Sol High | Stable approved role surfaces; task/runbook acceptance                                                         | Product consistency checkpoint, current receipt, focused rejecting checks, one required broad candidate gate, exact-head CI, branch protection and affected production proof                      | Final UI approved at `8ad3a9b`; technical delivery in progress                                                        |
 
 **Phase 1 files:** DESIGN.md; current first-party design surface briefs and review guidance; PRODUCT.md only to reconcile confirmed design facts; `docs/reviews/wp03-frontend-overhaul.md`; new bounded proposal/evidence under `planning/design/frontend-overhaul/`; this record; runbook continuation only. No src, backend, schema, dependencies or existing logo-artwork edits.
 

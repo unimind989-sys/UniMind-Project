@@ -296,25 +296,21 @@ test("RSC navigation, action responses and upload receipts remain safe", async (
   ).toBeVisible();
   await finishPrivacy();
   await page.goto(`/preview/batch-leader/campaigns/${campaign}?lang=en`);
+  await page.locator('input[type="file"]').setInputFiles({
+    name: "synthetic.pdf",
+    mimeType: "application/pdf",
+    buffer: Buffer.from("%PDF-1.7\nSynthetic only"),
+  });
+  await page.getByText("Source details", { exact: true }).click();
   await page
     .getByLabel("Source title")
     .fill("Synthetic privacy contract handout");
   await page
     .getByLabel("Professor or source description")
     .fill("Generated test fixture only.");
-  await page.locator('input[type="file"]').setInputFiles({
-    name: "synthetic.pdf",
-    mimeType: "application/pdf",
-    buffer: Buffer.from("%PDF-1.7\nSynthetic only"),
-  });
-  await page.getByLabel(/I confirm this synthetic fixture/u).check();
+  await page.getByLabel(/I have permission/u).check();
   await assertAccessible(page);
-  await page.getByRole("button", { name: "Validate and upload" }).click();
-  await expect(page.getByText("Upload evidence verified")).toBeVisible({
-    timeout: 20_000,
-  });
-  await finishPrivacy();
-  await page.getByRole("button", { name: "Finalize submission" }).click();
+  await page.getByRole("button", { name: "Upload files", exact: true }).click();
   await expect(page.getByText("Submission received")).toBeVisible({
     timeout: 20_000,
   });

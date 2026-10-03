@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, type ReactNode } from "react";
+import { useLayoutEffect, useRef, type ReactNode } from "react";
 import Link from "next/link";
 import type { Route } from "next";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -31,6 +31,10 @@ export function AppShell({
   const pathname = usePathname();
   const query = useSearchParams();
   const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
+  useLayoutEffect(() => {
+    document.documentElement.lang = locale;
+    document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
+  }, [locale]);
   const prefix = preview ? "/preview" : "";
   const menu = useRef<HTMLDetailsElement>(null);
   const adminResource = pathname.split("/").at(-1);
