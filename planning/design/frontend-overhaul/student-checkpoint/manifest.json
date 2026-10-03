@@ -1,0 +1,912 @@
+{
+  "generatedAt": "2026-10-01T00:23:30.411Z",
+  "phase1AcceptedCandidate": "ab568b6",
+  "binding": "Source SHA-256 values bind this student candidate; later relevant source edits invalidate affected proof. Captures are representative, not exhaustive route/state acceptance. Nominal CSS viewport and actual raster dimensions differ because of the in-app capture transform.",
+  "captures": [
+    {
+      "file": "account-light-en-1440.jpg",
+      "sha256": "5f1a535aa466b4dcf85ddc00dac096eea637d7a61b4d138c6e4f89a0a0be6ada",
+      "savedAt": "2026-09-30T23:43:50.596Z",
+      "raster": {
+        "width": 1430,
+        "height": 993
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "scope": "DOM-recorded browser capture",
+      "theme": "light",
+      "locale": "en",
+      "direction": "ltr",
+      "route": "/settings?lang=en",
+      "fullPage": false,
+      "scrollY": 0,
+      "overflow": false
+    },
+    {
+      "file": "account-light-en-390.jpg",
+      "sha256": "8a12db1cc4909de8f590ca126827c214fa7dd2dd7c4104f96a738f34b0eaf5e4",
+      "savedAt": "2026-09-30T23:43:50.355Z",
+      "raster": {
+        "width": 380,
+        "height": 822
+      },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scope": "DOM-recorded browser capture",
+      "theme": "light",
+      "locale": "en",
+      "direction": "ltr",
+      "route": "/settings?lang=en",
+      "fullPage": false,
+      "scrollY": 0,
+      "overflow": false
+    },
+    {
+      "file": "chat-empty-light-en-1440.jpg",
+      "sha256": "9800882f7431aa078cac92e61ff5ebf11dc4180c857ab56dd969baa1b82fa76a",
+      "savedAt": "2026-09-30T23:45:52.561Z",
+      "raster": {
+        "width": 1430,
+        "height": 993
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "scope": "DOM-recorded browser capture",
+      "theme": "light",
+      "locale": "en",
+      "direction": "ltr",
+      "route": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=en",
+      "fullPage": false,
+      "scrollY": 0,
+      "overflow": false
+    },
+    {
+      "file": "chat-populated-light-en-1440.jpg",
+      "sha256": "93a74e7018e57df7960df0d1054a29d61b168c552a61f08501ab65fee22b306f",
+      "savedAt": "2026-09-30T23:46:13.752Z",
+      "raster": {
+        "width": 1430,
+        "height": 993
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "scope": "DOM-recorded browser capture",
+      "theme": "light",
+      "locale": "en",
+      "direction": "ltr",
+      "route": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=en",
+      "fullPage": false,
+      "scrollY": 0,
+      "overflow": false
+    },
+    {
+      "file": "chat-streaming-light-en-1440.jpg",
+      "sha256": "67146e3c536fc02069ef38a87b6e275b96d0b534f1a8759c06c2e1dd05c243b2",
+      "savedAt": "2026-09-30T23:45:55.337Z",
+      "raster": {
+        "width": 1430,
+        "height": 993
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "scope": "DOM-recorded browser capture",
+      "theme": "light",
+      "locale": "en",
+      "direction": "ltr",
+      "route": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=en",
+      "fullPage": false,
+      "scrollY": 207,
+      "overflow": false
+    },
+    {
+      "file": "consent-dark-ar-390.jpg",
+      "sha256": "a31b0aa75b270c4f7482e76518684093fc26bbc7608403d228ab3309ab7ea70b",
+      "savedAt": "2026-09-30T23:42:56.979Z",
+      "raster": {
+        "width": 380,
+        "height": 822
+      },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scope": "DOM-recorded browser capture",
+      "theme": "dark",
+      "locale": "ar",
+      "direction": "rtl",
+      "route": "/consent?lang=ar",
+      "fullPage": false,
+      "scrollY": 0,
+      "overflow": false
+    },
+    {
+      "file": "landing-dark-ar-390.jpg",
+      "sha256": "aa6dfb53bc25337b78c09fd29485ae3dd9276d40e5bc82d9b79c4441fe66c847",
+      "savedAt": "2026-09-30T23:54:37.542Z",
+      "raster": {
+        "width": 380,
+        "height": 822
+      },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scope": "DOM-recorded browser capture",
+      "theme": "dark",
+      "locale": "ar",
+      "direction": "rtl",
+      "route": "/?lang=ar",
+      "fullPage": false,
+      "scrollY": 0,
+      "overflow": false
+    },
+    {
+      "file": "landing-dark-en-1440.jpg",
+      "sha256": "0ca45abc24c863d0c2024b23c609d4336b8963e1710bfffe327d57990a47d1d7",
+      "savedAt": "2026-09-30T23:41:21.063Z",
+      "raster": {
+        "width": 1430,
+        "height": 1251
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "scope": "DOM-recorded browser capture",
+      "theme": "dark",
+      "locale": "en",
+      "direction": "ltr",
+      "route": "/?lang=en",
+      "fullPage": true,
+      "scrollY": 0,
+      "overflow": false
+    },
+    {
+      "file": "landing-light-ar-390.jpg",
+      "sha256": "7c0c7ace3a4fa4e080b6969312b5d2d8964c3fa069fa46787d13a0bf51db6909",
+      "savedAt": "2026-09-30T23:53:03.760Z",
+      "raster": {
+        "width": 380,
+        "height": 822
+      },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scope": "DOM-recorded browser capture",
+      "theme": "light",
+      "locale": "ar",
+      "direction": "rtl",
+      "route": "/?lang=ar",
+      "fullPage": false,
+      "scrollY": 0,
+      "overflow": false
+    },
+    {
+      "file": "landing-light-en-1440.jpg",
+      "sha256": "4484a60d039cf1e65c81e48366d933e3a921a70e47ab2f37f6034612b4e6f6b8",
+      "savedAt": "2026-09-30T23:53:02.408Z",
+      "raster": {
+        "width": 1430,
+        "height": 993
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "scope": "DOM-recorded browser capture",
+      "theme": "light",
+      "locale": "en",
+      "direction": "ltr",
+      "route": "/",
+      "fullPage": false,
+      "scrollY": 0,
+      "overflow": false
+    },
+    {
+      "file": "login-dark-ar-390.jpg",
+      "sha256": "af3cd169889559b886c0dac103e21a462b192525d8978307854f909e6f519561",
+      "savedAt": "2026-09-30T23:41:54.169Z",
+      "raster": {
+        "width": 390,
+        "height": 844
+      },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scope": "DOM-recorded browser capture",
+      "theme": "dark",
+      "locale": "ar",
+      "direction": "rtl",
+      "route": "/login?lang=ar",
+      "fullPage": false,
+      "scrollY": 0,
+      "overflow": false
+    },
+    {
+      "file": "materials-light-en-1440.jpg",
+      "sha256": "f2489bcbad0f9c5059d47b54b69908afdc966731eaaa9132eb0f08ea958ede62",
+      "savedAt": "2026-09-30T23:44:30.165Z",
+      "raster": {
+        "width": 1430,
+        "height": 993
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "scope": "DOM-recorded browser capture",
+      "theme": "light",
+      "locale": "en",
+      "direction": "ltr",
+      "route": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy?lang=en",
+      "fullPage": false,
+      "scrollY": 0,
+      "overflow": false
+    },
+    {
+      "file": "onboarding-configured-dark-ar-390.jpg",
+      "sha256": "f0c596a2a37f36cb8a61f2120d37adc815378c4566f7b51adf1bcdcaa407c253",
+      "savedAt": "2026-09-30T23:43:26.732Z",
+      "raster": {
+        "width": 380,
+        "height": 822
+      },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scope": "DOM-recorded browser capture",
+      "theme": "dark",
+      "locale": "ar",
+      "direction": "rtl",
+      "route": "/learn?lang=ar",
+      "fullPage": false,
+      "scrollY": 0,
+      "overflow": false
+    },
+    {
+      "file": "onboarding-dark-ar-390.jpg",
+      "sha256": "81dc319c35e14f271feca69d9204d28f4ff2549187ce0b9f8d635c4a949ec3f7",
+      "savedAt": "2026-09-30T23:42:58.489Z",
+      "raster": {
+        "width": 380,
+        "height": 822
+      },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scope": "DOM-recorded browser capture",
+      "theme": "dark",
+      "locale": "ar",
+      "direction": "rtl",
+      "route": "/learn?lang=ar",
+      "fullPage": false,
+      "scrollY": 0,
+      "overflow": false
+    },
+    {
+      "file": "quiz-ready-dark-ar-390.jpg",
+      "sha256": "4c0169ada436e401becbdcb91ef7a642c543a15edfef0fe2dcf2e0ad0ef0e36d",
+      "savedAt": "2026-09-30T23:50:41.300Z",
+      "raster": {
+        "width": 380,
+        "height": 822
+      },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scope": "DOM-recorded browser capture",
+      "theme": "dark",
+      "locale": "ar",
+      "direction": "rtl",
+      "route": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/quiz?lang=ar",
+      "fullPage": false,
+      "scrollY": 0,
+      "overflow": false
+    },
+    {
+      "file": "report-light-en-1440.jpg",
+      "sha256": "2a3e2e6ad8a978bb9da8e26fb86c56856cbf1862fe82b4e61ae18a871d05bf4f",
+      "savedAt": "2026-09-30T23:53:52.436Z",
+      "raster": {
+        "width": 1440,
+        "height": 1000
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "scope": "DOM-recorded browser capture",
+      "theme": "light",
+      "locale": "en",
+      "direction": "ltr",
+      "route": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/report?exchange=1&session=1&lang=en",
+      "fullPage": false,
+      "scrollY": 0,
+      "overflow": false
+    },
+    {
+      "file": "shelf-dark-ar-390.jpg",
+      "sha256": "d4711caf5d29026d7437e823a592fc08658ec57f12bb70adb001d7bc4b38eeee",
+      "savedAt": "2026-09-30T23:43:27.342Z",
+      "raster": {
+        "width": 380,
+        "height": 822
+      },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scope": "DOM-recorded browser capture",
+      "theme": "dark",
+      "locale": "ar",
+      "direction": "rtl",
+      "route": "/learn?lang=ar",
+      "fullPage": false,
+      "scrollY": 0,
+      "overflow": false
+    },
+    {
+      "file": "shelf-denied-dark-ar-390.jpg",
+      "sha256": "39814ebe14e214d0401272d3368568cda9a23a75cbbf0aa39aa23682bb7244dc",
+      "savedAt": "2026-09-30T23:52:12.105Z",
+      "raster": {
+        "width": 390,
+        "height": 844
+      },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scope": "DOM-recorded browser capture",
+      "theme": "dark",
+      "locale": "ar",
+      "direction": "rtl",
+      "route": "/learn?fixture=forbidden&lang=ar",
+      "fullPage": false,
+      "scrollY": 0,
+      "overflow": false
+    },
+    {
+      "file": "shelf-empty-light-en-1440.jpg",
+      "sha256": "e73ab42d1def989299ba7e99e7d76d5c5eb171c7a1ad9e6b57d92e80034ed4d9",
+      "savedAt": "2026-09-30T23:52:19.055Z",
+      "raster": {
+        "width": 1440,
+        "height": 1000
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "scope": "DOM-recorded browser capture",
+      "theme": "light",
+      "locale": "en",
+      "direction": "ltr",
+      "route": "/learn?fixture=empty&lang=en",
+      "fullPage": false,
+      "scrollY": 0,
+      "overflow": false
+    },
+    {
+      "file": "shelf-error-dark-ar-390.jpg",
+      "sha256": "50e4861ad41df21ed50ab478ac323ac1e1eda14ade5cc60bf630bb7fa6dad11f",
+      "savedAt": "2026-09-30T23:51:18.721Z",
+      "raster": {
+        "width": 390,
+        "height": 844
+      },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scope": "DOM-recorded browser capture",
+      "theme": "dark",
+      "locale": "ar",
+      "direction": "rtl",
+      "route": "/learn?fixture=error&lang=ar",
+      "fullPage": false,
+      "scrollY": 0,
+      "overflow": false
+    },
+    {
+      "file": "shelf-light-en-1440.jpg",
+      "sha256": "19128830fcf0edf028d901f3b3d6287f56441b018cf9e7bb5d4ecac6cc9de5ac",
+      "savedAt": "2026-09-30T23:43:51.347Z",
+      "raster": {
+        "width": 1440,
+        "height": 1000
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "scope": "DOM-recorded browser capture",
+      "theme": "light",
+      "locale": "en",
+      "direction": "ltr",
+      "route": "/learn?lang=en",
+      "fullPage": false,
+      "scrollY": 0,
+      "overflow": false
+    },
+    {
+      "file": "studio-dark-ar-1440.jpg",
+      "sha256": "75513d59c18fc66e013aeb850f0c9a79f29200013f30353cd643c39179cab501",
+      "savedAt": "2026-09-30T23:14:20.021Z",
+      "raster": {
+        "width": 1430,
+        "height": 993
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "scope": "Earlier inspected Studio desktop capture; visual inputs unchanged by later report/bootstrap changes",
+      "theme": "dark",
+      "locale": "ar",
+      "direction": "rtl",
+      "route": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=ar",
+      "fullPage": false,
+      "scrollY": 0,
+      "overflow": false
+    },
+    {
+      "file": "studio-dark-ar-390.jpg",
+      "sha256": "afb54cddc2e165b948cd723f35b4daff2f6309d08e0cbb0943d9e8d05713dfc9",
+      "savedAt": "2026-09-30T23:49:18.177Z",
+      "raster": {
+        "width": 380,
+        "height": 822
+      },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scope": "DOM-recorded browser capture",
+      "theme": "dark",
+      "locale": "ar",
+      "direction": "rtl",
+      "route": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=ar",
+      "fullPage": false,
+      "scrollY": 0,
+      "overflow": false
+    },
+    {
+      "file": "studio-dark-en-1440.jpg",
+      "sha256": "375dd6c1f3715c662f589d86e630d59a398c2d78abe990202f420d252785e2ae",
+      "savedAt": "2026-09-30T23:12:08.327Z",
+      "raster": {
+        "width": 1430,
+        "height": 993
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "scope": "Earlier inspected Studio desktop capture; visual inputs unchanged by later report/bootstrap changes",
+      "theme": "dark",
+      "locale": "en",
+      "direction": "ltr",
+      "route": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=en",
+      "fullPage": false,
+      "scrollY": 0,
+      "overflow": false
+    },
+    {
+      "file": "studio-light-ar-1440.jpg",
+      "sha256": "e01fba4bdcf40910700426ec7c9f7de512e596cd5956f508a716c9703cea7522",
+      "savedAt": "2026-09-30T23:13:32.038Z",
+      "raster": {
+        "width": 1430,
+        "height": 993
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "scope": "Earlier inspected Studio desktop capture; visual inputs unchanged by later report/bootstrap changes",
+      "theme": "light",
+      "locale": "ar",
+      "direction": "rtl",
+      "route": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=ar",
+      "fullPage": false,
+      "scrollY": 0,
+      "overflow": false
+    },
+    {
+      "file": "studio-light-en-1440.jpg",
+      "sha256": "e7c49a094be73012727d1f4e28e674fbe365a8dcb6985a4b0bc67b5f8d46e47a",
+      "savedAt": "2026-09-30T23:12:57.898Z",
+      "raster": {
+        "width": 1430,
+        "height": 993
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "scope": "Earlier inspected Studio desktop capture; visual inputs unchanged by later report/bootstrap changes",
+      "theme": "light",
+      "locale": "en",
+      "direction": "ltr",
+      "route": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=en",
+      "fullPage": false,
+      "scrollY": 0,
+      "overflow": false
+    },
+    {
+      "file": "studio-output-dark-ar-390.jpg",
+      "sha256": "a96e95f99ae6a304c5efc40642ed107fc74fcf9d163fc79735bd7be49fc95adb",
+      "savedAt": "2026-09-30T23:50:21.857Z",
+      "raster": {
+        "width": 380,
+        "height": 822
+      },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scope": "DOM-recorded browser capture",
+      "theme": "dark",
+      "locale": "ar",
+      "direction": "rtl",
+      "route": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=ar",
+      "fullPage": false,
+      "scrollY": 904,
+      "overflow": false
+    },
+    {
+      "file": "subjects-light-en-1440.jpg",
+      "sha256": "3ca1b26493ac8581431aab8226a5f6409c3a21d53e861cd185bc6be8972546aa",
+      "savedAt": "2026-09-30T23:44:29.521Z",
+      "raster": {
+        "width": 1440,
+        "height": 1000
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "scope": "DOM-recorded browser capture",
+      "theme": "light",
+      "locale": "en",
+      "direction": "ltr",
+      "route": "/learn?view=subjects&lang=en",
+      "fullPage": false,
+      "scrollY": 0,
+      "overflow": false
+    },
+    {
+      "file": "viewer-dark-ar-390.jpg",
+      "sha256": "50e99f83bf8ad0fa285852f77b8f5b6ed4d999db22e3b155356b7b6253bca847",
+      "savedAt": "2026-09-30T23:50:21.032Z",
+      "raster": {
+        "width": 380,
+        "height": 822
+      },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scope": "DOM-recorded browser capture",
+      "theme": "dark",
+      "locale": "ar",
+      "direction": "rtl",
+      "route": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/sources?from=studio&lang=ar",
+      "fullPage": false,
+      "scrollY": 0,
+      "overflow": false
+    },
+    {
+      "file": "viewer-light-en-1440.jpg",
+      "sha256": "ca430d0562d14f8e00d8f397889939ebbde0013c8a6b7f34dfb7090acc78d332",
+      "savedAt": "2026-09-30T23:46:57.470Z",
+      "raster": {
+        "width": 1440,
+        "height": 1000
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "scope": "DOM-recorded browser capture",
+      "theme": "light",
+      "locale": "en",
+      "direction": "ltr",
+      "route": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/evidence?exchange=1&session=1&lang=en",
+      "fullPage": false,
+      "scrollY": 0,
+      "overflow": false
+    }
+  ],
+  "sources": {
+    "next.config.ts": "0479843c629a63babbb5dcd37d8dbbc15b814f8c3265e1950d03dcb14d5b898e",
+    "public/brand/unimind/icons/app-icon.svg": "da130217c1ca04cd2048c7174d6ee01405609e702f4a2b28389f4b3762397cb2",
+    "public/brand/unimind/icons/apple-touch-icon.png": "b830643215f38fe8ae8739ea04c7a26ba0f0592db39e2cea3f5c8099cd4180b1",
+    "public/brand/unimind/icons/favicon-16.png": "f6a646b7cdbc98b7655ec3096f3299990fda3a32e9244bf749855080a1039c28",
+    "public/brand/unimind/icons/favicon-32.png": "a969f5c84a6bf4f0c03ec5b57f448608e70ade9d88deb24f5d152b4ef9cd028d",
+    "public/brand/unimind/icons/favicon-48.png": "e6da005ada189bf67d99364c49ef69ba09c4c9fb1bb46aa921d0bc0921612339",
+    "public/brand/unimind/icons/favicon-dark.svg": "3a24666230cf4136cb353b5d53fbbb7fe5daccd5682197ea0854095e09f0d1b0",
+    "public/brand/unimind/icons/favicon-light.svg": "31700204339b7c3d3c214da2d9e4763709378a45a5b4f227490b5e27cfa70ee3",
+    "public/brand/unimind/icons/favicon.ico": "74955b1df24ccda31cf1146a75cb9d11b5a73a57f15a7a5577095ba618d5452c",
+    "public/brand/unimind/icons/favicon.svg": "2672eed2cc8c1cd58131766b6e497bb57e2e6eec921eb2a6b4eea02b654845e8",
+    "public/brand/unimind/icons/icon-192.png": "e6c0b49a35bf02d9a14a4fe1a336449e2bf3218c5233318a876a80ff95a664d3",
+    "public/brand/unimind/icons/icon-512.png": "0fff44586bee03001bc25436393e9002170b52820dae42669769b61e56ad797b",
+    "public/brand/unimind/icons/maskable-512.png": "6cd5df8d9b45e109d13b4151a0c4bb69b183c4f78d43aa9843405056f54382ef",
+    "public/brand/unimind/icons/maskable-icon.svg": "a85d8c668fdb2838644803fa4dbfe1fbb6f8aa6b7e9d9ebfd87b2646115d15d9",
+    "public/brand/unimind/icons/site.webmanifest": "bba36683889630e0ec4a1160c9858aa2f68fa58797c629d7fc5f2dbeb3b92ac1",
+    "public/brand/unimind/unimind-open-folio-horizontal-dark.svg": "fc64f13759c485ec4bf9677e502835254a24d16fcb4de5bf866bc9409ec7bd68",
+    "public/brand/unimind/unimind-open-folio-horizontal-light.svg": "a2e0098a33e8210386172691c1d78c18e8b1011939a578c9c5cb3aca4a2ee284",
+    "public/brand/unimind/unimind-open-folio-horizontal-white.svg": "6e2723f9f25066bb3b047bbf9ae0e11cbc4a44b620b7abfcb68487070bfa9f7a",
+    "public/brand/unimind/unimind-open-folio-symbol-dark.svg": "6575b8cb8210ebe3c9a24a6cb4bb432bc5b8bac6072309ee49f417b432a93e2a",
+    "public/brand/unimind/unimind-open-folio-symbol-light.svg": "df42e1b79466877ea66bd5522722afd793f7c39bfe68862eaa479fe703f12eae",
+    "public/brand/unimind/unimind-open-folio-symbol-small-dark.svg": "3a24666230cf4136cb353b5d53fbbb7fe5daccd5682197ea0854095e09f0d1b0",
+    "public/brand/unimind/unimind-open-folio-symbol-small-light.svg": "31700204339b7c3d3c214da2d9e4763709378a45a5b4f227490b5e27cfa70ee3",
+    "public/brand/unimind/unimind-open-folio-symbol-white.svg": "560bd373eb767a25c205edb7d522b362f4d30cb0b46a8d9f87eb2844561b6f6e",
+    "public/images/product/studio-ar-dark.jpg": "75513d59c18fc66e013aeb850f0c9a79f29200013f30353cd643c39179cab501",
+    "public/images/product/studio-ar-light.jpg": "e01fba4bdcf40910700426ec7c9f7de512e596cd5956f508a716c9703cea7522",
+    "public/images/product/studio-en-dark.jpg": "375dd6c1f3715c662f589d86e630d59a398c2d78abe990202f420d252785e2ae",
+    "public/images/product/studio-en-light.jpg": "e7c49a094be73012727d1f4e28e674fbe365a8dcb6985a4b0bc67b5f8d46e47a",
+    "src/app/(auth)/_components/auth-form.tsx": "686050e3a71e6fc0ad8a177d0cada5d4642f8fbcd4d4c5f33625428972344b7f",
+    "src/app/(auth)/_components/auth-page.tsx": "1be3d553c6db1f8962953dc75ba4ecf7f142f737064e6095544e06c838b3cf76",
+    "src/app/(auth)/_components/auth-shell.tsx": "3f6e063645ab0a25de597469da3a2eaa8cd75edf87b0bd204e9cb227be000997",
+    "src/app/(auth)/actions.ts": "8b2cc4a15aae6cda6c1241b68ad4ebd018a897bee7e52606e76cea56094cb492",
+    "src/app/(auth)/auth.module.css": "53afd3e03f2824fe5c28921441baa6f44d1b62286a78e59e5cb923c9e919e461",
+    "src/app/(auth)/consent/page.tsx": "2283a106bfc734fc51393b0343a9fdafdc3fe770167d502c70f62848691d2b59",
+    "src/app/_components/academic-settings.tsx": "614d47d42848e609067af593bf0c4be987e7d6bb21d4152f160661c6a3c0168c",
+    "src/app/_components/app-shell.module.css": "b9a0b8c1b6f47102e1004aec3aba54126d74573855be474a36e8b5a682e7a789",
+    "src/app/_components/app-shell.tsx": "0cbe88133589576cd54fae8b87c24740329c957590dd0f7d7049ba698fa73378",
+    "src/app/_components/appearance.tsx": "61be7d1d0d0bb84a0ba857e501f970240778bcfd572cba9ea08b23589e9b52ce",
+    "src/app/_components/brand.tsx": "9a9028dde2bd536e0225d6c26c9fb4573888d0654faff59ac67d16f98fef3576",
+    "src/app/_components/frontend-controls.tsx": "689cc975c7282a3c6bbaaac0f5748bb164fb8273d12a08ff8f01916eda75a7ab",
+    "src/app/_components/frontend-system.module.css": "1f52cec390792cae738035d549d14894f8b79f5c918b7d0204e3c1fd84c8fca7",
+    "src/app/_components/frontend-system.tsx": "8345f1a19699ebee3323e6e3888fee412857ff9aed356ace7a24c99fb59f68a2",
+    "src/app/_components/landing.module.css": "94380b107e108d54eb1cbecf9de5fc8b7f97c31d1e1445cd1a1387c0d08c7b5f",
+    "src/app/_components/landing.tsx": "36f4f5c67de3a56fc6da4b3ae49c4aa1b72e98e1490797df275cc659cb7b5645",
+    "src/app/_components/product-native-page.tsx": "e37592264c4232b35b88709dce4ff29201282a291e19ff39a1a0414e8779507a",
+    "src/app/_components/product-services.tsx": "a667d8c36a5760ed30c2c71f0bf571b15fb1a5287edcb09bd612069af36aa502",
+    "src/app/_components/product-ui.tsx": "5d0d26bae880029b439bb694777306d137db052c3128aca305a8cd04051d479b",
+    "src/app/_components/product.module.css": "749e44419eae364316021ff9afe388920635a2d922c23ec033eeecc45050eb57",
+    "src/app/_components/student-account.module.css": "c57fa543ee2ef21b1778f3cf01e0e5a6c5d42ca9d71b9d29f29695263f9377d7",
+    "src/app/apple-icon.png": "b830643215f38fe8ae8739ea04c7a26ba0f0592db39e2cea3f5c8099cd4180b1",
+    "src/app/auth/callback/route.ts": "6c56cd478754652fd468eb5f10d2937ef5340d348f86be1537437149b5129f49",
+    "src/app/error.tsx": "62bfc053b0d96b047bfba7e777fc3b6e67156b01b703d67b28d442b6e2f9a124",
+    "src/app/favicon.ico": "74955b1df24ccda31cf1146a75cb9d11b5a73a57f15a7a5577095ba618d5452c",
+    "src/app/globals.css": "9a65d2b023bfe04f14c38d16543a638b3dad0ff6f5d0931e0c5a8d8a2281e9cb",
+    "src/app/icon.svg": "2672eed2cc8c1cd58131766b6e497bb57e2e6eec921eb2a6b4eea02b654845e8",
+    "src/app/layout.tsx": "5bb2fe2d034679c3d106a86f0b067edb7846a741765cacf510e693155dc8c514",
+    "src/app/learn/[cohortId]/[unitId]/layout.tsx": "923a00a8ba6408eaa6624c311e7ce6c1e78e1362d0f7fa9b460e7187573f1a4a",
+    "src/app/learn/_components/product-chat.tsx": "a77da99937ba925eb28664cfd7b75e40a471204956250b3448f09e27f72d766e",
+    "src/app/learn/_components/product-studio.tsx": "9514b386f30842127a468026f14cdfdb3f6e364820eec06b66b5259e0ab00ef9",
+    "src/app/learn/_components/product-study.module.css": "f3692703ac55d40c7692724f12124e85e0b99a852966a5c16a09023ff611ad7d",
+    "src/app/learn/_components/product-study.tsx": "6cbb8153cc87c099ad58965b43b47548423cffe1f95ba28c46e89794b1afbd08",
+    "src/app/learn/_components/study-shelf.tsx": "c7ff6d635067c2ac3879cdad34ae1b5e90cd459623a7f59a175f366fbcdf7199",
+    "src/app/learn/_components/workspace-frame.tsx": "57d38506f4bcd26239a32fb39dcf539bf5d0c5b12e1577f8340afdf18872b371",
+    "src/app/learn/_components/workspace-pages.tsx": "0cce9fff9d38cd53e58a2d444582089a27cec91cf36d1eb5a8b887c70df678de",
+    "src/app/learn/loading.tsx": "031d8166a820324645a0bfcd9fb85fd7c28be623590d98a38954223e26d2c341",
+    "src/app/learn/page.tsx": "3b09a7f64c2d16e90351211bbbcebedea3bd04dab1f0fb308c8b4feb9ad3735f",
+    "src/app/learn/study-shelf.module.css": "8b7bb3b299ad0249548cda0469e9edabc4f2b59fba18803f7bf73f9a6b267b16",
+    "src/app/learn/workspace.module.css": "72bb517823d7db18bcdf9eb96f43e28305ce3d219b17dea67eb59579e94b3028",
+    "src/app/loading.tsx": "7c5c69b181b99e484d2dd10f9d9ee45d522881bb025e741a753f25c3a0625e53",
+    "src/app/page.tsx": "cdde13366c4bd11888245c36bbfc969fed829c9fe5adecb7c07520b19e076572",
+    "src/app/settings/actions.ts": "56dfec4210598fa2e99c8f495cf165d88b2fad22158574171ff9609f884e4fe1",
+    "src/app/settings/page.tsx": "87d2d2d0b0f28e050a1d2ea61fb42532e45f25689788a02905558f3e4c0ce17e",
+    "src/lib/account/account.application.ts": "2973aa2b05662d948e12eb45ff209810c3768e1361cc55b7d4a25aa7f1f4b1eb",
+    "src/lib/account/account.domain.ts": "3a0917394775da94807cc5f2dcac92a3ca1207b712b30aa22af80f8f5ebabece",
+    "src/lib/account/account.supabase.server.ts": "e3e4d1196aa13b0b11a85bee0c740876782d5891284f5902c3a2d1e1c247ba26",
+    "src/lib/theme/theme.application.ts": "49c894e8d89e61fbd85f7534de06ee596eb0ce316c39310670f2cd7e09abc749",
+    "src/lib/theme/theme.domain.ts": "32c7d632bb5032b5c3656cae40855402c5c3d053be1cf8bae9d65a89c1e00399",
+    "src/proxy.ts": "d43e119210f682e297394b31b05aa9140ee3b3d52549dfe7ed0d111210c18310",
+    "src/types/database.generated.ts": "d07daa72d2044d996bc934d11b8bef4a216a7427c30dc6dd6f297a0d6b195ec4",
+    "supabase/migrations/20260930220000_profile_academic_context.sql": "40d0b674de2d6bc65bd2e44f00b8686abb56f7951be504f9e318d73878bf7cce",
+    "supabase/tests/29_profile_academic_context.sql": "449345bc1752499ece21d77310caad62ef6f46a57866ad0b30c2116d04012fac",
+    "tests/e2e/auth-flows.spec.ts": "5a9de6c6144e2caf35f4f013c0f56bf6cf77bf085742a303457b08ff69a87556",
+    "tests/e2e/foundation.spec.ts": "d5e5dd182008780455001dd1047bf1580e87ef18d6dcc0d63a2ebb2c3336a09c",
+    "tests/e2e/native-product-demo.spec.ts": "8c4d3cd016ba34a42ea5896d5de5429d6d6aabdbcd8ef219f92d8b0c52fa3f09",
+    "tests/e2e/study-shelf.spec.ts": "e97c88cd1e951ebdfe7730cd975a7e26f697114b5fd242f2938d998cee056391",
+    "tests/e2e/workspace-shell.spec.ts": "4a5e03c43915b1dc2963fd75000f4bdf106da1061e3a2eb2eb7ed383a98528c5",
+    "tests/unit/account-settings.test.ts": "fe54de2be900e5619ce66e1c5a949fe5a7dc7be21f8ecf4715e424b9276571b1",
+    "tests/unit/account-supabase.test.ts": "1d61900b694efb3619cc9312628156d09a9e517ab4a539280d00e77375caea90",
+    "tests/unit/appearance-bootstrap.test.ts": "8c5cc27fbf15e18d21bf7b543419c29e71219555a8821d78c3d1fef94a3429a5",
+    "tests/unit/auth-entry-routing.test.ts": "3bd9a216ea7094ca2cc290d46d9eec1d27b09804fcdc55946b61441d8d171e97",
+    "tests/unit/synthetic-demo-runtime.test.ts": "e47978fbc11a2b732d655137657e5cb41f6bdee543799f3dadc8a236c89a9776"
+  },
+  "kitDependencyHashes": {
+    "color-palette.json": "b1e4ccefe3d8c66d2c50163ce2559b630ce16765520f06dcabd5aa223bc14593",
+    "export-spec.json": "c853f64e2a5407516707affd5865f41a5050beeb1b7246a385b7c286cfc72e08",
+    "icons/app-icon.svg": "da130217c1ca04cd2048c7174d6ee01405609e702f4a2b28389f4b3762397cb2",
+    "icons/apple-touch-icon.png": "b830643215f38fe8ae8739ea04c7a26ba0f0592db39e2cea3f5c8099cd4180b1",
+    "icons/favicon-16.png": "f6a646b7cdbc98b7655ec3096f3299990fda3a32e9244bf749855080a1039c28",
+    "icons/favicon-32.png": "a969f5c84a6bf4f0c03ec5b57f448608e70ade9d88deb24f5d152b4ef9cd028d",
+    "icons/favicon-48.png": "e6da005ada189bf67d99364c49ef69ba09c4c9fb1bb46aa921d0bc0921612339",
+    "icons/favicon-dark.svg": "3a24666230cf4136cb353b5d53fbbb7fe5daccd5682197ea0854095e09f0d1b0",
+    "icons/favicon-light.svg": "31700204339b7c3d3c214da2d9e4763709378a45a5b4f227490b5e27cfa70ee3",
+    "icons/favicon.ico": "74955b1df24ccda31cf1146a75cb9d11b5a73a57f15a7a5577095ba618d5452c",
+    "icons/favicon.svg": "2672eed2cc8c1cd58131766b6e497bb57e2e6eec921eb2a6b4eea02b654845e8",
+    "icons/icon-192.png": "e6c0b49a35bf02d9a14a4fe1a336449e2bf3218c5233318a876a80ff95a664d3",
+    "icons/icon-512.png": "0fff44586bee03001bc25436393e9002170b52820dae42669769b61e56ad797b",
+    "icons/maskable-512.png": "6cd5df8d9b45e109d13b4151a0c4bb69b183c4f78d43aa9843405056f54382ef",
+    "icons/maskable-icon.svg": "a85d8c668fdb2838644803fa4dbfe1fbb6f8aa6b7e9d9ebfd87b2646115d15d9",
+    "icons/site.webmanifest": "bba36683889630e0ec4a1160c9858aa2f68fa58797c629d7fc5f2dbeb3b92ac1",
+    "integration.md": "e8311ac9521c02a3ea5fb818bacdb089149fc5f89af6d6a4973f6b9a319ea451",
+    "provenance/approval.md": "f38e37847629fb5f253651309c3dfee35f95b088fdcbd1e6fcd44461db8c16d4",
+    "provenance/font-source.txt": "7c5d84b17aa4a9da5ba1319ad73c9b9df044d3a583a8820b2104bcb1aff997ed",
+    "provenance/manrope-ofl.txt": "d6a309fcfb963d329a93baf9df66fa5f3c23a4be2b5f67edf24d6cafecde12ac",
+    "provenance/README.md": "7c3a0a13c3d381cb304e1264a96e95776571a66db81ceca65433a23f8061af5e",
+    "provenance/svg-audit.json": "c7899ec6236584e01a39c12ffebe242fd2ca5389ae2ebde12df1edd80e9cf52e",
+    "svg/unimind-open-folio-horizontal-dark.svg": "fc64f13759c485ec4bf9677e502835254a24d16fcb4de5bf866bc9409ec7bd68",
+    "svg/unimind-open-folio-horizontal-light.svg": "a2e0098a33e8210386172691c1d78c18e8b1011939a578c9c5cb3aca4a2ee284",
+    "svg/unimind-open-folio-horizontal-white.svg": "6e2723f9f25066bb3b047bbf9ae0e11cbc4a44b620b7abfcb68487070bfa9f7a",
+    "svg/unimind-open-folio-symbol-dark.svg": "6575b8cb8210ebe3c9a24a6cb4bb432bc5b8bac6072309ee49f417b432a93e2a",
+    "svg/unimind-open-folio-symbol-light.svg": "df42e1b79466877ea66bd5522722afd793f7c39bfe68862eaa479fe703f12eae",
+    "svg/unimind-open-folio-symbol-small-dark.svg": "3a24666230cf4136cb353b5d53fbbb7fe5daccd5682197ea0854095e09f0d1b0",
+    "svg/unimind-open-folio-symbol-small-light.svg": "31700204339b7c3d3c214da2d9e4763709378a45a5b4f227490b5e27cfa70ee3",
+    "svg/unimind-open-folio-symbol-white.svg": "560bd373eb767a25c205edb7d522b362f4d30cb0b46a8d9f87eb2844561b6f6e",
+    "usage-guide.md": "47cb65dc95e2447fb2413b7182ccaeeffe8d333874eb0a0506acad1d6c76c914"
+  },
+  "runtimeBrand": [
+    {
+      "file": "icons\\app-icon.svg",
+      "source": "icons/app-icon.svg",
+      "sha256": "da130217c1ca04cd2048c7174d6ee01405609e702f4a2b28389f4b3762397cb2"
+    },
+    {
+      "file": "icons\\apple-touch-icon.png",
+      "source": "icons/apple-touch-icon.png",
+      "sha256": "b830643215f38fe8ae8739ea04c7a26ba0f0592db39e2cea3f5c8099cd4180b1"
+    },
+    {
+      "file": "icons\\favicon-16.png",
+      "source": "icons/favicon-16.png",
+      "sha256": "f6a646b7cdbc98b7655ec3096f3299990fda3a32e9244bf749855080a1039c28"
+    },
+    {
+      "file": "icons\\favicon-32.png",
+      "source": "icons/favicon-32.png",
+      "sha256": "a969f5c84a6bf4f0c03ec5b57f448608e70ade9d88deb24f5d152b4ef9cd028d"
+    },
+    {
+      "file": "icons\\favicon-48.png",
+      "source": "icons/favicon-48.png",
+      "sha256": "e6da005ada189bf67d99364c49ef69ba09c4c9fb1bb46aa921d0bc0921612339"
+    },
+    {
+      "file": "icons\\favicon-dark.svg",
+      "source": "icons/favicon-dark.svg",
+      "sha256": "3a24666230cf4136cb353b5d53fbbb7fe5daccd5682197ea0854095e09f0d1b0"
+    },
+    {
+      "file": "icons\\favicon-light.svg",
+      "source": "icons/favicon-light.svg",
+      "sha256": "31700204339b7c3d3c214da2d9e4763709378a45a5b4f227490b5e27cfa70ee3"
+    },
+    {
+      "file": "icons\\favicon.ico",
+      "source": "icons/favicon.ico",
+      "sha256": "74955b1df24ccda31cf1146a75cb9d11b5a73a57f15a7a5577095ba618d5452c"
+    },
+    {
+      "file": "icons\\favicon.svg",
+      "source": "icons/favicon.svg",
+      "sha256": "2672eed2cc8c1cd58131766b6e497bb57e2e6eec921eb2a6b4eea02b654845e8"
+    },
+    {
+      "file": "icons\\icon-192.png",
+      "source": "icons/icon-192.png",
+      "sha256": "e6c0b49a35bf02d9a14a4fe1a336449e2bf3218c5233318a876a80ff95a664d3"
+    },
+    {
+      "file": "icons\\icon-512.png",
+      "source": "icons/icon-512.png",
+      "sha256": "0fff44586bee03001bc25436393e9002170b52820dae42669769b61e56ad797b"
+    },
+    {
+      "file": "icons\\maskable-512.png",
+      "source": "icons/maskable-512.png",
+      "sha256": "6cd5df8d9b45e109d13b4151a0c4bb69b183c4f78d43aa9843405056f54382ef"
+    },
+    {
+      "file": "icons\\maskable-icon.svg",
+      "source": "icons/maskable-icon.svg",
+      "sha256": "a85d8c668fdb2838644803fa4dbfe1fbb6f8aa6b7e9d9ebfd87b2646115d15d9"
+    },
+    {
+      "file": "icons\\site.webmanifest",
+      "source": "icons/site.webmanifest",
+      "sha256": "bba36683889630e0ec4a1160c9858aa2f68fa58797c629d7fc5f2dbeb3b92ac1"
+    },
+    {
+      "file": "unimind-open-folio-horizontal-dark.svg",
+      "source": "svg/unimind-open-folio-horizontal-dark.svg",
+      "sha256": "fc64f13759c485ec4bf9677e502835254a24d16fcb4de5bf866bc9409ec7bd68"
+    },
+    {
+      "file": "unimind-open-folio-horizontal-light.svg",
+      "source": "svg/unimind-open-folio-horizontal-light.svg",
+      "sha256": "a2e0098a33e8210386172691c1d78c18e8b1011939a578c9c5cb3aca4a2ee284"
+    },
+    {
+      "file": "unimind-open-folio-horizontal-white.svg",
+      "source": "svg/unimind-open-folio-horizontal-white.svg",
+      "sha256": "6e2723f9f25066bb3b047bbf9ae0e11cbc4a44b620b7abfcb68487070bfa9f7a"
+    },
+    {
+      "file": "unimind-open-folio-symbol-dark.svg",
+      "source": "svg/unimind-open-folio-symbol-dark.svg",
+      "sha256": "6575b8cb8210ebe3c9a24a6cb4bb432bc5b8bac6072309ee49f417b432a93e2a"
+    },
+    {
+      "file": "unimind-open-folio-symbol-light.svg",
+      "source": "svg/unimind-open-folio-symbol-light.svg",
+      "sha256": "df42e1b79466877ea66bd5522722afd793f7c39bfe68862eaa479fe703f12eae"
+    },
+    {
+      "file": "unimind-open-folio-symbol-small-dark.svg",
+      "source": "svg/unimind-open-folio-symbol-small-dark.svg",
+      "sha256": "3a24666230cf4136cb353b5d53fbbb7fe5daccd5682197ea0854095e09f0d1b0"
+    },
+    {
+      "file": "unimind-open-folio-symbol-small-light.svg",
+      "source": "svg/unimind-open-folio-symbol-small-light.svg",
+      "sha256": "31700204339b7c3d3c214da2d9e4763709378a45a5b4f227490b5e27cfa70ee3"
+    },
+    {
+      "file": "unimind-open-folio-symbol-white.svg",
+      "source": "svg/unimind-open-folio-symbol-white.svg",
+      "sha256": "560bd373eb767a25c205edb7d522b362f4d30cb0b46a8d9f87eb2844561b6f6e"
+    }
+  ],
+  "publicPreview": [
+    {
+      "file": "studio-ar-dark.jpg",
+      "source": "planning/design/frontend-overhaul/student-checkpoint/studio-dark-ar-1440.jpg",
+      "sha256": "75513d59c18fc66e013aeb850f0c9a79f29200013f30353cd643c39179cab501",
+      "raster": {
+        "width": 1430,
+        "height": 993
+      }
+    },
+    {
+      "file": "studio-ar-light.jpg",
+      "source": "planning/design/frontend-overhaul/student-checkpoint/studio-light-ar-1440.jpg",
+      "sha256": "e01fba4bdcf40910700426ec7c9f7de512e596cd5956f508a716c9703cea7522",
+      "raster": {
+        "width": 1430,
+        "height": 993
+      }
+    },
+    {
+      "file": "studio-en-dark.jpg",
+      "source": "planning/design/frontend-overhaul/student-checkpoint/studio-dark-en-1440.jpg",
+      "sha256": "375dd6c1f3715c662f589d86e630d59a398c2d78abe990202f420d252785e2ae",
+      "raster": {
+        "width": 1430,
+        "height": 993
+      }
+    },
+    {
+      "file": "studio-en-light.jpg",
+      "source": "planning/design/frontend-overhaul/student-checkpoint/studio-light-en-1440.jpg",
+      "sha256": "e7c49a094be73012727d1f4e28e674fbe365a8dcb6985a4b0bc67b5f8d46e47a",
+      "raster": {
+        "width": 1430,
+        "height": 993
+      }
+    }
+  ]
+}

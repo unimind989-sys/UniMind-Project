@@ -1,0 +1,404 @@
+{
+  "recordedAt": "2026-10-03T00:12:34.878Z",
+  "scope": "WP03-T09 P2-A focused Admin presentation milestone. No broad, database, build, CI or production gate claim.",
+  "provenance": "Observed command results and actual in-app renders. Combined unique passing cases reuse unchanged relevant inputs across retained runs; no single complete normal or native suite PASS is asserted.",
+  "unit": {
+    "files": 4,
+    "passed": 52,
+    "failed": 0,
+    "log": "unit-admin.log",
+    "replay": {
+      "log": "copy-final.log",
+      "passed": 2,
+      "failed": 0,
+      "reason": "Human predicate-copy additions; overlapping tests, not extra unique cases"
+    }
+  },
+  "security": {
+    "files": 1,
+    "passed": 5,
+    "failed": 0,
+    "log": "security-admin.log",
+    "seam": "Existing protected Admin action boundary; unchanged domain/server/repository rules"
+  },
+  "normalBrowser": {
+    "file": "tests/e2e/admin-decision-queue.spec.ts",
+    "uniquePassingCases": 8,
+    "runs": [
+      {
+        "log": "normal-admin.log",
+        "passed": 0,
+        "failed": 0,
+        "reason": "Server lock occupied by owned demo; start failed before any tests",
+        "startFailed": true
+      },
+      {
+        "log": "normal-admin-confirm.log",
+        "passed": 7,
+        "failed": 1,
+        "reason": "Text locator matched the hidden phone select option instead of the visible target heading"
+      },
+      {
+        "log": "normal-admin-target-confirm.log",
+        "passed": 1,
+        "failed": 0,
+        "reason": "Corrected exact visible heading; containment review/confirm and success replay"
+      }
+    ],
+    "coverage": [
+      "exact target/reason/version review",
+      "cancel/focus",
+      "commit feedback",
+      "stale authority refresh",
+      "blocked readiness",
+      "unavailable/forbidden/empty",
+      "Arabic phone containment"
+    ],
+    "limits": "Eight unique passes combine retained 7/8 plus 1/1; not an 8/8 single-run receipt."
+  },
+  "nativeBrowser": {
+    "file": "tests/e2e/native-product-demo.spec.ts",
+    "uniquePassingAffectedCases": 9,
+    "runs": [
+      {
+        "log": "native-existing.log",
+        "passed": 3,
+        "failed": 0,
+        "reason": "Existing governed actions, twelve examples/distinct confirmations and stale-state cases"
+      },
+      {
+        "log": "native-new-initial.log",
+        "passed": 1,
+        "failed": 4,
+        "reason": "Actual enlarged-text header/heading reflow failures; isolated draft case passed"
+      },
+      {
+        "log": "native-new-confirm.log",
+        "passed": 0,
+        "failed": 4,
+        "reason": "Actual long current-location label reflow at 200%; corrected min-width/wrapping"
+      },
+      {
+        "log": "native-final.log",
+        "passed": 1,
+        "failed": 6,
+        "reason": "Outdated action/target locators and implicit select label; corrected locators and explicit label relationship"
+      },
+      {
+        "log": "native-stable.log",
+        "passed": 7,
+        "failed": 2,
+        "reason": "Arabic Cancel expectation did not match existing localized label; English matrices and substantive cases passed"
+      },
+      {
+        "log": "native-matrix-final.log",
+        "passed": 2,
+        "failed": 2,
+        "reason": "Arabic matrices passed; English axe sampled before streamed document title settled"
+      },
+      {
+        "log": "native-english-confirm.log",
+        "passed": 2,
+        "failed": 0,
+        "reason": "Explicit document-title readiness; English matrices replayed"
+      },
+      {
+        "log": "native-candidate-matrix.log",
+        "passed": 4,
+        "failed": 0,
+        "reason": "All four theme/language matrices after final draft-button spacing"
+      },
+      {
+        "log": "native-ar-confirm.log",
+        "passed": 2,
+        "failed": 0,
+        "reason": "Final localized Arabic academic target labels; Arabic matrices replayed"
+      }
+    ],
+    "coverage": [
+      "governed examples and distinct-founder confirmation",
+      "stale/blocked/unverified outcomes",
+      "isolated catalog/cohort/campaign drafts",
+      "all-role sign-out",
+      "all eight resources plus Overview/Users",
+      "native menu Escape/focus",
+      "review/cancel focus",
+      "axe WCAG A/AA and 2.1AA",
+      "200% text reflow at 320px"
+    ],
+    "geometryWidths": [1440, 390, 320],
+    "localeThemePairs": ["en/light", "en/dark", "ar/light", "ar/dark"],
+    "limits": "Nine unique affected passing cases combine retained runs. No full native suite PASS is asserted."
+  },
+  "static": {
+    "freshTypeScript": {
+      "result": "PASS",
+      "log": "typecheck-candidate.log"
+    },
+    "changedFileEslint": {
+      "result": "PASS",
+      "log": "lint-candidate.log"
+    },
+    "boundaries": {
+      "result": "PASS",
+      "log": "boundaries.log"
+    },
+    "policy": {
+      "result": "PASS",
+      "version": 8,
+      "log": "policy.log"
+    },
+    "secrets": {
+      "result": "PASS",
+      "observedFiles": 2970,
+      "log": "secrets-final.log",
+      "earlier": {
+        "observedFiles": 2963,
+        "log": "secret-scan.log"
+      }
+    },
+    "diffCheck": "PASS at source inspection; final staged proof recorded in task",
+    "readiness": {
+      "result": "PASS",
+      "log": "readiness-final.log",
+      "names": 488,
+      "localLinks": 119,
+      "synchronizedDecisions": 23,
+      "taskContracts": 113,
+      "attempts": "Initial wrong .ts path failed. Correct .ps1 rejected three not-yet-created packet links; after packet creation the same script passed."
+    },
+    "correctedNormalSelectorEslint": {
+      "result": "PASS",
+      "log": "lint-target-final.log"
+    },
+    "detector": {
+      "passes": 1,
+      "findings": 1,
+      "report": ".local/phase2-admin/detector.json",
+      "resolution": "Thick status side border replaced by quiet full 1px border and manually verified. No second detector pass claimed."
+    }
+  },
+  "rendered": {
+    "captures": 36,
+    "fullPage": false,
+    "overflow": false,
+    "desktopPhoneLocaleThemePairs": 8,
+    "cssViewports": [
+      {
+        "width": 1440,
+        "height": 1000
+      },
+      {
+        "width": 390,
+        "height": 900
+      },
+      {
+        "width": 360,
+        "height": 900
+      }
+    ],
+    "states": [
+      "Overview",
+      "eight resource routes",
+      "Users context",
+      "Account",
+      "campaign/catalog/cohort draft controls",
+      "exact confirmation",
+      "hold expiry/attestation",
+      "awaiting separate founder",
+      "loading",
+      "empty",
+      "blocked",
+      "unavailable",
+      "forbidden",
+      "stale",
+      "unverified result"
+    ],
+    "limits": "Representative viewport renders; scrolled confirmation/result frames explicitly identified in metadata. Fixed local examples do not prove real CRUD, invitations, membership or processing."
+  },
+  "pending": [
+    "explicit Admin approval",
+    "final product consistency review/approval",
+    "Linux database reset/upgrade/pgTAP/type parity for earlier student migration",
+    "broad stable-candidate verification and safe build",
+    "actual-diff preflight and exact-head CI",
+    "affected production proof and task closure"
+  ],
+  "independence": "Single executor, zero workers. Inline finish review is non-independent.",
+  "unrelatedPreserved": [
+    "supplied original kit",
+    "planning/design/logo-concepts",
+    "historical .impeccable/review/overhaul",
+    "pre-existing bounded-logo task block"
+  ],
+  "retainedArtifacts": [
+    {
+      "path": ".local/phase2-admin/boundaries.log",
+      "sha256": "71728c9030669dd3ebfdbfc3eea73588bd84da199bbe2f8d21d56492a7ede940"
+    },
+    {
+      "path": ".local/phase2-admin/copy-final.log",
+      "sha256": "12753214ab787c7a9142c845d0ba79f1546bc304cf0201ac9925cd9e0cb769fa"
+    },
+    {
+      "path": ".local/phase2-admin/demo-server.log",
+      "sha256": "d988dd10ed00a319c33c7bff3fa879605bc89120049389e0894f355467037892"
+    },
+    {
+      "path": ".local/phase2-admin/detector.json",
+      "sha256": "ebb9e1101a9b1b7ea972cf70393c5b81e11bdb8d98c355afaa4d6e86d4958133"
+    },
+    {
+      "path": ".local/phase2-admin/execution.json",
+      "sha256": "0143a7d50d8f196f24a419cd25b74951d122c362064643a6ce90d7be035c2213"
+    },
+    {
+      "path": ".local/phase2-admin/lint-candidate.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".local/phase2-admin/lint-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".local/phase2-admin/lint-stable.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".local/phase2-admin/lint-target-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".local/phase2-admin/native-ar-confirm.json",
+      "sha256": "99a52d3e6475733ea56b8135a7a0d66aecf3ee838ac715291ba21a00caa04068"
+    },
+    {
+      "path": ".local/phase2-admin/native-ar-confirm.log",
+      "sha256": "c0a7eb9c983d4c0f212c4b17b200e6a53531ac489eed088f3fd2189bd9870f31"
+    },
+    {
+      "path": ".local/phase2-admin/native-candidate-matrix.json",
+      "sha256": "a6dd4814475bc0294584aff92c82e8c58f18ff38fb86395dd94852145baebf1f"
+    },
+    {
+      "path": ".local/phase2-admin/native-candidate-matrix.log",
+      "sha256": "10a4f1a6e991f80dc7609ffe57ad7b1cdce6f5cc47f9d4671bf4eed6d3da7341"
+    },
+    {
+      "path": ".local/phase2-admin/native-english-confirm.json",
+      "sha256": "d8f80a24be11024d2b988595a372f6cee6c80464e8b891b3d4e30b556c091802"
+    },
+    {
+      "path": ".local/phase2-admin/native-english-confirm.log",
+      "sha256": "ac6699d1f1f58a1888a4c597ff838f8e4cd5e5d68e55792f04089fd1995c749b"
+    },
+    {
+      "path": ".local/phase2-admin/native-existing.log",
+      "sha256": "2894b0cffaf8c75d6c59491ae680ec9996a086c2c2f936d518c03a486eb009dc"
+    },
+    {
+      "path": ".local/phase2-admin/native-final.log",
+      "sha256": "c16b2edd02a7d09e49f6cc6f0bccd37cfd1cfb1249843b352eacfd94cc1962bf"
+    },
+    {
+      "path": ".local/phase2-admin/native-matrix-final.json",
+      "sha256": "347daa3fc71130b26426bc9fcd9fa46ca9ce93598334c7dc4f7629e98acce0a0"
+    },
+    {
+      "path": ".local/phase2-admin/native-matrix-final.log",
+      "sha256": "27b2eadc6c9fe20afc4c2a096eca10f5e19bff82ff4fee94179ded6e2e1f201b"
+    },
+    {
+      "path": ".local/phase2-admin/native-new-confirm.json",
+      "sha256": "73160e92f9b54a63a86499dd3852ee069a4105a4885ec696021205923f9905c4"
+    },
+    {
+      "path": ".local/phase2-admin/native-new-confirm.log",
+      "sha256": "9387e29c875444e583e951c7b5ae5473a674e4804dfec302c5ce053a7d8c7adb"
+    },
+    {
+      "path": ".local/phase2-admin/native-new-initial.json",
+      "sha256": "79582c44fcb9ee613867d68328cbe5146ee6c52c97a6ff968221ad575b354e89"
+    },
+    {
+      "path": ".local/phase2-admin/native-new-initial.log",
+      "sha256": "6687804264d3c7af35ccb5e4277d13c286751f8fd9d62d69bd1090d22fee4e87"
+    },
+    {
+      "path": ".local/phase2-admin/native-selector-failures.json",
+      "sha256": "70c78f2deba8624ba176f5d6e288f8efbb055e0c2b368b862297977c5c21bd8c"
+    },
+    {
+      "path": ".local/phase2-admin/native-stable.json",
+      "sha256": "b65638ca63622b74fa27ec873d04bbf4ff13489e1863123b9c2db33c451cdd7d"
+    },
+    {
+      "path": ".local/phase2-admin/native-stable.log",
+      "sha256": "712a57e28288a320694c15c86d48d0e2d0c4ebc3cea817b2e2141a94bb031b73"
+    },
+    {
+      "path": ".local/phase2-admin/normal-admin-confirm.json",
+      "sha256": "2ee5e5867c798dde8d6f5e9bd87688a72895e4faa114cd16dcc7f76a6f3ff209"
+    },
+    {
+      "path": ".local/phase2-admin/normal-admin-confirm.log",
+      "sha256": "86f92f29ddb269c53f629719fc12bf5ce5cf1247d4964c6b3f5446807b91c0b0"
+    },
+    {
+      "path": ".local/phase2-admin/normal-admin-target-confirm.json",
+      "sha256": "39d994644280e22528f0c72105d38db29d17725e73c74c1c7721b10e175b653c"
+    },
+    {
+      "path": ".local/phase2-admin/normal-admin-target-confirm.log",
+      "sha256": "9a3c373eb49b5272406142d274fac071fcb593bc9f600864ddcf0865b28e9b79"
+    },
+    {
+      "path": ".local/phase2-admin/normal-admin.log",
+      "sha256": "91ff8e8e07c269d4dadbf8f57e04e39b3ef5623d5a4a3118b80205a0d0f9d465"
+    },
+    {
+      "path": ".local/phase2-admin/policy.log",
+      "sha256": "81f07dcc719f374f66f957db8c6e823a3e2923f7700b94f623d5552c87717cf3"
+    },
+    {
+      "path": ".local/phase2-admin/readiness-confirm.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".local/phase2-admin/readiness-final.log",
+      "sha256": "45349f448d558f25a5a1852855274420cfd1acc406c0e25c1254b2340442e9ab"
+    },
+    {
+      "path": ".local/phase2-admin/readiness.log",
+      "sha256": "33668a488ea68183d22d459053c83ff34d2aa2e19b4cc3121d0e53c5934cdecf"
+    },
+    {
+      "path": ".local/phase2-admin/secret-scan.log",
+      "sha256": "c39ba8e9deff83ae2fca4ea2bee661efe8a03c3e0d7f301a583ffc8e28e7ce8e"
+    },
+    {
+      "path": ".local/phase2-admin/secrets-final.log",
+      "sha256": "8f53aa888cdd7b9e6a71bff02b1ff1d8dbf38143e062647008ae98b16a49045f"
+    },
+    {
+      "path": ".local/phase2-admin/security-admin.log",
+      "sha256": "61eca1dff5b7da9ce94d2cf6b4b281b19d3ad8c3ebb6c460c37c95686c435822"
+    },
+    {
+      "path": ".local/phase2-admin/typecheck-candidate.log",
+      "sha256": "77f59356155e3e1cef9b6fff6261665f710c1e1e5e447b0ffc45778d1e1f2397"
+    },
+    {
+      "path": ".local/phase2-admin/typecheck-final.log",
+      "sha256": "77f59356155e3e1cef9b6fff6261665f710c1e1e5e447b0ffc45778d1e1f2397"
+    },
+    {
+      "path": ".local/phase2-admin/typecheck-stable.log",
+      "sha256": "77f59356155e3e1cef9b6fff6261665f710c1e1e5e447b0ffc45778d1e1f2397"
+    },
+    {
+      "path": ".local/phase2-admin/unit-admin.log",
+      "sha256": "1bcb8dad0ee458e817c33c2db015c0716214d0d50242152fa3679a90dcb1b82d"
+    }
+  ]
+}

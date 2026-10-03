@@ -16,6 +16,8 @@ This repository contains the source-of-truth plan, executable delivery runbook, 
 - [Repository skills](.agents/skills/README.md) — audited, pinned workflows available to Codex in this repository.
 - [Skills guide](docs/agents/skills-guide.md) — which skills run automatically, which to call, and copy-ready examples.
 - [UI design stack](docs/agents/ui-design-stack.md) — why Impeccable was selected, how DESIGN.md and the Vercel review fit, and the UI workflow.
+- [Design contract](DESIGN.md) — canonical visual and interaction rules, proposal status, paired themes and role navigation.
+- [Frontend audit and proposal](docs/reviews/wp03-frontend-overhaul.md) — concrete findings, preserved capabilities, role flows and checkpoint sequence.
 - [Communication profiles](docs/agents/communication-profiles.md) — chat-language and intent-support routing for Ahmed and Ziad; core execution remains shared.
 - [Planning workspace](planning/README.md) — durable in-progress task records, decision status, and controlled planning inputs.
 - [Evaluation assets](evals/README.md) — versioned synthetic datasets, manifests, schemas, and safe reports.
@@ -77,6 +79,14 @@ corepack pnpm check:boundaries
 # Check every versioned SQL migration against the database conventions.
 corepack pnpm check:sql
 ```
+
+## Synthetic frontend review
+
+Run `corepack pnpm demo`, then open `http://127.0.0.1:3101/login?lang=en` in Chrome. This isolated development runtime uses normal product routes, forms and shared frontend components with synthetic services. It covers student, Batch Leader and admin journeys in English/Arabic without a separate review interface. Normal navigation preserves document-local memory; reload starts fresh. It grants no real access and makes no Auth, upload, email, provider or protected mutation calls.
+
+The [complete synthetic test pack](public/demo-files/README.md) supplies invented credentials, callback/invitation links, bilingual prompts, quiz answers, PDF/WAV/PNG files, submission metadata, admin reasons and prepared failure cases. Ordinary development/production behavior retains its real guards and services; query parameters cannot enable demo mode. Task order and the final named founder review gate remain in the execution runbook before WP04.
+
+Use the [Chrome screen-by-screen review guide](docs/reviews/wp03-synthetic-frontend-review.md) for the complete synthetic review, expected outcomes, failure states and isolation checks.
 
 ## Notes
 

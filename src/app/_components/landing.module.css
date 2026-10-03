@@ -1,0 +1,228 @@
+.page {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: 32px;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: center;
+  min-height: 88px;
+}
+.header nav {
+  display: flex;
+  gap: 16px;
+}
+.header a,
+.footer a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+  padding-block: 64px 80px;
+}
+.hero h1 {
+  font:
+    700 clamp(2.25rem, 4.2vw, 3.75rem)/1.15 var(--font-unimind-latin),
+    sans-serif;
+  letter-spacing: -0.035em;
+  margin: 0 0 24px;
+  text-align: start;
+}
+.hero p {
+  color: var(--secondary);
+  max-width: 52ch;
+  margin-block: 0 24px;
+}
+.primary,
+.secondary {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.primary {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.primary:hover {
+  background: var(--accent-hover);
+}
+.secondary {
+  color: var(--accent-ink);
+  margin-inline-start: 8px;
+}
+.preview {
+  margin: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.previewTop {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-block-end: 1px solid var(--border);
+  font-size: 0.8125rem;
+}
+.previewBody {
+  padding: 24px;
+}
+.caption {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.preview h2 {
+  font-size: 1.25rem;
+  line-height: 1.4;
+  margin: 12px 0 24px;
+}
+.material {
+  display: flex;
+  gap: 12px;
+  border-block-end: 1px solid var(--border);
+  padding-block-end: 16px;
+}
+.material > span {
+  font-size: 0.75rem;
+  padding: 8px;
+  background: var(--subtle);
+  align-self: start;
+}
+.material strong {
+  font-size: 0.875rem;
+}
+.material p {
+  font-size: 0.8125rem;
+  margin: 4px 0 0;
+}
+.preview h3 {
+  font-size: 1rem;
+  margin-block: 24px 12px;
+}
+.preview article p {
+  font-size: 0.9375rem;
+}
+.preview article a {
+  color: var(--accent-ink);
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+}
+.preview figcaption {
+  font-size: 0.75rem;
+  color: var(--muted);
+  padding: 12px 24px;
+  border-block-start: 1px solid var(--border);
+}
+.how {
+  padding-block: 48px;
+  border-block-start: 1px solid var(--border);
+}
+.how h2,
+.cta h2 {
+  font-size: 1.75rem;
+  margin: 0 0 24px;
+}
+.how ol {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px;
+  padding-inline-start: 24px;
+}
+.how li {
+  padding-inline-start: 8px;
+}
+.how li::marker {
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+.how h3 {
+  font-size: 1rem;
+}
+.how p {
+  color: var(--secondary);
+}
+.cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding-block: 48px;
+  border-block-start: 1px solid var(--border);
+}
+.cta h2 {
+  margin: 0;
+}
+.footer {
+  border-block-start: 1px solid var(--border);
+  padding-block: 32px;
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+.footer p {
+  flex: 1;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+@media (max-width: 767px) {
+  .page {
+    padding-inline: 16px;
+  }
+  .header {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .header nav {
+    gap: 12px;
+    font-size: 0.8125rem;
+  }
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+    padding-block: 40px;
+    gap: 32px;
+  }
+  .previewBody {
+    padding: 20px;
+  }
+  .how ol {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+  .how h2,
+  .cta h2 {
+    font-size: 1.625rem;
+  }
+  .cta,
+  .footer {
+    flex-direction: column;
+    align-items: start;
+  }
+}
+.productImage {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.productImage[data-product-theme="dark"] {
+  display: none;
+}
+:global([data-theme="dark"]) .productImage[data-product-theme="light"] {
+  display: none;
+}
+:global([data-theme="dark"]) .productImage[data-product-theme="dark"] {
+  display: block;
+}

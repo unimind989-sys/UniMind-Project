@@ -8,6 +8,7 @@ const resourceNames = {
   en: {
     catalog: "Catalog",
     cohorts: "Cohorts",
+    campaigns: "Campaigns",
     sources: "Sources",
     jobs: "Jobs",
     quality: "Quality",
@@ -17,6 +18,7 @@ const resourceNames = {
   ar: {
     catalog: "الفهرس",
     cohorts: "المجموعات الدراسية",
+    campaigns: "الحملات",
     sources: "المصادر",
     jobs: "المهام",
     quality: "الجودة",
@@ -138,6 +140,8 @@ const adminCopy = {
       ENABLED: "Enabled",
     } satisfies Record<string, string>,
     predicates: {
+      "target.already_applied": "This change is already applied.",
+      "budget.approval_required": "Budget approval is required.",
       "cohort.active": "The cohort must be active.",
       "unit.published": "At least one unit must be published.",
       "source.active_ready": "At least one source must be active and READY.",
@@ -277,6 +281,8 @@ const adminCopy = {
       ENABLED: "مفعّل",
     } satisfies Record<string, string>,
     predicates: {
+      "target.already_applied": "هذا التغيير مطبق بالفعل.",
+      "budget.approval_required": "يلزم اعتماد الميزانية.",
       "cohort.active": "يجب أن تكون المجموعة الدراسية نشطة.",
       "unit.published": "يجب نشر وحدة واحدة على الأقل.",
       "source.active_ready": "يجب أن يكون مصدر واحد على الأقل نشطًا وجاهزًا.",

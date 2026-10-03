@@ -157,7 +157,7 @@ test("the server-authorized path clears downstream choices and survives browser 
   await catalogExpect(unit).toHaveAttribute("aria-pressed", "true");
   await catalogExpect(page.getByText("11", { exact: true })).toBeVisible();
   await catalogExpect(
-    page.getByRole("link", { name: "Open authorized workspace" }),
+    page.getByRole("link", { name: "Open Biochemistry" }),
   ).toHaveAttribute(
     "href",
     /\/preview\/learn\/zagazig-university-human-medicine-year-1-term-1-cohort\/zagazig-university-human-medicine-y1-t1-biochemistry\?lang=en/u,
@@ -261,9 +261,16 @@ test("a valid direct deep link remains stable and locale switching preserves sco
   await catalogExpect(page).toHaveURL(
     /unit=zagazig-university-human-medicine-y1-t1-anatomy/u,
   );
-  await catalogExpect(page.getByText("Anatomy", { exact: true })).toBeVisible();
+  await catalogExpect(
+    page.getByRole("button", {
+      name: "Select curriculum unit: Anatomy",
+      exact: true,
+    }),
+  ).toBeVisible();
 
-  await page.getByRole("button", { name: "عربي" }).click();
+  await page
+    .getByLabel("Interface language", { exact: true })
+    .selectOption("ar");
   await catalogExpect(page).toHaveURL(/lang=ar/u);
   await catalogExpect(page).toHaveURL(
     /unit=zagazig-university-human-medicine-y1-t1-anatomy/u,
@@ -271,21 +278,27 @@ test("a valid direct deep link remains stable and locale switching preserves sco
   await catalogExpect(page.locator("html")).toHaveAttribute("lang", "ar");
   await catalogExpect(page.locator("html")).toHaveAttribute("dir", "rtl");
   await catalogExpect(
-    page.getByRole("heading", { name: "وحداتك" }),
+    page.getByRole("heading", { name: "وحدات", exact: true }),
   ).toBeVisible();
   await catalogExpect(
-    page.getByRole("heading", { name: "Your Modules" }),
+    page.getByRole("heading", { name: "Modules" }),
   ).toHaveCount(0);
   await catalogExpect(
-    page.getByText("علم التشريح", { exact: true }),
+    page.getByRole("button", {
+      name: "اختيار الوحدة الدراسية: علم التشريح",
+      exact: true,
+    }),
   ).toBeVisible();
   await catalogExpect(page.getByText("Anatomy", { exact: true })).toHaveCount(
     0,
   );
 
-  await page.getByLabel("ابحث في الفهرس التجريبي").fill("وظائف");
+  await page.getByLabel("البحث عن مادة").fill("وظائف");
   await catalogExpect(
-    page.getByText("وظائف الأعضاء", { exact: true }),
+    page.getByRole("button", {
+      name: "اختيار الوحدة الدراسية: وظائف الأعضاء",
+      exact: true,
+    }),
   ).toBeVisible();
   await catalogExpect(
     page.getByText("علم التشريح", { exact: true }),
@@ -298,7 +311,10 @@ test("safe empty and release-change states expose no catalog identifiers", async
   test.setTimeout(30_000);
   await chooseHumanMedicineFirstYear(page);
   await catalogExpect(
-    page.getByText("Biochemistry", { exact: true }),
+    page.getByRole("button", {
+      name: "Select curriculum unit: Biochemistry",
+      exact: true,
+    }),
   ).toBeVisible();
 
   const lockedUrl = new URL(page.url());
@@ -365,11 +381,15 @@ test("the mobile catalog keeps touch targets, focus, and page width intact", asy
     name: "Product navigation",
   });
   const navigationGeometry = await navigation.evaluate((element) => {
-    const listRectangle = element.querySelector("ul")?.getBoundingClientRect();
-    const items = Array.from(element.querySelectorAll("li"));
+    const listRectangle = element.getBoundingClientRect();
+    const items = Array.from(element.querySelectorAll("a"));
     return {
-      listLeft: listRectangle?.left ?? 0,
-      listWidth: listRectangle?.width ?? 0,
+      listLeft:
+        listRectangle.left + parseFloat(getComputedStyle(element).paddingLeft),
+      listWidth:
+        listRectangle.width -
+        parseFloat(getComputedStyle(element).paddingLeft) -
+        parseFloat(getComputedStyle(element).paddingRight),
       centers: items.map((item) => {
         const rectangle = item.getBoundingClientRect();
         return rectangle.left + rectangle.width / 2;
@@ -388,11 +408,11 @@ test("the mobile catalog keeps touch targets, focus, and page width intact", asy
       }),
     };
   });
-  catalogExpect(navigationGeometry.centers).toHaveLength(6);
+  catalogExpect(navigationGeometry.centers).toHaveLength(3);
   navigationGeometry.centers.forEach((center, index) => {
     const expectedCenter =
       navigationGeometry.listLeft +
-      (navigationGeometry.listWidth / 6) * (index + 0.5);
+      (navigationGeometry.listWidth / 3) * (index + 0.5);
     catalogExpect(Math.abs(center - expectedCenter)).toBeLessThanOrEqual(1);
   });
   catalogExpect(
@@ -421,10 +441,10 @@ test("reduced motion removes the authored shelf and loading animation", async ({
     page.getByRole("navigation", { name: "Product navigation" }),
   ).toBeVisible();
   await catalogExpect(
-    page.getByRole("searchbox", { name: "Search the synthetic catalog" }),
+    page.getByRole("searchbox", { name: "Search subjects" }),
   ).toBeVisible();
   await catalogExpect(
-    page.getByRole("link", { name: "Study Shelf" }),
+    page.getByRole("link", { name: "Study" }),
   ).toHaveAttribute("aria-current", "page");
 
   const animation = await page.evaluate(() => {
@@ -461,22 +481,19 @@ test("reduced motion removes the authored shelf and loading animation", async ({
     }
 
     const item = document.querySelector<HTMLElement>("[data-focused='true']");
-    const image = item?.querySelector<HTMLElement>("img");
-    const ready = item?.querySelector<HTMLElement>("[role='status']");
+    const ready = item?.querySelector<HTMLElement>("p span:last-child");
     const bodyStyle = getComputedStyle(document.body);
     const readyStyle = ready ? getComputedStyle(ready) : null;
     return {
       item: item ? getComputedStyle(item).transitionDuration : "missing",
-      image: image ? getComputedStyle(image).transitionDuration : "missing",
       bodyContrast: contrast(bodyStyle.color, bodyStyle.backgroundColor),
       readyContrast: readyStyle
-        ? contrast(readyStyle.color, readyStyle.backgroundColor)
+        ? contrast(readyStyle.color, bodyStyle.backgroundColor)
         : 0,
     };
   });
 
   catalogExpect(animation.item).toBe("0s");
-  catalogExpect(animation.image).toBe("0s");
   catalogExpect(animation.bodyContrast).toBeGreaterThanOrEqual(4.5);
   catalogExpect(animation.readyContrast).toBeGreaterThanOrEqual(4.5);
 });

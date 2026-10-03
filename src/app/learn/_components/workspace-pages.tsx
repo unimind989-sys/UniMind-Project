@@ -28,7 +28,17 @@ export function WorkspaceOverview({ scope, locale, basePath }: CommonProps) {
   return (
     <>
       <section className={styles.intro}>
-        <h2>{text.overviewTitle}</h2>
+        <h2>{locale === "ar" ? "المواد الدراسية" : "Materials"}</h2>
+        <p>
+          {scope.sourceCount} {text.approvedSources} ·{" "}
+          <bdi>{scope.curriculumEdition}</bdi> ·{" "}
+          <time dateTime={scope.materialUpdatedAt}>
+            {new Intl.DateTimeFormat(locale === "ar" ? "ar-EG" : "en-GB", {
+              dateStyle: "medium",
+              timeZone: "UTC",
+            }).format(new Date(scope.materialUpdatedAt))}
+          </time>
+        </p>
         <p>{text.overviewBody}</p>
       </section>
       <section aria-labelledby="workspace-tools">

@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 
 import { getCurrentAuthAccess } from "@/lib/auth/auth-access.supabase.server";
 import { validatedInternalReturnPath } from "@/lib/auth/auth-actions.application";
+import { currentRoleHome } from "@/lib/account/account.supabase.server";
 
 import { AuthPage, resolveAuthPageParameters } from "../_components/auth-page";
 
@@ -36,7 +37,12 @@ export default async function ConsentPage({
     );
   }
   if (access.gate === "READY") {
-    redirect(validatedInternalReturnPath(returnPath) as Route);
+    const destination = ["/", "/learn"].includes(returnPath)
+      ? await currentRoleHome()
+      : validatedInternalReturnPath(returnPath);
+    const address = new URL(destination, "https://unimind.invalid");
+    address.searchParams.set("lang", locale);
+    redirect((address.pathname + address.search + address.hash) as Route);
   }
   if (access.gate === "VERIFY_EMAIL") {
     redirect(

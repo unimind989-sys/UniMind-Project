@@ -1,0 +1,81 @@
+{
+  "stage": "Complete final native suite",
+  "stats": {
+    "startTime": "2026-09-30T13:39:50.574Z",
+    "duration": 462160.736,
+    "expected": 17,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "cases": [
+    {
+      "status": "passed",
+      "title": "en: normal student session, seven answer outcomes, evidence and report"
+    },
+    {
+      "status": "passed",
+      "title": "en: all six Studio artifacts, untimed quiz, score and source review"
+    },
+    {
+      "status": "passed",
+      "title": "en: native Batch Leader file/reference form and consistent tracking"
+    },
+    {
+      "status": "passed",
+      "title": "en: responsive routes, accessibility, RTL, keyboard and product navigation"
+    },
+    {
+      "status": "passed",
+      "title": "ar: normal student session, seven answer outcomes, evidence and report"
+    },
+    {
+      "status": "passed",
+      "title": "ar: all six Studio artifacts, untimed quiz, score and source review"
+    },
+    {
+      "status": "passed",
+      "title": "ar: native Batch Leader file/reference form and consistent tracking"
+    },
+    {
+      "status": "passed",
+      "title": "ar: responsive routes, accessibility, RTL, keyboard and product navigation"
+    },
+    {
+      "status": "passed",
+      "title": "Auth validation, registration, email callback, consent and recovery use no real services"
+    },
+    {
+      "status": "passed",
+      "title": "normal timed attempt expires, private future exchanges and scope remain separate"
+    },
+    {
+      "status": "passed",
+      "title": "prepared failure states recover through normal navigation, never a reviewer interface"
+    },
+    {
+      "status": "passed",
+      "title": "synthetic admin changes share availability, preserve distinct confirmation and block enablement"
+    },
+    {
+      "status": "passed",
+      "title": "all twelve governed examples, distinct confirmations and preserved pending reload"
+    },
+    {
+      "status": "passed",
+      "title": "stale, failed readiness and unavailable admin actions never change the candidate"
+    },
+    {
+      "status": "passed",
+      "title": "all supplied file types, mismatch, byte rejection and cancel retry use only local state"
+    },
+    {
+      "status": "passed",
+      "title": "runtime blocks all mutations and foreign origins; another document cannot inherit access"
+    },
+    {
+      "status": "passed",
+      "title": "normal sign-out changes roles without carrying the previous role's screen"
+    }
+  ]
+}

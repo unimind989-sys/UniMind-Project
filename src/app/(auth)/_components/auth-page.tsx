@@ -4,6 +4,10 @@ import { AuthShell } from "./auth-shell";
 import type { CurrentTerms } from "@/lib/auth/auth-access.application";
 import { validatedInternalReturnPath } from "@/lib/auth/auth-actions.application";
 import { resolveLocale, type Locale } from "@/lib/i18n/locale";
+import { getCurrentAuthAccess } from "@/lib/auth/auth-access.supabase.server";
+import { currentRoleHome } from "@/lib/account/account.supabase.server";
+import { redirect } from "next/navigation";
+import type { Route } from "next";
 
 type SearchParameters = Record<string, string | string[] | undefined>;
 
@@ -70,6 +74,22 @@ export async function AuthPage({
   const { locale, returnPath, notice } = resolveAuthPageParameters(
     await searchParams,
   );
+  let destination: string | null = null;
+  if (["login", "register", "verify"].includes(mode)) {
+    try {
+      if ((await getCurrentAuthAccess()).gate === "READY")
+        destination = ["/", "/learn"].includes(returnPath)
+          ? await currentRoleHome()
+          : returnPath;
+    } catch {
+      /* The form retains its safe unavailable behavior. */
+    }
+  }
+  if (destination) {
+    const address = new URL(destination, "https://unimind.invalid");
+    address.searchParams.set("lang", locale);
+    redirect((address.pathname + address.search + address.hash) as Route);
+  }
   const activeStep = {
     login: 0,
     register: 0,

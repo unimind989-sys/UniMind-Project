@@ -48,7 +48,7 @@ const collectionCopy = {
     noFile: "Choose a file to begin validation.",
     rightsMissing: "Declare rights before finalizing.",
     genericError:
-      "The submission was not changed. Check the campaign and file, then retry.",
+      "This file could not be submitted. Check the campaign and file, then retry.",
     offlineError:
       "The upload was interrupted. Reconnect and retry; your submission key is preserved.",
     statesTitle: "What each status means",
@@ -61,9 +61,9 @@ const collectionCopy = {
     stateDescriptions: [
       "Received safely and waiting for processing.",
       "Automated checks are running.",
-      "Your Batch Leader input is required.",
-      "Accepted into the controlled source lifecycle.",
-      "Rejected with safe contributor guidance.",
+      "More information is needed for this source.",
+      "Accepted. Processing can continue.",
+      "Rejected. Contact your campaign administrator for guidance.",
       "Processing and follow-up are complete.",
     ],
     backToCampaigns: "Back to assigned campaigns",
@@ -73,8 +73,7 @@ const collectionCopy = {
       "This campaign is not assigned to your account or is no longer active.",
     loading: "Checking collection access…",
     errorTitle: "Collection desk unavailable",
-    errorBody:
-      "Your campaign access was not broadened. Retry the assigned campaign.",
+    errorBody: "The assigned campaigns could not be loaded. Try again.",
     retry: "Try again",
     syntheticPreview: "Synthetic Batch Leader preview",
   },
@@ -123,7 +122,7 @@ const collectionCopy = {
     declared: "مؤكدة",
     noFile: "اختر ملفًا لبدء الفحص.",
     rightsMissing: "أكّد الحقوق قبل الإرسال النهائي.",
-    genericError: "لم تتغير حالة الإرسال. راجع الحملة والملف ثم حاول مرة أخرى.",
+    genericError: "تعذر إرسال هذا الملف. راجع الحملة والملف ثم حاول مرة أخرى.",
     offlineError:
       "انقطع رفع الملف. اتصل بالشبكة وحاول مرة أخرى؛ مفتاح الإرسال محفوظ.",
     statesTitle: "معنى كل حالة",
@@ -136,9 +135,9 @@ const collectionCopy = {
     stateDescriptions: [
       "تم الاستلام بأمان وفي انتظار المعالجة.",
       "الفحوص الآلية قيد التنفيذ.",
-      "نحتاج إلى معلومات من مسؤول الدفعة.",
-      "تم القبول في دورة حياة المصدر المنضبطة.",
-      "تم الرفض مع إرشاد آمن للمساهم.",
+      "نحتاج إلى معلومات إضافية عن هذا المصدر.",
+      "تم القبول. يمكن متابعة المعالجة.",
+      "تم الرفض. تواصل مع مسؤول الحملة لمعرفة السبب.",
       "اكتملت المعالجة والمتابعة.",
     ],
     backToCampaigns: "العودة إلى الحملات المسندة",
@@ -147,7 +146,7 @@ const collectionCopy = {
     unavailableBody: "هذه الحملة غير مسندة لحسابك أو لم تعد نشطة.",
     loading: "جارٍ التحقق من صلاحية الجمع…",
     errorTitle: "مكتب جمع المواد غير متاح",
-    errorBody: "لم يتم توسيع صلاحية حملتك. أعد محاولة فتح الحملة المسندة.",
+    errorBody: "تعذر تحميل الحملات المسندة. حاول مرة أخرى.",
     retry: "إعادة المحاولة",
     syntheticPreview: "معاينة تجريبية لمسؤول الدفعة",
   },

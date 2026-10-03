@@ -16,11 +16,12 @@ test("English desktop containment requires a scoped review and announces success
   page,
 }) => {
   await page.goto("/preview/admin?lang=en&state=containment");
+  await expect(page.getByRole("heading", { name: "Overview" })).toBeVisible();
   await expect(
-    page.getByRole("heading", { name: "Admin decision queue" }),
-  ).toBeVisible();
-  await expect(
-    page.getByText("Synthetic Anatomy · Cohort A").first(),
+    page.getByRole("heading", {
+      name: "Synthetic Anatomy · Cohort A",
+      exact: true,
+    }),
   ).toBeVisible();
   await page
     .getByLabel("Reason for this change")
@@ -118,9 +119,7 @@ test("Arabic mobile review, keyboard and direction retain the exact scope", asyn
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/preview/admin?lang=ar&state=containment");
   await expect(page.locator("main")).toHaveAttribute("dir", "rtl");
-  await expect(
-    page.getByRole("heading", { name: "قائمة قرارات الإدارة" }),
-  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: "نظرة عامة" })).toBeVisible();
   await page
     .getByLabel("سبب هذا التغيير")
     .fill("إخفاء الوحدة التجريبية حتى تنتهي المراجعة.");
@@ -175,8 +174,8 @@ test("Arabic mobile pending, stale, and unavailable states stay actionable", asy
 
 test("both locales reflow at desktop and mobile widths", async ({ page }) => {
   for (const [locale, direction, heading] of [
-    ["en", "ltr", "Admin decision queue"],
-    ["ar", "rtl", "قائمة قرارات الإدارة"],
+    ["en", "ltr", "Overview"],
+    ["ar", "rtl", "نظرة عامة"],
   ] as const) {
     for (const width of [1440, 390]) {
       await page.setViewportSize({ width, height: 900 });

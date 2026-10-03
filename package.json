@@ -8,6 +8,7 @@
   },
   "packageManager": "pnpm@10.34.5",
   "scripts": {
+    "demo": "tsx scripts/run-synthetic-demo.ts",
     "dev": "next dev --hostname 127.0.0.1",
     "build": "next build",
     "start": "next start",
@@ -30,6 +31,7 @@
     "test:auth:hosted": "tsx scripts/run-hosted-auth-integration.ts --environment development",
     "test:security": "tsx scripts/run-vitest-layer.ts security",
     "test:e2e": "playwright test",
+    "test:e2e:demo": "playwright test --config=playwright.demo.config.ts",
     "browser:cli": "node scripts/run-playwright-cli.mjs",
     "test:eval": "tsx scripts/run-vitest-layer.ts evaluation && tsx scripts/run-foundation-evaluation.ts",
     "test:load": "tsx scripts/run-vitest-layer.ts load && tsx scripts/run-load-suite.ts",
@@ -50,12 +52,12 @@
     "db:types:check": "git diff --exit-code -- src/types/database.generated.ts",
     "test:env-build": "tsx scripts/build-with-safe-env.ts",
     "verify": "tsx scripts/derive-agent-execution.ts --verify-local",
-    "verify:ci": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm typecheck:fresh && pnpm check:boundaries && pnpm check:sql && pnpm verify:ci-workflow && pnpm verify:agent-policy && pnpm scan:secrets && pnpm test:unit && pnpm test:integration && pnpm test:security && pnpm test:eval && pnpm test:load && pnpm test:e2e && pnpm test:env-build"
+    "verify:ci": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm typecheck:fresh && pnpm check:boundaries && pnpm check:sql && pnpm verify:ci-workflow && pnpm verify:agent-policy && pnpm scan:secrets && pnpm test:unit && pnpm test:integration && pnpm test:security && pnpm test:eval && pnpm test:load && pnpm test:e2e && pnpm test:e2e:demo && pnpm test:env-build"
   },
   "dependencies": {
     "@supabase/ssr": "0.12.4",
     "@supabase/supabase-js": "2.112.3",
-    "next": "16.3.4",
+    "next": "16.3.6",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "server-only": "0.0.1",
@@ -70,7 +72,7 @@
     "@types/react-dom": "19.2.7",
     "@vitest/coverage-v8": "4.1.11",
     "eslint": "9.39.5",
-    "eslint-config-next": "16.3.4",
+    "eslint-config-next": "16.3.6",
     "eslint-config-prettier": "10.1.8",
     "playwright": "1.62.1",
     "playwright-core": "1.62.1",

@@ -1,0 +1,77 @@
+{
+  "stage": "native flow preliminary run; two assertion failures, not a gate PASS",
+  "stats": {
+    "startTime": "2026-09-30T12:47:12.268Z",
+    "duration": 717975.453,
+    "expected": 14,
+    "skipped": 0,
+    "unexpected": 2,
+    "flaky": 0
+  },
+  "cases": [
+    {
+      "title": "en: normal student session, seven answer outcomes, evidence and report",
+      "status": "passed"
+    },
+    {
+      "title": "en: all six Studio artifacts, untimed quiz, score and source review",
+      "status": "passed"
+    },
+    {
+      "title": "en: native Batch Leader file/reference form and consistent tracking",
+      "status": "passed"
+    },
+    {
+      "title": "en: responsive routes, accessibility, RTL, keyboard and product navigation",
+      "status": "passed"
+    },
+    {
+      "title": "ar: normal student session, seven answer outcomes, evidence and report",
+      "status": "passed"
+    },
+    {
+      "title": "ar: all six Studio artifacts, untimed quiz, score and source review",
+      "status": "passed"
+    },
+    {
+      "title": "ar: native Batch Leader file/reference form and consistent tracking",
+      "status": "passed"
+    },
+    {
+      "title": "ar: responsive routes, accessibility, RTL, keyboard and product navigation",
+      "status": "passed"
+    },
+    {
+      "title": "Auth validation, registration, email callback, consent and recovery use no real services",
+      "status": "passed"
+    },
+    {
+      "title": "normal timed attempt expires, private future exchanges and scope remain separate",
+      "status": "passed"
+    },
+    {
+      "title": "prepared failure states recover through normal navigation, never a reviewer interface",
+      "status": "passed"
+    },
+    {
+      "title": "synthetic admin changes share availability, preserve distinct confirmation and block enablement",
+      "status": "passed"
+    },
+    {
+      "title": "all twelve governed examples, distinct confirmations and preserved pending reload",
+      "status": "failed"
+    },
+    {
+      "title": "stale, failed readiness and unavailable admin actions never change the candidate",
+      "status": "passed"
+    },
+    {
+      "title": "all supplied file types, mismatch, byte rejection and cancel retry use only local state",
+      "status": "failed"
+    },
+    {
+      "title": "runtime blocks all mutations and foreign origins; another document cannot inherit access",
+      "status": "passed"
+    }
+  ]
+}

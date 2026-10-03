@@ -9,7 +9,11 @@ related_targets:
   ]
 ---
 
-# WP03 Batch Leader collection desk
+# Current Batch Leader overhaul brief
+
+Operate mode. [Root DESIGN](../../DESIGN.md) governs the approved paired theme system. Student approval `3a2a95d` authorizes the current Batch Leader slice; its implementation and rendered review are complete; its own explicit approval is pending. Navigation: Uploads, History, Account. Mobile-first mixed-file queue composes current PDF/WAV/PNG byte validation and per-file upload/finalize contracts. Auto-map a unique compatible outstanding request, otherwise a unique compatible replacement; retain ambiguous destination choice and required rights/metadata. Preserve each retry key, campaign assignment/expiry/revocation and truthful received-versus-processing state. History shows existing latest submissions from currently assigned campaigns. No new storage/provider/worker or cross-campaign permission. The [implementation record](../../planning/design/frontend-overhaul/phase-2-batch-leader.md) owns proof and the leader checkpoint. Earlier one-file/expanding-rail composition below is historical, not the current target.
+
+# Historical WP03 Batch Leader collection desk
 
 ## Scope and mode
 

@@ -43,7 +43,7 @@ function changedPaths(baseRef = "origin/main", allowExplicit = true): string[] {
   const output = execFileSync(
     "git",
     baseRef === "origin/main"
-      ? ["diff", "--name-only", "--merge-base", "HEAD", baseRef]
+      ? ["diff", "--name-only", "--merge-base", baseRef, "HEAD"]
       : ["diff", "--name-only", baseRef],
     { encoding: "utf8", windowsHide: true },
   );

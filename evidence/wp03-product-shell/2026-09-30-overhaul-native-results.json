@@ -1,0 +1,357 @@
+{
+  "stats": {
+    "startTime": "2026-09-30T18:12:42.174Z",
+    "duration": 637008.87,
+    "expected": 23,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "title": "en: normal student session, seven answer outcomes, evidence and report",
+      "ok": true,
+      "tests": [
+        {
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "duration": 18608
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "en: all six Studio artifacts, untimed quiz, score and source review",
+      "ok": true,
+      "tests": [
+        {
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "duration": 17120
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "en: native Batch Leader file/reference form and consistent tracking",
+      "ok": true,
+      "tests": [
+        {
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "duration": 6730
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "en: responsive routes, accessibility, RTL, keyboard and product navigation",
+      "ok": true,
+      "tests": [
+        {
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "duration": 136307
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "ar: normal student session, seven answer outcomes, evidence and report",
+      "ok": true,
+      "tests": [
+        {
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "duration": 18729
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "ar: all six Studio artifacts, untimed quiz, score and source review",
+      "ok": true,
+      "tests": [
+        {
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "duration": 17976
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "ar: native Batch Leader file/reference form and consistent tracking",
+      "ok": true,
+      "tests": [
+        {
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "duration": 6564
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "ar: responsive routes, accessibility, RTL, keyboard and product navigation",
+      "ok": true,
+      "tests": [
+        {
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "duration": 127733
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Auth validation, registration, email callback, consent and recovery use no real services",
+      "ok": true,
+      "tests": [
+        {
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "duration": 17883
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "normal timed attempt expires, private future exchanges and scope remain separate",
+      "ok": true,
+      "tests": [
+        {
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "duration": 8870
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "prepared failure states recover through normal navigation, never a reviewer interface",
+      "ok": true,
+      "tests": [
+        {
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "duration": 76791
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "synthetic admin changes share availability, preserve distinct confirmation and block enablement",
+      "ok": true,
+      "tests": [
+        {
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "duration": 13809
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "all twelve governed examples, distinct confirmations and preserved pending reload",
+      "ok": true,
+      "tests": [
+        {
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "duration": 26308
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "stale, failed readiness and unavailable admin actions never change the candidate",
+      "ok": true,
+      "tests": [
+        {
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "duration": 15263
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "all supplied file types, mismatch, byte rejection and cancel retry use only local state",
+      "ok": true,
+      "tests": [
+        {
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "duration": 11252
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "runtime blocks all mutations and foreign origins; another document cannot inherit access",
+      "ok": true,
+      "tests": [
+        {
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "duration": 9856
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "normal sign-out changes roles without carrying the previous role's screen",
+      "ok": true,
+      "tests": [
+        {
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "duration": 9798
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "en: revised sample supports direct Send, locale-preserved drafts, history and Studio interruption",
+      "ok": true,
+      "tests": [
+        {
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "duration": 10010
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "ar: revised sample supports direct Send, locale-preserved drafts, history and Studio interruption",
+      "ok": true,
+      "tests": [
+        {
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "duration": 10613
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "en: populated checkpoint reflows with accessible controls and enlarged text",
+      "ok": true,
+      "tests": [
+        {
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "duration": 17498
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "ar: populated checkpoint reflows with accessible controls and enlarged text",
+      "ok": true,
+      "tests": [
+        {
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "duration": 19314
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "en: cancelling Chat does not submit or complete a reply",
+      "ok": true,
+      "tests": [
+        {
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "duration": 10824
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "ar: cancelling Chat does not submit or complete a reply",
+      "ok": true,
+      "tests": [
+        {
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "duration": 8706
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

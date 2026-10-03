@@ -1,0 +1,497 @@
+.chatLayout {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr);
+  gap: 2rem;
+  min-height: calc(100svh - 12rem);
+}
+.history {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+  border-inline-end: 1px solid var(--line);
+  padding-inline-end: 1rem;
+}
+.history > button,
+.history > a {
+  width: 100%;
+}
+.historyList {
+  min-width: 0;
+}
+.historyList summary {
+  color: var(--text-muted);
+  font-size: var(--type-body-compact-size);
+  padding-block: 0.75rem;
+  min-height: 44px;
+  cursor: pointer;
+}
+.historyList ul {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0;
+  display: grid;
+  gap: 0.4rem;
+}
+.historyList button {
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  font: inherit;
+  text-align: start;
+  width: 100%;
+  min-height: 48px;
+  padding: 0.75rem;
+  border-radius: var(--radius-control);
+  cursor: pointer;
+}
+.historyList button[aria-pressed="true"] {
+  background: var(--surface-active);
+  color: var(--text-primary);
+}
+.historyList button:hover {
+  background: var(--surface);
+}
+.historyList button span {
+  display: block;
+  font-size: var(--type-body-compact-size);
+  color: var(--text-muted);
+}
+.historyList p {
+  font-size: var(--type-body-compact-size);
+  color: var(--text-muted);
+}
+.conversation {
+  width: min(100%, 48rem);
+  margin-inline: auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.sectionHeading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-block-end: 1rem;
+}
+.sectionHeading h2 {
+  margin: 0;
+  font-size: var(--type-workspace-title-size);
+  line-height: 1.4;
+}
+.sectionHeading a {
+  font-size: var(--type-body-compact-size);
+  background: transparent;
+}
+.transcript {
+  min-height: 18rem;
+  flex: 1;
+}
+.chatEmpty {
+  padding: 2.5rem 0 2rem;
+  max-width: 40rem;
+  margin-inline: auto;
+}
+.chatEmpty > svg {
+  color: var(--accent-text);
+  width: 2rem;
+  height: 2rem;
+}
+.chatEmpty h3 {
+  margin: 1rem 0 0.65rem;
+  font-size: var(--type-study-invitation-size);
+  font-weight: 600;
+  line-height: 1.45;
+  text-wrap: balance;
+}
+.chatEmpty p {
+  color: var(--text-secondary);
+  margin: 0 0 1rem;
+  max-width: 60ch;
+}
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-block: 1.5rem 1rem;
+}
+.suggestions button {
+  font: inherit;
+  font-size: var(--type-body-compact-size);
+  min-height: 44px;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  color: var(--text-secondary);
+  cursor: pointer;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.suggestions button:hover {
+  background: var(--surface-active);
+  color: var(--text-primary);
+}
+.exchange {
+  padding-block: 1rem 1.75rem;
+}
+.questionBubble {
+  max-width: 85%;
+  width: fit-content;
+  margin-inline-start: auto;
+  padding: 0.75rem 1rem;
+  background: var(--surface-strong);
+  border-radius: var(--radius-card);
+  overflow-wrap: anywhere;
+}
+.questionBubble p {
+  margin: 0;
+  white-space: pre-line;
+}
+.questionBubble small {
+  display: block;
+  margin-block-start: 0.25rem;
+  color: var(--text-muted);
+  font-size: var(--type-body-compact-size);
+}
+.reply {
+  padding-block-start: 1.5rem;
+}
+.replyHeading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+.replyHeading span {
+  color: var(--ready);
+  font-size: var(--type-body-compact-size);
+}
+.reply > p {
+  max-width: 70ch;
+  margin-block: 0.75rem 1rem;
+  line-height: var(--type-body-leading);
+  white-space: pre-line;
+  color: var(--text-primary);
+}
+.replyActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+.replyActions a {
+  padding: 0.5rem 0.65rem;
+  font-size: var(--type-body-compact-size);
+  background: transparent;
+}
+.replyActions span {
+  color: var(--text-muted);
+  font-size: var(--type-body-compact-size);
+}
+.streaming {
+  padding: 1rem 0;
+  color: var(--text-secondary);
+}
+.streaming strong {
+  font-size: var(--type-body-compact-size);
+  color: var(--ready);
+}
+.composer {
+  display: grid;
+  gap: 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: 1rem;
+  background: var(--surface);
+}
+.composer > label {
+  font-size: var(--type-body-compact-size);
+  color: var(--text-secondary);
+}
+.composer textarea {
+  display: block;
+  inline-size: 100%;
+  min-width: 0;
+  font: inherit;
+  border: 0;
+  background: transparent;
+  color: var(--text-primary);
+  caret-color: var(--accent-text);
+  min-height: 5rem;
+  resize: vertical;
+  padding: 0.5rem;
+  line-height: var(--type-body-leading);
+}
+.composer textarea::placeholder {
+  color: var(--text-muted);
+}
+.composerTools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: end;
+  justify-content: space-between;
+}
+.composerTools label {
+  display: grid;
+  gap: 0.25rem;
+  min-width: 0;
+  max-width: 100%;
+  color: var(--text-muted);
+  font-size: var(--type-body-compact-size);
+}
+.composerTools select {
+  min-height: 44px;
+  max-width: 100%;
+  color: var(--text-secondary);
+  background: var(--surface-strong);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
+  font: inherit;
+  padding: 0.5rem;
+}
+.caption {
+  color: var(--text-muted);
+  font-size: var(--type-body-compact-size);
+  line-height: 1.6;
+  margin: 0.5rem 0 0;
+  overflow-wrap: anywhere;
+}
+.intro {
+  color: var(--text-secondary);
+  max-width: 65ch;
+  margin-block: -0.25rem 1.5rem;
+}
+.studio {
+  max-width: 80rem;
+  margin-inline: auto;
+  min-width: 0;
+}
+.studioLayout {
+  display: grid;
+  grid-template-columns: minmax(17rem, 22rem) minmax(0, 1fr);
+  gap: 2rem;
+  align-items: start;
+}
+.studioControls {
+  min-width: 0;
+  display: grid;
+  gap: 1.25rem;
+}
+.artifactTypes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  min-width: 0;
+}
+.artifactTypes legend {
+  padding: 0 0 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+.artifactTypes label {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--control-border);
+  border-radius: var(--radius-control);
+  color: var(--text-secondary);
+  background: var(--surface);
+  cursor: pointer;
+  font-size: var(--type-body-compact-size);
+  overflow-wrap: anywhere;
+}
+.artifactTypes label[data-selected="true"] {
+  background: var(--surface-active);
+  border-color: var(--accent-text);
+  color: var(--text-primary);
+}
+.artifactTypes label:hover {
+  color: var(--text-primary);
+  background: var(--surface-active);
+}
+.artifactTypes input {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  opacity: 0;
+}
+.artifactTypes label:has(input:focus-visible) {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+.artifactTypes:disabled label {
+  cursor: wait;
+  opacity: 0.6;
+}
+.configuration {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+.configuration label {
+  font-size: var(--type-body-compact-size);
+  color: var(--text-secondary);
+}
+.configuration select {
+  font-size: var(--type-body-compact-size);
+}
+.artifactArea {
+  min-width: 0;
+  min-height: 28rem;
+  border-inline-start: 1px solid var(--line);
+  padding-inline-start: 2rem;
+}
+.artifactEmpty {
+  padding-block: 3.5rem;
+  max-width: 35rem;
+}
+.artifactEmpty > svg {
+  color: var(--text-muted);
+  width: 2rem;
+  height: 2rem;
+}
+.artifactEmpty h3 {
+  font-size: var(--type-workspace-title-size);
+  line-height: 1.5;
+  font-weight: 600;
+  margin-block: 1rem 0.5rem;
+}
+.artifactEmpty p {
+  color: var(--text-muted);
+  max-width: 60ch;
+}
+.artifactOutput h2 {
+  margin-block: 0 0.75rem;
+  line-height: 1.5;
+  font-size: var(--type-artifact-title-size);
+}
+.artifactOutput > p {
+  color: var(--text-secondary);
+}
+.artifactOutput > div[lang] {
+  padding-block: 1rem;
+  border-block: 1px solid var(--line);
+  margin-block: 1.5rem;
+  line-height: 1.75;
+}
+.artifactOutput > div[lang] p {
+  color: var(--text-primary);
+}
+.artifactOutput li {
+  margin-block: 0.5rem;
+}
+.artifactLoading {
+  padding: 1rem;
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  margin-block-end: 1rem;
+}
+:is(.chatLayout, .studio) :is(button, a, select) {
+  max-width: 100%;
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 80rem) {
+  .chatLayout {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .history {
+    border-inline-end: 0;
+    padding-inline-end: 0;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: start;
+  }
+  .history > button,
+  .history > a {
+    width: auto;
+  }
+  .historyList {
+    flex: 1 1 12rem;
+  }
+  .historyList ul {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .historyList p {
+    margin: 0.25rem 0;
+  }
+  .chatEmpty {
+    padding-block: 1.5rem;
+  }
+  .studioLayout {
+    grid-template-columns: minmax(15rem, 20rem) minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+  .artifactArea {
+    padding-inline-start: 1.5rem;
+  }
+}
+@media (max-width: 68rem) {
+  .studioLayout {
+    grid-template-columns: 1fr;
+  }
+  .studioControls {
+    max-width: 40rem;
+  }
+  .artifactArea {
+    border-inline-start: 0;
+    border-block-start: 1px solid var(--line);
+    padding-inline-start: 0;
+    padding-block-start: 1.5rem;
+    min-height: 18rem;
+  }
+  .artifactEmpty {
+    padding-block: 1.5rem;
+  }
+}
+@media (max-width: 47.99rem) {
+  .chatEmpty h3 {
+    font-size: var(--type-study-invitation-mobile-size);
+  }
+  .history {
+    gap: 0.75rem;
+  }
+  .historyList {
+    flex-basis: 100%;
+    order: 3;
+  }
+  .transcript {
+    min-height: 12rem;
+  }
+  .composer {
+    padding: 0.75rem;
+  }
+  .composerTools > button {
+    flex: 1 1 100%;
+  }
+  .composerTools label {
+    width: 100%;
+  }
+  .questionBubble {
+    max-width: 95%;
+  }
+  .sectionHeading {
+    gap: 0.5rem;
+  }
+}
+@media (max-width: 23rem) {
+  .configuration {
+    grid-template-columns: 1fr;
+  }
+  .artifactTypes {
+    grid-template-columns: 1fr;
+  }
+}

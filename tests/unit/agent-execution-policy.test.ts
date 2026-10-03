@@ -1187,3 +1187,133 @@ describe("agent execution policy", () => {
     );
   });
 });
+
+describe("candidate Git comparison and public assets", () => {
+  it("routes committed branch work and retains working, staged and untracked paths", () => {
+    const repoRoot = process.cwd();
+    const fixtureRoot = mkdtempSync(path.join(os.tmpdir(), "unimind-route-"));
+    const git = (...args: string[]) =>
+      execFileSync("git", args, {
+        cwd: fixtureRoot,
+        encoding: "utf8",
+        windowsHide: true,
+      });
+    const write = (file: string, content: string) => {
+      mkdirSync(path.dirname(path.join(fixtureRoot, file)), {
+        recursive: true,
+      });
+      writeFileSync(path.join(fixtureRoot, file), content);
+    };
+    const commit = (message: string) => {
+      git("add", ".");
+      git("-c", "commit.gpgsign=false", "commit", "--no-verify", "-m", message);
+    };
+    const route = () =>
+      JSON.parse(
+        execFileSync(
+          process.execPath,
+          [
+            path.resolve(repoRoot, "node_modules/tsx/dist/cli.mjs"),
+            path.resolve(repoRoot, "scripts/derive-agent-execution.ts"),
+            "--task",
+            "WP03-T09",
+            "--pass",
+            "actual-diff",
+            "--format",
+            "json",
+          ],
+          { cwd: fixtureRoot, encoding: "utf8", windowsHide: true },
+        ),
+      ) as { surfaces: string[] };
+    try {
+      git("init", "--initial-branch", "main");
+      git("config", "user.name", "Synthetic execution fixture");
+      git("config", "user.email", "execution@example.invalid");
+      git("config", "core.hooksPath", path.join(fixtureRoot, ".git/no-hooks"));
+      write(
+        "docs/agents/agent-execution-policy.yaml",
+        readFileSync(
+          path.resolve(repoRoot, "docs/agents/agent-execution-policy.yaml"),
+          "utf8",
+        ),
+      );
+      write("README.md", "Synthetic comparison base.\n");
+      commit("base");
+      git("update-ref", "refs/remotes/origin/main", "HEAD");
+      git("checkout", "-b", "candidate");
+      write("src/app/learn/page.tsx", "Synthetic candidate route.\n");
+      commit("candidate frontend");
+      git("checkout", "main");
+      write("README.md", "Synthetic main-only documentation advance.\n");
+      commit("advance main");
+      git("update-ref", "refs/remotes/origin/main", "HEAD");
+      git("checkout", "candidate");
+      expect(route().surfaces).toEqual(["frontend"]);
+      write("src/lib/study/state.ts", "Synthetic unstaged state.\n");
+      git("add", "src/lib/study/state.ts");
+      write("README.md", "Synthetic unstaged document.\n");
+      write("tests/synthetic-route-input.ts", "Synthetic untracked test.\n");
+      expect(route().surfaces).toEqual([
+        "docs",
+        "frontend",
+        "runtime",
+        "tooling",
+      ]);
+    } finally {
+      if (
+        path.dirname(fixtureRoot) !== path.resolve(os.tmpdir()) ||
+        !path.basename(fixtureRoot).startsWith("unimind-route-")
+      )
+        throw new Error("Unsafe fixture cleanup path.");
+      rmSync(fixtureRoot, { recursive: true, force: true });
+    }
+  }, 10000);
+
+  for (const asset of [
+    "public/icons/favicon.svg",
+    "public/demo-files/unimind-synthetic-test-pack.zip",
+    "public/demo-files/README.md",
+    ".impeccable/work/synthetic-brief.md",
+    ".impeccable/review/synthetic-review.md",
+    "next.config.ts",
+    "playwright.demo.config.ts",
+    "src/proxy.ts",
+    "src/app/icon.svg",
+    "src/app/apple-icon.png",
+    "src/app/favicon.ico",
+  ]) {
+    it("classifies " + asset + " without weakening protected proof", () => {
+      const result = deriveAgentExecution(policy, {
+        task: "WP03-T09",
+        pass: "actual-diff",
+        declaredSurfaces: [],
+        changedPaths: [asset],
+        designDisposition: "OBJECTIVE_PRESERVING",
+        designEvidence:
+          "rationale:preserve supplied approved assets; baseline:8ad3a9b",
+      });
+      expect(result.surfaces).toEqual(policy.surface_order);
+      expect(result.risk).toBe("R3");
+      expect(result.planning).toBe("protected");
+      expect(result.worker.default).toBe(0);
+      expect(
+        result.reasons.some((reason) => reason.includes("unknown path")),
+      ).toBe(false);
+      expect(result.ci.predictions.every((job) => job.action === "RUN")).toBe(
+        true,
+      );
+    });
+  }
+  it("keeps unrelated unknown paths blocked", () => {
+    const result = deriveAgentExecution(policy, {
+      task: "WP03-T09",
+      pass: "proof-preflight",
+      declaredSurfaces: [],
+      changedPaths: ["unclassified/future-resource.bin"],
+      designDisposition: "OBJECTIVE_PRESERVING",
+      designEvidence:
+        "rationale:preserve supplied approved assets; baseline:8ad3a9b",
+    });
+    expect(result.proofPreflight.status).toBe("UNKNOWN");
+  });
+});

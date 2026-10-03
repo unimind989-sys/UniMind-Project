@@ -1,0 +1,17 @@
+{
+  "cases": [
+    {
+      "status": "passed",
+      "title": "prepared failure states recover through normal navigation, never a reviewer interface"
+    }
+  ],
+  "stage": "Final prepared-state recovery proof",
+  "stats": {
+    "startTime": "2026-09-30T13:23:21.872Z",
+    "duration": 66579.488,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

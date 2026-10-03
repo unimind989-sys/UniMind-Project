@@ -1,0 +1,5 @@
+email,password,role
+student@example.invalid,Synthetic-study-2026!,student
+leader@example.invalid,Synthetic-study-2026!,leader
+admin@example.invalid,Synthetic-study-2026!,admin
+second-admin@example.invalid,Synthetic-study-2026!,second-admin

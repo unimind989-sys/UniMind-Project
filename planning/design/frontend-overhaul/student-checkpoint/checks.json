@@ -1,0 +1,1173 @@
+{
+  "scope": "Student/public/auth milestone; neither whole-platform acceptance nor delivery proof",
+  "unit": {
+    "report": "unit-final.json",
+    "rawSha256": "64611520ca6d9b312ddb06ff10ce34d2721cd7c00622edf30c448b54ee0a189d",
+    "startTime": "2026-09-30T23:56:52.245Z",
+    "total": 110,
+    "passed": 110,
+    "failed": 0,
+    "files": [
+      {
+        "file": "tests/unit/account-settings.test.ts",
+        "total": 9,
+        "failed": 0
+      },
+      {
+        "file": "tests/unit/account-supabase.test.ts",
+        "total": 19,
+        "failed": 0
+      },
+      {
+        "file": "tests/unit/appearance-bootstrap.test.ts",
+        "total": 6,
+        "failed": 0
+      },
+      {
+        "file": "tests/unit/auth-access.test.ts",
+        "total": 7,
+        "failed": 0
+      },
+      {
+        "file": "tests/unit/auth-actions.test.ts",
+        "total": 6,
+        "failed": 0
+      },
+      {
+        "file": "tests/unit/auth-callback.test.ts",
+        "total": 10,
+        "failed": 0
+      },
+      {
+        "file": "tests/unit/auth-session-proxy.test.ts",
+        "total": 12,
+        "failed": 0
+      },
+      {
+        "file": "tests/unit/synthetic-demo-runtime.test.ts",
+        "total": 37,
+        "failed": 0
+      },
+      {
+        "file": "tests/unit/workspace-supabase.test.ts",
+        "total": 4,
+        "failed": 0
+      }
+    ]
+  },
+  "unitReplay": {
+    "report": "unit-auth-entry.json",
+    "rawSha256": "3a2df6f7abd39b2d9dc846f6de2965984de9b4a969d2e9593c249010669f6403",
+    "startTime": "2026-10-01T00:19:10.051Z",
+    "passed": 13,
+    "failed": 0,
+    "scope": "13 authenticated entry adapter checks after preserving deep-link fragments: verified role defaults, explicit exchange/session return, consent/verification/suspension/disabled gates, lookup failure and forged external return"
+  },
+  "runs": [
+    {
+      "report": "normal-focused.json",
+      "rawSha256": "4ce3a030c7c88fd7bf6ad7d3e013c493f9631936b8f8b59f5acd2b1a95f0b36a",
+      "startTime": "2026-09-30T23:33:23.503Z",
+      "duration": 198379.058,
+      "expected": 24,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0,
+      "tests": [
+        {
+          "name": "auth-flows.spec.ts / login presents one identity form and supports RTL",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 10298
+            }
+          ]
+        },
+        {
+          "name": "auth-flows.spec.ts / a forged return path is replaced before it reaches the form or links",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 2852
+            }
+          ]
+        },
+        {
+          "name": "auth-flows.spec.ts / invalid login restores focus to a generic summary and marks fields",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 3704
+            }
+          ]
+        },
+        {
+          "name": "auth-flows.spec.ts / public link states are bounded and recovery actions are visible",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 9933
+            }
+          ]
+        },
+        {
+          "name": "auth-flows.spec.ts / learning and reset routes reject missing verified sessions",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 12367
+            }
+          ]
+        },
+        {
+          "name": "auth-flows.spec.ts / an incomplete callback becomes a generic recoverable link state",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 5182
+            }
+          ]
+        },
+        {
+          "name": "auth-flows.spec.ts / mobile routes expose the current access step without page overflow",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 3207
+            }
+          ]
+        },
+        {
+          "name": "foundation.spec.ts / health routes are minimal, uncached, and read-only",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 2953
+            }
+          ]
+        },
+        {
+          "name": "foundation.spec.ts / anonymous entry shows the product landing and supplied brand without provider access",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 5450
+            }
+          ]
+        },
+        {
+          "name": "study-shelf.spec.ts / the university journey asks for faculty, academic year, then semester",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 4495
+            }
+          ]
+        },
+        {
+          "name": "study-shelf.spec.ts / the veterinary pilot uses the same hierarchy with subject terminology",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 4293
+            }
+          ]
+        },
+        {
+          "name": "study-shelf.spec.ts / the same catalog seam adapts the hierarchy for Thanaweya Amma",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 4962
+            }
+          ]
+        },
+        {
+          "name": "study-shelf.spec.ts / the server-authorized path clears downstream choices and survives browser history",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 7746
+            }
+          ]
+        },
+        {
+          "name": "study-shelf.spec.ts / forged and stale deep links are reduced to the authorized canonical path",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 2998
+            }
+          ]
+        },
+        {
+          "name": "study-shelf.spec.ts / a pending server navigation prevents an interrupted duplicate selection",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 3541
+            }
+          ]
+        },
+        {
+          "name": "study-shelf.spec.ts / a valid direct deep link remains stable and locale switching preserves scope",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 3846
+            }
+          ]
+        },
+        {
+          "name": "study-shelf.spec.ts / safe empty and release-change states expose no catalog identifiers",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 17118
+            }
+          ]
+        },
+        {
+          "name": "study-shelf.spec.ts / the mobile catalog keeps touch targets, focus, and page width intact",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 4051
+            }
+          ]
+        },
+        {
+          "name": "study-shelf.spec.ts / reduced motion removes the authored shelf and loading animation",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 6591
+            }
+          ]
+        },
+        {
+          "name": "workspace-shell.spec.ts / the overview exposes canonical scope, truthful state, and real child routes",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 16549
+            }
+          ]
+        },
+        {
+          "name": "workspace-shell.spec.ts / the mock chat creates, persists, and switches caller-scoped sessions",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 7602
+            }
+          ]
+        },
+        {
+          "name": "workspace-shell.spec.ts / forged and release-stale child routes share one non-identifying boundary",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 9223
+            }
+          ]
+        },
+        {
+          "name": "workspace-shell.spec.ts / Arabic uses the intended face and stays aligned at a narrow viewport",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 3067
+            }
+          ]
+        },
+        {
+          "name": "workspace-shell.spec.ts / English keeps Manrope and the shell survives 200 percent zoom geometry",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 3323
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "report": "auth-style-replay.json",
+      "rawSha256": "94affa05b2d151d5358b7cb210028230e5191b4fc5e63c56d10c56cfabe5c035",
+      "startTime": "2026-09-30T23:37:56.775Z",
+      "duration": 71569.049,
+      "expected": 7,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0,
+      "tests": [
+        {
+          "name": "auth-flows.spec.ts / login presents one identity form and supports RTL",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 9627
+            }
+          ]
+        },
+        {
+          "name": "auth-flows.spec.ts / a forged return path is replaced before it reaches the form or links",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 2585
+            }
+          ]
+        },
+        {
+          "name": "auth-flows.spec.ts / invalid login restores focus to a generic summary and marks fields",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 3102
+            }
+          ]
+        },
+        {
+          "name": "auth-flows.spec.ts / public link states are bounded and recovery actions are visible",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 10327
+            }
+          ]
+        },
+        {
+          "name": "auth-flows.spec.ts / learning and reset routes reject missing verified sessions",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 11335
+            }
+          ]
+        },
+        {
+          "name": "auth-flows.spec.ts / an incomplete callback becomes a generic recoverable link state",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 5284
+            }
+          ]
+        },
+        {
+          "name": "auth-flows.spec.ts / mobile routes expose the current access step without page overflow",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 2644
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "report": "native-initial.json",
+      "rawSha256": "6f9b4f2982142ce046b6cd6b4355943926723794db7b7a071bf9c6814411707f",
+      "startTime": "2026-09-30T23:15:15.619Z",
+      "duration": 239926.026,
+      "expected": 13,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0,
+      "tests": [
+        {
+          "name": "native-product-demo.spec.ts / en: academic setup, editable account settings and persistent appearance",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 21148
+            }
+          ]
+        },
+        {
+          "name": "native-product-demo.spec.ts / ar: academic setup, editable account settings and persistent appearance",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 10544
+            }
+          ]
+        },
+        {
+          "name": "native-product-demo.spec.ts / appearance storage denial falls back to System and controls remain usable",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 8364
+            }
+          ]
+        },
+        {
+          "name": "native-product-demo.spec.ts / en: normal student session, seven answer outcomes, evidence and report",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 17133
+            }
+          ]
+        },
+        {
+          "name": "native-product-demo.spec.ts / en: all six Studio artifacts, untimed quiz, score and source review",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 16011
+            }
+          ]
+        },
+        {
+          "name": "native-product-demo.spec.ts / ar: normal student session, seven answer outcomes, evidence and report",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 16435
+            }
+          ]
+        },
+        {
+          "name": "native-product-demo.spec.ts / ar: all six Studio artifacts, untimed quiz, score and source review",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 22137
+            }
+          ]
+        },
+        {
+          "name": "native-product-demo.spec.ts / en: revised sample supports direct Send, locale-preserved drafts, history and Studio interruption",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 14320
+            }
+          ]
+        },
+        {
+          "name": "native-product-demo.spec.ts / ar: revised sample supports direct Send, locale-preserved drafts, history and Studio interruption",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 10303
+            }
+          ]
+        },
+        {
+          "name": "native-product-demo.spec.ts / en: populated checkpoint reflows with accessible controls and enlarged text",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 38386
+            }
+          ]
+        },
+        {
+          "name": "native-product-demo.spec.ts / ar: populated checkpoint reflows with accessible controls and enlarged text",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 40725
+            }
+          ]
+        },
+        {
+          "name": "native-product-demo.spec.ts / en: cancelling Chat does not submit or complete a reply",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 9764
+            }
+          ]
+        },
+        {
+          "name": "native-product-demo.spec.ts / ar: cancelling Chat does not submit or complete a reply",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 10385
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "report": "native-supporting.json",
+      "rawSha256": "4717ef11b5c20a0c36209d768a4ec65b3693e13717d7134d5c3d835050888a84",
+      "startTime": "2026-09-30T23:40:43.516Z",
+      "duration": 365384.354,
+      "expected": 6,
+      "skipped": 0,
+      "unexpected": 1,
+      "flaky": 0,
+      "tests": [
+        {
+          "name": "native-product-demo.spec.ts / en: academic setup, editable account settings and persistent appearance",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 30440
+            }
+          ]
+        },
+        {
+          "name": "native-product-demo.spec.ts / ar: academic setup, editable account settings and persistent appearance",
+          "ok": false,
+          "results": [
+            {
+              "status": "failed",
+              "durationMs": 8150
+            }
+          ]
+        },
+        {
+          "name": "native-product-demo.spec.ts / en: public and identity surfaces reflow with AA contrast in both themes",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 140110
+            }
+          ]
+        },
+        {
+          "name": "native-product-demo.spec.ts / ar: public and identity surfaces reflow with AA contrast in both themes",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 124955
+            }
+          ]
+        },
+        {
+          "name": "native-product-demo.spec.ts / appearance storage denial falls back to System and controls remain usable",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 11119
+            }
+          ]
+        },
+        {
+          "name": "native-product-demo.spec.ts / en: normal student session, seven answer outcomes, evidence and report",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 21816
+            }
+          ]
+        },
+        {
+          "name": "native-product-demo.spec.ts / ar: normal student session, seven answer outcomes, evidence and report",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 22079
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "report": "native-replay.json",
+      "rawSha256": "489e0d279da85cfb194fd57645dec0969cce5e89b1f4277249450970d4f0fff5",
+      "startTime": "2026-09-30T23:48:24.049Z",
+      "duration": 50828.833,
+      "expected": 3,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0,
+      "tests": [
+        {
+          "name": "native-product-demo.spec.ts / ar: academic setup, editable account settings and persistent appearance",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 13713
+            }
+          ]
+        },
+        {
+          "name": "native-product-demo.spec.ts / en: normal student session, seven answer outcomes, evidence and report",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 16775
+            }
+          ]
+        },
+        {
+          "name": "native-product-demo.spec.ts / ar: normal student session, seven answer outcomes, evidence and report",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 17924
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "report": "native-appearance-final.json",
+      "rawSha256": "cfe07f63f0c24f089ee03896f8b613f92adc53114e30224b2a62026c06d45bc6",
+      "startTime": "2026-09-30T23:57:01.444Z",
+      "duration": 38440.472,
+      "expected": 3,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0,
+      "tests": [
+        {
+          "name": "native-product-demo.spec.ts / en: academic setup, editable account settings and persistent appearance",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 14611
+            }
+          ]
+        },
+        {
+          "name": "native-product-demo.spec.ts / ar: academic setup, editable account settings and persistent appearance",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 12240
+            }
+          ]
+        },
+        {
+          "name": "native-product-demo.spec.ts / appearance storage denial falls back to System and controls remain usable",
+          "ok": true,
+          "results": [
+            {
+              "status": "passed",
+              "durationMs": 9204
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "contrast": [
+    {
+      "logo": [
+        {
+          "src": "/brand/unimind/unimind-open-folio-horizontal-light.svg",
+          "transform": "none"
+        },
+        {
+          "src": "/brand/unimind/unimind-open-folio-symbol-light.svg",
+          "transform": "none"
+        }
+      ],
+      "theme": "light",
+      "tokens": {
+        "accent": "#2458b8",
+        "accent-hover": "#194794",
+        "accent-ink": "#214f9f",
+        "accent-soft": "#e8effb",
+        "canvas": "#f6f7f8",
+        "control-border": "#777f8b",
+        "danger": "#a32723",
+        "hover": "#e6e9ed",
+        "ink": "#202124",
+        "muted": "#626873",
+        "on-accent": "#ffffff",
+        "secondary": "#535861",
+        "subtle": "#eef0f2",
+        "success": "#236746",
+        "surface": "#ffffff"
+      },
+      "pairs": [
+        {
+          "foreground": "ink",
+          "background": "canvas",
+          "ratio": 15.01,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "ink",
+          "background": "surface",
+          "ratio": 16.1,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "ink",
+          "background": "subtle",
+          "ratio": 14.09,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "ink",
+          "background": "hover",
+          "ratio": 13.22,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "secondary",
+          "background": "canvas",
+          "ratio": 6.67,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "secondary",
+          "background": "surface",
+          "ratio": 7.15,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "secondary",
+          "background": "subtle",
+          "ratio": 6.26,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "secondary",
+          "background": "hover",
+          "ratio": 5.87,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "muted",
+          "background": "canvas",
+          "ratio": 5.23,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "muted",
+          "background": "surface",
+          "ratio": 5.6,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "muted",
+          "background": "subtle",
+          "ratio": 4.91,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "muted",
+          "background": "hover",
+          "ratio": 4.6,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "success",
+          "background": "canvas",
+          "ratio": 6.32,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "success",
+          "background": "surface",
+          "ratio": 6.77,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "danger",
+          "background": "canvas",
+          "ratio": 6.82,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "danger",
+          "background": "surface",
+          "ratio": 7.31,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "accent-ink",
+          "background": "canvas",
+          "ratio": 7.3,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "accent-ink",
+          "background": "surface",
+          "ratio": 7.83,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "accent-ink",
+          "background": "accent-soft",
+          "ratio": 6.77,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "on-accent",
+          "background": "accent",
+          "ratio": 6.64,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "on-accent",
+          "background": "accent-hover",
+          "ratio": 8.86,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "control-border",
+          "background": "canvas",
+          "ratio": 3.77,
+          "threshold": 3,
+          "pass": true
+        },
+        {
+          "foreground": "accent",
+          "background": "canvas",
+          "ratio": 6.19,
+          "threshold": 3,
+          "pass": true
+        },
+        {
+          "foreground": "control-border",
+          "background": "surface",
+          "ratio": 4.04,
+          "threshold": 3,
+          "pass": true
+        },
+        {
+          "foreground": "accent",
+          "background": "surface",
+          "ratio": 6.64,
+          "threshold": 3,
+          "pass": true
+        },
+        {
+          "foreground": "control-border",
+          "background": "subtle",
+          "ratio": 3.54,
+          "threshold": 3,
+          "pass": true
+        },
+        {
+          "foreground": "accent",
+          "background": "subtle",
+          "ratio": 5.81,
+          "threshold": 3,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "logo": [
+        {
+          "src": "/brand/unimind/unimind-open-folio-horizontal-dark.svg",
+          "transform": "none"
+        },
+        {
+          "src": "/brand/unimind/unimind-open-folio-symbol-dark.svg",
+          "transform": "none"
+        }
+      ],
+      "theme": "dark",
+      "tokens": {
+        "accent": "#adc7ff",
+        "accent-hover": "#c6d7ff",
+        "accent-ink": "#b9d0ff",
+        "accent-soft": "#2b3c59",
+        "canvas": "#1b1c1f",
+        "control-border": "#858d9a",
+        "danger": "#ffb4ab",
+        "hover": "#35383e",
+        "ink": "#eef0f3",
+        "muted": "#a6acb7",
+        "on-accent": "#152646",
+        "secondary": "#bdc2cb",
+        "subtle": "#2c2e33",
+        "success": "#91d2ad",
+        "surface": "#232529"
+      },
+      "pairs": [
+        {
+          "foreground": "ink",
+          "background": "canvas",
+          "ratio": 14.92,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "ink",
+          "background": "surface",
+          "ratio": 13.44,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "ink",
+          "background": "subtle",
+          "ratio": 11.9,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "ink",
+          "background": "hover",
+          "ratio": 10.3,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "secondary",
+          "background": "canvas",
+          "ratio": 9.53,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "secondary",
+          "background": "surface",
+          "ratio": 8.58,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "secondary",
+          "background": "subtle",
+          "ratio": 7.6,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "secondary",
+          "background": "hover",
+          "ratio": 6.57,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "muted",
+          "background": "canvas",
+          "ratio": 7.47,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "muted",
+          "background": "surface",
+          "ratio": 6.73,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "muted",
+          "background": "subtle",
+          "ratio": 5.96,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "muted",
+          "background": "hover",
+          "ratio": 5.15,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "success",
+          "background": "canvas",
+          "ratio": 9.76,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "success",
+          "background": "surface",
+          "ratio": 8.79,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "danger",
+          "background": "canvas",
+          "ratio": 10.04,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "danger",
+          "background": "surface",
+          "ratio": 9.04,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "accent-ink",
+          "background": "canvas",
+          "ratio": 10.98,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "accent-ink",
+          "background": "surface",
+          "ratio": 9.89,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "accent-ink",
+          "background": "accent-soft",
+          "ratio": 7.15,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "on-accent",
+          "background": "accent",
+          "ratio": 8.87,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "on-accent",
+          "background": "accent-hover",
+          "ratio": 10.42,
+          "threshold": 4.5,
+          "pass": true
+        },
+        {
+          "foreground": "control-border",
+          "background": "canvas",
+          "ratio": 5.09,
+          "threshold": 3,
+          "pass": true
+        },
+        {
+          "foreground": "accent",
+          "background": "canvas",
+          "ratio": 10.05,
+          "threshold": 3,
+          "pass": true
+        },
+        {
+          "foreground": "control-border",
+          "background": "surface",
+          "ratio": 4.59,
+          "threshold": 3,
+          "pass": true
+        },
+        {
+          "foreground": "accent",
+          "background": "surface",
+          "ratio": 9.06,
+          "threshold": 3,
+          "pass": true
+        },
+        {
+          "foreground": "control-border",
+          "background": "subtle",
+          "ratio": 4.06,
+          "threshold": 3,
+          "pass": true
+        },
+        {
+          "foreground": "accent",
+          "background": "subtle",
+          "ratio": 8.02,
+          "threshold": 3,
+          "pass": true
+        }
+      ]
+    }
+  ],
+  "otherChecks": {
+    "typecheck": "PASS",
+    "changedTypeScriptEslint": "PASS",
+    "moduleBoundaries": "PASS",
+    "sqlConventions": "PASS (28 migrations; static only)",
+    "impeccableDetector": "PASS (one owned-style pass, zero findings)"
+  },
+  "pending": [
+    "Linux ephemeral database reset/upgrade, pgTAP and generated-type parity",
+    "Broad stable product-wide verification",
+    "Exact-head required CI",
+    "Affected production proof",
+    "Student, Batch Leader, Admin and final design receipts"
+  ],
+  "replayNotes": [
+    "native-supporting: 6 passing and 1 Arabic setup failure due to checking document-title before client navigation finished. Keep that failed run. Wait for destination heading and nonempty title; affected Arabic setup and EN/AR student replay pass in native-replay. No axe rule disabled.",
+    "Later report copy and appearance bootstrap changes have targeted passing replay; initial unaffected Chat/Studio geometry and six-output proof is reused.",
+    "Authenticated redirects now retain exchange fragments. Thirteen focused entry adapter tests pass after this correction; existing public/auth render proof is unchanged."
+  ]
+}

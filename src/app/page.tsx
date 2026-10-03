@@ -1,40 +1,25 @@
-import { getServerEnvironment } from "@/lib/config/env.server";
+import type { Route } from "next";
+import { redirect } from "next/navigation";
+import { getCurrentAuthAccess } from "@/lib/auth/auth-access.supabase.server";
+import { currentRoleHome } from "@/lib/account/account.supabase.server";
+import { resolveLocale } from "@/lib/i18n/locale";
+import { Landing } from "./_components/landing";
 
-export default function HomePage() {
-  const environment = getServerEnvironment();
-
-  return (
-    <main className="foundation-page">
-      <h1>UniMind</h1>
-      <p>
-        The application foundation is running. Product workflows remain behind
-        deterministic mocks until their decisions and review gates pass.
-      </p>
-      <section aria-labelledby="foundation-status">
-        <h2 id="foundation-status">Foundation status</h2>
-        <dl>
-          <div>
-            <dt>Runtime</dt>
-            <dd>Node.js application</dd>
-          </div>
-          <div>
-            <dt>Data</dt>
-            <dd>Synthetic only</dd>
-          </div>
-          <div>
-            <dt>Providers</dt>
-            <dd>
-              {environment.PROVIDER_MODE === "mock"
-                ? "Mock only"
-                : "Approved real mode"}
-            </dd>
-          </div>
-          <div>
-            <dt>Release</dt>
-            <dd>{environment.NEXT_PUBLIC_RELEASE_ID}</dd>
-          </div>
-        </dl>
-      </section>
-    </main>
-  );
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const locale = resolveLocale((await searchParams).lang);
+  let destination: string | null = null;
+  try {
+    const access = await getCurrentAuthAccess();
+    if (access.gate === "READY") destination = await currentRoleHome();
+    else if (access.gate === "CONSENT_REQUIRED") destination = "/consent";
+    else if (access.gate === "VERIFY_EMAIL") destination = "/verify-email";
+  } catch {
+    /* Anonymous entry remains available if account services are unavailable. */
+  }
+  if (destination) redirect((destination + "?lang=" + locale) as Route);
+  return <Landing locale={locale} />;
 }

@@ -61,8 +61,44 @@ beforeEach(() => {
 });
 
 describe("Supabase session proxy", () => {
+  it.each([
+    "/preview",
+    "/preview/review",
+    "/preview/review/access/consent",
+    "/preview/learn",
+    "/wp03-review.html",
+  ])(
+    "keeps public fixture %s independent from real Auth and cookies",
+    async (path) => {
+      const { proxy } = await import("../../src/proxy");
+      const request = new NextRequest(`https://app.unimind.invalid${path}`, {
+        headers: { cookie: "synthetic-session=untouched-cookie" },
+      });
+      const response = await proxy(request);
+      expect(mocks.createServerClient).not.toHaveBeenCalled();
+      expect(mocks.getClaims).not.toHaveBeenCalled();
+      expect(response.cookies.getAll()).toEqual([]);
+      expect(request.cookies.get("synthetic-session")?.value).toBe(
+        "untouched-cookie",
+      );
+      expect(response.headers.get("cache-control")).toContain("no-store");
+      expect(response.headers.get("x-robots-tag")).toBe("noindex, nofollow");
+    },
+  );
+
+  it.each([
+    "/learn",
+    "/admin",
+    "/preview-fake",
+    "/api/batch-leader/campaigns/sample/uploads",
+  ])("does not bypass real Auth for %s", async (path) => {
+    const { proxy } = await import("../../src/proxy");
+    await proxy(new NextRequest(`https://app.unimind.invalid${path}`));
+    expect(mocks.getClaims).toHaveBeenCalledOnce();
+  });
+
   it("keeps health probes independent from Auth refresh", async () => {
-    const { config } = await import("../../src/proxy");
+    const { config, proxy } = await import("../../src/proxy");
 
     expect(
       unstable_doesMiddlewareMatch({
@@ -70,14 +106,14 @@ describe("Supabase session proxy", () => {
         nextConfig: {},
         url: "/api/health/live",
       }),
-    ).toBe(false);
+    ).toBe(true);
     expect(
       unstable_doesMiddlewareMatch({
         config,
         nextConfig: {},
         url: "/api/health/ready",
       }),
-    ).toBe(false);
+    ).toBe(true);
     expect(
       unstable_doesMiddlewareMatch({
         config,
@@ -85,6 +121,11 @@ describe("Supabase session proxy", () => {
         url: "/dashboard",
       }),
     ).toBe(true);
+    await proxy(new NextRequest("https://app.unimind.invalid/api/health/live"));
+    await proxy(
+      new NextRequest("https://app.unimind.invalid/api/health/ready"),
+    );
+    expect(mocks.getClaims).not.toHaveBeenCalled();
   });
 
   it("refreshes request and response cookies with private no-cache headers", async () => {

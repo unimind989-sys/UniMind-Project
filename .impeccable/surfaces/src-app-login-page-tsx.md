@@ -19,7 +19,11 @@ related_targets:
   ]
 ---
 
-## Scope and mode
+## Current overhaul brief
+
+[Root DESIGN](../../DESIGN.md) governs the approved Phase 1 system. Public/auth implementation evidence is in the [student record](../../planning/design/frontend-overhaul/phase-2-student.md), approved at `3a2a95d`; see the [receipt](../../planning/design/frontend-overhaul/student-approval.md). Operate mode for auth and Persuade for the public landing. First anonymous entry sees the landing with the exact slogan and product preview. One identity layer routes authenticated users by verified role after current account/consent gates; preserve validated invitation/deep-link return. Replace the horizontal four-stage rail with a compact current-task form and useful step status. Preserve verification/recovery/replay/generic-errors/password-manager semantics and exclude catalog search from auth. No client role choice or invented legal text. The existing approval block and composition below are historical WP03-T02 provenance, not approval of this overhaul.
+
+## Historical scope and mode
 
 WP03-T02 authentication, recovery, verification, logout, and current-consent routes. **Operate** mode.
 

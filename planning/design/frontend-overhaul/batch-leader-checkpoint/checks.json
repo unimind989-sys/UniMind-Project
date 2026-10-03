@@ -1,0 +1,188 @@
+{
+  "recordedAt": "2026-10-02T22:44:13.032Z",
+  "scope": "WP03-T09 P2-B focused milestone; no broad/database/build/CI/production gate claim",
+  "provenance": "Observed command results and in-app tool output. Earlier list-report runs have no durable report hash; do not claim a single complete passing browser run. Source and screenshot bindings are in manifest.json.",
+  "unit": [
+    {
+      "files": 8,
+      "passed": 62,
+      "failed": 0,
+      "coverage": "queue rules; collection domain/application/Supabase/upload handler; Auth return and role entry; security collection boundary"
+    },
+    {
+      "files": 2,
+      "passed": 7,
+      "failed": 0,
+      "reason": "application-layer helper rename rejecting replay plus collection formatting"
+    }
+  ],
+  "normalBrowser": {
+    "file": "tests/e2e/batch-leader-collection.spec.ts",
+    "uniquePassingCases": 12,
+    "runs": [
+      {
+        "passed": 8,
+        "failed": 3,
+        "reason": "two mixed fixtures incorrectly combined paths with buffers; picker role matched native input too"
+      },
+      {
+        "passed": 2,
+        "failed": 1,
+        "reason": "ambiguous PNG request needed a choice; an HMR edit occurred, so this run is not stable-candidate proof"
+      },
+      {
+        "passed": 5,
+        "failed": 1,
+        "reason": "exact implicit label included option text; role locator corrected"
+      },
+      {
+        "passed": 0,
+        "failed": 0,
+        "noTestsFound": true,
+        "reason": "anchored grep matched no tests; not a PASS"
+      },
+      {
+        "passed": 1,
+        "failed": 0,
+        "reason": "corrected mixed-file rejecting replay"
+      }
+    ],
+    "coverage": [
+      "mixed picker",
+      "mixed drop",
+      "unique/ambiguous destination",
+      "per-file keys and public receipts",
+      "interrupted stable-key retry",
+      "cancel retains next file",
+      "finalizer retry reuses receipt",
+      "invalid and oversized bytes",
+      "fresh rights after added files",
+      "keyboard skip/picker",
+      "360px EN/AR Light/Dark axe AA and 44px controls",
+      "non-identifying wrong/expired scope"
+    ],
+    "limits": "Unique case count combines retained passing results, including the oversize/drop case. It is not a 12/12 single-run receipt."
+  },
+  "nativeBrowser": {
+    "file": "tests/e2e/native-product-demo.spec.ts",
+    "uniquePassingAffectedCases": 12,
+    "runs": [
+      {
+        "passed": 7,
+        "failed": 2,
+        "reason": "actual campaign error fixture exposed form; outdated student sign-out locator"
+      },
+      {
+        "passed": 2,
+        "failed": 0,
+        "reason": "error-boundary and Account sign-out fixes replayed"
+      },
+      {
+        "passed": 1,
+        "failed": 0,
+        "reason": "Account density correction; four locale/theme pairs at 1440 and 360 with axe"
+      },
+      {
+        "passed": 2,
+        "failed": 0,
+        "reason": "new bounded History return/empty-state check and retained campaign failure check",
+        "observedStart": "2026-10-02T22:28:36.500Z"
+      },
+      {
+        "passed": 4,
+        "failed": 0,
+        "reason": "EN/AR file/reference, mixed private-byte/cancel and all-role sign-out replay after native Auth query change"
+      },
+      {
+        "passed": 1,
+        "failed": 0,
+        "reason": "invitation decision, return, disabled result, EN/AR Light/Dark at 1440/360 and axe"
+      }
+    ],
+    "geometryWidths": [1440, 768, 430, 390, 360, 320],
+    "localeThemePairs": ["en/light", "en/dark", "ar/light", "ar/dark"],
+    "coverage": [
+      "queue/History/Account",
+      "200% text at 320",
+      "reduced motion",
+      "44px controls",
+      "axe WCAG A/AA and 2.1AA",
+      "supplied mixed files only",
+      "local progress/received states",
+      "file/reference equality",
+      "empty/error/expired/forbidden/wrong-scope",
+      "History deep-link after sign-in",
+      "invitation decision/campaign return",
+      "student→leader→admin sign-out",
+      "no non-GET/HEAD API or foreign-origin calls, cookies, page errors or inherited identity"
+    ],
+    "limits": "Focused passing results are retained across runs. No full native suite PASS is asserted."
+  },
+  "static": {
+    "typescript": "PASS",
+    "changedFileEslint": "PASS",
+    "boundaries": "PASS after correcting helper layering",
+    "secrets": "PASS; final post-document scan inspected 2928 files",
+    "diffCheck": "PASS; full owned diff, whitespace, scope and secret review completed",
+    "detector": {
+      "passes": 1,
+      "findings": 0,
+      "scope": "owned collection flow, CSS and leader home",
+      "report": ".local/phase2-batch/detector.json"
+    },
+    "format": "PASS; owned source/design/proof formatting",
+    "readiness": {
+      "result": "PASS",
+      "names": 447,
+      "links": 108,
+      "decisions": 23,
+      "taskContracts": 113
+    }
+  },
+  "rendered": {
+    "captures": 34,
+    "fullPage": false,
+    "overflow": false,
+    "themes": ["light", "dark"],
+    "locales": ["en", "ar"],
+    "cssViewports": [
+      {
+        "width": 1440,
+        "height": 1000
+      },
+      {
+        "width": 390,
+        "height": 844
+      }
+    ],
+    "states": [
+      "assigned campaign",
+      "mixed queue",
+      "live 25% progress",
+      "per-file received",
+      "history statuses",
+      "account",
+      "loading",
+      "empty uploads/history/queue",
+      "error/expired",
+      "interrupted retry",
+      "invalid synthetic file",
+      "invitation pending/accepted"
+    ]
+  },
+  "pending": [
+    "explicit Batch Leader approval",
+    "Admin and final rendered approvals",
+    "Linux database reset/upgrade/pgTAP/type parity for earlier student migration",
+    "broad stable product-wide verification and safe build",
+    "actual-diff preflight and exact-head CI",
+    "affected production proof and task closure"
+  ],
+  "independence": "Single executor, zero workers. Inline finish review is non-independent.",
+  "unrelatedPreserved": [
+    "root supplied kit",
+    "planning/design/logo-concepts",
+    "historical .impeccable/review/overhaul",
+    "pre-existing bounded logo task-record block"
+  ]
+}
