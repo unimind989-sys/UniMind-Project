@@ -7,13 +7,25 @@ import { resolveDemoRuntime } from "@/lib/demo/demo-runtime.application";
 import { SyntheticProductProvider } from "./_components/product-services";
 import { ThemeRuntime } from "./_components/appearance";
 import { themeBootstrap } from "@/lib/theme/theme.application";
+import { getServerEnvironment } from "@/lib/config/env.server";
 
-export const metadata: Metadata = {
-  title: "UniMind",
-  description:
-    "Study deeper. Go further. Learn from your course materials with UniMind.",
-  manifest: "/brand/unimind/icons/site.webmanifest",
-};
+export function generateMetadata(): Metadata {
+  const environment = getServerEnvironment();
+  return {
+    title: "UniMind",
+    description:
+      "Study deeper. Go further. Learn from your course materials with UniMind.",
+    manifest: "/brand/unimind/icons/site.webmanifest",
+    other: {
+      "unimind-data": "Synthetic only",
+      "unimind-providers":
+        environment.PROVIDER_MODE === "mock"
+          ? "Mock only"
+          : "Approved real mode",
+      "unimind-release": environment.NEXT_PUBLIC_RELEASE_ID,
+    },
+  };
+}
 
 const latinFont = Manrope({
   subsets: ["latin"],

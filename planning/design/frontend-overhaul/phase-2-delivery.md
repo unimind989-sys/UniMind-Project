@@ -14,6 +14,31 @@ changed routes/system, persistence rationale, retained rendered proof and limits
 
 ## Verification map and freeze
 
+Latest candidate status, 3 October: all four exact-head jobs passed at `fee5903`
+in [run 37120365154](https://github.com/unimind989-sys/UniMind-Project/actions/runs/37120365154).
+Local broad verification has no PASS: the first invocation rejected ignored helper
+sources; they were preserved outside this checkout and the pinned Node/pnpm entry
+was corrected. The second passed static/unit checks but timed out on one catalog
+navigation whose response took 27.3 seconds; the unchanged focused replay passed.
+The third passed all 56 normal browser cases but was deliberately cancelled when
+release review found missing public release/mode markers. Its partial native
+results are retained, not promoted to a broad PASS.
+
+The root now publishes the existing server-validated release and provider markers
+as non-visible metadata. The approved visual hierarchy is unchanged, and the
+deployment-smoke contract is retained. A rejecting browser test passed 1/1 against
+forged query hints and the private-canary checks. Its initial format check failed;
+formatting was corrected. The repaired candidate requires a fresh guarded local
+broad chain and exact-head CI before protected delivery.
+
+The exact existing Free Preview project reports database, Auth, REST, storage and
+Realtime UNHEALTHY; read-only schema attempts return HTTP 544. Inventory status is
+not treated as service-health proof. One task-scoped restart is prepared but has
+not been issued; it is guarded by completed technical gates, exact target and a
+single-attempt record. No reset, new resource or Beta change is authorized here.
+The logo branch is recoverably bundled and the complete kit archived; retirement
+waits for verified delivery.
+
 | Requirement / seam                     | Required proof / current limit                                                                                                          |
 | -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | Approved role/UI behavior              | Source-bound accepted role packets and final 3+4 focused browser cases; seven passes, 29 final inspected views                          |
@@ -28,7 +53,7 @@ checks. Database tests use only the existing disposable GitHub Linux runner, nev
 a Windows workaround or a shared reset. CI runs against this public repository's
 existing workflow; it enables no paid provider.
 
-## Separately recorded gate defect / scope decision
+## Historical gate defect / scope decision — resolved below
 
 The gate calls `git diff --name-only --merge-base HEAD origin/main`. That compares
 the merge base to main and returns zero committed changes, while the correct
@@ -164,7 +189,7 @@ claim about access to private source contents. Review the existing RPC suspensio
 contract with its authorization owner as a separate follow-up; this frontend task
 does not silently broaden or change catalog authorization.
 
-## Next safe action
+## Historical next safe action — superseded below
 
 Exact-head draft-PR CI is complete and passing at `e3ab613`. Keep the PR draft
 and unmerged while the scoped gate decision is pending. Preserve the prepared
@@ -175,7 +200,7 @@ workflow, prove the merged Vercel artifact/configuration, promote and verify the
 affected public routes. Close T09/evidence only after affected services are proven.
 T10 remains the separate frontend mock gate before WP04.
 
-## Latest committed candidate proof and held delivery
+## Historical committed candidate proof and held delivery
 
 Exact-head run [37112809678](https://github.com/unimind989-sys/UniMind-Project/actions/runs/37112809678)
 at `e3ab613` passed all four required jobs. Application includes all 56 normal

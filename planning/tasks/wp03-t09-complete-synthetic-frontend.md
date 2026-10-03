@@ -12,7 +12,7 @@
 
 **Branch:** codex/wp03-complete-synthetic-frontend
 
-**Updated (UTC):** 2026-10-03T11:31:25.116Z
+**Updated (UTC):** 2026-10-03T12:15:00Z
 
 ## Derived execution envelope
 
@@ -91,11 +91,23 @@ Calendar, personal Workspace, global Sources and Progress have no approved stand
 
 **Preparation review:** COMPLETE_INLINE
 
-**Preparation fingerprint:** NOT_READY
+**Preparation fingerprint:** PENDING_NEW_COMMITTED_CANDIDATE
 
 **Unresolved findings:** NONE
 
 **Established facts:** NONE
+
+Release review found missing public release/mode markers. Server-validated,
+non-visible root metadata restores the existing deployment-smoke contract;
+approved visuals and founder receipt remain unchanged. The focused rejecting
+browser privacy/forged-query case passes 1/1. Exact-head CI at `fee5903` passed all
+four jobs (run 37120365154). Three local broad invocations are retained as failed,
+failed and cancelled: ignored helper sources, one 27.3-second catalog response
+with a passing unchanged focused replay, then candidate invalidation after all
+56 normal cases passed. No local broad PASS is asserted. Helpers and full logo
+recovery archives are preserved outside the release checkout. Actual hosted
+Preview health is UNHEALTHY; one guarded existing-Free-project restart is prepared
+but unexecuted. Fresh candidate-bound local/CI proof precedes recovery and delivery.
 
 No established-fact receipt is asserted before a commit-bound proof exists. The inline candidate review covers native composition, optional shared ports, zero service mutations, synthetic-only input checks, record/scope isolation, normal navigation and corrected source availability. Technical proof is recorded below. Founder design acceptance remains sourced from the named baseline. Candidate-changing findings are resolved. Guarded broad verification and new exact-head CI are pending for the authorized gate slice; protected delivery and hosted profile migration proof remain delivery obligations, not executed PASS results.
 

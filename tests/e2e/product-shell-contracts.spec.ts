@@ -125,6 +125,26 @@ async function assertAccessible(page: Page) {
     .toEqual([]);
 }
 
+test("public release metadata uses server configuration without private data", async ({
+  page,
+}) => {
+  const finishPrivacy = observePrivacy(page);
+  await page.goto("/?release=forged-release&providerMode=real");
+  await expect(page.locator('meta[name="unimind-release"]')).toHaveAttribute(
+    "content",
+    "e2e-synthetic",
+  );
+  await expect(page.locator('meta[name="unimind-providers"]')).toHaveAttribute(
+    "content",
+    "Mock only",
+  );
+  await expect(page.locator('meta[name="unimind-data"]')).toHaveAttribute(
+    "content",
+    "Synthetic only",
+  );
+  await finishPrivacy();
+});
+
 for (const surface of surfaces) {
   for (const locale of ["en", "ar"] as const) {
     test(`${surface.name} ${locale}: accessibility, focus, reflow, motion and privacy`, async ({

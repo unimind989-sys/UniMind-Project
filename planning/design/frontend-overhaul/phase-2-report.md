@@ -6,6 +6,21 @@ The accepted final design is `8ad3a9b`. [Delivery](phase-2-delivery.md) records
 source-bound technical results and blockers; [PR #64](https://github.com/unimind989-sys/UniMind-Project/pull/64)
 remains draft. This report does not close the task or claim production promotion.
 
+All four exact-head jobs passed at `fee5903` in
+[run 37120365154](https://github.com/unimind989-sys/UniMind-Project/actions/runs/37120365154).
+The local broad chain remains unproven: ignored helper files caused the first
+failure; a slow catalog response caused the second, with its unchanged focused
+replay passing; a third run passed all 56 normal browser cases before cancellation
+for a newly found release-marker omission. Non-visible, server-validated metadata
+restores that deployment contract and passed its focused privacy/forged-query
+case. The repaired candidate requires fresh local and exact-head CI proof.
+
+Hosted Preview's actual service health is UNHEALTHY despite its healthy inventory
+label. A single restart of the existing Free project is prepared behind the
+technical gates; migration, merge, promotion and closure remain pending. The
+recoverable logo branch bundle and full-kit archive preserve the extra artwork;
+the complete production subset is already integrated.
+
 ## Audit and preserved capabilities
 
 The [audit](../../../docs/reviews/wp03-frontend-overhaul.md) records fifteen
@@ -109,14 +124,15 @@ handoff update after that green commit; it is not a new committed CI candidate.
 
 ## Release limits and separate follow-ups
 
-The local release gate compares Git commits in the wrong order and lacks public
-asset classification. The bounded correction was prepared in
+The former local release gate compared Git commits in the wrong order and lacked
+public asset classification. The bounded correction was prepared in
 `E:/UniMind Project/.local/phase2-final/release-gate-correction.patch` and is now
 applied with rejecting regressions. Ahmed approved the bounded scope exception on 3 October. Policy 9 corrects the
 comparison and preserves conservative all-job proof for supported assets/config
 paths; unrelated unknown paths still block. All 60 gate regressions and policy/CI
-workflow validation pass. WP00 product/task state is unchanged. New exact-head CI
-and frozen local broad remain pending for this delivery slice.
+workflow validation pass. WP00 product/task state is unchanged. Exact-head CI at
+`fee5903` passed; frozen local broad and fresh CI remain pending for the subsequent
+non-visible metadata repair described above.
 
 Existing suspended-account catalog RPC behavior is separately recorded in
 [delivery](phase-2-delivery.md); it predates the academic preference extension.
