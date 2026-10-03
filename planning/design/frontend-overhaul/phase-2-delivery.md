@@ -1,6 +1,6 @@
 # Approved frontend delivery
 
-Status: in progress; final UI accepted at `8ad3a9b`. Selected task WP03-T09,
+Status: runtime delivered; final UI accepted at `8ad3a9b`. Selected task WP03-T09,
 Ahmed, same task branch/PR #64, one executor and zero workers. D-22 authorizes
 task-scoped non-financial completion after every technical gate passes. No paid
 provider/resource/cap exposure is authorized.
@@ -8,11 +8,15 @@ provider/resource/cap exposure is authorized.
 An isolated managed checkout preserves the original open 3101 review server,
 unrelated logo exploration/task text, supplied kit and branch history. The final
 [direct receipt](final-approval.md) and three role receipts prove design acceptance;
-current documents do not claim later technical gates have passed.
+historical sections retain their checkpoint limits; delivered gates are recorded below.
 The consolidated [implementation report](phase-2-report.md) covers audit findings,
 changed routes/system, persistence rationale, retained rendered proof and limits.
 
-## Verification map and freeze
+## Delivered source and affected release
+
+PR #64 merged exact reviewed head `890f00f` as `f107e41`. Frozen local verification, exact-head and main CI, hosted profile migration/postflight and promoted anonymous public proof PASS. Production is `dpl_76AWj26YVWDQpBRXx8v9BLz68VyN`, release `wp03-t09-f107e41-production`. [Commit-bound release evidence](../../../evidence/wp03-product-shell/2026-10-03_frontend-overhaul_production_f107e41.md) owns the final results, failures, source/configuration binding, rollback and limits. This docs-only closure and terminal cleanup follow without a runtime redeploy. Pending statements below are retained historical observations, superseded by this source-bound PASS.
+
+## Historical verification map and freeze
 
 Latest candidate status, 3 October: all four exact-head jobs passed at `fee5903`
 in [run 37120365154](https://github.com/unimind989-sys/UniMind-Project/actions/runs/37120365154).

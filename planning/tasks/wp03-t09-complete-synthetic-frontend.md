@@ -2,7 +2,7 @@
 
 **Task ID:** WP03-T09
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** One coherent clickable frontend review covers approved product journeys with isolated fixed synthetic state before continuing WP04.
 
@@ -12,7 +12,11 @@
 
 **Branch:** codex/wp03-complete-synthetic-frontend
 
-**Updated (UTC):** 2026-10-03T12:15:00Z
+**Updated (UTC):** 2026-10-03T13:24:42.576Z
+
+## Delivered runtime — 3 October 2026
+
+PR #64 merged exact reviewed head `890f00f` as `f107e41`; reviewed/merged trees match. Guarded local verification and all exact-head CI checks PASS, with merged-main CI PASS. Preview has the single reviewed profile migration and verified column/grant/validator/RLS/caller contracts. All five services recovered; the guarded restart was skipped, so no restart/reset occurred. Production `dpl_76AWj26YVWDQpBRXx8v9BLz68VyN`, release `wp03-t09-f107e41-production`, passes anonymous public smoke/fingerprint/access checks and bounded rendered/log review. [Release evidence](../../evidence/wp03-product-shell/2026-10-03_frontend-overhaul_production_f107e41.md) owns exact proof, retained failures and limits. The implementation outcome is delivered; this documentation-only closure and terminal Git cleanup do not change runtime. Earlier pending/checkpoint prose below is historical, superseded by this delivered state. T10 remains next before WP04.
 
 ## Derived execution envelope
 
@@ -38,11 +42,11 @@
 | ----- | -------------- | --------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- | ---------------------------------------------------------- |
 | 1     | Sol High       | Master-plan 6–8, DESIGN, WP03/06/07/08; independent route/render audit, follow-up scheduling and ownership            | Original completed history intact; WP03 follow-ups precede WP04; unresolved product behaviors excluded/named           | Cross-journey scope judgment remains with executor                    | Complete; audit evidence and T09/T10 scope                 |
 | 2     | Sol High       | Isolated simulation shell, fixture access/Settings and complete student/leader/admin loops                            | No real inputs, auth/provider/protected mutation; scope/tab/reset isolation; deterministic outcomes including failures | Shared simulation boundary and UX judgment justify one coherent block | Complete; connected fixture-only routes and state          |
-| 3     | Sol High       | Candidate review, accessible EN/AR responsive proof, technical gate, founder design checkpoint and protected delivery | Complete coverage, regression proof, exact-head CI; no false PASS; affected public review artifact proven              | Integrated acceptance and delivery remain with executor               | In progress; final UI accepted; technical delivery pending |
+| 3     | Sol High       | Candidate review, accessible EN/AR responsive proof, technical gate, founder design checkpoint and protected delivery | Complete coverage, regression proof, exact-head CI; no false PASS; affected public review artifact proven              | Integrated acceptance and delivery remain with executor               | Complete; accepted design, protected merge and affected release PASS |
 
 **Next model:** Sol High
 
-**Current block:** P2-F delivery
+**Current block:** Delivered runtime; documentation closure and terminal cleanup
 
 ## Execution contract
 
@@ -91,7 +95,7 @@ Calendar, personal Workspace, global Sources and Progress have no approved stand
 
 **Preparation review:** COMPLETE_INLINE
 
-**Preparation fingerprint:** PENDING_NEW_COMMITTED_CANDIDATE
+**Preparation fingerprint:** 37291eb49d9bb51b06e2ea7a1421042a3952db8c2e083838c1e0abcbb31e2f35
 
 **Unresolved findings:** NONE
 
@@ -117,13 +121,13 @@ No established-fact receipt is asserted before a commit-bound proof exists. The 
 - [x] Implement complete isolated synthetic journeys and connect entry points.
 - [x] Execute rejecting behavior/security/a11y/responsive proof and inspect diff.
 - [x] Present concrete candidate and record founder interaction checkpoint.
-- [ ] Complete protected delivery/affected proof, then select WP03-T10.
+- [x] Complete protected delivery/affected proof, then select WP03-T10.
 
 ## Current next safe action — approved delivery
 
-**Next safe action:** Ahmed approved the bounded shared-gate correction on 3 October 2026 and requested logo-branch integration/cleanup after merge. Policy 9 retains all protected checks. Complete proof preflight and frozen guarded local verification, new exact-head CI, protected review/merge and affected hosted proof. Keep the PR draft until technical gates pass. Preserve imported kit/user artwork and snapshot remaining logo branch work before retiring the task branches. T10/WP04 remain subsequent tasks.
+**Next safe action:** Complete this documentation-only closure through protected CI/review/merge, preserve original task text/artwork/review captures and the complete kit/bundled logo history, synchronize main and retire only the two task branches plus closure state. WP03-T10 is next; no WP04 implementation is included.
 
-**Commands:** Final UI accepted at 8ad3a9b; final browser proof 7/7 PASS and 29 inspected views retained. Failed runs 37107608541 (80f6d18) and 37108899217 (cdf1b7f) are retained in phase-2-delivery.md. Run 37110602490 at f041353: selector, dependency audit and complete disposable database job PASS (upgrade, repeated reset, pgTAP, advisors, type parity, 17 integration, 8 authenticated browser, 44 security, cleanup). Application FAIL after 564 unit, 15 integration plus 2 skipped, 44 security, evaluation/load, 56 normal browser and 40/41 native cases PASS. Stale registration-case sign-out selector now follows Account; focused native replay 1/1 PASS, changed-test lint/format PASS. Earlier upload repair browser replay 4/4 PASS, fresh types/lint, Arabic desktop and four phone language/theme renders inspected. Updated design references and pack's nine allowlisted entries match source bytes. Earlier unapplied gate proposal passed applicability and preserved five recorded CI predictions; current authorization and executed policy-9 regression proof supersede that held state. Read-only provider scope/plan inventory observed; schema query unavailable and hosted migration unproven. The existing suspension/catalog RPC finding is separately recorded. Exact-head CI at e3ab613 PASS in run 37112809678: all four required jobs, 56 normal and 41 native browser cases, complete database gate with eight authenticated browser cases, production build/client-secret scanning. Guarded local broad, protected delivery and affected production proof remain pending; no gate waived. Gate slice: first new regression run FAIL (49/60; dependency audit prediction could skip). Added conservative force-full patterns for newly classified paths. Replay 60/60 PASS, exit 0; policy-v9 and CI workflow validation PASS, exit 0. Five historical observations still replay to READY. Guarded broad/new exact-head CI NOT RUN for this gate slice.
+**Commands:** Guarded local pnpm verify PASS at reviewed head 890f00f and recorded fingerprint; 577 unit, 15 local integration plus 2 hosted-only skips, 44 security, evaluation/load-profile validation, 57 normal and 41 native browser cases, production build/client-secret scan. Exact-head CI 37122688934 and merged-main CI 37123975567 PASS. Pinned Preview CLI dry-run/forward migration PASS; installed metadata and five rollback-only caller checks PASS, invented identities/profiles absent. Exact merged archive 2862 files/63985702 bytes matches Git blobs; unpromoted authenticated and promoted anonymous smoke/fingerprint/cache/403 proof PASS. 40-entry log sample has no warning/error/fatal/5xx signals. Live EN landing and EN/AR sign-in desktop Light renders inspected; all approved paired-theme phone/role packets retained. Full diff/stat/whitespace and changed-file secret/scope review PASS. Logo bundle verified; complete kit archive/hash and imported/runtime parity recorded. Original failed/cancelled runs remain historical; evidence/wp03-product-shell/2026-10-03_frontend-overhaul_production_f107e41.md owns the source-bound results.
 
 **Admin checkpoint proof:** Four unit files passed 52 tests; unchanged protected Admin security boundary passed 5. Eight unique normal browser cases passed across retained 7/8 plus visible-target 1/1 replay. Nine unique affected native cases passed across retained runs; final four theme/language matrices passed 4/4, followed by Arabic localized-target 2/2. Source/capture manifest binds 36 inspected JPEG views, including all eight desktop/phone language/theme pairs and loading, empty, blocked, forbidden, stale and unverified states. Fresh TypeScript, changed-file lint, boundaries and policy checks passed. Final packet-aware readiness passed (488 names, 119 links, 23 decisions, 113 task contracts); final secret scan passed for 2970 files. One detector pass found one status side border, corrected to a quiet full 1px border and inspected. Failures and replay limits remain recorded in `admin-checkpoint/checks.json`. No Admin backend, schema or durable persistence change; no broad, build, database, CI or production PASS asserted. Owned local staging verifies formatting, full diff and bindings; unrelated bounded-logo task text stays only in the worktree. Admin is now accepted; the next required stop is final product-wide acceptance.
 
