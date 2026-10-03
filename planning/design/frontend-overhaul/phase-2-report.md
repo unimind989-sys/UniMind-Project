@@ -52,7 +52,7 @@ spacing, control variants, focus/disabled states, widths, breakpoints and reduce
 motion. The supplied Open Folio logo/icons retain their palette and proportions,
 use the supplied variants, and never mirror in Arabic. The slogan is exactly:
 
-**Study deeper**  
+**Study deeper**<br>
 **Go further.**
 
 System/Light/Dark preference uses validated local storage because the existing
