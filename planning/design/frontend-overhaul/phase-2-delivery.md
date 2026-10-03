@@ -14,13 +14,13 @@ changed routes/system, persistence rationale, retained rendered proof and limits
 
 ## Verification map and freeze
 
-| Requirement / seam                     | Required proof / current limit                                                                                                                         |
-| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Approved role/UI behavior              | Source-bound accepted role packets and final 3+4 focused browser cases; seven passes, 29 final inspected views                                         |
-| Profile academic persistence/authority | Complete Linux disposable database gate PASS at f041353; hosted migration presence/application still unproven                                          |
-| Shared runtime and isolation           | Guarded local broad chain once per stable candidate; full exact-head application/security/native/normal CI; pending                                    |
-| Readiness and release boundaries       | Correct comparison/envelope, valid founder receipt, inline preparation review, fingerprint, secret/diff/scope checks; gate defect below                |
-| Delivery                               | Exact-head CI, formal protected distinct-account review, merge and affected Supabase/Vercel proof; pending                                             |
+| Requirement / seam                     | Required proof / current limit                                                                                                          |
+| -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| Approved role/UI behavior              | Source-bound accepted role packets and final 3+4 focused browser cases; seven passes, 29 final inspected views                          |
+| Profile academic persistence/authority | Complete Linux disposable database gate PASS at f041353; hosted migration presence/application still unproven                           |
+| Shared runtime and isolation           | Guarded local broad chain once per stable candidate; full exact-head application/security/native/normal CI; pending                     |
+| Readiness and release boundaries       | Correct comparison/envelope, valid founder receipt, inline preparation review, fingerprint, secret/diff/scope checks; gate defect below |
+| Delivery                               | Exact-head CI, formal protected distinct-account review, merge and affected Supabase/Vercel proof; pending                              |
 
 Freeze all tracked inputs during the broad chain. Reuse unaffected focused
 proof; after a failure, correct only the task-scoped cause and replay the affected
@@ -166,11 +166,43 @@ does not silently broaden or change catalog authorization.
 
 ## Next safe action
 
-Push the current bounded test/documentation repair for fresh exact-head draft-PR
-CI. Keep the PR draft and unmerged. Continue independent
-technical proof while the scoped gate decision is pending. Once the gate is
+Exact-head draft-PR CI is complete and passing at `e3ab613`. Keep the PR draft
+and unmerged while the scoped gate decision is pending. Preserve the prepared
+patch and owned local handoff documentation. Once the gate is
 correct and all required checks pass, complete protected delivery, apply only the
 reviewed minimal profile migration through the approved environment-promotion
 workflow, prove the merged Vercel artifact/configuration, promote and verify the
 affected public routes. Close T09/evidence only after affected services are proven.
 T10 remains the separate frontend mock gate before WP04.
+
+## Latest committed candidate proof and held delivery
+
+Exact-head run [37112809678](https://github.com/unimind989-sys/UniMind-Project/actions/runs/37112809678)
+at `e3ab613` passed all four required jobs. Application includes all 56 normal
+and 41 native browser cases plus production build/client-secret scanning; the
+complete database job includes eight authenticated browser cases. The earlier
+failed runs above retain their original outcomes.
+
+The committed implementation is technically green in CI. Guarded local broad
+verification remains held for the separately requested shared-gate scope decision.
+Final manual classification found 409 committed paths, including ten existing
+unknown paths beyond public assets. The conservative unapplied patch now covers
+all of them, leaves unrelated unknown paths blocked and preserves R3/all checks.
+Its applicability, draft policy validation, 409-path classification and isolated
+Git-comparison probe pass; five recorded CI predictions are unchanged. Full drafted
+Vitest regressions remain unexecuted until the scope decision. Active policy is
+still version 8; no WP00 task state or gate code changed.
+
+Hosted migration presence/promotion is still unproven. PR #64 remains draft and
+unmerged; production remains at its prior release. This handoff updates only local
+task/report/delivery documentation after the green commit; those updates are not
+claimed as a new exact-head CI candidate. Preserve them for the authorized next
+slice rather than generating another documentation-only broad run.
+
+## Authorized gate correction — 3 October 2026
+
+Ahmed directly approved the prepared correction and requested necessary completion, then requested integration of important logo-branch content and cleanup after merge. The previously pending scope decision is resolved. Live policy is now version 9: candidate comparison is corrected and supported public/assets/config/proxy/review paths retain R3/all surfaces and conservative full CI. Unrelated unknown paths still block. WP00 task/product state and the CI workflow are unchanged.
+
+The first drafted regression run passed 49/60 and failed 11 assertions: explicit path classification had lost the old unknown-path dependency-audit requirement. Conservative force-full patterns restore it. Replay passes 60/60, policy validation and CI workflow checks exit 0; five retained conditional-CI observations replay consistently to READY. The founder receipt is rebound to policy 9 without changing its original human actor, reference, timestamp, scope or accepted candidate. Frozen local broad and new exact-head CI remain pending for this authorized slice.
+
+Logo inventory proves imported 94/94 files match logo head `89969da`; all 25 runtime placements and canonical assets retain exact supplied bytes. All required production content is integrated already. Preserve the supplied complete kit and recoverable logo-branch snapshot before retirement; no rejected exploration needs to be merged.

@@ -12,11 +12,11 @@
 
 **Branch:** codex/wp03-complete-synthetic-frontend
 
-**Updated (UTC):** 2026-10-03T09:05:03Z
+**Updated (UTC):** 2026-10-03T11:31:25.116Z
 
 ## Derived execution envelope
 
-**Policy version:** 8
+**Policy version:** 9
 
 **Surfaces:** docs, frontend, runtime, auth, data, storage, delivery, tooling
 
@@ -60,7 +60,7 @@
 
 **Rollback:** Stop the owned demo process or omit its explicit development flag to restore ordinary composition. Revert task-scoped UI/Auth-entry/account adapters and restore the previous verified release if affected proof fails. Keep the nullable academic preference column/data when rolling back application code; any schema/grant rollback requires its own reviewed migration. Never alter membership, approved source state, audit history or unrelated branch work.
 
-**Hard stop:** Real accounts/student/private data; protected preview mutations; financial exposure; invented product policy; lost unrelated work; weakened real authorization; false gate closure or missing material design acceptance.
+**Hard stop:** Real accounts/student/private data; unreviewed protected Preview mutations (only the accepted, tested task-scoped forward profile migration is allowed after technical gates and exact-target proof); financial exposure; invented product policy; lost unrelated work; weakened real authorization; false gate closure or missing material design acceptance.
 
 ## Trust map
 
@@ -87,17 +87,17 @@ Calendar, personal Workspace, global Sources and Progress have no approved stand
 
 **Design disposition:** OBJECTIVE_PRESERVING
 
-**Design evidence:** baseline:8ad3a9baaffe43bf89be09d404f921d2b3f9e714; receipt:evidence/wp03-product-shell/2026-10-03-wp03-t09-founder-design-receipt.json; final UI accepted by Ahmed. Post-acceptance security patch and bounded accessibility repairs restore the approved document locale/direction and 44px keyboard-target contract; focused normal browser replay and rendered Arabic upload inspection retain the accepted design direction. No new product flow or palette is proposed.
+**Design evidence:** rationale:preserve the approved presentation and supplied logo assets; baseline:8ad3a9baaffe43bf89be09d404f921d2b3f9e714; receipt:evidence/wp03-product-shell/2026-10-03-wp03-t09-founder-design-receipt.json; Ahmed accepted the final design. Post-acceptance bounded locale/picker repairs restore the approved accessibility contract and have rendered proof. The current scope changes only release tooling and evidence bindings. Founder actor, accepted candidate, scope and direct receipt provenance remain unchanged under policy 9.
 
 **Preparation review:** COMPLETE_INLINE
 
 **Preparation fingerprint:** NOT_READY
 
-**Unresolved findings:** Release gate comparison omits committed candidate work and public assets lack classification; proposed narrow correction awaits scope exception. Disposable database proof passes at f041353; application CI failed on a stale sign-out selector, repaired with focused replay passing. Current exact-head CI, guarded broad, protected delivery and affected production proof remain pending. Hosted profile migration presence is unproven. Final UI accepted at `8ad3a9b`.
+**Unresolved findings:** NONE
 
 **Established facts:** NONE
 
-No established-fact receipt is asserted before a commit-bound proof exists. The inline candidate review covers native composition, optional shared ports, zero service mutations, synthetic-only input checks, record/scope isolation, normal navigation and corrected source availability. Technical proof is recorded below. Founder design acceptance is satisfied at the named baseline. Guarded broad verification, exact-head CI and delivery remain unsatisfied gates; the preparation fingerprint stays NOT_READY until correct proof preflight exists.
+No established-fact receipt is asserted before a commit-bound proof exists. The inline candidate review covers native composition, optional shared ports, zero service mutations, synthetic-only input checks, record/scope isolation, normal navigation and corrected source availability. Technical proof is recorded below. Founder design acceptance remains sourced from the named baseline. Candidate-changing findings are resolved. Guarded broad verification and new exact-head CI are pending for the authorized gate slice; protected delivery and hosted profile migration proof remain delivery obligations, not executed PASS results.
 
 ## Steps
 
@@ -109,9 +109,9 @@ No established-fact receipt is asserted before a commit-bound proof exists. The 
 
 ## Current next safe action — approved delivery
 
-**Next safe action:** Final candidate `8ad3a9b` is accepted; see `final-approval.md` and `phase-2-delivery.md`. Record only genuine executed proof, run existing draft-PR/disposable database checks, and resolve the separately requested gate exception before guarded broad verification. Keep PR #64 draft/unmerged until gates pass. Complete the D-22 non-financial lifecycle, then close T09; T10/WP04 remain subsequent tasks. Original review/user work stays preserved.
+**Next safe action:** Ahmed approved the bounded shared-gate correction on 3 October 2026 and requested logo-branch integration/cleanup after merge. Policy 9 retains all protected checks. Complete proof preflight and frozen guarded local verification, new exact-head CI, protected review/merge and affected hosted proof. Keep the PR draft until technical gates pass. Preserve imported kit/user artwork and snapshot remaining logo branch work before retiring the task branches. T10/WP04 remain subsequent tasks.
 
-**Commands:** Final UI accepted at 8ad3a9b; final browser proof 7/7 PASS and 29 inspected views retained. Failed runs 37107608541 (80f6d18) and 37108899217 (cdf1b7f) are retained in phase-2-delivery.md. Run 37110602490 at f041353: selector, dependency audit and complete disposable database job PASS (upgrade, repeated reset, pgTAP, advisors, type parity, 17 integration, 8 authenticated browser, 44 security, cleanup). Application FAIL after 564 unit, 15 integration plus 2 skipped, 44 security, evaluation/load, 56 normal browser and 40/41 native cases PASS. Stale registration-case sign-out selector now follows Account; focused native replay 1/1 PASS, changed-test lint/format PASS. Earlier upload repair browser replay 4/4 PASS, fresh types/lint, Arabic desktop and four phone language/theme renders inspected. Updated design references and pack's nine allowlisted entries match source bytes. Unapplied gate proposal passes applicability and preserves five recorded CI predictions; new regression tests remain drafted/unexecuted, live policy unchanged. Read-only provider scope/plan inventory observed; schema query unavailable and hosted migration unproven. The existing suspension/catalog RPC finding is separately recorded. Fresh exact-head CI, guarded broad, protected delivery and affected production proof remain pending; no gate waived.
+**Commands:** Final UI accepted at 8ad3a9b; final browser proof 7/7 PASS and 29 inspected views retained. Failed runs 37107608541 (80f6d18) and 37108899217 (cdf1b7f) are retained in phase-2-delivery.md. Run 37110602490 at f041353: selector, dependency audit and complete disposable database job PASS (upgrade, repeated reset, pgTAP, advisors, type parity, 17 integration, 8 authenticated browser, 44 security, cleanup). Application FAIL after 564 unit, 15 integration plus 2 skipped, 44 security, evaluation/load, 56 normal browser and 40/41 native cases PASS. Stale registration-case sign-out selector now follows Account; focused native replay 1/1 PASS, changed-test lint/format PASS. Earlier upload repair browser replay 4/4 PASS, fresh types/lint, Arabic desktop and four phone language/theme renders inspected. Updated design references and pack's nine allowlisted entries match source bytes. Earlier unapplied gate proposal passed applicability and preserved five recorded CI predictions; current authorization and executed policy-9 regression proof supersede that held state. Read-only provider scope/plan inventory observed; schema query unavailable and hosted migration unproven. The existing suspension/catalog RPC finding is separately recorded. Exact-head CI at e3ab613 PASS in run 37112809678: all four required jobs, 56 normal and 41 native browser cases, complete database gate with eight authenticated browser cases, production build/client-secret scanning. Guarded local broad, protected delivery and affected production proof remain pending; no gate waived. Gate slice: first new regression run FAIL (49/60; dependency audit prediction could skip). Added conservative force-full patterns for newly classified paths. Replay 60/60 PASS, exit 0; policy-v9 and CI workflow validation PASS, exit 0. Five historical observations still replay to READY. Guarded broad/new exact-head CI NOT RUN for this gate slice.
 
 **Admin checkpoint proof:** Four unit files passed 52 tests; unchanged protected Admin security boundary passed 5. Eight unique normal browser cases passed across retained 7/8 plus visible-target 1/1 replay. Nine unique affected native cases passed across retained runs; final four theme/language matrices passed 4/4, followed by Arabic localized-target 2/2. Source/capture manifest binds 36 inspected JPEG views, including all eight desktop/phone language/theme pairs and loading, empty, blocked, forbidden, stale and unverified states. Fresh TypeScript, changed-file lint, boundaries and policy checks passed. Final packet-aware readiness passed (488 names, 119 links, 23 decisions, 113 task contracts); final secret scan passed for 2970 files. One detector pass found one status side border, corrected to a quiet full 1px border and inspected. Failures and replay limits remain recorded in `admin-checkpoint/checks.json`. No Admin backend, schema or durable persistence change; no broad, build, database, CI or production PASS asserted. Owned local staging verifies formatting, full diff and bindings; unrelated bounded-logo task text stays only in the worktree. Admin is now accepted; the next required stop is final product-wide acceptance.
 
@@ -308,3 +308,9 @@ Next safe action: present the saved leader checkpoint, wait for explicit Batch
 Leader approval, then execute P2-A in this same task/branch. Keep PR #64 draft/
 unmerged, owned loopback review available, unrelated logo concepts/original kit/
 task-record block intact, WP03-T09 in progress and WP04 held behind T10.
+
+## Authorized delivery-gate correction and logo cleanup
+
+Ahmed directly approved the prepared scope exception after the blocked handoff and asked to complete necessary work. This authorizes the bounded Git comparison, conservative asset/config/proxy classification, current-policy evidence binding and rejecting regressions while all WP00 task/product state stays closed. No CI workflow, provider, paid capacity or product capability is added.
+
+Ahmed also requested that the important logo-branch content survive cleanup. Inventory at logo head `89969da` proves all 94 files in the supplied imported kit match that branch. All 25 runtime logo/icon placements and the canonical source assets match their supplied bytes. The 33-file canonical integration subset includes the selected masters, entire icons directory, usage/integration guides, metadata and license/provenance. Additional render/export/artwork files remain in the supplied copy and must be preserved in a recoverable branch snapshot before any logo-worktree/branch removal; rejected exploration will not enter application main.

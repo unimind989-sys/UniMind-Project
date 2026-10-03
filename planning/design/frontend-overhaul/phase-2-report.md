@@ -24,14 +24,14 @@ simulated where the repository has no live implementation.
 
 ## Routes and shared components
 
-| Area | Implemented experience |
-| --- | --- |
-| `/` and Auth routes | Public hero, real product screenshots, steps, CTA/footer; compact registration, verification, consent and recovery; authenticated role routing |
-| `/learn` | One-time academic setup, current Study Shelf, Subjects search and contextual resume |
-| `/learn/[cohortId]/[unitId]` and Chat/Studio/Quiz children | Continuous Materials, Chat, Studio and contextual resource/evidence reading; existing six artifact choices and quiz/report behavior |
-| `/settings` | Account, editable Academic settings, Appearance and sign-out; preserved existing synthetic account/privacy controls |
-| `/batch-leader` and campaign child | Uploads/History/Account, mixed supported files, per-file progress/cancel/retry/receipts; upload finishes independently of processing |
-| `/admin` and all eight resource children | Overview, Content, Academics, Users and Operations around existing decisions, drafts and unavailable-state boundaries |
+| Area                                                       | Implemented experience                                                                                                                         |
+| ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/` and Auth routes                                        | Public hero, real product screenshots, steps, CTA/footer; compact registration, verification, consent and recovery; authenticated role routing |
+| `/learn`                                                   | One-time academic setup, current Study Shelf, Subjects search and contextual resume                                                            |
+| `/learn/[cohortId]/[unitId]` and Chat/Studio/Quiz children | Continuous Materials, Chat, Studio and contextual resource/evidence reading; existing six artifact choices and quiz/report behavior            |
+| `/settings`                                                | Account, editable Academic settings, Appearance and sign-out; preserved existing synthetic account/privacy controls                            |
+| `/batch-leader` and campaign child                         | Uploads/History/Account, mixed supported files, per-file progress/cancel/retry/receipts; upload finishes independently of processing           |
+| `/admin` and all eight resource children                   | Overview, Content, Academics, Users and Operations around existing decisions, drafts and unavailable-state boundaries                          |
 
 Shared `Brand`, `Appearance`, `AppShell`, product UI primitives and workspace/Admin
 composition replace competing treatments. Source is under `src/app/_components/`,
@@ -99,18 +99,24 @@ scan passed after archiving damaged ignored development declarations; its first
 failed invocation is retained. Readiness, secret scanning, complete owned diff,
 whitespace and nine-entry ZIP/source integrity checks passed.
 
-Fresh exact-head CI still must be observed on the final test/documentation
-candidate. Guarded local broad verification, protected review/merge and affected
+Exact-head [CI 37112809678](https://github.com/unimind989-sys/UniMind-Project/actions/runs/37112809678)
+passed all four required jobs at `e3ab613`, including all 56 normal, 41 native and
+eight authenticated database browser cases plus production build/client-secret
+scanning. Guarded local broad verification, protected review/merge and affected
 hosted proof remain separate release obligations. Passing CI does not repair the
-local gate or prove deployment.
+local gate or prove deployment. This report's latest status is an owned local
+handoff update after that green commit; it is not a new committed CI candidate.
 
 ## Release limits and separate follow-ups
 
 The local release gate compares Git commits in the wrong order and lacks public
-asset classification. A concrete unapplied correction is prepared in
-`E:/UniMind Project/.local/phase2-final/release-gate-correction.patch`. The separately
-requested scope decision remains pending under the user's no-WP00 guardrail;
-active policy and WP00 task state remain unchanged. All protected checks are kept.
+asset classification. The bounded correction was prepared in
+`E:/UniMind Project/.local/phase2-final/release-gate-correction.patch` and is now
+applied with rejecting regressions. Ahmed approved the bounded scope exception on 3 October. Policy 9 corrects the
+comparison and preserves conservative all-job proof for supported assets/config
+paths; unrelated unknown paths still block. All 60 gate regressions and policy/CI
+workflow validation pass. WP00 product/task state is unchanged. New exact-head CI
+and frozen local broad remain pending for this delivery slice.
 
 Existing suspended-account catalog RPC behavior is separately recorded in
 [delivery](phase-2-delivery.md); it predates the academic preference extension.
@@ -123,3 +129,11 @@ runbook owners. No Telegram or WP00 product work was reopened. WP03-T10 remains
 the next task before WP04. Original branch work, the supplied kit copy and unrelated
 logo exploration are preserved. No paid-provider activation or new financial
 exposure is authorized or claimed.
+
+## Logo branch preservation
+
+The imported kit matches logo head `89969da` for all 94 imported files. All 25
+runtime placements and canonical source assets match the supplied bytes. The
+canonical 33-file production source subset and license/provenance are integrated;
+extra exports and rejected exploration are preserved separately before branch
+retirement, as Ahmed requested. No new logo or visual approval is required.

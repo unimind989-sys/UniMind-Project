@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "policyVersion": 8,
+  "policyVersion": 9,
   "regressionCases": [
     "docs-only",
     "dependency-change",
@@ -17,7 +17,7 @@
       "candidate": "5cb38e01b96adf9eb100c3ec3d35ba4a2ad27686",
       "sourcePr": 46,
       "sourceUrl": "https://github.com/unimind989-sys/UniMind-Project/actions/runs/35799810641",
-      "replayedUnderPolicyVersion": 8,
+      "replayedUnderPolicyVersion": 9,
       "input": {
         "task": "WP03-T05",
         "pass": "actual-diff",
@@ -39,7 +39,7 @@
       "candidate": "bbc9380933b1adde438b7d2881587351d830cc8a",
       "sourcePr": 48,
       "sourceUrl": "https://github.com/unimind989-sys/UniMind-Project/actions/runs/35893819433",
-      "replayedUnderPolicyVersion": 8,
+      "replayedUnderPolicyVersion": 9,
       "input": {
         "task": "WP00-T13",
         "pass": "actual-diff",
@@ -80,7 +80,7 @@
       "candidate": "190f6132914f443b50a1d460b5db32f7d96769eb",
       "sourcePr": 50,
       "sourceUrl": "https://github.com/unimind989-sys/UniMind-Project/actions/runs/36045288034",
-      "replayedUnderPolicyVersion": 8,
+      "replayedUnderPolicyVersion": 9,
       "input": {
         "task": "WP03-T06",
         "pass": "actual-diff",
@@ -133,7 +133,7 @@
       "candidate": "c5d23ac6ebc5036eafb399e7db9c750032305215",
       "sourcePr": 53,
       "sourceUrl": "https://github.com/unimind989-sys/UniMind-Project/actions/runs/36138168844",
-      "replayedUnderPolicyVersion": 8,
+      "replayedUnderPolicyVersion": 9,
       "input": {
         "task": "WP00-T15",
         "pass": "actual-diff",
@@ -163,7 +163,7 @@
       "candidate": "8c61cf92409de11c7dd6de687a78a786aed2ada0",
       "sourcePr": 54,
       "sourceUrl": "https://github.com/unimind989-sys/UniMind-Project/actions/runs/36139600120",
-      "replayedUnderPolicyVersion": 8,
+      "replayedUnderPolicyVersion": 9,
       "input": {
         "task": "WP00-T15",
         "pass": "actual-diff",
