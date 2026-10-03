@@ -144,6 +144,16 @@ Admin Overview leads with decisions; Content groups Sources/Campaigns; Academics
 
 ## Approval and evidence
 
+### Public landing candidate — 3 October 2026
+
+Ahmed requested a premium landing page with modern animation and optional 3D, then confirmed "Use your strongest creative direction." The candidate retains the supplied Open Folio, exact English slogan, Manrope/Noto Sans Arabic, existing account routes and paired neutral themes. Its material presentation awaits a founder receipt; the previous approved product surfaces retain their existing status.
+
+The public `/` surface has a scoped marketing exception to the product's display-size, elevation and motion limits: a large two-line slogan, a dimensional folio, a blue-backed interactive workspace demonstration, an evidence diagram, an ordered study path and a blue closing field. Hero display caps at 96px, with 600 weight and −0.04em tracking; headings use 600 weight and −0.035em, with neutral Arabic tracking. The illustration uses fixed white paper, blue `#2458b8`, pale blue `#e8effb`, physical page-fold shading and offset shadows. Dark chrome uses existing semantic tokens with a `#233550` demonstration surround. These local materials do not redefine product tokens or alter supplied logo artwork.
+
+Motion assembles the folio once in 1100ms, tilts it with a fine pointer, and separates its layers on an explicit keyboard-accessible action. State changes use a 300ms preview transition and a 650ms folio transition with `cubic-bezier(0.16, 1, 0.3, 1)`. No continuous animation, scroll hijacking or added animation dependency. Reduced motion presents the same states immediately; offscreen/hidden pointer work is stopped and listeners/frames are cleaned up.
+
+Chat/Studio/Quiz demonstrate local sample interactions without generation, saving, private data or provider requests. The preview labels its sample content and limitations beside the working controls. Tabs wrap intrinsically under enlarged English/Arabic text. Below 850px the hero becomes a vertical composition; below 600px the material rail becomes a compact source row. Preserve 320px reflow, 200% text, roving tab focus, source disclosure, flashcard state and quiz feedback. Existing shared product rules remain unchanged outside this landing scope.
+
 Phase 1 approval covers this proposed system, role flows and sequence after the shell/student sample is shown. Phase 2 pauses at student, Batch Leader, Admin and final consistency rendered checkpoints. Record actual actor/time/candidate/route/state scope. An “okay” about missing assets is not design acceptance.
 
 The standalone proposal performs no real identity, upload, source, generation, account persistence or protected action. Its review toolbar is outside the proposed product flow. It neither replaces the full synthetic pack nor proves platform-wide WCAG/production PASS. Phase 1 evidence belongs in the [proposal README](planning/design/frontend-overhaul/README.md); implementation evidence belongs in the [student record](planning/design/frontend-overhaul/phase-2-student.md) and WP03-T09 record.
