@@ -10,7 +10,7 @@ import {
   type Locale,
 } from "./synthetic-fixtures";
 import { ProductLink } from "./product-ui";
-import { defaultUnitPath } from "./synthetic-fixtures";
+import { defaultUnitPath, defaultScope } from "./synthetic-fixtures";
 
 const actionNames = [
   "PUBLISH_UNIT",
@@ -82,8 +82,8 @@ export function ProductAdmin({
         candidateId: `sample-${action.id}`,
         action: actionNames[index]!,
         targetId: `a0000000-0000-4000-8000-${String(index + 1).padStart(12, "0")}`,
-        targetLabelEn: action.label[0] + " · synthetic Anatomy scope",
-        targetLabelAr: action.label[1] + " · نطاق تشريح تجريبي",
+        targetLabelEn: `${defaultScope.unitTitleEn} · ${defaultScope.cohortName}`,
+        targetLabelAr: `${defaultScope.unitTitleAr} · ${defaultScope.programNameAr} · ${defaultScope.levelNameAr} · ${defaultScope.termNameAr}`,
         currentState:
           current === "PENDING" || action.id === "retry"
             ? action.before
@@ -197,8 +197,10 @@ export function ProductAdmin({
         queue={queue}
         submitAction={submit}
         reloadAction={() => setQueueVersion((value) => value + 1)}
+        embedded
+        refreshOnSelect={false}
       />
-      <div style={{ padding: "1rem" }}>
+      <div>
         <ProductLink href={defaultUnitPath} locale={locale}>
           {locale === "ar" ? "معاينة الطالب" : "Preview student"}
         </ProductLink>

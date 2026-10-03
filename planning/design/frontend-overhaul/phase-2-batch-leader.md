@@ -1,7 +1,7 @@
 # Phase 2 Batch Leader implementation
 
-Status: implemented, focused proof and rendered review complete; explicit Batch
-Leader approval pending. Admin has not started.
+Status: implemented and approved by Ahmed at candidate `4c03b80`; see the
+[direct receipt](batch-leader-approval.md). Admin implementation is now authorized.
 Authority: [DESIGN](../../../DESIGN.md), the approved Phase 1 direction and
 [student approval](student-approval.md). Task WP03-T09; same branch; zero workers.
 
@@ -54,8 +54,8 @@ review with loading, error, empty, received and interruption states. Record exac
 failures/replays and reuse unaffected student proof. Broad product-wide and
 database/CI/delivery proof remain for the final stable accepted candidate.
 
-Required next checkpoint: rendered Batch Leader review and explicit approval
-before Admin implementation. Focused PASS below is not product-wide verification,
+The rendered Batch Leader checkpoint is approved. Required next checkpoint:
+rendered Admin review and explicit approval before final consistency. Focused PASS below is not product-wide verification,
 founder acceptance or permission to deliver this unfinished overhaul.
 
 ## Changed routes and components
@@ -158,8 +158,8 @@ one; this limitation is stated in the UI. No speculative endpoint was added.
 
 ## Next safe action
 
-Present this Batch Leader candidate, record explicit approval or requested changes,
-then start Admin only after approval. Keep PR #64 draft/unmerged, the native
+Ahmed approved this candidate at `4c03b80`; see the direct receipt above.
+The implemented Admin milestone now awaits its explicit rendered checkpoint. Keep PR #64 draft/unmerged, the native
 loopback review available and WP03-T09 in progress. Product-wide consistency,
 guarded broad proof, database/CI, affected production proof and final task closure
 remain later gates. Unrelated logo concepts, original kit and task-record block

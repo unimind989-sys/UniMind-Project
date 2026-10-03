@@ -1,5 +1,7 @@
 "use client";
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import adminStyles from "@/app/admin/admin.module.css";
 import {
   defaultScope,
   defaultUnitPath,
@@ -127,6 +129,7 @@ export function ProductCampaigns({ screen, locale, scenario }: Props) {
 
 export function ProductResource({ screen, locale }: Props) {
   const { state, update } = useProductServices();
+  const query = useSearchParams();
   const [step, setStep] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
   const [unitType, setUnitType] = useState("MODULE");
@@ -155,16 +158,68 @@ export function ProductResource({ screen, locale }: Props) {
       "حادثة جاهزية مصدر تجريبية معزولة. الاحتواء قد يخفي وحدة أو يغلق مجموعة أو يعطل ميزة مع حفظ التاريخ. لا تنبيه أو إشعار يرسل.",
     ],
   } as const;
+  if (resource === "cohorts" && query.get("view") === "users")
+    return (
+      <>
+        <section className={adminStyles.panel}>
+          <h2>{t("Assignment and access context", "سياق التكليف والوصول")}</h2>
+          <dl>
+            <div>
+              <dt>{t("Cohort", "المجموعة")}</dt>
+              <dd>
+                <bdi>{defaultScope.cohortName}</bdi>
+              </dd>
+            </div>
+            <div>
+              <dt>{t("Curriculum edition", "إصدار المنهج")}</dt>
+              <dd>
+                <bdi>{defaultScope.curriculumEdition}</bdi>
+              </dd>
+            </div>
+          </dl>
+          <p>
+            {t(
+              "Student access follows current membership and release. Batch Leader access follows an active campaign assignment and its expiry.",
+              "يعتمد وصول الطالب على العضوية والفتح الحاليين. ويعتمد وصول مسؤول الدفعة على تكليف فعال بالحملة ومدة صلاحيته.",
+            )}
+          </p>
+          <p>
+            {t(
+              "This fixed example provides context; individual user records are not available in this view.",
+              "يوضح هذا المثال الثابت السياق؛ لا تتوفر سجلات المستخدمين الفردية في هذا العرض.",
+            )}
+          </p>
+          <div className={adminStyles.actions}>
+            <ProductLink href="/admin/cohorts" locale={locale}>
+              {t("Review cohort configuration", "مراجعة إعداد المجموعة")}
+            </ProductLink>
+            <ProductLink href="/admin/campaigns" locale={locale}>
+              {t("Review campaign invitations", "مراجعة دعوات الحملات")}
+            </ProductLink>
+          </div>
+        </section>
+      </>
+    );
+  const summaryHeadings = {
+    sources: ["Source lifecycle example", "مثال دورة المصدر"],
+    jobs: ["Processing example", "مثال المعالجة"],
+    quality: ["Quality review example", "مثال مراجعة الجودة"],
+    usage: ["Usage and capacity", "الاستخدام والسعة"],
+    incidents: [
+      "Source-readiness incident example",
+      "مثال حادثة جاهزية المصدر",
+    ],
+  } as const;
   return (
     <>
       <p>
         {t(
-          "Synthetic resource view. Operations, configuration and processing are illustrative; no server resource is edited.",
-          "عرض مورد تجريبي. العمليات والإعدادات والمعالجة توضيحية؛ لا يعدل مورد على الخادم.",
+          "Fixed examples below show the existing resource workflow. Changes stay in this demo.",
+          "توضح الأمثلة الثابتة أدناه سير عمل المورد الحالي. تظل التغييرات داخل العرض التجريبي.",
         )}
       </p>
       {resource === "catalog" ? (
-        <section className={styles.panel}>
+        <section className={adminStyles.panel}>
           <h2>{t("Catalog configuration example", "مثال إعداد الدليل")}</h2>
           <p>
             {t(
@@ -219,7 +274,7 @@ export function ProductResource({ screen, locale }: Props) {
           ) : null}
         </section>
       ) : resource === "cohorts" ? (
-        <section className={styles.panel}>
+        <section className={adminStyles.panel}>
           <h2>{t("Cohort configuration example", "مثال إعداد المجموعة")}</h2>
           <p>
             <bdi>{defaultScope.cohortName}</bdi> ·{" "}
@@ -248,7 +303,7 @@ export function ProductResource({ screen, locale }: Props) {
           ) : null}
         </section>
       ) : resource === "campaigns" ? (
-        <section className={styles.panel}>
+        <section className={adminStyles.panel}>
           <h2>{t("Create campaign", "إنشاء حملة")}</h2>
           <p>
             {t(
@@ -280,7 +335,7 @@ export function ProductResource({ screen, locale }: Props) {
                   "أنشئت مسودة حملة محاكاة داخل التبويب.",
                 )}
               </Notice>
-              <label className={styles.check}>
+              <label className={adminStyles.check}>
                 <input
                   type="checkbox"
                   checked={confirmed}
@@ -318,8 +373,39 @@ export function ProductResource({ screen, locale }: Props) {
           ) : null}
         </section>
       ) : (
-        <section className={styles.panel}>
-          <h2>{text(resourceNames[resource], locale)}</h2>
+        <section className={adminStyles.panel}>
+          <h2>{text(summaryHeadings[resource], locale)}</h2>
+          <dl>
+            <div>
+              <dt>{t("Context", "السياق")}</dt>
+              <dd>
+                <bdi>{defaultScope.cohortName}</bdi> ·{" "}
+                {locale === "ar"
+                  ? defaultScope.unitTitleAr
+                  : defaultScope.unitTitleEn}
+              </dd>
+            </div>
+            <div>
+              <dt>{t("Example state", "حالة المثال")}</dt>
+              <dd>
+                {resource === "sources"
+                  ? t(
+                      "Failed versions remain isolated",
+                      "الإصدارات الفاشلة معزولة",
+                    )
+                  : resource === "jobs"
+                    ? t("Deletion verification pending", "تحقق الحذف معلق")
+                    : resource === "quality"
+                      ? t("Conflict needs review", "التعارض يحتاج مراجعة")
+                      : resource === "usage"
+                        ? t(
+                            "Providers disabled · paid budget zero",
+                            "المزودون معطلون · الميزانية المدفوعة صفر",
+                          )
+                        : t("Isolated for review", "معزولة للمراجعة")}
+              </dd>
+            </div>
+          </dl>
           <p>{text(summaries[resource], locale)}</p>
           {resource === "quality" ? (
             <ProductLink href={defaultUnitPath + "/chat"} locale={locale}>
@@ -335,7 +421,7 @@ export function ProductResource({ screen, locale }: Props) {
           ) : null}
         </section>
       )}
-      <div className={styles.actions}>
+      <div className={adminStyles.actions}>
         <ProductLink href={reviewBase + "/admin"} locale={locale}>
           {t("Open governed decisions", "فتح القرارات المنضبطة")}
         </ProductLink>

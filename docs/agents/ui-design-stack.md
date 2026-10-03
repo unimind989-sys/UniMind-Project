@@ -4,7 +4,7 @@ Every frontend task starts with the lightweight `frontend-quality-floor.md`. Thi
 
 ## Decision
 
-Current UniMind visual authority is [root DESIGN](../../DESIGN.md). Ahmed approved Phase 1 `ab568b6` and the student checkpoint `3a2a95d`; their receipts live in `planning/design/frontend-overhaul/`. The approved paired neutral theme world governs the Batch Leader implementation, whose rendered review is complete and explicit approval remains pending. Admin and final consistency follow their explicit approvals. Surface/history documents refer to the root contract and retain old receipts only as provenance. This request authorizes neither additional tools/dependencies nor new workers.
+Current UniMind visual authority is [root DESIGN](../../DESIGN.md). Ahmed approved Phase 1 `ab568b6` and the student checkpoint `3a2a95d`; their receipts live in `planning/design/frontend-overhaul/`. The approved paired neutral theme world governs the Batch Leader implementation, approved by Ahmed at `4c03b80`. Admin has focused proof and a rendered candidate; its explicit acceptance and final consistency acceptance remain required. Surface/history documents refer to the root contract and retain old receipts only as provenance. This request authorizes neither additional tools/dependencies nor new workers.
 
 | Layer | Choice | Responsibility |
 | --- | --- | --- |

@@ -1,0 +1,684 @@
+{
+  "generatedAt": "2026-10-03T00:12:34.737Z",
+  "previousAcceptedCandidate": "4c03b80",
+  "previousReceipt": "../batch-leader-approval.md",
+  "binding": "Final runtime/test/design source SHA-256 values bind this local Admin candidate. Representative viewport captures are not whole-platform acceptance. Duplicate filenames retain the latest inspected capture. Final typography, spacing and localized-target changes were replayed on their affected frames. Later relevant source edits invalidate affected proof. Actual JPEG raster dimensions can differ from CSS viewport because of the in-app capture transform.",
+  "origin": "http://127.0.0.1:3101",
+  "data": "Fixed invented document-local accounts, academic context, decisions and drafts; no real accounts, sources or services.",
+  "captures": [
+    {
+      "file": "desktop-en-light-overview.jpg",
+      "state": "Final shared frame; actionable Hide selected",
+      "height": 1000,
+      "locale": "en",
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "light",
+      "url": "http://127.0.0.1:3101/admin?lang=en",
+      "width": 1440,
+      "sha256": "08bc7fc13992179022068b699d9b9ebdcc60e69ec87089991849322fd0b3e1b0",
+      "raster": {
+        "width": 1430,
+        "height": 993
+      }
+    },
+    {
+      "file": "desktop-en-light-sources.jpg",
+      "state": "Fixed lifecycle example; no live processing",
+      "height": 1000,
+      "locale": "en",
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "light",
+      "url": "http://127.0.0.1:3101/admin/sources?lang=en",
+      "width": 1440,
+      "sha256": "fa35f246877a4584557d572e8857dd76a53e6b0950fd81c90b28aa3607158855",
+      "raster": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "file": "desktop-en-light-campaign-draft.jpg",
+      "state": "Final draft and invitation control spacing",
+      "height": 1000,
+      "locale": "en",
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "light",
+      "url": "http://127.0.0.1:3101/admin/campaigns?lang=en",
+      "width": 1440,
+      "sha256": "c818ee7bcec71970fce20384739abcf6142d727a10973356fd8a26de8ea54fa4",
+      "raster": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "file": "desktop-en-light-catalog-review.jpg",
+      "state": "Final spacing in the existing draft review",
+      "height": 1000,
+      "locale": "en",
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "light",
+      "url": "http://127.0.0.1:3101/admin/catalog?lang=en",
+      "width": 1440,
+      "sha256": "18aa3f3002c70a1768c9783f66886a98e16433370202af2fb190a43ef728a488",
+      "raster": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "file": "desktop-en-light-cohorts.jpg",
+      "state": "Final cohort draft control spacing",
+      "height": 1000,
+      "locale": "en",
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "light",
+      "url": "http://127.0.0.1:3101/admin/cohorts?lang=en",
+      "width": 1440,
+      "sha256": "131c8cf636dc9d28822366c7c359028be2ebba8f5525c60bc4a44d9807fc8e70",
+      "raster": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "file": "desktop-en-light-users.jpg",
+      "state": "Existing assignment context only; no user directory/editor",
+      "height": 1000,
+      "locale": "en",
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "light",
+      "url": "http://127.0.0.1:3101/admin/cohorts?view=users&lang=en",
+      "width": 1440,
+      "sha256": "7eec23deab102f5031950ac414e207e80ffc5423427709f7825e3e4e192d998d",
+      "raster": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "file": "desktop-en-light-jobs.jpg",
+      "state": "Fixed processing example; deletion verification pending",
+      "height": 1000,
+      "locale": "en",
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "light",
+      "url": "http://127.0.0.1:3101/admin/jobs?lang=en",
+      "width": 1440,
+      "sha256": "3f1284f4f5abf5a6f3647425a631475316de21ddd84caca7bc2ef2837b9e1945",
+      "raster": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "file": "desktop-en-light-quality.jpg",
+      "state": "Fixed conflict and grounding review example",
+      "height": 1000,
+      "locale": "en",
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "light",
+      "url": "http://127.0.0.1:3101/admin/quality?lang=en",
+      "width": 1440,
+      "sha256": "fb35b5789a5ed8475fdd2b415ca9463868bca228b4aac7071dc9ec30f2255792",
+      "raster": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "file": "desktop-en-light-usage.jpg",
+      "state": "Providers disabled; paid budget zero",
+      "height": 1000,
+      "locale": "en",
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "light",
+      "url": "http://127.0.0.1:3101/admin/usage?lang=en",
+      "width": 1440,
+      "sha256": "9c25c5ca6d77d1efcf7bced1e66c8beb8460e58979da7f4abe68c5c106d6a32a",
+      "raster": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "file": "desktop-en-light-incidents.jpg",
+      "state": "Fixed isolated readiness incident; no alerts sent",
+      "height": 1000,
+      "locale": "en",
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "light",
+      "url": "http://127.0.0.1:3101/admin/incidents?lang=en",
+      "width": 1440,
+      "sha256": "950466042fb40d42c5eda4fd9e9fcc854202721815f38138aedbb7a85b3a4d24",
+      "raster": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "file": "desktop-en-dark-overview.jpg",
+      "state": "Same decision structure in Dark theme",
+      "height": 1000,
+      "locale": "en",
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "dark",
+      "url": "http://127.0.0.1:3101/admin?lang=en",
+      "width": 1440,
+      "sha256": "6da5dcd6338a4e3eae8f1379b0f4a1308c553075c8cc43b2e36ba77f9aa33bfe",
+      "raster": {
+        "width": 1430,
+        "height": 993
+      }
+    },
+    {
+      "file": "desktop-en-dark-confirmation.jpg",
+      "state": "Scrolled exact-target review: consequence, ID, states, reason and cancel",
+      "height": 1000,
+      "locale": "en",
+      "overflow": false,
+      "scrollY": 319,
+      "theme": "dark",
+      "url": "http://127.0.0.1:3101/admin?lang=en",
+      "width": 1440,
+      "sha256": "5e69e494321c2f61184fe10fdd17b13cdb900847483cf65ffb1ee701d6a02302",
+      "raster": {
+        "width": 1430,
+        "height": 993
+      }
+    },
+    {
+      "file": "desktop-en-dark-hold-review.jpg",
+      "state": "Scrolled hold review with expiry, attestation and separate-founder consequence",
+      "height": 1000,
+      "locale": "en",
+      "overflow": false,
+      "scrollY": 665,
+      "theme": "dark",
+      "url": "http://127.0.0.1:3101/admin?lang=en",
+      "width": 1440,
+      "sha256": "3f0bc473c849fcab8578bbaad234738ada5cc1677dea8f2bbce56dbc23075216",
+      "raster": {
+        "width": 1430,
+        "height": 993
+      }
+    },
+    {
+      "file": "desktop-en-dark-awaiting-founder.jpg",
+      "state": "Local mock request recorded; distinct confirmation still required",
+      "height": 1000,
+      "locale": "en",
+      "overflow": false,
+      "scrollY": 860,
+      "theme": "dark",
+      "url": "http://127.0.0.1:3101/admin?lang=en",
+      "width": 1440,
+      "sha256": "4d2e5b603a7cacc0f95d99d2ce50418550973954ecd29c96e58ae22845c39dcf",
+      "raster": {
+        "width": 1430,
+        "height": 993
+      }
+    },
+    {
+      "file": "desktop-en-dark-account.jpg",
+      "state": "System/Light/Dark and existing Account controls",
+      "height": 1000,
+      "locale": "en",
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "dark",
+      "url": "http://127.0.0.1:3101/settings?lang=en",
+      "width": 1440,
+      "sha256": "855f807dd23981cae8adeff68178afed7c2be6253fc4cd6c81a24856372fe08b",
+      "raster": {
+        "width": 1430,
+        "height": 993
+      }
+    },
+    {
+      "file": "mobile-ar-dark-account.jpg",
+      "state": "Arabic narrow Account; supplied compact brand",
+      "height": 900,
+      "locale": "ar",
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "dark",
+      "url": "http://127.0.0.1:3101/settings?lang=ar",
+      "width": 390,
+      "sha256": "fd3bfd3b82146a0400fba92cb08fb314a6ccf1e65e8aebf926768a5756c62905",
+      "raster": {
+        "width": 380,
+        "height": 877
+      }
+    },
+    {
+      "file": "mobile-ar-dark-menu.jpg",
+      "state": "Open five-section menu with Account entry and non-mirrored compact logo",
+      "height": 900,
+      "locale": "ar",
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "dark",
+      "url": "http://127.0.0.1:3101/settings?lang=ar",
+      "width": 390,
+      "sha256": "2fc293ab850a730475f537595c5fd3244a674631d95e9a3aba00d5362cb9a0d1",
+      "raster": {
+        "width": 380,
+        "height": 877
+      }
+    },
+    {
+      "file": "mobile-ar-dark-overview.jpg",
+      "state": "Final localized target context without mixed-direction label ambiguity",
+      "height": 900,
+      "locale": "ar",
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "dark",
+      "url": "http://127.0.0.1:3101/admin?lang=ar",
+      "width": 390,
+      "sha256": "847e636c436e8efe0fe063715021cd0c409ea086d04b795e46780a40c3116cb3",
+      "raster": {
+        "width": 380,
+        "height": 877
+      }
+    },
+    {
+      "file": "mobile-ar-dark-sources.jpg",
+      "state": "Narrow Content section and Sources/Campaigns navigation",
+      "height": 900,
+      "locale": "ar",
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "dark",
+      "url": "http://127.0.0.1:3101/admin/sources?lang=ar",
+      "width": 390,
+      "sha256": "4801f495a2b408a144345bdad663023376793a277db205146de8d11e20f45a4e",
+      "raster": {
+        "width": 380,
+        "height": 877
+      }
+    },
+    {
+      "file": "mobile-ar-dark-campaigns.jpg",
+      "state": "Fixed campaign workflow at phone width",
+      "height": 900,
+      "locale": "ar",
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "dark",
+      "url": "http://127.0.0.1:3101/admin/campaigns?lang=ar",
+      "width": 390,
+      "sha256": "17055ea63a3f4feef88b447d6fb39ccdebf3a3450393338658f0a14ec243ddfc",
+      "raster": {
+        "width": 380,
+        "height": 877
+      }
+    },
+    {
+      "file": "mobile-ar-dark-catalog.jpg",
+      "state": "Narrow academic terminology draft controls",
+      "height": 900,
+      "locale": "ar",
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "dark",
+      "url": "http://127.0.0.1:3101/admin/catalog?lang=ar",
+      "width": 390,
+      "sha256": "6c5280661d311a7129bd8d425186b45a857e9f98caab0a451e5efaa6abf00193",
+      "raster": {
+        "width": 380,
+        "height": 877
+      }
+    },
+    {
+      "file": "mobile-ar-dark-users.jpg",
+      "state": "Narrow assignment context and links to existing resources",
+      "height": 900,
+      "locale": "ar",
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "dark",
+      "url": "http://127.0.0.1:3101/admin/cohorts?view=users&lang=ar",
+      "width": 390,
+      "sha256": "5f343b4f682cc11bc539296d286f90e0c441f6aa9c87e646b29ebf71714757dc",
+      "raster": {
+        "width": 390,
+        "height": 900
+      }
+    },
+    {
+      "file": "mobile-ar-dark-jobs.jpg",
+      "state": "Narrow Operations navigation and processing example",
+      "height": 900,
+      "locale": "ar",
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "dark",
+      "url": "http://127.0.0.1:3101/admin/jobs?lang=ar",
+      "width": 390,
+      "sha256": "2b75aa28868c3e2252b58917e72d261f0b32d559113b2d93d2c094b375528236",
+      "raster": {
+        "width": 380,
+        "height": 877
+      }
+    },
+    {
+      "file": "mobile-en-light-overview.jpg",
+      "state": "360px Light overview and native decision selector",
+      "height": 900,
+      "locale": "en",
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "light",
+      "url": "http://127.0.0.1:3101/admin?lang=en",
+      "width": 360,
+      "sha256": "1e40df41e7a804b1cb2cf9dbfe75a9e0eb4022de6af6defc29189caf5adf4fb2",
+      "raster": {
+        "width": 350,
+        "height": 875
+      }
+    },
+    {
+      "file": "mobile-en-light-confirmation.jpg",
+      "state": "Scrolled exact-target consequence, reason and controls",
+      "height": 900,
+      "locale": "en",
+      "overflow": false,
+      "scrollY": 894,
+      "theme": "light",
+      "url": "http://127.0.0.1:3101/admin?lang=en",
+      "width": 360,
+      "sha256": "4557dd9cfeb922913d746077cce7a872184d951286a45a44dbdf921d37f86e47",
+      "raster": {
+        "width": 350,
+        "height": 875
+      }
+    },
+    {
+      "file": "mobile-en-light-blocked.jpg",
+      "state": "Fresh readiness blocks all example decisions",
+      "height": 900,
+      "locale": "en",
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "light",
+      "url": "http://127.0.0.1:3101/admin?fixture=blocked&lang=en",
+      "width": 360,
+      "sha256": "0eed23cc0647a7b2f69a5d7a9fd083766b71773952ac313c588c90b631fc73a7",
+      "raster": {
+        "width": 350,
+        "height": 875
+      }
+    },
+    {
+      "file": "mobile-en-light-empty.jpg",
+      "state": "No waiting decisions; safe context retained",
+      "height": 900,
+      "locale": "en",
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "light",
+      "url": "http://127.0.0.1:3101/admin?fixture=empty&lang=en",
+      "width": 360,
+      "sha256": "0ede730077a0d5cb911727ef83eb4895ef910e677f1757772658ba2413c2b5e6",
+      "raster": {
+        "width": 360,
+        "height": 900
+      }
+    },
+    {
+      "file": "mobile-en-light-unavailable.jpg",
+      "state": "Queue unavailable; no action can be recorded",
+      "height": 900,
+      "locale": "en",
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "light",
+      "url": "http://127.0.0.1:3101/admin?fixture=error-page&lang=en",
+      "width": 360,
+      "sha256": "489725addb0851fc3478b2f74966cb955d5874fad4bf7c9759cd7fd99a3f2f94",
+      "raster": {
+        "width": 360,
+        "height": 900
+      }
+    },
+    {
+      "file": "mobile-en-light-forbidden.jpg",
+      "state": "Caller denial exposes no decision details",
+      "height": 900,
+      "locale": "en",
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "light",
+      "url": "http://127.0.0.1:3101/admin?fixture=forbidden&lang=en",
+      "width": 360,
+      "sha256": "d8873ab40fd39504b320f945275430c40b74dc7afac9853389eafe78f47014f4",
+      "raster": {
+        "width": 360,
+        "height": 900
+      }
+    },
+    {
+      "file": "mobile-en-light-stale-result.jpg",
+      "state": "Scrolled stale result: current-state reload, preserved scoped review",
+      "height": 900,
+      "locale": "en",
+      "overflow": false,
+      "scrollY": 894,
+      "theme": "light",
+      "url": "http://127.0.0.1:3101/admin?fixture=stale&lang=en",
+      "width": 360,
+      "sha256": "d63d325fee1683fc705a0ac7cc682717849e659127aa90d1252121fcf9884833",
+      "raster": {
+        "width": 350,
+        "height": 875
+      }
+    },
+    {
+      "file": "mobile-en-light-unverified-result.jpg",
+      "state": "Scrolled outcome cannot be verified; reload required before retry",
+      "height": 900,
+      "locale": "en",
+      "overflow": false,
+      "scrollY": 894,
+      "theme": "light",
+      "url": "http://127.0.0.1:3101/admin?fixture=error&lang=en",
+      "width": 360,
+      "sha256": "5cbec442d4a988228614a840af67cea38303773f0a7ad905c7f4333e1b8f5768",
+      "raster": {
+        "width": 350,
+        "height": 875
+      }
+    },
+    {
+      "file": "mobile-en-light-loading.jpg",
+      "state": "Known Admin frame while the fixed decision example loads",
+      "height": 900,
+      "locale": "en",
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "light",
+      "url": "http://127.0.0.1:3101/admin?fixture=loading&lang=en",
+      "width": 360,
+      "sha256": "a9100db9d1e833f90b923639e8e743e3d341c77f64d16cdd36e40c596c71be00",
+      "raster": {
+        "width": 360,
+        "height": 900
+      }
+    },
+    {
+      "file": "desktop-ar-light-overview.jpg",
+      "state": "Final Arabic desktop Light overview",
+      "height": 1000,
+      "locale": "ar",
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "light",
+      "url": "http://127.0.0.1:3101/admin?lang=ar",
+      "width": 1440,
+      "sha256": "76619058724a61d784ea63a6c25cff01bc3f414219ff81c77ad501a2765f35c0",
+      "raster": {
+        "width": 1430,
+        "height": 993
+      }
+    },
+    {
+      "file": "desktop-ar-dark-overview.jpg",
+      "state": "Final Arabic desktop Dark overview",
+      "height": 1000,
+      "locale": "ar",
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "dark",
+      "url": "http://127.0.0.1:3101/admin?lang=ar",
+      "width": 1440,
+      "sha256": "f901c77047b1cf64fda15e4fbc293c9f8e84431bf9024b8a43f10de384257a1a",
+      "raster": {
+        "width": 1430,
+        "height": 993
+      }
+    },
+    {
+      "file": "mobile-en-dark-overview.jpg",
+      "state": "Final English phone Dark overview",
+      "height": 900,
+      "locale": "en",
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "dark",
+      "url": "http://127.0.0.1:3101/admin?lang=en",
+      "width": 390,
+      "sha256": "ac54d1280a06cdf2d622f5f4505a0fb478b8111fb2c3bd0d76db88f21369847f",
+      "raster": {
+        "width": 380,
+        "height": 877
+      }
+    },
+    {
+      "file": "mobile-ar-light-overview.jpg",
+      "state": "Final Arabic phone Light overview",
+      "height": 900,
+      "locale": "ar",
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "light",
+      "url": "http://127.0.0.1:3101/admin?lang=ar",
+      "width": 390,
+      "sha256": "a2039878bf1a9cab1923a4b5892cce769cb0da0a50793e3e4af3008a0ece47c7",
+      "raster": {
+        "width": 380,
+        "height": 877
+      }
+    }
+  ],
+  "sources": [
+    {
+      "path": "DESIGN.md",
+      "sha256": "311292b345d6acd2618481997d6648c04beb81e371e3b058a79e479ee12b2cd6"
+    },
+    {
+      "path": "PRODUCT.md",
+      "sha256": "8b9dee74d06c617181b520c75fdb52e7d6c9ea000be2f18118e80b77c41ecfa7"
+    },
+    {
+      "path": "src/app/_components/app-shell.module.css",
+      "sha256": "f47b49d04f71fed98f8d572e5692d147c01aee9357332a950e2539c11e7ecc38"
+    },
+    {
+      "path": "src/app/_components/app-shell.tsx",
+      "sha256": "21ded948aba1ee5afcbe77dbc1d474f5ce71266a190f61630bee63d0ee1a07f2"
+    },
+    {
+      "path": "src/app/_components/brand.tsx",
+      "sha256": "9a9028dde2bd536e0225d6c26c9fb4573888d0654faff59ac67d16f98fef3576"
+    },
+    {
+      "path": "src/app/_components/product-admin.tsx",
+      "sha256": "851a4246b7eee6070f146d0b8d5281db8bb2d67e1e0022144cba863a29571730"
+    },
+    {
+      "path": "src/app/_components/product-native-page.tsx",
+      "sha256": "13b7b0fad3acc1833a6a05c5f9c037ed6c55b1266c4ce59fd2ff6264d13127c0"
+    },
+    {
+      "path": "src/app/_components/product-operations.tsx",
+      "sha256": "3eda706abb524388bb3a83e79eeda91189dd4b4a64f7a32c6c9281696fb1aa6e"
+    },
+    {
+      "path": "src/app/_components/product.module.css",
+      "sha256": "47a873440190f98f52bbbc2259a97ee545b6ee2ab84b1e7322090c7191540d17"
+    },
+    {
+      "path": "src/app/admin/[resource]/page.tsx",
+      "sha256": "9789bc8a704c8b4d883da89c3c357c380a35d2ae8a5b224c6a20d2e8b6aec0dd"
+    },
+    {
+      "path": "src/app/admin/_components/admin-decision-queue.tsx",
+      "sha256": "c8277e7bc79d9af2161ad2b167704d751f0631b4e735adb6473f74db1db4e0f4"
+    },
+    {
+      "path": "src/app/admin/_components/admin-workspace.tsx",
+      "sha256": "6b300ef0d2fe74584b3c6a049599f296ec9221ba5eaa1ebfe0b24bbdb00324b7"
+    },
+    {
+      "path": "src/app/admin/actions.ts",
+      "sha256": "8b280aa00b2ecfa97e2cd8d4d465b5f830d02413a3d843124099b4f2e68c7eb9"
+    },
+    {
+      "path": "src/app/admin/admin.module.css",
+      "sha256": "415bfca46829016226f45c0481b6b95f7f474dfc9b2b3ac2b2cba1dbbca78063"
+    },
+    {
+      "path": "src/app/admin/page.tsx",
+      "sha256": "7fa8e1339d6cad6f335883039d4b7ab4f1873831179bf69250cf576670d41655"
+    },
+    {
+      "path": "src/app/globals.css",
+      "sha256": "9a65d2b023bfe04f14c38d16543a638b3dad0ff6f5d0931e0c5a8d8a2281e9cb"
+    },
+    {
+      "path": "src/app/layout.tsx",
+      "sha256": "5bb2fe2d034679c3d106a86f0b067edb7846a741765cacf510e693155dc8c514"
+    },
+    {
+      "path": "src/lib/admin/admin-actions.application.ts",
+      "sha256": "264eb50e43cb596c4c77199cac0e2564b30c4c0ed9b828d4d633453c4e980330"
+    },
+    {
+      "path": "src/lib/admin/admin-actions.domain.ts",
+      "sha256": "d240cd050f33478d0fafb3d9a156bdc0ea7a49b0817db49b813f04afb52c3435"
+    },
+    {
+      "path": "src/lib/i18n/admin-copy.ts",
+      "sha256": "8c398c6c288a4ce16ef275420f15f31f974d56cf996a6003cb3de12844fb1008"
+    },
+    {
+      "path": "src/lib/theme/theme.application.ts",
+      "sha256": "49c894e8d89e61fbd85f7534de06ee596eb0ce316c39310670f2cd7e09abc749"
+    },
+    {
+      "path": "src/lib/theme/theme.domain.ts",
+      "sha256": "32c7d632bb5032b5c3656cae40855402c5c3d053be1cf8bae9d65a89c1e00399"
+    },
+    {
+      "path": "tests/e2e/admin-decision-queue.spec.ts",
+      "sha256": "2aa8ca7f420a0c703b9a3a92f8049bd90e88ac628cb9ed7f7e584c9af94bef12"
+    },
+    {
+      "path": "tests/e2e/native-product-demo.spec.ts",
+      "sha256": "15c28c9e5cb57e8d2cb1d55c3fa26e1b51d889e2d8cf1ece790e26027016d459"
+    }
+  ]
+}

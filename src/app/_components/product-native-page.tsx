@@ -24,6 +24,7 @@ import type { WorkspaceScope } from "@/lib/workspace/workspace.application";
 import { useProductServices } from "./product-services";
 import { ProductAuth } from "./product-auth";
 import { ProductAdmin } from "./product-admin";
+import { AdminWorkspace } from "@/app/admin/_components/admin-workspace";
 import { ProductCollection, makeDemoCampaign } from "./product-collection";
 import { LeaderHome } from "@/app/batch-leader/_components/leader-home";
 import { ProductCampaigns, ProductResource } from "./product-operations";
@@ -379,6 +380,34 @@ export function ProductNativePage({
     );
   }
   if (screen === "catalog" && standalone) return content;
+  if ((state.role === "admin" || state.role === "second-admin") && !scope) {
+    if (screen === "settings")
+      return (
+        <AppShell
+          locale={locale}
+          role="admin"
+          synthetic
+          title={t("Account", "الحساب")}
+        >
+          <h1>{t("Account", "الحساب")}</h1>
+          {content}
+        </AppShell>
+      );
+    return (
+      <AdminWorkspace
+        locale={locale}
+        synthetic
+        actions={
+          <Button variant="quiet" onClick={signedOut}>
+            {t("Sign out", "تسجيل الخروج")}
+          </Button>
+        }
+        resource={screen.startsWith("admin-") ? screen.slice(6) : undefined}
+      >
+        {content}
+      </AdminWorkspace>
+    );
+  }
   if (state.role === "leader" && !scope) {
     if (
       screen === "campaign-list" &&
@@ -557,7 +586,7 @@ function ProductSettings({
   const { state, update } = useProductServices();
   const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
   const sectionClass =
-    state.role === "leader" ? accountStyles.section : styles.panel;
+    state.role === "student" ? styles.panel : accountStyles.section;
   return (
     <>
       {state.lastStudyPath ? (

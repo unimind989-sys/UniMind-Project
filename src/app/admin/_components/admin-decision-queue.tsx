@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-import type { Route } from "next";
 import { useRouter } from "next/navigation";
 import {
   useActionState,
@@ -23,17 +21,7 @@ import { getTextDirection, type Locale } from "@/lib/i18n/locale";
 
 import { submitAdminAction } from "../actions";
 import styles from "../admin.module.css";
-
-const resourceKeys = [
-  "catalog",
-  "cohorts",
-  "campaigns",
-  "sources",
-  "jobs",
-  "quality",
-  "usage",
-  "incidents",
-] as const;
+import { AdminWorkspace } from "./admin-workspace";
 
 function candidateState(candidate: AdminActionCandidate, locale: Locale) {
   if (candidate.commandState === "PENDING_SECOND_CONFIRMATION") {
@@ -175,10 +163,10 @@ function ActionPanel({
     >
       <div className={styles.detailHeading}>
         <div>
-          <p className={styles.actionName}>{copy.actions[candidate.action]}</p>
           <h2 id="decision-detail-heading" dir="auto">
             {candidateLabel(candidate, locale)}
           </h2>
+          <p className={styles.actionName}>{copy.actions[candidate.action]}</p>
         </div>
         <span
           className={styles.statusCue}
@@ -186,7 +174,6 @@ function ActionPanel({
             blocked ? "blocked" : secondConfirmation ? "pending" : "ready"
           }
         >
-          <span aria-hidden="true" className={styles.statusMark} />
           {candidateState(candidate, locale)}
         </span>
       </div>
@@ -213,17 +200,11 @@ function ActionPanel({
       <div className={styles.readiness}>
         <h3>{copy.readiness}</h3>
         {candidate.failedPredicates.length === 0 ? (
-          <p className={styles.readyState}>
-            <span aria-hidden="true" className={styles.statusMark} />
-            {copy.ready}
-          </p>
+          <p className={styles.readyState}>{copy.ready}</p>
         ) : (
           <ul>
             {candidate.failedPredicates.map((predicate) => (
-              <li key={predicate}>
-                <span aria-hidden="true" className={styles.blockedMark} />
-                {predicateLabels[predicate] ?? predicate}
-              </li>
+              <li key={predicate}>{predicateLabels[predicate] ?? predicate}</li>
             ))}
           </ul>
         )}
@@ -450,12 +431,16 @@ export function AdminDecisionQueue({
   submitAction = submitAdminAction,
   syntheticPreview = false,
   reloadAction,
+  embedded = false,
+  refreshOnSelect = true,
 }: Readonly<{
   initialLocale: Locale;
   queue: AdminQueueState;
   submitAction?: typeof submitAdminAction;
   syntheticPreview?: boolean;
   reloadAction?: () => void;
+  embedded?: boolean;
+  refreshOnSelect?: boolean;
 }>) {
   const router = useRouter();
   const [refreshing, startRefresh] = useTransition();
@@ -463,218 +448,140 @@ export function AdminDecisionQueue({
   const copy = getAdminCopy(locale);
   const direction = getTextDirection(locale);
   const candidates = queue.status === "READY" ? queue.candidates : [];
+  const firstCandidate =
+    candidates.find(
+      (candidate) =>
+        candidate.failedPredicates.length === 0 &&
+        candidate.commandState !== "PENDING_OWNER_REVIEW",
+    ) ?? candidates[0];
   const [selectedId, setSelectedId] = useState(
-    candidates[0]?.candidateId ?? "",
+    firstCandidate?.candidateId ?? "",
   );
   const selected =
     candidates.find((candidate) => candidate.candidateId === selectedId) ??
-    candidates[0] ??
+    firstCandidate ??
     null;
-
   useEffect(() => {
     document.documentElement.lang = locale;
     document.documentElement.dir = direction;
   }, [direction, locale]);
-
   function selectCandidate(candidateId: string) {
     setSelectedId(candidateId);
-    if (!syntheticPreview) startRefresh(() => router.refresh());
+    if (!syntheticPreview && refreshOnSelect)
+      startRefresh(() => router.refresh());
   }
-
-  return (
-    <main className={styles.shell} lang={locale} dir={direction}>
-      <a className={styles.skipLink} href="#decision-list">
-        {locale === "ar" ? "انتقل إلى قائمة القرارات" : "Skip to decisions"}
-      </a>
-      <aside className={styles.rail} aria-label={copy.resourceHeading}>
-        <Link
-          className={styles.brand}
-          href={
-            `${syntheticPreview ? "/preview/admin" : "/admin"}?lang=${locale}` as Route
-          }
-        >
-          <span className={styles.brandMark} aria-hidden="true">
-            U
-          </span>
-          <span>UniMind</span>
-        </Link>
-        <h2>{copy.resourceHeading}</h2>
-        <nav aria-label={copy.resourceHeading} tabIndex={0}>
-          <ul>
-            {resourceKeys.map((resource) => (
-              <li key={resource}>
-                {syntheticPreview ? (
-                  <span className={styles.resourceLink}>
-                    <span className={styles.navMark} aria-hidden="true" />
-                    {copy.resources[resource]}
-                  </span>
-                ) : (
-                  <Link
-                    href={`/admin/${resource}?lang=${locale}` as Route}
-                    className={styles.resourceLink}
-                  >
-                    <span className={styles.navMark} aria-hidden="true" />
-                    {copy.resources[resource]}
-                  </Link>
-                )}
-              </li>
-            ))}
-          </ul>
-        </nav>
-        <p className={styles.syntheticBoundary}>{copy.syntheticOnly}</p>
-      </aside>
-
-      <div className={styles.workspace}>
-        <header className={styles.topBar}>
-          <p>{locale === "ar" ? "تشغيل النظام" : "Operate"}</p>
-          <nav className={styles.localeSwitch} aria-label={copy.language}>
-            <Link
-              href={
-                `${syntheticPreview ? "/preview/admin" : "/admin"}?lang=en` as Route
-              }
-              aria-current={locale === "en" ? "page" : undefined}
-            >
-              EN
-            </Link>
-            <Link
-              href={
-                `${syntheticPreview ? "/preview/admin" : "/admin"}?lang=ar` as Route
-              }
-              aria-current={locale === "ar" ? "page" : undefined}
-            >
-              ع
-            </Link>
-          </nav>
-        </header>
-
-        <div className={styles.content}>
-          <header className={styles.pageHeading}>
-            <div>
-              <h1>{copy.pageTitle}</h1>
-              <p>{copy.pageDescription}</p>
-            </div>
-            {queue.status === "READY" && (
-              <span className={styles.queueCount}>
-                <span className={styles.countValue}>{candidates.length}</span>
-                <span>{locale === "ar" ? "قرارات" : "decisions"}</span>
+  const body = (
+    <div className={styles.queue}>
+      {queue.status === "FORBIDDEN" || queue.status === "UNAVAILABLE" ? (
+        <section className={styles.notice} role="alert">
+          <h2>
+            {queue.status === "FORBIDDEN"
+              ? copy.forbiddenTitle
+              : copy.unavailableTitle}
+          </h2>
+          <p>
+            {queue.status === "FORBIDDEN"
+              ? copy.forbiddenBody
+              : copy.unavailableBody}
+          </p>
+        </section>
+      ) : candidates.length === 0 ? (
+        <section className={styles.emptyState}>
+          <h2>{copy.emptyTitle}</h2>
+          <p>{copy.emptyBody}</p>
+        </section>
+      ) : (
+        <div className={styles.queueLayout}>
+          <section
+            className={styles.queuePane}
+            aria-labelledby="decision-list-heading"
+          >
+            <h2 id="decision-list-heading">
+              {copy.decisionsHeading}{" "}
+              <span className={styles.queueCountCompact}>
+                ({new Intl.NumberFormat(locale).format(candidates.length)})
               </span>
-            )}
-          </header>
-
-          {queue.status === "FORBIDDEN" ? (
-            <section className={styles.notice} role="alert">
-              <span className={styles.noticeMark} aria-hidden="true">
-                !
-              </span>
-              <div>
-                <h2>{copy.forbiddenTitle}</h2>
-                <p>{copy.forbiddenBody}</p>
-              </div>
-            </section>
-          ) : queue.status === "UNAVAILABLE" ? (
-            <section className={styles.notice} role="alert">
-              <span className={styles.noticeMark} aria-hidden="true">
-                !
-              </span>
-              <div>
-                <h2>{copy.unavailableTitle}</h2>
-                <p>{copy.unavailableBody}</p>
-              </div>
-            </section>
-          ) : candidates.length === 0 ? (
-            <section className={styles.emptyState}>
-              <span className={styles.emptyMark} aria-hidden="true" />
-              <h2>{copy.emptyTitle}</h2>
-              <p>{copy.emptyBody}</p>
-            </section>
-          ) : (
-            <div className={styles.queueLayout}>
-              <section
-                className={styles.queuePane}
-                aria-labelledby="decision-list-heading"
+            </h2>
+            <div className={styles.mobileDecision}>
+              <label htmlFor="admin-decision">
+                {locale === "ar" ? "اختر قرارًا" : "Choose a decision"}
+              </label>
+              <select
+                id="admin-decision"
+                name="decision"
+                value={selected?.candidateId ?? ""}
+                onChange={(event) => selectCandidate(event.target.value)}
               >
-                <div className={styles.sectionHeading}>
-                  <h2 id="decision-list-heading">{copy.decisionsHeading}</h2>
-                  <span className={styles.queueCountCompact}>
-                    {candidates.length}
-                  </span>
-                </div>
-                <ul className={styles.decisionList} id="decision-list">
-                  {candidates.map((candidate) => (
-                    <li key={candidate.candidateId}>
-                      <button
-                        className={styles.decisionButton}
-                        data-selected={
-                          candidate.candidateId === selected?.candidateId
-                        }
-                        type="button"
-                        aria-pressed={
-                          candidate.candidateId === selected?.candidateId
-                        }
-                        onClick={() => selectCandidate(candidate.candidateId)}
-                      >
-                        <span className={styles.decisionTopLine}>
-                          <span className={styles.decisionAction}>
-                            {copy.actions[candidate.action]}
-                          </span>
-                          <span
-                            className={styles.listStatus}
-                            data-tone={
-                              candidate.failedPredicates.length > 0
-                                ? "blocked"
-                                : "ready"
-                            }
-                          >
-                            <span
-                              className={styles.statusMark}
-                              aria-hidden="true"
-                            />
-                            {candidate.commandState ===
-                            "PENDING_SECOND_CONFIRMATION"
-                              ? locale === "ar"
-                                ? "تأكيد ثانٍ"
-                                : "Confirm"
-                              : candidate.commandState ===
-                                  "PENDING_OWNER_REVIEW"
-                                ? locale === "ar"
-                                  ? "مراجعة"
-                                  : "Review"
-                                : candidate.failedPredicates.length > 0
-                                  ? locale === "ar"
-                                    ? "محجوب"
-                                    : "Blocked"
-                                  : locale === "ar"
-                                    ? "قرار"
-                                    : "Decision"}
-                          </span>
-                        </span>
-                        <span className={styles.decisionTarget}>
-                          {candidateLabel(candidate, locale)}
-                        </span>
-                        <span className={styles.decisionState} dir="auto">
-                          {stateLabel(candidate.currentState, locale)}{" "}
-                          <span aria-hidden="true">→</span>{" "}
-                          {stateLabel(candidate.proposedState, locale)}
-                        </span>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-              {selected !== null && (
-                <ActionPanel
-                  key={selected.candidateId}
-                  candidate={selected}
-                  locale={locale}
-                  submitAction={submitAction}
-                  refreshing={refreshing}
-                  reloadAction={reloadAction}
-                />
-              )}
+                {candidates.map((candidate) => (
+                  <option
+                    key={candidate.candidateId}
+                    value={candidate.candidateId}
+                  >
+                    {copy.actions[candidate.action]} ·{" "}
+                    {candidateLabel(candidate, locale)} ·{" "}
+                    {candidateState(candidate, locale)}
+                  </option>
+                ))}
+              </select>
             </div>
-          )}
+            <ul className={styles.decisionList} id="decision-list">
+              {candidates.map((candidate) => (
+                <li key={candidate.candidateId}>
+                  <button
+                    className={styles.decisionButton}
+                    data-selected={
+                      candidate.candidateId === selected?.candidateId
+                    }
+                    type="button"
+                    aria-pressed={
+                      candidate.candidateId === selected?.candidateId
+                    }
+                    onClick={() => selectCandidate(candidate.candidateId)}
+                  >
+                    <span className={styles.decisionAction}>
+                      {copy.actions[candidate.action]}
+                    </span>
+                    <span className={styles.decisionTarget}>
+                      {candidateLabel(candidate, locale)}
+                    </span>
+                    <span
+                      className={styles.listStatus}
+                      data-tone={
+                        candidate.failedPredicates.length > 0
+                          ? "blocked"
+                          : "ready"
+                      }
+                    >
+                      {candidateState(candidate, locale)}
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </section>
+          {selected ? (
+            <ActionPanel
+              key={selected.candidateId}
+              candidate={selected}
+              locale={locale}
+              submitAction={submitAction}
+              refreshing={refreshing}
+              reloadAction={reloadAction}
+            />
+          ) : null}
         </div>
-      </div>
-    </main>
+      )}
+    </div>
+  );
+  return embedded ? (
+    body
+  ) : (
+    <AdminWorkspace
+      locale={locale}
+      synthetic={syntheticPreview}
+      preview={syntheticPreview}
+    >
+      {body}
+    </AdminWorkspace>
   );
 }

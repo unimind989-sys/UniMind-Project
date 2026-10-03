@@ -12,7 +12,7 @@
 
 **Branch:** codex/wp03-complete-synthetic-frontend
 
-**Updated (UTC):** 2026-10-02T22:44:06.079Z
+**Updated (UTC):** 2026-10-02T23:57:04.622Z
 
 ## Derived execution envelope
 
@@ -42,15 +42,15 @@
 
 **Next model:** Sol High
 
-**Current block:** P2-B
+**Current block:** P2-A
 
 ## Execution contract
 
 **Dependencies:** WP03-T01–T08 completed evidence; clean main `595be3c`; user 2026-09-30 request schedules frontend follow-ups before continuing WP04.
 
-**Inputs:** Approved Phase 1 candidate `ab568b6`, approved student candidate `3a2a95d`, their direct receipts in `planning/design/frontend-overhaul/`, canonical DESIGN, current overhaul audit, supplied Open Folio kit, master-plan 6–8 and runbook WP03/06/07/08. Historical Study Shelf guidance remains historical. D-08/D-18/provider decisions remain open.
+**Inputs:** Approved Phase 1 candidate `ab568b6`, approved student candidate `3a2a95d` and Batch Leader candidate `4c03b80`, their direct receipts in `planning/design/frontend-overhaul/`, canonical DESIGN, current overhaul audit, supplied Open Folio kit, master-plan 6–8 and runbook WP03/06/07/08. Historical Study Shelf guidance remains historical. D-08/D-18/provider decisions remain open.
 
-**Files:** DESIGN, task/review/design records; shared brand, theme, shell, public/auth, account, shelf and workspace components; verified Auth entry/callback adapters; `src/lib/account/`, `src/lib/theme/`, `src/proxy.ts`, metadata/public assets; one nullable academic-context extension to existing profiles with column-specific grant and caller-scoped trigger, generated types and rejecting SQL/unit/browser tests. P2-B adds leader list/History, collection queue and transport composition, preview list support, bounded leader Auth returns, native composition and rejecting unit/browser tests. Supplied kit originals and unrelated logo concepts remain untouched. Collection, source, generation, availability and governance business contracts remain unchanged.
+**Files:** DESIGN, task/review/design records; shared brand, theme, shell, public/auth, account, shelf and workspace components; verified Auth entry/callback adapters; `src/lib/account/`, `src/lib/theme/`, `src/proxy.ts`, metadata/public assets; one nullable academic-context extension to existing profiles with column-specific grant and caller-scoped trigger, generated types and rejecting SQL/unit/browser tests. P2-B adds leader list/History, collection queue and transport composition, preview list support, bounded leader Auth returns, native composition and rejecting unit/browser tests. P2-A adds the shared Admin frame, five-section grouping of eight existing routes, compact menu/decision selector, preserved protected action review, resource draft/context presentation and focused normal/native proof. No Admin backend or persistence changes. Supplied kit originals and unrelated logo concepts remain untouched. Collection, source, generation, availability and governance business contracts remain unchanged.
 
 **Verify:** Narrow type/lint/boundary/SQL checks and affected academic/auth/workspace/isolation tests during edits; stable student and leader browser flows, both-theme EN/AR/mobile/keyboard/axe/render proof for their checkpoints. Leader proof covers mixed picker/drop, ambiguous requests, per-file progress/receipt, cancel/retry, preserved keys, no repeat upload on finalize retry, renewed rights, bytes/size/checksum and caller-scope denial. Migration/reset/upgrade, RLS/trigger pgTAP and generated-type parity require the repository's GitHub-hosted Linux ephemeral database runner. Full required verification, safe build, readiness, secrets, actual-diff routing, exact-head CI and affected production proof follow the stable accepted product-wide candidate. Do not repeat unaffected passing checks; do not treat mocks or source inspection as database proof.
 
@@ -93,7 +93,7 @@ Calendar, personal Workspace, global Sources and Progress have no approved stand
 
 **Preparation fingerprint:** NOT_READY
 
-**Unresolved findings:** Phase 1 and student implementation approved. Batch Leader implemented with focused/rendered proof and ready for its explicit checkpoint. Batch Leader/Admin/final acceptance, real database execution/type parity, broad stable verification and delivery proof remain pending. Earlier receipts do not accept later implementation states.
+**Unresolved findings:** Phase 1, student and Batch Leader implementation approved. Admin is implemented with focused/rendered proof, ready for its explicit checkpoint. Admin/final acceptance, real database execution/type parity, broad stable verification and delivery proof remain pending. Earlier receipts do not accept later implementation states.
 
 **Established facts:** NONE
 
@@ -107,14 +107,11 @@ No established-fact receipt is asserted before a commit-bound proof exists. The 
 - [~] Present concrete candidate and record founder interaction checkpoint.
 - [ ] Complete protected delivery/affected proof, then select WP03-T10.
 
-## Current next safe action — Batch Leader checkpoint
+## Current next safe action — Admin checkpoint
 
-Present the implemented Batch Leader candidate and wait for explicit approval
-before Admin. Canonical scope/proof: `planning/design/frontend-overhaul/phase-2-batch-leader.md`;
-34 inspected frames and final source hashes: `batch-leader-checkpoint/manifest.json`
-beside that record. The current action supersedes historical handoffs below.
-Keep PR #64 draft/unmerged and the owned synthetic review on port 3101 available.
-No broad/DB/CI/production proof or task closure is implied. WP04 remains after T10.
+**Next safe action:** Present the concrete Admin candidate under `phase-2-admin.md` and `admin-checkpoint/manifest.json`, then wait for explicit Admin approval before final consistency. Ahmed accepted Batch Leader `4c03b80`; its direct receipt is `batch-leader-approval.md`. This current action supersedes historical handoffs below. Keep PR #64 draft/unmerged and port 3101 available; database, broad verification, CI, delivery and T09 closure remain pending.
+
+**Admin checkpoint proof:** Four unit files passed 52 tests; unchanged protected Admin security boundary passed 5. Eight unique normal browser cases passed across retained 7/8 plus visible-target 1/1 replay. Nine unique affected native cases passed across retained runs; final four theme/language matrices passed 4/4, followed by Arabic localized-target 2/2. Source/capture manifest binds 36 inspected JPEG views, including all eight desktop/phone language/theme pairs and loading, empty, blocked, forbidden, stale and unverified states. Fresh TypeScript, changed-file lint, boundaries and policy checks passed. Final packet-aware readiness passed (488 names, 119 links, 23 decisions, 113 task contracts); final secret scan passed for 2970 files. One detector pass found one status side border, corrected to a quiet full 1px border and inspected. Failures and replay limits remain recorded in `admin-checkpoint/checks.json`. No Admin backend, schema or durable persistence change; no broad, build, database, CI or production PASS asserted. Owned local staging verifies formatting, full diff and bindings; unrelated bounded-logo task text stays only in the worktree. Required next stop remains explicit Admin approval.
 
 ## Historical handoff — superseded review wrapper
 
@@ -225,8 +222,8 @@ Ahmed explicitly resumes WP03-T09 with a two-phase frontend-first overhaul. This
 | ----- | -------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
 | P1    | Sol High | Current brief; master-plan 6–8, runbook WP03-T09/T10, actual routes/contracts; all first-party design Markdown | Evidence-backed role/route/state inventory, working-vs-synthetic map, authoritative DESIGN reconciliation, mobile/desktop Light/Dark EN/AR rendered proposal, explicit gaps and approval boundary | Approved: `ab568b6`, direct Ahmed receipt in `planning/design/frontend-overhaul/phase-1-approval.md`                  |
 | P2-S  | Sol High | Approved P1 direction; shared tokens/brand/auth/account/shelf/workspace                                        | Role derived from verified identity; authorized catalog persistence; all existing Chat/Studio/viewer/quiz/report behavior; mobile keyboard/AA/RTL/states; student rendered checkpoint             | Approved: `3a2a95d`, Ahmed receipt in `planning/design/frontend-overhaul/student-approval.md`; database proof pending |
-| P2-B  | Sol High | Accepted shared system; campaign/upload contracts                                                              | Mixed-file intake/progress/retry; uploading separate from processing; campaign authorization and real-mode denial preserved; leader rendered checkpoint                                           | Implemented with focused/rendered proof; explicit Batch Leader approval pending                                       |
-| P2-A  | Sol High | Accepted shared system; existing admin capabilities                                                            | Task-oriented grouping, real vs synthetic actions honest, no financial enablement; narrow layout and admin rendered checkpoint                                                                    | Awaiting dependencies                                                                                                 |
+| P2-B  | Sol High | Accepted shared system; campaign/upload contracts                                                              | Mixed-file intake/progress/retry; uploading separate from processing; campaign authorization and real-mode denial preserved; leader rendered checkpoint                                           | Approved: `4c03b80`, direct Ahmed receipt in `planning/design/frontend-overhaul/batch-leader-approval.md`             |
+| P2-A  | Sol High | Accepted shared system; existing admin capabilities                                                            | Task-oriented grouping, real vs synthetic actions honest, no financial enablement; narrow layout and admin rendered checkpoint                                                                    | Implemented with focused/rendered proof; explicit Admin approval pending                                              |
 | P2-F  | Sol High | Stable approved role surfaces; task/runbook acceptance                                                         | Product consistency checkpoint, current receipt, focused rejecting checks, one required broad candidate gate, exact-head CI, branch protection and affected production proof                      | Awaiting dependencies                                                                                                 |
 
 **Phase 1 files:** DESIGN.md; current first-party design surface briefs and review guidance; PRODUCT.md only to reconcile confirmed design facts; `docs/reviews/wp03-frontend-overhaul.md`; new bounded proposal/evidence under `planning/design/frontend-overhaul/`; this record; runbook continuation only. No src, backend, schema, dependencies or existing logo-artwork edits.

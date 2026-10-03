@@ -11,7 +11,9 @@ related_targets:
 
 # Current admin overhaul brief
 
-Operate mode. [Root DESIGN](../../DESIGN.md) governs all current design rules; Phase 1 is approved and the Admin implementation/checkpoint follows student and Batch Leader acceptance. Navigation: Overview, Content, Academics, Users, Operations. Group only existing decision/resource/assignment seams. Preserve audited target/version/readiness checks, exact consequences, distinct-principal confirmations, safe student preview and financial stops. No broad user editor, invitation delivery or live resource capability is invented. Use a usable narrow-width task list/detail flow and state-specific recovery. The [current audit](../../docs/reviews/wp03-frontend-overhaul.md) owns the Admin checkpoint and capability matrix. Prior navy/rail constraints below are historical baseline context.
+Operate mode. [Root DESIGN](../../DESIGN.md) governs all current design rules; Phase 1, student `3a2a95d` and Batch Leader `4c03b80` are approved. Admin implementation and focused/rendered proof are complete for presentation; explicit Admin acceptance remains pending. Navigation: Overview, Content, Academics, Users, Operations. Group only existing decision/resource/assignment seams. Preserve audited target/version/readiness checks, exact consequences, distinct-principal confirmations, safe student preview and financial stops. No broad user editor, invitation delivery or live resource capability is invented. Use a usable narrow-width task list/detail flow and state-specific recovery. The [current audit](../../docs/reviews/wp03-frontend-overhaul.md) owns the Admin checkpoint and capability matrix. Prior navy/rail constraints below are historical baseline context.
+
+Current captures: `planning/design/frontend-overhaul/admin-checkpoint/desktop-en-light-overview.jpg` and `mobile-ar-dark-overview.jpg`; the manifest names further route/state frames. Code-led extension of the accepted neutral world; no concept roll or new comp is required.
 
 # Historical WP03 admin decision queue
 

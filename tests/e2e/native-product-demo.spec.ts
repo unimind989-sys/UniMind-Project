@@ -826,17 +826,33 @@ test("synthetic admin changes share availability, preserve distinct confirmation
   await expect(
     page.getByText("The governed change was recorded."),
   ).toBeVisible();
-  await page.getByRole("button", { name: /Enable provider/u }).click();
+  await page
+    .getByRole("button", { name: /Enable approved mock artifact/u })
+    .click();
   await expect(
     page.getByRole("button", { name: "Review exact change", exact: true }),
   ).toBeDisabled();
   finish();
 });
 
+const governedLabels: Readonly<Record<string, string>> = {
+  publish: "Publish unit",
+  hide: "Hide unit",
+  unlock: "Unlock cohort",
+  lock: "Lock cohort",
+  activate: "Activate source version",
+  deactivate: "Deactivate source version",
+  quarantine: "Quarantine failed source",
+  retry: "Request source retry",
+  hold: "Place raw-data hold",
+  "remove-hold": "Remove raw-data hold",
+  enable: "Enable approved mock artifact",
+  disable: "Disable provider or artifact",
+};
 async function changeAdmin(page: Page, id: string, second = false) {
   const definition = actionFixtures.find((action) => action.id === id)!;
   await page
-    .getByRole("button", { name: new RegExp(definition.label[0]) })
+    .getByRole("button", { name: new RegExp(`^${governedLabels[id]}`) })
     .click();
   if (!second)
     await page
@@ -878,6 +894,192 @@ async function switchAdmin(page: Page, email: string) {
     .click();
   await expect(page).toHaveURL(/\/admin\?/u);
 }
+
+async function adminNavigate(page: Page, destination: string, locale: Locale) {
+  const menu = page.getByText(pick(locale, "Menu", "القائمة"), { exact: true });
+  const target = () =>
+    page
+      .locator(
+        `a[href="${destination}${destination.includes("?") ? "&" : "?"}lang=${locale}"]:visible`,
+      )
+      .first();
+  if ((await target().count()) === 0 && (await menu.isVisible()))
+    await menu.click();
+  await target().click();
+}
+
+for (const locale of ["en", "ar"] as const) {
+  for (const theme of ["light", "dark"] as const) {
+    test(`admin ${locale} ${theme}: five sections preserve resources, mobile menu and accessible decisions`, async ({
+      page,
+    }) => {
+      const finish = isolation(page);
+      await signIn(page, "admin", locale);
+      await adminNavigate(page, "/settings", locale);
+      await page
+        .getByLabel(pick(locale, "Theme", "السمة"), { exact: true })
+        .selectOption(theme);
+      await adminNavigate(page, "/admin", locale);
+      const routes = [
+        ["/admin", "Overview", "نظرة عامة"],
+        ["/admin/sources", "Sources", "المصادر"],
+        ["/admin/campaigns", "Campaigns", "الحملات"],
+        ["/admin/catalog", "Catalog", "الفهرس"],
+        ["/admin/cohorts", "Cohorts", "المجموعات الدراسية"],
+        ["/admin/cohorts?view=users", "Users", "المستخدمون"],
+        ["/admin/jobs", "Jobs", "المهام"],
+        ["/admin/quality", "Quality", "الجودة"],
+        ["/admin/usage", "Usage", "الاستخدام"],
+        ["/admin/incidents", "Incidents", "الحوادث"],
+      ] as const;
+      for (const [destination, en, ar] of routes) {
+        if (destination !== "/admin")
+          await adminNavigate(page, destination, locale);
+        await expect(page.locator("h1")).toHaveText(pick(locale, en, ar));
+        for (const width of [1440, 390, 320]) {
+          await page.setViewportSize({ width, height: 900 });
+          const inspect = () =>
+            page.evaluate(() => ({
+              overflow: document.documentElement.scrollWidth > innerWidth + 1,
+              controls: [
+                ...document.querySelectorAll(
+                  '[data-role="admin"] button, [data-role="admin"] a, [data-role="admin"] select, [data-role="admin"] textarea, [data-role="admin"] summary',
+                ),
+              ]
+                .filter((element) => {
+                  const rect = element.getBoundingClientRect();
+                  return (
+                    rect.width > 0 &&
+                    rect.height > 0 &&
+                    getComputedStyle(element).visibility !== "hidden" &&
+                    (rect.left < -1 ||
+                      rect.right > innerWidth + 1 ||
+                      rect.height < 43 ||
+                      (element.matches("button") &&
+                        element.scrollWidth > element.clientWidth + 2))
+                  );
+                })
+                .map((element) => element.textContent?.trim().slice(0, 80)),
+            }));
+          expect(await inspect()).toEqual({ overflow: false, controls: [] });
+          await expect(page.locator("main")).toHaveAttribute(
+            "dir",
+            locale === "ar" ? "rtl" : "ltr",
+          );
+          await expect(page.locator("html")).toHaveAttribute(
+            "data-theme",
+            theme,
+          );
+          if (width === 390) {
+            await expect(page).toHaveTitle(/\S/u);
+            const axe = await new AxeBuilder({ page })
+              .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+              .analyze();
+            expect(axe.violations).toEqual([]);
+          }
+          if (width === 320) {
+            await page.evaluate(() => {
+              document.documentElement.style.fontSize = "200%";
+            });
+            expect(await inspect()).toEqual({ overflow: false, controls: [] });
+            await page.evaluate(() => {
+              document.documentElement.style.fontSize = "";
+            });
+          }
+        }
+      }
+      await adminNavigate(page, "/admin", locale);
+      await page
+        .getByLabel(pick(locale, "Choose a decision", "اختر قرارًا"), {
+          exact: true,
+        })
+        .selectOption("sample-hide");
+      await page
+        .getByLabel(pick(locale, "Reason for this change", "سبب هذا التغيير"))
+        .fill(
+          pick(locale, "Synthetic readiness review.", "مراجعة جاهزية تجريبية."),
+        );
+      await page
+        .getByRole("button", {
+          name: pick(locale, "Review exact change", "مراجعة التغيير المحدد"),
+          exact: true,
+        })
+        .click();
+      await expect(
+        page.getByRole("button", {
+          name: pick(locale, "Submit this action", "إرسال هذا الإجراء"),
+          exact: true,
+        }),
+      ).toBeFocused();
+      await page
+        .getByRole("button", {
+          name: pick(locale, "Cancel and edit", "إلغاء والعودة للتعديل"),
+          exact: true,
+        })
+        .click();
+      await expect(
+        page.getByRole("button", {
+          name: pick(locale, "Review exact change", "مراجعة التغيير المحدد"),
+          exact: true,
+        }),
+      ).toBeFocused();
+      const menu = page
+        .locator("summary")
+        .filter({ hasText: pick(locale, "Menu", "القائمة") });
+      await menu.click();
+      await page.keyboard.press("Escape");
+      await expect(
+        page.locator("details").filter({ has: menu }),
+      ).not.toHaveAttribute("open", "");
+      await expect(menu).toBeFocused();
+      finish();
+    });
+  }
+}
+
+test("admin resource drafts and Users context preserve the existing isolated workflow", async ({
+  page,
+}) => {
+  const finish = isolation(page);
+  await signIn(page, "admin");
+  await adminNavigate(page, "/admin/catalog", "en");
+  await page.getByLabel("Configured unit label").selectOption("SUBJECT");
+  await page
+    .getByRole("button", { name: "Review changes", exact: true })
+    .click();
+  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await expect(page.getByRole("status")).toContainText(
+    "Sample catalog draft saved",
+  );
+  await adminNavigate(page, "/admin/cohorts", "en");
+  await page
+    .getByRole("button", { name: "Save cohort draft", exact: true })
+    .click();
+  await expect(page.getByRole("status")).toContainText("No cohort unlocked");
+  await adminNavigate(page, "/admin/cohorts?view=users", "en");
+  await expect(
+    page.getByRole("heading", { name: "Assignment and access context" }),
+  ).toBeVisible();
+  await page.getByRole("link", { name: "Review campaign invitations" }).click();
+  await page
+    .getByRole("button", { name: "Create campaign", exact: true })
+    .click();
+  await expect(
+    page.getByRole("button", { name: "Send invitation", exact: true }),
+  ).toBeDisabled();
+  await page
+    .getByLabel("Review fixed expiring campaign-only invitation")
+    .check();
+  await page
+    .getByRole("button", { name: "Send invitation", exact: true })
+    .click();
+  await expect(
+    page.getByText(
+      "Invitation example reviewed. No email, assignment or access grant.",
+    ),
+  ).toBeVisible();
+  finish();
+});
 test("all twelve governed examples, distinct confirmations and preserved pending reload", async ({
   page,
 }) => {
@@ -922,7 +1124,9 @@ test("all twelve governed examples, distinct confirmations and preserved pending
       "governed change",
     );
   }
-  await page.getByRole("button", { name: /Enable provider/u }).click();
+  await page
+    .getByRole("button", { name: /Enable approved mock artifact/u })
+    .click();
   await expect(
     page.getByRole("button", { name: "Review exact change", exact: true }),
   ).toBeDisabled();

@@ -97,6 +97,10 @@
   font-size: 0.875rem;
   font-weight: 600;
 }
+.shell[data-role="admin"] .location {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
 .utility label {
   display: flex;
   align-items: center;
@@ -145,6 +149,24 @@
 }
 .skip:focus {
   inset-block-start: 16px;
+}
+.adminAccount {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 12px;
+  margin-block-start: 24px;
+  color: var(--secondary);
+}
+.adminMenuRow {
+  display: none;
+}
+.previewDestination {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  color: var(--secondary);
 }
 @media (max-width: 1099px) and (min-width: 768px) {
   .shell {
@@ -211,7 +233,47 @@
     padding: 8px 16px;
   }
   .shell[data-role="admin"] .globalNav {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
     position: static;
+  }
+  .shell[data-role="admin"] {
+    padding-block-end: env(safe-area-inset-bottom);
+  }
+  .shell[data-role="admin"] .rail {
+    display: none;
+  }
+  .adminMenuRow {
+    display: flex;
+    gap: 16px;
+    align-items: start;
+    padding: 0 16px 8px;
+    background: var(--surface);
+    border-block-end: 1px solid var(--border);
+  }
+  .adminMenu {
+    flex: 1;
+    min-width: 0;
+  }
+  .adminMenu summary {
+    min-height: 44px;
+    padding: 10px 0;
+    cursor: pointer;
+    color: var(--ink);
+  }
+  .adminMenuRow > a {
+    min-height: 44px;
+    padding-block: 10px;
+    color: var(--accent-ink);
+  }
+  .shell[data-role="admin"] .adminMenu .globalNav {
+    padding: 4px 0;
+    border: 0;
+  }
+  .adminMenu .globalNav a {
+    flex-direction: row;
+    justify-content: start;
+    min-height: 44px;
+    font-size: 1rem;
+    padding: 10px 12px;
   }
 }

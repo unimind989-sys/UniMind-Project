@@ -8,6 +8,7 @@ import { getAdminCopy } from "@/lib/i18n/admin-copy";
 import { resolveLocale } from "@/lib/i18n/locale";
 
 import styles from "../admin.module.css";
+import { AdminWorkspace } from "../_components/admin-workspace";
 
 const resources = [
   "catalog",
@@ -61,24 +62,20 @@ export default async function AdminResourcePage({
   const unavailable = queue.status === "UNAVAILABLE";
 
   return (
-    <main
-      className={styles.resourcePage}
-      lang={locale}
-      dir={locale === "ar" ? "rtl" : "ltr"}
-    >
-      <nav
-        className={styles.breadcrumb}
-        aria-label={locale === "ar" ? "التنقل" : "Navigation"}
-      >
-        <a href={`/admin?lang=${locale}`}>{copy.pageTitle}</a>
-        <span aria-hidden="true">/</span>
-        <span>{copy.resources[resourceKey]}</span>
-      </nav>
+    <AdminWorkspace locale={locale} resource={resourceKey}>
       <section
         className={styles.resourceNotice}
         role={denied || unavailable ? "alert" : "status"}
       >
-        <h1>{copy.resources[resourceKey]}</h1>
+        <h2>
+          {denied
+            ? copy.forbiddenTitle
+            : unavailable
+              ? copy.unavailableTitle
+              : locale === "ar"
+                ? "هذا العرض غير متاح بعد"
+                : "This view is not available yet"}
+        </h2>
         <p>
           {denied
             ? copy.forbiddenBody
@@ -86,13 +83,12 @@ export default async function AdminResourcePage({
               ? copy.unavailableBody
               : copy.resourceUnavailable}
         </p>
-        <p>{copy.syntheticOnly}</p>
         <a className={styles.returnLink} href={`/admin?lang=${locale}`}>
           {locale === "ar"
             ? "العودة إلى قائمة القرارات"
             : "Return to decision queue"}
         </a>
       </section>
-    </main>
+    </AdminWorkspace>
   );
 }
