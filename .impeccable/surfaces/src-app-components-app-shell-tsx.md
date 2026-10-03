@@ -2,7 +2,16 @@
 version: 1
 slug: "src-app-components-app-shell-tsx"
 primary_target: "src/app/_components/app-shell.tsx"
-related_targets: ["src/app/_components/app-shell.module.css", "src/app/_components/frontend-system.tsx", "src/app/learn/study-shelf.module.css", "src/app/learn/_components/product-study.module.css", "src/app/(auth)/auth.module.css", "src/app/batch-leader/collection.module.css", "src/app/admin/admin.module.css"]
+related_targets:
+  [
+    "src/app/_components/app-shell.module.css",
+    "src/app/_components/frontend-system.tsx",
+    "src/app/learn/study-shelf.module.css",
+    "src/app/learn/_components/product-study.module.css",
+    "src/app/(auth)/auth.module.css",
+    "src/app/batch-leader/collection.module.css",
+    "src/app/admin/admin.module.css",
+  ]
 ---
 
 # Premium product refinement
@@ -19,7 +28,7 @@ Operate mode. Ahmed accepted landing 569c467 and asks for the same care across a
 
 **FORM:** Refine existing compositions: stronger type, crisp source identities, an editorial resume region, intentional tool tabs, paper-like reading surfaces, clear selected options, organized settings and split administrative review. No new-world roll or approved-comp translation. Missing standalone quality-bar card remains explicit.
 
-**MOTION:** Routine 160–220ms transitions explain selection, focus and submission; the appearance chooser previews its choices. Reading and task content remain immediately visible. No repeated entrances or continuous loop. CSS only, no new dependency; reduced motion exposes the same states instantly.
+**MOTION:** Routine 180ms transitions explain selection, focus and submission; the appearance chooser previews its choices. A 240ms CSS perspective flip follows explicit flashcard activation and keeps the active face accessible. Reading and task content remain immediately visible. No repeated entrances or continuous loop. CSS only, no new dependency; reduced motion exposes the same states instantly.
 
 **FINISH:** unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance.
 

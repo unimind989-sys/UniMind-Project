@@ -3,6 +3,20 @@
   "generatedAt": "2026-09-13T10:21:58.000Z",
   "title": "Design System: UniMind",
   "extensions": {
+    "premiumProductCandidate": {
+      "status": "pending-founder-acceptance",
+      "task": "WP03-T10",
+      "branch": "codex/premium-product-screens",
+      "approvedLanding": "569c467bb2f84c6efcbef616528c9b090768b61c",
+      "authority": "DESIGN.md",
+      "review": "planning/design/premium-product/remaining-screens-review.md",
+      "scope": "Access, role shell, shelf, study reading, Studio/Quiz, Account, collection and Admin presentation",
+      "routineTransitionMs": 180,
+      "flashcardTransitionMs": 240,
+      "reducedMotion": "instant same states",
+      "shippingRasters": [],
+      "legacySnapshot": "Other sidecar fields retain their September provenance; DESIGN.md owns current product rules."
+    },
     "colorMeta": {
       "night-canvas": {
         "role": "neutral",
