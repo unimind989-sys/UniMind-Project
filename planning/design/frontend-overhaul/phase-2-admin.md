@@ -1,7 +1,7 @@
 # Phase 2 Admin implementation
 
-Status: implemented; focused checks and rendered review complete for presentation.
-Explicit Admin approval pending. Authority to implement came from Ahmed's
+Status: implemented and approved by Ahmed at candidate `ec00466`; see the
+[direct receipt](admin-approval.md). Authority to implement came from Ahmed's
 [Batch Leader approval](batch-leader-approval.md).
 Authority: [DESIGN](../../../DESIGN.md), master plan §7.2, runbook WP03-T09.
 Same selected task and branch; single executor; zero workers.
@@ -130,7 +130,7 @@ those are documented capability limits, not invented functionality in this overh
 
 ## Next safe action
 
-Present this concrete Admin candidate and wait for explicit approval before final
-product-wide consistency. Keep T09 in progress, PR #64 draft/unmerged and the
+The Admin checkpoint is approved. Complete the final product-wide consistency
+review and stop for its explicit acceptance; see [the final record](phase-2-final.md). Keep T09 in progress, PR #64 draft/unmerged and the
 synthetic review available on port 3101. Preserve the supplied original kit, logo
 concepts, historical capture folder and unrelated bounded-logo task block.

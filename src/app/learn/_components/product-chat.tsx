@@ -191,10 +191,10 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
                     {t("Session", "جلسة")}{" "}
                     {new Intl.NumberFormat(locale).format(session.id)}
                     <span>
+                      {t("Replies", "الإجابات")} ·{" "}
                       {new Intl.NumberFormat(locale).format(
                         session.answers.length,
-                      )}{" "}
-                      {t("replies", "إجابات")}
+                      )}
                     </span>
                   </button>
                 </li>

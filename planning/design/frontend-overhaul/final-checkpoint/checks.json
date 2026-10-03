@@ -1,0 +1,206 @@
+{
+  "recordedAt": "2026-10-03T07:09:41.267Z",
+  "scope": "WP03-T09 P2-F final consistency presentation; no broad, database, build, CI or production PASS.",
+  "normalCrossRole": {
+    "result": "PASS",
+    "passed": 3,
+    "failed": 0,
+    "log": "cross-product.log",
+    "report": "cross-product.json",
+    "destinationsPerLocale": 23,
+    "widths": [1440, 768, 390, 320],
+    "coverage": [
+      "English/Arabic responsive route matrix",
+      "WCAG A/AA",
+      "RTL/LTR",
+      "visible keyboard focus",
+      "reduced motion",
+      "200% text",
+      "normal sign-out and role changes"
+    ],
+    "reuse": "Executed before the reply metadata edit; shared routing/shell/authority inputs unchanged. The affected populated text/reflow cases were replayed afterward."
+  },
+  "affectedPopulatedStudy": {
+    "result": "PASS",
+    "passed": 4,
+    "failed": 0,
+    "log": "populated-confirm.log",
+    "report": "populated-confirm.json",
+    "coverage": [
+      "English/Arabic direct Send",
+      "preserved drafts/history and independent output language",
+      "Studio interruption",
+      "both-theme populated reflow/accessible controls/enlarged text"
+    ],
+    "afterFinalCopy": true
+  },
+  "static": {
+    "freshTypeScript": { "result": "PASS", "log": "typecheck-final.log" },
+    "changedFileEslint": { "result": "PASS", "log": "lint-final.log" },
+    "boundaries": { "result": "PASS", "log": "boundaries.log" },
+    "policy": { "result": "PASS", "version": 8, "log": "policy.log" },
+    "readiness": {
+      "result": "PASS",
+      "log": "readiness.log",
+      "names": 522,
+      "localLinks": 136,
+      "synchronizedDecisions": 23,
+      "taskContracts": 113
+    },
+    "secrets": {
+      "result": "PASS",
+      "log": "secrets.log",
+      "observedFiles": 3004
+    },
+    "actualDiffRouting": {
+      "result": "PASS",
+      "log": "execution.json",
+      "policyVersion": 8,
+      "risk": "R3",
+      "planning": "protected",
+      "workersUsed": 0,
+      "scope": "Task-wide protected floor retained; not a broad verification receipt."
+    },
+    "formatDiffBindings": {
+      "result": "PASS",
+      "receipt": "Task record/local staging receipt",
+      "stagedFiles": 48,
+      "captures": 29,
+      "sources": 152,
+      "unrelatedTaskBlock": "Preserved in worktree only"
+    }
+  },
+  "detector": {
+    "passes": 1,
+    "findings": 0,
+    "report": ".local/phase2-final/detector.json",
+    "scope": "Owned ProductChat reply-count UI edit only; prior detectors are retained historical proof, not repeated."
+  },
+  "pack": {
+    "generation": "PASS",
+    "log": "pack-generation-final.log",
+    "entries": 9,
+    "archiveHashes": "PASS",
+    "fixtureAndAccountBytesAgainstHead": "UNCHANGED",
+    "guideCopiesAndAuditFilename": "PASS",
+    "status": "awaiting-final-consistency-acceptance",
+    "governedCatalogMetadata": "Regenerated from current accepted role fixtures; no new capability."
+  },
+  "rendered": {
+    "result": "INSPECTED",
+    "captures": 29,
+    "fullPage": false,
+    "viewports": [
+      { "width": 1440, "height": 1000 },
+      { "width": 390, "height": 900 }
+    ],
+    "localeThemePairs": ["en/light", "en/dark", "ar/light", "ar/dark"],
+    "overflow": false,
+    "coverage": [
+      "landing/auth/onboarding/Shelf",
+      "Materials/Chat/Studio",
+      "supporting viewer/evidence/report/quiz",
+      "Account",
+      "assigned campaign/History",
+      "Admin Overview"
+    ],
+    "limits": "Representative final joins; unchanged role loading/error/empty/retry/stale/uncertain frames remain in their accepted packets. Captures are not a fresh exhaustive state rerun or pixel-exact viewport claim."
+  },
+  "manualCaptureAccounting": "Localized h1/Email address/source-pool link locators were corrected from visible DOM after helper timeouts; no frames from failed waits retained. A Dark Chat frame was renamed to match its recorded theme. The initially busy Studio frame was replaced after the completed artifact settled. Final filenames, dimensions, hashes and scrolled states are explicit.",
+  "approval": {
+    "phase1": "ab568b6",
+    "student": "3a2a95d",
+    "batchLeader": "4c03b80",
+    "admin": "ec00466",
+    "final": "PENDING"
+  },
+  "pending": [
+    "explicit final founder acceptance",
+    "guarded broad stable verification and safe build",
+    "Linux disposable reset/upgrade/pgTAP/generated-type parity",
+    "exact-head CI/protected delivery/affected production proof",
+    "T09 closure and separate T10 gate before WP04"
+  ],
+  "logs": [
+    {
+      "path": ".local/phase2-final/boundaries.log",
+      "sha256": "71728c9030669dd3ebfdbfc3eea73588bd84da199bbe2f8d21d56492a7ede940"
+    },
+    {
+      "path": ".local/phase2-final/cross-product.json",
+      "sha256": "d557193f798615c320cfacf8b4cf238eb6a61a902db56457503cf3f78b70b883"
+    },
+    {
+      "path": ".local/phase2-final/cross-product.log",
+      "sha256": "ea9543d94485a8edee90d40f44cb16178df7092f97e9ad61db637732e302152e"
+    },
+    {
+      "path": ".local/phase2-final/detector.json",
+      "sha256": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f"
+    },
+    {
+      "path": ".local/phase2-final/execution-stderr.log",
+      "sha256": "30ee5b8d979e80b86bd5ef88811447d05245455ae0a31c1a2468f68e1ec40beb"
+    },
+    {
+      "path": ".local/phase2-final/execution.json",
+      "sha256": "5fe402291f1e027cccdda2146400f94c3f969385f5f5ba47cea5336def7277d6"
+    },
+    {
+      "path": ".local/phase2-final/lint-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".local/phase2-final/lint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".local/phase2-final/pack-generation-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".local/phase2-final/pack-generation.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".local/phase2-final/pack-integrity.json",
+      "sha256": "560e3b01c153f8ed76d1a2c203505c18fac9b1f0ac74afda331b96828df89abc"
+    },
+    {
+      "path": ".local/phase2-final/policy.log",
+      "sha256": "81f07dcc719f374f66f957db8c6e823a3e2923f7700b94f623d5552c87717cf3"
+    },
+    {
+      "path": ".local/phase2-final/populated-confirm.json",
+      "sha256": "33324c96d93c98b7ea198183a4b93f6fe7dc6aa015a3358295701c9b5bd57909"
+    },
+    {
+      "path": ".local/phase2-final/populated-confirm.log",
+      "sha256": "857a4f335ba553d2cce32aab05c7a417bc6dfdedc63f701825b4dcdba9cda1d5"
+    },
+    {
+      "path": ".local/phase2-final/readiness.log",
+      "sha256": "3a36c29e19d61f6dc61149d8b91bfcca4863c2ee7c062301eb8a52af168f1a90"
+    },
+    {
+      "path": ".local/phase2-final/secrets.log",
+      "sha256": "4d7cb74592b2f5479de39e0cae48db45314378c733b0f35965b8834f6da1f405"
+    },
+    {
+      "path": ".local/phase2-final/staged-files.json",
+      "sha256": "70e44d72dab44b37f8f4e9e2596d616d38dd27523d217bf0b55ca5d63938018b"
+    },
+    {
+      "path": ".local/phase2-final/staging-receipt.json",
+      "sha256": "ba17bcd4af2cffd38f86ddd841b91386af57f9d02e0e8bd6edc87dc08bc9c640"
+    },
+    {
+      "path": ".local/phase2-final/typecheck-final.log",
+      "sha256": "77f59356155e3e1cef9b6fff6261665f710c1e1e5e447b0ffc45778d1e1f2397"
+    },
+    {
+      "path": ".local/phase2-final/typecheck.log",
+      "sha256": "77f59356155e3e1cef9b6fff6261665f710c1e1e5e447b0ffc45778d1e1f2397"
+    }
+  ]
+}
