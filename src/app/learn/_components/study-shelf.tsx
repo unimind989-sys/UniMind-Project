@@ -298,6 +298,12 @@ export function StudyShelf({
                           data-unit-id={unit.id}
                         >
                           <article className={styles.unit}>
+                            <div
+                              className={styles.subjectBook}
+                              aria-hidden="true"
+                            >
+                              <span />
+                            </div>
                             <div className={styles.unitCopy}>
                               <button
                                 className={styles.unitSelect}

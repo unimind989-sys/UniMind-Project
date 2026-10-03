@@ -28,13 +28,125 @@
 .languageSwitch a[aria-current] {
   color: var(--accent-ink);
 }
-.workspace {
-  width: min(100%, 480px);
+.accessLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 480px);
+  align-items: center;
+  gap: clamp(40px, 7vw, 100px);
+  width: min(100%, 1080px);
   margin: 48px auto 0;
-  padding: 32px;
+}
+.introduction {
+  min-width: 0;
+  padding: 12px 0 32px;
+}
+.introductionTitle {
+  font:
+    600 3rem/1.18 var(--font-unimind-latin),
+    sans-serif;
+  letter-spacing: -0.04em;
+  margin: 24px 0 20px;
+}
+.introductionCopy {
+  max-width: 36ch;
+  color: var(--secondary);
+  line-height: 1.8;
+}
+.folioScene {
+  height: 250px;
+  position: relative;
+  perspective: 900px;
+  direction: ltr;
+}
+.folio {
+  position: absolute;
+  left: 35px;
+  top: 22px;
+  width: 230px;
+  height: 210px;
+  transform-style: preserve-3d;
+  transform: rotateX(26deg) rotateY(-24deg) rotateZ(-12deg);
+}
+.folioCover,
+.folioPages,
+.folioLeaf {
+  position: absolute;
+  inset: 0;
+  border-radius: 4px 14px 14px 4px;
+}
+.folioCover {
+  background: var(--accent);
+  transform: translateZ(-12px) translateX(-9px);
+  box-shadow: -1px 3px 0 var(--accent-hover);
+}
+.folioPages {
+  background: var(--surface);
+  border: 1px solid var(--control-border);
+  transform: translateZ(-5px);
+  box-shadow:
+    0 2px 0 var(--border),
+    0 5px 0 var(--surface),
+    0 7px 0 var(--border);
+}
+.folioLeaf {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  padding: 34px 30px;
+  transform-origin: left;
+  transform: rotateY(-18deg) translateZ(8px);
+}
+.folioLeaf > span,
+.folioNote > span {
+  display: block;
+  height: 3px;
+  background: var(--border);
+  margin-block-end: 13px;
+}
+.folioLeaf > span:first-child {
+  background: var(--accent);
+  width: 55%;
+  height: 5px;
+  margin-block-end: 22px;
+}
+.folioLeaf > span:nth-child(4) {
+  width: 65%;
+}
+.folioMark {
+  position: absolute;
+  right: 24px;
+  bottom: 18px;
+  font:
+    600 34px/1 var(--font-unimind-latin),
+    sans-serif;
+  color: var(--accent);
+}
+.folioNote {
+  position: absolute;
+  width: 125px;
+  height: 104px;
+  left: 242px;
+  top: 104px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  padding: 25px 20px;
+  transform: rotate(-6deg);
+}
+.folioNote > span {
+  background: var(--accent);
+  opacity: 0.5;
+  height: 2px;
+}
+.folioNote > span:last-child {
+  width: 65%;
+}
+.workspace {
+  width: 100%;
+  margin: 0;
+  padding: clamp(28px, 3vw, 40px);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
 }
 .steps {
   display: flex;
@@ -51,7 +163,7 @@
   color: var(--accent-ink);
 }
 .formRegion h1 {
-  font-size: 1.75rem;
+  font-size: 2rem;
   line-height: var(--type-display-leading);
   margin: 0 0 24px;
 }
@@ -96,6 +208,9 @@
   padding-inline: 40px 12px;
   background: var(--surface);
   color: var(--ink);
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease;
 }
 .field input[aria-invalid="true"] {
   border-color: var(--danger);
@@ -129,6 +244,12 @@
   background: var(--accent);
   color: var(--on-accent);
   font-weight: 600;
+  transition:
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+.primaryAction:active:not(:disabled) {
+  transform: translateY(1px);
 }
 .primaryAction:hover:not(:disabled) {
   background: var(--accent-hover);
@@ -208,6 +329,16 @@
   align-items: center;
   color: var(--accent-ink);
 }
+@media (max-width: 1000px) {
+  .accessLayout {
+    display: block;
+    width: min(100%, 480px);
+    margin-block-start: 24px;
+  }
+  .introduction {
+    display: none;
+  }
+}
 @media (max-width: 767px) {
   .shell {
     padding-inline: 16px;
@@ -220,10 +351,15 @@
     gap: 4px;
   }
   .workspace {
-    margin-block-start: 24px;
-    padding: 24px 20px;
+    padding: 28px 20px;
   }
   .formRegion h1 {
     font-size: 1.625rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .primaryAction,
+  .field input {
+    transition: none;
   }
 }

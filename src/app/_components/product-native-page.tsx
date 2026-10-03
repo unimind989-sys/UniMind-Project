@@ -585,8 +585,7 @@ function ProductSettings({
 }) {
   const { state, update } = useProductServices();
   const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
-  const sectionClass =
-    state.role === "student" ? styles.panel : accountStyles.section;
+  const sectionClass = accountStyles.section;
   return (
     <>
       {state.lastStudyPath ? (

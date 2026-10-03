@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { Route } from "next";
 import { AppShell } from "@/app/_components/app-shell";
 import { Button } from "@/app/_components/product-ui";
+import { FrontendIcon } from "@/app/_components/frontend-controls";
 import type { CollectionCampaign } from "@/lib/collection/collection.application";
 import type { CollectionActionState } from "../collection-actions";
 import { compatibleCollectionItems } from "@/lib/collection/collection-queue.application";
@@ -202,6 +203,9 @@ export function CollectionFlow({
               add(Array.from(event.dataTransfer.files));
             }}
           >
+            <div className={styles.uploadMark} aria-hidden="true">
+              <FrontendIcon name="send" />
+            </div>
             <p>
               {t(
                 "Drop files here, or choose them from your device.",

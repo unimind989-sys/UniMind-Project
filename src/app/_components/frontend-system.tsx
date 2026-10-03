@@ -80,18 +80,22 @@ export function FrontendShell({
         className={styles.subjectNav}
         aria-label={t("Workspace navigation", "تنقل مساحة المذاكرة")}
       >
-        {destinations.map(([suffix, label]) => (
+        {destinations.map(([suffix, label], index) => (
           <Link
             key={suffix}
             href={(base + suffix + "?lang=" + locale) as Route}
             prefetch={false}
             aria-current={
               pathname === base + suffix ||
-              (suffix === "" && pathname === base + "/sources")
+              (suffix === "" && pathname === base + "/sources") ||
+              (suffix === "/quiz" && pathname.startsWith(base + "/quiz/"))
                 ? "page"
                 : undefined
             }
           >
+            <FrontendIcon
+              name={(["sources", "chat", "studio", "quiz"] as const)[index]!}
+            />
             {label}
           </Link>
         ))}

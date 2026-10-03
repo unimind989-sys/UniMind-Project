@@ -11,6 +11,7 @@ export default defineConfig([
     ".agents/**",
     ".codex/**",
     ".impeccable/**",
+    ".local/**",
     ".next/**",
     "build/**",
     "coverage/**",

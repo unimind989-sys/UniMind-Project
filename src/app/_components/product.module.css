@@ -121,8 +121,8 @@
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius-card);
-  padding: clamp(1rem, 2vw, 1.5rem);
-  margin-block: 1rem;
+  padding: clamp(1.25rem, 2.5vw, 2rem);
+  margin-block: 1.5rem;
   min-width: 0;
 }
 .row {
@@ -131,7 +131,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-  padding-block: 1rem;
+  padding-block: 1.25rem;
   border-block-end: 1px solid var(--line);
 }
 .row > div {
@@ -173,6 +173,10 @@
 .button,
 .link {
   border-color: var(--control-border);
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease;
   background: var(--surface);
 }
 .field textarea {
@@ -299,13 +303,34 @@
   top: 1rem;
 }
 .question {
-  border: 1px solid var(--line);
-  padding: 1rem;
-  border-radius: var(--radius-control);
-  margin: 0;
+  border: 0;
+  padding: 1.5rem 0;
+  border-block-end: 1px solid var(--line);
+  margin: 0 0 1.5rem;
 }
 .question legend {
-  padding-inline: 0.4rem;
+  padding: 0;
+  font-weight: 650;
+  font-size: 1.125rem;
+  max-width: 65ch;
+}
+.question .check {
+  margin-block: 0.5rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--control-border);
+  border-radius: 10px;
+  background: var(--surface);
+  max-width: 48rem;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease;
+}
+.question .check:has(input:checked) {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+.question .check:hover {
+  border-color: var(--accent);
 }
 .answer {
   border-block-start: 1px solid var(--line);
@@ -371,9 +396,43 @@
   .shell {
     scroll-behavior: auto;
   }
+  .button,
+  .link,
+  .field :is(select, input, textarea),
+  .question .check {
+    transition: none;
+  }
 }
 .row summary {
   min-height: 44px;
   padding-block: 0.5rem;
   cursor: pointer;
+}
+.materialsHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin-block-end: 12px;
+}
+.materialsHeading h2 {
+  margin: 0;
+}
+.materialsHeading p {
+  margin: 8px 0 0;
+  font-size: 0.8125rem;
+  color: var(--secondary);
+}
+.materialsCaption {
+  margin-block: 0 16px;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--secondary);
+}
+.materialLibrary {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 0 20px;
 }

@@ -78,18 +78,25 @@ function Overview(props: Props) {
   const t = (en: string, ar: string) => (props.locale === "ar" ? ar : en);
   return (
     <section>
-      <h2>{t("Materials", "المواد الدراسية")}</h2>
-      <ProductLink href={props.base + "/sources"} locale={props.locale}>
-        {t("View material details", "عرض تفاصيل المواد")}
-      </ProductLink>
-      <p>
-        {new Intl.DateTimeFormat(props.locale === "ar" ? "ar-EG" : "en-GB", {
-          dateStyle: "medium",
-          timeZone: "UTC",
-        }).format(new Date(props.scope.materialUpdatedAt))}{" "}
-        · <bdi>{props.scope.curriculumEdition}</bdi>
-      </p>
-      <Evidence {...props} screen="sources" />
+      <header className={styles.materialsHeading}>
+        <div>
+          <h2>{t("Materials", "المواد الدراسية")}</h2>
+          <p>
+            {new Intl.DateTimeFormat(
+              props.locale === "ar" ? "ar-EG" : "en-GB",
+              {
+                dateStyle: "medium",
+                timeZone: "UTC",
+              },
+            ).format(new Date(props.scope.materialUpdatedAt))}{" "}
+            · <bdi>{props.scope.curriculumEdition}</bdi>
+          </p>
+        </div>
+        <ProductLink href={props.base + "/sources"} locale={props.locale}>
+          {t("View material details", "عرض تفاصيل المواد")}
+        </ProductLink>
+      </header>
+      <Evidence {...props} screen="sources" embedded />
     </section>
   );
 }
@@ -124,7 +131,13 @@ function getSources(scope: WorkspaceScope, locale: Locale) {
   }));
 }
 
-function Evidence({ scope, locale, base, screen }: Props) {
+function Evidence({
+  scope,
+  locale,
+  base,
+  screen,
+  embedded = false,
+}: Props & { embedded?: boolean }) {
   const { state } = useProductServices();
   const query = useSearchParams();
   const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
@@ -152,19 +165,21 @@ function Evidence({ scope, locale, base, screen }: Props) {
         : sources.slice(0, 1);
   return (
     <>
-      <ProductLink
-        href={
-          query.get("from") === "studio"
-            ? base + "/studio"
-            : `${base}/chat${session ? `?session=${session.id}#exchange-${exchange}` : ""}`
-        }
-        locale={locale}
-      >
-        {query.get("from") === "studio"
-          ? t("Return to Studio", "العودة للاستوديو")
-          : t("Return to Chat", "العودة للمحادثة")}
-      </ProductLink>
-      <p>
+      {!embedded ? (
+        <ProductLink
+          href={
+            query.get("from") === "studio"
+              ? base + "/studio"
+              : `${base}/chat${session ? `?session=${session.id}#exchange-${exchange}` : ""}`
+          }
+          locale={locale}
+        >
+          {query.get("from") === "studio"
+            ? t("Return to Studio", "العودة للاستوديو")
+            : t("Return to Chat", "العودة للمحادثة")}
+        </ProductLink>
+      ) : null}
+      <p className={embedded ? styles.materialsCaption : undefined}>
         {t(
           "Sample materials · Excerpts and page references below are illustrative.",
           "مواد تجريبية · النصوص ومواضع الصفحات أدناه للتوضيح.",
@@ -213,50 +228,52 @@ function Evidence({ scope, locale, base, screen }: Props) {
           </section>
         )
       ) : (
-        sources.map((source) => (
-          <Row key={source.segment} title={source.title}>
-            <p>
-              <bdi>{source.format}</bdi> · {source.locator}
-            </p>
-            <span className={styles.pill}>
-              {scope.unitId === defaultScope.unitId &&
-              !state.availability.sourceActive &&
-              source.segment.endsWith(":1")
-                ? t(
-                    "INACTIVE sample · excluded from new requests",
-                    "مثال غير نشط · مستبعد من الطلبات الجديدة",
-                  )
-                : t("Ready · Sample material", "جاهز · مادة تجريبية")}
-            </span>
-            {sources.indexOf(source) < 2 &&
-            !(
-              scope.unitId === defaultScope.unitId &&
-              !state.availability.sourceActive &&
-              source.segment.endsWith(":1")
-            ) ? (
-              <details>
-                <summary>
-                  {t("View supporting excerpt", "عرض النص الداعم")}
-                </summary>
-                <p>
-                  {source.format === "AUDIO"
-                    ? t(
-                        "Compare first, then identify the labels.",
-                        "قارن أولًا ثم حدد الأسماء.",
-                      )
-                    : t(
-                        "Identify the labels, then compare the diagrams.",
-                        "حدد الأسماء ثم قارن الرسوم.",
-                      )}
-                </p>
-                <p>
-                  {t("Processed sample excerpt", "نص تجريبي معالج")} ·{" "}
-                  {source.locator}
-                </p>
-              </details>
-            ) : null}
-          </Row>
-        ))
+        <div className={styles.materialLibrary}>
+          {sources.map((source) => (
+            <Row key={source.segment} title={source.title}>
+              <p>
+                <bdi>{source.format}</bdi> · {source.locator}
+              </p>
+              <span className={styles.pill}>
+                {scope.unitId === defaultScope.unitId &&
+                !state.availability.sourceActive &&
+                source.segment.endsWith(":1")
+                  ? t(
+                      "INACTIVE sample · excluded from new requests",
+                      "مثال غير نشط · مستبعد من الطلبات الجديدة",
+                    )
+                  : t("Ready · Sample material", "جاهز · مادة تجريبية")}
+              </span>
+              {sources.indexOf(source) < 2 &&
+              !(
+                scope.unitId === defaultScope.unitId &&
+                !state.availability.sourceActive &&
+                source.segment.endsWith(":1")
+              ) ? (
+                <details>
+                  <summary>
+                    {t("View supporting excerpt", "عرض النص الداعم")}
+                  </summary>
+                  <p>
+                    {source.format === "AUDIO"
+                      ? t(
+                          "Compare first, then identify the labels.",
+                          "قارن أولًا ثم حدد الأسماء.",
+                        )
+                      : t(
+                          "Identify the labels, then compare the diagrams.",
+                          "حدد الأسماء ثم قارن الرسوم.",
+                        )}
+                  </p>
+                  <p>
+                    {t("Processed sample excerpt", "نص تجريبي معالج")} ·{" "}
+                    {source.locator}
+                  </p>
+                </details>
+              ) : null}
+            </Row>
+          ))}
+        </div>
       )}
       <div className={styles.actions}>
         {answer ? (

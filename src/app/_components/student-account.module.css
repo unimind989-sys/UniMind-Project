@@ -1,13 +1,13 @@
 .section {
-  padding-block: 24px;
+  padding-block: 32px;
   border-block-end: 1px solid var(--border);
 }
 .section:first-child {
   padding-block-start: 0;
 }
 .section h2 {
-  font-size: 1.25rem;
-  margin: 0 0 8px;
+  font-size: 1.5rem;
+  margin: 0 0 12px;
 }
 .section p {
   color: var(--secondary);
@@ -16,7 +16,7 @@
 .fields {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  gap: 24px;
   border: 0;
   padding: 0;
   margin-block: 24px;
@@ -36,6 +36,7 @@
   border: 1px solid var(--control-border);
   border-radius: 8px;
   padding: 8px 12px;
+  transition: border-color 180ms ease;
 }
 .primary,
 .secondary {
@@ -44,6 +45,14 @@
   border-radius: 8px;
   font-weight: 600;
   border: 1px solid var(--control-border);
+  transition: background-color 180ms ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .fields select,
+  .primary,
+  .secondary {
+    transition: none;
+  }
 }
 .primary {
   background: var(--accent);
