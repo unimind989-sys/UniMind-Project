@@ -667,6 +667,7 @@ test("Auth validation, registration, email callback, consent and recovery use no
       exact: true,
     })
     .click();
+  await navigate(page, "/settings");
   await page
     .getByRole("button", { name: "Sign out", exact: true })
     .first()

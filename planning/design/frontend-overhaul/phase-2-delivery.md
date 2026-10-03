@@ -9,13 +9,15 @@ An isolated managed checkout preserves the original open 3101 review server,
 unrelated logo exploration/task text, supplied kit and branch history. The final
 [direct receipt](final-approval.md) and three role receipts prove design acceptance;
 current documents do not claim later technical gates have passed.
+The consolidated [implementation report](phase-2-report.md) covers audit findings,
+changed routes/system, persistence rationale, retained rendered proof and limits.
 
 ## Verification map and freeze
 
 | Requirement / seam                     | Required proof / current limit                                                                                                                         |
 | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Approved role/UI behavior              | Source-bound accepted role packets and final 3+4 focused browser cases; seven passes, 29 final inspected views                                         |
-| Profile academic persistence/authority | Linux disposable upgrade, repeated reset, twelve new pgTAP assertions, generated-type parity, authenticated integration/browser denial checks; pending |
+| Profile academic persistence/authority | Complete Linux disposable database gate PASS at f041353; hosted migration presence/application still unproven                                          |
 | Shared runtime and isolation           | Guarded local broad chain once per stable candidate; full exact-head application/security/native/normal CI; pending                                    |
 | Readiness and release boundaries       | Correct comparison/envelope, valid founder receipt, inline preparation review, fingerprint, secret/diff/scope checks; gate defect below                |
 | Delivery                               | Exact-head CI, formal protected distinct-account review, merge and affected Supabase/Vercel proof; pending                                             |
@@ -36,10 +38,15 @@ No broad PASS, correct full-diff envelope or release readiness is claimed throug
 that defect.
 
 The concrete proposed correction is recorded locally in
-`E:/UniMind Project/.local/phase2-final/release-gate-correction.md` and presented
+`E:/UniMind Project/.local/phase2-final/release-gate-correction.md`, with an
+unapplied `release-gate-correction.patch` beside it, and presented
 to Ahmed as a scope exception to the explicit no-WP00 guardrail. Approval is
 pending. No gate code/policy or WP00 state is changed before that answer.
 Required protected tests and branch protection remain intact.
+The patch applicability check passed. Offline proposal analysis preserved all
+five recorded conditional-CI observations and recommended READY under the draft
+version; new regression tests are drafted but not executed. These are preparation
+results, not evidence that the active policy/gate is corrected or verified.
 
 ## Release-check repairs — 3 October 2026
 
@@ -102,7 +109,48 @@ equated account suspension with cohort-membership revocation. It now revokes the
 actual membership and retains the independent suspended-preference-write denial.
 The authenticated leader fixture also grants the existing authoritative
 BATCH_LEADER role, so its entry assertion exercises role routing rather than an
-assignment-only student identity. Both changes await fresh Linux execution.
+assignment-only student identity. Both changes passed fresh Linux execution in
+the subsequent run below.
+
+## Third release-check result
+
+Run [37110602490](https://github.com/unimind989-sys/UniMind-Project/actions/runs/37110602490)
+at `f041353` passed selector, dependency audit and the complete database job:
+upgrade, two resets, migration/pgTAP/advisor contracts, generated-type parity,
+17 database integration cases, eight authenticated browser cases, 44 security
+cases and disposable cleanup. This proves the new preference migration and the
+authoritative Batch Leader fixture in the disposable Linux environment; it does
+not prove the migration is applied to hosted Preview.
+
+Application coverage passed 564 unit cases, 15 local integration cases (two
+hosted-only cases skipped), 44 security cases, evaluation/load checks and all
+56 normal browser cases. Native coverage passed 40 of 41 cases. The remaining
+registration/consent/recovery case still clicked Sign out on the onboarding page
+instead of navigating through Account. The test now follows the existing Account
+link and passed its focused replay (1/1), retaining the no-real-services assertion.
+The failed application job and unexecuted later build step are not release passes.
+
+The focused patched-runtime production build initially rejected malformed local
+generated development declarations. Those ignored cache files were archived
+inside the owned release checkout, with no source or verification-rule change.
+Replay passed the production build and privileged client-canary scan. The failed
+first invocation remains recorded; no broad local PASS is claimed.
+
+The current design-stack, audit, Admin brief and review-guide references now agree
+with final acceptance. Public guide mirrors and the nine-entry synthetic ZIP are
+refreshed; each archived entry matches the corresponding allowlisted source bytes.
+No fixture data or runtime behavior changed in this documentation refresh.
+Final readiness passed (490 names, 158 links, 23 decisions, 113 task contracts),
+secret scanning passed (2862 files), and owned source/diff/whitespace plus exact
+pack-entry review completed. The original review server and unrelated work remain
+preserved in the original checkout.
+
+Read-only provider inventory verified the existing Vercel Hobby team (active,
+no trial reported) and healthy exact Preview Supabase fingerprint. Two CLI
+read-only schema-query attempts could not connect. Hosted migration presence is
+unproven; no schema deployment/promotion is claimed and retired development/CI
+credentials were not recreated. The future hosted migration still requires its
+reviewed exact-target forward-only path after all technical gates pass.
 
 ### Separate existing authorization finding
 
@@ -118,8 +166,8 @@ does not silently broaden or change catalog authorization.
 
 ## Next safe action
 
-Push the accepted candidate/approval metadata only for existing draft-PR CI and
-disposable database proof. Keep the PR draft and unmerged. Continue independent
+Push the current bounded test/documentation repair for fresh exact-head draft-PR
+CI. Keep the PR draft and unmerged. Continue independent
 technical proof while the scoped gate decision is pending. Once the gate is
 correct and all required checks pass, complete protected delivery, apply only the
 reviewed minimal profile migration through the approved environment-promotion
