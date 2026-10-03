@@ -18,7 +18,8 @@ select throws_ok($q$update public.profiles set academic_context = academic_conte
 select throws_ok($q$update public.profiles set academic_context = '[]'::jsonb$q$, '22023', 'Academic preference does not match the available catalog.', 'malformed preference fails with a bounded public error');
 
 set local request.jwt.claim.sub = '10000000-0000-0000-0000-000000000003';
-select is((with changed as (update public.profiles set academic_context = '{}'::jsonb where user_id = '10000000-0000-0000-0000-000000000002' returning user_id) select count(*) from changed), 0::bigint, 'foreign profile is hidden from mutation by RLS');
+with changed as (update public.profiles set academic_context = '{}'::jsonb where user_id = '10000000-0000-0000-0000-000000000002' returning user_id)
+select is((select count(*) from changed), 0::bigint, 'foreign profile is hidden from mutation by RLS');
 select throws_ok($q$update public.profiles set academic_context = '{}'::jsonb where user_id = '10000000-0000-0000-0000-000000000003'$q$, '42501', 'Academic preference unavailable.', 'nonconsenting caller cannot save');
 reset role;
 update public.profiles set account_status = 'SUSPENDED' where user_id = '10000000-0000-0000-0000-000000000002';

@@ -1,6 +1,6 @@
 # UniMind: review the normal product flow with synthetic data
 
-Current design authority is [DESIGN](../../DESIGN.md) and the [overhaul audit](wp03-frontend-overhaul.md). Ahmed accepted student `3a2a95d`, Batch Leader `4c03b80` and Admin `ec00466`; the [final consistency record](../../planning/design/frontend-overhaul/phase-2-final.md) owns the current rendered checkpoint and pending final acceptance. The shared system now covers every role below. PR #64 remains draft/unmerged; broad/database/CI/delivery proof and WP03-T10 remain pending.
+Current design authority is [DESIGN](../../DESIGN.md) and the [overhaul audit](wp03-frontend-overhaul.md). Ahmed accepted student `3a2a95d`, Batch Leader `4c03b80`, Admin `ec00466` and final consistency `8ad3a9b`; the [final consistency record](../../planning/design/frontend-overhaul/phase-2-final.md) retains the rendered checkpoint and [delivery record](../../planning/design/frontend-overhaul/phase-2-delivery.md) tracks technical gates. The shared system now covers every role below. PR #64 remains draft/unmerged; broad/database/CI/delivery proof and WP03-T10 remain pending.
 
 This replaces the separate `/preview/review` interface. Start at **http://127.0.0.1:3101/?lang=en**. First-time visitors see the landing page; use **Sign in** to enter the synthetic journey. Use normal sign-in, consent, product navigation, forms and buttons. There is no role switcher, scenario selector or manual response-completion button. The small banner identifies simulated services.
 

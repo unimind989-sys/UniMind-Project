@@ -125,7 +125,8 @@ values
   ('validate_artifact_evidence_scope'),
   ('validate_artifact_finalization'),
   ('validate_embedding_dimensions'),
-  ('validate_final_answer');
+  ('validate_final_answer'),
+  ('validate_profile_academic_context');
 
 create temporary table reviewed_policies (
   table_name text not null,
@@ -236,6 +237,7 @@ insert into reviewed_authenticated_column_grants (
   table_name, column_name, privilege_type
 )
 values
+  ('profiles', 'academic_context', 'UPDATE'),
   ('profiles', 'display_name', 'UPDATE'),
   ('profiles', 'preferred_language', 'UPDATE'),
   ('profiles', 'chat_retention_mode', 'UPDATE'),

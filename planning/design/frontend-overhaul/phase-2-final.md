@@ -141,13 +141,12 @@ source data, uploads, generations, invitations, audit writes or paid services.
 
 ## Approval boundary, limitations and follow-ups
 
-The final product candidate is ready for founder review; explicit product-wide
-approval is still required by the user's milestone instruction and the frontend
-quality floor. All three role checkpoints are accepted; this record does not
-invent final acceptance. T09 remains `[~]`, PR #64 draft/unmerged, and the local
+Ahmed accepted final product candidate `8ad3a9b`; the [direct receipt](final-approval.md)
+records that approval separately from technical proof. All three role checkpoints
+are also accepted. T09 remains `[~]`, PR #64 draft/unmerged, and the local
 review remains available at `http://127.0.0.1:3101/?lang=en`.
 
-After explicit final approval, run the guarded broad stable-candidate gate once,
+Complete the guarded broad stable-candidate gate once,
 safe build and required Linux database proof, then exact-head CI/protected delivery
 and affected production proof. Rerun only checks invalidated by later changes.
 WP03-T10 remains the separate reviewed mock gate before WP04.

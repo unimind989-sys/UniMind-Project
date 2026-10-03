@@ -40,7 +40,8 @@ writeFileSync(
     {
       simulated: true,
       designCheckpoint: {
-        status: "awaiting-final-consistency-acceptance",
+        status: "final-consistency-accepted",
+        acceptedFinalCandidate: "8ad3a9b",
         acceptedRoleCandidates: {
           student: "3a2a95d",
           batchLeader: "4c03b80",
@@ -58,7 +59,7 @@ writeFileSync(
         studio:
           "Choose an artifact using the radio group. Generate prepares a fixed example; Cancel preparation interrupts it. Only MCQ offers Open quiz.",
         remainingPlatform:
-          "The shared system covers the accepted role journeys. Final consistency approval, database proof, broad verification and delivery remain pending. All study/upload/governance results here are fixed local examples.",
+          "Ahmed accepted the final consistency candidate. Database proof, broad verification and delivery remain pending. All study/upload/governance results here are fixed local examples.",
       },
       credentials: "accounts.csv",
       sourceTitle: "Synthetic study source",

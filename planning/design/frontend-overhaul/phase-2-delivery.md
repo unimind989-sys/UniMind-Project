@@ -41,6 +41,34 @@ to Ahmed as a scope exception to the explicit no-WP00 guardrail. Approval is
 pending. No gate code/policy or WP00 state is changed before that answer.
 Required protected tests and branch protection remain intact.
 
+## Release-check repairs — 3 October 2026
+
+Hosted run [37107608541](https://github.com/unimind989-sys/UniMind-Project/actions/runs/37107608541)
+at PR head `80f6d18` rejected the candidate. The dependency audit found
+[GHSA-vcvr-r3jv-pc5j](https://github.com/advisories/GHSA-vcvr-r3jv-pc5j)
+in Next.js 16.3.4. The existing framework and matching lint configuration are
+patched to 16.3.6, the first fixed version. No dependency family or product
+capability is added. The repaired production audit reports no known vulnerabilities.
+
+The database upgrade, two resets, migration inventory, advisors and generated-type
+parity passed in that run. Its pgTAP and authenticated browser gates failed;
+the whole database job is **FAIL**, not partial delivery proof.
+
+The reviewed security inventory now includes the existing academic-context
+validator and its six actor decisions, plus the single guarded profile column
+grant. Exact resource cross-product and private-function denial checks remain
+intact; all 44 local security tests pass. The profile test's mutation CTE now runs
+at the SQL top level, retaining the same foreign-profile denial assertion and
+twelve-assertion plan. These changes repair tests and documentation; the profile
+migration and its authorization behavior are unchanged.
+
+Authenticated browser checks now follow the approved Admin role destination,
+Overview heading and Account sign-out flow. Response inspection captures action
+POST bodies before navigation discards them, forwarding the original response
+once with redirects and retries disabled. It retains private-data rejection and
+all allowed/forbidden, revocation and stale-session checks. Execution of the
+repaired Linux database/browser gate remains pending; compilation cannot prove it.
+
 ## Next safe action
 
 Push the accepted candidate/approval metadata only for existing draft-PR CI and

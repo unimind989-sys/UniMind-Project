@@ -96,7 +96,9 @@ async function login(page: Page, role: Role) {
   expect(response.headers()["cache-control"]).toContain("no-store");
   expect(response.headers()["pragma"]).toBe("no-cache");
   expect(response.headers()["expires"]).toBe("0");
-  await expect(page).toHaveURL(/\/learn(?:\?|$)/u);
+  await expect(page).toHaveURL(
+    role === "admin" ? /\/admin(?:\?|$)/u : /\/learn(?:\?|$)/u,
+  );
 }
 
 test.beforeAll(async () => {
@@ -242,15 +244,19 @@ test.beforeEach(async ({ page }) => {
     if (!["127.0.0.1", "localhost"].includes(url.hostname))
       return route.abort("blockedbyclient");
     if (
-      request.method() !== "GET" ||
+      !["GET", "POST"].includes(request.method()) ||
       !["document", "fetch", "xhr"].includes(request.resourceType())
     )
       return route.continue();
-    // Chromium can discard application prefetch bodies during navigation. Read
+    // Chromium can discard action and prefetch bodies during navigation. Read
     // the one real server response before forwarding identical bytes/headers;
     // never repeat a mutation or manufacture a role/authorization response.
     const inspection = (async () => {
-      const response = await route.fetch({ maxRedirects: 0, timeout: 10_000 });
+      const response = await route.fetch({
+        maxRedirects: 0,
+        maxRetries: 0,
+        timeout: 10_000,
+      });
       const mime = response.headers()["content-type"] ?? "";
       if (
         /text\/html|text\/x-component|application\/json/iu.test(mime) &&
@@ -274,9 +280,7 @@ test.beforeEach(async ({ page }) => {
         await response.dispose();
       }
     })().catch(async () => {
-      exposure.push(
-        "application GET response could not be inspected or forwarded",
-      );
+      exposure.push("application response could not be inspected or forwarded");
       await route.abort("failed").catch(() => undefined);
     });
     inspections.push(inspection);
@@ -350,7 +354,7 @@ for (const role of roles) {
       ).toHaveCount(0);
       await expect(
         page.getByRole("heading", {
-          name: "Admin decision queue",
+          name: "Overview",
           exact: true,
         }),
       ).toBeVisible();
@@ -360,7 +364,7 @@ for (const role of roles) {
       ).toBeVisible();
     }
     if (role === "student") {
-      await page.goto("/learn?lang=en");
+      await page.goto("/settings?lang=en");
       await page.getByRole("button", { name: "Sign out", exact: true }).click();
       await expect(page).toHaveURL(/\/login\?/u);
       await page.goto(workspace);
