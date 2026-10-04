@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { ProductNavigationLink as Link } from "@/app/_components/product-navigation";
 import type { Route } from "next";
 import { AppShell } from "@/app/_components/app-shell";
 import type {

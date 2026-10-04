@@ -88,7 +88,7 @@ The [complete synthetic test pack](public/demo-files/README.md) supplies invente
 
 Use the [Chrome screen-by-screen review guide](docs/reviews/wp03-synthetic-frontend-review.md) for the complete synthetic review, expected outcomes, failure states and isolation checks.
 
-The [premium screen guide](planning/design/premium-product/README.md) links the approved design checkpoints, restartable role previews and commit-specific production evidence. Public production retains real access guards; invented demo credentials work only in the isolated local runtime.
+The [premium screen guide](planning/design/premium-product/README.md) links the approved design checkpoints, restartable role previews and commit-specific production evidence. The normal live login also recognizes the four exact approved synthetic account/password pairs in the test pack. Those accounts select the same shared views with browser-only fixture services, without new entry controls, labels or prefilled credentials. Navigation and locale changes preserve document memory; sign-out, reload and a new document discard it. They create no backend identity or permission; all real server access guards remain enforced. The separate loopback review launcher remains available for prepared fixture scenarios.
 
 ## Notes
 

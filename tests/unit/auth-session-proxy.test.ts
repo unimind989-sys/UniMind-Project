@@ -62,6 +62,25 @@ beforeEach(() => {
 
 describe("Supabase session proxy", () => {
   it.each([
+    "/synthetic-runtime",
+    "/synthetic-runtime/admin",
+    "/synthetic-runtime/login",
+  ])(
+    "denies local-only review route %s in the normal runtime without Auth",
+    async (path) => {
+      const { proxy } = await import("../../src/proxy");
+      const response = await proxy(
+        new NextRequest(
+          `https://app.unimind.invalid${path}?role=admin&synthetic=true`,
+        ),
+      );
+      expect(response.status).toBe(404);
+      expect(response.headers.get("Cache-Control")).toBe("private, no-store");
+      expect(response.cookies.getAll()).toEqual([]);
+      expect(mocks.createServerClient).not.toHaveBeenCalled();
+    },
+  );
+  it.each([
     "/preview",
     "/preview/review",
     "/preview/review/access/consent",

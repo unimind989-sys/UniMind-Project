@@ -1,5 +1,5 @@
 "use client";
-import Link from "next/link";
+import { ProductNavigationLink as Link } from "@/app/_components/product-navigation";
 
 import { useActionState, useEffect, useRef, useSyncExternalStore } from "react";
 
@@ -21,6 +21,8 @@ import {
   type AuthFormState,
 } from "../actions";
 import styles from "../auth.module.css";
+import { useSyntheticNavigation } from "@/app/_components/product-navigation";
+import { syntheticLoginRole } from "@/lib/demo/synthetic-account.application";
 
 const subscribeToClient = () => () => {};
 const clientReady = () => true;
@@ -146,10 +148,11 @@ export function AuthForm({
     previous: AuthFormState,
     data: FormData,
   ) => Promise<AuthFormState>;
-  initialEmail?: string;
-  initialPassword?: string;
+  initialEmail?: string | undefined;
+  initialPassword?: string | undefined;
 }>) {
   const copy = getAuthCopy(locale);
+  const synthetic = useSyntheticNavigation();
   const direction = getTextDirection(locale);
   const hydrated = useSyncExternalStore(
     subscribeToClient,
@@ -157,7 +160,32 @@ export function AuthForm({
     serverReady,
   );
   const [state, formAction, pending] = useActionState(
-    actionOverride ?? actions[mode],
+    mode === "login" && !actionOverride && synthetic
+      ? async (
+          previous: AuthFormState,
+          data: FormData,
+        ): Promise<AuthFormState> => {
+          const role = syntheticLoginRole(
+            data.get("email"),
+            data.get("password"),
+          );
+          if (role) {
+            const home =
+              role === "leader"
+                ? "/batch-leader"
+                : role === "student"
+                  ? "/learn"
+                  : "/admin";
+            synthetic.enter(
+              role,
+              locale,
+              ["/", "/learn"].includes(returnPath) ? home : returnPath,
+            );
+            return { status: "SUCCESS", returnPath: home };
+          }
+          return actions.login(previous, data);
+        }
+      : (actionOverride ?? actions[mode]),
     initialState,
   );
   const summaryRef = useRef<HTMLDivElement>(null);

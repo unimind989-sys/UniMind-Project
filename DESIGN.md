@@ -33,7 +33,7 @@ Brand dependency: `planning/design/unimind-logo/open-folio-kit/`. Read `usage-gu
 
 Ahmed supplied the kit in `unimind-open-folio-kit/` for Phase 2. Selected production files and guides are preserved under the canonical kit path; runtime copies live in `public/brand/unimind/`. Verify their hashes against the supplied manifest. The Phase 1 sample used a temporary plain wordmark. Unrelated logo concepts remain untouched.
 
-Use sentence case and concrete verbs: Open Module, Resume Anatomy, Upload files, Retry upload, View supporting material. Keep task IDs, provider internals and decision codes out of ordinary product flows. Synthetic review has one clear service-boundary label.
+Use sentence case and concrete verbs: Open Module, Resume Anatomy, Upload files, Retry upload, View supporting material. Keep task IDs, provider internals and decision codes out of ordinary product flows. Local synthetic review retains its service-boundary label. Ahmed's 4 October brief requires the hosted browser simulation to use identical ordinary presentation, with no mode button, banner, extra explanation or credential prefill; its exact approved login pairs select fixture services and ordinary sign-out discards the document-local state.
 
 ## Semantic color system
 

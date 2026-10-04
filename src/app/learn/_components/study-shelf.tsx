@@ -1,7 +1,8 @@
 "use client";
-import Link from "next/link";
+import { useProductRouter } from "@/app/_components/product-navigation";
+import { ProductNavigationLink as Link } from "@/app/_components/product-navigation";
 import type { Route } from "next";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AppShell } from "@/app/_components/app-shell";
 import {
@@ -35,7 +36,7 @@ export function StudyShelf({
   lastStudyPath?: string | null;
   unitPresentationById?: Readonly<Record<string, UnitPresentation>>;
 }) {
-  const router = useRouter();
+  const router = useProductRouter();
   const parameters = useSearchParams();
   const subjects = parameters.get("view") === "subjects";
   const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
