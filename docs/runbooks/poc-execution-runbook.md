@@ -1444,10 +1444,10 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 **Dependencies:** WP03-T09 and WP03-T10 delivered. Ahmed's 4 October request supersedes local-only presentation restrictions for this scoped browser simulation.
 
-- [~] Recognize only the four approved synthetic login pairs on the normal login; other credentials retain real Auth behavior. Keep synthetic role/activity in document memory, with no backend identity, cookie, persistent storage or seeded records.
-- [ ] Reuse shared product screens and navigation without new controls, banners, explanations or credential prefill. Preserve activity through navigation, locale and browser Back; discard it on sign-out, reload or a fresh document.
-- [ ] Prove each role, wrong-password/forged-URL denial, zero synthetic service mutation, EN/AR/mobile presentation and affected real regression. Keep every server/database guard intact.
-- [ ] Complete candidate review, guarded verification, protected exact-head delivery, affected production proof and cleanup.
+- [x] Recognize only the four approved synthetic login pairs on the normal login; other credentials retain real Auth behavior. Keep synthetic role/activity in document memory, with no backend identity, cookie, persistent storage or seeded records.
+- [x] Reuse shared product screens and navigation without new controls, banners, explanations or credential prefill. Preserve activity through navigation, locale and browser Back; discard it on sign-out, reload or a fresh document.
+- [x] Prove each role, wrong-password/forged-URL denial, zero synthetic service mutation, EN/AR/mobile presentation and affected real regression. Keep every server/database guard intact.
+- [x] Complete candidate review, guarded verification, protected exact-head delivery, affected production proof and cleanup.
 
 **Verify:** Focused hosted synthetic credential and browser isolation suites; affected real/demo regression; frontend floor; guarded `pnpm verify`; exact-head CI and production credential journeys.
 
