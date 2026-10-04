@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 3,
+  "policyVersion": 9,
+  "task": "WP03-T10",
+  "candidate": "569c467bb2f84c6efcbef616528c9b090768b61c",
+  "proofs": [
+    {
+      "id": "human-design-acceptance",
+      "check": "founder approval of presented landing candidate",
+      "status": "PASS",
+      "decisionActor": "Ahmed",
+      "decisionReference": "message:landing-approval-20261003T215720Z",
+      "decisionTimestamp": "2026-10-03T21:57:20Z",
+      "acceptedCandidate": "569c467bb2f84c6efcbef616528c9b090768b61c",
+      "acceptedScope": "routes:/; surfaces:public landing; states:EN/AR Light/Dark responsive desktop/mobile,folio collapsed/expanded,sample Chat/Studio/Quiz,reduced motion",
+      "invalidatedBy": {
+        "surfaces": [],
+        "pathPatterns": [],
+        "semanticFacts": [
+          { "flag": "visualImpactUnknown", "equals": true, "result": "MISSING" }
+        ]
+      }
+    }
+  ]
+}

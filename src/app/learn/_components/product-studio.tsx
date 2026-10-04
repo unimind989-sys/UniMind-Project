@@ -250,15 +250,33 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
               >
                 {artifact.type === "flashcards" ? (
                   <>
-                    <p>
-                      {flipped
-                        ? artifact.language === "en"
-                          ? "Identify labels, then compare diagrams."
-                          : "حدد الأسماء ثم قارن الرسوم."
-                        : artifact.language === "en"
-                          ? "What sequence does the sample handout use?"
-                          : "ما ترتيب الملزمة التجريبية؟"}
-                    </p>
+                    <div
+                      className={studyStyles.flashcard}
+                      data-flipped={flipped}
+                      role="region"
+                      aria-label={t("Flashcard", "بطاقة مراجعة")}
+                      aria-live="polite"
+                      aria-atomic="true"
+                    >
+                      <div className={studyStyles.flashcardInner}>
+                        <p
+                          className={studyStyles.flashcardFront}
+                          aria-hidden={flipped}
+                        >
+                          {artifact.language === "en"
+                            ? "What sequence does the sample handout use?"
+                            : "ما ترتيب الملزمة التجريبية؟"}
+                        </p>
+                        <p
+                          className={studyStyles.flashcardBack}
+                          aria-hidden={!flipped}
+                        >
+                          {artifact.language === "en"
+                            ? "Identify labels, then compare diagrams."
+                            : "حدد الأسماء ثم قارن الرسوم."}
+                        </p>
+                      </div>
+                    </div>
                     <Button onClick={() => setFlipped(!flipped)}>
                       {t("Flip card", "اقلب البطاقة التجريبية")}
                     </Button>

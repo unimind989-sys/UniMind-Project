@@ -1,8 +1,8 @@
 .chatLayout {
   display: grid;
-  grid-template-columns: 11rem minmax(0, 1fr);
+  grid-template-columns: 12rem minmax(0, 1fr);
   gap: 2rem;
-  min-height: calc(100svh - 12rem);
+  min-height: calc(100svh - 20rem);
 }
 .history {
   display: flex;
@@ -10,7 +10,7 @@
   gap: 1rem;
   min-width: 0;
   border-inline-end: 1px solid var(--line);
-  padding-inline-end: 1rem;
+  padding-inline-end: 1.5rem;
 }
 .history > button,
 .history > a {
@@ -25,6 +25,9 @@
   padding-block: 0.75rem;
   min-height: 44px;
   cursor: pointer;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease;
 }
 .historyList ul {
   list-style: none;
@@ -46,8 +49,8 @@
   cursor: pointer;
 }
 .historyList button[aria-pressed="true"] {
-  background: var(--surface-active);
-  color: var(--text-primary);
+  background: var(--accent-soft);
+  color: var(--accent-ink);
 }
 .historyList button:hover {
   background: var(--surface);
@@ -86,22 +89,26 @@
   background: transparent;
 }
 .transcript {
-  min-height: 18rem;
+  min-height: 19rem;
   flex: 1;
 }
 .chatEmpty {
-  padding: 2.5rem 0 2rem;
+  padding: 3rem 0 2.5rem;
   max-width: 40rem;
   margin-inline: auto;
 }
 .chatEmpty > svg {
   color: var(--accent-text);
-  width: 2rem;
-  height: 2rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0.6rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 12px;
 }
 .chatEmpty h3 {
   margin: 1rem 0 0.65rem;
-  font-size: var(--type-study-invitation-size);
+  font-size: 1.875rem;
   font-weight: 600;
   line-height: 1.45;
   text-wrap: balance;
@@ -141,9 +148,10 @@
   max-width: 85%;
   width: fit-content;
   margin-inline-start: auto;
-  padding: 0.75rem 1rem;
-  background: var(--surface-strong);
-  border-radius: var(--radius-card);
+  padding: 1rem 1.25rem;
+  background: var(--accent-soft);
+  border: 1px solid var(--border);
+  border-radius: 16px 16px 4px 16px;
   overflow-wrap: anywhere;
 }
 .questionBubble p {
@@ -203,9 +211,13 @@
   display: grid;
   gap: 0.5rem;
   border: 1px solid var(--line);
-  border-radius: var(--radius-card);
-  padding: 1rem;
+  border-radius: 16px;
+  padding: 1.25rem;
   background: var(--surface);
+  transition: border-color 180ms ease;
+}
+.composer:focus-within {
+  border-color: var(--accent);
 }
 .composer > label {
   font-size: var(--type-body-compact-size);
@@ -273,7 +285,7 @@
 .studioLayout {
   display: grid;
   grid-template-columns: minmax(17rem, 22rem) minmax(0, 1fr);
-  gap: 2rem;
+  gap: 2.5rem;
   align-items: start;
 }
 .studioControls {
@@ -300,8 +312,8 @@
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  min-height: 44px;
-  padding: 0.5rem 0.75rem;
+  min-height: 64px;
+  padding: 0.75rem;
   border: 1px solid var(--control-border);
   border-radius: var(--radius-control);
   color: var(--text-secondary);
@@ -309,11 +321,15 @@
   cursor: pointer;
   font-size: var(--type-body-compact-size);
   overflow-wrap: anywhere;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    border-color 180ms ease;
 }
 .artifactTypes label[data-selected="true"] {
-  background: var(--surface-active);
-  border-color: var(--accent-text);
-  color: var(--text-primary);
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent-ink);
 }
 .artifactTypes label:hover {
   color: var(--text-primary);
@@ -348,17 +364,23 @@
 .artifactArea {
   min-width: 0;
   min-height: 28rem;
-  border-inline-start: 1px solid var(--line);
-  padding-inline-start: 2rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  padding: clamp(1.5rem, 3vw, 2.5rem);
 }
 .artifactEmpty {
   padding-block: 3.5rem;
   max-width: 35rem;
+  margin-inline: auto;
 }
 .artifactEmpty > svg {
-  color: var(--text-muted);
-  width: 2rem;
-  height: 2rem;
+  color: var(--accent-ink);
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0.6rem;
+  background: var(--accent-soft);
+  border-radius: 10px;
 }
 .artifactEmpty h3 {
   font-size: var(--type-workspace-title-size);
@@ -395,6 +417,38 @@
   border-radius: var(--radius-control);
   background: var(--surface);
   margin-block-end: 1rem;
+}
+.flashcard {
+  perspective: 1000px;
+  margin-block: 0 1.25rem;
+}
+.flashcardInner {
+  display: grid;
+  transform-style: preserve-3d;
+  transition: transform 240ms ease;
+}
+.flashcard[data-flipped="true"] .flashcardInner {
+  transform: rotateY(180deg);
+}
+.flashcardFront,
+.flashcardBack {
+  grid-area: 1 / 1;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  min-height: 200px;
+  margin: 0;
+  padding: 32px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  backface-visibility: hidden;
+  background: var(--accent-soft);
+  font-size: 1.25rem;
+  line-height: 1.7;
+}
+.flashcardBack {
+  background: var(--subtle);
+  transform: rotateY(180deg);
 }
 :is(.chatLayout, .studio) :is(button, a, select) {
   max-width: 100%;
@@ -447,14 +501,21 @@
     max-width: 40rem;
   }
   .artifactArea {
-    border-inline-start: 0;
-    border-block-start: 1px solid var(--line);
-    padding-inline-start: 0;
-    padding-block-start: 1.5rem;
+    padding: 1.5rem;
     min-height: 18rem;
   }
   .artifactEmpty {
     padding-block: 1.5rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .historyList button,
+  .artifactTypes label,
+  .composer {
+    transition: none;
+  }
+  .flashcardInner {
+    transition: none;
   }
 }
 @media (max-width: 47.99rem) {

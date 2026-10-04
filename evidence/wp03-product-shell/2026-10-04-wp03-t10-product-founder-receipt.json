@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 3,
+  "policyVersion": 10,
+  "task": "WP03-T10",
+  "candidate": "f0a237febb8523451709f38569ad429fd492f842",
+  "proofs": [
+    {
+      "id": "human-design-acceptance",
+      "check": "founder approval of presented premium product candidate and final consistency",
+      "status": "PASS",
+      "decisionActor": "Ahmed",
+      "decisionReference": "message:product-approval-finalize-20261003T234034Z",
+      "decisionTimestamp": "2026-10-03T23:40:34Z",
+      "acceptedCandidate": "f0a237febb8523451709f38569ad429fd492f842",
+      "acceptedScope": "routes:access,onboarding,learn,materials,chat,evidence,report,studio,quiz,settings,batch-leader,campaigns,history,admin,admin-resources; surfaces:student,Batch Leader,Admin,shared shell,final consistency; states:EN/AR Light/Dark desktop/tablet/320px mobile,keyboard,reduced motion,prepared normal/recovery/denied cases",
+      "invalidatedBy": {
+        "surfaces": [],
+        "pathPatterns": [],
+        "semanticFacts": [
+          { "flag": "visualImpactUnknown", "equals": true, "result": "MISSING" }
+        ]
+      }
+    }
+  ]
+}

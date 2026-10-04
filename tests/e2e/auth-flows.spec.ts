@@ -97,12 +97,12 @@ test("public link states are bounded and recovery actions are visible", async ({
   ).toBeVisible();
 });
 
-test("learning and reset routes reject missing verified sessions", async ({
-  page,
-}) => {
+test("learning routes reject missing verified sessions", async ({ page }) => {
   await page.goto("/learn");
   await expect(page).toHaveURL(/\/login\?lang=en&next=%2Flearn$/u);
+});
 
+test("reset routes reject missing verified sessions", async ({ page }) => {
   await page.goto("/reset-password");
   await expect(page).toHaveURL(
     /\/forgot-password\?lang=en&status=invalid_link$/u,

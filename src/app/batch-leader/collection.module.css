@@ -1,5 +1,5 @@
 .workspace {
-  max-width: 58rem;
+  max-width: 64rem;
   margin-inline: auto;
   min-width: 0;
 }
@@ -11,13 +11,13 @@
   color: var(--accent-ink);
 }
 .header {
-  margin-block: 1rem 1.5rem;
+  margin-block: 0.5rem 2.25rem;
 }
 .header h1 {
   margin: 0.25rem 0 0.75rem;
-  font-size: var(--type-display-size);
-  letter-spacing: var(--type-display-tracking);
-  line-height: var(--type-display-leading);
+  font-size: 2.25rem;
+  letter-spacing: -0.035em;
+  line-height: 1.3;
   overflow-wrap: anywhere;
 }
 .header p {
@@ -61,15 +61,38 @@
 }
 .intake h2,
 .history h2 {
-  font-size: 1.125rem;
+  font-size: 1.5rem;
   margin-block: 0 0.5rem;
 }
 .drop {
   position: relative;
-  border: 1px dashed var(--control-border);
-  border-radius: var(--radius-control);
-  padding: 1.25rem;
+  border: 1px solid var(--control-border);
+  border-radius: 14px;
+  padding: 2.5rem 1.5rem;
   background: var(--surface);
+  text-align: center;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease;
+}
+.uploadMark {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 20px;
+  color: var(--accent-ink);
+  background: var(--accent-soft);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  transition: transform 180ms ease;
+}
+.uploadMark svg {
+  width: 26px;
+  height: 26px;
+}
+.drop[data-drag] .uploadMark {
+  transform: translateY(-4px);
 }
 .drop[data-drag] {
   border-color: var(--accent);
@@ -100,10 +123,10 @@
 }
 .file {
   min-width: 0;
-  padding: 1rem;
-  margin-block: 0.75rem;
+  padding: 1.5rem;
+  margin-block: 1rem;
   border: 1px solid var(--border);
-  border-radius: var(--radius-control);
+  border-radius: 12px;
   background: var(--surface);
 }
 .fileHeading {
@@ -222,6 +245,11 @@
 .status {
   font-size: 0.8125rem;
   font-weight: 600;
+  display: inline-flex;
+  padding: 5px 10px;
+  border-radius: 6px;
+  background: var(--subtle);
+  border: 1px solid var(--border);
 }
 .status[data-status="REJECTED"],
 .status[data-status="NEEDS_INFORMATION"] {
@@ -236,15 +264,24 @@
   justify-content: space-between;
   gap: 1rem;
   align-items: center;
-  padding-block: 1.25rem;
-  border-block: 1px solid var(--border);
+  padding: 1.75rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+.campaignList li + li {
+  margin-block-start: 1rem;
 }
 .campaignList h3 {
-  font-size: 1.0625rem;
+  font-size: 1.25rem;
   margin: 0;
 }
 .campaignList h3 a {
   color: var(--ink);
+  text-decoration: none;
+}
+.campaignList h3 a:hover {
+  text-decoration: underline;
 }
 .campaignList p {
   margin: 0.5rem 0;
@@ -253,13 +290,46 @@
 }
 .open {
   flex-shrink: 0;
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: var(--on-accent);
+  text-decoration: none;
+  transition: background-color 180ms ease;
+}
+.open:hover {
+  background: var(--accent-hover);
+}
+:global([lang="ar"]) .header h1 {
+  letter-spacing: 0;
+  line-height: 1.6;
 }
 .empty {
   padding: 1.25rem;
   background: var(--subtle);
   border-radius: var(--radius-control);
 }
+@media (prefers-reduced-motion: reduce) {
+  .drop,
+  .uploadMark,
+  .open {
+    transition: none;
+  }
+}
 @media (max-width: 600px) {
+  .header {
+    margin-block-end: 1rem;
+  }
+  .requests {
+    margin-block-end: 0.75rem;
+  }
+  .header h1 {
+    font-size: 1.875rem;
+  }
+  .uploadMark {
+    display: none;
+  }
   .historyList li {
     grid-template-columns: minmax(0, 1fr);
     gap: 0.5rem;

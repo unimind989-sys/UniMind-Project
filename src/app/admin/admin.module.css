@@ -3,7 +3,7 @@
   min-width: 0;
 }
 .pageHeading {
-  margin-block-end: 24px;
+  margin-block-end: 32px;
 }
 .headingRow {
   display: flex;
@@ -15,8 +15,9 @@
 .pageHeading h1 {
   min-width: 0;
   overflow-wrap: anywhere;
-  margin: 0 0 8px;
-  font-size: 1.75rem;
+  margin: 0 0 14px;
+  font-size: 2.25rem;
+  letter-spacing: -0.035em;
   line-height: var(--heading-leading, 1.35);
 }
 .pageHeading p {
@@ -39,6 +40,10 @@
   padding: 8px 12px;
   color: var(--secondary);
   border-radius: 8px;
+  text-decoration: none;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease;
 }
 .resourceNav a[aria-current="page"] {
   background: var(--accent-soft);
@@ -50,9 +55,9 @@
 }
 .queueLayout {
   display: grid;
-  grid-template-columns: minmax(220px, 0.8fr) minmax(0, 1.7fr);
+  grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.7fr);
   align-items: start;
-  gap: 24px;
+  gap: 32px;
 }
 .queuePane {
   min-width: 0;
@@ -71,14 +76,14 @@
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 4px;
+  gap: 8px;
 }
 .decisionButton {
   display: grid;
   gap: 4px;
   width: 100%;
   text-align: start;
-  padding: 12px;
+  padding: 16px;
   border: 1px solid transparent;
   border-radius: 8px;
   background: transparent;
@@ -86,6 +91,9 @@
   cursor: pointer;
   min-height: 44px;
   overflow-wrap: anywhere;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease;
 }
 .decisionButton:hover {
   background: var(--hover);
@@ -115,9 +123,9 @@
 }
 .detail {
   min-width: 0;
-  padding: 24px;
+  padding: 32px;
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 14px;
   background: var(--surface);
 }
 .detailHeading {
@@ -127,7 +135,7 @@
 }
 .detailHeading h2 {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   line-height: var(--heading-leading, 1.35);
   overflow-wrap: anywhere;
 }
@@ -247,6 +255,9 @@
   font-weight: 600;
   cursor: pointer;
   white-space: normal;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease;
 }
 .primaryAction {
   background: var(--accent);
@@ -351,10 +362,24 @@
   text-decoration: underline;
 }
 .panel {
-  max-width: 75ch;
-  padding-block: 0 24px;
+  max-width: 85ch;
+  padding: 28px;
   margin-block-end: 24px;
-  border-block-end: 1px solid var(--border);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+}
+:global([lang="ar"]) .pageHeading h1 {
+  letter-spacing: 0;
+  line-height: 1.6;
+}
+@media (prefers-reduced-motion: reduce) {
+  .resourceNav a,
+  .decisionButton,
+  .primaryAction,
+  .secondaryAction {
+    transition: none;
+  }
 }
 .panel p {
   color: var(--secondary);

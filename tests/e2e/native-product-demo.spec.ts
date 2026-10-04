@@ -14,6 +14,221 @@ const campaign = "/batch-leader/campaigns/sample-campaign";
 type Locale = "en" | "ar";
 const pick = (locale: Locale, en: string, ar: string) =>
   locale === "ar" ? ar : en;
+
+for (const locale of ["en", "ar"] as const) {
+  test(`premium product ${locale}: source reading, flashcard keyboard feedback and nested Quiz navigation`, async ({
+    page,
+  }) => {
+    const finish = isolation(page);
+    await page.setViewportSize({ width: 390, height: 844 });
+    await signIn(page, "student", locale, unit);
+    const source = page.getByRole("heading", {
+      name: pick(
+        locale,
+        "Synthetic sequence handout",
+        "ملزمة الترتيب التجريبية",
+      ),
+      exact: true,
+    });
+    await expect(source).toBeVisible();
+    const firstView = await source.evaluate((element) => {
+      const rect = element.getBoundingClientRect();
+      const bottomNav = document.querySelector(
+        '[aria-label="Primary navigation"], [aria-label="التنقل الرئيسي"]',
+      );
+      return {
+        sourceBottom: rect.bottom,
+        visibleBottom:
+          bottomNav?.getBoundingClientRect().top ?? innerHeight - 88,
+      };
+    });
+    expect(firstView.sourceBottom).toBeLessThanOrEqual(firstView.visibleBottom);
+    await navigate(page, unit + "/studio", locale);
+    await page
+      .getByRole("radio", {
+        name: pick(locale, "Flashcards", "بطاقات مراجعة"),
+        exact: true,
+      })
+      .check();
+    await page
+      .getByRole("button", {
+        name: pick(locale, "Generate", "إنشاء"),
+        exact: true,
+      })
+      .click();
+    const card = page.getByRole("region", {
+      name: pick(locale, "Flashcard", "بطاقة مراجعة"),
+      exact: true,
+    });
+    const question = pick(
+      locale,
+      "What sequence does the sample handout use?",
+      "ما ترتيب الملزمة التجريبية؟",
+    );
+    const answer = pick(
+      locale,
+      "Identify labels, then compare diagrams.",
+      "حدد الأسماء ثم قارن الرسوم.",
+    );
+    await expect(
+      card.getByRole("paragraph").filter({ hasText: question }),
+    ).toBeVisible();
+    await expect(
+      card.getByRole("paragraph").filter({ hasText: answer }),
+    ).toHaveCount(0);
+    const flip = page.getByRole("button", {
+      name: pick(locale, "Flip card", "اقلب البطاقة التجريبية"),
+      exact: true,
+    });
+    await flip.focus();
+    await flip.press("Enter");
+    await expect(flip).toBeFocused();
+    await expect(
+      card.getByRole("paragraph").filter({ hasText: answer }),
+    ).toBeVisible();
+    await expect(
+      card.getByRole("paragraph").filter({ hasText: question }),
+    ).toHaveCount(0);
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await flip.press("Enter");
+    await expect(
+      card.getByRole("paragraph").filter({ hasText: question }),
+    ).toBeVisible();
+    expect(
+      await card
+        .locator("div")
+        .evaluate((element) => getComputedStyle(element).transitionDuration),
+    ).toBe("0s");
+    for (const theme of ["light", "dark"]) {
+      await navigate(page, "/settings", locale);
+      await page
+        .getByLabel(pick(locale, "Theme", "السمة"), { exact: true })
+        .selectOption(theme);
+      await page
+        .getByRole("link", {
+          name: pick(locale, "Back to study", "العودة للمذاكرة"),
+          exact: true,
+        })
+        .click();
+      for (const width of [1440, 768, 390, 320]) {
+        await page.setViewportSize({ width, height: 900 });
+        expect(
+          await page.evaluate(
+            () => document.documentElement.scrollWidth <= innerWidth + 1,
+          ),
+        ).toBe(true);
+      }
+      await page.addStyleTag({ content: "html {font-size:200%}" });
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= innerWidth + 1,
+        ),
+      ).toBe(true);
+      await expect(page).toHaveTitle(/\S/u);
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      await page.addStyleTag({ content: "html {font-size:100%}" });
+    }
+    await navigate(page, unit + "/quiz", locale);
+    await page
+      .getByRole("button", {
+        name: pick(locale, "Start quiz", "بدء الاختبار"),
+        exact: true,
+      })
+      .click();
+    const quizTab = page
+      .getByRole("navigation", {
+        name: pick(locale, "Workspace navigation", "تنقل مساحة المذاكرة"),
+      })
+      .getByRole("link", {
+        name: pick(locale, "Quiz", "الاختبار"),
+        exact: true,
+      });
+    await expect(quizTab).toHaveAttribute("aria-current", "page");
+    await page
+      .getByRole("radio", {
+        name: pick(locale, "Identify labels", "تحديد الأسماء"),
+        exact: true,
+      })
+      .check();
+    await page
+      .getByRole("radio", {
+        name: pick(locale, "No duration is supplied", "لا توجد مدة محددة"),
+        exact: true,
+      })
+      .check();
+    await page
+      .getByRole("button", {
+        name: pick(locale, "Submit answers", "تسليم الإجابات"),
+        exact: true,
+      })
+      .click();
+    await expect(page).toHaveURL(/\/review\?/u);
+    await expect(quizTab).toHaveAttribute("aria-current", "page");
+    finish();
+  });
+  for (const theme of ["light", "dark"] as const) {
+    test(`premium product ${locale} ${theme}: access slogan and responsive working form`, async ({
+      page,
+    }) => {
+      const finish = isolation(page);
+      await page.emulateMedia({ colorScheme: theme, reducedMotion: "reduce" });
+      await page.setViewportSize({ width: 1440, height: 900 });
+      await page.goto(`/login?lang=${locale}`);
+      const introduction = page.getByRole("complementary");
+      await expect(
+        introduction.getByText(/Study deeper\s*Go further\./u),
+      ).toBeVisible();
+      for (const width of [1000, 768, 390, 320]) {
+        await page.setViewportSize({ width, height: 844 });
+        await expect(introduction).toBeHidden();
+        await expect(
+          page.getByLabel(pick(locale, "Email address", "البريد الإلكتروني")),
+        ).toBeVisible();
+        expect(
+          await page.evaluate(
+            () => document.documentElement.scrollWidth <= innerWidth + 1,
+          ),
+        ).toBe(true);
+      }
+      await page.addStyleTag({ content: "html {font-size:200%}" });
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= innerWidth + 1,
+        ),
+      ).toBe(true);
+      await expect(page).toHaveTitle(/\S/u);
+      expect(
+        (
+          await new AxeBuilder({ page })
+            .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+            .analyze()
+        ).violations,
+      ).toEqual([]);
+      finish();
+    });
+  }
+  test(`premium product ${locale}: phone campaign intake keeps its chooser in the first viewport`, async ({
+    page,
+  }) => {
+    const finish = isolation(page);
+    await page.setViewportSize({ width: 390, height: 844 });
+    await signIn(page, "leader", locale, campaign);
+    const chooser = page.getByRole("button", {
+      name: pick(locale, "Choose files", "اختيار ملفات"),
+      exact: true,
+    });
+    await expect(chooser).toBeVisible();
+    const rect = await chooser.boundingBox();
+    expect(rect!.y + rect!.height).toBeLessThanOrEqual(756);
+    finish();
+  });
+}
 test.beforeEach(async ({ page }) => {
   await page.route("**/*", async (route) =>
     new URL(route.request().url()).hostname === "127.0.0.1"
@@ -1215,6 +1430,7 @@ for (const locale of ["en", "ar"] as const)
           exact: true,
         }),
       ).toBeVisible();
+      await expect(page).toHaveTitle(/\S/u);
       for (const width of [1440, 768, 430, 390, 360, 320]) {
         await page.setViewportSize({ width, height: 844 });
         expect(
@@ -1259,6 +1475,7 @@ for (const locale of ["en", "ar"] as const)
           exact: true,
         }),
       ).toBeVisible();
+      await expect(page).toHaveTitle(/\S/u);
       expect(
         (
           await new AxeBuilder({ page })
@@ -1273,6 +1490,8 @@ for (const locale of ["en", "ar"] as const)
           exact: true,
         }),
       ).toBeVisible();
+      // Next streams metadata separately from the route's visible content.
+      await expect(page).toHaveTitle(/\S/u);
       expect(
         (
           await new AxeBuilder({ page })

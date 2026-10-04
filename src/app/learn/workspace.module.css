@@ -259,7 +259,10 @@
 }
 .toolList {
   margin-block-start: 0.8rem;
-  border-block-start: 0.0625rem solid var(--line);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  padding-inline: 1.5rem;
 }
 .toolRow {
   min-height: 8rem;
@@ -268,7 +271,10 @@
   align-items: center;
   gap: 2rem;
   border-block-end: 0.0625rem solid var(--line);
-  padding-block: 1rem;
+  padding-block: 1.5rem;
+}
+.toolRow:last-child {
+  border-block-end: 0;
 }
 .toolRow h3 {
   margin: 0.15rem 0 0;
