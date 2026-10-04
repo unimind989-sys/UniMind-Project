@@ -32,3 +32,5 @@ Exact reviewed-head GitHub checks, distinct-account approval, merge identity, so
 Hosted Supabase mutation/probing is out of scope: no migration, grant, RLS, function, trigger, storage rule or server identity adapter changed. Conservative auth/data/storage verification will run in the required disposable database CI job. No real credentials, private source data or provider call is used for this task.
 
 Rollback is the previous verified deployment `dpl_F5ZqTumH3YT79a175Gnwk6PxVjqZ` (source `a74abe56e854010ff96e0bc0024da52444975b32`), plus a protected task-scoped revert if needed. No schema/storage rollback is needed. Preserve unrelated logo checkout, landing branch and recovery tags. Task/runbook closure and clean synchronized main follow production proof.
+
+Subsequent delivery is complete in [production evidence](2026-10-04_hosted-synthetic-login_production_9dbb2a3.md). The pending statements above describe this local checkpoint only; runtime PR #69 is merged and production verified. The original failures remain historical failures.
