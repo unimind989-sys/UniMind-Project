@@ -1,6 +1,6 @@
 # Premium product-screen candidate
 
-The approved landing is saved at `569c467` with recovery tag `codex/landing-approved-2026-10-04`. The remaining screens are saved in `0d2c31c` on `codex/premium-product-screens`; their founder acceptance is pending. Candidate identity and executed checks are recorded in [local evidence](../../../evidence/wp03-product-shell/2026-10-04_premium-product_local_0d2c31c.md).
+The approved landing is saved at `569c467` with recovery tag `codex/landing-approved-2026-10-04`. Ahmed also accepted the remaining-screen candidate `f0a237f`, containing source implementation `0d2c31c`, and invoked `$finalize`; the [product approval](product-approval.md) records exact scope and identity. Local checks are recorded in [local evidence](../../../evidence/wp03-product-shell/2026-10-04_premium-product_local_0d2c31c.md). Technical delivery and production proof remain separate gates.
 
 ## Live local review
 
@@ -17,4 +17,4 @@ Access, onboarding, shelf, Materials, Chat, Studio, Quiz/review, evidence/report
 
 Review the student journey, leader journey, admin journey and consistency across them as one remaining-screen candidate. The [inline finish review](remaining-screens-review.md) records both capture rounds and their limitations. No shipping raster asset or new dependency was added.
 
-The landing is already accepted. New material product-screen acceptance is separate; the [frontend quality floor](../../../docs/agents/frontend-quality-floor.md) requires a traceable founder receipt for this presented candidate before guarded verification and protected delivery. Complete WP03-T10 acceptance and delivery remain open until that lifecycle is finished.
+The landing and remaining-screen material checkpoints are accepted separately. The [frontend quality floor](../../../docs/agents/frontend-quality-floor.md) receipt is now recorded for this exact candidate. Complete WP03-T10 technical verification and delivery remain open until that lifecycle is finished. The local server is stopped during stable verification; these links are restartable review entry points, not public production routes with synthetic access enabled.

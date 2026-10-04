@@ -1,6 +1,6 @@
 # UniMind: review the normal product flow with synthetic data
 
-Current design authority is [DESIGN](../../DESIGN.md) and the [overhaul audit](wp03-frontend-overhaul.md). Ahmed accepted student `3a2a95d`, Batch Leader `4c03b80`, Admin `ec00466` and final consistency `8ad3a9b`; the [final consistency record](../../planning/design/frontend-overhaul/phase-2-final.md) retains the rendered checkpoint and [delivery record](../../planning/design/frontend-overhaul/phase-2-delivery.md) tracks technical gates. The shared system now covers every role below. PR #64 remains draft/unmerged; broad/database/CI/delivery proof and WP03-T10 remain pending.
+Current design authority is [DESIGN](../../DESIGN.md). WP03-T09 was delivered through merged PR #64 and its [production evidence](../../evidence/wp03-product-shell/2026-10-03_frontend-overhaul_production_f107e41.md). Ahmed subsequently accepted premium landing `569c467` and remaining-screen/final consistency candidate `f0a237f`; the [premium review guide](../../planning/design/premium-product/README.md) and [product receipt](../../planning/design/premium-product/product-approval.md) own those checkpoints. The shared system covers every role below. WP03-T10's controlled record owns the current complete gate and delivery status; an acceptance receipt alone does not prove technical or production PASS.
 
 This replaces the separate `/preview/review` interface. Start at **http://127.0.0.1:3101/?lang=en**. First-time visitors see the landing page; use **Sign in** to enter the synthetic journey. Use normal sign-in, consent, product navigation, forms and buttons. There is no role switcher, scenario selector or manual response-completion button. The small banner identifies simulated services.
 
@@ -18,8 +18,8 @@ control for English/Arabic. Neither change selects a role.
 1. Sign in as the fictional student, accept commitments and set academic context
    once. Study and Subjects show the available Modules/Subjects; Account → Academic
    settings edits that selection. Demo navigation retains it; reload clears demo
-   identity/study data. The real profile extension requires database proof and its
-   reviewed migration before deployment.
+   identity/study data. The real profile extension is separately protected; its
+   deployed migration was proved during WP03-T09. This mock review writes no profile.
 2. Open Anatomy. Materials, Chat, Studio and Quiz stay within its workspace. Send
    a supplied question, inspect evidence or report it, generate a study aid, inspect
    its sources and use Return to Studio. Interface and study-output language remain

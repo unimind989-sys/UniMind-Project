@@ -8,15 +8,15 @@
 
 **Owner:** Codex executor; selected speaker Ahmed.
 
-**Reviewer:** Ahmed; landing accepted at 569c467. The forthcoming remaining-screen candidate needs rendered acceptance.
+**Reviewer:** Ahmed; landing accepted at 569c467 and remaining-screen/final consistency candidate accepted at f0a237f. GitHub requires a separate approving account; executor-controlled account separation is not independent review.
 
 **Branch:** codex/premium-product-screens
 
-**Updated (UTC):** 2026-10-03T23:21:34Z
+**Updated (UTC):** 2026-10-03T23:40:34Z
 
 ## Derived execution envelope
 
-**Policy version:** 9
+**Policy version:** 10
 
 **Surfaces:** docs, frontend, runtime, auth, data, storage, delivery, tooling
 
@@ -32,6 +32,8 @@
 
 **Routing reason:** Actual-diff policy widens auth-shell paths to runtime/auth and the unclassified .impeccable/design.json sidecar to conservative R3/full proof. The actual source diff changes presentation only; identity, permission, storage, source lifecycle and paid-capacity semantics remain unchanged. The trust-boundaries skill's materiality check excludes adapters that retain authorized abstractions unchanged. Preserve the wider delivery gates; do not weaken classification to avoid checks.
 
+Finalization preflight rejected the previously unregistered .impeccable/design.json and eslint.config.mjs paths. Policy 10 registers only these two supported files in the existing all-surface/full-CI rule. Risk remains R3/protected and every CI job runs. Existing parameterized safety regressions now include both files and retain unrelated unknown-path rejection. Conditional-CI observations and the new founder receipt are rebound to policy 10 after replay, retaining original identities, timestamps, scope and outcomes; no acceptance is invented and no workflow/product rule is weakened.
+
 ## Manual model work blocks
 
 | Block | Assigned model | Scope and governing inputs                                                                               | Independent acceptance checks, including failure cases                                                                                                | Assignment reason                                                          | Status and evidence                                                                                                          |
@@ -41,15 +43,15 @@
 
 **Next model:** Sol High
 
-**Current block:** 5, pending the new founder receipt. Landing block 1 is accepted; expanded implementation and local technical/rendered preparation are complete. The model assignment is a manual plan, not a claim about Desktop model selection.
+**Current block:** 5, active finalization after Ahmed's exact f0a237f acceptance and explicit $finalize invocation. Landing block 1 and expanded implementation/local rendered preparation are complete. The model assignment is a manual plan, not a claim about Desktop model selection.
 
 ### Expanded ordered work blocks — 4 October
 
 | Block | Assigned model | Scope | Independent acceptance checks | Reason | Status |
 | --- | --- | --- | --- | --- | --- |
-| 3 | Sol High | Auth, shared shell, shelf, workspace/reading, Studio/Quiz, Account, uploads/history and Admin presentation | Existing names/actions and protected seams preserved; every normal route uses the refined shared system; landing source identical to approved tag | User asks for a coherent premium treatment of all remaining screens | Complete; new material acceptance pending |
+| 3 | Sol High | Auth, shared shell, shelf, workspace/reading, Studio/Quiz, Account, uploads/history and Admin presentation | Existing names/actions and protected seams preserved; every normal route uses the refined shared system; landing source identical to approved tag | User asks for a coherent premium treatment of all remaining screens | Complete; Ahmed accepted f0a237f |
 | 4 | Sol High | Complete mock feedback run, focused corrections/regression and bounded rendered review; record new candidate | Full demo feedback with failures retained, focused rejection/rerun, real-mode E2E; 320px/200%/RTL/both themes; source/secret/boundary/type/build checks; inline finish review | Shared CSS changes reach all roles and states | Local preparation complete; final-head full gate remains block 5 |
-| 5 | Sol High | New founder receipt, current preflight, guarded broad proof, exact-head CI, protected delivery, production proof and close | All full WP03-T10 acceptance; landing checkpoint retained; no false provider or delivery claims | Material product-wide review remains separate from the accepted landing | Pending |
+| 5 | Sol High | New founder receipt, current preflight, guarded broad proof, exact-head CI, protected delivery, production proof and close | All full WP03-T10 acceptance; landing checkpoint retained; no false provider or delivery claims | Material product-wide review remains separate from the accepted landing | Active; scoped acceptance recorded, technical gates pending |
 
 ## Execution contract
 
@@ -71,9 +73,9 @@
 
 ## Candidate preparation
 
-**Design disposition:** MATERIAL
+**Design disposition:** NONVISUAL
 
-**Design evidence:** PENDING
+**Design evidence:** receipt:evidence/wp03-product-shell/2026-10-04-wp03-t10-product-founder-receipt.json; rationale:Post-acceptance changes record approval and delivery, register two protected configuration paths, and synchronize test-only metadata readiness, with no rendered source or interaction changes; baseline:f0a237febb8523451709f38569ad429fd492f842
 
 **Preparation review:** COMPLETE_INLINE
 
@@ -101,10 +103,10 @@ Landing acceptance is recorded in planning/design/premium-product/landing-approv
 
 **Changed:** Product-wide premium presentation: access folio, persistent role rail, shelf/book identities, subject tool navigation, Materials/Chat/Studio reading surfaces, explicit flashcard flip, Quiz option feedback, Account appearance preview, collection intake/history and Admin review/resource frames. Pinned brand/themes and approved landing sources remain unchanged. Standard lint excludes Git-ignored local scratch; independent denial tests preserve their original assertions/time budget. No protected semantic, provider, package or paid-capacity change.
 
-**Commands:** Actual-diff router policy 9, conservative R3/protected envelope, zero workers, new material acceptance required. Full initial demo feedback 40/41 with retained History title-timing failure; first focused proof 10/12 rejected chooser placement; final focused demo 12/12 PASS (102.6s). Real-mode suite 62/63 with one retained combined-test timeout; unchanged application proof reused for those 62 cases and both split denial cases PASS in a direct rerun. Standard lint PASS; final changed auth-test lint PASS; fresh TypeScript PASS; boundaries PASS; repository secrets PASS (2876 files); safe production build/client-artifact secret scan PASS; changed-file formatting and full diff integrity PASS. One detector warning is the literal book spine, recorded with its contextual disposition. Bounded inline finish verdict ship covers scored fixes only. Final readiness PASS (498 names, 167 links, 23 decisions, 113 contracts). Source candidate is committed as 0d2c31c; subsequent records are nonvisual. Detailed provenance, source binding and exclusions are in the new evidence file.
+**Commands:** Latest preparation exit 0: metadata-readiness repair 12/12 repeated locale/theme cases; 62 policy safety regressions and workflow validation. First guarded run FAIL: 579 unit, 15 local integration plus two hosted skips, 44 security, evaluation/load checks and 64 real-mode browser cases PASS; native 48/49 with one Account document-title timing failure; build not reached. This failure and generated-declaration drift remain recorded in evidence/wp03-product-shell/2026-10-04_premium-finalize_local_f0a237f.md. Earlier preparation commands exit 0: final focused demo 12/12, split real denial tests 2/2, lint/types/boundaries/secrets/safe build; policy registry regressions 62/62, policy 10 validation and unchanged workflow audit. Current receipt retains Ahmed's f0a237f acceptance; zero workers and R3/full CI remain. Historical preparation: Full initial demo feedback 40/41 with retained History title-timing failure; first focused proof 10/12 rejected chooser placement; final focused demo 12/12 PASS (102.6s). Real-mode suite 62/63 with one retained combined-test timeout; unchanged application proof reused for those 62 cases and both split denial cases PASS in a direct rerun. Standard lint PASS; final changed auth-test lint PASS; fresh TypeScript PASS; boundaries PASS; repository secrets PASS (2876 files); safe production build/client-artifact secret scan PASS; changed-file formatting and full diff integrity PASS. One detector warning is the literal book spine, recorded with its contextual disposition. Bounded inline finish verdict ship covers scored fixes only. Final readiness PASS (498 names, 167 links, 23 decisions, 113 contracts). Source candidate is committed as 0d2c31c; subsequent records are nonvisual. Detailed provenance, source binding and exclusions are in the new evidence file.
 
-**Remaining:** New material product receipt covering student/leader/admin/final consistency; complete final-head WP03-T10 proof, including full demo suite; current proof preflight/fingerprint; conservative guarded verification and exact-head CI; protected delivery; affected production proof and task closure. Local implementation and presentation are ready for review.
+**Remaining:** Complete final-head WP03-T10 proof, including full demo suite; current proof preflight/fingerprint; conservative guarded verification and exact-head CI; protected delivery; affected production proof and task closure. Material acceptance of f0a237f is recorded; no technical or production PASS is inferred from it.
 
-**Next safe action:** Review the committed product candidate through planning/design/premium-product/README.md. Once Ahmed or Ziad accepts the exact presented candidate, write the scoped receipt, reroute proof preflight and complete required verification/delivery. Preserve the approved landing and rollback tag. Do not claim full WP03-T10 PASS before these gates.
+**Next safe action:** Stop the owned local demo, reroute proof preflight with the new scoped receipt, record the computed preparation fingerprint and execute guarded verification on immutable inputs. Then deliver through exact-head checks, separate-account approval and affected production proof. Preserve both recovery tags and the saved landing branch. Do not claim full WP03-T10 PASS before these gates.
 
-**Reviewer action:** Review source candidate 0d2c31c (plus its nonvisual review/evidence record) through the live local guide. Record new acceptance for student, leader, admin and consistency only after actual founder review. Landing approval is already recorded and must not be requested again.
+**Reviewer action:** Ahmed approved exact presented candidate f0a237f with “I approve” and invoked $finalize, observed at 2026-10-03T23:40:34Z. Technical gates remain independent. No further founder acceptance is needed for nonvisual delivery records; preserve the accepted presentation.

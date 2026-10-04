@@ -1430,6 +1430,7 @@ for (const locale of ["en", "ar"] as const)
           exact: true,
         }),
       ).toBeVisible();
+      await expect(page).toHaveTitle(/\S/u);
       for (const width of [1440, 768, 430, 390, 360, 320]) {
         await page.setViewportSize({ width, height: 844 });
         expect(
@@ -1489,6 +1490,8 @@ for (const locale of ["en", "ar"] as const)
           exact: true,
         }),
       ).toBeVisible();
+      // Next streams metadata separately from the route's visible content.
+      await expect(page).toHaveTitle(/\S/u);
       expect(
         (
           await new AxeBuilder({ page })

@@ -1,0 +1,7 @@
+# Premium product acceptance — 4 October 2026
+
+Ahmed approved the presented remaining-screen candidate `f0a237febb8523451709f38569ad429fd492f842` with “I approve” and explicitly invoked `$finalize`. The approval was observed at 2026-10-03T23:40:34Z (4 October Cairo time), after the review guide and exact candidate had been presented. Source implementation is `0d2c31c765f7ab26c346d842daeee7b620d7b0bd`; the candidate's later records are nonvisual.
+
+Acceptance covers access/onboarding, the student journey, Batch Leader intake/history, Admin resources/review, Account and final consistency in the presented paired themes/locales and responsive states. The [scoped receipt](../../../evidence/wp03-product-shell/2026-10-04-wp03-t10-product-founder-receipt.json) preserves actor, observed time, message reference, exact commit and scope. It does not assert technical or production PASS; those gates remain independently required.
+
+The [landing approval](landing-approval.md), saved branch and `codex/landing-approved-2026-10-04` tag at `569c467` remain intact. The product candidate also has recovery tag `codex/product-screens-review-2026-10-04`. The design sidecar retains its candidate-time status as a historical snapshot; this receipt and DESIGN.md own current acceptance. Finalization may update nonvisual records and repair demonstrated gate defects; material presentation changes require renewed acceptance. D-22 authorizes the task-scoped non-financial lifecycle after technical gates pass. No paid resource/provider, trial or nonzero cap is approved.

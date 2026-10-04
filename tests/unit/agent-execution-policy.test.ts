@@ -1275,6 +1275,8 @@ describe("candidate Git comparison and public assets", () => {
     "public/demo-files/README.md",
     ".impeccable/work/synthetic-brief.md",
     ".impeccable/review/synthetic-review.md",
+    ".impeccable/design.json",
+    "eslint.config.mjs",
     "next.config.ts",
     "playwright.demo.config.ts",
     "src/proxy.ts",
