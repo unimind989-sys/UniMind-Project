@@ -1,6 +1,7 @@
 "use client";
+import { useProductRouter } from "@/app/_components/product-navigation";
 import { useEffect, type ReactNode } from "react";
-import { useSearchParams, usePathname, useRouter } from "next/navigation";
+import { useSearchParams, usePathname } from "next/navigation";
 import type { Route } from "next";
 import type { CatalogUnitNode } from "@/lib/catalog/catalog-journey.application";
 import { Select } from "@/app/_components/product-ui";
@@ -24,7 +25,7 @@ export function WorkspaceFrame({
 }) {
   const parameters = useSearchParams();
   const pathname = usePathname();
-  const router = useRouter();
+  const router = useProductRouter();
   const locale = parameters.get("lang") === "ar" ? "ar" : "en";
   useEffect(() => {
     document.documentElement.lang = locale;

@@ -1,4 +1,5 @@
 "use client";
+import { useProductText } from "@/app/_components/product-copy";
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import adminStyles from "@/app/admin/admin.module.css";
@@ -7,7 +8,6 @@ import {
   defaultUnitPath,
   reviewBase,
   resourceNames,
-  text,
   type Locale,
 } from "./synthetic-fixtures";
 import { useProductServices } from "./product-services";
@@ -17,7 +17,7 @@ type Props = { screen: string; locale: Locale; scenario: string };
 export function ProductCampaigns({ screen, locale, scenario }: Props) {
   const { state, update } = useProductServices();
   const accepted = state.invitationUsed;
-  const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
+  const t = useProductText(locale);
   if (["expired", "replayed"].includes(scenario))
     return (
       <section className={styles.panel}>
@@ -133,7 +133,7 @@ export function ProductResource({ screen, locale }: Props) {
   const [step, setStep] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
   const [unitType, setUnitType] = useState("MODULE");
-  const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
+  const t = useProductText(locale);
   const resource = screen.slice(6) as keyof typeof resourceNames;
   if (!Object.hasOwn(resourceNames, resource)) return null;
   const summaries = {
@@ -374,7 +374,9 @@ export function ProductResource({ screen, locale }: Props) {
         </section>
       ) : (
         <section className={adminStyles.panel}>
-          <h2>{text(summaryHeadings[resource], locale)}</h2>
+          <h2>
+            {t(summaryHeadings[resource][0], summaryHeadings[resource][1])}
+          </h2>
           <dl>
             <div>
               <dt>{t("Context", "السياق")}</dt>
@@ -406,7 +408,7 @@ export function ProductResource({ screen, locale }: Props) {
               </dd>
             </div>
           </dl>
-          <p>{text(summaries[resource], locale)}</p>
+          <p>{t(summaries[resource][0], summaries[resource][1])}</p>
           {resource === "quality" ? (
             <ProductLink href={defaultUnitPath + "/chat"} locale={locale}>
               {t("Inspect student conflict example", "فحص مثال تعارض الطالب")}

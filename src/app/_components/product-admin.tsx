@@ -11,6 +11,7 @@ import {
 } from "./synthetic-fixtures";
 import { ProductLink } from "./product-ui";
 import { defaultUnitPath, defaultScope } from "./synthetic-fixtures";
+import { useSyntheticNavigation } from "./product-navigation";
 
 const actionNames = [
   "PUBLISH_UNIT",
@@ -34,6 +35,7 @@ export function ProductAdmin({
   fixture: string;
 }) {
   const { state, update } = useProductServices();
+  const hosted = useSyntheticNavigation();
   const [queueVersion, setQueueVersion] = useState(0);
   const slot = state.role === "second-admin" ? "ZIAD" : "AHMED";
   const candidates: AdminActionCandidate[] = actionFixtures.map(
@@ -104,7 +106,10 @@ export function ProductAdmin({
           current === "PENDING"
             ? `b0000000-0000-4000-8000-${String(index + 1).padStart(12, "0")}`
             : null,
-        reason: current === "PENDING" ? "Synthetic readiness review." : null,
+        reason:
+          current === "PENDING"
+            ? (state.pendingReasons[action.id] ?? "Synthetic readiness review.")
+            : null,
         commandState:
           current === "PENDING"
             ? "PENDING_SECOND_CONFIRMATION"
@@ -142,14 +147,22 @@ export function ProductAdmin({
       return { status: "ERROR", code: "DIFFERENT_FOUNDER_REQUIRED" };
     if (
       candidate.action === "PLACE_RAW_HOLD" &&
-      (data.get("holdExpiresAtLocal") !== "2026-10-03T16:00" ||
+      ((hosted?.active
+        ? !Number.isFinite(Date.parse(String(data.get("holdExpiresAt")))) ||
+          Date.parse(String(data.get("holdExpiresAt"))) <= Date.now()
+        : data.get("holdExpiresAtLocal") !== "2026-10-03T16:00") ||
         data.get("reviewAttested") !== "true")
     )
       return { status: "ERROR", code: "INVALID_REQUEST" };
+    const reason = data.get("reason");
     if (
-      !["Synthetic readiness review.", "مراجعة جاهزية تجريبية."].includes(
-        String(data.get("reason")),
-      )
+      hosted?.active
+        ? typeof reason !== "string" ||
+          reason.trim().length < 8 ||
+          reason.trim().length > 500
+        : !["Synthetic readiness review.", "مراجعة جاهزية تجريبية."].includes(
+            String(reason),
+          )
     )
       return { status: "ERROR", code: "INVALID_REQUEST" };
     const definition = actionFixtures[candidates.indexOf(candidate)]!;
@@ -161,6 +174,13 @@ export function ProductAdmin({
       pendingActors: pending
         ? { ...current.pendingActors, [definition.id]: slot }
         : current.pendingActors,
+      pendingReasons:
+        pending && hosted?.active
+          ? {
+              ...current.pendingReasons,
+              [definition.id]: String(reason).trim(),
+            }
+          : current.pendingReasons,
       availability: pending
         ? current.availability
         : applySampleAvailability(current, definition.id),

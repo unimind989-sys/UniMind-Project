@@ -1,7 +1,8 @@
 "use client";
+import { useProductRouter } from "@/app/_components/product-navigation";
 
 import type { Route } from "next";
-import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import type { ReactNode } from "react";
 import type { Locale } from "./synthetic-fixtures";
 import styles from "./frontend-system.module.css";
@@ -89,7 +90,7 @@ export function FrontendIcon({ name }: { name: FrontendIconName }) {
 }
 
 export function LanguageSwitch({ locale }: { locale: Locale }) {
-  const router = useRouter();
+  const router = useProductRouter();
   const pathname = usePathname();
   const query = useSearchParams();
   return (

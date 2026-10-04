@@ -1,9 +1,10 @@
 "use client";
 
 import { useLayoutEffect, useRef, type ReactNode } from "react";
-import Link from "next/link";
+import { ProductNavigationLink as Link } from "@/app/_components/product-navigation";
 import type { Route } from "next";
 import { usePathname, useSearchParams } from "next/navigation";
+import { useSyntheticNavigation } from "./product-navigation";
 import type { Locale } from "@/lib/i18n/locale";
 import { Brand } from "./brand";
 import {
@@ -29,6 +30,7 @@ export function AppShell({
   preview?: boolean;
 }) {
   const pathname = usePathname();
+  const hosted = useSyntheticNavigation();
   const query = useSearchParams();
   const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
   useLayoutEffect(() => {
@@ -171,7 +173,11 @@ export function AppShell({
           <LanguageSwitch locale={locale} />
         </header>
         {role === "admin" && !preview ? (
-          <div className={styles.adminMenuRow}>
+          <div
+            className={styles.adminMenuRow}
+            role="navigation"
+            aria-label={t("Admin controls", "أدوات الإدارة")}
+          >
             <details
               ref={menu}
               className={styles.adminMenu}
@@ -196,7 +202,7 @@ export function AppShell({
             </Link>
           </div>
         ) : null}
-        {synthetic ? (
+        {synthetic && !hosted?.active ? (
           <p className={styles.simulation} role="note">
             {t(
               "Synthetic demo · Simulated services · Reload clears demo data",

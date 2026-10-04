@@ -1,7 +1,8 @@
 "use client";
+import { useProductRouter } from "@/app/_components/product-navigation";
 
 import { useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import type { Route } from "next";
 import { AuthShell } from "@/app/(auth)/_components/auth-shell";
 import {
@@ -14,17 +15,16 @@ import {
   type AuthGateway,
   type AuthActionResult,
 } from "@/lib/auth/auth-actions.application";
-import { useProductServices, type DemoRole } from "./product-services";
+import { useProductServices } from "./product-services";
 import { ProductLink, Notice } from "./product-ui";
 import type { Locale } from "./synthetic-fixtures";
+import { useSyntheticNavigation } from "./product-navigation";
+import {
+  syntheticAccounts as accounts,
+  syntheticPassword,
+} from "@/lib/demo/synthetic-account.application";
 
-export const syntheticPassword = "Synthetic-study-2026!";
-const accounts: Record<string, DemoRole> = {
-  "student@example.invalid": "student",
-  "leader@example.invalid": "leader",
-  "admin@example.invalid": "admin",
-  "second-admin@example.invalid": "second-admin",
-};
+export { syntheticPassword } from "@/lib/demo/synthetic-account.application";
 export const demoTerms = {
   id: "sample-current-terms",
   termsVersion: "sample-terms-v1",
@@ -47,7 +47,8 @@ export function ProductAuth({
   next?: string | undefined;
 }) {
   const { state, update } = useProductServices();
-  const router = useRouter();
+  const hosted = useSyntheticNavigation();
+  const router = useProductRouter();
   const query = useSearchParams();
   const notice: AuthNotice | undefined =
     fixture === "suspended"
@@ -276,9 +277,13 @@ export function ProductAuth({
           notice={notice}
           actionOverride={action}
           initialEmail={
-            email && accounts[email] ? email : "student@example.invalid"
+            hosted?.active
+              ? undefined
+              : email && accounts[email]
+                ? email
+                : "student@example.invalid"
           }
-          initialPassword={syntheticPassword}
+          initialPassword={hosted?.active ? undefined : syntheticPassword}
         />
       )}
     </AuthShell>

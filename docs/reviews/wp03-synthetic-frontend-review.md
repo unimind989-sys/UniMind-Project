@@ -2,7 +2,9 @@
 
 Current design authority is [DESIGN](../../DESIGN.md). WP03-T09 was delivered through merged PR #64 and its [production evidence](../../evidence/wp03-product-shell/2026-10-03_frontend-overhaul_production_f107e41.md). Ahmed subsequently accepted premium landing `569c467` and remaining-screen/final consistency candidate `f0a237f`; the [premium review guide](../../planning/design/premium-product/README.md) and [product receipt](../../planning/design/premium-product/product-approval.md) own those checkpoints. The shared system covers every role below. WP03-T10's controlled record owns the current complete gate and delivery status; an acceptance receipt alone does not prove technical or production PASS.
 
-This replaces the separate `/preview/review` interface. Start at **http://127.0.0.1:3101/?lang=en**. First-time visitors see the landing page; use **Sign in** to enter the synthetic journey. Use normal sign-in, consent, product navigation, forms and buttons. There is no role switcher, scenario selector or manual response-completion button. The small banner identifies simulated services.
+The normal live login recognizes the exact four invented credential pairs below. Hosted synthetic sessions use the ordinary shared views without additional controls, labels or prefill. All identity and activity stay in this browser document; sign-out exits synthetic mode and discards the session. Reload and a fresh tab return to the real site's ordinary access checks. These credentials grant no backend access and synthetic activity makes no service mutations.
+
+The loopback review runtime remains available at **http://127.0.0.1:3101/?lang=en** for prepared failure cases, fake callbacks and invitation fixtures. First-time visitors see the landing page; use **Sign in** to enter the synthetic journey. Use normal sign-in, consent, product navigation, forms and buttons. There is no role switcher, scenario selector or manual response-completion button. Only this local review launcher retains setup prefill and the simulated-service banner.
 
 Run `corepack pnpm demo` from the repository if the review server is stopped. This launches an isolated, loopback-only development runtime and replaces all service configuration with invented markers. Ordinary `pnpm dev`, production builds, real guards and backend services retain their normal behavior. Do not run two Next development processes in the same checkout simultaneously.
 
@@ -52,7 +54,7 @@ These files are invented byte fixtures: a one-page synthetic PDF, silent audio a
 | `admin@example.invalid`        | `Synthetic-study-2026!` | Admin resources, first founder simulation and containment |
 | `second-admin@example.invalid` | `Synthetic-study-2026!` | Distinct second founder simulation                        |
 
-Ready accounts begin verified, with current commitments awaiting acceptance. Email/password inputs are prefilled with the student fixture. Replace the email to try another role. Unknown credentials are rejected; use no real details. Sign out and sign in through normal controls to change accounts while preserving this document's shared synthetic records.
+Ready accounts begin verified, with current commitments awaiting acceptance. The local review launcher prefills the student fixture; its sign-out/sign-in preserves shared review records for two-account governance examples. Hosted login starts empty and hosted sign-out discards all synthetic records. Enter any of the four pairs above to select its role. Other credentials use real Auth on the live site; the local launcher rejects unknown credentials. Use no real details in the review launcher.
 
 ## 1. Access, verification and recovery
 
@@ -189,7 +191,7 @@ For example, paste `http://127.0.0.1:3101/learn/zagazig-university-human-medicin
 
 Repeat with **Interface language / لغة الواجهة** in the app and **العربية** on public/auth pages; verify RTL and intact values/scope. Switch output language independently to mixed Arabic/English. Inspect desktop 1440px, tablet 768px, mobile 390px and narrow mobile 320px. Try keyboard Tab/Shift+Tab/Enter, visible focus, 200% text scaling, reduced motion and long labels.
 
-A new tab/document begins signed out with no previous sessions, attempts, uploads or changes. Reload also clears them. Returning with product links/browser Back preserves the current document. No real session can be unlocked by demo credentials or consent; the mode is unavailable in ordinary/production runtime, and query parameters cannot activate it. Demo uploads never issue an HTTP upload request.
+A new tab/document begins without previous synthetic sessions, attempts, uploads or changes. Reload also clears them. Returning with product links/browser Back preserves the current document. Synthetic credentials or consent cannot unlock a real session. The loopback launcher is unavailable in production; hosted synthetic mode requires an approved credential pair on normal login. Query parameters cannot activate either mode. Synthetic uploads never issue an HTTP upload request.
 
 ## What is functional and what is simulated
 

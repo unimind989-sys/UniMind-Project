@@ -101,6 +101,17 @@ export async function proxy(request: NextRequest) {
   // Public fixtures have no identity. Never refresh a signed-in reviewer's
   // session, emit cookies, or contact Auth while rendering the simulation.
   const path = request.nextUrl.pathname;
+  // Hosted simulation lives only in the current browser document. Its local
+  // review route is never a public production entry or authorization shortcut.
+  if (path === "/synthetic-runtime" || path.startsWith("/synthetic-runtime/")) {
+    return new NextResponse("Not found.", {
+      status: 404,
+      headers: {
+        "Cache-Control": "private, no-store",
+        "X-Robots-Tag": "noindex, nofollow",
+      },
+    });
+  }
   // Preserve the previous real-runtime exclusions. Demo filtering above also
   // covers these paths, including API health probes and image-like API paths.
   if (

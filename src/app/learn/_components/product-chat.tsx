@@ -1,4 +1,5 @@
 "use client";
+import { useProductText } from "@/app/_components/product-copy";
 
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -47,7 +48,7 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
   const [notice, setNotice] = useState("");
   const input = useRef<HTMLTextAreaElement>(null);
   const end = useRef<HTMLDivElement>(null);
-  const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
+  const t = useProductText(locale);
   const sessions = state.sessions.filter(
     (session) => session.scope === scope.unitId,
   );

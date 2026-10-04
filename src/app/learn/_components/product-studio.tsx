@@ -1,4 +1,5 @@
 "use client";
+import { useProductText } from "@/app/_components/product-copy";
 import { useEffect, useRef, useState } from "react";
 import { useProductServices } from "@/app/_components/product-services";
 import {
@@ -77,7 +78,7 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
     }, 1000);
     return () => clearTimeout(timer);
   }, [request, scope.unitId, update]);
-  const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
+  const t = useProductText(locale);
   const artifact = state.artifacts[scope.unitId];
   useEffect(() => {
     if (artifact && completed.current) {

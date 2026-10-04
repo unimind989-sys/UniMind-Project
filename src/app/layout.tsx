@@ -8,6 +8,7 @@ import { SyntheticProductProvider } from "./_components/product-services";
 import { ThemeRuntime } from "./_components/appearance";
 import { themeBootstrap } from "@/lib/theme/theme.application";
 import { getServerEnvironment } from "@/lib/config/env.server";
+import { HostedSyntheticRuntime } from "./_components/hosted-synthetic-runtime";
 
 export function generateMetadata(): Metadata {
   const environment = getServerEnvironment();
@@ -71,7 +72,7 @@ export default function RootLayout({
         {resolveDemoRuntime(process.env) === "ENABLED" ? (
           <SyntheticProductProvider>{children}</SyntheticProductProvider>
         ) : (
-          children
+          <HostedSyntheticRuntime>{children}</HostedSyntheticRuntime>
         )}
       </body>
     </html>

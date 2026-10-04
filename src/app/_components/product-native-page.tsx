@@ -1,7 +1,9 @@
 "use client";
+import { useProductText } from "@/app/_components/product-copy";
+import { useProductRouter } from "@/app/_components/product-navigation";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import type { Route } from "next";
 import { StudyShelf } from "@/app/learn/_components/study-shelf";
 import { WorkspaceFrame } from "@/app/learn/_components/workspace-frame";
@@ -38,6 +40,7 @@ import {
 } from "./synthetic-fixtures";
 import styles from "./product.module.css";
 import accountStyles from "./student-account.module.css";
+import { useSyntheticNavigation } from "./product-navigation";
 
 const authModes = {
   login: "login",
@@ -62,12 +65,13 @@ export function ProductNativePage({
   callbackToken?: string | undefined;
 }) {
   const { state, update } = useProductServices();
-  const router = useRouter();
+  const hosted = useSyntheticNavigation();
+  const router = useProductRouter();
   const pathname = usePathname();
   const query = useSearchParams();
   const [loading, setLoading] = useState(fixture === "loading");
   const signingOut = useRef(false);
-  const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
+  const t = useProductText(locale);
   const auth = Object.hasOwn(authModes, screen);
   const home =
     state.role === "leader"
@@ -126,6 +130,19 @@ export function ProductNativePage({
     state.verified,
   ]);
   const signedOut = () => {
+    if (hosted?.active) {
+      update(() => ({
+        ...state,
+        role: null,
+        account: "NEW",
+        consent: false,
+        chatDrafts: {},
+        lastStudyPath: null,
+        academicContext: null,
+      }));
+      hosted.leave(locale);
+      return;
+    }
     signingOut.current = true;
     update((current) => ({
       ...current,
@@ -139,7 +156,7 @@ export function ProductNativePage({
     }));
     router.push(`/login?lang=${locale}` as Route);
   };
-  const boundary = (
+  const boundary = hosted?.active ? null : (
     <div className={styles.demoBadge} role="note">
       {t(
         "Synthetic demo · Simulated services · Reload clears demo data",
@@ -518,7 +535,7 @@ function ProductResourceShell({
 }) {
   const query = useSearchParams();
   const pathname = usePathname();
-  const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
+  const t = useProductText(locale);
   const nav = screen.startsWith("admin-")
     ? [
         ["admin", ["Decision queue", "قائمة القرارات"]] as const,
@@ -584,7 +601,7 @@ function ProductSettings({
   signOut: () => void;
 }) {
   const { state, update } = useProductServices();
-  const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
+  const t = useProductText(locale);
   const sectionClass = accountStyles.section;
   return (
     <>

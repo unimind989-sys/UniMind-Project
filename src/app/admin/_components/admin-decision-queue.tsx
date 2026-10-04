@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useProductRouter } from "@/app/_components/product-navigation";
 import {
   useActionState,
   useEffect,
@@ -442,7 +442,7 @@ export function AdminDecisionQueue({
   embedded?: boolean;
   refreshOnSelect?: boolean;
 }>) {
-  const router = useRouter();
+  const router = useProductRouter();
   const [refreshing, startRefresh] = useTransition();
   const locale = initialLocale;
   const copy = getAdminCopy(locale);

@@ -1,7 +1,9 @@
 "use client";
+import { useProductText } from "@/app/_components/product-copy";
+import { useProductRouter } from "@/app/_components/product-navigation";
 
 import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import type { Route } from "next";
 import type { WorkspaceScope } from "@/lib/workspace/workspace.application";
 import {
@@ -140,7 +142,7 @@ function Evidence({
 }: Props & { embedded?: boolean }) {
   const { state } = useProductServices();
   const query = useSearchParams();
-  const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
+  const t = useProductText(locale);
   const session = state.sessions.find(
     (entry) =>
       entry.scope === scope.unitId &&
@@ -294,7 +296,7 @@ function Report({ scope, locale, base }: Props) {
   const query = useSearchParams();
   const [reason, setReason] = useState("poor-answer");
   const [confirmed, setConfirmed] = useState(false);
-  const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
+  const t = useProductText(locale);
   const session = state.sessions.find(
     (entry) =>
       entry.scope === scope.unitId &&
@@ -391,10 +393,10 @@ function Report({ scope, locale, base }: Props) {
 
 function Quiz({ scope, locale, base, screen }: Props) {
   const { state, update } = useProductServices();
-  const router = useRouter();
+  const router = useProductRouter();
   const [mode, setMode] = useState("untimed");
   const [now, setNow] = useState(() => Date.now());
-  const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
+  const t = useProductText(locale);
   const attempt = state.attempts[scope.unitId];
   const handoutAvailable =
     scope.unitId !== defaultScope.unitId || state.availability.sourceActive;
@@ -671,7 +673,7 @@ export function UnitSwitch({
   locale,
   base,
 }: Pick<ProductStudyProps, "scope" | "locale" | "base">) {
-  const router = useRouter();
+  const router = useProductRouter();
   const { state } = useProductServices();
   return (
     <Select
