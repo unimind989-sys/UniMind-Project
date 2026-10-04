@@ -88,6 +88,8 @@ The [complete synthetic test pack](public/demo-files/README.md) supplies invente
 
 Use the [Chrome screen-by-screen review guide](docs/reviews/wp03-synthetic-frontend-review.md) for the complete synthetic review, expected outcomes, failure states and isolation checks.
 
+The [premium screen guide](planning/design/premium-product/README.md) links the approved design checkpoints, restartable role previews and commit-specific production evidence. Public production retains real access guards; invented demo credentials work only in the isolated local runtime.
+
 ## Notes
 
 This repository is intended to be used as the canonical project home for collaboration, versioning, and publication to GitHub.
