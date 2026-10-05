@@ -114,8 +114,8 @@
     },
     {
       "file": "src/app/batch-leader/_components/collection-flow.tsx",
-      "bytes": 23816,
-      "sha256": "1f9e14f0b78db3c1380a582fa2a2ddb4a0aea4557957fbbeedab69e7dcebcfee"
+      "bytes": 23745,
+      "sha256": "641418d80419830748f63ae8ce2d34d830f5d1fe810a4cabb99b90f004ee799f"
     },
     {
       "file": "src/app/batch-leader/_components/leader-home.tsx",
@@ -223,7 +223,7 @@
   "artifactStorage": {
     "note": "docs/reviews/uiux-2026-10-04/archive-note.md",
     "immutableOriginals": "docs/reviews/uiux-2026-10-04/immutable-originals.zip",
-    "verification": "Original manifests: three entries from exact ZIP originals; other entries from canonical Git objects. Application/test source hashes remain unchanged from the passing guarded candidate."
+    "verification": "Original manifests: three entries from exact ZIP originals; other entries from canonical Git objects. Current sourceFiles bind the post-CI narrow intake-copy correction. Capture-time and earlier guarded bindings remain separate."
   },
   "deliveryTestCorrection": {
     "file": "tests/e2e-database/product-shell.spec.ts",
@@ -232,7 +232,19 @@
     "priorHead": "b5b2406777eef68c9ca86bcc99fe2fc314cd38cf",
     "reason": "Authenticated Admin heading assertion follows approved Decision queue presentation; all access, forbidden-route, minimal-denial and data-exposure assertions unchanged.",
     "runtimeSourceChanges": 0,
-    "guarded41SourceHashes": "UNCHANGED",
+    "guarded41SourceHashes": "UNCHANGED at 6b928ae before the later two-string intake correction; priorGuardedSourceBinding records that distinction.",
     "verification": "Focused formatting, ESLint and fresh TypeScript passed; fresh exact-head database and full governed CI required."
+  },
+  "priorGuardedSourceBinding": {
+    "fingerprint": "53ba5a34073020f5303ac1ddc3f887352f2dab9c2056916020d9100d4ebaef8c",
+    "changedFiles": [
+      {
+        "file": "src/app/batch-leader/_components/collection-flow.tsx",
+        "bytes": 23816,
+        "sha256": "1f9e14f0b78db3c1380a582fa2a2ddb4a0aea4557957fbbeedab69e7dcebcfee"
+      }
+    ],
+    "unchangedSourceFiles": 40,
+    "invalidated": "Collection presentation text, final source-binding and preparation metadata; fresh guarded local gate and exact-head CI required."
   }
 }

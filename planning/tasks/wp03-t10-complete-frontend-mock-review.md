@@ -12,7 +12,7 @@
 
 **Branch:** codex/open-folio-redesign; historical runtime delivered through codex/premium-product-screens / PR #67; documentation closure through codex/wp03-t10-closure
 
-**Updated (UTC):** 2026-10-05T13:23:01.005969+00:00
+**Updated (UTC):** 2026-10-05T13:50:22.562486+00:00
 
 ## Derived execution envelope
 
@@ -97,13 +97,13 @@ Finalization preflight rejected the previously unregistered .impeccable/design.j
 
 **Preparation review:** COMPLETE_INLINE
 
-**Preparation fingerprint:** 53ba5a34073020f5303ac1ddc3f887352f2dab9c2056916020d9100d4ebaef8c
+**Preparation fingerprint:** NOT_READY
 
 **Unresolved findings:** NONE
 
 **Established facts:** NONE
 
-**Commands:** Guarded local verify exited 0 at unchanged fingerprint 53ba5a34073020f5303ac1ddc3f887352f2dab9c2056916020d9100d4ebaef8c: 594 unit, 15 integration with two hosted-only skips, 44 security, three evaluation plus foundation cases, five load/profile, 75/75 real browser (9.4m), 55/55 synthetic browser (23.2m), safe production build and client-secret scan PASS. Earlier failed feedback remains failed. An unpublished commit proceeded after a staged whitespace rejection; packaging was corrected before push. Exact originals for the CSV/two licenses and manifests are in immutable-originals.zip; canonical Git objects and archived originals verify 102/134 entries, unchanged CSV fields/license words and exact approved HTML. All 41 guarded application/test hashes remain unchanged. Corrected full/staged diff checks, 3180-file secrets and readiness (791 names, 334 links, 23 decisions, 114 contracts) exit 0; no policy/attribute/whitespace gate or executable source changed. The fingerprint records completed prepackaging proof; subsequent nonvisual packaging has focused proof and requires fresh exact-head CI. Two bounded capture batches, one detector and four-fix inline scoring are retained. PR #71 is open. Its initial head b5b2406 failed the database-only Admin heading assertion (7/8 browser cases passed); only Overview to Decision queue is corrected. Focused format/lint/fresh types pass; all 41 guarded source hashes remain unchanged and the added database-only correction is separately bound. Fresh exact-head governed CI and production proof remain owed.
+**Commands:** Earlier guarded local proof passed at fingerprint 53ba5a34 with 594 unit, 15 integration plus two hosted-only skips, 44 security, evaluation/load, 75 real and 55 synthetic browser cases and safe build. It is historical after a new source correction. Initial CI b5b2406 failed one stale database Admin heading; one exact assertion correction preserves protected checks. CI at 6b928ae passed database and 75 real browser cases, then failed two narrow chooser bounds (53/55 synthetic passed). Inspected both provider screenshots: at 380px chooser bottom 767.125 EN / 773.46875 AR exceeds unchanged 756px limit. Shorten only bilingual supported-format/limit guidance. Focused original EN/AR 390/380 chooser tests pass 2/2 (1.7m). Current source binding preserves earlier/capture-time provenance and separately binds this source and the database test. Focused lint/fresh types, readiness/secrets/format/full diff review and current preflight are checked before immutable guarded proof. Two bounded capture batches, one detector/four-fix scoring remain historical completed proof; this is a reproduced clearance repair within the approved reference. Fresh guarded local gate, four-job exact-head CI and production proof remain owed. No domain/auth/storage/database/provider/config/policy/dependency behavior changed.
 
 ## Historical preparation — 4 October delivery
 
@@ -209,4 +209,4 @@ Ahmed accepted the audit's major UX findings but explicitly withheld implementat
 - [x] Complete motion, responsive, Arabic/theme and focused workflow proof; final broad release proof remains separate.
 - [ ] Complete candidate review, required delivery proof and closure.
 
-**Resumption:** Branch codex/open-folio-redesign; PR #71. The complete guarded local runtime proof remains bound to unchanged fingerprint 53ba5a34 and all 41 source/test hashes. Initial remote database CI failed only its stale Overview heading (7/8 browser cases); the one-line Decision queue assertion correction has focused formatting/lint/fresh type proof and separate hash binding. Commit/push this nonvisual correction and accurate feedback records; require fresh exact-head four-job CI and a current distinct-account approval, merge without bypass, verify exact Git archive/free-tier Production artifact, promote after fingerprint/smoke proof, then verify all four public synthetic roles and close/clean. Preserve historical tags and original manifests; no cosmetic re-review.
+**Resumption:** Branch codex/open-folio-redesign; PR #71. Commit the isolated intake-copy repair and current feedback/preparation records; derive and bind current fingerprint at that head, freeze source/records while fresh guarded verify runs, and run exact-head governed CI concurrently. Do not relabel either failed remote run or reuse historical full proof as current. All four gates, exact-head distinct-account approval and current local proof must pass before merge. Then exact Git archive/free-tier deployment, prepromotion proof, D-22 receipt, public promotion and four independent synthetic role journeys; close and clean. Preserve original manifests/history/tags and do not start another cosmetic review.

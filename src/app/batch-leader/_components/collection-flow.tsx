@@ -205,8 +205,8 @@ export function CollectionFlow({
           </p>
           <p className={styles.helper}>
             {t(
-              "PDF, WAV and PNG · Up to 10 MB per file · Mixed files welcome",
-              "PDF وWAV وPNG · حتى ١٠ ميجابايت للملف · يمكنك اختيار أنواع مختلفة",
+              "PDF · WAV · PNG · Up to 10 MB per file",
+              "PDF · WAV · PNG · حتى ١٠ ميجابايت للملف",
             )}
           </p>
           <div

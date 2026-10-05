@@ -43,3 +43,5 @@ The source annotation, folio index and task-specific planes supply identity beyo
 ## keep
 
 Preserve truthful stage/data labels, six artifacts/seven answer outcomes, role guards, protected decision inputs, native focus behavior, reduced motion, paired planes and the supplied unmirrored mark.
+
+Delivery repair review: remote CI screenshots reproduce narrow phone chooser clearance in both languages. The scoped two-string format-guidance correction preserves formats, limit and first-action hierarchy without hiding requested items, changing targets or relaxing the 756px assertion. Original EN/AR 390/380px rejection checks pass locally. Inline review has no unresolved finding; complete current local/CI proof remains required. No additional styling hunt or detector.
