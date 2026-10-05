@@ -49,9 +49,9 @@ The hosted session-isolation failure reproduced in a one-case rerun. Its trace s
 
 The late source changes are limited to two accessible landmark names and a minimum workspace-tab width. They do not establish a third cosmetic review round. The 33 native captures retain their actual capture-time provenance; they are visual evidence of the recorded candidate, not new screenshots of later semantic fixes. Final source hashes and functional proof are bound separately. A minimum width can change small-screen tab spacing, so its rejecting reflow/target checks remain required.
 
-## Verification still owed
+## Remaining delivery verification
 
-Guarded complete synthetic and real-mode browser proof, source/secret/boundary/type/format checks, preparation binding, exact-head CI and affected production proof remain. Two bounded finished-candidate capture batches, the one detector, inline review and the four-fix scoring pass are complete. No complete delivery, AA conformance, performance improvement or production success is claimed yet.
+Complete guarded local proof is recorded below. Fresh exact-head CI and affected production proof remain required. Two bounded finished-candidate capture batches, the one detector, inline review and the four-fix scoring pass are complete. No complete delivery, AA conformance, performance improvement or production success is claimed yet.
 
 No participant study or comparable before/after performance measurement has been conducted. Missing backend capabilities remain missing; presentation does not supply real AI generation, processing history, user management, policy content or provider execution.
 
@@ -62,3 +62,9 @@ Capture-time source hashes are retained in [capture-source-binding.json](capture
 The third guarded invocation exited 0 at unchanged fingerprint `53ba5a34073020f5303ac1ddc3f887352f2dab9c2056916020d9100d4ebaef8c`: 594 unit, 15 integration with two hosted-only skips, 44 security, three evaluation plus foundation cases, five load/profile, 75/75 real-mode browser (9.4 minutes), 55/55 synthetic browser (23.2 minutes), production build and client-secret scan passed. No failed feedback run is relabeled.
 
 The first unpublished commit proceeded after a failed staged-whitespace check; it was not pushed. Packaging is corrected before delivery. Git normalized the original coverage CSV and reported two third-party-license trailing spaces plus an extra blank line in this cycle’s review record. [Exact original bytes](../../../docs/reviews/uiux-2026-10-04/archive-note.md) are preserved in an immutable ZIP, with ordinary Git-readable CSV/license copies and corrected review EOF. Original manifests are checked against archived originals for the three affected entries and canonical Git bytes for every other file. Policy, Git attributes and whitespace gates remain unchanged. The passing guarded application/test source is reused only after its 41 hashes are rechecked; focused packaging/readiness/secret proof and exact-head CI remain required.
+
+## Protected CI feedback
+
+PR [#71](https://github.com/unimind989-sys/UniMind-Project/pull/71), initial head `b5b2406777eef68c9ca86bcc99fe2fc314cd38cf`, failed the disposable authenticated browser gate in [run 37314890859](https://github.com/unimind989-sys/UniMind-Project/actions/runs/37314890859): 7/8 cases passed; the Admin case still expected the old Overview heading. The approved page renders Decision queue. Only that exact heading assertion is corrected. Allowed/forbidden routes, anonymous 403 payload, session containment, data-exposure checks, timeout and accessibility rules remain unchanged. Disposable schema/contracts/advisors/type parity, 17 integration and 44 security cases passed in that failed job; it remains a failure.
+
+Focused formatting, ESLint and fresh TypeScript exit 0. All 41 guarded application/test hashes remain unchanged; the additional database-only test correction is separately bound in source-binding.json. Neither local mock browser suite executes that database test. Reuse the completed local runtime proof only for its unchanged inputs; final candidate lint/format/types and fresh exact-head governed CI reject the corrected input. No application, configuration, policy, dependency or protected semantic changed. Initial CI application work may be superseded by the corrected head; only completed exact-head results count.

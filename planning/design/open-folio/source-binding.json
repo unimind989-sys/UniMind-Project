@@ -224,5 +224,15 @@
     "note": "docs/reviews/uiux-2026-10-04/archive-note.md",
     "immutableOriginals": "docs/reviews/uiux-2026-10-04/immutable-originals.zip",
     "verification": "Original manifests: three entries from exact ZIP originals; other entries from canonical Git objects. Application/test source hashes remain unchanged from the passing guarded candidate."
+  },
+  "deliveryTestCorrection": {
+    "file": "tests/e2e-database/product-shell.spec.ts",
+    "bytes": 18215,
+    "sha256": "0fbe1236d063052273eb74f2015346883900e557978516058e9151a8bacc4ec7",
+    "priorHead": "b5b2406777eef68c9ca86bcc99fe2fc314cd38cf",
+    "reason": "Authenticated Admin heading assertion follows approved Decision queue presentation; all access, forbidden-route, minimal-denial and data-exposure assertions unchanged.",
+    "runtimeSourceChanges": 0,
+    "guarded41SourceHashes": "UNCHANGED",
+    "verification": "Focused formatting, ESLint and fresh TypeScript passed; fresh exact-head database and full governed CI required."
   }
 }
