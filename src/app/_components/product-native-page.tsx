@@ -14,6 +14,7 @@ import {
 import { FrontendShell } from "./frontend-system";
 import { AppShell } from "./app-shell";
 import { AcademicSettings } from "./academic-settings";
+import { AccountLayout } from "./account-layout";
 import { Appearance } from "./appearance";
 import { Landing } from "./landing";
 import { authorizedAcademicContext } from "@/lib/account/account.application";
@@ -390,6 +391,7 @@ export function ProductNativePage({
         }
         available={!blocked && !general.includes(fixture)}
         account={`${state.role}@example.invalid`}
+        returnToAdmin={state.role === "admin" || state.role === "second-admin"}
         signOut={signedOut}
       >
         <div className={styles.studyBody}>{content}</div>
@@ -403,6 +405,11 @@ export function ProductNativePage({
         <AppShell
           locale={locale}
           role="admin"
+          roleLabel={
+            state.role === "second-admin"
+              ? t("Second Admin", "المسؤول الثاني")
+              : t("Admin", "مسؤول")
+          }
           synthetic
           title={t("Account", "الحساب")}
         >
@@ -413,6 +420,11 @@ export function ProductNativePage({
     return (
       <AdminWorkspace
         locale={locale}
+        roleLabel={
+          state.role === "second-admin"
+            ? t("Second Admin", "المسؤول الثاني")
+            : t("Admin", "مسؤول")
+        }
         synthetic
         actions={
           <Button variant="quiet" onClick={signedOut}>
@@ -604,13 +616,13 @@ function ProductSettings({
   const t = useProductText(locale);
   const sectionClass = accountStyles.section;
   return (
-    <>
+    <AccountLayout locale={locale} academic={state.role === "student"}>
       {state.lastStudyPath ? (
         <ProductLink href={state.lastStudyPath} locale={locale}>
-          {t("Back to study", "العودة للمذاكرة")}
+          {t("Return to last study tool", "العودة إلى آخر أداة مذاكرة")}
         </ProductLink>
       ) : null}
-      <section className={sectionClass}>
+      <section id="appearance-settings" className={sectionClass}>
         <h2>{t("Appearance", "المظهر")}</h2>
         <Appearance locale={locale} />
       </section>
@@ -632,7 +644,7 @@ function ProductSettings({
           }}
         />
       ) : null}
-      <section className={sectionClass}>
+      <section id="privacy-settings" className={sectionClass}>
         <h2>{t("Future exchange sharing", "مشاركة المحادثات القادمة")}</h2>
         <Select
           id="sharing-mode"
@@ -668,8 +680,20 @@ function ProductSettings({
           )}
         </Notice>
       </section>
-      <section className={sectionClass}>
+      <section id="identity-settings" className={sectionClass}>
         <h2>{t("Your account", "حسابك")}</h2>
+        <p>
+          {t("Assigned role", "الدور المسند")}:{" "}
+          <strong>
+            {state.role === "second-admin"
+              ? t("Second Admin", "المسؤول الثاني")
+              : state.role === "admin"
+                ? t("Admin", "مسؤول")
+                : state.role === "leader"
+                  ? t("Batch Leader", "مسؤول الدفعة")
+                  : t("Student", "طالب")}
+          </strong>
+        </p>
         <div className={styles.actions}>
           <ProductLink href="/forgot-password" locale={locale}>
             {t("Reset password", "تغيير كلمة المرور")}
@@ -677,6 +701,6 @@ function ProductSettings({
           <Button onClick={signOut}>{t("Sign out", "تسجيل الخروج")}</Button>
         </div>
       </section>
-    </>
+    </AccountLayout>
   );
 }

@@ -1,0 +1,515 @@
+{
+  "sourceBaseline": "9f7d840ec9353c4c66e6d1e0e771de9acc76d866",
+  "files": [
+    {
+      "file": "assessment-a.md",
+      "bytes": 6661,
+      "sha256": "bba9eba4058ed5abf1c024fb7e891a9852e5bbc758fc0e12c5da316b0716fbd4"
+    },
+    {
+      "file": "audit.md",
+      "bytes": 40652,
+      "sha256": "85103047543f8ea11764e80c6f3ab2cc6179e0ecba8020328b666969b584b3eb"
+    },
+    {
+      "file": "comparisons/01-shelf.jpg",
+      "bytes": 181895,
+      "sha256": "cb70156b9819b5e015f129b500a64465e0e59f05c12837bc1eba88f4cd009ba1"
+    },
+    {
+      "file": "comparisons/02-chat.jpg",
+      "bytes": 188303,
+      "sha256": "0c9e53dfdc3da2559ade0fe526fb2f0318a087fb9350371c32799de151cd2f9a"
+    },
+    {
+      "file": "comparisons/03-studio.jpg",
+      "bytes": 193649,
+      "sha256": "adedd989904937d175b955ae1387569d9b1fc360fc69e01ab536503adb6c982f"
+    },
+    {
+      "file": "comparisons/04-intake.jpg",
+      "bytes": 195321,
+      "sha256": "34dbae88fef1072b0d75bf2cc3b7384423a9acd76339f8eda539b3bb29a98e01"
+    },
+    {
+      "file": "comparisons/05-admin.jpg",
+      "bytes": 216249,
+      "sha256": "aacf1c30f5f19ecd565cf9f8889a5e73c63e5db7837eee24d6cf3a9110c402ee"
+    },
+    {
+      "file": "concepts/assets/folio-dark.svg",
+      "bytes": 326,
+      "sha256": "6575b8cb8210ebe3c9a24a6cb4bb432bc5b8bac6072309ee49f417b432a93e2a"
+    },
+    {
+      "file": "concepts/assets/folio-light.svg",
+      "bytes": 326,
+      "sha256": "df42e1b79466877ea66bd5522722afd793f7c39bfe68862eaa479fe703f12eae"
+    },
+    {
+      "file": "concepts/assets/Manrope-OFL.txt",
+      "bytes": 4387,
+      "sha256": "58172e0c0fac2cda8a37b348164bb55e44b0e69051e557e92b1d3f6910141f7b"
+    },
+    {
+      "file": "concepts/assets/manrope.woff2",
+      "bytes": 24576,
+      "sha256": "e310b55a7fd9677f5e3555e6c6c4d064fa1f1d24393f0ddbe217cea12a8c432f"
+    },
+    {
+      "file": "concepts/index.html",
+      "bytes": 63193,
+      "sha256": "635205f85c9906c5987934a036a9b09b2b586bcb7bfee1bf0aea8b2c3ad164cc"
+    },
+    {
+      "file": "concepts/previews/admin-desktop.jpg",
+      "bytes": 94226,
+      "sha256": "5bd8dadd38ba9ac02a2b87faa1574f50ece736d7e4eff38f81cd8d2ad19201b3"
+    },
+    {
+      "file": "concepts/previews/admin-detail-mobile.jpg",
+      "bytes": 32778,
+      "sha256": "e95c140d3dae3dc1ff382013ac375c2803ecb324687b68eccdfdd49abff77656"
+    },
+    {
+      "file": "concepts/previews/admin-empty-desktop.jpg",
+      "bytes": 73429,
+      "sha256": "11d97c8ff0339697941287f2ce3de2f04b0eeb5e2a4251d9f66b8a2a9902c347"
+    },
+    {
+      "file": "concepts/previews/admin-mobile.jpg",
+      "bytes": 29417,
+      "sha256": "9650e290596b438c906f598f254b5787d7e5514c3bb78d6dd6230ff127d787dd"
+    },
+    {
+      "file": "concepts/previews/admin-review-desktop.jpg",
+      "bytes": 83745,
+      "sha256": "0c59cf3e6cf18d2717b057b44b8d1c0fbd33baf7f25142bd9c88f9182d0b645d"
+    },
+    {
+      "file": "concepts/previews/chat-desktop.jpg",
+      "bytes": 78198,
+      "sha256": "1f31709eaf1d16f472de74f7d8c759c3473c2213adebe60f025d9e848c0b9058"
+    },
+    {
+      "file": "concepts/previews/chat-evidence-mobile.jpg",
+      "bytes": 30361,
+      "sha256": "06a27f8c9987751be0cd39119d96d39e39605c35dfac2e6b1ad149ec1e225ae7"
+    },
+    {
+      "file": "concepts/previews/chat-laptop.jpg",
+      "bytes": 72165,
+      "sha256": "7c50083b52d4c425b93eb12b035e136a82b90c1530f9c516f1a3e3e15d5e69e6"
+    },
+    {
+      "file": "concepts/previews/chat-mobile.jpg",
+      "bytes": 33009,
+      "sha256": "4487f22052db2641539454072916f7c4fe2e4bc4fe73404d3362811c0a04025f"
+    },
+    {
+      "file": "concepts/previews/chat-tablet.jpg",
+      "bytes": 49774,
+      "sha256": "7f48f08dc08056f084f228eecdd83e7e64a1d667db18035ab24192082d0d8748"
+    },
+    {
+      "file": "concepts/previews/intake-desktop.jpg",
+      "bytes": 84658,
+      "sha256": "e1eb66cd16d4d9c493876097efcc2505f3c36daf08aa5e8ce51710318c8bb222"
+    },
+    {
+      "file": "concepts/previews/intake-mobile.jpg",
+      "bytes": 35188,
+      "sha256": "cc2d1b25a14c097615fb7f43a182cdbb591c83a16af7f533af28dddf8d720693"
+    },
+    {
+      "file": "concepts/previews/shelf-desktop-dark.jpg",
+      "bytes": 78951,
+      "sha256": "5b15d16db7377e3b7a537a38d20a27c32f786b35c7c3c29873c03297ca07fe37"
+    },
+    {
+      "file": "concepts/previews/shelf-desktop.jpg",
+      "bytes": 78057,
+      "sha256": "33b59569e5dff35047fd43cd44e3ebcd4a70fb69245cf599798ed1d42379ef81"
+    },
+    {
+      "file": "concepts/previews/shelf-mobile.jpg",
+      "bytes": 32806,
+      "sha256": "4ca92a35e56b0f2bd004d1f0ebb415bd6b88d986ed35c9372471243fc21d3635"
+    },
+    {
+      "file": "concepts/previews/studio-desktop.jpg",
+      "bytes": 82325,
+      "sha256": "bbe718ed7be51d056b5c258d49b0466728d3c296425ea31b8d4b0f97f64dbb00"
+    },
+    {
+      "file": "concepts/previews/studio-mobile.jpg",
+      "bytes": 32418,
+      "sha256": "4396857a184cc954e0761f44e99baa1abccea2a3a629117698687e5737d298d6"
+    },
+    {
+      "file": "concepts/README.md",
+      "bytes": 1928,
+      "sha256": "370abd723653b9564fac36725b7674c9c2be0277e1a1a038325c9a89cd6d3be8"
+    },
+    {
+      "file": "contact-sheets/sheet-01.jpg",
+      "bytes": 202931,
+      "sha256": "14ea42257954d012e8ced3c6dbd60f1f9493c225dcff6f668d19435b31c94e41"
+    },
+    {
+      "file": "contact-sheets/sheet-02.jpg",
+      "bytes": 203030,
+      "sha256": "42af2c386772db814f3a6d665d69477184782262a10b4d03ba8bc9beed06ebdd"
+    },
+    {
+      "file": "contact-sheets/sheet-03.jpg",
+      "bytes": 193312,
+      "sha256": "b0da333d54cc92f083531254383d002a6f40afc77795bf1bf6f0d3304d9d8853"
+    },
+    {
+      "file": "contact-sheets/sheet-04.jpg",
+      "bytes": 197496,
+      "sha256": "6e27491508f4ffe2e7514ded469b9e26bd433bfde6a30c25a9f1e8c7bbfc7f32"
+    },
+    {
+      "file": "contact-sheets/sheet-05.jpg",
+      "bytes": 199855,
+      "sha256": "290056c29771f390f90031d9c1e2894302b1063ea3534005e6ca970f35aa8879"
+    },
+    {
+      "file": "coverage-inventory.csv",
+      "bytes": 50526,
+      "sha256": "d68bbe3e87eeb03176c1505f4972227802ed0bb9b5dbd6bfcd4afa9042b38780"
+    },
+    {
+      "file": "coverage.json",
+      "bytes": 87411,
+      "sha256": "cfaba75c77b9839ddf9d1a23e35b42e8be9f83ccab4a73599d24fba13fb412e5"
+    },
+    {
+      "file": "detector-review.json",
+      "bytes": 801,
+      "sha256": "d36266e47d8da65739bf258fa166e2a253abcc27f44fd56c23b519c06444b4ce"
+    },
+    {
+      "file": "issue-register.md",
+      "bytes": 27786,
+      "sha256": "7b60d4d4cebf836377d03b212b51b65798a6be63cd570d16dae2c7aeea6dd670"
+    },
+    {
+      "file": "measurements.md",
+      "bytes": 4995,
+      "sha256": "d951208c8b74381935bfb26cdcc22b6edc93bc2b26ce40ca5cee2499f7cb5bab"
+    },
+    {
+      "file": "method.md",
+      "bytes": 4292,
+      "sha256": "f625bdf26452b39b64d07f6f218277902926a7418c0e9daf7a0cbb10481d08a9"
+    },
+    {
+      "file": "screen-critique.md",
+      "bytes": 38269,
+      "sha256": "d2ce2fcb0c9bdd7feb7e784e84c1b2cdef04c156a14f73bcc3793364f9a565f4"
+    },
+    {
+      "file": "screenshots/p01-recovery-tablet.jpg",
+      "bytes": 31129,
+      "sha256": "5c9f4fed20cc381daa7bdf69354e57860900bd418a013d1335ecb4ebb85a5d8a"
+    },
+    {
+      "file": "screenshots/p02-not-found.jpg",
+      "bytes": 16811,
+      "sha256": "941951fce2077f7832b3515520ed143819ec94aab1f1adc855911d4d61ce3117"
+    },
+    {
+      "file": "screenshots/p03-landing-tablet.jpg",
+      "bytes": 57016,
+      "sha256": "91da7e8b89d54a7a8cf4f699359b6e0584aa489c86b1cb5d01f1fca78d556643"
+    },
+    {
+      "file": "screenshots/p04-landing-laptop.jpg",
+      "bytes": 66625,
+      "sha256": "54876a8fa4c06ab119c6604357017d1e60446772dd472962d30e463d049b67fe"
+    },
+    {
+      "file": "screenshots/p05-landing-desktop.jpg",
+      "bytes": 79163,
+      "sha256": "92504c0b137545caf9c9fccfe6e2f8dfa8548e6f87034ac731fcf4d467033b5b"
+    },
+    {
+      "file": "screenshots/p06-landing-mobile.jpg",
+      "bytes": 39176,
+      "sha256": "a1c3e7d6bcc3eac4a093133e16b47ace6685f44c07172c0bf89d64d543cd2cdb"
+    },
+    {
+      "file": "screenshots/p07-login-mobile-dark.jpg",
+      "bytes": 22662,
+      "sha256": "59134081c20282fa1d8a1daf0e5b39c5cc76c736bb681ecbaa50f3bafabf33c1"
+    },
+    {
+      "file": "screenshots/p08-consent-mobile.jpg",
+      "bytes": 36038,
+      "sha256": "073cc43fe859c0b34c4104cb1c612722b665fad361a0da47efaf7366b0473d9c"
+    },
+    {
+      "file": "screenshots/p09-setup-mobile.jpg",
+      "bytes": 29247,
+      "sha256": "3c9ae5736d8ca2f034c34f5cb6ceae87a94f6349b3aa8f31980b2ad5f69fe66d"
+    },
+    {
+      "file": "screenshots/p10-shelf-mobile.jpg",
+      "bytes": 27834,
+      "sha256": "6a69053717ffbc117ca485e7fd5c322e56e22924572ddd8e27b89f7c6880c263"
+    },
+    {
+      "file": "screenshots/p11-shelf-desktop-dark.jpg",
+      "bytes": 53705,
+      "sha256": "bab5edc0fd9d1015d8c9cc03c5e96255d6deb45fc1853fd062029d45401c98bf"
+    },
+    {
+      "file": "screenshots/p12-account-desktop-dark.jpg",
+      "bytes": 50247,
+      "sha256": "3be7a21e0e8f820f3ee8d841e46f204a1474455e03a1c6eca4a7c7979577a0f2"
+    },
+    {
+      "file": "screenshots/p13-shelf-desktop-light.jpg",
+      "bytes": 54176,
+      "sha256": "2c95e8fec2b63edea6ac0cef83b2d333f37af2e8e20cd0f9a9d9fc56162d9fda"
+    },
+    {
+      "file": "screenshots/p14-materials-desktop.jpg",
+      "bytes": 53206,
+      "sha256": "2345276745b5ef46da6a3a8a585ba5c1b4dc4f9bb995a0e1c577fae4df9030b9"
+    },
+    {
+      "file": "screenshots/p15-chat-empty-desktop.jpg",
+      "bytes": 56151,
+      "sha256": "359e6f061775ddc323ba3431a4ddf39f1105a48e9d612cc495ebeed28af24126"
+    },
+    {
+      "file": "screenshots/p16-chat-empty-mobile.jpg",
+      "bytes": 31774,
+      "sha256": "abecaa05447bc6646106c26d0979cbd9751920df1479d18e7813d6b84555eb0c"
+    },
+    {
+      "file": "screenshots/p17-chat-supported-mobile.jpg",
+      "bytes": 36308,
+      "sha256": "f7036744139a72ad64544e5e4bfeed10606ee119707b558342cfad60264cf043"
+    },
+    {
+      "file": "screenshots/p18-evidence-mobile.jpg",
+      "bytes": 33941,
+      "sha256": "0d87f70bf62553b031ae5e6c4d969a752ac40b5fb638df3745249875841a97c5"
+    },
+    {
+      "file": "screenshots/p19-studio-desktop.jpg",
+      "bytes": 61443,
+      "sha256": "ed5ccb89d4342acd7fdc6fd6e8afddb4082d9564f453f6ab331f58e88745d57b"
+    },
+    {
+      "file": "screenshots/p20-studio-laptop.jpg",
+      "bytes": 54757,
+      "sha256": "62dc9daa5f4fd0f957e3405bfd1cf7e56fada168946121888053cb0780ce82d0"
+    },
+    {
+      "file": "screenshots/p21-studio-tablet.jpg",
+      "bytes": 53737,
+      "sha256": "6e1fbfa9a51d5da7d27279a6c9b5e3ece4314b7d35cd1e6be1ef684de37b5949"
+    },
+    {
+      "file": "screenshots/p22-studio-mobile.jpg",
+      "bytes": 31544,
+      "sha256": "5ad76114db5e46b8e2e171b8d9fe04113ecab8964b93a99d4a3b1b6192361185"
+    },
+    {
+      "file": "screenshots/p23-flashcard-mobile.jpg",
+      "bytes": 33050,
+      "sha256": "dc5ee72a2f3ef0521ee58901835158895927b8a29679b52b39fff87467c75b23"
+    },
+    {
+      "file": "screenshots/p24-quiz-start-mobile.jpg",
+      "bytes": 28462,
+      "sha256": "952e8fe4cac6749850a52b7e584fb6d5593144de86086442fdd132a2898c3e90"
+    },
+    {
+      "file": "screenshots/p25-quiz-attempt-mobile.jpg",
+      "bytes": 31350,
+      "sha256": "7d87b7cfaa22459f250bf85d7e344c763a081e7940dea7109f2999dfde1a8bf4"
+    },
+    {
+      "file": "screenshots/p26-quiz-review-mobile.jpg",
+      "bytes": 33469,
+      "sha256": "0eba1577b0cd892fe6c685f72ef3208ef0ba865a9376dfbc85867c12924ff65d"
+    },
+    {
+      "file": "screenshots/p27-report-mobile.jpg",
+      "bytes": 34125,
+      "sha256": "bcbee864b871e30c64e5b79a10aa6edb4035ae38cf1746dfc4886b883e18792a"
+    },
+    {
+      "file": "screenshots/p28-account-mobile.jpg",
+      "bytes": 25189,
+      "sha256": "5d184cd6ed162e16e3149b48f636c78725d033f40249766293c55792e7932021"
+    },
+    {
+      "file": "screenshots/p29-leader-home-desktop.jpg",
+      "bytes": 39979,
+      "sha256": "5d543f63c6001706ee128852a40875ab8b089c8ef7c7451ae7654048ae1f5711"
+    },
+    {
+      "file": "screenshots/p30-campaign-desktop.jpg",
+      "bytes": 57993,
+      "sha256": "ac615fe993c8f1780713382543a65837f4334e1ec21820479e29126bdb0b0d27"
+    },
+    {
+      "file": "screenshots/p31-campaign-laptop.jpg",
+      "bytes": 49837,
+      "sha256": "d7eb6dc21dee1e8f304c5333453facef3e34bf16d58bba94a56b6453e841cc6d"
+    },
+    {
+      "file": "screenshots/p32-campaign-tablet.jpg",
+      "bytes": 57852,
+      "sha256": "ec30b2b147b02e0370888703cd32506ad0366a7e9bd064830553e41fc1c74e7f"
+    },
+    {
+      "file": "screenshots/p33-campaign-mobile.jpg",
+      "bytes": 39077,
+      "sha256": "45ad95d52ce8b3d16469c66189d975b4a6306fa0a4adf5f5df8bec61dc05d415"
+    },
+    {
+      "file": "screenshots/p34-campaign-queue-mobile.jpg",
+      "bytes": 33545,
+      "sha256": "7c4e863adb17bf726ed514427049de87600fe18cef9ad060e11cabf03810778e"
+    },
+    {
+      "file": "screenshots/p35-leader-history-mobile.jpg",
+      "bytes": 31665,
+      "sha256": "0b095f352fd6c91c8063f67e3243558171f9cb1389a8ecd6ac67eb3ea71c8a83"
+    },
+    {
+      "file": "screenshots/p36-leader-account-mobile.jpg",
+      "bytes": 29608,
+      "sha256": "1ad42e04f250d201e72ec2efd6140975f65a5050a53b2f1c4ca8482987df598f"
+    },
+    {
+      "file": "screenshots/p37-admin-desktop.jpg",
+      "bytes": 74353,
+      "sha256": "0feadc5aa1e04b0e64a36f088f6c116131a3ea3f48ed81cb8a60e5a41f1ba14e"
+    },
+    {
+      "file": "screenshots/p38-admin-confirmation.jpg",
+      "bytes": 86807,
+      "sha256": "44f1f2b302f56c05e85d5e29f755b810dba9b1e0f0d85a5f6148109d33d24b02"
+    },
+    {
+      "file": "screenshots/p39-admin-laptop.jpg",
+      "bytes": 46184,
+      "sha256": "04777823df24e52b21db796a41f86eaa89f936c004be60dcd12aadb28191e8bc"
+    },
+    {
+      "file": "screenshots/p40-admin-tablet.jpg",
+      "bytes": 46500,
+      "sha256": "ce0b7ab31ad5bf549599a98333ef4f9181ce0c725958ac4003d17dae133ac503"
+    },
+    {
+      "file": "screenshots/p41-admin-mobile.jpg",
+      "bytes": 32015,
+      "sha256": "8d2de66b79e1b19c6e467f91990b00e8d355cd7bfe2248a08a48d8740a5eb218"
+    },
+    {
+      "file": "screenshots/p42-admin-menu-mobile.jpg",
+      "bytes": 33556,
+      "sha256": "3cfe1deffa46eb21c16fa9a9ad3444d14b93c2f2fb3ca1eaa6127c4721265481"
+    },
+    {
+      "file": "screenshots/p43-admin-sources-mobile.jpg",
+      "bytes": 32041,
+      "sha256": "2a4e652c7f491890a085a653650352c39358501f237276bfa187f0370f3ad86b"
+    },
+    {
+      "file": "screenshots/p44-admin-catalog.jpg",
+      "bytes": 59039,
+      "sha256": "4aba9b8dcf5bbac591ca3b2ea02131175f46b16c7df8857fa38a8c2190fe83f9"
+    },
+    {
+      "file": "screenshots/p45-admin-cohorts.jpg",
+      "bytes": 59566,
+      "sha256": "d862eecb9e571b2f8c410810a3517bcd0226d2cfe933d240a1d9faf68f69c961"
+    },
+    {
+      "file": "screenshots/p46-admin-users.jpg",
+      "bytes": 57160,
+      "sha256": "da198a3ad6859666d7848c81e939db770952cdb88d1a8bfe6cbfc808b9a830d7"
+    },
+    {
+      "file": "screenshots/p47-admin-jobs.jpg",
+      "bytes": 49924,
+      "sha256": "9624b6d301fa955779b64082a12495b6b26504938dee9f0c1c98f34a5d9249ba"
+    },
+    {
+      "file": "screenshots/p48-admin-quality.jpg",
+      "bytes": 55127,
+      "sha256": "37ea1e0040275144e1591833864d9b6412744e6257830d4740311e5e86b09f80"
+    },
+    {
+      "file": "screenshots/p49-admin-usage.jpg",
+      "bytes": 55144,
+      "sha256": "04f64d518b124ecf54714c8fcb7bed08d656e9c845001e38973113c649eb7b03"
+    },
+    {
+      "file": "screenshots/p50-admin-incidents.jpg",
+      "bytes": 52705,
+      "sha256": "b3139286c95f3c185a14f502995486fab5c7fb8503d5629536d32fac05d6e4ae"
+    },
+    {
+      "file": "screenshots/p51-admin-account.jpg",
+      "bytes": 58956,
+      "sha256": "92650a217285dcdc3f9eb4f39ad05f8766e2c35708fd9b284832e93c0b8dfcdc"
+    },
+    {
+      "file": "screenshots/p52-admin-account-ar-dark.jpg",
+      "bytes": 23003,
+      "sha256": "1525b490c01590f9963cd4eb79fb9c4c627fda4935966495cc308d9e6965a3bc"
+    },
+    {
+      "file": "screenshots/p53-admin-mobile-ar-dark.jpg",
+      "bytes": 30206,
+      "sha256": "e84b85c9dd2519acb26d634378de881665ccc10a35d57a838c0bf1e32219775e"
+    },
+    {
+      "file": "screenshots/p54-second-admin-desktop.jpg",
+      "bytes": 74353,
+      "sha256": "0feadc5aa1e04b0e64a36f088f6c116131a3ea3f48ed81cb8a60e5a41f1ba14e"
+    },
+    {
+      "file": "screenshots/p55-second-admin-account.jpg",
+      "bytes": 59140,
+      "sha256": "3835424258d6db6d48894a6939473d420e4bbbfb37a3e6167595ba2e6d39541c"
+    },
+    {
+      "file": "screenshots/p56-register-desktop.jpg",
+      "bytes": 57607,
+      "sha256": "c38b86602243583a375de25c3a68683bcfc44cddfba0b2868c18a9827cc77743"
+    },
+    {
+      "file": "screenshots/p57-register-validation.jpg",
+      "bytes": 62905,
+      "sha256": "c4a439b5a1e8b5d2d9e0b7fefc4fd84bf0099cdd587c996e2ce0b567d1d5af87"
+    },
+    {
+      "file": "screenshots/p58-public-workspace-laptop.jpg",
+      "bytes": 58927,
+      "sha256": "c5ef9e92cded6036236ea593cc4fb2c4fcbcbcbbc6fec8e29c925569049d2746"
+    },
+    {
+      "file": "screenshots/p59-public-how-it-works-laptop.jpg",
+      "bytes": 38602,
+      "sha256": "4bc6c9232c7327b583fcf770dc370c2ca821de7888cd12a83a6f86d360019bf9"
+    },
+    {
+      "file": "verification.md",
+      "bytes": 2917,
+      "sha256": "e7f55be1be2cc42d32554a01ffc86ee8c9dfc11da4471c4c610561da512ba97b"
+    }
+  ]
+}

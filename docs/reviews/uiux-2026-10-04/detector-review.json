@@ -1,0 +1,21 @@
+{
+  "target": "src/app",
+  "slug": "src-app",
+  "runs": 1,
+  "assessmentA": "assessment-a.md",
+  "independentAssessors": false,
+  "reason": "User requested one agent",
+  "warnings": [
+    {
+      "rule": "side-tab",
+      "file": "src/app/learn/study-shelf.module.css",
+      "line": 99,
+      "selector": ".subjectBook",
+      "signal": "Inset box-shadow 5px stripe",
+      "disposition": "Not accepted as proof of generic AI styling: the stripe is an intentional book spine. Repeated oversized books are a manually observed density issue; reduce their weight within the proposed shelf composition."
+    }
+  ],
+  "browserOverlay": "Not injected: documented browser evaluate is read-only",
+  "fallback": "Live interaction, DOM inspection and settled native screenshots",
+  "conformanceClaim": false
+}

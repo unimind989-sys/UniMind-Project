@@ -22,6 +22,18 @@
   --on-accent: #ffffff;
   --success: #236746;
   --danger: #a32723;
+  --spine: #1d2939;
+  --spine-ink: #eef2f8;
+  --spine-secondary: #bdc8d6;
+  --spine-active: #2b3c53;
+  --annotation: #f1f4fa;
+  --success-surface: #edf6f0;
+  --danger-surface: #fceeed;
+  --motion-control: 120ms;
+  --motion-dialog: 180ms;
+  --motion-result: 280ms;
+  --motion-evidence: 300ms;
+  --ease-settle: cubic-bezier(0.22, 1, 0.36, 1);
   --canvas-deep: var(--subtle);
   --surface-strong: var(--subtle);
   --surface-focus: var(--hover);
@@ -47,12 +59,12 @@
   --space-6: 2rem;
   --space-7: 3rem;
   --font-unimind-ui: var(--font-unimind-latin);
-  --type-workspace-title-size: 1.75rem;
+  --type-workspace-title-size: 1.625rem;
   --type-study-invitation-size: 1.5rem;
   --type-study-invitation-mobile-size: 1.25rem;
   --type-artifact-title-size: 1.25rem;
-  --type-display-size: 1.75rem;
-  --type-display-mobile-size: 1.625rem;
+  --type-display-size: 2.125rem;
+  --type-display-mobile-size: 1.75rem;
   --type-auth-display-size: 1.75rem;
   --type-auth-display-mobile-size: 1.625rem;
   --type-headline-size: 1.25rem;
@@ -79,13 +91,13 @@
 :root[data-theme="dark"] {
   color-scheme: dark;
   --canvas: #1b1c1f;
-  --surface: #232529;
-  --subtle: #2c2e33;
-  --hover: #35383e;
+  --surface: #23272f;
+  --subtle: #2c313a;
+  --hover: #353d48;
   --ink: #eef0f3;
   --secondary: #bdc2cb;
   --muted: #a6acb7;
-  --border: #3e424a;
+  --border: #434b57;
   --control-border: #858d9a;
   --accent: #adc7ff;
   --accent-hover: #c6d7ff;
@@ -94,13 +106,17 @@
   --on-accent: #152646;
   --success: #91d2ad;
   --danger: #ffb4ab;
+  --spine: #141b25;
+  --annotation: #202c40;
+  --success-surface: #253a31;
+  --danger-surface: #432b2e;
 }
 
 html[lang="ar"],
 [lang="ar"][dir="rtl"] {
   --font-unimind-ui: var(--font-unimind-arabic);
-  --type-display-size: 1.75rem;
-  --type-display-mobile-size: 1.625rem;
+  --type-display-size: 2.125rem;
+  --type-display-mobile-size: 1.75rem;
   --type-auth-display-size: 1.75rem;
   --type-auth-display-mobile-size: 1.625rem;
   --type-headline-size: 1.25rem;

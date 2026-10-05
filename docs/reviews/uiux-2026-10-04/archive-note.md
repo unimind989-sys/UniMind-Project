@@ -1,0 +1,5 @@
+# Immutable audit originals and Git distribution copies
+
+Git applies the repository's LF convention to the coverage CSV. Two supplied font-license texts contain trailing spaces. `immutable-originals.zip` preserves the exact original bytes of those three files and both original manifests. All license wording is unchanged in the Git-readable distribution copies; their trailing spaces are removed. The CSV's fields are unchanged; only its Git representation uses LF. No application, policy, attribute, whitespace-check or design-reference rule was changed to accommodate the archive.
+
+The original manifests retain their original hashes. Verification resolves their three affected entries from the ZIP and every other entry from the canonical Git object. The approved refinement HTML remains byte-identical at SHA-256 `f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4`. The original screenshots, source content and audit findings are unchanged. Use the ZIP for an exact original-byte export of the three affected files and manifests.

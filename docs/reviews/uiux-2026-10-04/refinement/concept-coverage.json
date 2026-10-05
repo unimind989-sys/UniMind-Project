@@ -1,0 +1,1675 @@
+[
+  {
+    "id": "shelf-desktop",
+    "state": "initial state, English light",
+    "screenshot": "screenshots/shelf-desktop.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:12:44.609Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=shelf&theme=light&locale=en&motion=full&role=student",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 900,
+    "locale": "en",
+    "mainBottom": 900,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [],
+    "theme": "light",
+    "width": 1440,
+    "imagePixels": {
+      "width": 1440,
+      "height": 900
+    }
+  },
+  {
+    "id": "chat-desktop",
+    "state": "initial state, English light",
+    "screenshot": "screenshots/chat-desktop.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:12:44.751Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=chat&theme=light&locale=en&motion=full&role=student",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 900,
+    "locale": "en",
+    "mainBottom": 900,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "Send",
+        "rect": {
+          "bottom": 797.40625,
+          "height": 44,
+          "left": 948.03125,
+          "right": 1044.5,
+          "top": 753.40625,
+          "width": 96.46875,
+          "x": 948.03125,
+          "y": 753.40625
+        }
+      }
+    ],
+    "theme": "light",
+    "width": 1440,
+    "imagePixels": {
+      "width": 1440,
+      "height": 900
+    }
+  },
+  {
+    "id": "studio-desktop",
+    "state": "initial state, English light",
+    "screenshot": "screenshots/studio-desktop.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:12:44.892Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=studio&theme=light&locale=en&motion=full&role=student",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 900,
+    "locale": "en",
+    "mainBottom": 900,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "Generate",
+        "rect": {
+          "bottom": 740.5625,
+          "height": 44,
+          "left": 263.5,
+          "right": 513.5,
+          "top": 696.5625,
+          "width": 250,
+          "x": 263.5,
+          "y": 696.5625
+        }
+      }
+    ],
+    "theme": "light",
+    "width": 1440,
+    "imagePixels": {
+      "width": 1440,
+      "height": 900
+    }
+  },
+  {
+    "id": "intake-desktop",
+    "state": "initial state, English light",
+    "screenshot": "screenshots/intake-desktop.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:12:45.016Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=intake&theme=light&locale=en&motion=full&role=leader",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 900,
+    "locale": "en",
+    "mainBottom": 900,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "Add sample file",
+        "rect": {
+          "bottom": 480.671875,
+          "height": 52,
+          "left": 532.40625,
+          "right": 732.59375,
+          "top": 428.671875,
+          "width": 200.1875,
+          "x": 532.40625,
+          "y": 428.671875
+        }
+      }
+    ],
+    "theme": "light",
+    "width": 1440,
+    "imagePixels": {
+      "width": 1440,
+      "height": 900
+    }
+  },
+  {
+    "id": "admin-desktop",
+    "state": "initial state, English light",
+    "screenshot": "screenshots/admin-desktop.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:12:45.162Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=admin&theme=light&locale=en&motion=full&role=admin",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 900,
+    "locale": "en",
+    "mainBottom": 900,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [],
+    "theme": "light",
+    "width": 1440,
+    "imagePixels": {
+      "width": 1440,
+      "height": 900
+    }
+  },
+  {
+    "id": "account-desktop",
+    "state": "initial state, English light",
+    "screenshot": "screenshots/account-desktop.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:12:45.300Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=account&theme=light&locale=en&motion=full&role=admin",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 900,
+    "locale": "en",
+    "mainBottom": 900,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [],
+    "theme": "light",
+    "width": 1440,
+    "imagePixels": {
+      "width": 1440,
+      "height": 900
+    }
+  },
+  {
+    "id": "states-desktop",
+    "state": "initial state, English light",
+    "screenshot": "screenshots/states-desktop.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:12:45.451Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=states&theme=light&locale=en&motion=full&role=admin",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 900,
+    "locale": "en",
+    "mainBottom": 900,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "Primary action",
+        "rect": {
+          "bottom": 336.609375,
+          "height": 44,
+          "left": 262.5,
+          "right": 422.140625,
+          "top": 292.609375,
+          "width": 159.640625,
+          "x": 262.5,
+          "y": 292.609375
+        }
+      }
+    ],
+    "theme": "light",
+    "width": 1440,
+    "imagePixels": {
+      "width": 1440,
+      "height": 900
+    }
+  },
+  {
+    "id": "admin-selected-desktop",
+    "state": "Anatomy scope, Hide unit, expected version 2, empty reason",
+    "screenshot": "screenshots/admin-selected-desktop.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:12:45.702Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=admin&theme=light&locale=en&motion=full&role=admin",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 900,
+    "locale": "en",
+    "mainBottom": 900,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "Review exact change",
+        "rect": {
+          "bottom": 785.484375,
+          "height": 44,
+          "left": 601.5,
+          "right": 1353.5,
+          "top": 741.484375,
+          "width": 752,
+          "x": 601.5,
+          "y": 741.484375
+        }
+      }
+    ],
+    "theme": "light",
+    "width": 1440,
+    "imagePixels": {
+      "width": 1440,
+      "height": 900
+    }
+  },
+  {
+    "id": "admin-review-desktop",
+    "state": "exact target, state pair, version and reason in review dialog",
+    "screenshot": "screenshots/admin-review-desktop.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:12:46.182Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=admin&theme=light&locale=en&motion=full&role=admin",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 900,
+    "locale": "en",
+    "mainBottom": 900,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "Review exact change",
+        "rect": {
+          "bottom": 504.484375,
+          "height": 44,
+          "left": 601.5,
+          "right": 1353.5,
+          "top": 460.484375,
+          "width": 752,
+          "x": 601.5,
+          "y": 460.484375
+        }
+      }
+    ],
+    "theme": "light",
+    "width": 1440,
+    "imagePixels": {
+      "width": 1440,
+      "height": 900
+    }
+  },
+  {
+    "id": "shelf-mobile",
+    "state": "initial state, English light",
+    "screenshot": "screenshots/shelf-mobile.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:15:30.469Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=shelf&theme=light&locale=en&motion=full&role=student",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 844,
+    "locale": "en",
+    "mainBottom": 784,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [],
+    "theme": "light",
+    "width": 390,
+    "imagePixels": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  {
+    "id": "chat-mobile",
+    "state": "initial state, English light",
+    "screenshot": "screenshots/chat-mobile.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:15:30.576Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=chat&theme=light&locale=en&motion=full&role=student",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 844,
+    "locale": "en",
+    "mainBottom": 784,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "Send",
+        "rect": {
+          "bottom": 710.953125,
+          "height": 44,
+          "left": 278.453125,
+          "right": 354,
+          "top": 666.953125,
+          "width": 75.546875,
+          "x": 278.453125,
+          "y": 666.953125
+        }
+      }
+    ],
+    "theme": "light",
+    "width": 390,
+    "imagePixels": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  {
+    "id": "studio-mobile",
+    "state": "initial state, English light",
+    "screenshot": "screenshots/studio-mobile.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:15:30.684Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=studio&theme=light&locale=en&motion=full&role=student",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 844,
+    "locale": "en",
+    "mainBottom": 784,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "Generate",
+        "rect": {
+          "bottom": 734.375,
+          "height": 44,
+          "left": 37,
+          "right": 338,
+          "top": 690.375,
+          "width": 301,
+          "x": 37,
+          "y": 690.375
+        }
+      }
+    ],
+    "theme": "light",
+    "width": 390,
+    "imagePixels": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  {
+    "id": "intake-mobile",
+    "state": "initial state, English light",
+    "screenshot": "screenshots/intake-mobile.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:15:30.809Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=intake&theme=light&locale=en&motion=full&role=leader",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 844,
+    "locale": "en",
+    "mainBottom": 784,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "Add sample file",
+        "rect": {
+          "bottom": 760.65625,
+          "height": 44,
+          "left": 107.421875,
+          "right": 267.578125,
+          "top": 716.65625,
+          "width": 160.15625,
+          "x": 107.421875,
+          "y": 716.65625
+        }
+      }
+    ],
+    "theme": "light",
+    "width": 390,
+    "imagePixels": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  {
+    "id": "admin-mobile",
+    "state": "initial state, English light",
+    "screenshot": "screenshots/admin-mobile.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:15:30.923Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=admin&theme=light&locale=en&motion=full&role=admin",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 844,
+    "locale": "en",
+    "mainBottom": 784,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [],
+    "theme": "light",
+    "width": 390,
+    "imagePixels": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  {
+    "id": "account-mobile",
+    "state": "initial state, English light",
+    "screenshot": "screenshots/account-mobile.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:15:31.042Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=account&theme=light&locale=en&motion=full&role=admin",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 844,
+    "locale": "en",
+    "mainBottom": 784,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [],
+    "theme": "light",
+    "width": 390,
+    "imagePixels": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  {
+    "id": "states-mobile",
+    "state": "initial state, English light",
+    "screenshot": "screenshots/states-mobile.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:15:31.172Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=states&theme=light&locale=en&motion=full&role=admin",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 844,
+    "locale": "en",
+    "mainBottom": 784,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "Primary action",
+        "rect": {
+          "bottom": 433.65625,
+          "height": 44,
+          "left": 18,
+          "right": 177.640625,
+          "top": 389.65625,
+          "width": 159.640625,
+          "x": 18,
+          "y": 389.65625
+        }
+      }
+    ],
+    "theme": "light",
+    "width": 390,
+    "imagePixels": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  {
+    "id": "admin-selected-mobile",
+    "state": "Hide unit, version 2, same supplied reason as current p41; current capture is scrolled",
+    "screenshot": "screenshots/admin-selected-mobile.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:15:31.403Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=admin&theme=light&locale=en&motion=full&role=admin",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 844,
+    "locale": "en",
+    "mainBottom": 784,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "Review exact change",
+        "rect": {
+          "bottom": 676.59375,
+          "height": 44,
+          "left": 37,
+          "right": 338,
+          "top": 632.59375,
+          "width": 301,
+          "x": 37,
+          "y": 632.59375
+        }
+      }
+    ],
+    "theme": "light",
+    "width": 390,
+    "imagePixels": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  {
+    "id": "shelf-mobile-rtl-dark",
+    "state": "initial state, Arabic dark",
+    "screenshot": "screenshots/shelf-mobile-rtl-dark.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:15:31.686Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=shelf&theme=dark&locale=ar&motion=full&role=student",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 844,
+    "locale": "ar",
+    "mainBottom": 784,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [],
+    "theme": "dark",
+    "width": 390,
+    "imagePixels": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  {
+    "id": "chat-mobile-rtl-dark",
+    "state": "initial state, Arabic dark",
+    "screenshot": "screenshots/chat-mobile-rtl-dark.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:15:31.842Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=chat&theme=dark&locale=ar&motion=full&role=student",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 844,
+    "locale": "ar",
+    "mainBottom": 784,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "إرسال",
+        "rect": {
+          "bottom": 708.75,
+          "height": 44,
+          "left": 36,
+          "right": 113.203125,
+          "top": 664.75,
+          "width": 77.203125,
+          "x": 36,
+          "y": 664.75
+        }
+      }
+    ],
+    "theme": "dark",
+    "width": 390,
+    "imagePixels": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  {
+    "id": "studio-mobile-rtl-dark",
+    "state": "initial state, Arabic dark",
+    "screenshot": "screenshots/studio-mobile-rtl-dark.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:15:31.965Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=studio&theme=dark&locale=ar&motion=full&role=student",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 844,
+    "locale": "ar",
+    "mainBottom": 784,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "إعداد",
+        "rect": {
+          "bottom": 760.859375,
+          "height": 44.5,
+          "left": 52,
+          "right": 353,
+          "top": 716.359375,
+          "width": 301,
+          "x": 52,
+          "y": 716.359375
+        }
+      }
+    ],
+    "theme": "dark",
+    "width": 390,
+    "imagePixels": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  {
+    "id": "intake-mobile-rtl-dark",
+    "state": "initial state, Arabic dark",
+    "screenshot": "screenshots/intake-mobile-rtl-dark.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:15:32.091Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=intake&theme=dark&locale=ar&motion=full&role=leader",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 844,
+    "locale": "ar",
+    "mainBottom": 784,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "إضافة ملف تجريبي",
+        "rect": {
+          "bottom": 768.5,
+          "height": 44.5,
+          "left": 109.484375,
+          "right": 295.53125,
+          "top": 724,
+          "width": 186.046875,
+          "x": 109.484375,
+          "y": 724
+        }
+      }
+    ],
+    "theme": "dark",
+    "width": 390,
+    "imagePixels": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  {
+    "id": "account-admin-mobile-rtl-dark",
+    "state": "Admin appearance settings, Arabic dark",
+    "screenshot": "screenshots/account-admin-mobile-rtl-dark.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:15:32.231Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=account&theme=dark&locale=ar&motion=full&role=admin",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 844,
+    "locale": "ar",
+    "mainBottom": 784,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [],
+    "theme": "dark",
+    "width": 390,
+    "imagePixels": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  {
+    "id": "account-second-admin-mobile-rtl-dark",
+    "state": "Second admin appearance settings, Arabic dark",
+    "screenshot": "screenshots/account-second-admin-mobile-rtl-dark.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:15:32.356Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=account&theme=dark&locale=ar&motion=full&role=second-admin",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 844,
+    "locale": "ar",
+    "mainBottom": 784,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [],
+    "theme": "dark",
+    "width": 390,
+    "imagePixels": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  {
+    "id": "account-second-admin-identity-mobile-rtl-dark",
+    "state": "Second admin identity and assigned access",
+    "screenshot": "screenshots/account-second-admin-identity-mobile-rtl-dark.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:15:32.530Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=account&theme=dark&locale=ar&motion=full&role=second-admin",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 844,
+    "locale": "ar",
+    "mainBottom": 784,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [],
+    "theme": "dark",
+    "width": 390,
+    "imagePixels": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  {
+    "id": "shelf-tablet-rtl-dark",
+    "state": "initial state, Arabic dark",
+    "screenshot": "screenshots/shelf-tablet-rtl-dark.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:17:55.166Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=shelf&theme=dark&locale=ar&motion=full&role=student",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 1024,
+    "locale": "ar",
+    "mainBottom": 1024,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [],
+    "theme": "dark",
+    "width": 768,
+    "imagePixels": {
+      "width": 768,
+      "height": 1024
+    }
+  },
+  {
+    "id": "chat-tablet-rtl-dark",
+    "state": "initial state, Arabic dark",
+    "screenshot": "screenshots/chat-tablet-rtl-dark.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:17:55.297Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=chat&theme=dark&locale=ar&motion=full&role=student",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 1024,
+    "locale": "ar",
+    "mainBottom": 1024,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "إرسال",
+        "rect": {
+          "bottom": 931,
+          "height": 44.5,
+          "left": 77,
+          "right": 175.390625,
+          "top": 886.5,
+          "width": 98.390625,
+          "x": 77,
+          "y": 886.5
+        }
+      }
+    ],
+    "theme": "dark",
+    "width": 768,
+    "imagePixels": {
+      "width": 768,
+      "height": 1024
+    }
+  },
+  {
+    "id": "studio-tablet-rtl-dark",
+    "state": "initial state, Arabic dark",
+    "screenshot": "screenshots/studio-tablet-rtl-dark.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:17:55.426Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=studio&theme=dark&locale=ar&motion=full&role=student",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 1024,
+    "locale": "ar",
+    "mainBottom": 1024,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "إعداد",
+        "rect": {
+          "bottom": 764.421875,
+          "height": 44.5,
+          "left": 448,
+          "right": 643,
+          "top": 719.921875,
+          "width": 195,
+          "x": 448,
+          "y": 719.921875
+        }
+      }
+    ],
+    "theme": "dark",
+    "width": 768,
+    "imagePixels": {
+      "width": 768,
+      "height": 1024
+    }
+  },
+  {
+    "id": "intake-tablet-rtl-dark",
+    "state": "initial state, Arabic dark",
+    "screenshot": "screenshots/intake-tablet-rtl-dark.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:17:55.584Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=intake&theme=dark&locale=ar&motion=full&role=leader",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 1024,
+    "locale": "ar",
+    "mainBottom": 1024,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "إضافة ملف تجريبي",
+        "rect": {
+          "bottom": 498.546875,
+          "height": 52,
+          "left": 366.234375,
+          "right": 598.78125,
+          "top": 446.546875,
+          "width": 232.546875,
+          "x": 366.234375,
+          "y": 446.546875
+        }
+      }
+    ],
+    "theme": "dark",
+    "width": 768,
+    "imagePixels": {
+      "width": 768,
+      "height": 1024
+    }
+  },
+  {
+    "id": "admin-tablet-rtl-dark",
+    "state": "initial state, Arabic dark",
+    "screenshot": "screenshots/admin-tablet-rtl-dark.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:17:55.722Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=admin&theme=dark&locale=ar&motion=full&role=admin",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 1024,
+    "locale": "ar",
+    "mainBottom": 1024,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [],
+    "theme": "dark",
+    "width": 768,
+    "imagePixels": {
+      "width": 768,
+      "height": 1024
+    }
+  },
+  {
+    "id": "account-tablet-rtl-dark",
+    "state": "initial state, Arabic dark",
+    "screenshot": "screenshots/account-tablet-rtl-dark.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:17:55.911Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=account&theme=dark&locale=ar&motion=full&role=admin",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 1024,
+    "locale": "ar",
+    "mainBottom": 1024,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [],
+    "theme": "dark",
+    "width": 768,
+    "imagePixels": {
+      "width": 768,
+      "height": 1024
+    }
+  },
+  {
+    "id": "states-tablet-rtl-dark",
+    "state": "initial state, Arabic dark",
+    "screenshot": "screenshots/states-tablet-rtl-dark.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:17:56.141Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=states&theme=dark&locale=ar&motion=full&role=admin",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 1024,
+    "locale": "ar",
+    "mainBottom": 1024,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "الإجراء الأساسي",
+        "rect": {
+          "bottom": 329.4375,
+          "height": 44.5,
+          "left": 488.5,
+          "right": 644,
+          "top": 284.9375,
+          "width": 155.5,
+          "x": 488.5,
+          "y": 284.9375
+        }
+      }
+    ],
+    "theme": "dark",
+    "width": 768,
+    "imagePixels": {
+      "width": 768,
+      "height": 1024
+    }
+  },
+  {
+    "id": "shelf-laptop-rtl-dark",
+    "state": "initial state, Arabic dark",
+    "screenshot": "screenshots/shelf-laptop-rtl-dark.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:18:13.051Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=shelf&theme=dark&locale=ar&motion=full&role=student",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 800,
+    "locale": "ar",
+    "mainBottom": 800,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [],
+    "theme": "dark",
+    "width": 1280,
+    "imagePixels": {
+      "width": 1280,
+      "height": 800
+    }
+  },
+  {
+    "id": "chat-laptop-rtl-dark",
+    "state": "initial state, Arabic dark",
+    "screenshot": "screenshots/chat-laptop-rtl-dark.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:18:13.170Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=chat&theme=dark&locale=ar&motion=full&role=student",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 800,
+    "locale": "ar",
+    "mainBottom": 800,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "إرسال",
+        "rect": {
+          "bottom": 695,
+          "height": 44.5,
+          "left": 389,
+          "right": 487.390625,
+          "top": 650.5,
+          "width": 98.390625,
+          "x": 389,
+          "y": 650.5
+        }
+      }
+    ],
+    "theme": "dark",
+    "width": 1280,
+    "imagePixels": {
+      "width": 1280,
+      "height": 800
+    }
+  },
+  {
+    "id": "studio-laptop-rtl-dark",
+    "state": "initial state, Arabic dark",
+    "screenshot": "screenshots/studio-laptop-rtl-dark.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:18:13.301Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=studio&theme=dark&locale=ar&motion=full&role=student",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 800,
+    "locale": "ar",
+    "mainBottom": 800,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "إعداد",
+        "rect": {
+          "bottom": 768.421875,
+          "height": 44.5,
+          "left": 773,
+          "right": 1023,
+          "top": 723.921875,
+          "width": 250,
+          "x": 773,
+          "y": 723.921875
+        }
+      }
+    ],
+    "theme": "dark",
+    "width": 1280,
+    "imagePixels": {
+      "width": 1280,
+      "height": 800
+    }
+  },
+  {
+    "id": "intake-laptop-rtl-dark",
+    "state": "initial state, Arabic dark",
+    "screenshot": "screenshots/intake-laptop-rtl-dark.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:18:13.426Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=intake&theme=dark&locale=ar&motion=full&role=leader",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 800,
+    "locale": "ar",
+    "mainBottom": 800,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "إضافة ملف تجريبي",
+        "rect": {
+          "bottom": 502.546875,
+          "height": 52,
+          "left": 611.234375,
+          "right": 843.78125,
+          "top": 450.546875,
+          "width": 232.546875,
+          "x": 611.234375,
+          "y": 450.546875
+        }
+      }
+    ],
+    "theme": "dark",
+    "width": 1280,
+    "imagePixels": {
+      "width": 1280,
+      "height": 800
+    }
+  },
+  {
+    "id": "admin-laptop-rtl-dark",
+    "state": "initial state, Arabic dark",
+    "screenshot": "screenshots/admin-laptop-rtl-dark.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:18:13.567Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=admin&theme=dark&locale=ar&motion=full&role=admin",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 800,
+    "locale": "ar",
+    "mainBottom": 800,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [],
+    "theme": "dark",
+    "width": 1280,
+    "imagePixels": {
+      "width": 1280,
+      "height": 800
+    }
+  },
+  {
+    "id": "account-laptop-rtl-dark",
+    "state": "initial state, Arabic dark",
+    "screenshot": "screenshots/account-laptop-rtl-dark.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:18:13.703Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=account&theme=dark&locale=ar&motion=full&role=admin",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 800,
+    "locale": "ar",
+    "mainBottom": 800,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [],
+    "theme": "dark",
+    "width": 1280,
+    "imagePixels": {
+      "width": 1280,
+      "height": 800
+    }
+  },
+  {
+    "id": "states-laptop-rtl-dark",
+    "state": "initial state, Arabic dark",
+    "screenshot": "screenshots/states-laptop-rtl-dark.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:18:13.873Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=states&theme=dark&locale=ar&motion=full&role=admin",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 800,
+    "locale": "ar",
+    "mainBottom": 800,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "الإجراء الأساسي",
+        "rect": {
+          "bottom": 333.4375,
+          "height": 44.5,
+          "left": 868.5,
+          "right": 1024,
+          "top": 288.9375,
+          "width": 155.5,
+          "x": 868.5,
+          "y": 288.9375
+        }
+      }
+    ],
+    "theme": "dark",
+    "width": 1280,
+    "imagePixels": {
+      "width": 1280,
+      "height": 800
+    }
+  },
+  {
+    "id": "states-hover-desktop",
+    "state": "actual primary hover",
+    "screenshot": "screenshots/states-hover-desktop.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:18:14.200Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=states&theme=light&locale=en&motion=full&role=admin",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 900,
+    "locale": "en",
+    "mainBottom": 900,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "Primary action",
+        "rect": {
+          "bottom": 336.609375,
+          "height": 44,
+          "left": 262.5,
+          "right": 422.140625,
+          "top": 292.609375,
+          "width": 159.640625,
+          "x": 262.5,
+          "y": 292.609375
+        }
+      }
+    ],
+    "theme": "light",
+    "width": 1440,
+    "imagePixels": {
+      "width": 1440,
+      "height": 900
+    }
+  },
+  {
+    "id": "states-keyboard-focus-desktop",
+    "state": "secondary action keyboard focus",
+    "screenshot": "screenshots/states-keyboard-focus-desktop.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:18:14.369Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=states&theme=light&locale=en&motion=full&role=admin",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 900,
+    "locale": "en",
+    "mainBottom": 900,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "Primary action",
+        "rect": {
+          "bottom": 336.609375,
+          "height": 44,
+          "left": 262.5,
+          "right": 422.140625,
+          "top": 292.609375,
+          "width": 159.640625,
+          "x": 262.5,
+          "y": 292.609375
+        }
+      }
+    ],
+    "theme": "light",
+    "width": 1440,
+    "imagePixels": {
+      "width": 1440,
+      "height": 900
+    }
+  },
+  {
+    "id": "states-error-focus-desktop",
+    "state": "required title error, input focused",
+    "screenshot": "screenshots/states-error-focus-desktop.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:18:14.801Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=states&theme=light&locale=en&motion=full&role=admin",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 900,
+    "locale": "en",
+    "mainBottom": 900,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "Primary action",
+        "rect": {
+          "bottom": 270.609375,
+          "height": 44,
+          "left": 262.5,
+          "right": 422.140625,
+          "top": 226.609375,
+          "width": 159.640625,
+          "x": 262.5,
+          "y": 226.609375
+        }
+      }
+    ],
+    "theme": "light",
+    "width": 1440,
+    "imagePixels": {
+      "width": 1440,
+      "height": 900
+    }
+  },
+  {
+    "id": "states-success-desktop",
+    "state": "valid title, local inline success",
+    "screenshot": "screenshots/states-success-desktop.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:18:15.251Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=states&theme=light&locale=en&motion=full&role=admin",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 900,
+    "locale": "en",
+    "mainBottom": 900,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "Primary action",
+        "rect": {
+          "bottom": 217.609375,
+          "height": 44,
+          "left": 262.5,
+          "right": 422.140625,
+          "top": 173.609375,
+          "width": 159.640625,
+          "x": 262.5,
+          "y": 173.609375
+        }
+      }
+    ],
+    "theme": "light",
+    "width": 1440,
+    "imagePixels": {
+      "width": 1440,
+      "height": 900
+    }
+  },
+  {
+    "id": "chat-loading-desktop",
+    "state": "pending fixed answer, original question retained",
+    "screenshot": "screenshots/chat-loading-desktop.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:21:58.461Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=chat&theme=light&locale=en&motion=full&role=student",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 900,
+    "locale": "en",
+    "mainBottom": 900,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "Send",
+        "rect": {
+          "bottom": 797.40625,
+          "height": 44,
+          "left": 948.03125,
+          "right": 1044.5,
+          "top": 753.40625,
+          "width": 96.46875,
+          "x": 948.03125,
+          "y": 753.40625
+        }
+      }
+    ],
+    "theme": "light",
+    "width": 1440,
+    "imagePixels": {
+      "width": 1440,
+      "height": 900
+    }
+  },
+  {
+    "id": "chat-supported-source-desktop",
+    "state": "source-linked supported answer with activated excerpt",
+    "screenshot": "screenshots/chat-supported-source-desktop.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:22:00.465Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=chat&theme=light&locale=en&motion=full&role=student",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 900,
+    "locale": "en",
+    "mainBottom": 900,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "Send",
+        "rect": {
+          "bottom": 797.40625,
+          "height": 44,
+          "left": 948.03125,
+          "right": 1044.5,
+          "top": 753.40625,
+          "width": 96.46875,
+          "x": 948.03125,
+          "y": 753.40625
+        }
+      }
+    ],
+    "theme": "light",
+    "width": 1440,
+    "imagePixels": {
+      "width": 1440,
+      "height": 900
+    }
+  },
+  {
+    "id": "chat-reduced-source-desktop",
+    "state": "same citation action, reduced motion",
+    "screenshot": "screenshots/chat-reduced-source-desktop.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:22:00.920Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=chat&theme=light&locale=en&motion=reduced&role=student",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 900,
+    "locale": "en",
+    "mainBottom": 900,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "Send",
+        "rect": {
+          "bottom": 797.40625,
+          "height": 44,
+          "left": 948.03125,
+          "right": 1044.5,
+          "top": 753.40625,
+          "width": 96.46875,
+          "x": 948.03125,
+          "y": 753.40625
+        }
+      }
+    ],
+    "theme": "light",
+    "width": 1440,
+    "imagePixels": {
+      "width": 1440,
+      "height": 900
+    }
+  },
+  {
+    "id": "studio-english-output-rtl-dark-laptop",
+    "state": "Arabic interface, English summary output",
+    "screenshot": "screenshots/studio-english-output-rtl-dark-laptop.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:22:47.847Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=studio&theme=dark&locale=ar&motion=full&role=student",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 800,
+    "locale": "ar",
+    "mainBottom": 800,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "إعداد",
+        "rect": {
+          "bottom": 768.421875,
+          "height": 44.5,
+          "left": 773,
+          "right": 1023,
+          "top": 723.921875,
+          "width": 250,
+          "x": 773,
+          "y": 723.921875
+        }
+      }
+    ],
+    "theme": "dark",
+    "width": 1280,
+    "imagePixels": {
+      "width": 1280,
+      "height": 800
+    }
+  },
+  {
+    "id": "studio-loading-rtl-dark-laptop",
+    "state": "Arabic flashcard pending; configuration retained",
+    "screenshot": "screenshots/studio-loading-rtl-dark-laptop.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:22:48.093Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=studio&theme=dark&locale=ar&motion=full&role=student",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 800,
+    "locale": "ar",
+    "mainBottom": 800,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "إعداد",
+        "rect": {
+          "bottom": 768.421875,
+          "height": 44.5,
+          "left": 773,
+          "right": 1023,
+          "top": 723.921875,
+          "width": 250,
+          "x": 773,
+          "y": 723.921875
+        }
+      }
+    ],
+    "theme": "dark",
+    "width": 1280,
+    "imagePixels": {
+      "width": 1280,
+      "height": 800
+    }
+  },
+  {
+    "id": "studio-flashcard-answer-rtl-dark-laptop",
+    "state": "Arabic flashcard answer activated with Space",
+    "screenshot": "screenshots/studio-flashcard-answer-rtl-dark-laptop.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:22:49.789Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=studio&theme=dark&locale=ar&motion=full&role=student",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 800,
+    "locale": "ar",
+    "mainBottom": 800,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "إعداد",
+        "rect": {
+          "bottom": 680.421875,
+          "height": 44.5,
+          "left": 773,
+          "right": 1023,
+          "top": 635.921875,
+          "width": 250,
+          "x": 773,
+          "y": 635.921875
+        }
+      }
+    ],
+    "theme": "dark",
+    "width": 1280,
+    "imagePixels": {
+      "width": 1280,
+      "height": 800
+    }
+  },
+  {
+    "id": "chat-error-mobile-rtl-dark",
+    "state": "recoverable failure; question retained in composer",
+    "screenshot": "screenshots/chat-error-mobile-rtl-dark.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:23:18.642Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=chat&theme=dark&locale=ar&motion=full&role=student",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 844,
+    "locale": "ar",
+    "mainBottom": 784,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "إرسال",
+        "rect": {
+          "bottom": 708.75,
+          "height": 44,
+          "left": 36,
+          "right": 113.203125,
+          "top": 664.75,
+          "width": 77.203125,
+          "x": 36,
+          "y": 664.75
+        }
+      }
+    ],
+    "theme": "dark",
+    "width": 390,
+    "imagePixels": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  {
+    "id": "chat-source-dialog-mobile-rtl-dark",
+    "state": "supported answer; source dialog opened from citation",
+    "screenshot": "screenshots/chat-source-dialog-mobile-rtl-dark.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:23:20.774Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=chat&theme=dark&locale=ar&motion=full&role=student",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 844,
+    "locale": "ar",
+    "mainBottom": 784,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "إرسال",
+        "rect": {
+          "bottom": 708.75,
+          "height": 44,
+          "left": 36,
+          "right": 113.203125,
+          "top": 664.75,
+          "width": 77.203125,
+          "x": 36,
+          "y": 664.75
+        }
+      }
+    ],
+    "theme": "dark",
+    "width": 390,
+    "imagePixels": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  {
+    "id": "intake-error-mobile-rtl-dark",
+    "state": "interrupted example, scrolled to error and retained fields",
+    "screenshot": "screenshots/intake-error-mobile-rtl-dark.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:29:29.514Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=intake&theme=dark&locale=ar&motion=full&role=leader",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 844,
+    "locale": "ar",
+    "mainBottom": 784,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "إعادة الإرسال",
+        "rect": {
+          "bottom": 644.125,
+          "height": 44.5,
+          "left": 48,
+          "right": 357,
+          "top": 599.625,
+          "width": 309,
+          "x": 48,
+          "y": 599.625
+        }
+      }
+    ],
+    "theme": "dark",
+    "width": 390,
+    "imagePixels": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  {
+    "id": "intake-received-mobile-rtl-dark",
+    "state": "scrolled receipt ledger: received, processing pending, not available",
+    "screenshot": "screenshots/intake-received-mobile-rtl-dark.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:29:31.104Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=intake&theme=dark&locale=ar&motion=full&role=leader",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 844,
+    "locale": "ar",
+    "mainBottom": 784,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [],
+    "theme": "dark",
+    "width": 390,
+    "imagePixels": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  {
+    "id": "admin-mobile-rtl-dark",
+    "state": "unselected queue, Arabic dark",
+    "screenshot": "screenshots/admin-mobile-rtl-dark.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:24:23.306Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=admin&theme=dark&locale=ar&motion=full&role=admin",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 844,
+    "locale": "ar",
+    "mainBottom": 784,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [],
+    "theme": "dark",
+    "width": 390,
+    "imagePixels": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  {
+    "id": "admin-selected-mobile-rtl-dark",
+    "state": "Anatomy scope, Hide unit, version 2, empty reason",
+    "screenshot": "screenshots/admin-selected-mobile-rtl-dark.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:24:23.475Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=admin&theme=dark&locale=ar&motion=full&role=admin",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 844,
+    "locale": "ar",
+    "mainBottom": 784,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "مراجعة التغيير المحدد",
+        "rect": {
+          "bottom": 942.375,
+          "height": 44.5,
+          "left": 52,
+          "right": 353,
+          "top": 897.875,
+          "width": 301,
+          "x": 52,
+          "y": 897.875
+        }
+      }
+    ],
+    "theme": "dark",
+    "width": 390,
+    "imagePixels": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  {
+    "id": "admin-review-mobile-rtl-dark",
+    "state": "exact target, state pair, version and supplied Arabic reason",
+    "screenshot": "screenshots/admin-review-mobile-rtl-dark.jpg",
+    "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+    "capturedAt": "2026-10-04T22:24:23.869Z",
+    "url": "http://127.0.0.1:3164/refinement/index.html?screen=admin&theme=dark&locale=ar&motion=full&role=admin",
+    "evaluated": "partial visual and synthetic interaction review",
+    "height": 844,
+    "locale": "ar",
+    "mainBottom": 784,
+    "overflowX": false,
+    "overflowY": false,
+    "primary": [
+      {
+        "label": "مراجعة التغيير المحدد",
+        "rect": {
+          "bottom": 696.375,
+          "height": 44.5,
+          "left": 52,
+          "right": 353,
+          "top": 651.875,
+          "width": 301,
+          "x": 52,
+          "y": 651.875
+        }
+      }
+    ],
+    "theme": "dark",
+    "width": 390,
+    "imagePixels": {
+      "width": 390,
+      "height": 844
+    }
+  }
+]

@@ -86,8 +86,8 @@ test("the university journey asks for faculty, academic year, then semester", as
     "human-medicine-year-1-term-1",
   );
   await catalogExpect(
-    page.getByRole("button", {
-      name: "Select curriculum unit: Biochemistry",
+    page.getByRole("link", {
+      name: "Open Biochemistry",
     }),
   ).toBeVisible();
 });
@@ -114,8 +114,8 @@ test("the veterinary pilot uses the same hierarchy with subject terminology", as
     page.getByRole("heading", { name: "Subjects", exact: true }),
   ).toBeVisible();
   await catalogExpect(
-    page.getByRole("button", {
-      name: "Select curriculum unit: Veterinary Anatomy",
+    page.getByRole("link", {
+      name: "Open Veterinary Anatomy",
     }),
   ).toBeVisible();
 });
@@ -136,48 +136,51 @@ test("the same catalog seam adapts the hierarchy for Thanaweya Amma", async ({
   await page.getByLabel("Term").selectOption("science-track-year-3-term-1");
 
   await catalogExpect(
-    page.getByRole("button", { name: "Select curriculum unit: Biology" }),
+    page.getByRole("link", { name: "Open Biology" }),
   ).toBeVisible();
 });
 
-test("the server-authorized path clears downstream choices and survives browser history", async ({
+test("direct unit navigation preserves the authorized path and academic changes clear downstream choices", async ({
   page,
 }) => {
   test.setTimeout(30_000);
   await chooseHumanMedicineFirstYear(page);
 
-  const unit = page.getByRole("button", {
-    name: "Select curriculum unit: Biochemistry",
+  const unit = page.getByRole("link", {
+    name: "Open Biochemistry",
   });
-  await unit.focus();
-  await page.keyboard.press("Enter");
-  await catalogExpect(page).toHaveURL(
-    /unit=zagazig-university-human-medicine-y1-t1-biochemistry/u,
-  );
-  await catalogExpect(unit).toHaveAttribute("aria-pressed", "true");
-  await catalogExpect(page.getByText("11", { exact: true })).toBeVisible();
-  await catalogExpect(
-    page.getByRole("link", { name: "Open Biochemistry" }),
-  ).toHaveAttribute(
+  const shelfUrl = page.url();
+  await catalogExpect(unit).toContainText("11 sample materials");
+  await catalogExpect(unit).toHaveAttribute(
     "href",
     /\/preview\/learn\/zagazig-university-human-medicine-year-1-term-1-cohort\/zagazig-university-human-medicine-y1-t1-biochemistry\?lang=en/u,
   );
+  await unit.focus();
+  await page.keyboard.press("Enter");
+  await catalogExpect(page).toHaveURL(
+    /\/preview\/learn\/zagazig-university-human-medicine-year-1-term-1-cohort\/zagazig-university-human-medicine-y1-t1-biochemistry\?lang=en/u,
+  );
+  await catalogExpect(
+    page.getByRole("heading", { level: 1, name: "Biochemistry" }),
+  ).toBeVisible();
 
   await page.reload();
   await catalogExpect(page).toHaveURL(
-    /unit=zagazig-university-human-medicine-y1-t1-biochemistry/u,
+    /\/zagazig-university-human-medicine-y1-t1-biochemistry\?lang=en/u,
   );
-  await catalogExpect(unit).toHaveAttribute("aria-pressed", "true");
+  await catalogExpect(
+    page.getByRole("heading", { level: 1, name: "Biochemistry" }),
+  ).toBeVisible();
 
   await page.goBack();
-  await catalogExpect(page).not.toHaveURL(
-    /unit=zagazig-university-human-medicine-y1-t1-biochemistry/u,
-  );
-  await catalogExpect(unit).toHaveAttribute("aria-pressed", "false");
+  await catalogExpect(page).toHaveURL(shelfUrl);
+  await catalogExpect(unit).toBeVisible();
   await page.goForward();
   await catalogExpect(page).toHaveURL(
-    /unit=zagazig-university-human-medicine-y1-t1-biochemistry/u,
+    /\/zagazig-university-human-medicine-y1-t1-biochemistry\?lang=en/u,
   );
+  await page.goBack();
+  await catalogExpect(page).toHaveURL(shelfUrl);
 
   await page.getByLabel("Academic year").selectOption("human-medicine-year-3");
   await catalogExpect(page).toHaveURL(/level=human-medicine-year-3/u);
@@ -189,8 +192,8 @@ test("the server-authorized path clears downstream choices and survives browser 
     .getByLabel("Semester")
     .selectOption("human-medicine-year-3-term-1");
   await catalogExpect(
-    page.getByRole("button", {
-      name: "Select curriculum unit: Anatomy",
+    page.getByRole("link", {
+      name: "Open Anatomy",
     }),
   ).toBeVisible();
 });
@@ -262,8 +265,8 @@ test("a valid direct deep link remains stable and locale switching preserves sco
     /unit=zagazig-university-human-medicine-y1-t1-anatomy/u,
   );
   await catalogExpect(
-    page.getByRole("button", {
-      name: "Select curriculum unit: Anatomy",
+    page.getByRole("link", {
+      name: "Open Anatomy",
       exact: true,
     }),
   ).toBeVisible();
@@ -284,8 +287,8 @@ test("a valid direct deep link remains stable and locale switching preserves sco
     page.getByRole("heading", { name: "Modules" }),
   ).toHaveCount(0);
   await catalogExpect(
-    page.getByRole("button", {
-      name: "اختيار الوحدة الدراسية: علم التشريح",
+    page.getByRole("link", {
+      name: "فتح علم التشريح",
       exact: true,
     }),
   ).toBeVisible();
@@ -295,8 +298,8 @@ test("a valid direct deep link remains stable and locale switching preserves sco
 
   await page.getByLabel("البحث عن مادة").fill("وظائف");
   await catalogExpect(
-    page.getByRole("button", {
-      name: "اختيار الوحدة الدراسية: وظائف الأعضاء",
+    page.getByRole("link", {
+      name: "فتح وظائف الأعضاء",
       exact: true,
     }),
   ).toBeVisible();
@@ -311,8 +314,8 @@ test("safe empty and release-change states expose no catalog identifiers", async
   test.setTimeout(30_000);
   await chooseHumanMedicineFirstYear(page);
   await catalogExpect(
-    page.getByRole("button", {
-      name: "Select curriculum unit: Biochemistry",
+    page.getByRole("link", {
+      name: "Open Biochemistry",
       exact: true,
     }),
   ).toBeVisible();
@@ -429,12 +432,20 @@ test("reduced motion removes the authored shelf and loading animation", async ({
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await chooseHumanMedicineFirstYear(page);
-  const firstUnit = page.getByRole("button", {
-    name: "Select curriculum unit: Anatomy",
+  const firstUnit = page.getByRole("link", {
+    name: "Open Anatomy",
   });
+  await catalogExpect(firstUnit).toBeVisible();
+  const shelfUrl = page.url();
   await firstUnit.focus();
   await page.keyboard.press("Enter");
-  await catalogExpect(firstUnit).toHaveAttribute("aria-pressed", "true");
+  await catalogExpect(page).toHaveURL(
+    /\/zagazig-university-human-medicine-y1-t1-anatomy\?lang=en/u,
+  );
+  await page.goBack();
+  await catalogExpect(page).toHaveURL(shelfUrl);
+  await firstUnit.focus();
+  await catalogExpect(firstUnit).toBeFocused();
 
   await catalogExpect(page.getByRole("main")).toBeVisible();
   await catalogExpect(
@@ -480,8 +491,13 @@ test("reduced motion removes the authored shelf and loading animation", async ({
       return (light + 0.05) / (dark + 0.05);
     }
 
-    const item = document.querySelector<HTMLElement>("[data-focused='true']");
-    const ready = item?.querySelector<HTMLElement>("p span:last-child");
+    const link = document.querySelector<HTMLElement>(
+      'a[aria-label="Open Anatomy"]',
+    );
+    const item = link?.closest("li");
+    const ready = link?.querySelector<HTMLElement>(
+      ":scope > span:nth-last-child(2)",
+    );
     const bodyStyle = getComputedStyle(document.body);
     const readyStyle = ready ? getComputedStyle(ready) : null;
     return {

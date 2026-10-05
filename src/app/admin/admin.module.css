@@ -3,7 +3,7 @@
   min-width: 0;
 }
 .pageHeading {
-  margin-block-end: 32px;
+  margin-block-end: 24px;
 }
 .headingRow {
   display: flex;
@@ -16,7 +16,7 @@
   min-width: 0;
   overflow-wrap: anywhere;
   margin: 0 0 14px;
-  font-size: 2.25rem;
+  font-size: 1.875rem;
   letter-spacing: -0.035em;
   line-height: var(--heading-leading, 1.35);
 }
@@ -53,11 +53,22 @@
 .resourceNav a:hover {
   background: var(--hover);
 }
+.policyDetails {
+  margin-block: 20px;
+  font-size: 0.875rem;
+  color: var(--secondary);
+}
+.policyDetails summary {
+  cursor: pointer;
+  min-height: 44px;
+  display: list-item;
+  padding-block: 12px;
+}
 .queueLayout {
   display: grid;
-  grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.7fr);
+  grid-template-columns: 300px minmax(0, 1fr);
   align-items: start;
-  gap: 32px;
+  gap: 24px;
 }
 .queuePane {
   min-width: 0;
@@ -123,9 +134,9 @@
 }
 .detail {
   min-width: 0;
-  padding: 32px;
+  padding: 24px;
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 10px;
   background: var(--surface);
 }
 .detailHeading {
@@ -366,7 +377,7 @@
   padding: 28px;
   margin-block-end: 24px;
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 10px;
   background: var(--surface);
 }
 :global([lang="ar"]) .pageHeading h1 {
@@ -450,5 +461,127 @@
     border-radius: 0;
     padding: 24px 0;
     background: transparent;
+  }
+}
+
+.queueSearch {
+  display: grid;
+  gap: 8px;
+  font-size: 0.8125rem;
+  margin-block-end: 12px;
+}
+.queueSearch input {
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--control-border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+}
+.queueFilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-block-end: 16px;
+}
+.queueFilters button {
+  min-height: 44px;
+  padding: 8px;
+  font: inherit;
+  font-size: 0.8125rem;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: var(--secondary);
+  background: transparent;
+}
+.queueFilters button[aria-pressed="true"] {
+  border-color: var(--accent);
+  color: var(--accent-ink);
+  background: var(--annotation);
+}
+.queueFilters button:hover {
+  background: var(--hover);
+}
+.queueFilters button span {
+  margin-inline-start: 4px;
+  font-variant-numeric: tabular-nums;
+}
+.selectedDetail {
+  min-width: 0;
+}
+.decisionEmpty {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 28rem;
+  padding: 32px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+.decisionEmpty > svg {
+  color: var(--accent-ink);
+  margin-block-end: 20px;
+}
+.decisionEmpty h2 {
+  margin: 0 0 12px;
+  font-size: 1.5rem;
+  line-height: var(--heading-leading, 1.35);
+}
+.decisionEmpty p {
+  max-width: 48ch;
+  margin: 0;
+  color: var(--secondary);
+}
+.detailBack {
+  display: none;
+}
+.reviewPanel {
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+.reviewPanel dl {
+  display: grid;
+  gap: 12px;
+}
+.reviewPanel dl > div {
+  display: grid;
+  grid-template-columns: minmax(7rem, 1fr) minmax(0, 2fr);
+  gap: 16px;
+}
+.reviewPanel dd {
+  margin: 0;
+}
+@media (max-width: 767px) {
+  .queueLayout[data-detail-open="false"] .selectedDetail {
+    display: none;
+  }
+  .queueLayout[data-detail-open="true"] .queuePane {
+    display: none;
+  }
+  .queueLayout[data-detail-open="false"] .decisionList {
+    display: grid;
+  }
+  .mobileDecision {
+    display: none;
+  }
+  .detailBack {
+    display: flex;
+    min-height: 44px;
+    margin-block-end: 12px;
+    padding: 8px 0;
+    border: 0;
+    font: inherit;
+    background: transparent;
+    color: var(--accent-ink);
+  }
+  .detail {
+    padding: 20px;
+  }
+  .reviewPanel dl > div {
+    grid-template-columns: 1fr;
+    gap: 4px;
   }
 }

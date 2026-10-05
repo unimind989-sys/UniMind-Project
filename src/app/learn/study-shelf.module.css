@@ -3,13 +3,13 @@
 }
 .pageHeader {
   position: relative;
-  padding-block-end: 36px;
+  padding-block-end: 16px;
 }
 .pageHeader h1 {
-  margin: 0 0 14px;
-  font-size: 2.5rem;
-  line-height: 1.25;
-  letter-spacing: -0.04em;
+  margin: 0 0 12px;
+  font-size: var(--type-display-size);
+  line-height: var(--type-display-leading);
+  letter-spacing: var(--type-display-tracking);
 }
 .pageHeader p {
   margin: 0;
@@ -48,11 +48,11 @@
   justify-content: space-between;
   align-items: end;
   gap: 24px;
-  margin-block: 16px 24px;
+  margin-block: 16px 20px;
 }
 .shelfHeading h2 {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.125rem;
 }
 .search {
   display: grid;
@@ -73,10 +73,7 @@
   list-style: none;
   padding: 0;
   margin: 0;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  overflow: hidden;
+  border-block: 1px solid var(--border);
 }
 .units li + li {
   border-block-start: 1px solid var(--border);
@@ -93,35 +90,37 @@
 .unit {
   display: flex;
   align-items: center;
-  gap: 24px;
-  padding: 24px 28px;
+  gap: 20px;
+  padding: 18px 4px;
+  min-height: 98px;
+  text-decoration: none;
+  color: var(--ink);
 }
 .subjectBook {
   flex: none;
   position: relative;
-  width: 54px;
-  height: 66px;
-  background: var(--accent-soft);
+  width: 30px;
+  height: 42px;
+  background: var(--surface);
   color: var(--accent);
-  border: 1px solid currentColor;
-  border-radius: 3px 8px 8px 3px;
-  box-shadow: inset 5px 0 0 var(--accent);
-  transform: rotate(-5deg);
+  border: 1px solid var(--control-border);
+  border-radius: 2px;
 }
 .subjectBook::after {
   content: "";
   position: absolute;
-  inset: 14px 12px auto 15px;
-  height: 2px;
-  background: currentColor;
-  box-shadow: 0 7px 0 currentColor;
+  inset-block-start: 0;
+  inset-inline-end: 5px;
+  width: 5px;
+  height: 16px;
+  background: var(--accent);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 75%, 0 100%);
 }
 .subjectBook > span {
   position: absolute;
-  inset: auto 4px 4px 8px;
-  height: 4px;
-  background: var(--surface);
-  border-block-start: 1px solid currentColor;
+  inset-block: 0;
+  inset-inline-start: 5px;
+  border-inline-start: 1px solid var(--border);
 }
 .unitCopy {
   flex: 1;
@@ -295,4 +294,104 @@
   padding: 0.65rem;
   color: var(--text-primary);
   background: var(--surface);
+}
+
+.indexLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 232px;
+  gap: 32px;
+}
+.indexLayout > div {
+  min-width: 0;
+}
+.unitTitle {
+  display: block;
+  font-size: 1rem;
+  font-weight: 650;
+}
+.materialCount {
+  display: block;
+  margin-block-start: 6px;
+  color: var(--secondary);
+  font-size: 0.8125rem;
+}
+.unit > .ready {
+  font-size: 0.8125rem;
+}
+.unit > svg {
+  color: var(--accent-ink);
+  transition: translate var(--motion-control) var(--ease-settle);
+}
+.unit:hover > svg {
+  translate: 3px 0;
+}
+:global([dir="rtl"]) .unit:hover > svg {
+  translate: -3px 0;
+}
+.orientation {
+  padding-block-start: 76px;
+  font-size: 0.875rem;
+  color: var(--secondary);
+}
+.orientation > svg {
+  width: 180px;
+  height: 140px;
+  color: var(--accent-ink);
+}
+.orientation h2 {
+  font-size: 1.125rem;
+  color: var(--ink);
+  margin-block: 20px 12px;
+}
+.orientation p {
+  max-width: 32ch;
+}
+.orientation a {
+  color: var(--accent-ink);
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+@media (max-width: 1050px) {
+  .indexLayout {
+    grid-template-columns: 1fr;
+  }
+  .orientation {
+    display: none;
+  }
+}
+@media (max-width: 767px) {
+  .pageHeader {
+    padding-block-end: 12px;
+  }
+  .pageHeader h1 {
+    font-size: var(--type-display-mobile-size);
+  }
+  .shelfHeading {
+    align-items: stretch;
+    gap: 12px;
+    margin-block: 12px;
+  }
+  .search {
+    width: 100%;
+  }
+  .search > span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  .unit {
+    min-height: 78px;
+    gap: 12px;
+    padding: 14px 4px;
+  }
+  .subjectBook {
+    width: 26px;
+    height: 36px;
+  }
+  .unit > .ready {
+    font-size: 0.75rem;
+  }
 }

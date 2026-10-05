@@ -90,19 +90,6 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
     scope.unitId !== defaultScope.unitId || state.availability.sourceActive;
   return (
     <div className={studyStyles.studio}>
-      <div className={studyStyles.sectionHeading}>
-        <h2>{t("Studio", "الاستوديو")}</h2>
-        <ProductLink href={base + "/sources?from=studio"} locale={locale}>
-          <FrontendIcon name="sources" />
-          {t("Unit sources", "مصادر الوحدة")}
-        </ProductLink>
-      </div>
-      <p className={studyStyles.intro}>
-        {t(
-          "Make a study aid from this subject’s sample materials.",
-          "أعد أداة مذاكرة من المواد التجريبية لهذه المادة.",
-        )}
-      </p>
       <div className={studyStyles.studioLayout}>
         <form
           className={studyStyles.studioControls}
@@ -122,24 +109,17 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
               )}
             </Notice>
           ) : null}
-          <fieldset
-            className={studyStyles.artifactTypes}
+          <h2>{t("Shape the result", "شكّل المخرج")}</h2>
+          <Select
+            id="artifact-type"
+            label={t("Artifact type", "نوع المخرج")}
+            value={type}
+            onChange={(value) => setOption("type", value)}
+            options={artifactTypes.map(
+              ([id, en, ar]) => [id, t(en, ar)] as const,
+            )}
             disabled={request !== null}
-          >
-            <legend>{t("Artifact type", "نوع المخرج")}</legend>
-            {artifactTypes.map(([id, en, ar]) => (
-              <label key={id} data-selected={type === id}>
-                <input
-                  type="radio"
-                  name="artifact-type"
-                  value={id}
-                  checked={type === id}
-                  onChange={() => setOption("type", id)}
-                />
-                <span>{t(en, ar)}</span>
-              </label>
-            ))}
-          </fieldset>
+          />
           <div className={studyStyles.configuration}>
             <Select
               id="artifact-topic"
@@ -153,7 +133,7 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
             />
             <Select
               id="artifact-language"
-              label={t("Language", "اللغة")}
+              label={t("Output language", "لغة المخرج")}
               value={language}
               onChange={(value) => setOption("language", value)}
               options={[
@@ -162,27 +142,33 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
                 ["mixed", t("Mixed", "مختلط")],
               ]}
             />
-            <Select
-              id="artifact-depth"
-              label={t("Depth", "التفصيل")}
-              value={depth}
-              onChange={(value) => setOption("depth", value)}
-              options={[
-                ["concise", t("Concise", "موجز")],
-                ["detailed", t("Detailed", "مفصل")],
-              ]}
-            />
-            <Select
-              id="artifact-size"
-              label={t("Size", "الحجم")}
-              value={size}
-              onChange={(value) => setOption("size", value)}
-              options={[
-                ["short", t("Short sample", "مثال قصير")],
-                ["extended", t("Extended sample", "مثال موسع")],
-              ]}
-            />
           </div>
+          <details className={studyStyles.secondaryOptions}>
+            <summary>{t("Depth and size", "التفصيل والحجم")}</summary>
+            <div className={studyStyles.configuration}>
+              <Select
+                id="artifact-depth"
+                label={t("Depth", "التفصيل")}
+                value={depth}
+                onChange={(value) => setOption("depth", value)}
+                options={[
+                  ["concise", t("Concise", "موجز")],
+                  ["detailed", t("Detailed", "مفصل")],
+                ]}
+              />
+              <Select
+                id="artifact-size"
+                label={t("Size", "الحجم")}
+                value={size}
+                onChange={(value) => setOption("size", value)}
+                options={[
+                  ["short", t("Short sample", "مثال قصير")],
+                  ["extended", t("Extended sample", "مثال موسع")],
+                ]}
+              />
+            </div>
+          </details>
+
           <Button
             primary
             type="submit"
@@ -198,6 +184,16 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
           </p>
         </form>
         <div className={studyStyles.artifactArea} aria-busy={request !== null}>
+          <header className={studyStyles.artifactHeader}>
+            <h2>{t("Your artifact", "مخرجك الدراسي")}</h2>
+            <span>
+              {(artifact?.language ?? language) === "ar"
+                ? "العربية"
+                : (artifact?.language ?? language) === "en"
+                  ? "English"
+                  : t("Bilingual", "ثنائي اللغة")}
+            </span>
+          </header>
           {request ? (
             <div className={studyStyles.artifactLoading}>
               <Notice>
@@ -220,7 +216,10 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
           ) : null}
           {notice ? <Notice>{notice}</Notice> : null}
           {artifact ? (
-            <section className={studyStyles.artifactOutput}>
+            <section
+              className={studyStyles.artifactOutput}
+              key={`${artifact.type}:${artifact.language}:${artifact.topic}:${artifact.depth}:${artifact.size}`}
+            >
               <h2 ref={outputHeading} tabIndex={-1}>
                 {t("Simulated artifact", "مخرج محاكى")}:{" "}
                 {text(
@@ -395,6 +394,12 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
               </p>
             </div>
           )}
+          <footer className={studyStyles.artifactFooter}>
+            <ProductLink href={base + "/sources?from=studio"} locale={locale}>
+              <FrontendIcon name="sources" />
+              {t("Unit sources", "مصادر الوحدة")}
+            </ProductLink>
+          </footer>
         </div>
       </div>
     </div>

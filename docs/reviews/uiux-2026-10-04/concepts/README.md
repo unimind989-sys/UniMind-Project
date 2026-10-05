@@ -1,0 +1,9 @@
+# Review concepts
+
+Open `index.html` in a browser. It is a standalone review artifact, not a UniMind route or implementation. No service, model, account, upload, provider, database or protected action is connected. All text and responses are synthetic. The selector provides five screens; Dark toggles the paired theme. Search, sample Chat, evidence dialogs, flashcard reveal, rights-gated receipt preview and deliberate Admin review demonstrate a limited set of interactions.
+
+The SVGs are copies of the repository's approved Open Folio symbols. The Manrope font is copied from the existing local Next font output; no new font family or dependency was introduced. Manrope uses the SIL Open Font License; this copy is solely a repository-local design artifact. Preserve original project asset provenance when packaging an approved implementation.
+
+Rendered JPG previews and five comparison boards accompany the portable HTML. They are proposals, not after-implementation proof. Desktop views were inspected at 1440×900; all five layouts at 390×844; Chat additionally at 1280×800 and 768×1024. A dark Shelf sample was captured. The local inspection server served only this directory and was stopped before delivery. No site is published.
+
+Important limitations: English concepts only; Arabic and actual RTL behavior remain an implementation acceptance requirement. They demonstrate shared layouts and hierarchy, not final copy approval, data contracts, complete navigation, screen-reader validation or product feature completeness. Navigation outside the five concepts either repeats a proposal screen or explains the intended existing workflow. Studio depicts an output state; its preceding configuration is immediately accessible. Intake depicts a queued reference; initial file choice is illustrative. Admin depicts an initial unselected queue and a deliberate selection/review, without a functioning confirmation action.

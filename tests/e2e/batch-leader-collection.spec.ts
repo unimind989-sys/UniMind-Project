@@ -82,7 +82,7 @@ test("mixed files infer requests, register separately and finish before processi
   await proof(page.getByLabel("Requested item", { exact: true })).toHaveCount(
     0,
   );
-  await rows(page).first().getByText("Source details", { exact: true }).click();
+  await proof(rows(page).first().getByLabel("Source title")).toBeVisible();
   await rows(page)
     .first()
     .getByLabel("Source title")

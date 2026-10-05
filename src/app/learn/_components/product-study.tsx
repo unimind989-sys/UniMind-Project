@@ -62,9 +62,9 @@ export function ProductStudy(props: Props) {
       {screen === "overview" ? (
         <Overview {...props} />
       ) : screen === "chat" ? (
-        <ProductChat {...props} />
+        <ProductChat key={props.scope.unitId} {...props} />
       ) : screen === "studio" ? (
-        <ProductStudio {...props} />
+        <ProductStudio key={props.scope.unitId} {...props} />
       ) : ["quiz", "attempt", "quiz-review"].includes(screen) ? (
         <Quiz {...props} />
       ) : screen === "sources" || screen === "evidence" ? (

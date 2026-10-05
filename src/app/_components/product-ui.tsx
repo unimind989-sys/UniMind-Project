@@ -62,12 +62,14 @@ export function Select({
   onChange,
   options,
   id,
+  disabled = false,
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
   options: readonly (readonly [string, string])[];
   id: string;
+  disabled?: boolean;
 }) {
   return (
     <div className={styles.field}>
@@ -76,6 +78,7 @@ export function Select({
         id={id}
         name={id}
         value={value}
+        disabled={disabled}
         onChange={(event) => onChange(event.target.value)}
       >
         {options.map(([key, title]) => (
@@ -90,14 +93,16 @@ export function Select({
 export function Notice({
   children,
   error = false,
+  success = false,
 }: {
   children: ReactNode;
   error?: boolean;
+  success?: boolean;
 }) {
   return (
     <p
       role={error ? "alert" : "status"}
-      className={`${styles.status} ${error ? styles.error : ""}`}
+      className={`${styles.status} ${error ? styles.error : success ? styles.success : ""}`}
     >
       {children}
     </p>

@@ -301,7 +301,23 @@
         "name": "mobile",
         "value": "47.99rem"
       }
-    ]
+    ],
+    "openFolioApprovedReference": {
+      "task": "WP03-T10",
+      "status": "approved-direction; implementation-under-verification",
+      "approval": "planning/design/open-folio/approval.md",
+      "referenceSha256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+      "authority": "DESIGN.md",
+      "routineTransitionMs": 120,
+      "sourceRevealMs": 300,
+      "resultDeliveryMs": 280,
+      "dialogEnterMs": 180,
+      "dialogExitMs": 140,
+      "flashcardMs": 240,
+      "reducedMotion": "instant same states",
+      "shippingRasters": [],
+      "legacySnapshot": "Older fields preserve their provenance; DESIGN.md and the approved refinement govern this candidate."
+    }
   },
   "components": [
     {

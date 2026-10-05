@@ -1,12 +1,12 @@
 .section {
-  padding-block: 32px;
+  padding-block: 24px;
   border-block-end: 1px solid var(--border);
 }
 .section:first-child {
   padding-block-start: 0;
 }
 .section h2 {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   margin: 0 0 12px;
 }
 .section p {
@@ -16,7 +16,7 @@
 .fields {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px;
+  gap: 16px;
   border: 0;
   padding: 0;
   margin-block: 24px;
@@ -82,4 +82,54 @@
   display: grid;
   gap: 0.5rem;
   min-width: 0;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 176px minmax(0, 1fr);
+  gap: 40px;
+  align-items: start;
+  max-width: 960px;
+}
+.sectionNav {
+  display: grid;
+  gap: 4px;
+  position: sticky;
+  inset-block-start: 24px;
+}
+.sectionNav a {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  text-decoration: none;
+  font-size: 0.875rem;
+  color: var(--secondary);
+  border-radius: 4px;
+}
+.sectionNav a:hover {
+  background: var(--annotation);
+  color: var(--accent-ink);
+}
+.settingsBody {
+  min-width: 0;
+}
+.settingsBody > section {
+  scroll-margin-block-start: 24px;
+}
+@media (max-width: 767px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .sectionNav {
+    display: flex;
+    position: static;
+    flex-wrap: wrap;
+    border-block-end: 1px solid var(--border);
+    padding-block-end: 12px;
+  }
+  .sectionNav a {
+    padding: 8px;
+  }
 }

@@ -4,6 +4,7 @@ import { ProductNavigationLink as Link } from "@/app/_components/product-navigat
 import type { Route } from "next";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { FrontendIcon } from "@/app/_components/frontend-controls";
 import { AppShell } from "@/app/_components/app-shell";
 import {
   buildCatalogHref,
@@ -22,9 +23,7 @@ export function StudyShelf({
   state,
   basePath,
   synthetic = false,
-  completeNavigation = false,
   lastStudyPath,
-  unitPresentationById = {},
 }: {
   initialLocale: Locale;
   journey: CatalogJourney;
@@ -262,113 +261,123 @@ export function StudyShelf({
                     </Link>
                   </section>
                 ) : null}
-                <div className={styles.shelfHeading}>
-                  <h2 ref={results} tabIndex={-1}>
-                    {label ?? t("Subjects", "المواد")}
-                  </h2>
-                  <label className={styles.search}>
-                    <span>{t("Search subjects", "البحث عن مادة")}</span>
-                    <input
-                      type="search"
-                      value={search}
-                      placeholder={t("Find a subject…", "ابحث عن مادة…")}
-                      onChange={(event) => setSearch(event.target.value)}
-                    />
-                  </label>
+                <div className={styles.indexLayout}>
+                  <div>
+                    <div className={styles.shelfHeading}>
+                      <h2 ref={results} tabIndex={-1}>
+                        {label ?? t("Subjects", "المواد")}
+                      </h2>
+                      <label className={styles.search}>
+                        <span>{t("Search subjects", "البحث عن مادة")}</span>
+                        <input
+                          type="search"
+                          value={search}
+                          placeholder={t("Find a subject…", "ابحث عن مادة…")}
+                          onChange={(event) => setSearch(event.target.value)}
+                        />
+                      </label>
+                    </div>
+                    {units.length === 0 ? (
+                      <section className={styles.emptyState} role="status">
+                        <h3>{copy.noSearchTitle}</h3>
+                        <p>{copy.noSearchBody}</p>
+                        <button type="button" onClick={() => setSearch("")}>
+                          {copy.clearSearch}
+                        </button>
+                      </section>
+                    ) : (
+                      <ul className={styles.units}>
+                        {units.map((unit) => {
+                          const href = journey.selectedCohort
+                            ? `${basePath}/${journey.selectedCohort.id}/${unit.id}?lang=${locale}`
+                            : null;
+                          const name =
+                            locale === "ar" ? unit.nameAr : unit.nameEn;
+                          const contents = (
+                            <>
+                              <span
+                                className={styles.subjectBook}
+                                aria-hidden="true"
+                              >
+                                <span />
+                              </span>
+                              <span className={styles.unitCopy}>
+                                <span className={styles.unitTitle}>
+                                  <bdi>{name}</bdi>
+                                </span>
+                                <span className={styles.materialCount}>
+                                  {unit.sourceCount !== undefined
+                                    ? new Intl.NumberFormat(locale).format(
+                                        unit.sourceCount,
+                                      )
+                                    : ""}{" "}
+                                  {synthetic
+                                    ? t("sample materials", "مواد تجريبية")
+                                    : t("available materials", "مواد متاحة")}
+                                </span>
+                              </span>
+                              <span className={styles.ready}>
+                                {t("Ready", "جاهزة")}
+                              </span>
+                              <FrontendIcon name="arrow" />
+                            </>
+                          );
+                          return (
+                            <li key={unit.id} data-unit-id={unit.id}>
+                              {href ? (
+                                <Link
+                                  className={styles.unit}
+                                  href={href as Route}
+                                  aria-label={`${t("Open", "فتح")} ${name}`}
+                                >
+                                  {contents}
+                                </Link>
+                              ) : (
+                                <div className={styles.unit}>{contents}</div>
+                              )}
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    )}
+                  </div>
+                  <aside className={styles.orientation}>
+                    <svg
+                      viewBox="0 0 180 140"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      aria-hidden="true"
+                    >
+                      <path d="M25 26h48q17 0 17 16v74q-8-11-22-11H25z M155 26h-48q-17 0-17 16v74q8-11 22-11h43z M36 42h30 M36 53h30 M36 64h23 M107 42h35 M107 53h35 M107 64h25" />
+                      <path d="M136 26v28l-7-6-7 6V26" fill="currentColor" />
+                      <path
+                        d="M18 32v80h50q14 0 22 10 8-10 22-10h50V32"
+                        opacity=".45"
+                      />
+                    </svg>
+                    <h2>{t("Start with the source.", "ابدأ بالمصدر.")}</h2>
+                    <p>
+                      {t(
+                        "Read your materials, ask a question, then turn what you understand into a study artifact.",
+                        "اقرأ مصادرك، اسأل عما تريد فهمه، ثم حوّل فهمك إلى أداة للمذاكرة.",
+                      )}
+                    </p>
+                    <p>
+                      {t(
+                        "Your academic settings determine which subjects appear here.",
+                        "إعداداتك الدراسية تحدد المواد التي تظهر هنا.",
+                      )}
+                    </p>
+                    <Link
+                      href={
+                        `/settings?lang=${locale}#academic-settings-heading` as Route
+                      }
+                    >
+                      {t("Edit academic context", "تعديل السياق الدراسي")}
+                    </Link>
+                  </aside>
                 </div>
-                {units.length === 0 ? (
-                  <section className={styles.emptyState} role="status">
-                    <h3>{copy.noSearchTitle}</h3>
-                    <p>{copy.noSearchBody}</p>
-                    <button type="button" onClick={() => setSearch("")}>
-                      {copy.clearSearch}
-                    </button>
-                  </section>
-                ) : (
-                  <ul className={styles.units}>
-                    {units.map((unit) => {
-                      const focused = journey.selection.unitId === unit.id;
-                      const presentation = unitPresentationById[unit.id];
-                      const href = journey.selectedCohort
-                        ? `${basePath}/${journey.selectedCohort.id}/${unit.id}?lang=${locale}`
-                        : null;
-                      return (
-                        <li
-                          key={unit.id}
-                          data-focused={focused}
-                          data-unit-id={unit.id}
-                        >
-                          <article className={styles.unit}>
-                            <div
-                              className={styles.subjectBook}
-                              aria-hidden="true"
-                            >
-                              <span />
-                            </div>
-                            <div className={styles.unitCopy}>
-                              <button
-                                className={styles.unitSelect}
-                                type="button"
-                                disabled={pending}
-                                aria-pressed={focused}
-                                aria-label={`${copy.selectUnit}: ${locale === "ar" ? unit.nameAr : unit.nameEn}`}
-                                onClick={() => navigate("unit", unit.id)}
-                              >
-                                <bdi>
-                                  {locale === "ar" ? unit.nameAr : unit.nameEn}
-                                </bdi>
-                              </button>
-                              <p>
-                                {unit.sourceCount !== undefined ? (
-                                  <span>
-                                    {new Intl.NumberFormat(locale).format(
-                                      unit.sourceCount,
-                                    )}
-                                  </span>
-                                ) : null}{" "}
-                                {synthetic
-                                  ? t("sample materials", "مواد تجريبية")
-                                  : t("available materials", "مواد متاحة")}{" "}
-                                ·{" "}
-                                <span className={styles.ready}>
-                                  {t("Ready to study", "جاهزة للمذاكرة")}
-                                </span>
-                              </p>
-                              {focused && presentation ? (
-                                <p>
-                                  {locale === "ar"
-                                    ? presentation.descriptionAr
-                                    : presentation.descriptionEn}
-                                </p>
-                              ) : null}
-                            </div>
-                            {href ? (
-                              <Link
-                                className={styles.open}
-                                href={href as Route}
-                              >
-                                {t("Open", "فتح")}{" "}
-                                <span className={styles.srOnly}>
-                                  {locale === "ar" ? unit.nameAr : unit.nameEn}
-                                </span>
-                              </Link>
-                            ) : null}
-                          </article>
-                          {focused && journey.selectedCohort ? (
-                            <p className={styles.edition}>
-                              <bdi>
-                                {journey.selectedCohort.curriculumEdition}
-                              </bdi>
-                              {completeNavigation
-                                ? ` · ${t("Sample workspace", "مساحة تجريبية")}`
-                                : ""}
-                            </p>
-                          ) : null}
-                        </li>
-                      );
-                    })}
-                  </ul>
-                )}
               </>
             )}
           </>

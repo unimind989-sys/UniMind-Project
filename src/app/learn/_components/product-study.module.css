@@ -1,16 +1,16 @@
 .chatLayout {
   display: grid;
-  grid-template-columns: 12rem minmax(0, 1fr);
-  gap: 2rem;
-  min-height: calc(100svh - 20rem);
+  grid-template-columns: minmax(0, 1fr) 252px;
+  grid-template-rows: minmax(0, 1fr);
+  gap: 24px;
+  height: 100%;
+  min-height: 18rem;
 }
 .history {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  position: relative;
+  grid-column: 1 / -1;
   min-width: 0;
-  border-inline-end: 1px solid var(--line);
-  padding-inline-end: 1.5rem;
+  font-size: 0.8125rem;
 }
 .history > button,
 .history > a {
@@ -65,52 +65,58 @@
   color: var(--text-muted);
 }
 .conversation {
-  width: min(100%, 48rem);
-  margin-inline: auto;
   min-width: 0;
+  min-height: 0;
   display: flex;
   flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
 }
 .sectionHeading {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  margin-block-end: 1rem;
+  gap: 12px;
+  padding-block-end: 12px;
+  border-block-end: 1px solid var(--border);
+  margin-block-end: 12px;
+  flex: none;
 }
 .sectionHeading h2 {
   margin: 0;
-  font-size: var(--type-workspace-title-size);
-  line-height: 1.4;
+  font-size: 1rem;
+  line-height: 1.5;
 }
 .sectionHeading a {
   font-size: var(--type-body-compact-size);
   background: transparent;
 }
 .transcript {
-  min-height: 19rem;
   flex: 1;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding-inline-end: 6px;
+  scrollbar-gutter: stable;
 }
 .chatEmpty {
-  padding: 3rem 0 2.5rem;
+  padding: 24px 8px;
   max-width: 40rem;
   margin-inline: auto;
 }
 .chatEmpty > svg {
-  color: var(--accent-text);
-  width: 2.75rem;
-  height: 2.75rem;
-  padding: 0.6rem;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  border-radius: 12px;
+  color: var(--accent-ink);
+  width: 22px;
+  height: 22px;
 }
 .chatEmpty h3 {
-  margin: 1rem 0 0.65rem;
-  font-size: 1.875rem;
-  font-weight: 600;
-  line-height: 1.45;
+  margin: 12px 0;
+  font-size: 1.5rem;
+  font-weight: 650;
+  line-height: 1.4;
   text-wrap: balance;
 }
 .chatEmpty p {
@@ -121,8 +127,8 @@
 .suggestions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-block: 1.5rem 1rem;
+  gap: 8px;
+  margin-block: 16px 8px;
 }
 .suggestions button {
   font: inherit;
@@ -148,10 +154,9 @@
   max-width: 85%;
   width: fit-content;
   margin-inline-start: auto;
-  padding: 1rem 1.25rem;
-  background: var(--accent-soft);
-  border: 1px solid var(--border);
-  border-radius: 16px 16px 4px 16px;
+  padding: 12px 16px;
+  background: var(--subtle);
+  border-radius: 6px;
   overflow-wrap: anywhere;
 }
 .questionBubble p {
@@ -209,12 +214,14 @@
 }
 .composer {
   display: grid;
-  gap: 0.5rem;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 1.25rem;
+  flex: none;
+  gap: 4px;
+  border: 1px solid var(--control-border);
+  border-radius: 8px;
+  padding: 12px;
   background: var(--surface);
-  transition: border-color 180ms ease;
+  transition: border-color var(--motion-control);
+  margin-block-start: 12px;
 }
 .composer:focus-within {
   border-color: var(--accent);
@@ -230,46 +237,46 @@
   font: inherit;
   border: 0;
   background: transparent;
-  color: var(--text-primary);
-  caret-color: var(--accent-text);
-  min-height: 5rem;
+  color: var(--ink);
+  caret-color: var(--accent);
+  min-height: 48px;
+  max-height: 120px;
   resize: vertical;
-  padding: 0.5rem;
-  line-height: var(--type-body-leading);
+  padding: 4px;
+  line-height: 1.5;
 }
 .composer textarea::placeholder {
   color: var(--text-muted);
 }
 .composerTools {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
   align-items: end;
-  justify-content: space-between;
 }
 .composerTools label {
   display: grid;
-  gap: 0.25rem;
+  gap: 2px;
   min-width: 0;
-  max-width: 100%;
-  color: var(--text-muted);
-  font-size: var(--type-body-compact-size);
+  color: var(--secondary);
+  font-size: 0.8125rem;
 }
 .composerTools select {
   min-height: 44px;
   max-width: 100%;
-  color: var(--text-secondary);
-  background: var(--surface-strong);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-control);
+  width: min(100%, 200px);
+  color: var(--secondary);
+  background: var(--surface);
+  border: 1px solid var(--control-border);
+  border-radius: 8px;
   font: inherit;
-  padding: 0.5rem;
+  padding: 8px;
 }
 .caption {
-  color: var(--text-muted);
-  font-size: var(--type-body-compact-size);
+  color: var(--muted);
+  font-size: 0.8125rem;
   line-height: 1.6;
-  margin: 0.5rem 0 0;
+  margin: 8px 0 0;
   overflow-wrap: anywhere;
 }
 .intro {
@@ -284,14 +291,27 @@
 }
 .studioLayout {
   display: grid;
-  grid-template-columns: minmax(17rem, 22rem) minmax(0, 1fr);
-  gap: 2.5rem;
+  grid-template-columns: 264px minmax(0, 1fr);
+  gap: 24px;
   align-items: start;
 }
 .studioControls {
   min-width: 0;
   display: grid;
-  gap: 1.25rem;
+  gap: 8px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+.configuration label {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.configuration select {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  padding: 8px 12px;
 }
 .artifactTypes {
   display: grid;
@@ -351,36 +371,57 @@
 }
 .configuration {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
+  grid-template-columns: 1fr;
+  gap: 12px;
 }
 .configuration label {
   font-size: var(--type-body-compact-size);
   color: var(--text-secondary);
 }
 .configuration select {
-  font-size: var(--type-body-compact-size);
+  font-size: 0.875rem;
+  min-height: 44px;
 }
 .artifactArea {
   min-width: 0;
-  min-height: 28rem;
-  border: 1px solid var(--line);
-  border-radius: 14px;
+  min-height: 26rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
   background: var(--surface);
-  padding: clamp(1.5rem, 3vw, 2.5rem);
+  padding: 24px;
+}
+.artifactHeader {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  align-items: center;
+  justify-content: space-between;
+  padding-block-end: 16px;
+  border-block-end: 1px solid var(--border);
+}
+.artifactHeader h2 {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.artifactHeader > span {
+  font-size: 0.8125rem;
+  color: var(--secondary);
+}
+.artifactFooter {
+  margin-block-start: 24px;
+  padding-block-start: 12px;
+  border-block-start: 1px solid var(--border);
 }
 .artifactEmpty {
-  padding-block: 3.5rem;
+  padding-block: 56px;
   max-width: 35rem;
   margin-inline: auto;
 }
 .artifactEmpty > svg {
   color: var(--accent-ink);
-  width: 2.75rem;
-  height: 2.75rem;
-  padding: 0.6rem;
-  background: var(--accent-soft);
-  border-radius: 10px;
+  width: 22px;
+  height: 22px;
 }
 .artifactEmpty h3 {
   font-size: var(--type-workspace-title-size);
@@ -456,103 +497,224 @@
   white-space: normal;
   overflow-wrap: anywhere;
 }
-@media (max-width: 80rem) {
+
+.history > summary {
+  cursor: pointer;
+  min-height: 44px;
+  padding: 8px 0;
+  color: var(--accent-ink);
+}
+.history > div {
+  position: absolute;
+  inset-block-start: 44px;
+  inset-inline-start: 0;
+  z-index: 20;
+  width: min(480px, calc(100vw - 64px));
+  max-height: min(480px, 70dvh);
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  background: var(--surface);
+  box-shadow: 0 12px 40px #0002;
+  display: flex;
+  gap: 16px;
+  align-items: start;
+  flex-wrap: wrap;
+  margin: 0;
+}
+.history:not([open]) > div {
+  display: none;
+}
+.history > div > a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+.historyList {
+  flex: 1;
+}
+.evidenceMargin {
+  min-width: 0;
+  align-self: start;
+  padding: 20px 16px;
+  border-block-start: 2px solid var(--accent);
+  background: var(--annotation);
+  font-size: 0.875rem;
+}
+.evidenceMargin h2 {
+  margin: 0 0 12px;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.evidenceMargin > p {
+  color: var(--secondary);
+}
+.excerpt {
+  margin-block: 16px;
+  animation: evidence-reveal var(--motion-evidence) var(--ease-settle);
+}
+.excerpt h3 {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.excerpt > p {
+  color: var(--secondary);
+  font-size: 0.8125rem;
+}
+.excerpt blockquote {
+  margin: 16px 0;
+  padding-block: 12px;
+  border-block: 1px solid var(--border);
+  line-height: 1.8;
+}
+.citation {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px;
+  min-height: 44px;
+  font: inherit;
+  font-size: 0.8125rem;
+  border: 0;
+  border-radius: 4px;
+  background: var(--annotation);
+  color: var(--accent-ink);
+  cursor: pointer;
+}
+.citation:hover {
+  background: var(--accent-soft);
+}
+.studioControls > h2 {
+  margin: 0 0 4px;
+  font-size: 1.125rem;
+}
+.secondaryOptions {
+  font-size: 0.8125rem;
+  color: var(--secondary);
+  border-block-start: 1px solid var(--border);
+}
+.secondaryOptions summary {
+  min-height: 44px;
+  padding-block: 12px;
+  cursor: pointer;
+}
+.secondaryOptions > div {
+  margin-block: 8px;
+}
+.artifactOutput {
+  animation: result-settle var(--motion-result) var(--ease-settle);
+}
+.artifactOutput > div[lang] {
+  max-width: 68ch;
+}
+.streaming {
+  background: var(--annotation);
+  border-radius: 4px;
+  padding: 16px;
+}
+@keyframes evidence-reveal {
+  from {
+    transform: translateY(10px);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes result-settle {
+  from {
+    transform: translateY(7px);
+  }
+  to {
+    transform: none;
+  }
+}
+@media (max-width: 1050px) {
   .chatLayout {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+    grid-template-columns: minmax(0, 1fr);
   }
-  .history {
-    border-inline-end: 0;
-    padding-inline-end: 0;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: start;
+  .evidenceMargin {
+    display: none;
   }
-  .history > button,
-  .history > a {
+}
+@media (max-width: 767px) {
+  .sectionHeading {
+    gap: 8px;
+  }
+  .history > div {
+    position: fixed;
+    inset-block-start: 220px;
+    inset-inline: 16px;
     width: auto;
+    max-height: 60dvh;
   }
-  .historyList {
-    flex: 1 1 12rem;
+}
+@media (max-width: 767px) {
+  .chatLayout {
+    gap: 4px;
   }
-  .historyList ul {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  .historyList p {
-    margin: 0.25rem 0;
+  .conversation {
+    padding: 12px;
   }
   .chatEmpty {
-    padding-block: 1.5rem;
+    padding: 16px 4px;
   }
-  .studioLayout {
-    grid-template-columns: minmax(15rem, 20rem) minmax(0, 1fr);
-    gap: 1.5rem;
-  }
-  .artifactArea {
-    padding-inline-start: 1.5rem;
-  }
-}
-@media (max-width: 68rem) {
-  .studioLayout {
-    grid-template-columns: 1fr;
-  }
-  .studioControls {
-    max-width: 40rem;
-  }
-  .artifactArea {
-    padding: 1.5rem;
-    min-height: 18rem;
-  }
-  .artifactEmpty {
-    padding-block: 1.5rem;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .historyList button,
-  .artifactTypes label,
-  .composer {
-    transition: none;
-  }
-  .flashcardInner {
-    transition: none;
-  }
-}
-@media (max-width: 47.99rem) {
   .chatEmpty h3 {
-    font-size: var(--type-study-invitation-mobile-size);
+    font-size: 1.25rem;
   }
-  .history {
-    gap: 0.75rem;
+  .chatEmpty p {
+    font-size: 0.875rem;
   }
-  .historyList {
-    flex-basis: 100%;
-    order: 3;
+  .chatEmpty > .caption {
+    display: none;
   }
-  .transcript {
-    min-height: 12rem;
+  .suggestions {
+    gap: 4px;
+    margin-block: 8px;
+  }
+  .suggestions button {
+    padding: 8px;
+    font-size: 0.8125rem;
   }
   .composer {
-    padding: 0.75rem;
+    padding: 8px;
+    margin-block-start: 8px;
+  }
+  .composer > .caption {
+    font-size: 0.75rem;
+  }
+  .composerTools {
+    gap: 8px;
   }
   .composerTools > button {
-    flex: 1 1 100%;
-  }
-  .composerTools label {
-    width: 100%;
+    min-width: 84px;
   }
   .questionBubble {
     max-width: 95%;
   }
-  .sectionHeading {
-    gap: 0.5rem;
+  .studioLayout {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .studioControls {
+    padding: 16px;
+    gap: 10px;
+  }
+  .artifactArea {
+    padding: 20px;
+    min-height: 18rem;
+  }
+  .artifactEmpty {
+    padding-block: 24px;
   }
 }
-@media (max-width: 23rem) {
-  .configuration {
-    grid-template-columns: 1fr;
+@media (max-height: 600px) {
+  .chatLayout {
+    height: auto;
+    min-height: 30rem;
   }
-  .artifactTypes {
-    grid-template-columns: 1fr;
+  .transcript {
+    min-height: 12rem;
   }
 }

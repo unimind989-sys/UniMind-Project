@@ -1,5 +1,5 @@
 .workspace {
-  max-width: 64rem;
+  max-width: 78rem;
   margin-inline: auto;
   min-width: 0;
 }
@@ -11,11 +11,11 @@
   color: var(--accent-ink);
 }
 .header {
-  margin-block: 0.5rem 2.25rem;
+  margin-block: 0.5rem 1rem;
 }
 .header h1 {
   margin: 0.25rem 0 0.75rem;
-  font-size: 2.25rem;
+  font-size: 1.875rem;
   letter-spacing: -0.035em;
   line-height: 1.3;
   overflow-wrap: anywhere;
@@ -67,8 +67,8 @@
 .drop {
   position: relative;
   border: 1px solid var(--control-border);
-  border-radius: 14px;
-  padding: 2.5rem 1.5rem;
+  border-radius: 10px;
+  padding: 24px 20px;
   background: var(--surface);
   text-align: center;
   transition:
@@ -84,7 +84,7 @@
   color: var(--accent-ink);
   background: var(--accent-soft);
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 10px;
   transition: transform 180ms ease;
 }
 .uploadMark svg {
@@ -341,5 +341,159 @@
   .drop,
   .file {
     padding: 1rem;
+  }
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 20px 28px;
+}
+.workspace > .back,
+.workspace > .header {
+  grid-column: 1 / -1;
+}
+.workspace > .assignment {
+  grid-column: 2;
+  grid-row: 3;
+}
+.workspace > .intake {
+  grid-column: 1;
+  grid-row: 3;
+  min-width: 0;
+}
+.workspace > .history {
+  grid-column: 1 / -1;
+}
+.workspace.campaignOverview {
+  grid-template-columns: minmax(0, 1fr);
+}
+.assignment {
+  padding: 20px 16px;
+  background: var(--annotation);
+  font-size: 0.8125rem;
+  align-self: start;
+}
+.assignment > h2 {
+  margin: 0 0 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.assignment > strong {
+  display: block;
+  font-size: 1.5rem;
+  line-height: 1.5;
+  color: var(--ink);
+}
+.assignment > p {
+  color: var(--secondary);
+}
+.deadlineDetails {
+  font-size: 0.8125rem;
+  color: var(--secondary);
+}
+.deadlineDetails summary {
+  min-height: 44px;
+  padding-block: 12px;
+  cursor: pointer;
+}
+.assignment .requests {
+  margin-block: 16px 0;
+}
+.assignment .requests li {
+  border-block-end: 1px solid var(--border);
+}
+.assignment .requests li > span:first-child {
+  color: var(--ink);
+}
+.uploadMark {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  margin-block-end: 12px;
+}
+.receiptStages {
+  padding: 16px;
+  border-radius: 8px;
+  background: var(--success-surface);
+  color: var(--success);
+}
+.receiptStages > p {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-block: 8px;
+}
+.receiptStages .helper {
+  color: var(--secondary);
+}
+@media (max-width: 767px) {
+  .workspace {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+  .workspace > .assignment,
+  .workspace > .intake {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .assignment {
+    padding: 16px;
+  }
+  .assignment > strong {
+    font-size: 1.25rem;
+  }
+  .assignment .requests ul {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px 12px;
+  }
+  .assignment .requests li > span:last-child {
+    display: none;
+  }
+  .assignment .requests p {
+    margin-block: 8px;
+  }
+  .header h1 {
+    font-size: 1.625rem;
+    margin-block-end: 8px;
+  }
+  .header {
+    margin: 0;
+  }
+  .header p {
+    font-size: 0.8125rem;
+    margin-block: 6px;
+  }
+  .assignment {
+    padding: 12px;
+  }
+  .assignment > h2 {
+    margin-block-end: 4px;
+  }
+  .assignment .requests {
+    margin-block-start: 4px;
+  }
+  .requests li {
+    font-size: 0.8125rem;
+    padding-block: 4px;
+  }
+  .intake h2 {
+    font-size: 1.25rem;
+  }
+  .intake > p {
+    font-size: 0.8125rem;
+    margin-block: 8px;
+  }
+  .drop {
+    padding: 8px 12px;
+  }
+  .drop p {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin-block-end: 8px;
   }
 }

@@ -2,6 +2,7 @@
 import { useProductText } from "@/app/_components/product-copy";
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { useSyntheticNavigation } from "./product-navigation";
 import adminStyles from "@/app/admin/admin.module.css";
 import {
   defaultScope,
@@ -129,6 +130,7 @@ export function ProductCampaigns({ screen, locale, scenario }: Props) {
 
 export function ProductResource({ screen, locale }: Props) {
   const { state, update } = useProductServices();
+  const hosted = useSyntheticNavigation();
   const query = useSearchParams();
   const [step, setStep] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
@@ -408,18 +410,30 @@ export function ProductResource({ screen, locale }: Props) {
               </dd>
             </div>
           </dl>
-          <p>{t(summaries[resource][0], summaries[resource][1])}</p>
+          <details className={adminStyles.policyDetails}>
+            <summary>{t("How this view works", "كيف يعمل هذا العرض")}</summary>
+            <p>{t(summaries[resource][0], summaries[resource][1])}</p>
+          </details>
           {resource === "quality" ? (
             <ProductLink href={defaultUnitPath + "/chat"} locale={locale}>
               {t("Inspect student conflict example", "فحص مثال تعارض الطالب")}
             </ProductLink>
           ) : resource === "usage" ? (
-            <ProductLink
-              href={defaultUnitPath + "/chat?fixture=capacity"}
-              locale={locale}
-            >
-              {t("Preview capacity delay", "معاينة تأخير السعة")}
-            </ProductLink>
+            hosted?.active ? (
+              <p>
+                {t(
+                  "A capacity-delay preview is unavailable in this session. No capacity measurement has been made.",
+                  "معاينة تأخير السعة غير متاحة في هذه الجلسة. لم يتم قياس السعة.",
+                )}
+              </p>
+            ) : (
+              <ProductLink
+                href={defaultUnitPath + "/chat?fixture=capacity"}
+                locale={locale}
+              >
+                {t("Preview capacity delay", "معاينة تأخير السعة")}
+              </ProductLink>
+            )
           ) : null}
         </section>
       )}

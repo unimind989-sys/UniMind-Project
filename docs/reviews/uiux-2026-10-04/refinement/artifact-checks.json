@@ -1,0 +1,40 @@
+{
+  "status": "ARTIFACT_INTEGRITY_PASS",
+  "sourceBoundCaptures": 55,
+  "comparisonBindings": 11,
+  "localDocumentationLinks": 43,
+  "originalAuditFilesPreserved": 102,
+  "selectedContrastPairs": 36,
+  "prototypeSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+  "applicationMutation": "NONE",
+  "remainingChecks": "NONE within the recorded artifact review scope; production proof remains unperformed",
+  "commands": {
+    "prototypeScriptParse": "PASS (fresh extraction from final HTML)",
+    "formatting": "PASS refinement artifacts and new task supplement; historical task tables retain pre-existing warnings",
+    "agentReadiness": "PASS final: 743 names, 295 local links, 23 synchronized decisions, 114 task contracts",
+    "repositorySecrets": "PASS final: 3130 files; this result-only metadata update is manually reviewed",
+    "gitDiffCheck": "PASS"
+  },
+  "scope": {
+    "trackedChanges": [
+      "planning/tasks/wp03-t10-complete-frontend-mock-review.md"
+    ],
+    "untrackedFiles": 239,
+    "applicationCodeChanges": 0,
+    "canonicalDesignChanged": false,
+    "commitPrMergeDeploy": false,
+    "originalTaskPrefixPreserved": true
+  },
+  "browserDiagnostics": "No error/warn entries returned in the bounded final review tab log check",
+  "founderHandoff": {
+    "url": "http://127.0.0.1:3164/refinement/index.html",
+    "serverPid": 32568,
+    "serverDisposition": "RUNNING_FOR_REVIEW",
+    "browser": "In-app tab marked deliverable; viewport override reset",
+    "report": "Queued in Codex",
+    "chromeLaunch": "BLOCKED_BY_AUTOMATIC_APPROVAL_POLICY; no bypass"
+  },
+  "limitations": "Synthetic local interaction examples only; no full accessibility, backend, all-artifact, physical-keyboard or performance proof",
+  "founderImplementationApproval": "PENDING",
+  "artifactManifest": "PASS: 134 files; excludes itself; refreshed after final result metadata"
+}

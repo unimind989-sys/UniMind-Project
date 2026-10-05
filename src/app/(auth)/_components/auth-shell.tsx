@@ -25,7 +25,7 @@ export function AuthShell({
       dir={locale === "ar" ? "rtl" : "ltr"}
     >
       <header className={styles.header}>
-        <Brand />
+        <Brand href={`/?lang=${locale}` as Route} />
         <nav className={styles.languageSwitch} aria-label={copy.language}>
           <Link
             href={languageHref.en as Route}
@@ -75,6 +75,11 @@ export function AuthShell({
             {locale === "ar"
               ? "موادك المعتمدة، محادثاتك، وأدوات المذاكرة في مساحة واحدة."
               : "Your approved materials, conversations, and study tools. One considered workspace."}
+          </p>
+          <p className={styles.introductionCopy}>
+            {locale === "ar"
+              ? "حسابك يحدد دورك والمواد المتاحة لك."
+              : "Your account determines your role and available materials."}
           </p>
         </aside>
         <main className={styles.workspace}>

@@ -19,7 +19,12 @@ export type FrontendIconName =
   | "send"
   | "check"
   | "summary"
-  | "cards";
+  | "cards"
+  | "account"
+  | "upload"
+  | "shield"
+  | "arrow";
+// Icons share the same authored grid and stroke across study and operations.
 export function FrontendIcon({ name }: { name: FrontendIconName }) {
   const paths: Record<FrontendIconName, ReactNode> = {
     shelf: (
@@ -71,16 +76,34 @@ export function FrontendIcon({ name }: { name: FrontendIconName }) {
         <path d="M16 3H4v14M10 11h7M10 15h5" />
       </>
     ),
+    account: (
+      <>
+        <circle cx="12" cy="7" r="4" />
+        <path d="M4 21v-2a8 8 0 0 1 16 0v2" />
+      </>
+    ),
+    upload: (
+      <>
+        <path d="m7 8 5-5 5 5M12 3v12M4 14v7h16v-7" />
+      </>
+    ),
+    shield: (
+      <>
+        <path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6l8-3Z" />
+        <path d="m8 12 3 3 5-6" />
+      </>
+    ),
+    arrow: <path d="M4 12h16m-6-6 6 6-6 6" />,
   };
   return (
     <svg
       className={styles.icon}
-      data-directional={name === "back" || undefined}
+      data-directional={name === "back" || name === "arrow" || undefined}
       aria-hidden="true"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.8"
+      strokeWidth="1.75"
       strokeLinecap="round"
       strokeLinejoin="round"
     >

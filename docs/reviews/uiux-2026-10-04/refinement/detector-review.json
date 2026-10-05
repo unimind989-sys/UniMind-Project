@@ -1,0 +1,12 @@
+[
+  {
+    "antipattern": "marquee",
+    "name": "Auto-scrolling marquee",
+    "description": "Continuously auto-scrolling content demands attention it has not earned and hides half its content at any moment. Reserve motion for content that changes; let readers move at their own pace.",
+    "severity": "warning",
+    "category": "slop",
+    "file": "E:\\UniMind Project\\docs\\reviews\\uiux-2026-10-04\\refinement\\index.html",
+    "line": 0,
+    "snippet": ".busy-line::after — infinite horizontal loop animation \"busy-pass\""
+  }
+]
