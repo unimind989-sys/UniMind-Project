@@ -1,6 +1,6 @@
 # Open Folio acceptance evidence
 
-The human-approved reference is bound in [approval.md](approval.md). This matrix separates implemented presentation and existing functional behavior from capabilities and measurements this frontend cycle cannot establish. Complete regression and delivery proof remain required; focused feedback alone is not a release PASS.
+The human-approved reference is bound in [approval.md](approval.md). This matrix separates implemented presentation and existing functional behavior from capabilities and measurements this frontend cycle cannot establish. Complete current local/CI regression and production proof are recorded in the source-bound evidence below; focused feedback alone is not a release PASS.
 
 ## Visual criteria
 
@@ -46,4 +46,8 @@ All 45 original IDs and observations remain intact in the [audit register](../..
 
 ## Unmeasured outcomes
 
-No participant recruitment, timing baseline, LCP/CLS/INP comparison, hardware keyboard/safe-area trial or screen-reader study was performed. No external messages were sent. Success means demonstrable shared design and preserved tested behaviors; a stronger design score, lower completion time or complete accessibility conformance needs its own evidence.
+No participant recruitment, timing baseline, LCP/CLS/INP comparison, hardware keyboard/safe-area trial or screen-reader study was performed. No participant-research outreach was sent. Success means demonstrable shared design and preserved tested behaviors; a stronger design score, lower completion time or complete accessibility conformance needs its own evidence.
+
+## Completed runtime/service proof
+
+[Commit-specific production proof](../../../evidence/wp03-product-shell/2026-10-05_open-folio_production_1013cd5.md) binds current guarded local 75/75 real and 55/55 synthetic browser cases, four exact-head CI jobs, disposable authenticated role/access proof and four separate production-rendered synthetic account journeys. V01–V05/X01–X14 retain the practical limits above. Three remote failures, interrupted local proof, source-copy and navigation-contrast corrections are preserved; earlier captures are not retouched or represented as newer source. Production browser actual dimensions are recorded per observation in that evidence; requested responsive sizes remain covered locally. Nonvisual closure reuses current runtime proof without a new deployment.
