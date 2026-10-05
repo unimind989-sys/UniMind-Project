@@ -1580,6 +1580,45 @@ test("leader invitation preserves its decision and campaign return in both theme
       ).toHaveCount(1);
       for (const width of [1440, 360]) {
         await page.setViewportSize({ width, height: 844 });
+        const navigationContrast = await page
+          .locator('nav a[aria-current="page"]')
+          .evaluate(async (link) => {
+            const luminance = (color: string) => {
+              const channels = color.match(/[0-9.]+/gu)?.map(Number);
+              if (
+                !channels ||
+                channels.length < 3 ||
+                (channels.length === 4 && channels[3] !== 1)
+              )
+                throw new Error(
+                  "Navigation must use an opaque readable palette.",
+                );
+              const linear = channels.slice(0, 3).map((channel) => {
+                const value = channel / 255;
+                return value <= 0.04045
+                  ? value / 12.92
+                  : ((value + 0.055) / 1.055) ** 2.4;
+              });
+              return (
+                linear[0]! * 0.2126 + linear[1]! * 0.7152 + linear[2]! * 0.0722
+              );
+            };
+            const samples: number[] = [];
+            for (let frame = 0; frame < 12; frame += 1) {
+              const style = getComputedStyle(link);
+              const foreground = luminance(style.color);
+              const background = luminance(style.backgroundColor);
+              samples.push(
+                (Math.max(foreground, background) + 0.05) /
+                  (Math.min(foreground, background) + 0.05),
+              );
+              await new Promise<void>((resolve) =>
+                requestAnimationFrame(() => resolve()),
+              );
+            }
+            return Math.min(...samples);
+          });
+        expect(navigationContrast).toBeGreaterThanOrEqual(4.5);
         expect(
           await page.evaluate(
             () => document.documentElement.scrollWidth <= innerWidth,

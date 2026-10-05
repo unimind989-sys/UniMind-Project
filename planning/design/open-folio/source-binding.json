@@ -34,8 +34,8 @@
     },
     {
       "file": "src/app/_components/app-shell.module.css",
-      "bytes": 8538,
-      "sha256": "5b91d1817228a6598508201f180cef90c3b60693c7eeb0edad43da573f6f0c1a"
+      "bytes": 8447,
+      "sha256": "1a7a7a5775c61240717974902d060e7d69105ebbce6edf82730b23dd1680f0b4"
     },
     {
       "file": "src/app/_components/app-shell.tsx",
@@ -204,8 +204,8 @@
     },
     {
       "file": "tests/e2e/native-product-demo.spec.ts",
-      "bytes": 78065,
-      "sha256": "f2e27c7f614dc6f12ccc65d3a520195e87415f209f159d91d199b4504d88f69f"
+      "bytes": 79698,
+      "sha256": "2e32b430b44b7cef1998c41880684bcdf004f19f086adc4a8345fe6c613a887a"
     },
     {
       "file": "tests/e2e/product-shell-contracts.spec.ts",
@@ -246,5 +246,23 @@
     ],
     "unchangedSourceFiles": 40,
     "invalidated": "Collection presentation text, final source-binding and preparation metadata; fresh guarded local gate and exact-head CI required."
+  },
+  "navigationRepairPriorBinding": {
+    "head": "b61e2c18e688dae53895efd613657bdda4dc30f3",
+    "interruptedLocalFingerprint": "43abdc1f2d5d87fdf8ecbb6a6a06ce9a74f292de1aee03ceda11952b7e32d8c7",
+    "changedFiles": [
+      {
+        "file": "src/app/_components/app-shell.module.css",
+        "bytes": 8538,
+        "sha256": "5b91d1817228a6598508201f180cef90c3b60693c7eeb0edad43da573f6f0c1a"
+      },
+      {
+        "file": "tests/e2e/native-product-demo.spec.ts",
+        "bytes": 78065,
+        "sha256": "f2e27c7f614dc6f12ccc65d3a520195e87415f209f159d91d199b4504d88f69f"
+      }
+    ],
+    "reason": "Atomic navigation palette prevents transient 3.95:1 contrast on desktop/phone reflow; added independent frame-sampled 4.5:1 regression rejects old CSS at 3.95280375001457.",
+    "sourceProof": "Fresh guarded local and exact-head CI required."
   }
 }

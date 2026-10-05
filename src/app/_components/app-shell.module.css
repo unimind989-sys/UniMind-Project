@@ -87,9 +87,6 @@
   text-decoration: none;
   color: var(--spine-secondary);
   font-size: 0.875rem;
-  transition:
-    background-color var(--motion-control),
-    color var(--motion-control);
 }
 .globalNav a[aria-current] {
   color: var(--spine-ink);

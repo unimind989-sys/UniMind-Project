@@ -12,7 +12,7 @@
 
 **Branch:** codex/open-folio-redesign; historical runtime delivered through codex/premium-product-screens / PR #67; documentation closure through codex/wp03-t10-closure
 
-**Updated (UTC):** 2026-10-05T13:50:22.562486+00:00
+**Updated (UTC):** 2026-10-05T14:25:46.047823+00:00
 
 ## Derived execution envelope
 
@@ -103,7 +103,7 @@ Finalization preflight rejected the previously unregistered .impeccable/design.j
 
 **Established facts:** NONE
 
-**Commands:** Earlier guarded local proof passed at fingerprint 53ba5a34 with 594 unit, 15 integration plus two hosted-only skips, 44 security, evaluation/load, 75 real and 55 synthetic browser cases and safe build. It is historical after a new source correction. Initial CI b5b2406 failed one stale database Admin heading; one exact assertion correction preserves protected checks. CI at 6b928ae passed database and 75 real browser cases, then failed two narrow chooser bounds (53/55 synthetic passed). Inspected both provider screenshots: at 380px chooser bottom 767.125 EN / 773.46875 AR exceeds unchanged 756px limit. Shorten only bilingual supported-format/limit guidance. Focused original EN/AR 390/380 chooser tests pass 2/2 (1.7m). Current source binding preserves earlier/capture-time provenance and separately binds this source and the database test. Focused lint/fresh types, readiness/secrets/format/full diff review and current preflight are checked before immutable guarded proof. Two bounded capture batches, one detector/four-fix scoring remain historical completed proof; this is a reproduced clearance repair within the approved reference. Fresh guarded local gate, four-job exact-head CI and production proof remain owed. No domain/auth/storage/database/provider/config/policy/dependency behavior changed.
+**Commands:** Historical guarded proof 53ba5a34 passed, then delivery feedback required scoped corrections; it is not current proof. Initial database stale Overview heading corrected without protected changes. CI 6b928ae failed two 380px chooser bounds; shortened only format/limit guidance. CI b61e2c1 passed database, 75 real and 54/55 synthetic browser cases; chooser passed, invitation caught transient selected-navigation 3.95:1 contrast below 4.5 during rail/phone palette interpolation. Inspected provider screenshot. Remove only shared navigation color/background interpolation, preserving endpoint palettes and non-color motion. Independent twelve-frame contrast regression retains full Axe audit; fixed invitation/chooser checks pass 3/3 (49.3s). Calibration of exact old CSS fails at 3.95280375001457; fixed bytes restored. Guarded local 43abdc1f interrupted after 75 real/40 synthetic cases; exit -1 not PASS. Current source/history bindings updated, inline findings NONE. Focused lint/fresh types/format/readiness/secrets/full diff checked before new preflight. Fresh complete guarded local, exact-head four-job CI and production proof remain owed. No dependency, configuration, policy or protected semantic change.
 
 ## Historical preparation — 4 October delivery
 
@@ -209,4 +209,4 @@ Ahmed accepted the audit's major UX findings but explicitly withheld implementat
 - [x] Complete motion, responsive, Arabic/theme and focused workflow proof; final broad release proof remains separate.
 - [ ] Complete candidate review, required delivery proof and closure.
 
-**Resumption:** Branch codex/open-folio-redesign; PR #71. Commit the isolated intake-copy repair and current feedback/preparation records; derive and bind current fingerprint at that head, freeze source/records while fresh guarded verify runs, and run exact-head governed CI concurrently. Do not relabel either failed remote run or reuse historical full proof as current. All four gates, exact-head distinct-account approval and current local proof must pass before merge. Then exact Git archive/free-tier deployment, prepromotion proof, D-22 receipt, public promotion and four independent synthetic role journeys; close and clean. Preserve original manifests/history/tags and do not start another cosmetic review.
+**Resumption:** PR #71 on codex/open-folio-redesign. Commit atomic navigation palette and independent frame-contrast regression with accurate failure records; bind current fingerprint, then freeze source/record during complete guarded verify and exact-head CI. Prior local interruption/remote failures are not PASS. Require current complete local proof, all four CI checks and exact-head distinct-account review before protected merge. Then exact Git archive/free-tier deployment, fingerprint/smoke, D-22 exact-target receipt, public promotion and four separate synthetic role journeys; nonvisual closure/cleanup. No new aesthetic review, worker, backend behavior or paid action.
