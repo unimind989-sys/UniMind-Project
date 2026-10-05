@@ -2,7 +2,7 @@
 
 **Task ID:** WP03-T10
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** Implement Ahmed's approved Open Folio refinement across study, intake, governance, account and ordinary states, preserving all existing service and access contracts; verify, review and deliver the frontend candidate through WP03-T10 gates.
 
@@ -10,9 +10,9 @@
 
 **Reviewer:** Inline candidate review completed with accurate single-executor provenance; Ahmed approved the exact Open Folio reference in planning/design/open-folio/approval.md. Actual branch requirements govern delivery. Executor-controlled distinct-account approval is not independent review.
 
-**Branch:** codex/open-folio-redesign; historical runtime delivered through codex/premium-product-screens / PR #67; documentation closure through codex/wp03-t10-closure
+**Branch:** codex/open-folio-closure; runtime PR #71 from codex/open-folio-redesign; historical branches retained as recorded
 
-**Updated (UTC):** 2026-10-05T14:25:46.047823+00:00
+**Updated (UTC):** 2026-10-05T16:38:07.877357+00:00
 
 ## Derived execution envelope
 
@@ -89,21 +89,23 @@ Finalization preflight rejected the previously unregistered .impeccable/design.j
 
 **Historical Hard stop:** Missing founder acceptance before material delivery; real-money exposure; private inputs; incomplete full gate must not become PASS.
 
-## Candidate preparation
+## Preparation — nonvisual closure with completed runtime proof
 
-**Design disposition:** APPROVED_REFERENCE
+The fingerprint below binds the completed guarded runtime at da4b610. It does not claim a guarded run at this documentation head. This closure reuses unchanged executable-source proof and requires focused document checks and exact-head governed CI.
 
-**Design evidence:** reference:docs/reviews/uiux-2026-10-04/refinement/index.html#sha256=f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4
+**Design disposition:** NONVISUAL
+
+**Design evidence:** NONVISUAL: documentation closure of approved Open Folio runtime; source and interaction unchanged from PR #71 and production proof
 
 **Preparation review:** COMPLETE_INLINE
 
-**Preparation fingerprint:** NOT_READY
+**Preparation fingerprint:** 5b411c1aba507d298bdfa994dbf28e8ca5209a320f5b61e47185158a0ead4a83
 
 **Unresolved findings:** NONE
 
 **Established facts:** NONE
 
-**Commands:** Historical guarded proof 53ba5a34 passed, then delivery feedback required scoped corrections; it is not current proof. Initial database stale Overview heading corrected without protected changes. CI 6b928ae failed two 380px chooser bounds; shortened only format/limit guidance. CI b61e2c1 passed database, 75 real and 54/55 synthetic browser cases; chooser passed, invitation caught transient selected-navigation 3.95:1 contrast below 4.5 during rail/phone palette interpolation. Inspected provider screenshot. Remove only shared navigation color/background interpolation, preserving endpoint palettes and non-color motion. Independent twelve-frame contrast regression retains full Axe audit; fixed invitation/chooser checks pass 3/3 (49.3s). Calibration of exact old CSS fails at 3.95280375001457; fixed bytes restored. Guarded local 43abdc1f interrupted after 75 real/40 synthetic cases; exit -1 not PASS. Current source/history bindings updated, inline findings NONE. Focused lint/fresh types/format/readiness/secrets/full diff checked before new preflight. Fresh complete guarded local, exact-head four-job CI and production proof remain owed. No dependency, configuration, policy or protected semantic change.
+**Commands:** Current guarded local gate exit 0 at da4b6100eb7cea68c4b8230ceea7038d996b8269, unchanged fingerprint 5b411c1aba507d298bdfa994dbf28e8ca5209a320f5b61e47185158a0ead4a83: 594 unit, 15 integration with two hosted-only skips, 44 security, evaluation/load, 75 real and 55 synthetic browser cases, safe build/client-secret scan. Exact-head CI 37325850809 all four PASS; disposable 17 integration/eight authenticated browser/44 security PASS. PR #71 protected merge/source tree parity, exact Git archive, Hobby/free-tier scope, prepromotion/public six fingerprint/seven smoke/auth-cache/anonymous-denial and four separate synthetic role journeys PASS; bounded log sample clean. Earlier local/remote failures remain failed. Source proof is reused only for this nonvisual evidence closure. Focused closure formatting, readiness (792 names/342 links), 3181-file secret scan and full diff review exit 0; exact-head governed documentation CI remains required.
 
 ## Historical preparation — 4 October delivery
 
@@ -207,6 +209,10 @@ Ahmed accepted the audit's major UX findings but explicitly withheld implementat
 - [x] Implement study compositions and equally crafted ordinary screens.
 - [x] Implement leader and administrative presentation through existing capabilities.
 - [x] Complete motion, responsive, Arabic/theme and focused workflow proof; final broad release proof remains separate.
-- [ ] Complete candidate review, required delivery proof and closure.
+- [x] Complete candidate review and runtime/service delivery proof; terminal nonvisual closure is governed by the resumption entry below.
 
-**Resumption:** PR #71 on codex/open-folio-redesign. Commit atomic navigation palette and independent frame-contrast regression with accurate failure records; bind current fingerprint, then freeze source/record during complete guarded verify and exact-head CI. Prior local interruption/remote failures are not PASS. Require current complete local proof, all four CI checks and exact-head distinct-account review before protected merge. Then exact Git archive/free-tier deployment, fingerprint/smoke, D-22 exact-target receipt, public promotion and four separate synthetic role journeys; nonvisual closure/cleanup. No new aesthetic review, worker, backend behavior or paid action.
+**Resumption:** Runtime/service acceptance complete at 1013cd5961edd9b3eb8670c0363b712e2e0747a0, deployment dpl_4gRN7d4ytvkFGnEaVwEmQBWw92cd; see evidence/wp03-product-shell/2026-10-05_open-folio_production_1013cd5.md. Deliver this nonvisual evidence/task/runbook closure through exact-head governed CI and distinct-account review, then synchronize clean main and remove only owned merged branches/staging/helpers. No further implementation or production promotion; WP04 not started. Preserve recovery tags, saved landing branch, original archives and unrelated work.
+
+## Current Open Folio runtime delivery
+
+Protected runtime PR [#71](https://github.com/unimind989-sys/UniMind-Project/pull/71) and [commit-specific production proof](../../evidence/wp03-product-shell/2026-10-05_open-folio_production_1013cd5.md) complete the approved frontend cycle. Formal distinct-account review is executor controlled, not independent. Fresh guarded and exact-head proof replace prior failed candidate runs; no product capability, performance score or full accessibility claim is invented. This nonvisual closure keeps the full R3/protected task envelope and reuses unchanged executable-source proof.
