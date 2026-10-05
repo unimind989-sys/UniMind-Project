@@ -211,7 +211,7 @@ Ahmed accepted the audit's major UX findings but explicitly withheld implementat
 - [x] Complete motion, responsive, Arabic/theme and focused workflow proof; final broad release proof remains separate.
 - [x] Complete candidate review and runtime/service delivery proof; terminal nonvisual closure is governed by the resumption entry below.
 
-**Resumption:** Runtime/service acceptance complete at 1013cd5961edd9b3eb8670c0363b712e2e0747a0, deployment dpl_4gRN7d4ytvkFGnEaVwEmQBWw92cd; see evidence/wp03-product-shell/2026-10-05_open-folio_production_1013cd5.md. Deliver this nonvisual evidence/task/runbook closure through exact-head governed CI and distinct-account review, then synchronize clean main and remove only owned merged branches/staging/helpers. No further implementation or production promotion; WP04 not started. Preserve recovery tags, saved landing branch, original archives and unrelated work.
+**Resumption:** Runtime/service acceptance complete at 1013cd5961edd9b3eb8670c0363b712e2e0747a0, deployment dpl_4gRN7d4ytvkFGnEaVwEmQBWw92cd. Protected nonvisual closure [#72](https://github.com/unimind989-sys/UniMind-Project/pull/72) records the terminal task/runbook state and [production proof](../../evidence/wp03-product-shell/2026-10-05_open-folio_production_1013cd5.md); exact-head governed checks and distinct-account approval must pass before its merge. After merge, no implementation or production work remains for WP03-T10; synchronize main and remove only owned merged branches/staging/helpers. WP04 was not started. Preserve recovery tags, saved landing branch, original archives and unrelated work.
 
 ## Current Open Folio runtime delivery
 
