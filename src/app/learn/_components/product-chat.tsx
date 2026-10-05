@@ -14,6 +14,7 @@ import {
   type ResponseKind,
   type SampleAnswer,
 } from "@/app/_components/synthetic-fixtures";
+import { ProductDialog } from "@/app/_components/product-dialog";
 import type { ProductStudyProps } from "./product-study";
 import styles from "./product-study.module.css";
 
@@ -46,6 +47,14 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
   }, [requestedSession, scope.unitId, update]);
   const [sending, setSending] = useState<SampleAnswer | null>(null);
   const [notice, setNotice] = useState("");
+  const [selectedEvidence, setEvidence] = useState<{
+    answer: SampleAnswer;
+    exchange: number;
+    sessionId: number;
+  } | null>(null);
+  const [evidenceDialog, setEvidenceDialog] = useState(false);
+  const sourceHeading = useRef<HTMLHeadingElement>(null);
+  const history = useRef<HTMLDetailsElement>(null);
   const input = useRef<HTMLTextAreaElement>(null);
   const end = useRef<HTMLDivElement>(null);
   const t = useProductText(locale);
@@ -55,6 +64,8 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
   const selected = sessions.find(
     (session) => session.id === state.activeSessions[scope.unitId],
   );
+  const evidence =
+    selectedEvidence?.sessionId === selected?.id ? selectedEvidence : null;
   const key = `${scope.unitId}:${selected?.id ?? "new"}`;
   const draft = state.chatDrafts[key] ?? { message: "", language: locale };
   useEffect(() => {
@@ -106,7 +117,71 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
       end.current?.scrollIntoView({ block: "nearest" });
   }, [selected?.answers.length, sending]);
 
+  useEffect(() => {
+    if (evidence && !evidenceDialog)
+      sourceHeading.current?.focus({ preventScroll: true });
+  }, [evidence, evidenceDialog]);
+  function inspect(answer: SampleAnswer, exchange: number, sessionId: number) {
+    setEvidence({ answer, exchange, sessionId });
+    setEvidenceDialog(window.matchMedia("(max-width: 1050px)").matches);
+  }
+  const sourceContent = evidence ? (
+    <>
+      <p className={styles.caption}>
+        {t(
+          "Sample excerpt · illustrative source locator",
+          "نص تجريبي · موضع مصدر توضيحي",
+        )}
+      </p>
+      {(evidence.answer.kind === "conflict"
+        ? ["PDF", "AUDIO"]
+        : evidence.answer.kind === "hint"
+          ? ["AUDIO"]
+          : ["PDF"]
+      ).map((format) => (
+        <section className={styles.excerpt} key={format}>
+          <h3>
+            {format === "AUDIO"
+              ? t("Synthetic comparison recording", "تسجيل المقارنة التجريبي")
+              : t("Synthetic sequence handout", "ملزمة الترتيب التجريبية")}
+          </h3>
+          <p>
+            {format === "AUDIO"
+              ? t("Sample timestamp 02:10", "توقيت تجريبي ٠٢:١٠")
+              : t("Sample page 3", "صفحة تجريبية ٣")}
+          </p>
+          <blockquote>
+            {format === "AUDIO"
+              ? t(
+                  "Compare first, then identify the labels.",
+                  "قارن أولًا ثم حدد الأسماء.",
+                )
+              : t(
+                  "Identify the labels, then compare the diagrams.",
+                  "حدد الأسماء ثم قارن الرسوم.",
+                )}
+          </blockquote>
+        </section>
+      ))}
+      <ProductLink
+        href={`${base}/evidence?exchange=${evidence.exchange}&session=${evidence.sessionId}`}
+        locale={locale}
+      >
+        {t("Open evidence details", "فتح تفاصيل الأدلة")}
+      </ProductLink>
+    </>
+  ) : (
+    <p>
+      {t(
+        "When an answer cites a source, inspect its excerpt without losing your question.",
+        "عندما تستشهد الإجابة بمصدر، افحص النص دون فقدان سؤالك.",
+      )}
+    </p>
+  );
   function start() {
+    if (history.current) history.current.open = false;
+    setEvidence(null);
+    setEvidenceDialog(false);
     const id =
       state.sessions.reduce(
         (maximum, session) => Math.max(maximum, session.id),
@@ -157,67 +232,84 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
   }
   return (
     <div className={styles.chatLayout}>
-      <aside
-        className={styles.history}
-        aria-label={t("Unit sessions", "جلسات الوحدة")}
-      >
-        <Button onClick={start} disabled={sending !== null}>
-          <FrontendIcon name="plus" />
-          {t("New session", "جلسة جديدة")}
-        </Button>
-        <details className={styles.historyList} open>
-          <summary>
-            {t("Sessions in this unit", "جلسات هذه الوحدة")} ·{" "}
-            {new Intl.NumberFormat(locale).format(sessions.length)}
-          </summary>
-          {sessions.length ? (
-            <ul>
-              {sessions.map((session) => (
-                <li key={session.id}>
-                  <button
-                    type="button"
-                    aria-pressed={selected?.id === session.id}
-                    onClick={() => {
-                      update((current) => ({
-                        ...current,
-                        activeSessions: {
-                          ...current.activeSessions,
-                          [scope.unitId]: session.id,
-                        },
-                      }));
-                      setSending(null);
-                      setNotice("");
-                    }}
-                  >
-                    {t("Session", "جلسة")}{" "}
-                    {new Intl.NumberFormat(locale).format(session.id)}
-                    <span>
-                      {t("Replies", "الإجابات")} ·{" "}
-                      {new Intl.NumberFormat(locale).format(
-                        session.answers.length,
-                      )}
-                    </span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>
-              {t(
-                "Your first message starts a session here.",
-                "أول رسالة تبدأ جلسة هنا.",
-              )}
-            </p>
-          )}
-        </details>
-        <ProductLink href="/settings" locale={locale}>
-          <FrontendIcon name="settings" />
-          {t("Privacy settings", "إعدادات الخصوصية")}
-        </ProductLink>
-      </aside>
       <div className={styles.conversation}>
         <div className={styles.sectionHeading}>
           <h2>{t("Chat", "المحادثة")}</h2>
+          <details
+            ref={history}
+            className={styles.history}
+            onKeyDown={(event) => {
+              if (event.key === "Escape") {
+                event.preventDefault();
+                event.currentTarget.open = false;
+                event.currentTarget.querySelector("summary")?.focus();
+              }
+            }}
+          >
+            <summary
+              aria-label={t("Sessions and privacy", "الجلسات والخصوصية")}
+            >
+              {t("Sessions", "الجلسات")}
+            </summary>
+            <div>
+              <Button onClick={start} disabled={sending !== null}>
+                <FrontendIcon name="plus" />
+                {t("New session", "جلسة جديدة")}
+              </Button>
+              <details className={styles.historyList} open>
+                <summary>
+                  {t("Sessions in this unit", "جلسات هذه الوحدة")} ·{" "}
+                  {new Intl.NumberFormat(locale).format(sessions.length)}
+                </summary>
+                {sessions.length ? (
+                  <ul>
+                    {sessions.map((session) => (
+                      <li key={session.id}>
+                        <button
+                          type="button"
+                          aria-pressed={selected?.id === session.id}
+                          onClick={() => {
+                            if (history.current) history.current.open = false;
+                            update((current) => ({
+                              ...current,
+                              activeSessions: {
+                                ...current.activeSessions,
+                                [scope.unitId]: session.id,
+                              },
+                            }));
+                            setSending(null);
+                            setNotice("");
+                            setEvidence(null);
+                            setEvidenceDialog(false);
+                          }}
+                        >
+                          {t("Session", "جلسة")}{" "}
+                          {new Intl.NumberFormat(locale).format(session.id)}
+                          <span>
+                            {t("Replies", "الإجابات")} ·{" "}
+                            {new Intl.NumberFormat(locale).format(
+                              session.answers.length,
+                            )}
+                          </span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>
+                    {t(
+                      "Your first message starts a session here.",
+                      "أول رسالة تبدأ جلسة هنا.",
+                    )}
+                  </p>
+                )}
+              </details>
+              <ProductLink href="/settings" locale={locale}>
+                <FrontendIcon name="settings" />
+                {t("Privacy settings", "إعدادات الخصوصية")}
+              </ProductLink>
+            </div>
+          </details>
           <ProductLink href={base + "/sources"} locale={locale}>
             <FrontendIcon name="sources" />
             {t("Unit sources", "مصادر الوحدة")}
@@ -314,6 +406,20 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
                   ) : null}
                 </p>
                 <div className={styles.replyActions}>
+                  {!["unavailable", "patient"].includes(answer.kind) ? (
+                    <button
+                      type="button"
+                      className={styles.citation}
+                      onClick={() => inspect(answer, index + 1, selected.id)}
+                    >
+                      <FrontendIcon name="sources" />
+                      {answer.kind === "hint"
+                        ? t("Recording · 02:10", "التسجيل · ٠٢:١٠")
+                        : answer.kind === "conflict"
+                          ? t("Two source excerpts", "نصان من مصدرين")
+                          : t("Handout · p. 3", "الملزمة · ص ٣")}
+                    </button>
+                  ) : null}
                   <ProductLink
                     href={`${base}/evidence?exchange=${index + 1}&session=${selected.id}`}
                     locale={locale}
@@ -370,7 +476,7 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
             id="message"
             name="message"
             dir="auto"
-            rows={3}
+            rows={2}
             maxLength={1000}
             autoComplete="off"
             placeholder={t("Ask about your unit…", "اسأل عن وحدتك…")}
@@ -451,6 +557,32 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
         </form>
         {notice ? <Notice>{notice}</Notice> : null}
       </div>
+      <aside
+        className={styles.evidenceMargin}
+        aria-label={t("Source evidence", "أدلة المصدر")}
+      >
+        <h2 ref={sourceHeading} tabIndex={-1}>
+          {evidence
+            ? t("Source excerpt", "نص المصدر")
+            : t("An evidence margin", "هامش للأدلة")}
+        </h2>
+        {sourceContent}
+        <p className={styles.caption}>
+          {new Intl.NumberFormat(locale).format(scope.sourceCount)}{" "}
+          {t("sample materials available", "مواد تجريبية متاحة")}
+        </p>
+      </aside>
+      <ProductDialog
+        open={!!evidence && evidenceDialog}
+        title={t("Source excerpt", "نص المصدر")}
+        closeLabel={t("Close", "إغلاق")}
+        onClose={() => {
+          setEvidenceDialog(false);
+          setEvidence(null);
+        }}
+      >
+        {sourceContent}
+      </ProductDialog>
     </div>
   );
 }

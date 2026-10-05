@@ -1,0 +1,610 @@
+[
+  {
+    "file": "account-desktop.png",
+    "state": "Student account; light; academic draft visible",
+    "height": 900,
+    "locale": "en",
+    "scrollX": 0,
+    "scrollY": 0,
+    "theme": "light",
+    "title": "UniMind",
+    "url": "http://127.0.0.1:3101/settings?lang=en",
+    "width": 1440,
+    "imagePixels": [
+      1430,
+      894
+    ],
+    "sha256": "9141b0dba4ec7b7891a52076be95f7e6bc450a301678967b65245868c0ce4a9e",
+    "role": "Student"
+  },
+  {
+    "file": "shelf-desktop.png",
+    "state": "Student shelf, five fixture modules, light",
+    "height": 900,
+    "locale": "en",
+    "scrollX": 0,
+    "scrollY": 0,
+    "theme": "light",
+    "title": "Study · UniMind",
+    "url": "http://127.0.0.1:3101/learn?lang=en",
+    "width": 1440,
+    "round": 2,
+    "capturedAt": "2026-10-05T08:21:33.547107+00:00",
+    "timestampProvenance": "File modification time of second-round overwrite; browser metadata observed during that capture",
+    "imagePixels": [
+      1430,
+      894
+    ],
+    "sha256": "90f407c398f0239d31cd11e85e875185c130eb8f952a1f3fe1650895cdce8ff2",
+    "role": "Student"
+  },
+  {
+    "file": "shelf-mobile.png",
+    "state": "Student shelf, same module fixture, light",
+    "height": 844,
+    "locale": "en",
+    "scrollX": 0,
+    "scrollY": 0,
+    "theme": "light",
+    "title": "Study · UniMind",
+    "url": "http://127.0.0.1:3101/learn?lang=en",
+    "width": 390,
+    "round": 2,
+    "capturedAt": "2026-10-05T08:21:14.710372+00:00",
+    "timestampProvenance": "File modification time of second-round overwrite; browser metadata observed during that capture",
+    "imagePixels": [
+      380,
+      822
+    ],
+    "sha256": "1c8c3dff6faed1143d125cd651c430eb00f857cdd438f167c1ffb5873eaf29b2",
+    "role": "Student"
+  },
+  {
+    "file": "shelf-empty-focus.png",
+    "state": "Search matches no modules; focused input",
+    "height": 844,
+    "locale": "en",
+    "scrollX": 0,
+    "scrollY": 0,
+    "theme": "light",
+    "title": "UniMind",
+    "url": "http://127.0.0.1:3101/learn?lang=en",
+    "width": 390,
+    "imagePixels": [
+      390,
+      844
+    ],
+    "sha256": "a40df331e702c4e9185100f4337381ba8b4d31bbcc805cf0c37261570da4180a",
+    "role": "Student"
+  },
+  {
+    "file": "materials-desktop.png",
+    "state": "Student material list, light",
+    "height": 900,
+    "locale": "en",
+    "scrollX": 0,
+    "scrollY": 0,
+    "theme": "light",
+    "title": "UniMind",
+    "url": "http://127.0.0.1:3101/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy?lang=en",
+    "width": 1440,
+    "imagePixels": [
+      1440,
+      900
+    ],
+    "sha256": "26b4d5066112fedd6ac209a574a0a36280da02659ac725ad5ed727fc63f3cb9b",
+    "role": "Student"
+  },
+  {
+    "file": "chat-desktop-empty.png",
+    "state": "Empty bounded Chat, light",
+    "height": 900,
+    "locale": "en",
+    "scrollX": 0,
+    "scrollY": 0,
+    "theme": "light",
+    "title": "UniMind",
+    "url": "http://127.0.0.1:3101/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=en",
+    "width": 1440,
+    "imagePixels": [
+      1440,
+      900
+    ],
+    "sha256": "ebecd7d55a61ad4d6e559b9454f4073b1a15d9c39ae317aa1a406f7cd95b88d5",
+    "role": "Student"
+  },
+  {
+    "file": "chat-desktop-draft-focus.png",
+    "state": "Suggested question fills the focused composer; not yet submitted",
+    "height": 900,
+    "locale": "en",
+    "scrollX": 0,
+    "scrollY": 0,
+    "theme": "light",
+    "title": "UniMind",
+    "url": "http://127.0.0.1:3101/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=en",
+    "width": 1440,
+    "imagePixels": [
+      1440,
+      900
+    ],
+    "sha256": "5651d96ab555d1b16c622cf0c783ae69b6c1d4ac2b3b4bb69bc95a0f6ff7ec5c",
+    "role": "Student"
+  },
+  {
+    "file": "chat-desktop-loading.png",
+    "state": "Submitted fixed-example question; generating state",
+    "height": 900,
+    "locale": "en",
+    "scrollX": 0,
+    "scrollY": 0,
+    "theme": "light",
+    "title": "UniMind",
+    "url": "http://127.0.0.1:3101/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=en",
+    "width": 1440,
+    "imagePixels": [
+      1440,
+      900
+    ],
+    "sha256": "af6954578aa91471f9ccd80a7ad883a37a907ebe155c650f510c26b3c0434966",
+    "role": "Student"
+  },
+  {
+    "file": "chat-desktop-source.png",
+    "state": "Supported answer and selected source excerpt",
+    "height": 900,
+    "locale": "en",
+    "scrollX": 0,
+    "scrollY": 0,
+    "theme": "light",
+    "title": "UniMind",
+    "url": "http://127.0.0.1:3101/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=en",
+    "width": 1440,
+    "imagePixels": [
+      1440,
+      900
+    ],
+    "sha256": "3467cdae334ec0c6617ddea631cb10e6540c7469b540e73792bf242e7b2841ca",
+    "role": "Student"
+  },
+  {
+    "file": "chat-laptop-source.png",
+    "state": "Same supported exchange at laptop size",
+    "height": 800,
+    "locale": "en",
+    "scrollX": 0,
+    "scrollY": 0,
+    "theme": "light",
+    "title": "UniMind",
+    "url": "http://127.0.0.1:3101/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=en",
+    "width": 1280,
+    "imagePixels": [
+      1280,
+      800
+    ],
+    "sha256": "59307a3024b0d7574682632f9f5a8be9ea8d12a2043c207c05ef2d0916eb89ec",
+    "role": "Student"
+  },
+  {
+    "file": "chat-mobile-source-dialog.png",
+    "state": "Same exchange with native modal citation review",
+    "height": 844,
+    "locale": "en",
+    "scrollX": 0,
+    "scrollY": 0,
+    "theme": "light",
+    "title": "UniMind",
+    "url": "http://127.0.0.1:3101/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=en",
+    "width": 390,
+    "imagePixels": [
+      390,
+      844
+    ],
+    "sha256": "538b9a72cd638fa75fe67d64016cd528ff788290437e661ba7485a860e5d02d0",
+    "role": "Student"
+  },
+  {
+    "file": "chat-mobile.png",
+    "state": "Supported exchange, citation focus returned after close",
+    "height": 844,
+    "locale": "en",
+    "scrollX": 0,
+    "scrollY": 0,
+    "theme": "light",
+    "title": "UniMind",
+    "url": "http://127.0.0.1:3101/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=en",
+    "width": 390,
+    "imagePixels": [
+      390,
+      844
+    ],
+    "sha256": "5420e967bad0f4b2afb1cad881c41f9f8284003efdb9e6d136aa941c1edf53a0",
+    "role": "Student"
+  },
+  {
+    "file": "studio-desktop.png",
+    "state": "Studio before generation; six-format selector",
+    "height": 900,
+    "locale": "en",
+    "scrollX": 0,
+    "scrollY": 0,
+    "theme": "light",
+    "title": "UniMind",
+    "url": "http://127.0.0.1:3101/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=en",
+    "width": 1440,
+    "imagePixels": [
+      1440,
+      900
+    ],
+    "sha256": "ecb4d6d22716b1557da4039607cabfa8548d94d8483a697f7796a555aa679515",
+    "role": "Student"
+  },
+  {
+    "file": "studio-loading.png",
+    "state": "Pending generation with cancellable status",
+    "height": 900,
+    "locale": "en",
+    "scrollX": 0,
+    "scrollY": 0,
+    "theme": "light",
+    "title": "UniMind",
+    "url": "http://127.0.0.1:3101/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=en",
+    "width": 1440,
+    "imagePixels": [
+      1440,
+      900
+    ],
+    "sha256": "391534ec61e33bcf37c07e3d5cabd872a0701b408ca350810b79906a8ad65f80",
+    "role": "Student"
+  },
+  {
+    "file": "studio-mobile.png",
+    "state": "Studio controls and generated artifact below the first viewport",
+    "height": 844,
+    "locale": "en",
+    "scrollX": 0,
+    "scrollY": 0,
+    "theme": "light",
+    "title": "UniMind",
+    "url": "http://127.0.0.1:3101/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=en",
+    "width": 390,
+    "imagePixels": [
+      390,
+      844
+    ],
+    "sha256": "e817bf7c3a37cc9aee89c1bfb8cf80ede55f8d91822923b48d91f487cfd7be7c",
+    "role": "Student"
+  },
+  {
+    "file": "account-mobile-ar-dark.png",
+    "state": "Arabic dark account; actual settings sections",
+    "height": 844,
+    "locale": "ar",
+    "scrollX": 0,
+    "scrollY": 0,
+    "theme": "dark",
+    "title": "UniMind",
+    "url": "http://127.0.0.1:3101/settings?lang=ar",
+    "width": 390,
+    "imagePixels": [
+      380,
+      822
+    ],
+    "sha256": "755270c80bed00d92255356b3a3dae6fa34b9d1a6c101e9ef5768ecb02e4db83",
+    "role": "Student"
+  },
+  {
+    "file": "shelf-tablet-ar-dark.png",
+    "state": "Arabic dark shelf; tablet rail",
+    "height": 1024,
+    "locale": "ar",
+    "scrollX": 0,
+    "scrollY": 0,
+    "theme": "dark",
+    "title": "UniMind",
+    "url": "http://127.0.0.1:3101/learn?lang=ar",
+    "width": 768,
+    "imagePixels": [
+      758,
+      1011
+    ],
+    "sha256": "2908351768ddfb1a2c03c60dab7d26fdb0f4aca12e89b51946f214ff00821f79",
+    "role": "Student"
+  },
+  {
+    "file": "studio-desktop-ar-dark.png",
+    "state": "Arabic dark interface with English example artifact",
+    "height": 900,
+    "locale": "ar",
+    "scrollX": 0,
+    "scrollY": 0,
+    "theme": "dark",
+    "title": "UniMind",
+    "url": "http://127.0.0.1:3101/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=ar",
+    "width": 1440,
+    "imagePixels": [
+      1440,
+      900
+    ],
+    "sha256": "9f40b0b2444a61bd416b844f49773a2b2174e46b9d18d7df9dcab02e412ba857",
+    "role": "Student"
+  },
+  {
+    "file": "leader-home-desktop.png",
+    "state": "Assigned campaign with separate request/submission counts",
+    "height": 900,
+    "locale": "en",
+    "scrollX": 0,
+    "scrollY": 0,
+    "theme": "dark",
+    "title": "UniMind",
+    "url": "http://127.0.0.1:3101/batch-leader?lang=en",
+    "width": 1440,
+    "imagePixels": [
+      1440,
+      900
+    ],
+    "sha256": "95be9062ec032e05011d5a932039656e3d3b9c115e549a73e7c488805f9aed88",
+    "role": "Batch Leader"
+  },
+  {
+    "file": "history-received.png",
+    "state": "Latest submissions after local receipt; submitted, processing, needs information and rejected rows",
+    "height": 900,
+    "locale": "en",
+    "scrollX": 0,
+    "scrollY": 1230,
+    "theme": "dark",
+    "title": "UniMind",
+    "url": "http://127.0.0.1:3101/batch-leader/campaigns/sample-campaign?lang=en",
+    "width": 1440,
+    "imagePixels": [
+      1430,
+      894
+    ],
+    "sha256": "0ad1121d97e3cc91c9f223bbe3e6dc76cc6f8f79f51df6e4a6553efc33af7e85",
+    "role": "Batch Leader"
+  },
+  {
+    "file": "admin-desktop.png",
+    "state": "Selected permitted decision; heading and queue in viewport",
+    "height": 900,
+    "locale": "en",
+    "scrollX": 0,
+    "scrollY": 0,
+    "theme": "light",
+    "title": "UniMind",
+    "url": "http://127.0.0.1:3101/admin?lang=en",
+    "width": 1440,
+    "imagePixels": [
+      1430,
+      894
+    ],
+    "sha256": "05fc985cf6d58c9b9b3ee3ae7bf27253f0f1380084d8a7bd62281fbc344fe7c7",
+    "role": "Admin"
+  },
+  {
+    "file": "admin-review-dialog.png",
+    "state": "Exact-change modal, noncommitting initial focus",
+    "height": 900,
+    "locale": "en",
+    "scrollX": 0,
+    "scrollY": 363,
+    "theme": "light",
+    "title": "UniMind",
+    "url": "http://127.0.0.1:3101/admin?lang=en",
+    "width": 1440,
+    "imagePixels": [
+      1430,
+      894
+    ],
+    "sha256": "d4863e7e04f4ff6655f28fe6cb22b2676370bfeceeded7c8618ff1b081ee86b1",
+    "role": "Admin"
+  },
+  {
+    "file": "admin-mobile-detail.png",
+    "state": "Phone detail from top with Back to decisions visible",
+    "height": 844,
+    "locale": "en",
+    "scrollX": 0,
+    "scrollY": 0,
+    "theme": "light",
+    "title": "UniMind",
+    "url": "http://127.0.0.1:3101/admin?lang=en",
+    "width": 390,
+    "imagePixels": [
+      380,
+      822
+    ],
+    "sha256": "6f5a70a79623cde67ac5660000ef3f7b16b19d681c2b24ea016cd58325e08705",
+    "role": "Admin"
+  },
+  {
+    "file": "admin-mobile.png",
+    "state": "Phone decision list after deliberate Back",
+    "height": 844,
+    "locale": "en",
+    "scrollX": 0,
+    "scrollY": 0,
+    "theme": "light",
+    "title": "UniMind",
+    "url": "http://127.0.0.1:3101/admin?lang=en",
+    "width": 390,
+    "imagePixels": [
+      380,
+      822
+    ],
+    "sha256": "3d30e2c04d217cec650e67bfa37440fe6178755fb2cf1090724951453628d4c8",
+    "role": "Admin"
+  },
+  {
+    "file": "second-admin-desktop.png",
+    "state": "Second Admin independently signed in; unselected queue",
+    "height": 900,
+    "locale": "en",
+    "scrollX": 0,
+    "scrollY": 0,
+    "theme": "light",
+    "title": "UniMind",
+    "url": "http://127.0.0.1:3101/admin?lang=en",
+    "width": 1440,
+    "imagePixels": [
+      1430,
+      894
+    ],
+    "sha256": "e55b9f69bb17ccf96e74afd8ea07358764363da3e42ec1e289608ec0f7f9025a",
+    "role": "Second Admin"
+  },
+  {
+    "file": "second-admin-blocked.png",
+    "state": "Derived blocked decisions; no action applied",
+    "height": 900,
+    "locale": "en",
+    "scrollX": 0,
+    "scrollY": 0,
+    "theme": "light",
+    "title": "UniMind",
+    "url": "http://127.0.0.1:3101/admin?lang=en",
+    "width": 1440,
+    "imagePixels": [
+      1430,
+      894
+    ],
+    "sha256": "ea43c1c1b2bdb16c6c61cbf5b232115ccb75ab76b7128865dcb25bb989c84ae2",
+    "role": "Second Admin"
+  },
+  {
+    "file": "auth-desktop.png",
+    "state": "Public sign-in with blank credentials; light",
+    "height": 900,
+    "locale": "en",
+    "scrollX": 0,
+    "scrollY": 0,
+    "theme": "light",
+    "title": "UniMind",
+    "url": "http://127.0.0.1:3101/login?lang=en",
+    "width": 1440,
+    "imagePixels": [
+      1430,
+      894
+    ],
+    "sha256": "8fd95554806852fc35beb7911b7b5ec401ca67197e831215e5b19c2512df00dd",
+    "role": "Public"
+  },
+  {
+    "file": "auth-error-focus.png",
+    "state": "Blank password validation, associated error and focus",
+    "height": 900,
+    "locale": "en",
+    "scrollX": 0,
+    "scrollY": 36,
+    "theme": "light",
+    "title": "UniMind",
+    "url": "http://127.0.0.1:3101/login?lang=en",
+    "width": 1440,
+    "imagePixels": [
+      1430,
+      894
+    ],
+    "sha256": "3752f604286d065ee4287e11c1066b7b5e9f8107edc16444feba6677c09d2d62",
+    "role": "Public"
+  },
+  {
+    "file": "auth-mobile-error.png",
+    "state": "Credential-free mobile sign-in with associated validation error",
+    "height": 844,
+    "locale": "en",
+    "scrollX": 0,
+    "scrollY": 36,
+    "theme": "light",
+    "title": "UniMind",
+    "url": "http://127.0.0.1:3101/login?lang=en",
+    "width": 390,
+    "imagePixels": [
+      380,
+      822
+    ],
+    "sha256": "005af6cc264f14297a4e104c4c4ac5299b1b374f7943216a7fe8f0d2332ddef6",
+    "role": "Public"
+  },
+  {
+    "file": "admin-desktop-empty.png",
+    "state": "Admin independently signed in; all 12 candidates; no implicit decision; corrected narrow queue and empty paper",
+    "round": 2,
+    "capturedAt": "2026-10-05T11:07:47.041Z",
+    "height": 900,
+    "locale": "en",
+    "scrollX": 0,
+    "scrollY": 0,
+    "theme": "light",
+    "title": "UniMind",
+    "url": "http://127.0.0.1:3101/admin?lang=en",
+    "width": 1440,
+    "imagePixels": [
+      1430,
+      894
+    ],
+    "sha256": "84a6b91391f5a322067654f47a1f11c4545e27ce9e3d6a78575eb7ce6b64e036",
+    "role": "Admin"
+  },
+  {
+    "file": "intake-desktop.png",
+    "state": "Batch Leader; campaign sample-campaign; empty initial intake; English light; corrected primary file action",
+    "round": 2,
+    "capturedAt": "2026-10-05T11:08:37.012Z",
+    "height": 900,
+    "locale": "en",
+    "scrollX": 0,
+    "scrollY": 0,
+    "theme": "light",
+    "title": "UniMind",
+    "url": "http://127.0.0.1:3101/batch-leader/campaigns/sample-campaign?lang=en",
+    "width": 1440,
+    "imagePixels": [
+      1430,
+      894
+    ],
+    "sha256": "98192abab9e03332e10e224f823304c23796a2af97e09ac7d431e3b74d25f13f",
+    "role": "Batch Leader"
+  },
+  {
+    "file": "intake-mobile.png",
+    "state": "Batch Leader; initial empty intake; English light; corrected Choose files fully above fixed 64px navigation including classic scrollbar",
+    "round": 2,
+    "capturedAt": "2026-10-05T11:08:46.037Z",
+    "height": 844,
+    "locale": "en",
+    "scrollX": 0,
+    "scrollY": 0,
+    "theme": "light",
+    "title": "UniMind",
+    "url": "http://127.0.0.1:3101/batch-leader/campaigns/sample-campaign?lang=en",
+    "width": 390,
+    "imagePixels": [
+      380,
+      822
+    ],
+    "sha256": "1f8b684a8528c0e8cf50f3fd8d75cb9d02b541f76b563d0908644bc2378f9710",
+    "role": "Batch Leader"
+  },
+  {
+    "file": "admin-desktop-selected.png",
+    "state": "Admin; Hide unit selected; version 2; empty reason; no recording; corrected 300px queue; document top",
+    "round": 2,
+    "capturedAt": "2026-10-05T11:10:04.548Z",
+    "height": 900,
+    "locale": "en",
+    "scrollX": 0,
+    "scrollY": 0,
+    "theme": "light",
+    "title": "UniMind",
+    "url": "http://127.0.0.1:3101/admin?lang=en",
+    "width": 1440,
+    "imagePixels": [
+      1430,
+      894
+    ],
+    "sha256": "fa3de110556e2d30e2c3cfa31224f1aeef51a7ec0f956866014fa5444434bfde",
+    "role": "Admin"
+  }
+]

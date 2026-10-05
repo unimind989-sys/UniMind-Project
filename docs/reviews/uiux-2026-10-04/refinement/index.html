@@ -1,0 +1,3132 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-theme="light" data-motion="full">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UniMind · Open Folio refinement review</title>
+    <style>
+      @font-face {
+        font-family: Manrope;
+        src: url("../concepts/assets/manrope.woff2") format("woff2");
+        font-weight: 200 800;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: NotoArabic;
+        src: url("assets/noto-sans-arabic.woff2") format("woff2");
+        font-weight: 100 900;
+        font-display: swap;
+        unicode-range:
+          U+600-6FF, U+750-77F, U+870-8FF, U+FB50-FDFF, U+FE70-FEFC;
+      }
+      :root {
+        --canvas: #f6f7f8;
+        --paper: #fff;
+        --subtle: #eef0f2;
+        --hover: #e6e9ed;
+        --ink: #202124;
+        --secondary: #535861;
+        --muted: #626873;
+        --line: #d9dde3;
+        --control: #777f8b;
+        --blue: #2458b8;
+        --blue-hover: #194794;
+        --blue-soft: #e8effb;
+        --blue-ink: #214f9f;
+        --on-blue: #fff;
+        --good: #236746;
+        --good-soft: #edf6f0;
+        --bad: #a32723;
+        --bad-soft: #fceeed;
+        --spine: #1d2939;
+        --spine-ink: #eef2f8;
+        --spine-muted: #bdc8d6;
+        --spine-hover: #2b3b51;
+        --annotation: #f1f4fa;
+        --shadow: 0 12px 40px #101c2b26;
+        --fast: 120ms;
+        --state: 180ms;
+        --signature: 300ms;
+        --ease: cubic-bezier(0.22, 1, 0.36, 1);
+        --toolbar: 64px;
+        --radius: 8px;
+      }
+      [data-theme="dark"] {
+        --canvas: #1b1c1f;
+        --paper: #23272f;
+        --subtle: #2c313a;
+        --hover: #353d48;
+        --ink: #eef0f3;
+        --secondary: #bdc2cb;
+        --muted: #a6acb7;
+        --line: #434b57;
+        --control: #858d9a;
+        --blue: #adc7ff;
+        --blue-hover: #c6d7ff;
+        --blue-soft: #2b3c59;
+        --blue-ink: #b9d0ff;
+        --on-blue: #152646;
+        --good: #91d2ad;
+        --good-soft: #253a31;
+        --bad: #ffb4ab;
+        --bad-soft: #432b2e;
+        --spine: #141b25;
+        --spine-hover: #253246;
+        --annotation: #202c40;
+        --shadow: 0 12px 40px #0008;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: Manrope, Arial, sans-serif;
+        color: var(--ink);
+        background: var(--canvas);
+        font-size: 15px;
+        line-height: 1.55;
+      }
+      html[lang="ar"] body {
+        font-family: NotoArabic, Manrope, Arial, sans-serif;
+        line-height: 1.75;
+      }
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+      button,
+      a,
+      input,
+      select,
+      textarea {
+        touch-action: manipulation;
+      }
+      button,
+      a {
+        -webkit-tap-highlight-color: transparent;
+      }
+      button {
+        cursor: pointer;
+      }
+      button:disabled {
+        cursor: default;
+        opacity: 0.5;
+      }
+      a {
+        color: var(--blue);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      button,
+      input,
+      select,
+      textarea,
+      a {
+        outline-offset: 3px;
+      }
+      :focus-visible {
+        outline: 3px solid var(--blue);
+      }
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+      h1 {
+        font-size: 34px;
+        letter-spacing: -0.035em;
+        line-height: 1.18;
+        font-weight: 700;
+      }
+      h2 {
+        font-size: 22px;
+        letter-spacing: -0.022em;
+        line-height: 1.35;
+        font-weight: 700;
+      }
+      h3 {
+        font-size: 16px;
+        line-height: 1.5;
+        font-weight: 700;
+      }
+      html[lang="ar"] :is(h1, h2, h3) {
+        letter-spacing: normal;
+        line-height: 1.55;
+      }
+      small,
+      .meta {
+        font-size: 13px;
+        line-height: 1.6;
+        color: var(--muted);
+      }
+      .muted {
+        color: var(--secondary);
+      }
+      .icon {
+        width: 22px;
+        height: 22px;
+        flex: 0 0 22px;
+        stroke: currentColor;
+        stroke-width: 1.75;
+        fill: none;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .directional {
+        transform: scaleX(1);
+      }
+      [dir="rtl"] .directional {
+        transform: scaleX(-1);
+      }
+      .inline {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .spread {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+      .stack {
+        display: grid;
+        gap: 16px;
+      }
+      .gap8 {
+        gap: 8px;
+      }
+      .gap24 {
+        gap: 24px;
+      }
+      .btn {
+        min-height: 44px;
+        border: 1px solid var(--control);
+        background: var(--paper);
+        color: var(--ink);
+        padding: 9px 15px;
+        border-radius: var(--radius);
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+        justify-content: center;
+        font-weight: 650;
+        font-size: 14px;
+        transition:
+          background var(--fast),
+          border-color var(--fast),
+          transform var(--fast) var(--ease);
+      }
+      .btn:hover {
+        background: var(--hover);
+      }
+      .btn:active:not(:disabled) {
+        transform: translateY(1px);
+      }
+      .btn.primary {
+        background: var(--blue);
+        border-color: var(--blue);
+        color: var(--on-blue);
+      }
+      .btn.primary:hover {
+        background: var(--blue-hover);
+      }
+      .btn.quiet {
+        background: transparent;
+        border-color: transparent;
+        color: var(--blue);
+      }
+      .btn.quiet:hover {
+        background: var(--blue-soft);
+      }
+      .btn.danger {
+        color: var(--bad);
+        border-color: var(--bad);
+      }
+      .icon-btn {
+        width: 44px;
+        padding: 10px;
+      }
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        font-weight: 650;
+        white-space: nowrap;
+        color: var(--secondary);
+      }
+      .tag.ready {
+        color: var(--good);
+      }
+      .tag.ready::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        background: currentColor;
+        border-radius: 50%;
+      }
+      .pill {
+        padding: 3px 9px;
+        border-radius: 4px;
+        background: var(--subtle);
+        font-size: 13px;
+        color: var(--secondary);
+      }
+      label.field {
+        display: grid;
+        gap: 7px;
+        font-size: 14px;
+        font-weight: 650;
+      }
+      input,
+      select,
+      textarea {
+        width: 100%;
+        min-height: 44px;
+        border: 1px solid var(--control);
+        border-radius: var(--radius);
+        padding: 10px 12px;
+        background: var(--paper);
+        color: var(--ink);
+        font-size: 15px;
+      }
+      textarea {
+        resize: vertical;
+        line-height: 1.5;
+      }
+      input::placeholder,
+      textarea::placeholder {
+        color: var(--muted);
+      }
+      input[aria-invalid="true"],
+      textarea[aria-invalid="true"] {
+        border-color: var(--bad);
+      }
+      .help {
+        font-size: 13px;
+        font-weight: 400;
+        line-height: 1.55;
+        color: var(--muted);
+      }
+      .check {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        font-size: 14px;
+      }
+      .check input {
+        width: 20px;
+        min-height: 20px;
+        margin: 3px 0 0;
+        accent-color: var(--blue);
+      }
+      .notice {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 14px 16px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--subtle);
+        font-size: 14px;
+      }
+      .notice.success {
+        background: var(--good-soft);
+        color: var(--good);
+        border-color: var(--good);
+      }
+      .notice.error {
+        background: var(--bad-soft);
+        color: var(--bad);
+        border-color: var(--bad);
+      }
+      .notice .icon {
+        margin-top: 1px;
+      }
+      .notice p + p {
+        margin-top: 6px;
+      }
+      .skip {
+        position: fixed;
+        inset-block-start: 8px;
+        inset-inline-start: 8px;
+        transform: translateY(-140%);
+        z-index: 30;
+        background: var(--paper);
+        padding: 8px;
+      }
+      .skip:focus {
+        transform: none;
+      }
+      .reviewbar {
+        height: var(--toolbar);
+        position: relative;
+        z-index: 4;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        border-bottom: 1px solid var(--line);
+        padding: 8px 20px;
+        background: var(--paper);
+        font-size: 13px;
+      }
+      .reviewtitle {
+        flex: 1;
+        line-height: 1.4;
+        min-width: 120px;
+      }
+      .reviewtitle strong {
+        font-size: 14px;
+      }
+      .reviewcontrols {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .reviewcontrols select {
+        min-height: 36px;
+        padding: 6px 28px 6px 9px;
+        font-size: 13px;
+        width: auto;
+        max-width: 180px;
+        border-radius: 5px;
+      }
+      .reviewcontrols label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .shell {
+        display: grid;
+        grid-template-columns: 192px minmax(0, 1fr);
+        height: calc(100dvh - var(--toolbar));
+      }
+      .spine {
+        background: var(--spine);
+        color: var(--spine-ink);
+        padding: 26px 18px 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 34px;
+        overflow: auto;
+      }
+      .brand img {
+        width: 145px;
+        height: 36px;
+        object-fit: contain;
+        object-position: left center;
+      }
+      .spine nav {
+        display: grid;
+        gap: 6px;
+      }
+      .navlink {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-height: 46px;
+        padding: 10px;
+        border: 0;
+        background: none;
+        border-radius: 7px;
+        color: var(--spine-muted);
+        font-size: 14px;
+        font-weight: 600;
+        text-align: start;
+        position: relative;
+      }
+      .navlink:hover {
+        color: var(--spine-ink);
+        background: var(--spine-hover);
+      }
+      .navlink.active {
+        color: white;
+        background: var(--spine-hover);
+      }
+      .navlink.active::after {
+        content: "";
+        position: absolute;
+        inset-inline-end: -18px;
+        inset-block-start: 16px;
+        width: 8px;
+        height: 14px;
+        background: var(--canvas);
+        clip-path: polygon(100% 0, 0 50%, 100% 100%);
+      }
+      [dir="rtl"] .navlink.active::after {
+        clip-path: polygon(0 0, 100% 50%, 0 100%);
+      }
+      .spine :focus-visible {
+        outline-color: #adc7ff;
+      }
+      .identity {
+        margin-top: auto;
+        display: grid;
+        gap: 12px;
+        padding-top: 16px;
+        border-top: 1px solid #546176;
+      }
+      .identity .meta {
+        color: var(--spine-muted);
+      }
+      .avatar {
+        width: 34px;
+        height: 34px;
+        display: grid;
+        place-items: center;
+        background: #344359;
+        border: 1px solid #78879b;
+        border-radius: 50%;
+        font-size: 13px;
+      }
+      .spine .wordmark {
+        font-size: 12px;
+        line-height: 1.8;
+        color: var(--spine-muted);
+      }
+      .main {
+        min-width: 0;
+        overflow: auto;
+        scrollbar-gutter: stable;
+        padding: 32px 40px 40px;
+      }
+      .page {
+        max-width: 1140px;
+        margin: auto;
+      }
+      .page-heading {
+        margin-bottom: 30px;
+      }
+      .page-heading .muted {
+        margin-top: 10px;
+        max-width: 62ch;
+      }
+      .mobilebar,
+      .bottomnav {
+        display: none;
+      }
+      .section-line {
+        padding-block: 18px;
+        border-block-start: 1px solid var(--line);
+      }
+      .paper {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        position: relative;
+      }
+      .paper-head {
+        padding: 18px 24px;
+        border-bottom: 1px solid var(--line);
+      }
+      .paper-body {
+        padding: 24px;
+      }
+      .collection {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 270px;
+        gap: 40px;
+      }
+      .collection-main .spread {
+        margin-bottom: 18px;
+      }
+      .search {
+        position: relative;
+        max-width: 255px;
+      }
+      .search input {
+        padding-inline-start: 39px;
+      }
+      .search .icon {
+        position: absolute;
+        inset-inline-start: 12px;
+        top: 11px;
+        width: 19px;
+        height: 19px;
+      }
+      .subject-index {
+        border-top: 1px solid var(--line);
+      }
+      .subject-row {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        width: 100%;
+        min-height: 99px;
+        padding: 18px 4px;
+        border: 0;
+        border-bottom: 1px solid var(--line);
+        background: none;
+        text-align: start;
+        color: var(--ink);
+        transition: background var(--fast);
+      }
+      .subject-row:hover {
+        background: var(--subtle);
+      }
+      .subject-row .subject-copy {
+        flex: 1;
+        min-width: 0;
+      }
+      .subject-row h3 {
+        font-size: 20px;
+        letter-spacing: -0.02em;
+      }
+      .subject-row .meta {
+        margin-top: 3px;
+      }
+      .subject-row .directional {
+        color: var(--blue);
+        transition: translate var(--state) var(--ease);
+      }
+      .subject-row:hover .directional {
+        translate: 3px 0;
+      }
+      [dir="rtl"] .subject-row:hover .directional {
+        translate: -3px 0;
+      }
+      .folio-mark {
+        height: 48px;
+        width: 38px;
+        flex: 0 0 38px;
+        border: 1px solid var(--control);
+        border-radius: 2px 5px 5px 2px;
+        position: relative;
+        background: var(--paper);
+      }
+      .folio-mark::before {
+        content: "";
+        position: absolute;
+        inset-inline-start: 7px;
+        inset-block: 0;
+        border-inline-start: 1px solid var(--line);
+      }
+      .folio-mark::after {
+        content: "";
+        position: absolute;
+        inset-block-start: 0;
+        inset-inline-end: 7px;
+        width: 7px;
+        height: 19px;
+        background: var(--blue);
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 76%, 0 100%);
+      }
+      .orientation {
+        padding-top: 64px;
+      }
+      .orientation h2 {
+        font-size: 20px;
+        margin-bottom: 14px;
+      }
+      .orientation .folio-emblem {
+        width: 148px;
+        height: 116px;
+        margin-bottom: 18px;
+        color: var(--blue);
+      }
+      .orientation p {
+        color: var(--secondary);
+        font-size: 14px;
+        line-height: 1.75;
+        margin-top: 12px;
+      }
+      .context-note {
+        margin-top: 22px;
+        border-top: 1px solid var(--line);
+        padding-top: 18px;
+      }
+      .context-note strong {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 5px;
+      }
+      .unithead {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 18px;
+      }
+      .unithead h1 {
+        font-size: 26px;
+        letter-spacing: -0.02em;
+      }
+      .unithead .meta {
+        margin-top: 4px;
+      }
+      .breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 14px;
+        font-size: 13px;
+        color: var(--secondary);
+      }
+      .breadcrumb button {
+        font-size: 13px;
+        min-height: 32px;
+        padding: 0 4px;
+      }
+      .tabs {
+        display: flex;
+        gap: 26px;
+        border-bottom: 1px solid var(--line);
+        margin-bottom: 24px;
+        min-height: 45px;
+      }
+      .tabs button {
+        border: 0;
+        background: none;
+        color: var(--secondary);
+        padding: 8px 0 14px;
+        font-size: 14px;
+        font-weight: 600;
+        position: relative;
+        white-space: nowrap;
+      }
+      .tabs button[aria-current="page"] {
+        color: var(--blue);
+        font-weight: 750;
+      }
+      .tabs button[aria-current="page"]::after {
+        content: "";
+        position: absolute;
+        inset-inline: 0;
+        bottom: -1px;
+        height: 2px;
+        background: var(--blue);
+      }
+      .workspace {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 276px;
+        gap: 24px;
+        align-items: start;
+      }
+      .chat-work {
+        height: calc(100dvh - var(--toolbar) - 215px);
+        min-height: 365px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .thread-head {
+        padding: 16px 22px;
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .thread-head h2 {
+        font-size: 18px;
+      }
+      .thread {
+        flex: 1;
+        min-height: 0;
+        overflow: auto;
+        padding: 26px 30px;
+      }
+      .reading-empty {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        max-width: 60ch;
+      }
+      .reading-empty .icon {
+        width: 36px;
+        height: 36px;
+        color: var(--blue);
+        margin-bottom: 16px;
+      }
+      .reading-empty h2 {
+        font-size: 26px;
+        margin-bottom: 12px;
+      }
+      .reading-empty p {
+        color: var(--secondary);
+        max-width: 47ch;
+        line-height: 1.75;
+      }
+      .suggestion {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-align: start;
+        border: 0;
+        border-bottom: 1px solid var(--line);
+        background: none;
+        color: var(--blue);
+        padding: 12px 0;
+        font-size: 14px;
+        min-height: 44px;
+      }
+      .prompts {
+        margin-top: 20px;
+      }
+      .composer {
+        margin: 0 22px 18px;
+        border: 1px solid var(--control);
+        border-radius: 10px;
+        background: var(--paper);
+        padding: 10px;
+        display: flex;
+        align-items: flex-end;
+        gap: 12px;
+      }
+      .composer textarea {
+        border: 0;
+        outline-offset: 0;
+        min-height: 65px;
+        height: 65px;
+        resize: none;
+        padding: 7px 5px;
+        flex: 1;
+      }
+      .composer .btn {
+        flex: 0 0 auto;
+      }
+      .chat-foot {
+        margin: 0 22px 14px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .question {
+        padding: 12px 16px;
+        background: var(--subtle);
+        border-radius: 8px;
+        margin-bottom: 24px;
+        max-width: 85%;
+        margin-inline-start: auto;
+        font-size: 14px;
+      }
+      .answer {
+        font-size: 16px;
+        line-height: 1.8;
+        max-width: 66ch;
+      }
+      .answer h3 {
+        margin-bottom: 10px;
+        font-size: 19px;
+      }
+      .answer .tag {
+        margin-bottom: 10px;
+      }
+      .citation {
+        display: inline-flex;
+        gap: 7px;
+        align-items: center;
+        border: 0;
+        background: var(--blue-soft);
+        color: var(--blue-ink);
+        padding: 6px 9px;
+        border-radius: 4px;
+        min-height: 36px;
+        font-size: 13px;
+        font-weight: 650;
+        margin-top: 14px;
+      }
+      .citation:hover {
+        background: var(--hover);
+      }
+      .margin-panel {
+        border-top: 2px solid var(--blue);
+        background: var(--annotation);
+        padding: 22px 20px;
+        min-height: 270px;
+      }
+      .margin-panel h2 {
+        font-size: 17px;
+      }
+      .margin-panel h3 {
+        margin-top: 26px;
+      }
+      .margin-panel p {
+        font-size: 14px;
+        color: var(--secondary);
+        margin-top: 12px;
+      }
+      .margin-panel blockquote {
+        font-size: 15px;
+        line-height: 1.8;
+        margin: 18px 0 0;
+      }
+      .margin-panel .source-rule {
+        height: 1px;
+        background: var(--line);
+        margin: 20px 0;
+      }
+      .source-inspector {
+        animation: source-reveal var(--signature) var(--ease);
+      }
+      .source-quote {
+        background: var(--blue-soft);
+        padding: 12px;
+        border-radius: 4px;
+        animation: annotation-arrive 450ms var(--ease);
+      }
+      .source-inspector :focus-visible {
+        outline: 3px solid var(--blue);
+      }
+      .work-title {
+        margin-bottom: 20px;
+      }
+      .studio-grid {
+        display: grid;
+        grid-template-columns: 300px minmax(0, 1fr);
+        gap: 28px;
+      }
+      .config {
+        display: grid;
+        gap: 18px;
+        padding: 24px;
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+      }
+      .config h2 {
+        font-size: 19px;
+      }
+      .config details {
+        border-top: 1px solid var(--line);
+        padding-top: 14px;
+      }
+      .config summary {
+        font-size: 14px;
+        color: var(--blue);
+        cursor: pointer;
+        min-height: 32px;
+      }
+      .config details .stack {
+        margin-top: 14px;
+      }
+      .result {
+        min-height: 430px;
+      }
+      .result.empty .paper-body {
+        min-height: 350px;
+        display: flex;
+        align-items: center;
+      }
+      .result .reading-empty {
+        height: auto;
+      }
+      .result-content {
+        animation: result-arrive 280ms var(--ease);
+      }
+      .source-footer {
+        border-top: 1px solid var(--line);
+        padding: 14px 24px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .flashcard {
+        min-height: 220px;
+        width: 100%;
+        background: var(--paper);
+        border: 1px solid var(--control);
+        border-radius: 10px;
+        padding: 28px;
+        text-align: start;
+        color: var(--ink);
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        justify-content: center;
+      }
+      .flashcard strong {
+        font-size: 25px;
+        font-weight: 650;
+      }
+      .flashcard.flip .card-copy {
+        animation: card-turn 240ms var(--ease);
+      }
+      .flashcard .meta {
+        margin-top: 6px;
+      }
+      .busy-line {
+        height: 3px;
+        background: var(--line);
+        position: relative;
+        overflow: hidden;
+        margin-block: 20px;
+      }
+      .busy-line::after {
+        content: "";
+        width: 30%;
+        height: 100%;
+        position: absolute;
+        background: var(--blue);
+        animation: busy-pass 1200ms ease-in-out 2;
+      }
+      .placeholder-lines {
+        display: grid;
+        gap: 13px;
+        max-width: 410px;
+      }
+      .placeholder-lines span {
+        display: block;
+        background: var(--subtle);
+        height: 12px;
+        border-radius: 3px;
+      }
+      .placeholder-lines span:nth-child(2) {
+        width: 83%;
+      }
+      .placeholder-lines span:nth-child(3) {
+        width: 68%;
+      }
+      .intake-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 320px;
+        gap: 32px;
+      }
+      .deadline {
+        background: var(--annotation);
+        padding: 22px 24px;
+        display: grid;
+        gap: 6px;
+        border-radius: 8px;
+        margin-top: 22px;
+      }
+      .deadline strong {
+        font-size: 24px;
+        letter-spacing: -0.02em;
+      }
+      .deadline .meta {
+        font-size: 13px;
+      }
+      .request-list {
+        list-style: none;
+        padding: 0;
+        margin: 8px 0 0;
+        border-top: 1px solid var(--line);
+      }
+      .request-list li {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        padding: 14px 0;
+        border-bottom: 1px solid var(--line);
+        font-size: 14px;
+      }
+      .request-list .icon {
+        color: var(--secondary);
+      }
+      .queue-empty {
+        min-height: 250px;
+        display: grid;
+        place-content: center;
+        padding: 24px;
+        text-align: center;
+        gap: 12px;
+      }
+      .queue-empty .icon {
+        margin: auto;
+        width: 32px;
+        height: 32px;
+        color: var(--blue);
+      }
+      .upload-head {
+        margin-bottom: 18px;
+      }
+      .file-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 18px;
+        margin-bottom: 18px;
+      }
+      .file-row .icon {
+        width: 28px;
+        height: 28px;
+        color: var(--blue);
+      }
+      .receipt-ledger {
+        list-style: none;
+        margin: 22px 0 0;
+        padding: 0;
+        border-top: 1px solid var(--line);
+      }
+      .receipt-ledger li {
+        display: flex;
+        gap: 10px;
+        padding: 13px 0;
+        border-bottom: 1px solid var(--line);
+        align-items: center;
+        font-size: 14px;
+      }
+      .receipt-ledger .icon {
+        color: var(--good);
+      }
+      .admin-heading h1 {
+        font-size: 30px;
+      }
+      .queue-grid {
+        display: grid;
+        grid-template-columns: 310px minmax(0, 1fr);
+        gap: 28px;
+      }
+      .queue-filter {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-block: 16px;
+      }
+      .filter {
+        border: 1px solid var(--line);
+        border-radius: 5px;
+        padding: 7px 10px;
+        min-height: 38px;
+        background: var(--paper);
+        color: var(--secondary);
+        font-size: 13px;
+      }
+      .filter[aria-pressed="true"] {
+        background: var(--blue-soft);
+        color: var(--blue-ink);
+        border-color: var(--blue);
+      }
+      .queue-row {
+        width: 100%;
+        background: none;
+        text-align: start;
+        color: var(--ink);
+        border: 0;
+        border-bottom: 1px solid var(--line);
+        padding: 15px 12px;
+        display: grid;
+        gap: 4px;
+        transition: background var(--fast);
+        border-radius: 0;
+      }
+      .queue-row strong {
+        font-size: 14px;
+      }
+      .queue-row:hover {
+        background: var(--subtle);
+      }
+      .queue-row.selected {
+        background: var(--blue-soft);
+      }
+      .queue-row .meta {
+        font-size: 12px;
+      }
+      .queue-list {
+        border-top: 1px solid var(--line);
+      }
+      .detail .paper-head h2 {
+        font-size: 24px;
+      }
+      .detail .paper-body {
+        display: grid;
+        gap: 20px;
+      }
+      .state-pair {
+        display: grid;
+        grid-template-columns: 1fr 24px 1fr;
+        gap: 12px;
+        align-items: center;
+        padding-block: 4px;
+      }
+      .state-pair .icon {
+        color: var(--muted);
+      }
+      .state-value {
+        display: grid;
+        gap: 8px;
+      }
+      .state-value strong {
+        font-size: 18px;
+        font-weight: 650;
+      }
+      .state-value.proposed strong {
+        color: var(--blue);
+      }
+      .consequence {
+        padding: 16px 0;
+        border-block: 1px solid var(--line);
+        font-size: 15px;
+        line-height: 1.75;
+      }
+      .decision-context {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 13px;
+        gap: 12px;
+        color: var(--muted);
+      }
+      .decision-empty {
+        min-height: 460px;
+        display: flex;
+        align-items: center;
+        padding: 32px;
+      }
+      .decision-empty .reading-empty {
+        height: auto;
+      }
+      .back-queue {
+        display: none;
+      }
+      .settings-grid {
+        display: grid;
+        grid-template-columns: 190px minmax(0, 1fr);
+        gap: 32px;
+        max-width: 960px;
+      }
+      .settings-nav {
+        display: grid;
+        gap: 6px;
+        align-content: start;
+      }
+      .settings-nav button {
+        font-size: 14px;
+        text-align: start;
+        background: none;
+        border: 0;
+        min-height: 44px;
+        padding: 8px 12px;
+        border-radius: 5px;
+        color: var(--secondary);
+      }
+      .settings-nav button.active {
+        background: var(--blue-soft);
+        color: var(--blue-ink);
+        font-weight: 650;
+      }
+      .settings-section {
+        padding: 24px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .settings-section:first-child {
+        padding-top: 0;
+      }
+      .settings-section h2 {
+        font-size: 20px;
+        margin-bottom: 10px;
+      }
+      .settings-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 235px;
+        gap: 28px;
+        align-items: center;
+        margin-top: 22px;
+      }
+      .settings-row h3 {
+        font-size: 14px;
+      }
+      .settings-row p {
+        font-size: 13px;
+        color: var(--muted);
+        margin-top: 4px;
+      }
+      .specimen-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 28px;
+      }
+      .specimen {
+        padding: 24px;
+        border-block-start: 1px solid var(--line);
+        display: grid;
+        gap: 18px;
+        align-content: start;
+      }
+      .specimen h2 {
+        font-size: 20px;
+      }
+      .specimen .reading-empty {
+        height: auto;
+      }
+      .specimen .reading-empty h2 {
+        font-size: 20px;
+      }
+      .specimen .busy-line {
+        margin-block: 8px;
+      }
+      .feedback {
+        animation: feedback-arrive var(--state) var(--ease);
+      }
+      .toast {
+        position: fixed;
+        inset-inline-end: 26px;
+        inset-block-end: 24px;
+        max-width: 400px;
+        z-index: 20;
+        background: var(--paper);
+        border: 1px solid var(--control);
+        box-shadow: var(--shadow);
+        padding: 15px 18px;
+        border-radius: 8px;
+        font-size: 14px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        animation: feedback-arrive var(--state) var(--ease);
+      }
+      .toast .icon {
+        color: var(--good);
+      }
+      dialog {
+        background: var(--paper);
+        color: var(--ink);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        padding: 0;
+        width: min(580px, calc(100% - 32px));
+        max-height: calc(100dvh - 40px);
+        overflow: auto;
+        animation: dialog-enter var(--state) var(--ease);
+      }
+      dialog::backdrop {
+        background: #101b2b77;
+      }
+      dialog header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 24px;
+        border-bottom: 1px solid var(--line);
+        gap: 16px;
+      }
+      dialog header h2 {
+        font-size: 21px;
+      }
+      dialog .dialog-body {
+        padding: 24px;
+        display: grid;
+        gap: 18px;
+      }
+      dialog footer {
+        border-top: 1px solid var(--line);
+        padding: 18px 24px;
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+      .mobile-sources {
+        display: none;
+      }
+      .only-wide {
+        display: block;
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+      }
+      @keyframes source-reveal {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @keyframes annotation-arrive {
+        from {
+          background: var(--paper);
+        }
+        to {
+          background: var(--blue-soft);
+        }
+      }
+      @keyframes result-arrive {
+        from {
+          opacity: 0;
+          transform: translateY(7px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @keyframes card-turn {
+        from {
+          opacity: 0.2;
+          transform: rotateX(15deg);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @keyframes feedback-arrive {
+        from {
+          opacity: 0;
+          transform: translateY(4px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @keyframes dialog-enter {
+        from {
+          opacity: 0;
+          transform: translateY(6px) scale(0.985);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @keyframes busy-pass {
+        0% {
+          transform: translateX(-100%);
+        }
+        100% {
+          transform: translateX(440%);
+        }
+      }
+      @media (min-width: 1550px) {
+        .main {
+          padding-inline: 64px;
+        }
+      }
+      @media (max-width: 1100px) {
+        .main {
+          padding: 28px;
+        }
+        .collection {
+          grid-template-columns: minmax(0, 1fr) 225px;
+          gap: 28px;
+        }
+        .workspace {
+          grid-template-columns: minmax(0, 1fr) 230px;
+          gap: 20px;
+        }
+        .studio-grid {
+          grid-template-columns: 260px minmax(0, 1fr);
+          gap: 20px;
+        }
+        .intake-grid {
+          grid-template-columns: minmax(0, 1fr) 260px;
+          gap: 24px;
+        }
+        .queue-grid {
+          grid-template-columns: 275px minmax(0, 1fr);
+          gap: 20px;
+        }
+        .reviewbar {
+          gap: 8px;
+          padding-inline: 12px;
+        }
+        .reviewcontrols label span {
+          display: none;
+        }
+      }
+      @media (max-width: 900px) {
+        .shell {
+          grid-template-columns: 72px minmax(0, 1fr);
+        }
+        .spine {
+          padding: 24px 12px;
+          gap: 28px;
+        }
+        .spine .brand img {
+          width: 48px;
+          object-fit: cover;
+          object-position: left;
+          height: 40px;
+        }
+        .spine .navlink {
+          padding: 10px 13px;
+          justify-content: center;
+        }
+        .spine .navlink span,
+        .spine .identity .identity-copy,
+        .spine .wordmark {
+          display: none;
+        }
+        .navlink.active::after {
+          inset-inline-end: -12px;
+        }
+        .identity .inline {
+          justify-content: center;
+        }
+        .collection {
+          grid-template-columns: minmax(0, 1fr) 210px;
+          gap: 24px;
+        }
+        .workspace {
+          grid-template-columns: minmax(0, 1fr);
+        }
+        .margin-panel {
+          display: none;
+        }
+        .mobile-sources {
+          display: inline-flex;
+        }
+        .studio-grid {
+          grid-template-columns: 245px minmax(0, 1fr);
+        }
+        .intake-grid {
+          grid-template-columns: minmax(0, 1fr) 230px;
+        }
+        .queue-grid {
+          grid-template-columns: 250px minmax(0, 1fr);
+        }
+        .settings-grid {
+          grid-template-columns: 150px minmax(0, 1fr);
+          gap: 24px;
+        }
+        .settings-row {
+          grid-template-columns: 1fr 190px;
+        }
+        .reviewtitle small {
+          display: none;
+        }
+        .reviewcontrols select {
+          max-width: 140px;
+        }
+        .reviewcontrols {
+          gap: 5px;
+        }
+        .chat-work {
+          height: calc(100dvh - var(--toolbar) - 209px);
+        }
+      }
+      @media (max-width: 600px) {
+        :root {
+          --toolbar: 100px;
+        }
+        body {
+          font-size: 14px;
+        }
+        .reviewbar {
+          height: var(--toolbar);
+          display: block;
+          padding: 8px 12px;
+        }
+        .reviewtitle {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 8px;
+          font-size: 11px;
+        }
+        .reviewtitle strong {
+          font-size: 13px;
+        }
+        .reviewtitle small {
+          display: block;
+          font-size: 11px;
+        }
+        .reviewcontrols {
+          display: grid;
+          grid-template-columns: 1.4fr 0.9fr 0.9fr 0.9fr;
+          gap: 5px;
+        }
+        .reviewcontrols select {
+          width: 100%;
+          max-width: none;
+          min-height: 35px;
+          padding: 5px 17px 5px 7px;
+          font-size: 11px;
+        }
+        .reviewcontrols label {
+          min-width: 0;
+        }
+        .reviewcontrols label span {
+          display: none;
+        }
+        .shell {
+          display: block;
+          height: calc(100dvh - var(--toolbar));
+          padding-top: 52px;
+          padding-bottom: 60px;
+        }
+        .spine {
+          display: none;
+        }
+        .mobilebar {
+          display: flex;
+          position: absolute;
+          top: var(--toolbar);
+          inset-inline: 0;
+          height: 52px;
+          background: var(--spine);
+          color: var(--spine-ink);
+          align-items: center;
+          justify-content: space-between;
+          padding: 6px 16px;
+          z-index: 3;
+        }
+        .mobilebar img {
+          width: 119px;
+          height: 32px;
+          object-fit: contain;
+          object-position: left;
+        }
+        .mobilebar .btn {
+          color: var(--spine-ink);
+          min-height: 40px;
+          width: 40px;
+          padding: 8px;
+        }
+        .mobilebar .role-label {
+          font-size: 12px;
+          color: var(--spine-muted);
+          margin-inline-start: auto;
+          margin-inline-end: 10px;
+        }
+        .bottomnav {
+          display: flex;
+          position: fixed;
+          bottom: 0;
+          inset-inline: 0;
+          height: 60px;
+          background: var(--paper);
+          border-top: 1px solid var(--line);
+          justify-content: space-around;
+          align-items: center;
+          z-index: 3;
+          padding-bottom: env(safe-area-inset-bottom);
+        }
+        .bottomnav button {
+          border: 0;
+          background: none;
+          color: var(--secondary);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 7px;
+          min-height: 46px;
+          min-width: 88px;
+          font-size: 12px;
+        }
+        .bottomnav button.active {
+          color: var(--blue);
+          font-weight: 750;
+        }
+        .main {
+          padding: 22px 18px 28px;
+          height: 100%;
+          scrollbar-gutter: auto;
+        }
+        h1 {
+          font-size: 28px;
+        }
+        .page-heading {
+          margin-bottom: 24px;
+        }
+        .page-heading .muted {
+          font-size: 14px;
+          line-height: 1.7;
+        }
+        .collection {
+          display: block;
+        }
+        .collection-main .spread {
+          display: grid;
+          gap: 12px;
+        }
+        .search {
+          max-width: none;
+          width: 100%;
+        }
+        .subject-row {
+          min-height: 91px;
+          gap: 16px;
+          padding: 15px 2px;
+        }
+        .subject-row h3 {
+          font-size: 18px;
+        }
+        .subject-row .tag {
+          font-size: 12px;
+        }
+        .folio-mark {
+          width: 31px;
+          height: 41px;
+          flex-basis: 31px;
+        }
+        .orientation {
+          padding-top: 28px;
+        }
+        .orientation .folio-emblem {
+          display: none;
+        }
+        .orientation h2 {
+          font-size: 18px;
+        }
+        .orientation p {
+          margin-top: 10px;
+        }
+        .unithead {
+          margin-bottom: 12px;
+        }
+        .unithead h1 {
+          font-size: 22px;
+        }
+        .unithead .btn {
+          padding: 8px 10px;
+          font-size: 12px;
+        }
+        .unithead .meta {
+          font-size: 12px;
+        }
+        .breadcrumb {
+          margin-bottom: 8px;
+        }
+        .tabs {
+          gap: 20px;
+          min-height: 43px;
+          margin-bottom: 16px;
+        }
+        .tabs button {
+          font-size: 13px;
+        }
+        .workspace {
+          gap: 0;
+        }
+        .chat-work {
+          height: calc(100dvh - var(--toolbar) - 282px);
+          min-height: 280px;
+          border-radius: 8px;
+        }
+        .thread-head {
+          padding: 10px 14px;
+        }
+        .thread-head h2 {
+          font-size: 16px;
+        }
+        .thread-head .btn {
+          min-height: 36px;
+          padding: 7px;
+          font-size: 12px;
+        }
+        .thread {
+          padding: 18px;
+        }
+        .reading-empty h2 {
+          font-size: 21px;
+          margin-bottom: 8px;
+        }
+        .reading-empty p {
+          font-size: 14px;
+          line-height: 1.7;
+        }
+        .reading-empty .icon {
+          margin-bottom: 10px;
+          width: 28px;
+          height: 28px;
+        }
+        .prompts {
+          margin-top: 10px;
+        }
+        .suggestion {
+          font-size: 12px;
+          padding: 7px 0;
+          min-height: 38px;
+        }
+        .composer {
+          margin: 0 10px 10px;
+          padding: 6px;
+          gap: 6px;
+        }
+        .composer textarea {
+          height: 61px;
+          min-height: 61px;
+          font-size: 14px;
+        }
+        .composer .btn {
+          padding: 9px;
+          min-height: 44px;
+          font-size: 12px;
+        }
+        .composer .btn .icon {
+          width: 18px;
+          height: 18px;
+          flex-basis: 18px;
+        }
+        .chat-foot {
+          font-size: 11px;
+          margin: 0 12px 10px;
+        }
+        .question {
+          font-size: 13px;
+          max-width: 95%;
+          margin-bottom: 16px;
+        }
+        .answer {
+          font-size: 15px;
+        }
+        .answer h3 {
+          font-size: 17px;
+        }
+        .studio-grid,
+        .intake-grid {
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
+        }
+        .config,
+        .intake-grid > aside,
+        .intake-grid > section {
+          width: 100%;
+        }
+        .config {
+          padding: 18px;
+          gap: 14px;
+        }
+        .config .btn {
+          width: 100%;
+        }
+        .result {
+          width: 100%;
+          min-height: 290px;
+        }
+        .result.empty .paper-body {
+          min-height: 240px;
+        }
+        .paper-head {
+          padding: 15px 18px;
+        }
+        .paper-body {
+          padding: 18px;
+        }
+        .source-footer {
+          padding: 12px 18px;
+        }
+        .flashcard {
+          min-height: 200px;
+          padding: 22px;
+        }
+        .flashcard strong {
+          font-size: 22px;
+        }
+        .work-title {
+          margin-bottom: 18px;
+        }
+        .work-title h2 {
+          font-size: 22px;
+        }
+        .intake-grid > aside {
+          order: -1;
+        }
+        .deadline {
+          padding: 16px 18px;
+          margin-top: 16px;
+        }
+        .deadline strong {
+          font-size: 23px;
+        }
+        .request-list {
+          display: none;
+        }
+        .intake-requests[open] .request-list {
+          display: block;
+        }
+        .intake-requests summary {
+          color: var(--blue);
+          font-size: 14px;
+          min-height: 44px;
+          padding: 12px 0;
+          cursor: pointer;
+        }
+        .intake-requests {
+          margin-top: 14px;
+        }
+        .queue-empty {
+          min-height: 180px;
+        }
+        .upload-head {
+          margin-bottom: 14px;
+        }
+        .admin-heading h1 {
+          font-size: 27px;
+        }
+        .queue-grid {
+          display: block;
+        }
+        .queue-grid.has-selection .queue-column {
+          display: none;
+        }
+        .queue-grid:not(.has-selection) .detail-column {
+          display: none;
+        }
+        .back-queue {
+          display: inline-flex;
+          margin-bottom: 14px;
+        }
+        .detail .paper-head h2 {
+          font-size: 21px;
+        }
+        .state-pair {
+          grid-template-columns: 1fr 20px 1fr;
+          gap: 8px;
+        }
+        .state-value strong {
+          font-size: 16px;
+        }
+        .decision-context {
+          align-items: flex-start;
+        }
+        .settings-grid {
+          display: block;
+        }
+        .settings-nav {
+          display: flex;
+          overflow: auto;
+          margin-bottom: 24px;
+          padding-bottom: 8px;
+          gap: 8px;
+        }
+        .settings-nav button {
+          white-space: nowrap;
+        }
+        .settings-row {
+          grid-template-columns: 1fr;
+          gap: 10px;
+        }
+        .specimen-grid {
+          grid-template-columns: 1fr;
+          gap: 4px;
+        }
+        .specimen {
+          padding: 22px 0;
+        }
+        .toast {
+          inset-inline: 18px;
+          bottom: 75px;
+          max-width: none;
+          font-size: 13px;
+        }
+        dialog {
+          width: calc(100% - 24px);
+          max-height: calc(100dvh - 32px);
+          border-radius: 10px;
+        }
+        dialog header,
+        dialog .dialog-body,
+        dialog footer {
+          padding: 18px;
+        }
+        dialog footer {
+          flex-wrap: wrap;
+        }
+        .only-wide {
+          display: none;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation: none !important;
+          transition: none !important;
+          scroll-behavior: auto !important;
+        }
+        .subject-row:hover .directional {
+          translate: none;
+        }
+        .btn:active {
+          transform: none;
+        }
+        .busy-line::after {
+          animation: none;
+          width: 100%;
+          opacity: 0.35;
+        }
+      }
+      [data-motion="reduced"] *,
+      [data-motion="reduced"] *::before,
+      [data-motion="reduced"] *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+      [data-motion="reduced"] .subject-row:hover .directional {
+        translate: none;
+      }
+      [data-motion="reduced"] .btn:active {
+        transform: none;
+      }
+      [data-motion="reduced"] .busy-line::after {
+        animation: none;
+        width: 100%;
+        opacity: 0.35;
+      }
+
+      .sr-only {
+        inset-block-start: 0;
+        inset-inline-start: 0;
+      }
+      /* Final bounded-review corrections: containment, action placement and identity. */
+      html,
+      body {
+        height: 100%;
+        overflow: hidden;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      .reviewtitle strong {
+        margin-inline-end: 10px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--spine-ink);
+        font-size: 23px;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+      }
+      .brand:hover {
+        text-decoration: none;
+      }
+      .brand img {
+        width: 34px;
+        height: 40px;
+        object-fit: contain;
+      }
+      .mobilebar .mobile-brand {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        font-size: 19px;
+        font-weight: 700;
+      }
+      .mobilebar img {
+        width: 28px;
+        height: 32px;
+        object-fit: contain;
+      }
+      dialog .navlink {
+        color: var(--ink);
+        background: transparent;
+      }
+      dialog .navlink:hover,
+      dialog .navlink.active {
+        color: var(--blue);
+        background: var(--blue-soft);
+      }
+      dialog .navlink.active::after {
+        display: none;
+      }
+      dialog.closing {
+        animation: dialog-exit 140ms ease-in forwards;
+      }
+      [data-screen="chat"] .page {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      [data-screen="chat"] .breadcrumb,
+      [data-screen="chat"] .unithead,
+      [data-screen="chat"] .tabs {
+        flex: 0 0 auto;
+      }
+      [data-screen="chat"] .workspace {
+        flex: 1;
+        min-height: 0;
+        grid-template-rows: minmax(0, 1fr);
+      }
+      [data-screen="chat"] .chat-work {
+        height: 100%;
+        min-height: 0;
+      }
+      .source-inspector {
+        animation: none;
+      }
+      .source-inspector.reveal {
+        animation: source-reveal var(--signature) var(--ease);
+      }
+      .source-quote {
+        animation: none;
+      }
+      .source-inspector.reveal .source-quote {
+        animation: annotation-arrive 450ms var(--ease);
+      }
+      .config {
+        gap: 14px;
+      }
+      .config .field {
+        gap: 6px;
+      }
+      @keyframes dialog-exit {
+        to {
+          opacity: 0;
+          transform: translateY(4px) scale(0.99);
+        }
+      }
+      @media (max-width: 900px) {
+        .spine .brand img {
+          width: 34px;
+          height: 40px;
+          object-fit: contain;
+        }
+        .spine .brand .brand-name {
+          display: none;
+        }
+        .brand {
+          justify-content: center;
+        }
+      }
+      @media (max-width: 600px) {
+        .reviewbar {
+          direction: ltr;
+        }
+        .studio-grid .config {
+          gap: 12px;
+        }
+        .intake-grid > .intake-context > h2 {
+          display: none;
+        }
+        .intake-grid .deadline {
+          margin-top: 0;
+          padding: 16px;
+        }
+        .intake-context > .help {
+          display: none;
+        }
+        .intake-requests {
+          margin-top: 2px;
+        }
+        .queue-empty {
+          min-height: 140px;
+          padding: 12px;
+          gap: 8px;
+        }
+        .intake-grid .paper-body {
+          padding: 14px;
+        }
+        .intake-grid .queue-empty .icon {
+          display: none;
+        }
+        .intake-grid .queue-empty h3 {
+          font-size: 15px;
+        }
+        .intake-grid .queue-empty p {
+          font-size: 12px;
+        }
+        .page-heading.admin-heading .spread {
+          align-items: flex-start;
+        }
+        .page-heading.admin-heading h1 {
+          font-size: 25px;
+        }
+        .page-heading.admin-heading .pill {
+          max-width: 110px;
+          font-size: 11px;
+        }
+      }
+      @media (max-width: 600px) {
+        [data-screen="studio"] .breadcrumb {
+          display: none;
+        }
+      }
+      @media (max-width: 600px) {
+        .subject-row {
+          min-height: 78px;
+          padding-block: 12px;
+        }
+        .intake-requests[open] .request-list {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 0 12px;
+        }
+        .intake-requests .request-list li {
+          padding: 6px 0;
+          font-size: 12px;
+          gap: 6px;
+        }
+        .intake-requests .request-list .icon {
+          width: 16px;
+          height: 16px;
+          flex-basis: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- THESIS: Open Folio reading and annotation, an expansion of UniMind's supplied identity.
+OWN-WORLD: Dark navigation spine; neutral reading paper; blue annotation margin; Manrope/Noto Arabic; coordinated SVG controls.
+STORY: Find a unit, study against its sources, produce a bounded artifact, or review an exact operational change.
+FIRST VIEWPORT: A 192px navigation spine, contextual unit tabs, bounded reading workspace and a visible primary action. Mobile uses an identity bar and task navigation.
+FORM: Existing brief-pinned Folio direction, refined; no replacement-world seed. All data and outcomes are synthetic.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance. For this unapproved proposal the design contract is design-system.md; canonical DESIGN.md is read-only. -->
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="reviewbar" aria-label="Design review controls">
+      <div class="reviewtitle">
+        <strong>Open Folio · refinement</strong
+        ><small>Proposal · synthetic · no services</small>
+      </div>
+      <div class="reviewcontrols">
+        <label
+          ><span>Screen</span
+          ><select id="screen" aria-label="Review screen">
+            <option value="shelf">Subjects</option>
+            <option value="chat">Chat</option>
+            <option value="studio">Studio</option>
+            <option value="intake">Intake</option>
+            <option value="admin">Decisions</option>
+            <option value="account">Account</option>
+            <option value="states">State library</option>
+          </select></label
+        >
+        <label
+          ><span>Theme</span
+          ><select id="theme" aria-label="Review theme">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select></label
+        >
+        <label
+          ><span>Locale</span
+          ><select id="locale" aria-label="Review locale">
+            <option value="en">English</option>
+            <option value="ar">العربية</option>
+          </select></label
+        >
+        <label
+          ><span>Motion</span
+          ><select id="motion" aria-label="Review motion">
+            <option value="full">Full</option>
+            <option value="reduced">Reduced</option>
+          </select></label
+        >
+      </div>
+    </header>
+    <div id="root"></div>
+    <dialog id="dialog" aria-labelledby="dialog-title"></dialog>
+    <div
+      id="announcement"
+      class="sr-only"
+      role="status"
+      aria-live="polite"
+    ></div>
+    <script>
+      const $ = (s) => document.querySelector(s);
+      const initial = new URLSearchParams(location.search);
+      const state = {
+        screen: initial.get("screen") || "shelf",
+        theme: initial.get("theme") || "light",
+        locale: initial.get("locale") || "en",
+        motion: initial.get("motion") || "full",
+        role: initial.get("role") || "student",
+        chat: "empty",
+        question: "",
+        cardBack: false,
+        studio: "empty",
+        type: "summary",
+        output: "en",
+        topic: "Study sequence",
+        intake: "empty",
+        rights: false,
+        filter: "all",
+        selected: null,
+        sourceOpen: false,
+        depth: "concise",
+        size: "short",
+        sourceTitle: "Synthetic anatomy handout",
+        sourceDescription: "Synthetic teaching fixture",
+        reason: "",
+        section: "appearance",
+        epoch: 0,
+      };
+      const T = (en, ar) => (state.locale === "ar" ? ar : en);
+      const esc = (x) =>
+        String(x).replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[c],
+        );
+      const paths = {
+        book: "M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-2H4z M20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-2h3z",
+        shelf: "M4 4v16h16 M8 5v11h3V5z M14 6l3-1 3 10-3 1z",
+        chat: "M4 4h16v12H9l-5 4z M8 8h8 M8 12h5",
+        studio: "M4 5h16v14H4z M8 9h8 M8 13h4 M16 16v5 M13.5 18.5h5",
+        quiz: "M5 3h14v18H5z M9 8l1.5 1.5L14 6 M9 14h6 M9 17h4",
+        arrow: "M5 12h14 M14 7l5 5-5 5",
+        back: "M19 12H5 M10 7l-5 5 5 5",
+        file: "M6 3h8l4 4v14H6z M14 3v5h4 M9 12h6 M9 16h4",
+        user: "M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0 M4 21v-2a8 8 0 0 1 16 0v2",
+        search: "M16 10a6 6 0 1 1-12 0 6 6 0 0 1 12 0 M14.5 14.5L21 21",
+        check: "M5 12l4 4L19 6",
+        close: "M6 6l12 12 M18 6L6 18",
+        clock: "M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0 M12 6v6l4 2",
+        upload: "M12 16V3 M7 8l5-5 5 5 M4 15v6h16v-6",
+        shield: "M12 3l8 3v6c0 5-8 9-8 9s-8-4-8-9V6z M8 12l3 3 5-6",
+        menu: "M4 6h16 M4 12h16 M4 18h16",
+        info: "M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0 M12 10v6 M12 7h.01",
+        alert: "M12 3L2 21h20z M12 9v5 M12 17h.01",
+        settings: "M4 7h16 M4 17h16 M8 4v6 M16 14v6",
+        sun: "M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0 M12 2v2 M12 20v2 M2 12h2 M20 12h2 M5 5l1 1 M18 18l1 1 M5 19l1-1 M18 6l1-1",
+        globe:
+          "M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0 M3 12h18 M12 3c5 6 5 12 0 18-5-6-5-12 0-18",
+        pause: "M8 4v16 M16 4v16",
+      };
+      const I = (name, extra = "") =>
+        `<svg viewBox="0 0 24 24" class="icon ${extra}" aria-hidden="true"><path d="${paths[name] || paths.info}"/></svg>`;
+      const B = (text, action, variant = "", icon = "", extra = "") =>
+        `<button ${extra.includes('type="submit"') ? "" : 'type="button"'} class="btn ${variant}" data-action="${action}" ${extra}>${icon ? I(icon, icon === "arrow" || icon === "back" ? "directional" : "") : ""}${text}</button>`;
+      const notice = (kind, title, body) =>
+        `<div class="notice ${kind} feedback" role="${kind === "error" ? "alert" : "status"}">${I(kind === "success" ? "check" : kind === "error" ? "alert" : "info")}<div><strong>${title}</strong>${body ? `<p>${body}</p>` : ""}</div></div>`;
+      const role = () =>
+        state.screen === "intake"
+          ? "leader"
+          : state.screen === "admin"
+            ? state.role === "second-admin"
+              ? "second-admin"
+              : "admin"
+            : state.screen === "account"
+              ? state.role
+              : "student";
+      const roleLabel = () =>
+        ({
+          student: T("Student", "طالب"),
+          leader: T("Batch leader", "مسؤول الدفعة"),
+          admin: T("Admin", "مسؤول"),
+          "second-admin": T("Second admin", "المسؤول الثاني"),
+        })[role()];
+      const navItem = (label, icon, target, active) =>
+        `<button class="navlink ${active ? "active" : ""}" data-screen="${target}" ${active ? 'aria-current="page"' : ""} aria-label="${label}">${I(icon)}<span>${label}</span></button>`;
+      function navigation() {
+        const r = role();
+        if (r === "leader")
+          return (
+            navItem(
+              T("Source intake", "استقبال المصادر"),
+              "upload",
+              "intake",
+              state.screen === "intake",
+            ) + navItem(T("History", "السجل"), "clock", "history", false)
+          );
+        if (r.includes("admin"))
+          return (
+            navItem(
+              T("Decision queue", "قائمة القرارات"),
+              "shield",
+              "admin",
+              state.screen === "admin",
+            ) +
+            navItem(T("Catalog", "الدليل الدراسي"), "book", "catalog", false) +
+            navItem(T("Sources", "المصادر"), "file", "sources", false) +
+            navItem(
+              T("Usage & capacity", "الاستخدام والسعة"),
+              "settings",
+              "usage",
+              false,
+            )
+          );
+        return (
+          navItem(
+            T("Study", "المذاكرة"),
+            "book",
+            "shelf",
+            state.screen === "chat" || state.screen === "studio",
+          ) +
+          navItem(
+            T("Subjects", "المواد"),
+            "shelf",
+            "shelf",
+            state.screen === "shelf",
+          )
+        );
+      }
+      function shell(body) {
+        return `<div class="shell"><aside class="spine"><a class="brand" href="?screen=shelf" aria-label="UniMind"><img src="../concepts/assets/folio-dark.svg" alt="" /><span class="brand-name">UniMind</span></a><nav aria-label="${T("Main navigation", "التنقل الرئيسي")}">${navigation()}</nav><div class="identity"><button class="navlink ${state.screen === "account" ? "active" : ""}" data-screen="account">${I("user")}<span>${T("Account", "الحساب")}</span></button><div class="inline"><span class="avatar" aria-hidden="true">${role() === "student" ? "S" : role() === "leader" ? "L" : role() === "second-admin" ? "A2" : "A"}</span><div class="identity-copy"><strong style="font-size:13px">${roleLabel()}</strong><div class="meta">${T("Synthetic account", "حساب تجريبي")}</div></div></div><p class="wordmark" lang="en" dir="ltr">Study deeper<br />Go further.</p></div></aside><header class="mobilebar"><span class="mobile-brand"><img src="../concepts/assets/folio-dark.svg" alt="" /><span>UniMind</span></span><span class="role-label">${roleLabel()}</span>${B(`<span class="sr-only">${T("Open navigation", "فتح التنقل")}</span>`, "menu", "quiet icon-btn", "menu")}</header><main id="main" class="main" tabindex="-1"><div class="page">${body}</div></main><nav class="bottomnav" aria-label="${T("Primary navigation", "التنقل الأساسي")}"><button data-screen="${role() === "leader" ? "intake" : role().includes("admin") ? "admin" : "shelf"}" class="${state.screen !== "account" ? "active" : ""}">${I(role() === "leader" ? "upload" : role().includes("admin") ? "shield" : "shelf")}<span>${role() === "leader" ? T("Intake", "الاستقبال") : role().includes("admin") ? T("Decisions", "القرارات") : T("Subjects", "المواد")}</span></button><button data-screen="account" class="${state.screen === "account" ? "active" : ""}">${I("user")}<span>${T("Account", "الحساب")}</span></button><button data-action="menu">${I("menu")}<span>${T("More", "المزيد")}</span></button></nav></div>`;
+      }
+      function unit() {
+        return `<div class="breadcrumb">${B(T("Subjects", "المواد"), "subjects", "quiet", "back")}<span>/</span><span>${T("Anatomy", "التشريح")}</span></div><header class="unithead"><div><h1>${T("Anatomy", "التشريح")}</h1><p class="meta">${T("8 sample materials · Ready", "٨ مواد تجريبية · جاهزة")}</p></div>${B(T("Switch unit", "تغيير الوحدة"), "subjects", "quiet", "shelf")}</header><nav class="tabs" aria-label="${T("Unit tools", "أدوات الوحدة")}">${["materials", "chat", "studio", "quiz"].map((s) => `<button data-screen="${s}" ${state.screen === s ? 'aria-current="page"' : ""}>${{ materials: T("Materials", "المواد الدراسية"), chat: T("Chat", "المحادثة"), studio: T("Studio", "الاستوديو"), quiz: T("Quiz", "الاختبار") }[s]}</button>`).join("")}</nav>`;
+      }
+      function shelf() {
+        const subjects = [
+          ["Anatomy", "التشريح"],
+          ["Biochemistry", "الكيمياء الحيوية"],
+          ["Physiology", "علم وظائف الأعضاء"],
+          ["Pathology", "علم الأمراض"],
+          ["Pharmacology", "علم الأدوية"],
+        ];
+        return `<header class="page-heading"><h1>${T("Your subjects", "موادك الدراسية")}</h1><p class="muted">${T("Choose a subject. Every answer stays connected to its approved materials.", "اختر مادة. تظل كل إجابة مرتبطة بمصادرها المعتمدة.")}</p></header><div class="collection"><section class="collection-main" aria-label="${T("Subjects", "المواد")}"><div class="spread"><h2>${T("Medicine · Modules", "الطب · الوحدات")}</h2><label class="search">${I("search")}<input type="search" id="subject-search" aria-label="${T("Find a subject", "البحث عن مادة")}" placeholder="${T("Find a subject", "ابحث عن مادة")}" /></label></div><div class="subject-index" id="subject-list">${subjects.map(([en, ar]) => `<button class="subject-row" data-action="open-subject" data-name="${en.toLowerCase()} ${ar}" aria-label="${T("Open " + en, "فتح " + ar)}"><span class="folio-mark" aria-hidden="true"></span><div class="subject-copy"><h3>${T(en, ar)}</h3><p class="meta">${T("8 sample materials", "٨ مواد تجريبية")}</p></div><span class="tag ready">${T("Ready", "جاهزة")}</span>${I("arrow", "directional")}</button>`).join("")}</div><p id="subject-empty" class="notice" hidden>${T("No matching subjects. Try another name.", "لا توجد مواد مطابقة. جرّب اسمًا آخر.")}</p></section><aside class="orientation"><svg class="folio-emblem" viewBox="0 0 180 140" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M25 26h48q17 0 17 16v74q-8-11-22-11H25z M155 26h-48q-17 0-17 16v74q8-11 22-11h43z M36 42h30 M36 53h30 M36 64h23 M107 42h35 M107 53h35 M107 64h25"/><path d="M136 26v28l-7-6-7 6V26" fill="currentColor"/><path d="M18 32v80h50q14 0 22 10 8-10 22-10h50V32" opacity=".45"/></svg><h2>${T("Start with the source.", "ابدأ من المصدر.")}</h2><p>${T("Read your materials, ask a question, then turn what you understand into a study artifact.", "اقرأ موادك، واسأل سؤالًا، ثم حوّل ما فهمته إلى أداة للمذاكرة.")}</p><div class="context-note"><strong>${T("Your academic context", "سياقك الدراسي")}</strong><p class="meta">${T("Medicine · Synthetic cohort", "الطب · مجموعة تجريبية")}</p>${B(T("Edit in Account", "تعديل من الحساب"), "account", "quiet", "settings")}</div></aside></div>`;
+      }
+      const samplePrompt = () =>
+        T(
+          "Explain the sample unit's study sequence.",
+          "اشرح ترتيب المذاكرة في الوحدة التجريبية.",
+        );
+      const sampleAnswer = () =>
+        T(
+          "The synthetic handout says to identify the labelled structures, then compare the two diagrams. This fixed example uses only the sample handout.",
+          "الملزمة التجريبية تطلب تحديد الأجزاء المسماة ثم مقارنة الرسمين. هذا مثال ثابت من الملزمة فقط.",
+        );
+      function sourceContent(reveal = false) {
+        return `<div class="source-inspector ${reveal ? "reveal" : ""}"><div class="spread"><h2 tabindex="-1" id="source-heading">${T("Source excerpt", "مقتطف من المصدر")}</h2><span class="pill">${T("Page 3", "صفحة ٣")}</span></div><h3>${T("Synthetic anatomy handout", "ملزمة التشريح التجريبية")}</h3><p class="meta">${T("Approved sample material", "مادة تجريبية معتمدة")}</p><blockquote class="source-quote">${T("Identify the labelled structures, then compare the two diagrams.", "حدد الأجزاء المسماة، ثم قارن الرسمين.")}</blockquote><div class="source-rule"></div><p>${T("The source supports this sequence. It does not specify the timing of either step.", "المصدر يدعم هذا الترتيب، لكنه لا يحدد وقت كل خطوة.")}</p></div>`;
+      }
+      function margin() {
+        return `<aside class="margin-panel" id="source-panel" aria-label="${T("Evidence margin", "هامش الأدلة")}">${state.chat === "supported" ? sourceContent() : `<h2>${T("An evidence margin", "هامش الأدلة")}</h2><p>${T("When an answer cites a source, inspect its excerpt here without losing your question.", "عندما تستشهد الإجابة بمصدر، راجع مقتطفه هنا دون فقدان سؤالك.")}</p><div class="source-rule"></div><div class="inline">${I("file")}<span class="meta">${T("8 sample materials available", "٨ مواد تجريبية متاحة")}</span></div>`}</aside>`;
+      }
+      function chatBody() {
+        if (state.chat === "loading")
+          return `<p class="question">${esc(state.question)}</p><div class="reading-empty" role="status" aria-live="polite"><h2>${T("Checking the sample materials…", "جارٍ مراجعة المواد التجريبية…")}</h2><p>${T("Your question remains here. You can cancel this example.", "يبقى سؤالك هنا. يمكنك إلغاء هذا المثال.")}</p><div class="busy-line" style="width:100%"></div>${B(T("Cancel", "إلغاء"), "cancel-chat", "quiet")}</div>`;
+        if (state.chat === "error")
+          return (
+            notice(
+              "error",
+              T("The answer could not be loaded.", "تعذّر تحميل الإجابة."),
+              T(
+                "Your question has been kept. Retry when you are ready.",
+                "احتُفظ بسؤالك. أعد المحاولة عندما تكون جاهزًا.",
+              ),
+            ) +
+            B(
+              T("Retry answer", "إعادة تحميل الإجابة"),
+              "retry-chat",
+              "quiet",
+              "arrow",
+            )
+          );
+        if (state.chat === "supported")
+          return `<p class="question">${esc(state.question || samplePrompt())}</p><article class="answer"><span class="tag ready">${T("Supported by a source", "مدعوم بمصدر")}</span><h3>${T("Identify, then compare.", "حدّد، ثم قارن.")}</h3><p>${sampleAnswer()}</p><button class="citation" data-action="citation" aria-label="${T("Inspect source, handout page 3", "عرض المصدر، الملزمة صفحة ٣")}">${I("file")}${T("Handout · p. 3", "الملزمة · ص. ٣")}</button></article>`;
+        return `<div class="reading-empty">${I("chat")}<h2>${T("A question worth understanding.", "سؤال يستحق الفهم.")}</h2><p>${T("Ask about Anatomy. Answers use the approved materials for this unit and show what supports them.", "اسأل عن التشريح. تستخدم الإجابات مواد هذه الوحدة المعتمدة وتوضح ما يدعمها.")}</p><div class="prompts"><button class="suggestion" data-action="suggest">${samplePrompt()}${I("arrow", "directional")}</button><button class="suggestion" data-action="demo-error">${T("Preview a recoverable error", "معاينة خطأ قابل للاسترداد")}${I("arrow", "directional")}</button></div></div>`;
+      }
+      function chat() {
+        return (
+          unit() +
+          `<div class="workspace"><section class="paper chat-work" aria-label="${T("Study conversation", "محادثة المذاكرة")}"><div class="thread-head"><h2>${T("Study conversation", "محادثة المذاكرة")}</h2><div class="inline gap8">${B(T("Sources", "المصادر"), "citation", "quiet mobile-sources", "file")}${B(T("New session", "جلسة جديدة"), "new-chat", "quiet")}</div></div><div class="thread" id="thread">${chatBody()}</div><form class="composer" id="chat-form"><label class="sr-only" for="message">${T("Message", "رسالة")}</label><textarea id="message" placeholder="${T("Ask about your materials…", "اسأل عن موادك…")}" ${state.chat === "loading" ? "disabled" : ""}>${state.chat === "error" ? esc(state.question) : ""}</textarea>${B(T("Send", "إرسال"), "send", "primary", "arrow", `type="submit" ${state.chat === "loading" ? "disabled" : ""}`)}</form><p class="chat-foot">${T("Shared study session · source-grounded answers", "جلسة مذاكرة مشتركة · إجابات من المصادر")}</p></section>${margin()}</div>`
+        );
+      }
+      const artifacts = [
+        ["summary", "Structured summary", "ملخص منظم"],
+        ["guide", "Study guide", "دليل مذاكرة"],
+        ["practice", "Practice questions", "أسئلة تدريب"],
+        ["flashcards", "Flashcards", "بطاقات مراجعة"],
+        ["revision", "Revision pack", "حزمة مراجعة"],
+        ["quiz", "MCQ quiz", "اختبار اختيار من متعدد"],
+      ];
+      function output() {
+        if (state.studio === "loading")
+          return `<div class="reading-empty" role="status"><h2>${T("Preparing your example…", "جارٍ إعداد المثال…")}</h2><p>${T("Checking the selected materials. No progress percentage is assumed.", "جارٍ مراجعة المواد المختارة. لا نفترض نسبة تقدم.")}</p><div class="busy-line" style="width:100%"></div><div class="placeholder-lines" style="width:100%" aria-hidden="true"><span></span><span></span><span></span></div>${B(T("Cancel", "إلغاء"), "cancel-studio", "quiet")}</div>`;
+        if (state.studio === "error")
+          return `<div class="stack">${notice("error", T("This artifact could not be prepared.", "تعذّر إعداد هذه الأداة."), T("Your topic and options are preserved.", "احتُفظ بالموضوع والخيارات."))}${B(T("Retry generation", "إعادة الإعداد"), "generate", "quiet", "arrow")}</div>`;
+        if (state.studio === "empty")
+          return `<div class="reading-empty">${I("studio")}<h2>${T("Give your understanding a form.", "امنح فهمك شكلًا.")}</h2><p>${T("Choose an artifact and a topic. The result will stay alongside its source evidence.", "اختر أداة وموضوعًا. ستبقى النتيجة بجانب أدلة مصادرها.")}</p></div>`;
+        if (state.type === "flashcards")
+          return `<div class="stack result-content"><div class="spread"><span class="meta">${T("Card 1 of 1 · sample", "بطاقة ١ من ١ · مثال")}</span>${B(T("Sources", "المصادر"), "citation", "quiet", "file")}</div><button class="flashcard ${state.cardBack ? "flip" : ""}" data-action="flip" aria-label="${T("Turn flashcard", "قلب البطاقة")}" aria-pressed="${state.cardBack}"><span class="meta">${state.cardBack ? T("Answer", "الإجابة") : T("Question", "السؤال")}</span><strong class="card-copy" dir="${state.output === "ar" ? "rtl" : "ltr"}">${state.cardBack ? (state.output === "ar" ? "حدد الأجزاء المسماة، ثم قارن الرسمين." : "Identify the labelled structures, then compare the two diagrams.") : state.output === "ar" ? "ما الخطوة التي تسبق مقارنة الرسمين؟" : "What comes before comparing the diagrams?"}</strong><span class="meta">${T("Click or press Space to turn", "اضغط أو استخدم مفتاح المسافة للقلب")}</span></button></div>`;
+        return `<article class="answer result-content" dir="${state.output === "ar" ? "rtl" : "ltr"}"><span class="tag ready">${T("Fixed example · source-supported", "مثال ثابت · مدعوم بمصدر")}</span><h2 style="margin-block:10px 20px">${state.output === "ar" ? "ترتيب المذاكرة" : "Study sequence"}</h2><h3>${state.output === "ar" ? "ابدأ بتحديد الأجزاء" : "Begin with identification"}</h3><p style="margin-top:10px">${state.output === "ar" ? "حدد الأجزاء المسماة في الملزمة التجريبية قبل مقارنة الرسمين." : "Identify the labelled structures in the synthetic handout before comparing the two diagrams."}</p><h3 style="margin-top:24px">${state.output === "ar" ? "ثم قارن الرسمين" : "Then compare the diagrams"}</h3><p style="margin-top:10px">${state.output === "ar" ? "المصدر لا يحدد وقت كل خطوة." : "The source does not specify the timing of either step."}</p><button class="citation" data-action="citation">${I("file")}${T("Handout · p. 3", "الملزمة · ص. ٣")}</button></article>`;
+      }
+      function studio() {
+        return (
+          unit() +
+          `<div class="studio-grid"><form class="config" id="studio-form"><h2>${T("Shape the result", "حدد شكل النتيجة")}</h2><label class="field">${T("Artifact", "الأداة")}<select id="artifact">${artifacts.map(([id, en, ar]) => `<option value="${id}" ${id === state.type ? "selected" : ""}>${T(en, ar)}</option>`).join("")}</select></label><label class="field">${T("Topic", "الموضوع")}<input id="topic" required value="${esc(state.topic)}" /></label><label class="field">${T("Output language", "لغة النتيجة")}<select id="output-language"><option value="en" ${state.output === "en" ? "selected" : ""}>English</option><option value="ar" ${state.output === "ar" ? "selected" : ""}>العربية</option></select><span class="help">${T("Independent of your interface language.", "مستقلة عن لغة الواجهة.")}</span></label><details><summary>${T("Depth and size", "التفصيل والحجم")}</summary><div class="stack"><label class="field">${T("Depth", "التفصيل")}<select id="depth"><option value="concise" ${state.depth === "concise" ? "selected" : ""}>${T("Concise", "موجز")}</option><option value="detailed" ${state.depth === "detailed" ? "selected" : ""}>${T("Detailed", "مفصل")}</option></select></label><label class="field">${T("Size", "الحجم")}<select id="size"><option value="short" ${state.size === "short" ? "selected" : ""}>${T("Short", "قصير")}</option><option value="long" ${state.size === "long" ? "selected" : ""}>${T("Long", "طويل")}</option></select></label></div></details>${B(T("Generate", "إعداد"), "generate", "primary", "studio", `type="submit" ${state.studio === "loading" ? "disabled" : ""}`)}<p class="help">${T("Review prototype: summary and flashcard outcomes are fixed examples. Other artifact formats are not simulated.", "نموذج مراجعة: نتائج الملخص والبطاقات أمثلة ثابتة. لا تُحاكى بقية الأشكال.")}</p></form><section class="paper result ${state.studio}"><header class="paper-head spread"><h2 style="font-size:18px">${state.studio === "empty" ? T("Your artifact", "أداتك") : T(...artifacts.find((a) => a[0] === state.type).slice(1))}</h2><span class="meta">${state.output === "en" ? "English" : "العربية"}</span></header><div class="paper-body" id="studio-result" aria-live="polite">${output()}</div><footer class="source-footer">${T("Anatomy · approved sample materials", "التشريح · مواد تجريبية معتمدة")}</footer></section></div>`
+        );
+      }
+      function requestList() {
+        return `<ul class="request-list">${[T("Anatomy handout", "ملزمة التشريح"), T("Lecture recording", "تسجيل المحاضرة"), T("Labelled diagram", "الرسم المسمى")].map((x) => `<li>${I("file")}<span>${x}</span></li>`).join("")}</ul>`;
+      }
+      function intake() {
+        return `<header class="page-heading"><h1>${T("Anatomy source call", "طلب مصادر التشريح")}</h1><p class="muted">${T("Submit requested material for review. Receipt does not mean student availability.", "أرسل المواد المطلوبة للمراجعة. الاستلام لا يعني إتاحتها للطلاب.")}</p></header><div class="intake-grid"><section><div class="spread upload-head"><h2>${T("Submission queue", "قائمة الإرسال")}</h2><span class="meta">${state.intake === "empty" ? T("0 files", "٠ ملفات") : T("1 file", "ملف واحد")}</span></div><div class="paper"><div class="paper-body">${state.intake === "empty" ? `<div class="queue-empty">${I("upload")}<h3>${T("No files queued", "لا توجد ملفات في القائمة")}</h3><p class="muted">${T("PDF, WAV or PNG · up to 10 MB", "PDF أو WAV أو PNG · حتى ١٠ ميغابايت")}</p>${B(T("Add sample file", "إضافة ملف تجريبي"), "add-file", "primary", "upload")}</div>` : state.intake === "received" ? `${notice("success", T("File received", "تم استلام الملف"), T("Processing and review are still pending.", "المعالجة والمراجعة ما زالتا معلقتين."))}<ul class="receipt-ledger"><li>${I("check")}<span>${T("Received", "تم الاستلام")}</span><span class="meta" style="margin-inline-start:auto"><bdi>synthetic-handout.pdf</bdi></span></li><li>${I("clock")}<span>${T("Processing pending", "المعالجة معلقة")}</span></li><li>${I("shield")}<span>${T("Not yet available to students", "غير متاح للطلاب بعد")}</span></li></ul>${B(T("Add another sample", "إضافة مثال آخر"), "add-file", "quiet", "upload")}` : `<div class="file-row">${I("file")}<div><h3><bdi>synthetic-handout.pdf</bdi></h3><p class="meta">${T("Anatomy handout · 0.6 KB", "ملزمة التشريح · ٠٫٦ كيلوبايت")}</p></div>${B(`<span class="sr-only">${T("Remove sample file", "إزالة الملف التجريبي")}</span>`, "remove-file", "quiet icon-btn", "close")}</div><div class="stack"><label class="field">${T("Source title", "عنوان المصدر")}<input id="source-title" value="${esc(state.sourceTitle)}" required /></label><label class="field">${T("Professor or source description", "المحاضر أو وصف المصدر")}<input id="source-description" value="${esc(state.sourceDescription)}" required /></label><label class="check"><input id="rights" type="checkbox" ${state.rights ? "checked" : ""} /><span>${T("I have permission to submit this source.", "لدي إذن بإرسال هذا المصدر.")}</span></label>${state.intake === "error" ? notice("error", T("Submission was interrupted", "توقف الإرسال"), T("The file and its details remain in your queue. Retry without adding it again.", "يبقى الملف وتفاصيله في القائمة. أعد المحاولة دون إضافته مجددًا.")) : ""}${B(state.intake === "sending" ? T("Sending…", "جارٍ الإرسال…") : state.intake === "error" ? T("Retry submission", "إعادة الإرسال") : T("Submit file", "إرسال الملف"), "submit-file", "primary", "upload", `${!state.rights || state.intake === "sending" ? "disabled" : ""}`)}<p class="help">${T("Local example only; no file is transferred.", "مثال محلي فقط؛ لا يُنقل أي ملف.")}</p>${B(T("Preview interrupted submission", "معاينة توقف الإرسال"), "intake-error", "quiet")}</div>`}</div></div></section><aside class="intake-context"><h2>${T("Your assignment", "تكليفك")}</h2><div class="deadline"><span class="meta">${T("Your deadline", "موعدك النهائي")}</span><strong>${T("10 October", "١٠ أكتوبر")}</strong><span>${T("23:00 · Cairo time", "٢٣:٠٠ · توقيت القاهرة")}</span><span class="meta">${T("Campaign closes 12 October at 23:00.", "تُغلق الحملة في ١٢ أكتوبر، ٢٣:٠٠.")}</span></div><details class="intake-requests" open><summary>${T("Requested material · 3 requests", "المواد المطلوبة · ٣ طلبات")}</summary>${requestList()}</details><p class="help" style="margin-top:18px">${T("Received files are checked before they become available for study.", "تُفحص الملفات المستلمة قبل إتاحتها للمذاكرة.")}</p></aside></div>`;
+      }
+      const decisions = [
+        ["publish", "Publish unit", "نشر الوحدة", "DRAFT", "PUBLISHED", true],
+        ["hide", "Hide unit", "إخفاء الوحدة", "PUBLISHED", "WITHDRAWN", false],
+        ["unlock", "Unlock cohort", "فتح المجموعة", "LOCKED", "UNLOCKED", true],
+        ["lock", "Lock cohort", "قفل المجموعة", "UNLOCKED", "LOCKED", false],
+        [
+          "activate",
+          "Activate source",
+          "تفعيل المصدر",
+          "INACTIVE",
+          "ACTIVE",
+          true,
+        ],
+        [
+          "deactivate",
+          "Deactivate source",
+          "تعطيل المصدر",
+          "ACTIVE",
+          "DEACTIVATED",
+          false,
+        ],
+        [
+          "quarantine",
+          "Quarantine source",
+          "عزل المصدر",
+          "FAILED",
+          "QUARANTINED",
+          false,
+        ],
+        [
+          "retry",
+          "Retry source",
+          "إعادة محاولة المصدر",
+          "FAILED",
+          "PENDING_OWNER_REVIEW",
+          false,
+        ],
+        [
+          "hold",
+          "Place raw-data hold",
+          "تعليق حذف البيانات الخام",
+          "STORED",
+          "HELD",
+          true,
+        ],
+        [
+          "remove-hold",
+          "Remove raw-data hold",
+          "رفع تعليق الحذف",
+          "HELD",
+          "STORED",
+          true,
+        ],
+        [
+          "enable",
+          "Enable provider or artifact",
+          "تفعيل مزود أو مخرج",
+          "DISABLED",
+          "ENABLED",
+          true,
+        ],
+        [
+          "disable",
+          "Disable provider or artifact",
+          "تعطيل مزود أو مخرج",
+          "ENABLED",
+          "DISABLED",
+          false,
+        ],
+      ];
+      const blockedIds = ["publish", "unlock", "activate", "enable"];
+      const stateLabel = (x) =>
+        ({
+          DRAFT: T("Draft", "مسودة"),
+          PUBLISHED: T("Published", "منشورة"),
+          WITHDRAWN: T("Withdrawn", "مسحوبة"),
+          LOCKED: T("Locked", "مقفلة"),
+          UNLOCKED: T("Unlocked", "مفتوحة"),
+          INACTIVE: T("Inactive", "غير نشط"),
+          ACTIVE: T("Active", "نشط"),
+          DEACTIVATED: T("Deactivated", "معطل"),
+          FAILED: T("Failed", "فاشل"),
+          QUARANTINED: T("Quarantined", "معزول"),
+          PENDING_OWNER_REVIEW: T(
+            "Owner review pending",
+            "مراجعة المسؤول معلقة",
+          ),
+          STORED: T("Stored", "مخزن"),
+          HELD: T("Held", "معلق"),
+          DISABLED: T("Disabled", "معطل"),
+          ENABLED: T("Enabled", "مفعل"),
+        })[x] || x;
+      function queueRows() {
+        return decisions
+          .filter(
+            (d) =>
+              state.filter === "all" ||
+              (state.filter === "blocked"
+                ? blockedIds.includes(d[0])
+                : !blockedIds.includes(d[0])),
+          )
+          .map(
+            (d) =>
+              `<button class="queue-row ${state.selected === d[0] ? "selected" : ""}" data-decision="${d[0]}" aria-pressed="${state.selected === d[0]}"><strong>${T(d[1], d[2])}</strong><span class="meta">${T("Anatomy · Synthetic Faculty of Medicine year 1, term 1", "علم التشريح · كلية الطب البشري · السنة الأولى · الترم الأول")} · ${blockedIds.includes(d[0]) ? T("Readiness blocked", "الجاهزية محجوبة") : T("Decision available", "قرار متاح")}</span></button>`,
+          )
+          .join("");
+      }
+      const consequences = {
+        publish: [
+          "This unit becomes visible when the cohort is unlocked and its approved source stays ready.",
+          "ستظهر الوحدة عند فتح المجموعة وبقاء مصدرها المعتمد جاهزًا.",
+        ],
+        hide: [
+          "This unit is hidden from student availability immediately; its history remains.",
+          "ستختفي الوحدة من إتاحة الطلاب فورًا مع الاحتفاظ بسجلها.",
+        ],
+        unlock: [
+          "This cohort becomes available to eligible students after both founders confirm.",
+          "ستتاح هذه المجموعة للطلاب المؤهلين بعد تأكيد المؤسسين.",
+        ],
+        lock: [
+          "This cohort becomes unavailable to students immediately; its history remains.",
+          "ستصبح هذه المجموعة غير متاحة للطلاب فورًا مع الاحتفاظ بسجلها.",
+        ],
+        activate: [
+          "This accepted source joins the available unit pool after both founders confirm.",
+          "سينضم هذا المصدر المقبول إلى مصادر الوحدة المتاحة بعد تأكيد المؤسسين.",
+        ],
+        deactivate: [
+          "This source leaves student availability immediately; processed history remains.",
+          "سيخرج هذا المصدر من إتاحة الطلاب فورًا مع بقاء سجل المعالجة.",
+        ],
+        quarantine: [
+          "This failed source is isolated immediately and its provenance remains.",
+          "سيُعزل هذا المصدر الفاشل فورًا مع الاحتفاظ بمصدره وسجله.",
+        ],
+        retry: [
+          "This records an owner review request. No worker starts and the source stays in its current state.",
+          "سيسجل طلب مراجعة للمسؤول. لن يبدأ العامل وستبقى حالة المصدر كما هي.",
+        ],
+        hold: [
+          "This synthetic raw object is preserved until its documented review or expiry.",
+          "سيُحفظ هذا العنصر الخام التجريبي حتى موعد مراجعته أو انتهاء الحجز.",
+        ],
+        "remove-hold": [
+          "This releases a synthetic preservation hold after a fresh safety check; no bytes are deleted.",
+          "سيُرفع حجز الحفظ التجريبي بعد فحص سلامة جديد دون حذف أي بيانات.",
+        ],
+        enable: [
+          "This approved mock artifact becomes available only after both founders confirm.",
+          "سيتاح الناتج التجريبي المعتمد فقط بعد تأكيد المؤسسين.",
+        ],
+        disable: [
+          "This provider or artifact is disabled immediately; existing records remain.",
+          "سيُعطّل هذا المزوّد أو الناتج فورًا مع بقاء السجلات الحالية.",
+        ],
+      };
+      function decisionDetail() {
+        if (!state.selected)
+          return `<div class="paper decision-empty"><div class="reading-empty">${I("shield")}<h2>${T("Choose a decision deliberately.", "اختر القرار عن قصد.")}</h2><p>${T("Inspect its target, current state and consequence before preparing a change.", "راجع الهدف والحالة الحالية والأثر قبل إعداد التغيير.")}</p></div></div>`;
+        const d = decisions.find((x) => x[0] === state.selected);
+        const blocked = blockedIds.includes(d[0]);
+        return `${B(T("Back to queue", "العودة إلى القائمة"), "back-queue", "quiet back-queue", "back")}<section class="paper detail"><header class="paper-head"><span class="meta">${T("Target", "الهدف")}</span><h2>${T("Anatomy", "علم التشريح")}</h2><p class="meta">${T("Synthetic Faculty of Medicine year 1, term 1", "كلية الطب البشري · السنة الأولى · الترم الأول")}</p><h3 style="margin-top:14px">${T(d[1], d[2])}</h3></header><div class="paper-body"><div class="decision-context"><span>${T("Expected version", "الإصدار المتوقع")} <bdi>2</bdi></span><span class="tag ${blocked ? "" : "ready"}">${blocked ? T("Blocked", "محجوب") : T("Available", "متاح")}</span></div><div class="state-pair"><div class="state-value"><span class="meta">${T("Current", "الحالية")}</span><strong>${stateLabel(d[3])}</strong></div>${I("arrow", "directional")}<div class="state-value proposed"><span class="meta">${T("Proposed", "المقترحة")}</span><strong>${stateLabel(d[4])}</strong></div></div><p class="consequence">${T(...consequences[d[0]])}</p>${blocked ? notice("", T("Readiness checks are unresolved", "فحوص الجاهزية غير مكتملة"), T("Resolve the checks before this action can be reviewed. This is an illustrative blocked example.", "أكمل الفحوص قبل مراجعة الإجراء. هذا مثال توضيحي لحالة محجوبة.")) : `${d[5] ? notice("", T("Second confirmation required", "يتطلب تأكيدًا ثانيًا"), T("A different eligible founder must confirm this protected change.", "يجب أن يؤكد مؤسس مؤهل آخر هذا التغيير المحمي.")) : ""}<label class="field">${T("Reason for this change", "سبب هذا التغيير")}<textarea id="reason" rows="3" placeholder="${T("Explain why this change is needed", "وضح سبب الحاجة إلى التغيير")}">${esc(state.reason)}</textarea><span class="help">${T("This reason will be part of the review record.", "سيكون هذا السبب ضمن سجل المراجعة.")}</span></label>${B(T("Review exact change", "مراجعة التغيير المحدد"), "review-change", "primary", "arrow", `${state.reason.trim() ? "" : "disabled"}`)}`}<p class="help">${T("Prototype version and readiness are illustrative. No command is submitted.", "الإصدار والجاهزية توضيحيان في النموذج. لا يُرسل أي أمر.")}</p></div></section>`;
+      }
+      function admin() {
+        return `<header class="page-heading admin-heading"><div class="spread"><h1>${T("Decision queue", "قائمة القرارات")}</h1><span class="pill">${T("12 sample actions", "١٢ إجراءً تجريبيًا")}</span></div><p class="muted">${T("Review readiness. Choose a target. Confirm an exact change.", "راجع الجاهزية. اختر هدفًا. أكّد تغييرًا محددًا.")}</p></header><div class="queue-grid ${state.selected ? "has-selection" : ""}"><section class="queue-column" aria-label="${T("Decision list", "قائمة القرارات")}"><label class="search" style="max-width:none">${I("search")}<input type="search" id="decision-search" aria-label="${T("Find an action", "البحث عن إجراء")}" placeholder="${T("Find an action", "ابحث عن إجراء")}" /></label><div class="queue-filter" aria-label="${T("Readiness filter", "مرشح الجاهزية")}">${[
+          ["all", T("All", "الكل")],
+          ["available", T("Available", "متاح")],
+          ["blocked", T("Blocked", "محجوب")],
+        ]
+          .map(
+            ([id, label]) =>
+              `<button class="filter" data-filter="${id}" aria-pressed="${state.filter === id}">${label}</button>`,
+          )
+          .join(
+            "",
+          )}</div><div id="decision-list" class="queue-list">${queueRows()}</div><p class="help" style="margin-top:14px">${T("Readiness grouping is illustrative in this review prototype.", "تجميع الجاهزية توضيحي في نموذج المراجعة.")}</p></section><div class="detail-column" id="decision-detail">${decisionDetail()}</div></div>`;
+      }
+      function settingsContent() {
+        if (state.section === "identity")
+          return `<section class="settings-section"><h2>${T("Identity and access", "الهوية والوصول")}</h2><p class="muted">${T("Your role and academic scope are explicit.", "الدور والنطاق الدراسي واضحان.")}</p><div class="settings-row"><div><h3>${T("Role", "الدور")}</h3><p>${T("Assigned access; this screen does not grant permissions.", "الوصول مُعين مسبقًا؛ لا تمنح هذه الشاشة صلاحيات.")}</p></div><strong>${roleLabel()}</strong></div>${role() === "student" ? `<div class="settings-row"><div><h3>${T("Academic context", "السياق الدراسي")}</h3><p>${T("Medicine · Synthetic cohort", "الطب · مجموعة تجريبية")}</p></div>${B(T("Review context", "مراجعة السياق"), "context", "quiet", "shelf")}</div>` : ""}</section>`;
+        if (state.section === "privacy")
+          return `<section class="settings-section"><h2>${T("Study privacy", "خصوصية المذاكرة")}</h2><p class="muted">${role() === "student" ? T("Session sharing should be stated where you study.", "يجب توضيح مشاركة الجلسة أثناء المذاكرة.") : T("Operational accounts have role-specific settings.", "للحسابات التشغيلية إعدادات خاصة بأدوارها.")}</p>${notice("", T("Role-specific content", "محتوى خاص بالدور"), T("Student exchange settings belong to student accounts. Administrative settings must reflect administrative responsibilities.", "إعدادات مشاركة المذاكرة تخص حسابات الطلاب. يجب أن تعكس إعدادات المسؤول مهامه."))}</section>`;
+        return `<section class="settings-section"><h2>${T("Appearance", "المظهر")}</h2><p class="muted">${T("Make sustained reading comfortable.", "اجعل القراءة المستمرة مريحة.")}</p><div class="settings-row"><div><h3>${T("Theme", "السمة")}</h3><p>${T("Distinct reading surfaces in both light and dark.", "أسطح قراءة مميزة في الفاتح والداكن.")}</p></div><select id="account-theme" aria-label="${T("Theme", "السمة")}"><option value="light" ${state.theme === "light" ? "selected" : ""}>${T("Light", "فاتحة")}</option><option value="dark" ${state.theme === "dark" ? "selected" : ""}>${T("Dark", "داكنة")}</option></select></div><div class="settings-row"><div><h3>${T("Interface language", "لغة الواجهة")}</h3><p>${T("Artifact output language is chosen in Studio.", "تُختار لغة النتيجة في الاستوديو.")}</p></div><select id="account-locale" aria-label="${T("Interface language", "لغة الواجهة")}"><option value="en" ${state.locale === "en" ? "selected" : ""}>English</option><option value="ar" ${state.locale === "ar" ? "selected" : ""}>العربية</option></select></div><div class="settings-row"><div><h3>${T("Motion preference", "تفضيل الحركة")}</h3><p>${T("System reduced motion always takes precedence.", "تفضيل النظام لتقليل الحركة له الأولوية دائمًا.")}</p></div><select id="account-motion" aria-label="${T("Motion preference", "تفضيل الحركة")}"><option value="full" ${state.motion === "full" ? "selected" : ""}>${T("Follow system", "اتباع النظام")}</option><option value="reduced" ${state.motion === "reduced" ? "selected" : ""}>${T("Reduced", "مخفضة")}</option></select></div></section>`;
+      }
+      function account() {
+        return `<header class="page-heading"><h1>${T("Account", "الحساب")}</h1><p class="muted">${roleLabel()} · ${T("Synthetic account", "حساب تجريبي")}</p></header><div class="settings-grid"><nav class="settings-nav" aria-label="${T("Account sections", "أقسام الحساب")}">${[
+          ["appearance", T("Appearance", "المظهر")],
+          ["identity", T("Identity & access", "الهوية والوصول")],
+          ["privacy", T("Privacy", "الخصوصية")],
+        ]
+          .map(
+            ([id, text]) =>
+              `<button data-setting="${id}" class="${state.section === id ? "active" : ""}" ${state.section === id ? 'aria-current="page"' : ""}>${text}</button>`,
+          )
+          .join(
+            "",
+          )}</nav><div>${settingsContent()}<div class="settings-section"><h2>${T("Review account variants", "مراجعة أنواع الحسابات")}</h2><label class="field" style="max-width:300px;margin-top:16px">${T("Prototype role", "دور النموذج")}<select id="account-role"><option value="student" ${state.role === "student" ? "selected" : ""}>${T("Student", "طالب")}</option><option value="leader" ${state.role === "leader" ? "selected" : ""}>${T("Batch leader", "مسؤول الدفعة")}</option><option value="admin" ${state.role === "admin" ? "selected" : ""}>${T("Admin", "مسؤول")}</option><option value="second-admin" ${state.role === "second-admin" ? "selected" : ""}>${T("Second admin", "المسؤول الثاني")}</option></select><span class="help">${T("Review control only; it does not change real access.", "أداة مراجعة فقط؛ لا تغير الوصول الحقيقي.")}</span></label></div></div></div>`;
+      }
+      function specimens() {
+        return `<header class="page-heading"><h1>${T("Every state belongs to the same product.", "كل حالة تنتمي إلى المنتج نفسه.")}</h1><p class="muted">${T("Interactive specimens for forms, feedback, overlays and recovery. These are review fixtures.", "نماذج تفاعلية للنماذج والتنبيهات والنوافذ والاسترداد. هذه أمثلة للمراجعة.")}</p></header><div class="specimen-grid"><section class="specimen"><h2>${T("Controls and focus", "الأزرار والتركيز")}</h2><div class="inline" style="flex-wrap:wrap">${B(T("Primary action", "الإجراء الأساسي"), "toast", "primary", "check")}${B(T("Secondary action", "الإجراء الثانوي"), "toast", "", "settings")}${B(T("Unavailable", "غير متاح"), "none", "", "", "disabled")}</div><p class="help">${T("Hover a control. Use Tab to see its focus ring. Press Space to activate it.", "مرر المؤشر. استخدم Tab لرؤية إطار التركيز، والمسافة للتفعيل.")}</p><form id="specimen-form" class="stack" novalidate><label class="field">${T("Source title", "عنوان المصدر")}<input id="specimen-title" aria-describedby="specimen-help" placeholder="${T("A meaningful title", "عنوان واضح")}" /><span class="help" id="specimen-help">${T("Required so reviewers can recognize the material.", "مطلوب كي يتعرف المراجع على المادة.")}</span></label><div id="specimen-error"></div>${B(T("Validate form", "فحص النموذج"), "validate", "", "arrow", 'type="submit"')}</form></section><section class="specimen"><h2>${T("Empty state", "الحالة الفارغة")}</h2><div class="reading-empty">${I("file")}<h2>${T("No reviewed submissions yet", "لا توجد إرسالات تمت مراجعتها")}</h2><p>${T("Accepted, rejected and needs-information items will appear here with their latest status.", "ستظهر هنا العناصر المقبولة والمرفوضة والمحتاجة إلى معلومات مع أحدث حالاتها.")}</p>${B(T("Go to intake", "الذهاب إلى الاستقبال"), "intake", "quiet", "arrow")}</div></section><section class="specimen"><h2>${T("Loading with continuity", "التحميل مع الحفاظ على السياق")}</h2><p class="muted">${T("The requested title and next action remain visible. No invented percentage.", "يبقى العنوان المطلوب والإجراء التالي ظاهرين. لا توجد نسبة مختلقة.")}</p><div class="busy-line" aria-hidden="true"></div><div class="placeholder-lines" aria-hidden="true"><span></span><span></span><span></span></div><p role="status">${T("Loading source details…", "جارٍ تحميل تفاصيل المصدر…")}</p>${B(T("Preview error", "معاينة الخطأ"), "state-error", "quiet")}</section><section class="specimen"><h2>${T("Success and recoverable error", "النجاح والخطأ القابل للاسترداد")}</h2>${notice("success", T("Details saved", "تم حفظ التفاصيل"), T("Your changes are visible in this local example.", "تغييراتك ظاهرة في هذا المثال المحلي."))}${notice("error", T("Could not load the latest status", "تعذّر تحميل أحدث حالة"), T("Keep your current view and retry.", "احتفظ بالعرض الحالي وأعد المحاولة."))}${B(T("Retry", "إعادة المحاولة"), "toast", "quiet", "arrow")}</section><section class="specimen"><h2>${T("Review dialog", "نافذة المراجعة")}</h2><p class="muted">${T("A consequential action shows target, before/after and reason. Escape returns focus to the initiating control.", "الإجراء المؤثر يعرض الهدف والحالتين والسبب. يعيد Escape التركيز إلى الزر الذي فتح النافذة.")}</p>${B(T("Open review example", "فتح مثال المراجعة"), "example-dialog", "", "shield")}</section><section class="specimen"><h2>${T("Needs information", "بحاجة إلى معلومات")}</h2>${notice("", T("Source description is missing", "وصف المصدر غير موجود"), T("Add a professor or source description before the request can be reviewed.", "أضف اسم المحاضر أو وصف المصدر قبل مراجعة الطلب."))}${B(T("Complete source details", "إكمال تفاصيل المصدر"), "intake", "quiet", "arrow")}</section></div>`;
+      }
+      let closeTimer = null;
+      function closeDialog() {
+        const d = $("#dialog");
+        if (!d.open) return;
+        d.classList.add("closing");
+        const reduced =
+          state.motion === "reduced" ||
+          matchMedia("(prefers-reduced-motion:reduce)").matches;
+        clearTimeout(closeTimer);
+        closeTimer = setTimeout(
+          () => {
+            d.close();
+            d.classList.remove("closing");
+          },
+          reduced ? 0 : 140,
+        );
+      }
+      $("#dialog").addEventListener("cancel", (e) => {
+        e.preventDefault();
+        closeDialog();
+      });
+      let returnFocus = null,
+        toastTimer = null;
+      function announce(message) {
+        $("#announcement").textContent = message;
+      }
+      function toast(text) {
+        document.querySelector(".toast")?.remove();
+        const el = document.createElement("div");
+        el.className = "toast";
+        el.setAttribute("role", "status");
+        el.innerHTML = I("check") + `<span>${text}</span>`;
+        document.body.append(el);
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => el.remove(), 4500);
+      }
+      function dialog(title, body, footer = "") {
+        clearTimeout(closeTimer);
+        $("#dialog").classList.remove("closing");
+        returnFocus = document.activeElement;
+        $("#dialog").innerHTML =
+          `<header><h2 id="dialog-title">${title}</h2>${B(`<span class="sr-only">${T("Close dialog", "إغلاق النافذة")}</span>`, "close-dialog", "quiet icon-btn", "close")}</header><div class="dialog-body">${body}</div><footer>${footer || B(T("Close", "إغلاق"), "close-dialog")}</footer>`;
+        $("#dialog").showModal();
+        bind($("#dialog"));
+        $("#dialog").querySelector("[data-action=close-dialog]").focus();
+      }
+      $("#dialog").addEventListener(
+        "close",
+        () => returnFocus?.isConnected && returnFocus.focus(),
+      );
+      function source() {
+        if (state.chat !== "supported" && state.screen === "chat") {
+          dialog(
+            T("Your materials", "موادك"),
+            `<p>${T("8 approved sample materials are available. Ask a question to inspect a linked excerpt.", "٨ مواد تجريبية معتمدة متاحة. اطرح سؤالًا لعرض مقتطف مرتبط.")}</p>`,
+          );
+          return;
+        }
+        if (
+          state.screen === "chat" &&
+          matchMedia("(min-width:901px)").matches
+        ) {
+          state.sourceOpen = true;
+          $("#source-panel").innerHTML = sourceContent(true);
+          $("#source-heading").focus();
+          announce(
+            T(
+              "Source excerpt opened, handout page 3.",
+              "تم فتح مقتطف المصدر، الملزمة صفحة ٣.",
+            ),
+          );
+        } else dialog(T("Source evidence", "أدلة المصدر"), sourceContent(true));
+      }
+      function chooseScreen(screen) {
+        if (
+          ![
+            "shelf",
+            "chat",
+            "studio",
+            "intake",
+            "admin",
+            "account",
+            "states",
+          ].includes(screen)
+        ) {
+          dialog(
+            T("System extension", "امتداد النظام"),
+            `<p>${T("This screen family is specified in the refinement report. It has not been built in this review prototype.", "هذه المجموعة موضحة في تقرير التحسين، ولم تُبنَ في نموذج المراجعة.")}</p>`,
+          );
+          return;
+        }
+        state.screen = screen;
+        if (screen === "admin" && state.selected === undefined)
+          state.selected = null;
+        render();
+        $("#main").focus();
+      }
+      function startChat(error = false) {
+        const message =
+          $("#message")?.value.trim() || state.question || samplePrompt();
+        state.question = message;
+        state.sourceOpen = false;
+        state.chat = "loading";
+        const epoch = ++state.epoch;
+        render();
+        announce(
+          T("Checking sample materials.", "جارٍ مراجعة المواد التجريبية."),
+        );
+        setTimeout(() => {
+          if (epoch !== state.epoch || state.screen !== "chat") return;
+          state.chat = error ? "error" : "supported";
+          render();
+          announce(
+            error
+              ? T(
+                  "Answer could not be loaded. Your question was kept.",
+                  "تعذّر تحميل الإجابة. احتُفظ بسؤالك.",
+                )
+              : T(
+                  "Answer ready. One source available.",
+                  "الإجابة جاهزة. يوجد مصدر واحد.",
+                ),
+          );
+        }, 1600);
+      }
+      function startStudio() {
+        if (!["summary", "flashcards"].includes(state.type)) {
+          dialog(
+            T("Format coverage", "تغطية الأشكال"),
+            `<p>${T("Only structured summary and flashcard outcomes are simulated. This control preserves the existing format choices; it does not claim a working generator.", "تُحاكى نتائج الملخص المنظم والبطاقات فقط. تحافظ الخيارات على الأشكال الحالية ولا تدعي وجود توليد فعلي.")}</p>`,
+          );
+          return;
+        }
+        state.topic = $("#topic").value;
+        state.studio = "loading";
+        const epoch = ++state.epoch;
+        render();
+        announce(
+          T("Preparing the fixed example.", "جارٍ إعداد المثال الثابت."),
+        );
+        setTimeout(() => {
+          if (epoch !== state.epoch || state.screen !== "studio") return;
+          state.studio = "success";
+          render();
+          announce(T("Study artifact ready.", "أداة المذاكرة جاهزة."));
+        }, 1600);
+      }
+      function reviewChange() {
+        const d = decisions.find((x) => x[0] === state.selected);
+        dialog(
+          T("Review exact change", "مراجعة التغيير المحدد"),
+          `<p class="meta">${T("Anatomy · Synthetic Faculty of Medicine year 1, term 1 · expected version 2", "علم التشريح · كلية الطب البشري · السنة الأولى · الترم الأول · الإصدار المتوقع ٢")}</p><h3>${T(d[1], d[2])}</h3><div class="state-pair"><div class="state-value"><span class="meta">${T("Current", "الحالية")}</span><strong>${stateLabel(d[3])}</strong></div>${I("arrow", "directional")}<div class="state-value proposed"><span class="meta">${T("Proposed", "المقترحة")}</span><strong>${stateLabel(d[4])}</strong></div></div><div class="consequence">${T(...consequences[d[0]])}</div><div><h3>${T("Recorded reason", "السبب المسجل")}</h3><p style="margin-top:8px;white-space:pre-wrap">${esc(state.reason)}</p></div><p class="help">${T("Review example only. Confirmation does not submit a real command.", "مثال مراجعة فقط. لا يرسل التأكيد أمرًا حقيقيًا.")}</p>`,
+          B(T("Cancel", "إلغاء"), "close-dialog") +
+            B(
+              T("Confirm example", "تأكيد المثال"),
+              "confirm-example",
+              "danger",
+              "shield",
+            ),
+        );
+      }
+      function act(action) {
+        if (action === "subjects") chooseScreen("shelf");
+        else if (action === "account") chooseScreen("account");
+        else if (action === "intake") chooseScreen("intake");
+        else if (action === "open-subject") {
+          state.chat = "empty";
+          chooseScreen("chat");
+        } else if (action === "new-chat") {
+          state.epoch++;
+          state.chat = "empty";
+          state.sourceOpen = false;
+          state.question = "";
+          render();
+          $("#message").focus();
+        } else if (action === "suggest") {
+          $("#message").value = samplePrompt();
+          $("#message").focus();
+        } else if (action === "demo-error") startChat(true);
+        else if (action === "send" || action === "retry-chat") startChat();
+        else if (action === "cancel-chat") {
+          state.epoch++;
+          state.chat = "empty";
+          render();
+          $("#message").value = state.question;
+          $("#message").focus();
+        } else if (action === "citation") source();
+        else if (action === "generate") startStudio();
+        else if (action === "cancel-studio") {
+          state.epoch++;
+          state.studio = "empty";
+          render();
+        } else if (action === "flip") {
+          state.cardBack = !state.cardBack;
+          $("#studio-result").innerHTML = output();
+          bind($("#studio-result"));
+          $("[data-action=flip]").focus();
+          announce(
+            state.cardBack
+              ? T("Answer shown.", "الإجابة ظاهرة.")
+              : T("Question shown.", "السؤال ظاهر."),
+          );
+        } else if (action === "add-file") {
+          state.intake = "queued";
+          state.rights = false;
+          render();
+        } else if (action === "remove-file") {
+          state.intake = "empty";
+          state.rights = false;
+          render();
+        } else if (action === "intake-error") {
+          state.intake = "error";
+          render();
+        } else if (action === "submit-file") {
+          if (
+            !$("#source-title").reportValidity() ||
+            !$("#source-description").reportValidity()
+          )
+            return;
+          state.intake = "sending";
+          const epoch = ++state.epoch;
+          render();
+          announce(T("Sending example file.", "جارٍ إرسال الملف التجريبي."));
+          setTimeout(() => {
+            if (epoch !== state.epoch || state.screen !== "intake") return;
+            state.intake = "received";
+            render();
+            announce(
+              T(
+                "File received. Processing remains pending.",
+                "تم استلام الملف. المعالجة ما زالت معلقة.",
+              ),
+            );
+          }, 1300);
+        } else if (action === "review-change") reviewChange();
+        else if (action === "back-queue") {
+          state.selected = null;
+          render();
+        } else if (action === "close-dialog") closeDialog();
+        else if (action === "confirm-example") {
+          $("#dialog").close();
+          toast(
+            T(
+              "Example confirmed · no real command submitted.",
+              "تم تأكيد المثال · لم يُرسل أمر حقيقي.",
+            ),
+          );
+        } else if (action === "menu")
+          dialog(
+            T("Navigation", "التنقل"),
+            `<nav class="stack">${navigation()}${B(T("Account", "الحساب"), "account", "quiet", "user")}${B(T("State library", "مكتبة الحالات"), "states", "quiet", "settings")}</nav>`,
+          );
+        else if (action === "states") chooseScreen("states");
+        else if (action === "toast")
+          toast(T("Local example completed.", "اكتمل المثال المحلي."));
+        else if (action === "state-error")
+          dialog(
+            T("Recoverable error", "خطأ قابل للاسترداد"),
+            notice(
+              "error",
+              T("Could not load the latest status", "تعذّر تحميل أحدث حالة"),
+              T(
+                "Your current view is kept. Retry without repeating your earlier selections.",
+                "احتُفظ بالعرض الحالي. أعد المحاولة دون تكرار اختياراتك السابقة.",
+              ),
+            ),
+            B(T("Close", "إغلاق"), "close-dialog") +
+              B(
+                T("Retry", "إعادة المحاولة"),
+                "confirm-example",
+                "primary",
+                "arrow",
+              ),
+          );
+        else if (action === "example-dialog") {
+          state.selected = "hide";
+          state.reason = T(
+            "Synthetic review reason: correct published availability.",
+            "سبب مراجعة تجريبي: تصحيح حالة الإتاحة المنشورة.",
+          );
+          reviewChange();
+        } else if (action === "context")
+          dialog(
+            T("Academic context", "السياق الدراسي"),
+            `<p>${T("Medicine · Synthetic cohort. The production design will preserve the approved academic selection workflow.", "الطب · مجموعة تجريبية. يحافظ التصميم الإنتاجي على مسار اختيار السياق الدراسي المعتمد.")}</p>`,
+          );
+      }
+      function bind(scope = document) {
+        if ($(".brand"))
+          $(".brand").onclick = (e) => {
+            e.preventDefault();
+            chooseScreen(
+              role() === "leader"
+                ? "intake"
+                : role().includes("admin")
+                  ? "admin"
+                  : "shelf",
+            );
+          };
+        for (const [id, key] of [
+          ["depth", "depth"],
+          ["size", "size"],
+          ["source-title", "sourceTitle"],
+          ["source-description", "sourceDescription"],
+        ])
+          if ($("#" + id))
+            $("#" + id).oninput = (e) => (state[key] = e.target.value);
+        scope.querySelectorAll("[data-action]").forEach(
+          (el) =>
+            (el.onclick = (e) => {
+              if (el.type === "submit" && el.form) return;
+              act(el.dataset.action);
+            }),
+        );
+        scope.querySelectorAll("button[data-screen]").forEach(
+          (el) =>
+            (el.onclick = () => {
+              if ($("#dialog").open) $("#dialog").close();
+              chooseScreen(el.dataset.screen);
+            }),
+        );
+        scope.querySelectorAll("[data-decision]").forEach(
+          (el) =>
+            (el.onclick = () => {
+              state.selected = el.dataset.decision;
+              state.reason = "";
+              render();
+              if (matchMedia("(max-width:600px)").matches)
+                $("#main").scrollTop = 0;
+            }),
+        );
+        scope.querySelectorAll("[data-filter]").forEach(
+          (el) =>
+            (el.onclick = () => {
+              state.filter = el.dataset.filter;
+              render();
+            }),
+        );
+        scope.querySelectorAll("[data-setting]").forEach(
+          (el) =>
+            (el.onclick = () => {
+              state.section = el.dataset.setting;
+              render();
+            }),
+        );
+        if ($("#subject-search"))
+          $("#subject-search").oninput = (e) => {
+            let count = 0;
+            document.querySelectorAll(".subject-row").forEach((row) => {
+              const show = row.dataset.name.includes(
+                e.target.value.toLowerCase(),
+              );
+              row.hidden = !show;
+              row.style.display = show ? "flex" : "none";
+              if (show) count++;
+            });
+            $("#subject-empty").hidden = count !== 0;
+            $("#subject-empty").style.display = count ? "none" : "flex";
+          };
+        if ($("#decision-search"))
+          $("#decision-search").oninput = (e) => {
+            document
+              .querySelectorAll(".queue-row")
+              .forEach(
+                (row) =>
+                  (row.style.display = row.textContent
+                    .toLowerCase()
+                    .includes(e.target.value.toLowerCase())
+                    ? "grid"
+                    : "none"),
+              );
+          };
+        if ($("#chat-form"))
+          $("#chat-form").onsubmit = (e) => {
+            e.preventDefault();
+            if ($("#message").value.trim()) startChat();
+            else $("#message").focus();
+          };
+        if ($("#studio-form"))
+          $("#studio-form").onsubmit = (e) => {
+            e.preventDefault();
+            startStudio();
+          };
+        if ($("#artifact"))
+          $("#artifact").onchange = (e) => {
+            state.type = e.target.value;
+            state.studio = "empty";
+            state.epoch++;
+            render();
+          };
+        if ($("#output-language"))
+          $("#output-language").onchange = (e) => {
+            state.output = e.target.value;
+          };
+        if ($("#topic"))
+          $("#topic").oninput = (e) => (state.topic = e.target.value);
+        if ($("#rights"))
+          $("#rights").onchange = (e) => {
+            state.rights = e.target.checked;
+            $("[data-action=submit-file]").disabled = !state.rights;
+          };
+        if ($("#reason"))
+          $("#reason").oninput = (e) => {
+            state.reason = e.target.value;
+            $("[data-action=review-change]").disabled = !state.reason.trim();
+          };
+        for (const [id, key] of [
+          ["account-theme", "theme"],
+          ["account-locale", "locale"],
+          ["account-motion", "motion"],
+          ["account-role", "role"],
+        ])
+          if ($("#" + id))
+            $("#" + id).onchange = (e) => {
+              state[key] = e.target.value;
+              render();
+              toast(
+                T(
+                  "Review preference updated locally.",
+                  "تم تحديث تفضيل المراجعة محليًا.",
+                ),
+              );
+            };
+        if ($("#specimen-form"))
+          $("#specimen-form").onsubmit = (e) => {
+            e.preventDefault();
+            const input = $("#specimen-title");
+            if (!input.value.trim()) {
+              input.setAttribute("aria-invalid", "true");
+              $("#specimen-error").innerHTML = notice(
+                "error",
+                T("Add a source title.", "أضف عنوان المصدر."),
+                "",
+              );
+              input.focus();
+            } else {
+              input.removeAttribute("aria-invalid");
+              $("#specimen-error").innerHTML = notice(
+                "success",
+                T(
+                  "Title accepted in this example.",
+                  "تم قبول العنوان في هذا المثال.",
+                ),
+                "",
+              );
+            }
+          };
+      }
+      function render() {
+        document.documentElement.dataset.screen = state.screen;
+        if (state.screen === "intake") state.role = "leader";
+        if (state.screen === "admin" && !state.role.includes("admin"))
+          state.role = "admin";
+        if (["shelf", "chat", "studio"].includes(state.screen))
+          state.role = "student";
+        document.documentElement.dataset.theme = state.theme;
+        document.documentElement.dataset.motion = state.motion;
+        document.documentElement.lang = state.locale;
+        document.documentElement.dir = state.locale === "ar" ? "rtl" : "ltr";
+        for (const k of ["screen", "theme", "locale", "motion"])
+          $("#" + k).value = state[k];
+        $("#root").innerHTML = shell(
+          { shelf, chat, studio, intake, admin, account, states: specimens }[
+            state.screen
+          ](),
+        );
+        bind();
+        const q = new URLSearchParams({
+          screen: state.screen,
+          theme: state.theme,
+          locale: state.locale,
+          motion: state.motion,
+          role: state.role,
+        });
+        history.replaceState(null, "", "?" + q);
+      }
+      for (const k of ["screen", "theme", "locale", "motion"])
+        $("#" + k).onchange = (e) => {
+          state[k] = e.target.value;
+          if (k === "screen") state.epoch++;
+          render();
+        };
+      render();
+    </script>
+  </body>
+</html>

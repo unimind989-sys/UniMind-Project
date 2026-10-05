@@ -215,6 +215,26 @@
 .field input[aria-invalid="true"] {
   border-color: var(--danger);
 }
+.inputFrame:has(.passwordVisibility) input {
+  padding-inline-end: 68px;
+}
+.passwordVisibility {
+  position: absolute;
+  inset-inline-end: 4px;
+  inset-block-start: 2px;
+  min-height: 44px;
+  min-width: 56px;
+  border: 0;
+  border-radius: 6px;
+  padding: 4px 8px;
+  background: transparent;
+  color: var(--accent-ink);
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+.passwordVisibility:hover {
+  background: var(--accent-soft);
+}
 .fieldError {
   color: var(--danger);
   font-size: 0.8125rem;

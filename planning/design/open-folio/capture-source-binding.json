@@ -1,0 +1,198 @@
+{
+  "baseline": "9f7d840ec9353c4c66e6d1e0e771de9acc76d866",
+  "approvedPrototypeSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+  "immutableManifestsVerified": [
+    {
+      "manifest": "docs/reviews/uiux-2026-10-04/artifact-manifest.json",
+      "filesVerified": 102
+    },
+    {
+      "manifest": "docs/reviews/uiux-2026-10-04/refinement/artifact-manifest.json",
+      "filesVerified": 134
+    }
+  ],
+  "sourceFiles": [
+    {
+      "file": "src/app/(auth)/_components/auth-form.tsx",
+      "bytes": 14878,
+      "sha256": "3cd0fa78455f2f600e1ebb0e98fc2fc23e30ed9d54aa50ec27e2a5994e49cc86"
+    },
+    {
+      "file": "src/app/(auth)/_components/auth-shell.tsx",
+      "bytes": 3734,
+      "sha256": "746dce10257b7ae927791662eac98f600f722b694e774fccd46f3d0026e1bab2"
+    },
+    {
+      "file": "src/app/(auth)/auth.module.css",
+      "bytes": 7353,
+      "sha256": "8359828824bae2fe0f93e54a46ab3674b6ea1dfaf3c814b75d362a71e43a302f"
+    },
+    {
+      "file": "src/app/_components/account-layout.tsx",
+      "bytes": 1215,
+      "sha256": "0d76df6a7f33334c211ce5fad1ae2e4eda84f6904c4c225a034a1512690e3b11"
+    },
+    {
+      "file": "src/app/_components/app-shell.module.css",
+      "bytes": 8538,
+      "sha256": "5b91d1817228a6598508201f180cef90c3b60693c7eeb0edad43da573f6f0c1a"
+    },
+    {
+      "file": "src/app/_components/app-shell.tsx",
+      "bytes": 8668,
+      "sha256": "0f81024a6ce49b80aaa5fd11c78a825613167501ae99d286ed42bca9775b0e83"
+    },
+    {
+      "file": "src/app/_components/brand.tsx",
+      "bytes": 1079,
+      "sha256": "a247d681f9212f25bba5087a7c9ecb6d9516c2d9d82fa53a0c13d3d871f1ac65"
+    },
+    {
+      "file": "src/app/_components/frontend-controls.tsx",
+      "bytes": 3529,
+      "sha256": "c06198761ce8f1db03ddc2233cc43f51e3d58ad2a153e7ae16c4fec46fe60d2d"
+    },
+    {
+      "file": "src/app/_components/frontend-system.module.css",
+      "bytes": 2981,
+      "sha256": "79459861cc20057d105031191362cfa55a33122e6aecb0e6dc737f4702ebbafc"
+    },
+    {
+      "file": "src/app/_components/frontend-system.tsx",
+      "bytes": 3869,
+      "sha256": "f4c8281de7031c37dc0b2e8799bc1eee1efb37f175663f61e976b37c61f8f9a8"
+    },
+    {
+      "file": "src/app/_components/product-dialog.module.css",
+      "bytes": 875,
+      "sha256": "bb04a4b9b9893e6845d55421802dec4f18767965ed60bf71755cd70e02c5575d"
+    },
+    {
+      "file": "src/app/_components/product-dialog.tsx",
+      "bytes": 1913,
+      "sha256": "a335dc9a0ad20410a2c953d14d527a9a4c27eecc8ffb2b190a829052e04cc5bd"
+    },
+    {
+      "file": "src/app/_components/product-native-page.tsx",
+      "bytes": 24294,
+      "sha256": "d972a0e72995989e9403ab314c896d9fd651558eb8a44bac60da1f68faac74a2"
+    },
+    {
+      "file": "src/app/_components/product-operations.tsx",
+      "bytes": 20535,
+      "sha256": "92b8bffe76b9cc307280ee9cc04c14973473d6d0a90ec436e8346d01db3d8dc6"
+    },
+    {
+      "file": "src/app/_components/product-ui.tsx",
+      "bytes": 4108,
+      "sha256": "e489fe36c8c76be3050523b916d7f659589a03304156e5e75d172453e7dca1fb"
+    },
+    {
+      "file": "src/app/_components/product.module.css",
+      "bytes": 8503,
+      "sha256": "4905de4ce4e4d7248e7186380f59323cc104d05e91e228da74a1fb31292d6059"
+    },
+    {
+      "file": "src/app/_components/student-account.module.css",
+      "bytes": 2414,
+      "sha256": "68f4a7d27a9e6b49f48ed2aa4635f905087cf123acc3031a13a6f44e390d919a"
+    },
+    {
+      "file": "src/app/admin/_components/admin-decision-queue.tsx",
+      "bytes": 23488,
+      "sha256": "33ce8689a7149c830044431f0e570a426e97735d7de0cf57ff109dc53049930c"
+    },
+    {
+      "file": "src/app/admin/_components/admin-workspace.tsx",
+      "bytes": 3527,
+      "sha256": "84df8b18ae07423dd59638cca41a369215971d699327a60db4c130c440e993e4"
+    },
+    {
+      "file": "src/app/admin/admin.module.css",
+      "bytes": 10896,
+      "sha256": "daae9cad6494d4873bd96aa16fbad364c3425dc5d095a4ce6e630b8609156c48"
+    },
+    {
+      "file": "src/app/batch-leader/_components/collection-flow.tsx",
+      "bytes": 23761,
+      "sha256": "2abf6df565bfe2c45c49f268ade918be31a771b5750ce1e07603fc39394be8d0"
+    },
+    {
+      "file": "src/app/batch-leader/_components/leader-home.tsx",
+      "bytes": 8110,
+      "sha256": "1cf13f95ed484306751da0caf99ed4a3348f2dba2f6d93b49c64efec53a88628"
+    },
+    {
+      "file": "src/app/batch-leader/collection.module.css",
+      "bytes": 9080,
+      "sha256": "e70662c77876711735ce1095bc5f997b549b4caa69cfe5b817620aacd59dd4ae"
+    },
+    {
+      "file": "src/app/globals.css",
+      "bytes": 6201,
+      "sha256": "3d1f099058203f2610120adcd5c1f6fa03f0d33d0b505263d728cce15f77f16b"
+    },
+    {
+      "file": "src/app/learn/_components/product-chat.tsx",
+      "bytes": 22574,
+      "sha256": "f5a5d301491c33acd42e6df3c8d7a22df9b201545babbf79f2d4c865719b0c8c"
+    },
+    {
+      "file": "src/app/learn/_components/product-studio.tsx",
+      "bytes": 17412,
+      "sha256": "cd947c8d5c2afea1192e63aa1c3b095bfe8d1800cc9deba9705d8458ff26a9f5"
+    },
+    {
+      "file": "src/app/learn/_components/product-study.module.css",
+      "bytes": 13955,
+      "sha256": "3751c3600c07ae31aeaf649721c7ca81e7b12bb3e5f02f82fc1b74b7ff388b41"
+    },
+    {
+      "file": "src/app/learn/_components/product-study.tsx",
+      "bytes": 25562,
+      "sha256": "59d4b43e954cdb048454fbdf9cbcffaaf38627eb31d99039612e827e696ffb1b"
+    },
+    {
+      "file": "src/app/learn/_components/study-shelf.tsx",
+      "bytes": 15888,
+      "sha256": "bc4a5fdfc983ba8bda693fb14de77bc33eeb87da39555b707fc0a88b31e9491b"
+    },
+    {
+      "file": "src/app/learn/study-shelf.module.css",
+      "bytes": 7194,
+      "sha256": "da6c181eb5093e2259e8cecdd24c38e0fac25de95c0d09b3db00d83e4854b3ff"
+    },
+    {
+      "file": "src/app/learn/workspace.module.css",
+      "bytes": 12694,
+      "sha256": "131e46565afa533cbb0f2d6119a0a1412b365b522a2e2c696cf4353b7ae8eefa"
+    },
+    {
+      "file": "src/app/not-found.tsx",
+      "bytes": 406,
+      "sha256": "661853f10a5f421c8406a062607563e77b62df07fbe0ff911b1f026250551701"
+    },
+    {
+      "file": "src/app/settings/page.tsx",
+      "bytes": 2766,
+      "sha256": "a993955cf6ea1997f581d60283c3a591c6de145b77d047661eef42e575a692d4"
+    },
+    {
+      "file": "src/lib/i18n/auth-copy.ts",
+      "bytes": 8192,
+      "sha256": "6a26fafac03ddb17ad3e5ad34559140fda1c43afe02444fad7ee8ca046ee280c"
+    },
+    {
+      "file": "tests/e2e/hosted-synthetic-login.spec.ts",
+      "bytes": 11614,
+      "sha256": "67c63a286e760cce0a58a6172575b2aff5e2c2fc17dbf60ef38693bb38a43841"
+    },
+    {
+      "file": "tests/e2e/native-product-demo.spec.ts",
+      "bytes": 78065,
+      "sha256": "f2e27c7f614dc6f12ccc65d3a520195e87415f209f159d91d199b4504d88f69f"
+    }
+  ],
+  "captureInventorySHA256": "efaab39a5a309190a249cd67d9c3faac75534b9a0b0960221a3cfd64d490f417",
+  "limitations": "Local synthetic browser evidence; candidate source hashes, not a production acceptance claim."
+}

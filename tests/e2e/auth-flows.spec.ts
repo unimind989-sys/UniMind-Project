@@ -25,7 +25,7 @@ test("login presents one identity form and supports RTL", async ({ page }) => {
     "autocomplete",
     "email",
   );
-  await expect(page.getByLabel("Password")).toHaveAttribute(
+  await expect(page.getByLabel("Password", { exact: true })).toHaveAttribute(
     "autocomplete",
     "current-password",
   );
@@ -62,6 +62,9 @@ test("invalid login restores focus to a generic summary and marks fields", async
 }) => {
   await page.goto("/login");
   await page.getByLabel("Email address").fill("not-an-email");
+  await page
+    .getByLabel("Password", { exact: true })
+    .fill("invalid-form-specimen");
   await page.getByRole("button", { name: "Continue" }).click();
 
   const summary = page.getByRole("main").getByRole("alert");
@@ -71,10 +74,34 @@ test("invalid login restores focus to a generic summary and marks fields", async
     "aria-invalid",
     "true",
   );
-  await expect(page.getByLabel("Password")).toHaveAttribute(
+  await expect(page.getByLabel("Password", { exact: true })).toHaveAttribute(
     "aria-invalid",
-    "true",
+    "false",
   );
+});
+
+test("a missing password stays local and focuses its described field in both locales", async ({
+  page,
+}) => {
+  const submissions: string[] = [];
+  page.on("request", (request) => {
+    if (request.method() === "POST") submissions.push(request.url());
+  });
+  for (const [locale, passwordLabel, continueLabel, required] of [
+    ["en", "Password", "Continue", "Enter your password."],
+    ["ar", "كلمة المرور", "متابعة", "أدخل كلمة المرور."],
+  ] as const) {
+    await page.goto(`/login?lang=${locale}`);
+    await page
+      .getByRole("button", { name: continueLabel, exact: true })
+      .click();
+    const password = page.getByLabel(passwordLabel, { exact: true });
+    await expect(password).toBeFocused();
+    await expect(password).toHaveAttribute("aria-invalid", "true");
+    await expect(password).toHaveAccessibleDescription(required);
+    await expect(page).toHaveURL(new RegExp(`/login\\?lang=${locale}$`, "u"));
+  }
+  expect(submissions).toEqual([]);
 });
 
 test("public link states are bounded and recovery actions are visible", async ({

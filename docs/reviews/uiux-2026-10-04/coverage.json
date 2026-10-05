@@ -1,0 +1,2453 @@
+[
+  {
+    "id": "01-landing-desktop",
+    "role": "public",
+    "state": "hero",
+    "route": "https://project-xwrez.vercel.app/",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated public state only; lower-page or unrecorded states are not complete coverage."
+  },
+  {
+    "id": "02-landing-layers",
+    "role": "public",
+    "state": "folio expanded",
+    "route": "https://project-xwrez.vercel.app/",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated public state only; lower-page or unrecorded states are not complete coverage."
+  },
+  {
+    "id": "03-landing-preview-chat",
+    "role": "public",
+    "state": "sample chat",
+    "route": "https://project-xwrez.vercel.app/#workspace",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated public state only; lower-page or unrecorded states are not complete coverage."
+  },
+  {
+    "id": "04-landing-preview-studio",
+    "role": "public",
+    "state": "sample studio",
+    "route": "https://project-xwrez.vercel.app/#workspace",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated public state only; lower-page or unrecorded states are not complete coverage."
+  },
+  {
+    "id": "05-landing-flashcard",
+    "role": "public",
+    "state": "revealed sample card",
+    "route": "https://project-xwrez.vercel.app/#workspace",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated public state only; lower-page or unrecorded states are not complete coverage."
+  },
+  {
+    "id": "06-landing-quiz",
+    "role": "public",
+    "state": "sample quiz",
+    "route": "https://project-xwrez.vercel.app/#workspace",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated public state only; lower-page or unrecorded states are not complete coverage."
+  },
+  {
+    "id": "07-landing-mobile",
+    "role": "public",
+    "state": "sample quiz responsive",
+    "route": "https://project-xwrez.vercel.app/#workspace",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated public state only; lower-page or unrecorded states are not complete coverage."
+  },
+  {
+    "id": "08-landing-mobile-hero",
+    "role": "public",
+    "state": "hero responsive",
+    "route": "https://project-xwrez.vercel.app/#workspace",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated public state only; lower-page or unrecorded states are not complete coverage."
+  },
+  {
+    "id": "09-landing-tablet",
+    "role": "public",
+    "state": "hero responsive",
+    "route": "https://project-xwrez.vercel.app/?lang=en",
+    "viewport": {
+      "height": 1024,
+      "width": 768
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated public state only; lower-page or unrecorded states are not complete coverage."
+  },
+  {
+    "id": "10-landing-laptop",
+    "role": "public",
+    "state": "hero responsive",
+    "route": "https://project-xwrez.vercel.app/?lang=en",
+    "viewport": {
+      "height": 800,
+      "width": 1280
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated public state only; lower-page or unrecorded states are not complete coverage."
+  },
+  {
+    "id": "11-login-laptop",
+    "role": "public",
+    "state": "loaded login",
+    "route": "https://project-xwrez.vercel.app/login?lang=en",
+    "viewport": {
+      "height": 800,
+      "width": 1280
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Synthetic entry only; real callbacks, external email and real policy reading untested."
+  },
+  {
+    "id": "12-login-desktop",
+    "role": "public",
+    "state": "login",
+    "route": "https://project-xwrez.vercel.app/login?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Synthetic entry only; real callbacks, external email and real policy reading untested."
+  },
+  {
+    "id": "13-register-desktop",
+    "role": "public",
+    "state": "registration form unsubmitted",
+    "route": "https://project-xwrez.vercel.app/register?lang=en&next=%2Flearn",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Synthetic entry only; real callbacks, external email and real policy reading untested."
+  },
+  {
+    "id": "14-register-validation",
+    "role": "public",
+    "state": "empty submit result",
+    "route": "https://project-xwrez.vercel.app/register?lang=en&next=%2Flearn",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Synthetic entry only; real callbacks, external email and real policy reading untested."
+  },
+  {
+    "id": "15-student-consent",
+    "role": "student",
+    "state": "consent onboarding",
+    "route": "https://project-xwrez.vercel.app/consent?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Synthetic entry only; real callbacks, external email and real policy reading untested."
+  },
+  {
+    "id": "16-student-shelf-initial",
+    "role": "student",
+    "state": "loaded shelf",
+    "route": "https://project-xwrez.vercel.app/learn?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated fixture state only; real service behavior and complete accessibility untested."
+  },
+  {
+    "id": "17-student-shelf",
+    "role": "student",
+    "state": "configured shelf",
+    "route": "https://project-xwrez.vercel.app/learn?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated fixture state only; real service behavior and complete accessibility untested."
+  },
+  {
+    "id": "18-student-selected-title",
+    "role": "student",
+    "state": "subject title activation",
+    "route": "https://project-xwrez.vercel.app/learn?lang=en&stage=university&institution=zagazig-university&program=human-medicine&level=human-medicine-year-1&term=human-medicine-year-1-term-1&cohort=zagazig-university-human-medicine-year-1-term-1-cohort&unit=zagazig-university-human-medicine-y1-t1-anatomy",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated fixture state only; real service behavior and complete accessibility untested."
+  },
+  {
+    "id": "19-materials-desktop",
+    "role": "student",
+    "state": "materials library",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated fixture state only; real service behavior and complete accessibility untested."
+  },
+  {
+    "id": "20-materials-excerpt",
+    "role": "student",
+    "state": "source excerpt expanded",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated fixture state only; real service behavior and complete accessibility untested."
+  },
+  {
+    "id": "21-chat-empty-desktop",
+    "role": "student",
+    "state": "chat initial",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated fixture state only; real service behavior and complete accessibility untested."
+  },
+  {
+    "id": "22-chat-sending",
+    "role": "student",
+    "state": "synthetic sending transition",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated fixture state only; real service behavior and complete accessibility untested."
+  },
+  {
+    "id": "23-chat-answer-desktop",
+    "role": "student",
+    "state": "supported answer",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated fixture state only; real service behavior and complete accessibility untested."
+  },
+  {
+    "id": "24-chat-mobile",
+    "role": "student",
+    "state": "supported answer mobile",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated fixture state only; real service behavior and complete accessibility untested."
+  },
+  {
+    "id": "25-chat-mobile-top",
+    "role": "student",
+    "state": "mobile chat header",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated fixture state only; real service behavior and complete accessibility untested."
+  },
+  {
+    "id": "26-evidence-mobile",
+    "role": "student",
+    "state": "exact exchange evidence",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/evidence?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated fixture state only; real service behavior and complete accessibility untested."
+  },
+  {
+    "id": "27-report-mobile",
+    "role": "student",
+    "state": "report form unsubmitted",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/report?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Visible form and confirmation inspected; no report submitted."
+  },
+  {
+    "id": "28-studio-initial",
+    "role": "student",
+    "state": "studio initial",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Flashcards sampled; other generation types and real provider behavior untested."
+  },
+  {
+    "id": "29-studio-flashcards",
+    "role": "student",
+    "state": "generated flashcards",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Flashcards sampled; other generation types and real provider behavior untested."
+  },
+  {
+    "id": "30-studio-flipped",
+    "role": "student",
+    "state": "keyboard flashcard flip",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Flashcards sampled; other generation types and real provider behavior untested."
+  },
+  {
+    "id": "31-studio-laptop",
+    "role": "student",
+    "state": "generated flashcards laptop",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=en",
+    "viewport": {
+      "height": 800,
+      "width": 1280
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Flashcards sampled; other generation types and real provider behavior untested."
+  },
+  {
+    "id": "32-studio-tablet",
+    "role": "student",
+    "state": "generated flashcards tablet",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=en",
+    "viewport": {
+      "height": 1024,
+      "width": 768
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Flashcards sampled; other generation types and real provider behavior untested."
+  },
+  {
+    "id": "33-studio-mobile-top",
+    "role": "student",
+    "state": "studio mobile controls",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Flashcards sampled; other generation types and real provider behavior untested."
+  },
+  {
+    "id": "34-quiz-mobile",
+    "role": "student",
+    "state": "quiz setup",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/quiz?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Untimed fixed quiz sampled; timed expiry untested."
+  },
+  {
+    "id": "35-quiz-active-mobile",
+    "role": "student",
+    "state": "active untimed quiz",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/quiz/sample-attempt?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Untimed fixed quiz sampled; timed expiry untested."
+  },
+  {
+    "id": "36-quiz-results-mobile",
+    "role": "student",
+    "state": "submitted quiz result",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/quiz/sample-attempt/review?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Untimed fixed quiz sampled; timed expiry untested."
+  },
+  {
+    "id": "37-quiz-results-desktop",
+    "role": "student",
+    "state": "quiz result desktop",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/quiz/sample-attempt/review?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Untimed fixed quiz sampled; timed expiry untested."
+  },
+  {
+    "id": "38-account-desktop",
+    "role": "student",
+    "state": "account overview",
+    "route": "https://project-xwrez.vercel.app/settings?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Appearance and visible sections inspected; destructive/account actions unsubmitted."
+  },
+  {
+    "id": "39-account-dark",
+    "role": "student",
+    "state": "dark account",
+    "route": "https://project-xwrez.vercel.app/settings?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Appearance and visible sections inspected; destructive/account actions unsubmitted."
+  },
+  {
+    "id": "40-account-mobile-dark",
+    "role": "student",
+    "state": "dark account mobile",
+    "route": "https://project-xwrez.vercel.app/settings?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Appearance and visible sections inspected; destructive/account actions unsubmitted."
+  },
+  {
+    "id": "41-account-mobile-ar-dark",
+    "role": "student",
+    "state": "Arabic dark account",
+    "route": "https://project-xwrez.vercel.app/settings?lang=ar",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Appearance and visible sections inspected; destructive/account actions unsubmitted."
+  },
+  {
+    "id": "42-studio-ar-dark",
+    "role": "student",
+    "state": "Arabic dark Studio",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=ar",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Flashcards sampled; other generation types and real provider behavior untested."
+  },
+  {
+    "id": "43-chat-unavailable-mobile",
+    "role": "student",
+    "state": "unavailable information",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated fixture state only; real service behavior and complete accessibility untested."
+  },
+  {
+    "id": "44-shelf-empty-search",
+    "role": "student",
+    "state": "no matching subjects",
+    "route": "https://project-xwrez.vercel.app/learn?view=subjects&lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Stated fixture state only; real service behavior and complete accessibility untested."
+  },
+  {
+    "id": "45-login-mobile",
+    "role": "public",
+    "state": "signed out login",
+    "route": "https://project-xwrez.vercel.app/login?lang=en&status=signed_out",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Synthetic entry only; real callbacks, external email and real policy reading untested."
+  },
+  {
+    "id": "46-leader-home-mobile",
+    "role": "leader",
+    "state": "uploads home",
+    "route": "https://project-xwrez.vercel.app/batch-leader?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Approved-reference fixture flow only; actual file transfer and durable correction untested."
+  },
+  {
+    "id": "47-leader-home-desktop",
+    "role": "leader",
+    "state": "uploads home desktop",
+    "route": "https://project-xwrez.vercel.app/batch-leader?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Approved-reference fixture flow only; actual file transfer and durable correction untested."
+  },
+  {
+    "id": "48-campaign-desktop",
+    "role": "leader",
+    "state": "campaign intake",
+    "route": "https://project-xwrez.vercel.app/batch-leader/campaigns/sample-campaign?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Approved-reference fixture flow only; actual file transfer and durable correction untested."
+  },
+  {
+    "id": "49-campaign-requests",
+    "role": "leader",
+    "state": "requested materials expanded",
+    "route": "https://project-xwrez.vercel.app/batch-leader/campaigns/sample-campaign?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Approved-reference fixture flow only; actual file transfer and durable correction untested."
+  },
+  {
+    "id": "50-campaign-queue",
+    "role": "leader",
+    "state": "approved reference queued",
+    "route": "https://project-xwrez.vercel.app/batch-leader/campaigns/sample-campaign?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Approved-reference fixture flow only; actual file transfer and durable correction untested."
+  },
+  {
+    "id": "51-campaign-laptop",
+    "role": "leader",
+    "state": "queue laptop",
+    "route": "https://project-xwrez.vercel.app/batch-leader/campaigns/sample-campaign?lang=en",
+    "viewport": {
+      "height": 800,
+      "width": 1280
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Approved-reference fixture flow only; actual file transfer and durable correction untested."
+  },
+  {
+    "id": "52-campaign-tablet",
+    "role": "leader",
+    "state": "queue tablet",
+    "route": "https://project-xwrez.vercel.app/batch-leader/campaigns/sample-campaign?lang=en",
+    "viewport": {
+      "height": 1024,
+      "width": 768
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Approved-reference fixture flow only; actual file transfer and durable correction untested."
+  },
+  {
+    "id": "53-campaign-mobile",
+    "role": "leader",
+    "state": "queue mobile",
+    "route": "https://project-xwrez.vercel.app/batch-leader/campaigns/sample-campaign?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Approved-reference fixture flow only; actual file transfer and durable correction untested."
+  },
+  {
+    "id": "54-intake-pending-mobile",
+    "role": "leader",
+    "state": "synthetic reference pending",
+    "route": "https://project-xwrez.vercel.app/batch-leader/campaigns/sample-campaign?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Approved-reference fixture flow only; actual file transfer and durable correction untested."
+  },
+  {
+    "id": "55-intake-received-mobile",
+    "role": "leader",
+    "state": "synthetic receipt",
+    "route": "https://project-xwrez.vercel.app/batch-leader/campaigns/sample-campaign?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Approved-reference fixture flow only; actual file transfer and durable correction untested."
+  },
+  {
+    "id": "56-leader-history-mobile",
+    "role": "leader",
+    "state": "submission history",
+    "route": "https://project-xwrez.vercel.app/batch-leader?view=history&lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Approved-reference fixture flow only; actual file transfer and durable correction untested."
+  },
+  {
+    "id": "57-leader-history-desktop",
+    "role": "leader",
+    "state": "submission history desktop",
+    "route": "https://project-xwrez.vercel.app/batch-leader?view=history&lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Approved-reference fixture flow only; actual file transfer and durable correction untested."
+  },
+  {
+    "id": "58-leader-account",
+    "role": "leader",
+    "state": "role-specific account",
+    "route": "https://project-xwrez.vercel.app/settings?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Appearance and visible sections inspected; destructive/account actions unsubmitted."
+  },
+  {
+    "id": "59-admin-overview-desktop",
+    "role": "admin",
+    "state": "initial decisions queue",
+    "route": "https://project-xwrez.vercel.app/admin?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "60-admin-confirmation",
+    "role": "admin",
+    "state": "review exact change unconfirmed",
+    "route": "https://project-xwrez.vercel.app/admin?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "61-admin-laptop",
+    "role": "admin",
+    "state": "queue laptop",
+    "route": "https://project-xwrez.vercel.app/admin?lang=en",
+    "viewport": {
+      "height": 800,
+      "width": 1280
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "62-admin-tablet",
+    "role": "admin",
+    "state": "queue tablet",
+    "route": "https://project-xwrez.vercel.app/admin?lang=en",
+    "viewport": {
+      "height": 1024,
+      "width": 768
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "63-admin-mobile",
+    "role": "admin",
+    "state": "queue mobile",
+    "route": "https://project-xwrez.vercel.app/admin?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "64-admin-mobile-menu",
+    "role": "admin",
+    "state": "expanded admin menu",
+    "route": "https://project-xwrez.vercel.app/admin?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "65-admin-sources-mobile",
+    "role": "admin",
+    "state": "source lifecycle",
+    "route": "https://project-xwrez.vercel.app/admin/sources?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "66-admin-sources-desktop",
+    "role": "admin",
+    "state": "sources summary",
+    "route": "https://project-xwrez.vercel.app/admin/sources?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "67-admin-campaigns",
+    "role": "admin",
+    "state": "campaign draft preparation",
+    "route": "https://project-xwrez.vercel.app/admin/campaigns?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "68-admin-catalog",
+    "role": "admin",
+    "state": "catalog configuration",
+    "route": "https://project-xwrez.vercel.app/admin/catalog?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "69-admin-cohorts",
+    "role": "admin",
+    "state": "cohort draft",
+    "route": "https://project-xwrez.vercel.app/admin/cohorts?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "70-admin-users",
+    "role": "admin",
+    "state": "assignment context",
+    "route": "https://project-xwrez.vercel.app/admin/cohorts?view=users&lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "71-admin-jobs",
+    "role": "admin",
+    "state": "processing summary",
+    "route": "https://project-xwrez.vercel.app/admin/jobs?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "72-admin-quality",
+    "role": "admin",
+    "state": "quality summary",
+    "route": "https://project-xwrez.vercel.app/admin/quality?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "73-admin-usage",
+    "role": "admin",
+    "state": "usage capacity summary",
+    "route": "https://project-xwrez.vercel.app/admin/usage?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "74-admin-incidents",
+    "role": "admin",
+    "state": "incident summary",
+    "route": "https://project-xwrez.vercel.app/admin/incidents?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "75-capacity-preview",
+    "role": "admin",
+    "state": "attempted capacity preview; normal chat rendered",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=capacity&lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Capacity preview link opened normal chat; sending returned Supported, not a capacity state. Capacity error NOT observed. Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated fixture state only; real service behavior and complete accessibility untested."
+  },
+  {
+    "id": "76-capacity-feedback",
+    "role": "admin",
+    "state": "attempted capacity preview; normal chat rendered",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=capacity&lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Capacity preview link opened normal chat; sending returned Supported, not a capacity state. Capacity error NOT observed. Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated fixture state only; real service behavior and complete accessibility untested."
+  },
+  {
+    "id": "77-admin-account",
+    "role": "admin",
+    "state": "admin account",
+    "route": "https://project-xwrez.vercel.app/settings?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Appearance and visible sections inspected; destructive/account actions unsubmitted."
+  },
+  {
+    "id": "78-admin-dark",
+    "role": "admin",
+    "state": "dark decisions",
+    "route": "https://project-xwrez.vercel.app/admin?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "79-admin-ar-mobile-dark",
+    "role": "admin",
+    "state": "Arabic dark decisions",
+    "route": "https://project-xwrez.vercel.app/admin?lang=ar",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "80-admin-blocked-ar",
+    "role": "admin",
+    "state": "blocked publication",
+    "route": "https://project-xwrez.vercel.app/admin?lang=ar",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "81-second-admin-mobile",
+    "role": "second-admin",
+    "state": "independent initial decisions",
+    "route": "https://project-xwrez.vercel.app/admin?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "82-second-admin-desktop",
+    "role": "second-admin",
+    "state": "independent desktop decisions",
+    "route": "https://project-xwrez.vercel.app/admin?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "83-second-admin-blocked",
+    "role": "second-admin",
+    "state": "blocked publication details",
+    "route": "https://project-xwrez.vercel.app/admin?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "84-second-admin-sources",
+    "role": "second-admin",
+    "state": "independent sources summary",
+    "route": "https://project-xwrez.vercel.app/admin/sources?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "85-second-admin-campaign-draft",
+    "role": "second-admin",
+    "state": "synthetic campaign draft feedback",
+    "route": "https://project-xwrez.vercel.app/admin/campaigns?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "DOM evaluated; screenshot omitted because the synthetic recipient identifier is displayed. Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "86-second-admin-catalog",
+    "role": "second-admin",
+    "state": "independent catalog",
+    "route": "https://project-xwrez.vercel.app/admin/catalog?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "87-second-admin-cohorts",
+    "role": "second-admin",
+    "state": "independent cohort configuration",
+    "route": "https://project-xwrez.vercel.app/admin/cohorts?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "88-second-admin-users",
+    "role": "second-admin",
+    "state": "independent users context",
+    "route": "https://project-xwrez.vercel.app/admin/cohorts?view=users&lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "89-second-admin-jobs",
+    "role": "second-admin",
+    "state": "independent jobs summary",
+    "route": "https://project-xwrez.vercel.app/admin/jobs?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "90-second-admin-quality",
+    "role": "second-admin",
+    "state": "independent quality summary",
+    "route": "https://project-xwrez.vercel.app/admin/quality?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "91-second-admin-usage",
+    "role": "second-admin",
+    "state": "independent usage summary",
+    "route": "https://project-xwrez.vercel.app/admin/usage?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "92-second-admin-incidents",
+    "role": "second-admin",
+    "state": "independent incident summary",
+    "route": "https://project-xwrez.vercel.app/admin/incidents?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "93-second-admin-account",
+    "role": "second-admin",
+    "state": "independent account",
+    "route": "https://project-xwrez.vercel.app/settings?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Appearance and visible sections inspected; destructive/account actions unsubmitted."
+  },
+  {
+    "id": "94-login-tablet",
+    "role": "public",
+    "state": "login tablet",
+    "route": "https://project-xwrez.vercel.app/login?lang=en&status=signed_out",
+    "viewport": {
+      "height": 1024,
+      "width": 768
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Synthetic entry only; real callbacks, external email and real policy reading untested."
+  },
+  {
+    "id": "95-forgot-tablet",
+    "role": "public",
+    "state": "recovery form unsubmitted",
+    "route": "https://project-xwrez.vercel.app/forgot-password?lang=en",
+    "viewport": {
+      "height": 1024,
+      "width": 768
+    },
+    "notes": "Discovery interaction/DOM observation; superseded screenshot frames removed.",
+    "screenshot": null,
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Synthetic entry only; real callbacks, external email and real policy reading untested."
+  },
+  {
+    "id": "p01-recovery-tablet",
+    "role": "public",
+    "state": "recovery form",
+    "route": "https://project-xwrez.vercel.app/forgot-password?lang=en",
+    "viewport": {
+      "height": 1024,
+      "width": 768
+    },
+    "notes": "",
+    "screenshot": "screenshots/p01-recovery-tablet.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 768,
+      "height": 1024
+    },
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Synthetic entry only; real callbacks, external email and real policy reading untested."
+  },
+  {
+    "id": "p02-not-found",
+    "role": "public",
+    "state": "public 404",
+    "route": "https://project-xwrez.vercel.app/design-review-missing-page",
+    "viewport": {
+      "height": 1024,
+      "width": 768
+    },
+    "notes": "",
+    "screenshot": "screenshots/p02-not-found.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 758,
+      "height": 1011
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated public state only; lower-page or unrecorded states are not complete coverage."
+  },
+  {
+    "id": "p03-landing-tablet",
+    "role": "public",
+    "state": "landing tablet",
+    "route": "https://project-xwrez.vercel.app/",
+    "viewport": {
+      "height": 1024,
+      "width": 768
+    },
+    "notes": "",
+    "screenshot": "screenshots/p03-landing-tablet.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 758,
+      "height": 1011
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated public state only; lower-page or unrecorded states are not complete coverage."
+  },
+  {
+    "id": "p04-landing-laptop",
+    "role": "Public",
+    "state": "Landing hero; corrected settled laptop capture",
+    "route": "https://project-xwrez.vercel.app/",
+    "viewport": {
+      "height": 800,
+      "width": 1280
+    },
+    "notes": "Replaces previous-viewport frame.",
+    "screenshot": "screenshots/p04-landing-laptop.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 1270,
+      "height": 794
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated public state only; lower-page or unrecorded states are not complete coverage."
+  },
+  {
+    "id": "p05-landing-desktop",
+    "role": "public",
+    "state": "landing desktop",
+    "route": "https://project-xwrez.vercel.app/",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "",
+    "screenshot": "screenshots/p05-landing-desktop.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 1430,
+      "height": 894
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated public state only; lower-page or unrecorded states are not complete coverage."
+  },
+  {
+    "id": "p06-landing-mobile",
+    "role": "public",
+    "state": "landing mobile settled",
+    "route": "https://project-xwrez.vercel.app/",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "",
+    "screenshot": "screenshots/p06-landing-mobile.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 380,
+      "height": 822
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated public state only; lower-page or unrecorded states are not complete coverage."
+  },
+  {
+    "id": "p07-login-mobile-dark",
+    "role": "public",
+    "state": "dark login mobile",
+    "route": "https://project-xwrez.vercel.app/login?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "",
+    "screenshot": "screenshots/p07-login-mobile-dark.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 390,
+      "height": 844
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Synthetic entry only; real callbacks, external email and real policy reading untested."
+  },
+  {
+    "id": "p08-consent-mobile",
+    "role": "Student",
+    "state": "Consent",
+    "route": "https://project-xwrez.vercel.app/consent?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "",
+    "screenshot": "screenshots/p08-consent-mobile.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 390,
+      "height": 844
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Synthetic entry only; real callbacks, external email and real policy reading untested."
+  },
+  {
+    "id": "p09-setup-mobile",
+    "role": "Student",
+    "state": "Academic setup",
+    "route": "https://project-xwrez.vercel.app/learn?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "",
+    "screenshot": "screenshots/p09-setup-mobile.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 380,
+      "height": 822
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated fixture state only; real service behavior and complete accessibility untested."
+  },
+  {
+    "id": "p10-shelf-mobile",
+    "role": "Student",
+    "state": "Configured shelf",
+    "route": "https://project-xwrez.vercel.app/learn?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "",
+    "screenshot": "screenshots/p10-shelf-mobile.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 380,
+      "height": 822
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated fixture state only; real service behavior and complete accessibility untested."
+  },
+  {
+    "id": "p11-shelf-desktop-dark",
+    "role": "Student",
+    "state": "Configured shelf",
+    "route": "https://project-xwrez.vercel.app/learn?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "",
+    "screenshot": "screenshots/p11-shelf-desktop-dark.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 1430,
+      "height": 894
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated fixture state only; real service behavior and complete accessibility untested."
+  },
+  {
+    "id": "p12-account-desktop-dark",
+    "role": "Student",
+    "state": "Account appearance and settings",
+    "route": "https://project-xwrez.vercel.app/settings?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "",
+    "screenshot": "screenshots/p12-account-desktop-dark.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 1430,
+      "height": 894
+    },
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Appearance and visible sections inspected; destructive/account actions unsubmitted."
+  },
+  {
+    "id": "p13-shelf-desktop-light",
+    "role": "Student",
+    "state": "Configured shelf",
+    "route": "https://project-xwrez.vercel.app/learn?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "",
+    "screenshot": "screenshots/p13-shelf-desktop-light.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 1430,
+      "height": 894
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated fixture state only; real service behavior and complete accessibility untested."
+  },
+  {
+    "id": "p14-materials-desktop",
+    "role": "Student",
+    "state": "Materials",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "",
+    "screenshot": "screenshots/p14-materials-desktop.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 1430,
+      "height": 894
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated fixture state only; real service behavior and complete accessibility untested."
+  },
+  {
+    "id": "p15-chat-empty-desktop",
+    "role": "Student",
+    "state": "Chat empty",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "",
+    "screenshot": "screenshots/p15-chat-empty-desktop.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 1430,
+      "height": 894
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated fixture state only; real service behavior and complete accessibility untested."
+  },
+  {
+    "id": "p16-chat-empty-mobile",
+    "role": "Student",
+    "state": "Chat empty",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "",
+    "screenshot": "screenshots/p16-chat-empty-mobile.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 380,
+      "height": 822
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated fixture state only; real service behavior and complete accessibility untested."
+  },
+  {
+    "id": "p17-chat-supported-mobile",
+    "role": "Student",
+    "state": "Supported answer",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "",
+    "screenshot": "screenshots/p17-chat-supported-mobile.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 380,
+      "height": 822
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated fixture state only; real service behavior and complete accessibility untested."
+  },
+  {
+    "id": "p18-evidence-mobile",
+    "role": "Student",
+    "state": "Exact answer evidence",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/evidence?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "",
+    "screenshot": "screenshots/p18-evidence-mobile.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 380,
+      "height": 822
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated fixture state only; real service behavior and complete accessibility untested."
+  },
+  {
+    "id": "p19-studio-desktop",
+    "role": "Student",
+    "state": "Studio configuration",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "",
+    "screenshot": "screenshots/p19-studio-desktop.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 1430,
+      "height": 894
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Flashcards sampled; other generation types and real provider behavior untested."
+  },
+  {
+    "id": "p20-studio-laptop",
+    "role": "Student",
+    "state": "Studio configuration",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=en",
+    "viewport": {
+      "height": 800,
+      "width": 1280
+    },
+    "notes": "",
+    "screenshot": "screenshots/p20-studio-laptop.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 1270,
+      "height": 794
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Flashcards sampled; other generation types and real provider behavior untested."
+  },
+  {
+    "id": "p21-studio-tablet",
+    "role": "Student",
+    "state": "Studio configuration",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=en",
+    "viewport": {
+      "height": 1024,
+      "width": 768
+    },
+    "notes": "",
+    "screenshot": "screenshots/p21-studio-tablet.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 758,
+      "height": 1011
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Flashcards sampled; other generation types and real provider behavior untested."
+  },
+  {
+    "id": "p22-studio-mobile",
+    "role": "Student",
+    "state": "Studio configuration",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "",
+    "screenshot": "screenshots/p22-studio-mobile.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 380,
+      "height": 822
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Flashcards sampled; other generation types and real provider behavior untested."
+  },
+  {
+    "id": "p23-flashcard-mobile",
+    "role": "Student",
+    "state": "Generated flashcards",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/studio?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "",
+    "screenshot": "screenshots/p23-flashcard-mobile.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 380,
+      "height": 822
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Flashcards sampled; other generation types and real provider behavior untested."
+  },
+  {
+    "id": "p24-quiz-start-mobile",
+    "role": "Student",
+    "state": "Quiz setup",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/quiz?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "",
+    "screenshot": "screenshots/p24-quiz-start-mobile.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 390,
+      "height": 844
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Untimed fixed quiz sampled; timed expiry untested."
+  },
+  {
+    "id": "p25-quiz-attempt-mobile",
+    "role": "Student",
+    "state": "Untimed attempt",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/quiz/sample-attempt?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "",
+    "screenshot": "screenshots/p25-quiz-attempt-mobile.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 380,
+      "height": 822
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Untimed fixed quiz sampled; timed expiry untested."
+  },
+  {
+    "id": "p26-quiz-review-mobile",
+    "role": "Student",
+    "state": "Grounded quiz review",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/quiz/sample-attempt/review?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "",
+    "screenshot": "screenshots/p26-quiz-review-mobile.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 380,
+      "height": 822
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Untimed fixed quiz sampled; timed expiry untested."
+  },
+  {
+    "id": "p27-report-mobile",
+    "role": "Student",
+    "state": "Report form; unsubmitted",
+    "route": "https://project-xwrez.vercel.app/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/report?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "",
+    "screenshot": "screenshots/p27-report-mobile.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 380,
+      "height": 822
+    },
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Visible form and confirmation inspected; no report submitted."
+  },
+  {
+    "id": "p28-account-mobile",
+    "role": "Student",
+    "state": "Account",
+    "route": "https://project-xwrez.vercel.app/settings?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "",
+    "screenshot": "screenshots/p28-account-mobile.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 380,
+      "height": 822
+    },
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Appearance and visible sections inspected; destructive/account actions unsubmitted."
+  },
+  {
+    "id": "p29-leader-home-desktop",
+    "role": "Batch Leader",
+    "state": "Assigned campaigns",
+    "route": "https://project-xwrez.vercel.app/batch-leader?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "",
+    "screenshot": "screenshots/p29-leader-home-desktop.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 1440,
+      "height": 900
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Approved-reference fixture flow only; actual file transfer and durable correction untested."
+  },
+  {
+    "id": "p30-campaign-desktop",
+    "role": "Batch Leader",
+    "state": "Campaign intake",
+    "route": "https://project-xwrez.vercel.app/batch-leader/campaigns/sample-campaign?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "",
+    "screenshot": "screenshots/p30-campaign-desktop.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 1430,
+      "height": 894
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Approved-reference fixture flow only; actual file transfer and durable correction untested."
+  },
+  {
+    "id": "p31-campaign-laptop",
+    "role": "Batch Leader",
+    "state": "Campaign intake",
+    "route": "https://project-xwrez.vercel.app/batch-leader/campaigns/sample-campaign?lang=en",
+    "viewport": {
+      "height": 800,
+      "width": 1280
+    },
+    "notes": "",
+    "screenshot": "screenshots/p31-campaign-laptop.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 1270,
+      "height": 794
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Approved-reference fixture flow only; actual file transfer and durable correction untested."
+  },
+  {
+    "id": "p32-campaign-tablet",
+    "role": "Batch Leader",
+    "state": "Campaign intake",
+    "route": "https://project-xwrez.vercel.app/batch-leader/campaigns/sample-campaign?lang=en",
+    "viewport": {
+      "height": 1024,
+      "width": 768
+    },
+    "notes": "",
+    "screenshot": "screenshots/p32-campaign-tablet.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 758,
+      "height": 1011
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Approved-reference fixture flow only; actual file transfer and durable correction untested."
+  },
+  {
+    "id": "p33-campaign-mobile",
+    "role": "Batch Leader",
+    "state": "Campaign intake",
+    "route": "https://project-xwrez.vercel.app/batch-leader/campaigns/sample-campaign?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "",
+    "screenshot": "screenshots/p33-campaign-mobile.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 380,
+      "height": 822
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Approved-reference fixture flow only; actual file transfer and durable correction untested."
+  },
+  {
+    "id": "p34-campaign-queue-mobile",
+    "role": "Batch Leader",
+    "state": "Approved reference queued; not submitted in recapture",
+    "route": "https://project-xwrez.vercel.app/batch-leader/campaigns/sample-campaign?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "",
+    "screenshot": "screenshots/p34-campaign-queue-mobile.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 380,
+      "height": 822
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Approved-reference fixture flow only; actual file transfer and durable correction untested."
+  },
+  {
+    "id": "p35-leader-history-mobile",
+    "role": "Batch Leader",
+    "state": "Latest submissions history",
+    "route": "https://project-xwrez.vercel.app/batch-leader?view=history&lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "",
+    "screenshot": "screenshots/p35-leader-history-mobile.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 380,
+      "height": 822
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Approved-reference fixture flow only; actual file transfer and durable correction untested."
+  },
+  {
+    "id": "p36-leader-account-mobile",
+    "role": "Batch Leader",
+    "state": "Account with exchange-sharing controls",
+    "route": "https://project-xwrez.vercel.app/settings?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "",
+    "screenshot": "screenshots/p36-leader-account-mobile.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 380,
+      "height": 822
+    },
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Appearance and visible sections inspected; destructive/account actions unsubmitted."
+  },
+  {
+    "id": "p37-admin-desktop",
+    "role": "Admin",
+    "state": "Independent initial decision queue",
+    "route": "https://project-xwrez.vercel.app/admin?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "",
+    "screenshot": "screenshots/p37-admin-desktop.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 1430,
+      "height": 894
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "p38-admin-confirmation",
+    "role": "Admin",
+    "state": "Exact-change review; unsubmitted",
+    "route": "https://project-xwrez.vercel.app/admin?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Focus lands on Submit this action.",
+    "screenshot": "screenshots/p38-admin-confirmation.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 1430,
+      "height": 894
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "p39-admin-laptop",
+    "role": "Admin",
+    "state": "Decision queue",
+    "route": "https://project-xwrez.vercel.app/admin?lang=en",
+    "viewport": {
+      "height": 800,
+      "width": 1280
+    },
+    "notes": "Settled frame captures a scrolled queue/detail state; it is not a top-of-page composition screenshot.",
+    "screenshot": "screenshots/p39-admin-laptop.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 1270,
+      "height": 794
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "p40-admin-tablet",
+    "role": "Admin",
+    "state": "Decision queue",
+    "route": "https://project-xwrez.vercel.app/admin?lang=en",
+    "viewport": {
+      "height": 1024,
+      "width": 768
+    },
+    "notes": "Settled frame captures a scrolled queue/detail state; it is not a top-of-page composition screenshot.",
+    "screenshot": "screenshots/p40-admin-tablet.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 758,
+      "height": 1011
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "p41-admin-mobile",
+    "role": "Admin",
+    "state": "Decision queue",
+    "route": "https://project-xwrez.vercel.app/admin?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "Settled frame captures a scrolled queue/detail state; it is not a top-of-page composition screenshot.",
+    "screenshot": "screenshots/p41-admin-mobile.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 380,
+      "height": 822
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "p42-admin-menu-mobile",
+    "role": "Admin",
+    "state": "Menu expanded",
+    "route": "https://project-xwrez.vercel.app/admin?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "",
+    "screenshot": "screenshots/p42-admin-menu-mobile.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 380,
+      "height": 822
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "p43-admin-sources-mobile",
+    "role": "Admin",
+    "state": "Source lifecycle summary",
+    "route": "https://project-xwrez.vercel.app/admin/sources?lang=en",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "",
+    "screenshot": "screenshots/p43-admin-sources-mobile.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 380,
+      "height": 822
+    },
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "p44-admin-catalog",
+    "role": "Admin",
+    "state": "Catalog configuration; unsubmitted",
+    "route": "https://project-xwrez.vercel.app/admin/catalog?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "",
+    "screenshot": "screenshots/p44-admin-catalog.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 1440,
+      "height": 900
+    },
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "p45-admin-cohorts",
+    "role": "Admin",
+    "state": "Cohort draft; unsubmitted",
+    "route": "https://project-xwrez.vercel.app/admin/cohorts?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "",
+    "screenshot": "screenshots/p45-admin-cohorts.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 1440,
+      "height": 900
+    },
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "p46-admin-users",
+    "role": "Admin",
+    "state": "Users destination showing access context",
+    "route": "https://project-xwrez.vercel.app/admin/cohorts?view=users&lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "",
+    "screenshot": "screenshots/p46-admin-users.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 1440,
+      "height": 900
+    },
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "p47-admin-jobs",
+    "role": "Admin",
+    "state": "Processing summary",
+    "route": "https://project-xwrez.vercel.app/admin/jobs?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "",
+    "screenshot": "screenshots/p47-admin-jobs.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 1440,
+      "height": 900
+    },
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "p48-admin-quality",
+    "role": "Admin",
+    "state": "Quality summary",
+    "route": "https://project-xwrez.vercel.app/admin/quality?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "",
+    "screenshot": "screenshots/p48-admin-quality.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 1440,
+      "height": 900
+    },
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "p49-admin-usage",
+    "role": "Admin",
+    "state": "Usage summary",
+    "route": "https://project-xwrez.vercel.app/admin/usage?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "",
+    "screenshot": "screenshots/p49-admin-usage.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 1440,
+      "height": 900
+    },
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "p50-admin-incidents",
+    "role": "Admin",
+    "state": "Incident summary",
+    "route": "https://project-xwrez.vercel.app/admin/incidents?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "",
+    "screenshot": "screenshots/p50-admin-incidents.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 1440,
+      "height": 900
+    },
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "p51-admin-account",
+    "role": "Admin",
+    "state": "Account",
+    "route": "https://project-xwrez.vercel.app/settings?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "",
+    "screenshot": "screenshots/p51-admin-account.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 1430,
+      "height": 894
+    },
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Appearance and visible sections inspected; destructive/account actions unsubmitted."
+  },
+  {
+    "id": "p52-admin-account-ar-dark",
+    "role": "Admin",
+    "state": "Arabic dark Account",
+    "route": "https://project-xwrez.vercel.app/settings?lang=ar",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "",
+    "screenshot": "screenshots/p52-admin-account-ar-dark.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 380,
+      "height": 822
+    },
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Appearance and visible sections inspected; destructive/account actions unsubmitted."
+  },
+  {
+    "id": "p53-admin-mobile-ar-dark",
+    "role": "Admin",
+    "state": "Arabic dark decision queue",
+    "route": "https://project-xwrez.vercel.app/admin?lang=ar",
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "notes": "",
+    "screenshot": "screenshots/p53-admin-mobile-ar-dark.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 380,
+      "height": 822
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "p54-second-admin-desktop",
+    "role": "Second Admin",
+    "state": "Fresh independent decision queue",
+    "route": "https://project-xwrez.vercel.app/admin?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "Same initial twelve candidates, verified after independent sign-in.",
+    "screenshot": "screenshots/p54-second-admin-desktop.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 1430,
+      "height": 894
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Final governed submission, real resource services and cross-account confirmation untested."
+  },
+  {
+    "id": "p55-second-admin-account",
+    "role": "Second Admin",
+    "state": "Independent Account",
+    "route": "https://project-xwrez.vercel.app/settings?lang=en",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "",
+    "screenshot": "screenshots/p55-second-admin-account.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 1430,
+      "height": 894
+    },
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Appearance and visible sections inspected; destructive/account actions unsubmitted."
+  },
+  {
+    "id": "p56-register-desktop",
+    "role": "Public",
+    "state": "Registration unsubmitted",
+    "route": "https://project-xwrez.vercel.app/register?lang=en&next=%2Flearn",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "",
+    "screenshot": "screenshots/p56-register-desktop.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 1430,
+      "height": 894
+    },
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Synthetic entry only; real callbacks, external email and real policy reading untested."
+  },
+  {
+    "id": "p57-register-validation",
+    "role": "Public",
+    "state": "Empty submission field errors",
+    "route": "https://project-xwrez.vercel.app/register?lang=en&next=%2Flearn",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    },
+    "notes": "",
+    "screenshot": "screenshots/p57-register-validation.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 1430,
+      "height": 894
+    },
+    "evaluation": "Partially evaluated",
+    "scopeLimit": "Synthetic entry only; real callbacks, external email and real policy reading untested."
+  },
+  {
+    "id": "p58-public-workspace-laptop",
+    "role": "Public",
+    "state": "Public sample workspace",
+    "route": "https://project-xwrez.vercel.app/#workspace",
+    "viewport": {
+      "height": 800,
+      "width": 1280
+    },
+    "notes": "",
+    "screenshot": "screenshots/p58-public-workspace-laptop.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 1270,
+      "height": 794
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated public state only; lower-page or unrecorded states are not complete coverage."
+  },
+  {
+    "id": "p59-public-how-it-works-laptop",
+    "role": "Public",
+    "state": "How it works and final CTA",
+    "route": "https://project-xwrez.vercel.app/#how-it-works",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    },
+    "notes": "Additional 1280x720 viewport after browser recovery. How-it-works visible; final CTA only partially in frame.",
+    "screenshot": "screenshots/p59-public-how-it-works-laptop.jpg",
+    "phase": "settled visual evidence",
+    "imagePixels": {
+      "width": 1270,
+      "height": 714
+    },
+    "evaluation": "Evaluated stated visible state",
+    "scopeLimit": "Stated public state only; lower-page or unrecorded states are not complete coverage."
+  }
+]

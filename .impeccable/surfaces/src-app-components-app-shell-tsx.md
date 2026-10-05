@@ -14,6 +14,26 @@ related_targets:
   ]
 ---
 
+# Open Folio implementation
+
+Operate mode. Current visual authority is Ahmed's approved refinement, exact reference SHA in planning/design/open-folio/approval.md. No new direction roll is needed: the human has selected and approved the concrete interactive reference. Earlier premium-product directions below are historical, not authority for this replacement composition.
+
+**THESIS:** Make UniMind recognizable through a navigation spine, reading paper and source annotations, with distinct study, intake and governance compositions.
+
+**OWN-WORLD:** Preserve supplied Open Folio brand, Manrope/Noto Sans Arabic, neutral canvas and blue action. Dark spine #1d2939/#141b25; reading paper #ffffff/#23272f; annotation #f1f4fa/#202c40. Solid planes and authored 24-unit SVG; no imitation physical textures or new raster obligation.
+
+**STORY:** Direct subject entry; bounded Chat plus exchange-specific citation; compact Studio controls plus artifact-specific result; all required intake material before file selection; deliberate queue selection before an exact-change dialog. Account and operational forms share the same field/action/feedback rules.
+
+**FIRST VIEWPORT:** 192px spine, 34px collection titles, 26px unit titles and a reachable primary action. Tablet uses a 72px rail; phone has a compact identity bar and role navigation, with local unit tabs.
+
+**FORM:** Faithful approved reference translation; no seed roll applies. Three planes do different jobs rather than repetitive cards. Preserve real content, six artifact formats, native controls, role guards and all original recovery paths. Real service limitations remain explicit.
+
+**MOTION:** 120ms control, 300ms source reveal, 280ms result delivery, 180/140ms dialog, existing 240ms explicit flashcard activation. Reduced motion shows the same states instantly. No dependency added.
+
+**FINISH:** One detector and inline non-independent finish review; at most two batched candidate captures, actual screenshots and source binding. Full functional/accessibility proof remains separate from appearance approval. DESIGN.md and the approved refinement system govern tokens and states.
+
+## Historical refinement
+
 # Premium product refinement
 
 Operate mode. Ahmed accepted landing 569c467 and asks for the same care across all other screens, with a saved rollback point. This is an amplification of the established Open Folio identity and existing functioning journeys, not a replacement brand or product. Product and trust semantics remain governed by the master plan. The landing recovery tag is codex/landing-approved-2026-10-04.

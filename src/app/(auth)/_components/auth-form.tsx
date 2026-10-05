@@ -1,7 +1,13 @@
 "use client";
 import { ProductNavigationLink as Link } from "@/app/_components/product-navigation";
 
-import { useActionState, useEffect, useRef, useSyncExternalStore } from "react";
+import {
+  useActionState,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 
 import type { CurrentTerms } from "@/lib/auth/auth-access.application";
 import type {
@@ -213,13 +219,17 @@ export function AuthForm({
     if (state.status !== "SUCCESS") summaryRef.current?.focus();
   }, [state.status]);
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [missingPassword, setMissingPassword] = useState<string | null>(null);
   const emailError = firstFieldError(state, "email", copy);
-  const passwordError = firstFieldError(state, "password", copy);
-  const confirmationError = firstFieldError(
-    state,
-    "passwordConfirmation",
-    copy,
-  );
+  const passwordError =
+    missingPassword === "password"
+      ? copy.passwordRequired
+      : firstFieldError(state, "password", copy);
+  const confirmationError =
+    missingPassword === "passwordConfirmation"
+      ? copy.passwordRequired
+      : firstFieldError(state, "passwordConfirmation", copy);
   const acceptanceError = firstFieldError(state, "acceptance", copy);
 
   return (
@@ -242,7 +252,25 @@ export function AuthForm({
         </div>
       ) : null}
 
-      <form action={formAction} noValidate>
+      <form
+        action={formAction}
+        noValidate
+        onInput={() => setMissingPassword(null)}
+        onSubmit={(event) => {
+          if (!["login", "register", "reset"].includes(mode)) return;
+          for (const name of mode === "login"
+            ? ["password"]
+            : ["password", "passwordConfirmation"]) {
+            const field = event.currentTarget.elements.namedItem(name);
+            if (field instanceof HTMLInputElement && !field.value) {
+              event.preventDefault();
+              setMissingPassword(name);
+              field.focus();
+              return;
+            }
+          }
+        }}
+      >
         <input type="hidden" name="locale" value={locale} />
         <input type="hidden" name="returnPath" value={returnPath} />
 
@@ -281,7 +309,7 @@ export function AuthForm({
               <input
                 id={`${mode}-password`}
                 name="password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 defaultValue={initialPassword}
                 autoComplete={
                   actionOverride
@@ -296,6 +324,29 @@ export function AuthForm({
                 }
                 required
               />
+              <button
+                type="button"
+                className={styles.passwordVisibility}
+                aria-pressed={showPassword}
+                aria-label={
+                  locale === "ar"
+                    ? showPassword
+                      ? "إخفاء كلمة المرور"
+                      : "إظهار كلمة المرور"
+                    : showPassword
+                      ? "Hide password"
+                      : "Show password"
+                }
+                onClick={() => setShowPassword((shown) => !shown)}
+              >
+                {locale === "ar"
+                  ? showPassword
+                    ? "إخفاء"
+                    : "إظهار"
+                  : showPassword
+                    ? "Hide"
+                    : "Show"}
+              </button>
             </span>
             {passwordError !== null ? (
               <span id={`${mode}-password-error`} className={styles.fieldError}>
@@ -315,7 +366,7 @@ export function AuthForm({
               <input
                 id={`${mode}-password-confirmation`}
                 name="passwordConfirmation"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 defaultValue={initialPassword}
                 autoComplete={actionOverride ? "off" : "new-password"}
                 aria-invalid={confirmationError !== null}

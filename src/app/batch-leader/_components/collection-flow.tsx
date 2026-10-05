@@ -144,37 +144,57 @@ export function CollectionFlow({
               "أضف المواد المطلوبة لدفعتك. ينتهي الرفع قبل بدء المعالجة.",
             )}
           </p>
-          <div className={styles.dates}>
-            <span>
-              {text.due}: {formatCollectionDate(locale, campaign.closesAt)}
-            </span>
-            <span>
+        </header>
+        <aside className={styles.assignment} aria-labelledby="intake-deadline">
+          <h2 id="intake-deadline">{t("Your deadline", "موعدك النهائي")}</h2>
+          <strong>
+            {new Intl.DateTimeFormat(locale === "ar" ? "ar-EG" : "en-GB", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+              timeZone: "Africa/Cairo",
+            }).format(
+              new Date(
+                Math.min(
+                  Date.parse(campaign.closesAt),
+                  Date.parse(campaign.assignmentExpiresAt),
+                ),
+              ),
+            )}
+          </strong>
+          <details className={styles.deadlineDetails}>
+            <summary>
+              {t("Assignment and campaign dates", "مواعيد التكليف والحملة")}
+            </summary>
+            <p>
               {text.assignment}:{" "}
               {formatCollectionDate(locale, campaign.assignmentExpiresAt)}
-            </span>
-          </div>
-        </header>
-        <details className={styles.requests}>
-          <summary>
-            {text.requestQueue} ·{" "}
-            {campaign.requestedItems.filter((item) => item.required).length}
-          </summary>
-          <ul>
-            {campaign.requestedItems
-              .filter((item) => item.required)
-              .map((item) => (
-                <li key={item.id}>
-                  <span>{item.title}</span>
-                  <span>
-                    {item.latestSubmission
-                      ? text.received
-                      : t("Awaiting file", "بانتظار ملف")}
-                  </span>
-                </li>
-              ))}
-          </ul>
-          <p>{text.replaceGuidance}</p>
-        </details>
+            </p>
+            <p>
+              {text.due}: {formatCollectionDate(locale, campaign.closesAt)}
+            </p>
+          </details>
+          <details className={styles.requests} open>
+            <summary>
+              {text.requestQueue} ·{" "}
+              {campaign.requestedItems.filter((item) => item.required).length}
+            </summary>
+            <ul>
+              {campaign.requestedItems
+                .filter((item) => item.required)
+                .map((item) => (
+                  <li key={item.id}>
+                    <span>{item.title}</span>
+                    <span>
+                      {item.latestSubmission
+                        ? text.received
+                        : t("Awaiting file", "بانتظار ملف")}
+                    </span>
+                  </li>
+                ))}
+            </ul>
+          </details>
+        </aside>
         <section className={styles.intake} aria-labelledby="collection-intake">
           <h2 id="collection-intake">{t("Add files", "إضافة ملفات")}</h2>
           <p className={styles.helper}>
@@ -185,8 +205,8 @@ export function CollectionFlow({
           </p>
           <p className={styles.helper}>
             {t(
-              "PDF, WAV and PNG · Up to 10 MB per file · Mixed files welcome",
-              "PDF وWAV وPNG · حتى ١٠ ميجابايت للملف · يمكنك اختيار أنواع مختلفة",
+              "PDF · WAV · PNG · Up to 10 MB per file",
+              "PDF · WAV · PNG · حتى ١٠ ميجابايت للملف",
             )}
           </p>
           <div
@@ -213,6 +233,7 @@ export function CollectionFlow({
               )}
             </p>
             <Button
+              variant="primary"
               onClick={() => picker.current?.click()}
               disabled={queue.running}
             >
@@ -335,7 +356,7 @@ export function CollectionFlow({
                             ) : null}
                           </label>
                         ) : null}
-                        <details className={styles.fileDetails}>
+                        <details className={styles.fileDetails} open>
                           <summary>
                             {t("Source details", "تفاصيل المصدر")}
                           </summary>
@@ -424,12 +445,30 @@ export function CollectionFlow({
                       />
                     ) : null}
                     {row.state === "RECEIVED" ? (
-                      <p className={styles.helper}>
-                        {t(
-                          "Received safely. Processing will continue separately; you can upload the next file.",
-                          "تم الاستلام بأمان. تستمر المعالجة بشكل منفصل؛ يمكنك رفع الملف التالي.",
-                        )}
-                      </p>
+                      <div className={styles.receiptStages}>
+                        <p>
+                          <FrontendIcon name="check" />
+                          {t("File received", "تم استلام الملف")}
+                        </p>
+                        <p>
+                          {t(
+                            "Processing and review pending",
+                            "المعالجة والمراجعة معلقتان",
+                          )}
+                        </p>
+                        <p>
+                          {t(
+                            "Not available to students yet",
+                            "غير متاح للطلاب بعد",
+                          )}
+                        </p>
+                        <p className={styles.helper}>
+                          {t(
+                            "Received safely. Processing will continue separately; you can upload the next file.",
+                            "تم الاستلام بأمان. تستمر المعالجة بشكل منفصل؛ يمكنك رفع الملف التالي.",
+                          )}
+                        </p>
+                      </div>
                     ) : null}
                     <div className={styles.actions}>
                       {row.state === "ERROR" && row.inspection && row.itemId ? (

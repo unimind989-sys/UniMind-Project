@@ -2,7 +2,9 @@
 
 This is the canonical first-party visual and interaction contract. Product/security authority remains in the [master plan](docs/plans/poc-master-plan.md); acceptance and delivery remain in the [runbook](docs/runbooks/poc-execution-runbook.md). Surface briefs describe particular jobs and refer here for system rules.
 
-**Status: Phase 1, student, Batch Leader and Admin implementation approved; final consistency approved.** Ahmed approved Phase 1 `ab568b6` and student candidate `3a2a95d`; see the [Phase 1 receipt](planning/design/frontend-overhaul/phase-1-approval.md) and [student receipt](planning/design/frontend-overhaul/student-approval.md). The [student record](planning/design/frontend-overhaul/phase-2-student.md) owns retained proof; the [Batch Leader record](planning/design/frontend-overhaul/phase-2-batch-leader.md) owns the current slice. Ahmed accepted Batch Leader candidate `4c03b80`; see the [Batch Leader receipt](planning/design/frontend-overhaul/batch-leader-approval.md). The [Admin record](planning/design/frontend-overhaul/phase-2-admin.md) owns its focused proof and rendered checkpoint. Ahmed accepted Admin candidate `ec00466`; see the [Admin receipt](planning/design/frontend-overhaul/admin-approval.md). The [final consistency record](planning/design/frontend-overhaul/phase-2-final.md) retains its source-bound checkpoint. Ahmed accepted final candidate `8ad3a9b`; see the [final receipt](planning/design/frontend-overhaul/final-approval.md). The [delivery record](planning/design/frontend-overhaul/phase-2-delivery.md) owns delivered technical proof. See the [audit, flows and rollout](docs/reviews/wp03-frontend-overhaul.md) and [proposal](planning/design/frontend-overhaul/README.md).
+**Current approval: Open Folio refinement, 5 October 2026.** Ahmed's explicit “I approve” authorizes the [refined direction](docs/reviews/uiux-2026-10-04/refinement/refined-direction.md), [visual/motion system](docs/reviews/uiux-2026-10-04/refinement/design-system.md) and [roadmap](docs/reviews/uiux-2026-10-04/refinement/roadmap-and-acceptance.md). The exact approved interactive reference SHA-256 is `f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4`; see [approval](planning/design/open-folio/approval.md). This contract now governs implementation. The following receipts preserve earlier accepted work; they do not prove this candidate.
+
+**Historical delivery:** **Status: Phase 1, student, Batch Leader and Admin implementation approved; final consistency approved.** Ahmed approved Phase 1 `ab568b6` and student candidate `3a2a95d`; see the [Phase 1 receipt](planning/design/frontend-overhaul/phase-1-approval.md) and [student receipt](planning/design/frontend-overhaul/student-approval.md). The [student record](planning/design/frontend-overhaul/phase-2-student.md) owns retained proof; the [Batch Leader record](planning/design/frontend-overhaul/phase-2-batch-leader.md) owns the current slice. Ahmed accepted Batch Leader candidate `4c03b80`; see the [Batch Leader receipt](planning/design/frontend-overhaul/batch-leader-approval.md). The [Admin record](planning/design/frontend-overhaul/phase-2-admin.md) owns its focused proof and rendered checkpoint. Ahmed accepted Admin candidate `ec00466`; see the [Admin receipt](planning/design/frontend-overhaul/admin-approval.md). The [final consistency record](planning/design/frontend-overhaul/phase-2-final.md) retains its source-bound checkpoint. Ahmed accepted final candidate `8ad3a9b`; see the [final receipt](planning/design/frontend-overhaul/final-approval.md). The [delivery record](planning/design/frontend-overhaul/phase-2-delivery.md) owns delivered technical proof. See the [audit, flows and rollout](docs/reviews/wp03-frontend-overhaul.md) and [proposal](planning/design/frontend-overhaul/README.md).
 
 The [previous design contract](planning/design/frontend-overhaul/previous-design-contract.md) preserves the implemented dark Study Shelf and historical approval. Its navy-only palette, six-item mobile bar, expanding auth rail and mandatory imagery no longer govern this overhaul. Existing behavior and safety remain binding.
 
@@ -16,7 +18,7 @@ Make the next study action clear, keep academic context stable, and let material
 - Layered neutral greys, quiet separators, one restrained blue interaction accent. Chrome themes and NotebookLM's quiet surfaces guide the brief; the composition is a UniMind interpretation.
 - Every control works through an existing seam or explains its specific prerequisite.
 - Mobile-first student/leader flows and an admin list/detail layout that reflows.
-- No gradients, glows, heavy shadows, oversized decorative cards, invented metrics, repeated icon tiles, animated entrances or purposeless ornament.
+- No gradients, glows, heavy shadows, oversized decorative cards, invented metrics, repeated icon tiles or purposeless ornament. Content-specific delivery and evidence transitions follow the motion contract below.
 
 ## Brand and copy
 
@@ -42,13 +44,13 @@ Components use semantic tokens; brand artwork keeps its supplied palette. Succes
 | Token                                           | Light     | Dark      |
 | ----------------------------------------------- | --------- | --------- |
 | `--canvas`                                      | `#f6f7f8` | `#1b1c1f` |
-| `--surface`                                     | `#ffffff` | `#232529` |
-| `--subtle`                                      | `#eef0f2` | `#2c2e33` |
-| `--hover`                                       | `#e6e9ed` | `#35383e` |
+| `--surface`                                     | `#ffffff` | `#23272f` |
+| `--subtle`                                      | `#eef0f2` | `#2c313a` |
+| `--hover`                                       | `#e6e9ed` | `#353d48` |
 | `--ink`                                         | `#202124` | `#eef0f3` |
 | `--secondary`                                   | `#535861` | `#bdc2cb` |
 | `--muted`                                       | `#626873` | `#a6acb7` |
-| `--border` / decorative separator               | `#d9dde3` | `#3e424a` |
+| `--border` / decorative separator               | `#d9dde3` | `#434b57` |
 | `--control-border` / necessary control boundary | `#777f8b` | `#858d9a` |
 | `--accent` / primary action, focus              | `#2458b8` | `#adc7ff` |
 | `--accent-hover`                                | `#194794` | `#c6d7ff` |
@@ -75,7 +77,8 @@ Keep self-hosted **Manrope** (English) and **Noto Sans Arabic** (Arabic). Interf
 | Role                     | Size / weight / leading                               |
 | ------------------------ | ----------------------------------------------------- |
 | Public hero              | `clamp(2.25rem, 4.2vw, 3.75rem)` / 700 / 1.15–1.35    |
-| Page title               | 28px desktop, 26px phone / 700 / 1.35                 |
+| Collection title         | 34px desktop, 28px phone / 700 / 1.35                 |
+| Unit title               | 26px desktop, 22px phone / 700 / 1.35                 |
 | Section title            | 20px standard, 18px compact form/history / 650 / 1.35 |
 | Row/subsection title     | 16px / 650 / 1.4                                      |
 | Reading                  | 16px target, 15px compact preview / 400–450 / 1.6     |
@@ -85,7 +88,7 @@ Keep self-hosted **Manrope** (English) and **Noto Sans Arabic** (Arabic). Interf
 
 Arabic reading leading 1.7–1.8 and heading leading 1.5–1.55 use locale tokens, not scattered overrides. English tracking never below −0.04em.
 
-Spacing steps: **4, 8, 12, 16, 24, 32, 48px**. Controls radius 8px; useful panels 10px; dialogs 12px. Default elevation none; overlays may use one restrained neutral shadow when layering needs it. Reading measure about 65–75ch. Main maximum 1200px; desktop rail 216px/compact 184px; materials column 264px/compact 220px. Intrinsic wrapping and `min-width: 0` protect important text.
+Spacing steps: **4, 8, 12, 16, 24, 32, 48px**. Controls radius 8px; useful panels 10px; dialogs 12px. Default elevation none; overlays may use one restrained neutral shadow when layering needs it. Reading measure about 60–68ch. Main canvas maximum 1220px including desktop insets; navigation spine 192px/compact 72px; Studio configuration 264px and source annotation 252px. The solid spine uses #1d2939 / #141b25; annotation #f1f4fa / #202c40. Intrinsic wrapping and `min-width: 0` protect important text.
 
 ## Shared components
 
@@ -105,11 +108,11 @@ Consolidate overlapping `product-ui`, `frontend-system` and role controls increm
 
 ## Information architecture and flows
 
-| Role         | Global navigation                                   | Local experience                                                                                                      |
-| ------------ | --------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| Student      | **Study, Subjects, Account**                        | Resume Study Shelf; authorized units; Materials, Chat, Studio, Quiz; scoped evidence/report/viewer; academic settings |
-| Batch Leader | **Uploads, History, Account**                       | Assigned campaigns/invitation; mixed-file queue; upload/finalize progress; statuses/retry                             |
-| Admin        | **Overview, Content, Academics, Users, Operations** | Decisions; Sources/Campaigns; Catalog/Cohorts; existing assignment/access context; Jobs/Quality/Usage/Incidents       |
+| Role         | Global navigation                                                  | Local experience                                                                                                      |
+| ------------ | ------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
+| Student      | **Study, Subjects, Account**                                       | Resume Study Shelf; authorized units; Materials, Chat, Studio, Quiz; scoped evidence/report/viewer; academic settings |
+| Batch Leader | **Source intake, History, Account**                                | Assigned campaigns/invitation; mixed-file queue; upload/finalize progress; statuses/retry                             |
+| Admin        | **Decision queue, Content, Academics, Access context, Operations** | Decisions; Sources/Campaigns; Catalog/Cohorts; existing assignment/access context; Jobs/Quality/Usage/Incidents       |
 
 “Subjects” is the requested global destination. Inside it, configuration still renders **Modules** for Medicine and **Subjects** elsewhere. Do not rename the domain.
 
@@ -127,18 +130,19 @@ Retry submission does not upload again. Adding files clears the rights checkbox.
 Queue drafts stay in document memory. History shows only the existing latest
 submission per request in currently assigned active campaigns; it does not claim
 to be an archive. Uploads, History, campaign and Account share the role shell,
-semantic tokens and unmirrored brand; campaign workspace maximum is 58rem.
+semantic tokens and unmirrored brand; campaign workspace maximum is 78rem.
 
-Admin Overview leads with decisions; Content groups Sources/Campaigns; Academics groups Catalog/Cohorts; Operations groups Jobs/Quality/Usage/Incidents. Users exposes only existing assignment/membership context through authorized seams: no invented user directory/editor. Preserve consequences, stale checks, readiness predicates, audit and distinct-principal confirmation. Financial/provider boundaries remain fail-closed.
+Admin Decision queue leads with decisions; Content groups Sources/Campaigns; Academics groups Catalog/Cohorts; Operations groups Jobs/Quality/Usage/Incidents. Access context exposes only existing assignment/membership context through authorized seams: no invented user directory/editor. Preserve consequences, stale checks, readiness predicates, audit and distinct-principal confirmation. Financial/provider boundaries remain fail-closed.
 
 ## Responsive, accessible and state rules
 
 - Prioritize 360–430px student/leader screens; retain the existing 320px reflow floor. Also review 768px and 1440px.
-- Below 768px use three equal student/leader bottom targets with safe-area padding. Admin uses a labeled compact menu, not five tiny targets. Compact desktop rail begins below 1100px.
+- Below 768px use three equal student/leader bottom targets with safe-area padding. Admin uses a labeled compact menu, not five tiny targets. Compact desktop rail applies from 768–1050px.
 - Local unit navigation is separate from global navigation. Four destinations fit a text row; wrap/stack under enlarged text. On mobile Materials is an explicit view; Studio/Chat/viewer use the full reading width and return to it.
 - Use ≥44px touch targets, visible focus, skip links, landmarks, meaningful headings and native labels. No essential hover, drag or gesture-only action. Dialog focus returns to trigger; disclosures close with Escape; sticky controls never cover focused content.
 - Theme/locale changes preserve input, selection and separate output language. Unit changes never mix sessions/artifacts across scopes.
-- Only helpful 120–160ms color/opacity transitions; no entrances or forced smooth scrolling. Reduced motion removes optional transitions and preserves meaningful progress.
+- Routine control transitions use 120ms. Source annotation reveals use 300ms, ≤10px and cubic-bezier(.22,1,.36,1); result delivery 280ms, ≤7px with the same easing. Native dialog enters in 180ms and closes in 140ms with noncommitting focus and focus restoration. Keep the existing user-triggered 240ms flashcard flip. Indeterminate feedback conveys actual work, never invented percentages; the loading-line specimen settles after two 1200ms passes. Reduced motion exposes identical states instantly. No forced smooth scrolling or whole-page entrance choreography.
+- Navigation text and its background change as one immediate palette when the rail becomes bottom navigation or appearance changes. Do not interpolate through unreadable color pairs; preserve panel, source, result and press feedback.
 - Loading keeps known context and announces status. Empty explains absence and allowed next action. Retry only when retryable; forbidden/expired states offer safe role-home exits. Interruption retains correct retry identity/draft. Stale admin actions refresh authority. Success uses text plus a non-color cue.
 - Check long Arabic/English labels, mixed technical text, keyboard, 200% text and 320px reflow in both themes. Visual review, automated accessibility and security proof remain separate obligations.
 

@@ -1,11 +1,14 @@
 import Link from "next/link";
+import { Brand } from "./_components/brand";
+import styles from "./learn/workspace.module.css";
 
 export default function NotFound() {
   return (
-    <main>
+    <main className={styles.standaloneState}>
+      <Brand variant="compact" />
       <h1>Page not found</h1>
       <p>The requested UniMind page does not exist.</p>
-      <Link href="/">Return to the foundation page</Link>
+      <Link href="/">Return to UniMind</Link>
     </main>
   );
 }

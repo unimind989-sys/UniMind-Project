@@ -1426,6 +1426,12 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 #### WP03-T10 — Run the complete frontend mock review gate
 
+**New authorized cycle, 5 October 2026:** Ahmed approved the [Open Folio reference and frontend roadmap](../../planning/design/open-folio/approval.md). Historical checked delivery below remains valid for its original candidate. The [controlled task record](../../planning/tasks/wp03-t10-complete-frontend-mock-review.md) now tracks the new cycle separately; WP04 is not started by this request.
+
+- [x] Implement the approved Open Folio foundations, role/context shell and shared controls while preserving service contracts.
+- [x] Complete study, ordinary, leader and admin compositions; retain original audit acceptance and truthful capability limits.
+- [~] Verify reference fidelity, all role journeys, responsive/Arabic/themes/motion and required technical proof; deliver and close the new cycle without overwriting historical evidence.
+
 **Dependencies:** WP03-T09 reviewed/delivered candidate; WP03-T01–T08 evidence remains valid for unchanged functional seams. This gate precedes continuing WP04, including WP04-T02; a backend package cannot substitute for it.
 
 - [x] Select the delivered exact candidate and map every approved role/route/journey/state to executed synthetic proof; record coverage and exclusions without claiming live functionality. Ahmed accepted landing `569c467` and remaining-screen/final consistency candidate `f0a237f`. Both pushed recovery tags and the saved landing branch remain intact.

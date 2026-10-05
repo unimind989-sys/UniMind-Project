@@ -260,18 +260,18 @@
 .toolList {
   margin-block-start: 0.8rem;
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 10px;
   background: var(--surface);
   padding-inline: 1.5rem;
 }
 .toolRow {
-  min-height: 8rem;
+  min-height: 6rem;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 2rem;
   border-block-end: 0.0625rem solid var(--line);
-  padding-block: 1.5rem;
+  padding-block: 1rem;
 }
 .toolRow:last-child {
   border-block-end: 0;
@@ -449,7 +449,7 @@
   height: 0.25rem;
   border-radius: 999px;
   background: var(--accent);
-  animation: workspace-loading 1s ease-in-out infinite alternate;
+  animation: workspace-loading 1200ms ease-in-out 2 alternate;
 }
 .standaloneState {
   min-height: 100svh;
@@ -460,6 +460,17 @@
   padding: 2rem;
   background: var(--canvas);
   color: var(--text-secondary);
+}
+.standaloneState h1 {
+  color: var(--ink);
+  font-size: 2.125rem;
+  line-height: 1.35;
+  margin: 16px 0 0;
+}
+.standaloneState a:has(img) {
+  background: transparent;
+  padding: 0;
+  min-height: 44px;
 }
 
 .workspace:has(.standaloneState) {

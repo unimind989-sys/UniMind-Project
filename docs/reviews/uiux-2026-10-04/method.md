@@ -1,0 +1,21 @@
+# Inspection method and limits
+
+The public site and four provided synthetic roles were explored independently in the Codex in-app browser. No account identifier, password, session token, browser storage or credential export is part of this archive. Browser actions used visible controls and documented read-only DOM inspection. No protected Admin action, report, invitation send, real registration, password-reset send or irreversible record change was completed.
+
+Synthetic consent, a fixed sample Chat reply, a generated sample flashcard, an untimed sample Quiz and one approved-reference intake submission were completed in browser memory. A second Admin campaign draft was created only in fixture memory; its invitation was not sent. Reload/sign-out discard this runtime. The source distinction matters: real Admin resource routes also contain unavailable-yet states. Scores describe the observed experience, not implemented platform completeness.
+
+Exact requested viewports: 1440×900, 1280×800, 768×1024, 390×844. Landing, Studio, Leader intake and Admin queue were inspected across these dimensions. Every screen was not exercised at every size. Theme/Arabic checks sampled Account, Studio and the Admin queue. No claim of full dark/RTL route coverage, physical-device testing, landscape validation, browser zoom, assistive-technology conformance or measured production performance is made.
+
+`coverage.json` records individual observations, including route, role, state and requested viewport. Discovery observations with null screenshot references were retained as interaction/DOM notes. They are not a screenshot corpus. Early transition/previous-viewport images were deleted, and representative views were recaptured after separate navigation/resize calls. Only `phase: settled visual evidence` entries are retained visual proof. Native images may exclude scrollbar space or scale slightly; viewport dimensions come from the DOM. Do not infer a viewport from image pixel dimensions.
+
+The final inventory contains 154 deduplicated observations and 59 retained screenshots. [The CSV inventory](coverage-inventory.csv) gives every observation's role, route, CSS viewport, evaluation status and scope limit. Image pixel dimensions are also recorded independently. Session/exchange query selectors are omitted from archived URLs; evidence IDs identify the observed fixed study states. Admin laptop/tablet and one mobile detail capture are scrolled states, which limits top-of-page visual comparison. An additional public 1280×720 frame was retained after browser recovery; it does not replace the requested 1280×800 checks. Lower public-page coverage remains partial.
+
+Coverage terminology in the inventory:
+
+- **Evaluated**: the stated visible synthetic state and its stated normal interactions were examined; this does not mean every possible backend state or accessibility condition was tested.
+- **Partial**: a form stopped before side effects, a transition inspected incompletely, a route with limited fixture content, or a workflow whose next state was unavailable.
+- **Untested**: explicitly identified missing states, real services and cross-account actions.
+
+Assessment A was written before the deterministic scan. The user requested one agent; therefore the Impeccable critique runs in a disclosed single-context mode. It has no independent assessors. The CLI detector was run once against markup plus CSS in `src/app` and returned one warning about the decorative shelf book spine (`study-shelf.module.css:99`). This is an intentional book metaphor, not proof of an AI-generated component; its repetitive visual weight remains a design judgment. No other automatic warning was returned. The detector is neither an accessibility audit nor a product-quality score.
+
+Browser evaluate is read-only, so no detector overlay was injected or claimed. The ordinary rendered browser and retained images are the fallback evidence. Console inspection and DOM geometry are separate from subjective design scores. Automation timeouts are not latency metrics or product errors. Source references are bound to baseline `9f7d840ec9353c4c66e6d1e0e771de9acc76d866`; the live inspection occurred on 4 October 2026. No deployment/source parity gate was performed during this read-only audit.

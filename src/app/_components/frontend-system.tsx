@@ -23,6 +23,7 @@ type ShellProps = {
   children: ReactNode;
   synthetic?: boolean;
   preview?: boolean;
+  returnToAdmin?: boolean;
 };
 
 export function FrontendShell({
@@ -35,6 +36,7 @@ export function FrontendShell({
   children,
   synthetic = true,
   preview = false,
+  returnToAdmin = false,
 }: ShellProps) {
   const pathname = usePathname();
   const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
@@ -49,21 +51,30 @@ export function FrontendShell({
       locale={locale}
       synthetic={synthetic}
       preview={preview}
-      title={t("Study", "المذاكرة")}
+      title={`${title} · ${t("Study", "المذاكرة")}`}
+      workspace
     >
+      {returnToAdmin ? (
+        <p className={styles.previewContext}>
+          {t("Student preview", "معاينة الطالب")} ·{" "}
+          <Link href={("/admin?lang=" + locale) as Route}>
+            {t("Return to Admin", "العودة للإدارة")}
+          </Link>
+        </p>
+      ) : null}
       <header className={styles.subjectHeader}>
         <div>
           <Link
             className={styles.back}
             href={
               ((preview ? "/preview/learn" : "/learn") +
-                "?lang=" +
+                "?view=subjects&lang=" +
                 locale) as Route
             }
             prefetch={false}
           >
             <FrontendIcon name="back" />
-            {t("Study Shelf", "رف المذاكرة")}
+            {t("Subjects", "المواد")}
           </Link>
           <h1>
             <bdi>{title}</bdi>
@@ -73,7 +84,13 @@ export function FrontendShell({
           </p>
         </div>
         {scopeControl ? (
-          <div className={styles.subjectSwitch}>{scopeControl}</div>
+          <details className={styles.subjectSwitch}>
+            <summary>
+              <FrontendIcon name="sources" />
+              {t("Switch unit", "تغيير الوحدة")}
+            </summary>
+            <div>{scopeControl}</div>
+          </details>
         ) : null}
       </header>
       <nav

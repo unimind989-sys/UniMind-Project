@@ -1,0 +1,529 @@
+[
+  {
+    "screen": "chat",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "actions": [
+      {
+        "label": "Send",
+        "rect": {
+          "bottom": 842.875,
+          "height": 44,
+          "left": 939.53125,
+          "right": 1036,
+          "top": 798.875,
+          "width": 96.46875,
+          "x": 939.53125,
+          "y": 798.875
+        }
+      }
+    ],
+    "height": 900,
+    "mainScroll": true,
+    "overflow": false,
+    "width": 1440
+  },
+  {
+    "screen": "studio",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "actions": [
+      {
+        "label": "Generate",
+        "rect": {
+          "bottom": 835.046875,
+          "height": 44,
+          "left": 257,
+          "right": 507,
+          "top": 791.046875,
+          "width": 250,
+          "x": 257,
+          "y": 791.046875
+        }
+      }
+    ],
+    "height": 900,
+    "mainScroll": true,
+    "overflow": false,
+    "width": 1440
+  },
+  {
+    "screen": "intake",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "actions": [
+      {
+        "label": "Add sample file",
+        "rect": {
+          "bottom": 503.921875,
+          "height": 52,
+          "left": 524.90625,
+          "right": 725.09375,
+          "top": 451.921875,
+          "width": 200.1875,
+          "x": 524.90625,
+          "y": 451.921875
+        }
+      }
+    ],
+    "height": 900,
+    "mainScroll": false,
+    "overflow": false,
+    "width": 1440
+  },
+  {
+    "screen": "admin",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "actions": [],
+    "height": 900,
+    "mainScroll": true,
+    "overflow": false,
+    "width": 1440
+  },
+  {
+    "screen": "account",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "actions": [],
+    "height": 900,
+    "mainScroll": false,
+    "overflow": false,
+    "width": 1440
+  },
+  {
+    "screen": "states",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "actions": [
+      {
+        "label": "Primary action",
+        "rect": {
+          "bottom": 336.609375,
+          "height": 44,
+          "left": 256,
+          "right": 415.640625,
+          "top": 292.609375,
+          "width": 159.640625,
+          "x": 256,
+          "y": 292.609375
+        }
+      }
+    ],
+    "height": 900,
+    "mainScroll": true,
+    "overflow": false,
+    "width": 1440
+  },
+  {
+    "screen": "shelf",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "actions": [],
+    "height": 844,
+    "overflow": false,
+    "width": 390
+  },
+  {
+    "screen": "chat",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "actions": [
+      {
+        "label": "Send",
+        "rect": {
+          "bottom": 751.234375,
+          "height": 42,
+          "left": 248.453125,
+          "right": 324,
+          "top": 709.234375,
+          "width": 75.546875,
+          "x": 248.453125,
+          "y": 709.234375
+        }
+      }
+    ],
+    "height": 844,
+    "overflow": false,
+    "width": 390
+  },
+  {
+    "screen": "studio",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "actions": [
+      {
+        "label": "Generate",
+        "rect": {
+          "bottom": 856.859375,
+          "height": 44,
+          "left": 37,
+          "right": 323,
+          "top": 812.859375,
+          "width": 286,
+          "x": 37,
+          "y": 812.859375
+        }
+      }
+    ],
+    "height": 844,
+    "overflow": false,
+    "width": 390
+  },
+  {
+    "screen": "intake",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "actions": [
+      {
+        "label": "Add sample file",
+        "rect": {
+          "bottom": 1060.375,
+          "height": 52,
+          "left": 86.578125,
+          "right": 273.421875,
+          "top": 1008.375,
+          "width": 186.84375,
+          "x": 86.578125,
+          "y": 1008.375
+        }
+      }
+    ],
+    "height": 844,
+    "overflow": false,
+    "width": 390
+  },
+  {
+    "screen": "admin",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "actions": [],
+    "height": 844,
+    "overflow": false,
+    "width": 390
+  },
+  {
+    "screen": "account",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "actions": [],
+    "height": 844,
+    "overflow": false,
+    "width": 390
+  },
+  {
+    "screen": "states",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "actions": [
+      {
+        "label": "Primary action",
+        "rect": {
+          "bottom": 433.65625,
+          "height": 44,
+          "left": 18,
+          "right": 177.640625,
+          "top": 389.65625,
+          "width": 159.640625,
+          "x": 18,
+          "y": 389.65625
+        }
+      }
+    ],
+    "height": 844,
+    "overflow": false,
+    "width": 390
+  },
+  {
+    "screen": "shelf",
+    "viewport": {
+      "width": 768,
+      "height": 1024
+    },
+    "actions": [],
+    "height": 1024,
+    "overflow": false,
+    "width": 768
+  },
+  {
+    "screen": "chat",
+    "viewport": {
+      "width": 768,
+      "height": 1024
+    },
+    "actions": [
+      {
+        "label": "إرسال",
+        "rect": {
+          "bottom": 978.59375,
+          "height": 44.5,
+          "left": 77,
+          "right": 175.390625,
+          "top": 934.09375,
+          "width": 98.390625,
+          "x": 77,
+          "y": 934.09375
+        }
+      }
+    ],
+    "height": 1024,
+    "overflow": false,
+    "width": 768
+  },
+  {
+    "screen": "studio",
+    "viewport": {
+      "width": 768,
+      "height": 1024
+    },
+    "actions": [
+      {
+        "label": "إعداد",
+        "rect": {
+          "bottom": 863.3125,
+          "height": 44.5,
+          "left": 433,
+          "right": 628,
+          "top": 818.8125,
+          "width": 195,
+          "x": 433,
+          "y": 818.8125
+        }
+      }
+    ],
+    "height": 1024,
+    "overflow": false,
+    "width": 768
+  },
+  {
+    "screen": "intake",
+    "viewport": {
+      "width": 768,
+      "height": 1024
+    },
+    "actions": [
+      {
+        "label": "إضافة ملف تجريبي",
+        "rect": {
+          "bottom": 498.546875,
+          "height": 52,
+          "left": 358.734375,
+          "right": 591.28125,
+          "top": 446.546875,
+          "width": 232.546875,
+          "x": 358.734375,
+          "y": 446.546875
+        }
+      }
+    ],
+    "height": 1024,
+    "overflow": false,
+    "width": 768
+  },
+  {
+    "screen": "admin",
+    "viewport": {
+      "width": 768,
+      "height": 1024
+    },
+    "actions": [],
+    "height": 1024,
+    "overflow": false,
+    "width": 768
+  },
+  {
+    "screen": "account",
+    "viewport": {
+      "width": 768,
+      "height": 1024
+    },
+    "actions": [],
+    "height": 1024,
+    "overflow": false,
+    "width": 768
+  },
+  {
+    "screen": "states",
+    "viewport": {
+      "width": 768,
+      "height": 1024
+    },
+    "actions": [
+      {
+        "label": "الإجراء الأساسي",
+        "rect": {
+          "bottom": 329.4375,
+          "height": 44.5,
+          "left": 473.5,
+          "right": 629,
+          "top": 284.9375,
+          "width": 155.5,
+          "x": 473.5,
+          "y": 284.9375
+        }
+      }
+    ],
+    "height": 1024,
+    "overflow": false,
+    "width": 768
+  },
+  {
+    "screen": "shelf",
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "actions": [],
+    "height": 800,
+    "overflow": false,
+    "width": 1280
+  },
+  {
+    "screen": "chat",
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "actions": [
+      {
+        "label": "إرسال",
+        "rect": {
+          "bottom": 752.59375,
+          "height": 44.5,
+          "left": 389,
+          "right": 487.390625,
+          "top": 708.09375,
+          "width": 98.390625,
+          "x": 389,
+          "y": 708.09375
+        }
+      }
+    ],
+    "height": 800,
+    "overflow": false,
+    "width": 1280
+  },
+  {
+    "screen": "studio",
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "actions": [
+      {
+        "label": "إعداد",
+        "rect": {
+          "bottom": 867.3125,
+          "height": 44.5,
+          "left": 758,
+          "right": 1008,
+          "top": 822.8125,
+          "width": 250,
+          "x": 758,
+          "y": 822.8125
+        }
+      }
+    ],
+    "height": 800,
+    "overflow": false,
+    "width": 1280
+  },
+  {
+    "screen": "intake",
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "actions": [
+      {
+        "label": "إضافة ملف تجريبي",
+        "rect": {
+          "bottom": 502.546875,
+          "height": 52,
+          "left": 603.734375,
+          "right": 836.28125,
+          "top": 450.546875,
+          "width": 232.546875,
+          "x": 603.734375,
+          "y": 450.546875
+        }
+      }
+    ],
+    "height": 800,
+    "overflow": false,
+    "width": 1280
+  },
+  {
+    "screen": "admin",
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "actions": [],
+    "height": 800,
+    "overflow": false,
+    "width": 1280
+  },
+  {
+    "screen": "account",
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "actions": [],
+    "height": 800,
+    "overflow": false,
+    "width": 1280
+  },
+  {
+    "screen": "states",
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "actions": [
+      {
+        "label": "الإجراء الأساسي",
+        "rect": {
+          "bottom": 333.4375,
+          "height": 44.5,
+          "left": 853.5,
+          "right": 1009,
+          "top": 288.9375,
+          "width": 155.5,
+          "x": 853.5,
+          "y": 288.9375
+        }
+      }
+    ],
+    "height": 800,
+    "overflow": false,
+    "width": 1280
+  }
+]

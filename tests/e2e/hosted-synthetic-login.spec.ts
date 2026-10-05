@@ -43,8 +43,8 @@ async function enter(page: Page, role: string, locale = "en") {
     .getByRole("button", {
       name: pick(
         locale,
-        "Accept all and enter your shelf",
-        "الموافقة ودخول مكتبتك",
+        "Accept all and continue to UniMind",
+        "الموافقة والمتابعة إلى UniMind",
       ),
       exact: true,
     })
@@ -75,6 +75,16 @@ for (const locale of ["en", "ar"]) {
         ),
       );
       if (role === "admin" || role === "second-admin") {
+        await expect(
+          page.getByLabel(
+            pick(locale, "Reason for this change", "سبب هذا التغيير"),
+          ),
+        ).toHaveCount(0);
+        await page
+          .getByRole("button", {
+            name: new RegExp(pick(locale, "^Hide unit", "^إخفاء الوحدة"), "u"),
+          })
+          .click();
         await page
           .getByLabel(
             pick(locale, "Reason for this change", "سبب هذا التغيير"),
@@ -246,6 +256,13 @@ test("hosted student: study memory, locale, sign-out, refresh and new-document i
   context,
 }) => {
   test.setTimeout(120_000);
+  // Compile guarded routes before entering document-local fixtures. A cold
+  // development rebuild can remount the browser-only tree in another tab.
+  // Denial remains checked both before entry and in a new document afterward.
+  await page.goto(unit + "/chat?lang=en");
+  await expect(page).toHaveURL(/\/login\?/u);
+  await page.goto("/settings?lang=en");
+  await expect(page).toHaveURL(/\/login\?/u);
   const finish = await enter(page, "student");
   const selects = [
     "Education stage",
@@ -297,7 +314,9 @@ test("hosted student: study memory, locale, sign-out, refresh and new-document i
     .filter({ visible: true })
     .first()
     .click();
-  await page.getByRole("link", { name: "Back to study", exact: true }).click();
+  await page
+    .getByRole("link", { name: "Return to last study tool", exact: true })
+    .click();
   await expect(
     page.getByRole("link", { name: "Inspect evidence", exact: true }),
   ).toBeVisible();

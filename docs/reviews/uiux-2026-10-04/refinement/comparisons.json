@@ -1,0 +1,200 @@
+[
+  {
+    "board": "comparisons\\01-shelf-desktop.jpg",
+    "context": "Student / Subjects / five subjects; no resume",
+    "before": {
+      "file": "../screenshots/p13-shelf-desktop-light.jpg",
+      "sha256": "2c95e8fec2b63edea6ac0cef83b2d333f37af2e8e20cd0f9a9d9fc56162d9fda"
+    },
+    "after": {
+      "file": "screenshots/shelf-desktop.jpg",
+      "sha256": "371a6fe9f2ab334049ebcf6f6d7b0a71220d76fdf5ebe88a8be2203eac088d59",
+      "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+      "cssViewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    "differenceDisclosure": "Same task/content state; copy/layout change intentionally. Proposal includes review toolbar."
+  },
+  {
+    "board": "comparisons\\02-chat-desktop.jpg",
+    "context": "Student / Chat / empty initial session",
+    "before": {
+      "file": "../screenshots/p15-chat-empty-desktop.jpg",
+      "sha256": "359e6f061775ddc323ba3431a4ddf39f1105a48e9d612cc495ebeed28af24126"
+    },
+    "after": {
+      "file": "screenshots/chat-desktop.jpg",
+      "sha256": "6942100a50e88bf02054251d513e6570961c7e50fdcbbb178336b4a29aaa772b",
+      "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+      "cssViewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    "differenceDisclosure": "Same task/content state; copy/layout change intentionally. Proposal includes review toolbar."
+  },
+  {
+    "board": "comparisons\\03-studio-desktop.jpg",
+    "context": "Student / Studio / summary, Study sequence, English; empty output",
+    "before": {
+      "file": "../screenshots/p19-studio-desktop.jpg",
+      "sha256": "ed5ccb89d4342acd7fdc6fd6e8afddb4082d9564f453f6ab331f58e88745d57b"
+    },
+    "after": {
+      "file": "screenshots/studio-desktop.jpg",
+      "sha256": "89ef4a7d99a0cbfda5bbbb6fc6627aa09cc8aacd7c2d1497735b03ac750607d8",
+      "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+      "cssViewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    "differenceDisclosure": "Same task/content state; copy/layout change intentionally. Proposal includes review toolbar."
+  },
+  {
+    "board": "comparisons\\04-intake-desktop.jpg",
+    "context": "Batch Leader / Intake / empty queue; same deadlines and requests",
+    "before": {
+      "file": "../screenshots/p30-campaign-desktop.jpg",
+      "sha256": "ac615fe993c8f1780713382543a65837f4334e1ec21820479e29126bdb0b0d27"
+    },
+    "after": {
+      "file": "screenshots/intake-desktop.jpg",
+      "sha256": "337ae7b987b4bbcf2bf221ef0687a11fed6959a74e91e6e4693fa6d6a03b78fb",
+      "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+      "cssViewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    "differenceDisclosure": "Same task/content state; copy/layout change intentionally. Proposal includes review toolbar."
+  },
+  {
+    "board": "comparisons\\05-admin-desktop.jpg",
+    "context": "Admin / Hide unit / Anatomy, version 2; empty reason",
+    "before": {
+      "file": "../screenshots/p37-admin-desktop.jpg",
+      "sha256": "0feadc5aa1e04b0e64a36f088f6c116131a3ea3f48ed81cb8a60e5a41f1ba14e"
+    },
+    "after": {
+      "file": "screenshots/admin-selected-desktop.jpg",
+      "sha256": "6d8f0de840f565594c1d782dc810ab7048465d2522f3259ed88190a251dfc4be",
+      "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+      "cssViewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    "differenceDisclosure": "Same task/content state; copy/layout change intentionally. Proposal includes review toolbar."
+  },
+  {
+    "board": "comparisons\\01-shelf-mobile.jpg",
+    "context": "Student / Subjects / same five subjects",
+    "before": {
+      "file": "../screenshots/p10-shelf-mobile.jpg",
+      "sha256": "6a69053717ffbc117ca485e7fd5c322e56e22924572ddd8e27b89f7c6880c263"
+    },
+    "after": {
+      "file": "screenshots/shelf-mobile.jpg",
+      "sha256": "683f25df77d8d6ab09a3fc120e7d28e3838d078846bc62a24cb4ca82c44cf2ca",
+      "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+      "cssViewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    "differenceDisclosure": "Same task/content state; copy/layout change intentionally. Proposal includes review toolbar."
+  },
+  {
+    "board": "comparisons\\02-chat-mobile.jpg",
+    "context": "Student / Chat / empty initial session",
+    "before": {
+      "file": "../screenshots/p16-chat-empty-mobile.jpg",
+      "sha256": "abecaa05447bc6646106c26d0979cbd9751920df1479d18e7813d6b84555eb0c"
+    },
+    "after": {
+      "file": "screenshots/chat-mobile.jpg",
+      "sha256": "4a98c8200ada54365ec974ae7609e009a391ad7b51c1d6c2074b339210a7453c",
+      "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+      "cssViewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    "differenceDisclosure": "Same task/content state; copy/layout change intentionally. Proposal includes review toolbar."
+  },
+  {
+    "board": "comparisons\\03-studio-mobile.jpg",
+    "context": "Student / Studio / summary configuration; empty output",
+    "before": {
+      "file": "../screenshots/p22-studio-mobile.jpg",
+      "sha256": "5ad76114db5e46b8e2e171b8d9fe04113ecab8964b93a99d4a3b1b6192361185"
+    },
+    "after": {
+      "file": "screenshots/studio-mobile.jpg",
+      "sha256": "44a26d84f6e1d313c2fcf38de2d2cfdbdbc5b495f67eb8f48f65c974ba857765",
+      "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+      "cssViewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    "differenceDisclosure": "Same task/content state; copy/layout change intentionally. Proposal includes review toolbar."
+  },
+  {
+    "board": "comparisons\\04-intake-mobile.jpg",
+    "context": "Batch Leader / Intake / empty queue; all request names visible",
+    "before": {
+      "file": "../screenshots/p33-campaign-mobile.jpg",
+      "sha256": "45ad95d52ce8b3d16469c66189d975b4a6306fa0a4adf5f5df8bec61dc05d415"
+    },
+    "after": {
+      "file": "screenshots/intake-mobile.jpg",
+      "sha256": "b1b19e8e47a026cd7fcaa8f93ae75fff9d32c5c3f7deeee30c20ef78c4108781",
+      "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+      "cssViewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    "differenceDisclosure": "Same task/content state; copy/layout change intentionally. Proposal includes review toolbar."
+  },
+  {
+    "board": "comparisons\\05-admin-mobile.jpg",
+    "context": "Admin / Hide unit / same scope, version 2 and supplied reason",
+    "before": {
+      "file": "../screenshots/p41-admin-mobile.jpg",
+      "sha256": "8d2de66b79e1b19c6e467f91990b00e8d355cd7bfe2248a08a48d8740a5eb218"
+    },
+    "after": {
+      "file": "screenshots/admin-selected-mobile.jpg",
+      "sha256": "1b4bc657623b6dcbf2df55bfcb125598cf465fd34da4cd7b33369ab7a5c3a543",
+      "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+      "cssViewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    "differenceDisclosure": "Same action/version/reason. Current is scrolled; scroll origins differ. Proposal includes review toolbar."
+  },
+  {
+    "board": "comparisons\\06-account-arabic-dark.jpg",
+    "context": "Admin / Account / Arabic dark; role-specific sections proposed",
+    "before": {
+      "file": "../screenshots/p52-admin-account-ar-dark.jpg",
+      "sha256": "1525b490c01590f9963cd4eb79fb9c4c627fda4935966495cc308d9e6965a3bc"
+    },
+    "after": {
+      "file": "screenshots/account-admin-mobile-rtl-dark.jpg",
+      "sha256": "31a6b5c171572ca4399f5150ba6731e662e245a27ca12335617040aeef85ce70",
+      "sourceSHA256": "f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4",
+      "cssViewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    "differenceDisclosure": "Same role/theme/locale. Settings scope and presentation are redesigned; not identical field contents."
+  }
+]

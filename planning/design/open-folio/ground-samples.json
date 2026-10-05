@@ -1,0 +1,233 @@
+{
+  "method": "Unedited PNG/JPEG colour-frequency samples; JPEG compression may differ by one channel. Canvas comparison uses dominant page plane, not a staged replacement image.",
+  "samples": [
+    {
+      "file": "docs\\reviews\\uiux-2026-10-04\\refinement\\screenshots\\shelf-desktop.jpg",
+      "imagePixels": [
+        1440,
+        900
+      ],
+      "mostFrequentColours": [
+        {
+          "rgb": [
+            246,
+            247,
+            249
+          ],
+          "pixels": 873294
+        },
+        {
+          "rgb": [
+            29,
+            41,
+            57
+          ],
+          "pixels": 128012
+        },
+        {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "pixels": 64861
+        },
+        {
+          "rgb": [
+            245,
+            246,
+            248
+          ],
+          "pixels": 15485
+        },
+        {
+          "rgb": [
+            254,
+            255,
+            255
+          ],
+          "pixels": 9161
+        },
+        {
+          "rgb": [
+            247,
+            248,
+            250
+          ],
+          "pixels": 5677
+        }
+      ]
+    },
+    {
+      "file": "planning\\design\\open-folio\\captures\\shelf-desktop.png",
+      "imagePixels": [
+        1430,
+        894
+      ],
+      "mostFrequentColours": [
+        {
+          "rgb": [
+            246,
+            247,
+            249
+          ],
+          "pixels": 816256
+        },
+        {
+          "rgb": [
+            29,
+            41,
+            57
+          ],
+          "pixels": 130188
+        },
+        {
+          "rgb": [
+            239,
+            240,
+            242
+          ],
+          "pixels": 69338
+        },
+        {
+          "rgb": [
+            247,
+            248,
+            250
+          ],
+          "pixels": 18727
+        },
+        {
+          "rgb": [
+            245,
+            246,
+            248
+          ],
+          "pixels": 17254
+        },
+        {
+          "rgb": [
+            255,
+            255,
+            255
+          ],
+          "pixels": 10923
+        }
+      ]
+    },
+    {
+      "file": "docs\\reviews\\uiux-2026-10-04\\refinement\\screenshots\\shelf-tablet-rtl-dark.jpg",
+      "imagePixels": [
+        768,
+        1024
+      ],
+      "mostFrequentColours": [
+        {
+          "rgb": [
+            27,
+            28,
+            32
+          ],
+          "pixels": 507626
+        },
+        {
+          "rgb": [
+            20,
+            27,
+            37
+          ],
+          "pixels": 55599
+        },
+        {
+          "rgb": [
+            35,
+            39,
+            48
+          ],
+          "pixels": 32539
+        },
+        {
+          "rgb": [
+            27,
+            28,
+            33
+          ],
+          "pixels": 31972
+        },
+        {
+          "rgb": [
+            27,
+            28,
+            30
+          ],
+          "pixels": 5136
+        },
+        {
+          "rgb": [
+            34,
+            38,
+            47
+          ],
+          "pixels": 4686
+        }
+      ]
+    },
+    {
+      "file": "planning\\design\\open-folio\\captures\\shelf-tablet-ar-dark.png",
+      "imagePixels": [
+        758,
+        1011
+      ],
+      "mostFrequentColours": [
+        {
+          "rgb": [
+            27,
+            28,
+            32
+          ],
+          "pixels": 371468
+        },
+        {
+          "rgb": [
+            43,
+            60,
+            88
+          ],
+          "pixels": 57377
+        },
+        {
+          "rgb": [
+            45,
+            49,
+            58
+          ],
+          "pixels": 47866
+        },
+        {
+          "rgb": [
+            20,
+            27,
+            37
+          ],
+          "pixels": 46195
+        },
+        {
+          "rgb": [
+            27,
+            28,
+            33
+          ],
+          "pixels": 32187
+        },
+        {
+          "rgb": [
+            27,
+            28,
+            30
+          ],
+          "pixels": 10140
+        }
+      ]
+    }
+  ]
+}

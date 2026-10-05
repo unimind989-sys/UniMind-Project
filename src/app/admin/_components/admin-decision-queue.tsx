@@ -21,6 +21,8 @@ import { getTextDirection, type Locale } from "@/lib/i18n/locale";
 
 import { submitAdminAction } from "../actions";
 import styles from "../admin.module.css";
+import { ProductDialog } from "@/app/_components/product-dialog";
+import { FrontendIcon } from "@/app/_components/frontend-controls";
 import { AdminWorkspace } from "./admin-workspace";
 
 function candidateState(candidate: AdminActionCandidate, locale: Locale) {
@@ -77,10 +79,6 @@ function ActionPanel({
   const blocked = candidate.failedPredicates.length > 0;
   const secondConfirmation = candidate.pendingActionId !== null;
   const ownerReviewPending = candidate.commandState === "PENDING_OWNER_REVIEW";
-
-  useEffect(() => {
-    if (reviewOpen) confirmButton.current?.focus();
-  }, [reviewOpen]);
 
   useEffect(() => {
     if (state.status !== "IDLE") feedbackRef.current?.focus();
@@ -329,12 +327,24 @@ function ActionPanel({
             {copy.reloadQueue}
           </button>
         )}
-        {reviewOpen && (
+        <ProductDialog
+          open={reviewOpen && state.status === "IDLE"}
+          title={copy.reviewHeading}
+          closeLabel={copy.cancelReview}
+          onClose={closeReview}
+          onAfterClose={() => {
+            setReviewOpen(false);
+            (state.status === "IDLE"
+              ? reviewButton
+              : feedbackRef
+            ).current?.focus({ preventScroll: true });
+          }}
+          dismissible={!pending}
+        >
           <section
             className={styles.reviewPanel}
             aria-label={copy.reviewHeading}
           >
-            <h3>{copy.reviewHeading}</h3>
             <p>{copy.consequences[candidate.action]}</p>
             <dl>
               <div>
@@ -359,6 +369,14 @@ function ActionPanel({
                 <dt>{copy.reason}</dt>
                 <dd>{reviewReason}</dd>
               </div>
+              <div>
+                <dt>{copy.expectedVersion}</dt>
+                <dd>
+                  {new Intl.NumberFormat(
+                    locale === "ar" ? "ar-EG" : "en",
+                  ).format(candidate.expectedVersion)}
+                </dd>
+              </div>
               {reviewExpiry !== "" && (
                 <div>
                   <dt>{copy.holdExpiry}</dt>
@@ -366,48 +384,14 @@ function ActionPanel({
                 </div>
               )}
             </dl>
+            <p>{copy.ready}</p>
             {candidate.protected && <p>{copy.separateFounderNotice}</p>}
           </section>
-        )}
-        <div className={styles.reviewActions}>
-          {reviewOpen ? (
-            <>
-              <button
-                className={styles.secondaryAction}
-                type="button"
-                onClick={closeReview}
-                disabled={pending}
-              >
-                {copy.cancelReview}
-              </button>
-              <button
-                ref={confirmButton}
-                className={styles.primaryAction}
-                type="submit"
-                disabled={
-                  !actionable ||
-                  blocked ||
-                  pending ||
-                  refreshing ||
-                  state.status !== "IDLE"
-                }
-                aria-busy={pending}
-              >
-                {pending
-                  ? copy.working
-                  : secondConfirmation
-                    ? copy.confirmSecond
-                    : candidate.protected
-                      ? copy.confirmProtected
-                      : copy.confirmAction}
-              </button>
-            </>
-          ) : (
+          <div className={styles.reviewActions}>
             <button
-              ref={reviewButton}
+              ref={confirmButton}
               className={styles.primaryAction}
-              type="button"
-              onClick={openReview}
+              type="submit"
               disabled={
                 !actionable ||
                 blocked ||
@@ -415,10 +399,34 @@ function ActionPanel({
                 refreshing ||
                 state.status !== "IDLE"
               }
+              aria-busy={pending}
             >
-              {refreshing ? copy.checkingState : copy.reviewAction}
+              {pending
+                ? copy.working
+                : secondConfirmation
+                  ? copy.confirmSecond
+                  : candidate.protected
+                    ? copy.confirmProtected
+                    : copy.confirmAction}
             </button>
-          )}
+          </div>
+        </ProductDialog>
+        <div className={styles.reviewActions}>
+          <button
+            ref={reviewButton}
+            className={styles.primaryAction}
+            type="button"
+            onClick={openReview}
+            disabled={
+              !actionable ||
+              blocked ||
+              pending ||
+              refreshing ||
+              state.status !== "IDLE"
+            }
+          >
+            {refreshing ? copy.checkingState : copy.reviewAction}
+          </button>
         </div>
       </form>
     </section>
@@ -448,25 +456,44 @@ export function AdminDecisionQueue({
   const copy = getAdminCopy(locale);
   const direction = getTextDirection(locale);
   const candidates = queue.status === "READY" ? queue.candidates : [];
-  const firstCandidate =
-    candidates.find(
-      (candidate) =>
-        candidate.failedPredicates.length === 0 &&
-        candidate.commandState !== "PENDING_OWNER_REVIEW",
-    ) ?? candidates[0];
-  const [selectedId, setSelectedId] = useState(
-    firstCandidate?.candidateId ?? "",
+  const [selectedId, setSelectedId] = useState("");
+  const [detailOpen, setDetailOpen] = useState(false);
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("all");
+  const detail = useRef<HTMLDivElement>(null);
+  const group = (candidate: AdminActionCandidate) =>
+    candidate.commandState === "PENDING_SECOND_CONFIRMATION" ||
+    candidate.commandState === "PENDING_OWNER_REVIEW"
+      ? "pending"
+      : candidate.failedPredicates.length
+        ? "blocked"
+        : "available";
+  const matching = candidates.filter((candidate) =>
+    `${copy.actions[candidate.action]} ${candidateLabel(candidate, locale)}`
+      .toLocaleLowerCase(locale)
+      .includes(search.trim().toLocaleLowerCase(locale)),
+  );
+  const filtered = matching.filter(
+    (candidate) => filter === "all" || group(candidate) === filter,
   );
   const selected =
     candidates.find((candidate) => candidate.candidateId === selectedId) ??
-    firstCandidate ??
     null;
+  useEffect(() => {
+    if (
+      selectedId &&
+      detailOpen &&
+      window.matchMedia("(max-width:767px)").matches
+    )
+      detail.current?.focus({ preventScroll: true });
+  }, [selectedId, detailOpen]);
   useEffect(() => {
     document.documentElement.lang = locale;
     document.documentElement.dir = direction;
   }, [direction, locale]);
   function selectCandidate(candidateId: string) {
     setSelectedId(candidateId);
+    setDetailOpen(true);
     if (!syntheticPreview && refreshOnSelect)
       startRefresh(() => router.refresh());
   }
@@ -491,7 +518,7 @@ export function AdminDecisionQueue({
           <p>{copy.emptyBody}</p>
         </section>
       ) : (
-        <div className={styles.queueLayout}>
+        <div className={styles.queueLayout} data-detail-open={detailOpen}>
           <section
             className={styles.queuePane}
             aria-labelledby="decision-list-heading"
@@ -502,6 +529,56 @@ export function AdminDecisionQueue({
                 ({new Intl.NumberFormat(locale).format(candidates.length)})
               </span>
             </h2>
+            <label className={styles.queueSearch}>
+              <span>
+                {locale === "ar" ? "البحث عن قرار" : "Find a decision"}
+              </span>
+              <input
+                type="search"
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+              />
+            </label>
+            <div
+              className={styles.queueFilters}
+              aria-label={
+                locale === "ar" ? "تصفية القرارات" : "Filter decisions"
+              }
+            >
+              {(
+                [
+                  ["all", "All", "الكل"],
+                  ["available", "Available", "متاح"],
+                  ["blocked", "Blocked", "محجوب"],
+                  ["pending", "Pending", "معلق"],
+                ] as const
+              ).map(([id, en, ar]) => (
+                <button
+                  key={id}
+                  type="button"
+                  aria-pressed={filter === id}
+                  onClick={() => setFilter(id)}
+                >
+                  {locale === "ar" ? ar : en}{" "}
+                  <span>
+                    {new Intl.NumberFormat(locale).format(
+                      id === "all"
+                        ? matching.length
+                        : matching.filter(
+                            (candidate) => group(candidate) === id,
+                          ).length,
+                    )}
+                  </span>
+                </button>
+              ))}
+            </div>
+            {filtered.length === 0 ? (
+              <p role="status">
+                {locale === "ar"
+                  ? "لا توجد قرارات تطابق البحث."
+                  : "No decisions match this search."}
+              </p>
+            ) : null}
             <div className={styles.mobileDecision}>
               <label htmlFor="admin-decision">
                 {locale === "ar" ? "اختر قرارًا" : "Choose a decision"}
@@ -512,7 +589,12 @@ export function AdminDecisionQueue({
                 value={selected?.candidateId ?? ""}
                 onChange={(event) => selectCandidate(event.target.value)}
               >
-                {candidates.map((candidate) => (
+                <option value="">
+                  {locale === "ar"
+                    ? "اختر قرارًا للمراجعة"
+                    : "Choose a decision to review"}
+                </option>
+                {filtered.map((candidate) => (
                   <option
                     key={candidate.candidateId}
                     value={candidate.candidateId}
@@ -525,7 +607,7 @@ export function AdminDecisionQueue({
               </select>
             </div>
             <ul className={styles.decisionList} id="decision-list">
-              {candidates.map((candidate) => (
+              {filtered.map((candidate) => (
                 <li key={candidate.candidateId}>
                   <button
                     className={styles.decisionButton}
@@ -559,16 +641,43 @@ export function AdminDecisionQueue({
               ))}
             </ul>
           </section>
-          {selected ? (
-            <ActionPanel
-              key={selected.candidateId}
-              candidate={selected}
-              locale={locale}
-              submitAction={submitAction}
-              refreshing={refreshing}
-              reloadAction={reloadAction}
-            />
-          ) : null}
+          <div className={styles.selectedDetail} ref={detail} tabIndex={-1}>
+            {selected ? (
+              <>
+                <button
+                  className={styles.detailBack}
+                  type="button"
+                  onClick={() => setDetailOpen(false)}
+                >
+                  {locale === "ar"
+                    ? "العودة إلى القرارات"
+                    : "Back to decisions"}
+                </button>
+                <ActionPanel
+                  key={selected.candidateId}
+                  candidate={selected}
+                  locale={locale}
+                  submitAction={submitAction}
+                  refreshing={refreshing}
+                  reloadAction={reloadAction}
+                />
+              </>
+            ) : (
+              <section className={styles.decisionEmpty}>
+                <FrontendIcon name="shield" />
+                <h2>
+                  {locale === "ar"
+                    ? "اختر قرارًا للمراجعة"
+                    : "Choose a decision to review"}
+                </h2>
+                <p>
+                  {locale === "ar"
+                    ? "راجع الهدف والنتيجة قبل تسجيل أي تغيير."
+                    : "Inspect its target and consequence before recording a change."}
+                </p>
+              </section>
+            )}
+          </div>
         </div>
       )}
     </div>

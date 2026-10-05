@@ -359,7 +359,7 @@ for (const role of roles) {
       ).toHaveCount(0);
       await expect(
         page.getByRole("heading", {
-          name: "Overview",
+          name: "Decision queue",
           exact: true,
         }),
       ).toBeVisible();

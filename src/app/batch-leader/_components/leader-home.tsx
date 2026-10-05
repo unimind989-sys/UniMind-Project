@@ -77,6 +77,15 @@ export function CollectionHistory({
                 <p className={styles.helper}>
                   {descriptions[submission.status]}
                 </p>
+                {submission.status === "NEEDS_INFORMATION" ||
+                submission.status === "REJECTED" ? (
+                  <p className={styles.helper}>
+                    {t(
+                      "A review reason is not available in this view. Open the assigned campaign to inspect the request and permitted upload actions.",
+                      "سبب المراجعة غير متاح في هذا العرض. افتح الحملة المسندة لفحص الطلب وإجراءات الرفع المسموحة.",
+                    )}
+                  </p>
+                ) : null}
               </div>
             </li>
           ))}
@@ -120,7 +129,7 @@ export function LeaderHome({
       synthetic={synthetic}
       preview={preview}
     >
-      <div className={styles.workspace}>
+      <div className={`${styles.workspace} ${styles.campaignOverview}`}>
         <header className={styles.header}>
           <h1>{title}</h1>
           <p>
@@ -159,6 +168,21 @@ export function LeaderHome({
                         </Link>
                       </h3>
                       <p>{campaign.cohortName}</p>
+                      <p className={styles.helper}>
+                        {t("Required requests", "الطلبات المطلوبة")}:{" "}
+                        {new Intl.NumberFormat(locale).format(
+                          campaign.requestedItems.filter(
+                            (item) => item.required,
+                          ).length,
+                        )}
+                        {" · "}
+                        {t("Latest submissions", "آخر الإرسالات")}:{" "}
+                        {new Intl.NumberFormat(locale).format(
+                          campaign.requestedItems.filter(
+                            (item) => item.latestSubmission,
+                          ).length,
+                        )}
+                      </p>
                       <p className={styles.helper}>
                         {t("Closes", "موعد الإغلاق")}:{" "}
                         {formatCollectionDate(locale, campaign.closesAt)}

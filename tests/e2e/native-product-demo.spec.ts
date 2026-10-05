@@ -45,11 +45,8 @@ for (const locale of ["en", "ar"] as const) {
     expect(firstView.sourceBottom).toBeLessThanOrEqual(firstView.visibleBottom);
     await navigate(page, unit + "/studio", locale);
     await page
-      .getByRole("radio", {
-        name: pick(locale, "Flashcards", "بطاقات مراجعة"),
-        exact: true,
-      })
-      .check();
+      .getByLabel(pick(locale, "Artifact type", "نوع المخرج"), { exact: true })
+      .selectOption("flashcards");
     await page
       .getByRole("button", {
         name: pick(locale, "Generate", "إنشاء"),
@@ -106,7 +103,11 @@ for (const locale of ["en", "ar"] as const) {
         .selectOption(theme);
       await page
         .getByRole("link", {
-          name: pick(locale, "Back to study", "العودة للمذاكرة"),
+          name: pick(
+            locale,
+            "Return to last study tool",
+            "العودة إلى آخر أداة مذاكرة",
+          ),
           exact: true,
         })
         .click();
@@ -223,9 +224,12 @@ for (const locale of ["en", "ar"] as const) {
       name: pick(locale, "Choose files", "اختيار ملفات"),
       exact: true,
     });
-    await expect(chooser).toBeVisible();
-    const rect = await chooser.boundingBox();
-    expect(rect!.y + rect!.height).toBeLessThanOrEqual(756);
+    for (const width of [390, 380]) {
+      await page.setViewportSize({ width, height: 844 });
+      await expect(chooser).toBeVisible();
+      const rect = await chooser.boundingBox();
+      expect(rect!.y + rect!.height).toBeLessThanOrEqual(756);
+    }
     finish();
   });
 }
@@ -276,8 +280,8 @@ async function signIn(
     .getByRole("button", {
       name: pick(
         locale,
-        "Accept all and enter your shelf",
-        "الموافقة ودخول مكتبتك",
+        "Accept all and continue to UniMind",
+        "الموافقة والمتابعة إلى UniMind",
       ),
       exact: true,
     })
@@ -522,6 +526,7 @@ for (const locale of ["en", "ar"] as const) {
     await signIn(page, "student", locale, unit);
     await expect(page).toHaveURL(new RegExp(unit));
     await navigate(page, unit + "/chat", locale);
+    await openSessionTools(page, locale);
     await page
       .getByRole("button", {
         name: pick(locale, "New session", "جلسة جديدة"),
@@ -574,11 +579,13 @@ for (const locale of ["en", "ar"] as const) {
     await navigate(page, unit + "/studio", locale);
     for (const [id, en, ar] of artifactTypes) {
       await page
-        .getByRole("radio", { name: pick(locale, en, ar), exact: true })
-        .check();
+        .getByLabel(pick(locale, "Artifact type", "نوع المخرج"), {
+          exact: true,
+        })
+        .selectOption({ label: pick(locale, en, ar) });
       await page
         .getByRole("combobox", {
-          name: pick(locale, "Language", "اللغة"),
+          name: pick(locale, "Output language", "لغة المخرج"),
           exact: true,
         })
         .selectOption(id === "guide" ? "mixed" : locale);
@@ -840,6 +847,7 @@ for (const locale of ["en", "ar"] as const) {
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth),
     ).toBeLessThanOrEqual(391);
+    await openSessionTools(page, locale);
     await page
       .getByRole("button", {
         name: pick(locale, "New session", "جلسة جديدة"),
@@ -878,7 +886,7 @@ test("Auth validation, registration, email callback, consent and recovery use no
   await page.getByRole("checkbox").check();
   await page
     .getByRole("button", {
-      name: "Accept all and enter your shelf",
+      name: "Accept all and continue to UniMind",
       exact: true,
     })
     .click();
@@ -920,8 +928,10 @@ test("normal timed attempt expires, private future exchanges and scope remain se
     .selectOption("private");
   await page.goBack();
   await navigate(page, unit + "/chat");
+  await openSessionTools(page, "en");
   await page.getByRole("button", { name: "New session", exact: true }).click();
   await send(page, "supported");
+  await page.locator("summary").filter({ hasText: "Switch unit" }).click();
   await page
     .getByLabel("Switch unit", { exact: true })
     .selectOption("/learn/synthetic-credit-cohort/synthetic-credit-unit");
@@ -966,15 +976,17 @@ test("prepared failure states recover through normal navigation, never a reviewe
     "stale",
   ]) {
     await signIn(page, "student", "en", `${unit}/chat?fixture=${fixture}`);
-    if (fixture === "loading")
+    if (fixture === "loading") {
+      await openSessionTools(page, "en");
       await expect(
         page.getByRole("button", { name: "New session", exact: true }),
       ).toBeVisible();
-    else {
+    } else {
       await expect(
         page.getByRole("button", { name: "Retry", exact: true }),
       ).toBeVisible();
       await page.getByRole("button", { name: "Retry", exact: true }).click();
+      await openSessionTools(page, "en");
       await expect(
         page.getByRole("button", { name: "New session", exact: true }),
       ).toBeVisible();
@@ -1025,7 +1037,7 @@ test("synthetic admin changes share availability, preserve distinct confirmation
   await page.getByRole("checkbox").check();
   await page
     .getByRole("button", {
-      name: "Accept all and enter your shelf",
+      name: "Accept all and continue to UniMind",
       exact: true,
     })
     .click();
@@ -1104,7 +1116,7 @@ async function switchAdmin(page: Page, email: string) {
   await page.getByRole("checkbox").check();
   await page
     .getByRole("button", {
-      name: "Accept all and enter your shelf",
+      name: "Accept all and continue to UniMind",
       exact: true,
     })
     .click();
@@ -1137,12 +1149,12 @@ for (const locale of ["en", "ar"] as const) {
         .selectOption(theme);
       await adminNavigate(page, "/admin", locale);
       const routes = [
-        ["/admin", "Overview", "نظرة عامة"],
+        ["/admin", "Decision queue", "قائمة القرارات"],
         ["/admin/sources", "Sources", "المصادر"],
         ["/admin/campaigns", "Campaigns", "الحملات"],
         ["/admin/catalog", "Catalog", "الفهرس"],
         ["/admin/cohorts", "Cohorts", "المجموعات الدراسية"],
-        ["/admin/cohorts?view=users", "Users", "المستخدمون"],
+        ["/admin/cohorts?view=users", "Access context", "سياق الوصول"],
         ["/admin/jobs", "Jobs", "المهام"],
         ["/admin/quality", "Quality", "الجودة"],
         ["/admin/usage", "Usage", "الاستخدام"],
@@ -1206,10 +1218,10 @@ for (const locale of ["en", "ar"] as const) {
       }
       await adminNavigate(page, "/admin", locale);
       await page
-        .getByLabel(pick(locale, "Choose a decision", "اختر قرارًا"), {
-          exact: true,
+        .getByRole("button", {
+          name: new RegExp(pick(locale, "^Hide unit", "^إخفاء الوحدة")),
         })
-        .selectOption("sample-hide");
+        .click();
       await page
         .getByLabel(pick(locale, "Reason for this change", "سبب هذا التغيير"))
         .fill(
@@ -1222,8 +1234,8 @@ for (const locale of ["en", "ar"] as const) {
         })
         .click();
       await expect(
-        page.getByRole("button", {
-          name: pick(locale, "Submit this action", "إرسال هذا الإجراء"),
+        page.getByRole("heading", {
+          name: pick(locale, "Review before recording", "راجع قبل التسجيل"),
           exact: true,
         }),
       ).toBeFocused();
@@ -1568,6 +1580,45 @@ test("leader invitation preserves its decision and campaign return in both theme
       ).toHaveCount(1);
       for (const width of [1440, 360]) {
         await page.setViewportSize({ width, height: 844 });
+        const navigationContrast = await page
+          .locator('nav a[aria-current="page"]')
+          .evaluate(async (link) => {
+            const luminance = (color: string) => {
+              const channels = color.match(/[0-9.]+/gu)?.map(Number);
+              if (
+                !channels ||
+                channels.length < 3 ||
+                (channels.length === 4 && channels[3] !== 1)
+              )
+                throw new Error(
+                  "Navigation must use an opaque readable palette.",
+                );
+              const linear = channels.slice(0, 3).map((channel) => {
+                const value = channel / 255;
+                return value <= 0.04045
+                  ? value / 12.92
+                  : ((value + 0.055) / 1.055) ** 2.4;
+              });
+              return (
+                linear[0]! * 0.2126 + linear[1]! * 0.7152 + linear[2]! * 0.0722
+              );
+            };
+            const samples: number[] = [];
+            for (let frame = 0; frame < 12; frame += 1) {
+              const style = getComputedStyle(link);
+              const foreground = luminance(style.color);
+              const background = luminance(style.backgroundColor);
+              samples.push(
+                (Math.max(foreground, background) + 0.05) /
+                  (Math.min(foreground, background) + 0.05),
+              );
+              await new Promise<void>((resolve) =>
+                requestAnimationFrame(() => resolve()),
+              );
+            }
+            return Math.min(...samples);
+          });
+        expect(navigationContrast).toBeGreaterThanOrEqual(4.5);
         expect(
           await page.evaluate(
             () => document.documentElement.scrollWidth <= innerWidth,
@@ -1699,7 +1750,7 @@ test("normal sign-out changes roles without carrying the previous role's screen"
   await page.getByRole("checkbox").check();
   await page
     .getByRole("button", {
-      name: "Accept all and enter your shelf",
+      name: "Accept all and continue to UniMind",
       exact: true,
     })
     .click();
@@ -1716,7 +1767,7 @@ test("normal sign-out changes roles without carrying the previous role's screen"
   await page.getByRole("checkbox").check();
   await page
     .getByRole("button", {
-      name: "Accept all and enter your shelf",
+      name: "Accept all and continue to UniMind",
       exact: true,
     })
     .click();
@@ -1745,7 +1796,11 @@ for (const locale of ["en", "ar"] as const) {
     ).toBeVisible();
     await page
       .getByRole("link", {
-        name: pick(locale, "Back to study", "العودة للمذاكرة"),
+        name: pick(
+          locale,
+          "Return to last study tool",
+          "العودة إلى آخر أداة مذاكرة",
+        ),
         exact: true,
       })
       .click();
@@ -1801,6 +1856,7 @@ for (const locale of ["en", "ar"] as const) {
     await expect(
       page.getByLabel(pick(nextLocale, "Message", "السؤال"), { exact: true }),
     ).toHaveValue("");
+    await openSessionTools(page, nextLocale);
     await page
       .getByRole("button", {
         name: pick(nextLocale, "New session", "جلسة جديدة"),
@@ -1808,12 +1864,14 @@ for (const locale of ["en", "ar"] as const) {
       })
       .click();
     await expect(page.locator("article")).toHaveCount(0);
+    await openSessionTools(page, nextLocale);
     await page
       .getByRole("button", {
         name: new RegExp(pick(nextLocale, "Session 1", "جلسة [١1]")),
       })
       .click();
     await expect(page.locator("article")).toHaveCount(1);
+    await openSessionTools(page, nextLocale);
     await page
       .getByRole("link", {
         name: pick(nextLocale, "Privacy settings", "إعدادات الخصوصية"),
@@ -1822,18 +1880,21 @@ for (const locale of ["en", "ar"] as const) {
       .click();
     await page
       .getByRole("link", {
-        name: pick(nextLocale, "Back to study", "العودة للمذاكرة"),
+        name: pick(
+          nextLocale,
+          "Return to last study tool",
+          "العودة إلى آخر أداة مذاكرة",
+        ),
         exact: true,
       })
       .click();
     await expect(page.locator("article")).toHaveCount(1);
     await navigate(page, unit + "/studio", nextLocale);
     await page
-      .getByRole("radio", {
-        name: pick(nextLocale, "Flashcards", "بطاقات مراجعة"),
+      .getByLabel(pick(nextLocale, "Artifact type", "نوع المخرج"), {
         exact: true,
       })
-      .check();
+      .selectOption("flashcards");
     await page
       .getByRole("button", {
         name: pick(nextLocale, "Generate", "إنشاء"),
@@ -1889,11 +1950,10 @@ for (const locale of ["en", "ar"] as const) {
       if (screen === "studio") {
         await navigate(page, unit + "/studio", locale);
         await page
-          .getByRole("radio", {
-            name: pick(locale, "Flashcards", "بطاقات مراجعة"),
+          .getByLabel(pick(locale, "Artifact type", "نوع المخرج"), {
             exact: true,
           })
-          .check();
+          .selectOption("flashcards");
         await page
           .getByRole("button", {
             name: pick(locale, "Generate", "إنشاء"),
@@ -1913,7 +1973,11 @@ for (const locale of ["en", "ar"] as const) {
           .selectOption(theme);
         await page
           .getByRole("link", {
-            name: pick(locale, "Back to study", "العودة للمذاكرة"),
+            name: pick(
+              locale,
+              "Return to last study tool",
+              "العودة إلى آخر أداة مذاكرة",
+            ),
             exact: true,
           })
           .click();
@@ -2049,6 +2113,214 @@ for (const locale of ["en", "ar"] as const) {
       }),
     ).toHaveCount(1);
     await expect(input).toHaveValue(prompt);
+    finish();
+  });
+}
+
+async function openSessionTools(page: Page, locale: Locale) {
+  const summary = page.locator(
+    `summary[aria-label="${pick(locale, "Sessions and privacy", "الجلسات والخصوصية")}"]`,
+  );
+  await summary.waitFor();
+  if ((await summary.locator("..").getAttribute("open")) === null)
+    await summary.click();
+}
+
+for (const locale of ["en", "ar"] as const) {
+  test(`open folio ${locale}: reachable study actions, exchange-bound citations and reduced motion`, async ({
+    page,
+  }) => {
+    const finish = isolation(page);
+    await page.emulateMedia({
+      colorScheme: locale === "ar" ? "dark" : "light",
+      reducedMotion: "reduce",
+    });
+    await signIn(page, "student", locale, unit + "/chat");
+    const input = page.getByLabel(pick(locale, "Message", "السؤال"), {
+      exact: true,
+    });
+    for (const [width, height] of [
+      [1440, 900],
+      [1280, 800],
+      [768, 1024],
+      [390, 844],
+    ]) {
+      await page.setViewportSize({ width: width!, height: height! });
+      const send = page.getByRole("button", {
+        name: pick(locale, "Send", "إرسال"),
+        exact: true,
+      });
+      const rect = await send.boundingBox();
+      expect(rect!.y).toBeGreaterThanOrEqual(0);
+      expect(rect!.y + rect!.height).toBeLessThanOrEqual(
+        height! - (width! < 768 ? 64 : 0),
+      );
+      expect(
+        await page.evaluate(() => document.documentElement.scrollWidth),
+      ).toBeLessThanOrEqual(width! + 1);
+    }
+    await send(page, "supported", locale);
+    const citation = page.getByRole("button", {
+      name: pick(locale, "Handout · p. 3", "الملزمة · ص ٣"),
+      exact: true,
+    });
+    await citation.click();
+    const dialog = page.getByRole("dialog", {
+      name: pick(locale, "Source excerpt", "نص المصدر"),
+      exact: true,
+    });
+    await expect(dialog).toBeVisible();
+    await expect(dialog.getByRole("heading", { level: 2 })).toBeFocused();
+    await expect(
+      dialog.getByRole("link", {
+        name: pick(locale, "Open evidence details", "فتح تفاصيل الأدلة"),
+      }),
+    ).toHaveAttribute("href", /exchange=1&session=1/u);
+    expect(
+      await dialog.evaluate(
+        (element) => getComputedStyle(element).animationName,
+      ),
+    ).toBe("none");
+    await page.keyboard.press("Escape");
+    await expect(dialog).not.toBeVisible();
+    await expect(citation).toBeFocused();
+    await send(page, "conflict", locale);
+    await page
+      .getByRole("button", {
+        name: pick(locale, "Two source excerpts", "نصان من مصدرين"),
+        exact: true,
+      })
+      .click();
+    await expect(dialog.locator("blockquote")).toHaveCount(2);
+    await expect(
+      dialog.getByRole("link", {
+        name: pick(locale, "Open evidence details", "فتح تفاصيل الأدلة"),
+      }),
+    ).toHaveAttribute("href", /exchange=2&session=1/u);
+    await page.keyboard.press("Escape");
+    await openSessionTools(page, locale);
+    await page
+      .getByRole("button", {
+        name: pick(locale, "New session", "جلسة جديدة"),
+        exact: true,
+      })
+      .click();
+    await expect(
+      page.getByRole("button", {
+        name: pick(locale, "Handout · p. 3", "الملزمة · ص ٣"),
+      }),
+    ).toHaveCount(0);
+    await expect(input).toHaveValue("");
+    await navigate(page, unit + "/studio", locale);
+    for (const [width, height] of [
+      [1440, 900],
+      [1280, 800],
+      [768, 1024],
+      [390, 844],
+    ]) {
+      await page.setViewportSize({ width: width!, height: height! });
+      const rect = await page
+        .getByRole("button", {
+          name: pick(locale, "Generate", "إنشاء"),
+          exact: true,
+        })
+        .boundingBox();
+      expect(rect!.y + rect!.height).toBeLessThanOrEqual(
+        height! - (width! < 768 ? 64 : 0),
+      );
+    }
+    await navigate(page, unit + "/chat", locale);
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.addStyleTag({ content: "html { font-size: 200% !important; }" });
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth),
+    ).toBeLessThanOrEqual(391);
+    await openSessionTools(page, locale);
+    await page
+      .getByRole("button", {
+        name: pick(locale, "New session", "جلسة جديدة"),
+        exact: true,
+      })
+      .click();
+    await expect(input).toBeEnabled();
+    finish();
+  });
+  test(`open folio ${locale}: password disclosure preserves value and blank submission names the required field`, async ({
+    page,
+  }) => {
+    const finish = isolation(page);
+    await page.goto(`/login?lang=${locale}`);
+    const password = page.getByLabel(pick(locale, "Password", "كلمة المرور"), {
+      exact: true,
+    });
+    await password.fill("");
+    await page
+      .getByRole("button", {
+        name: pick(locale, "Continue", "متابعة"),
+        exact: true,
+      })
+      .click();
+    await expect(password).toBeFocused();
+    await expect(password).toHaveAttribute("aria-invalid", "true");
+    const description = await password.getAttribute("aria-describedby");
+    await expect(page.locator(`[id="${description}"]`)).toBeVisible();
+    await password.fill("visible field specimen");
+    await page
+      .getByRole("button", {
+        name: pick(locale, "Show password", "إظهار كلمة المرور"),
+        exact: true,
+      })
+      .click();
+    await expect(password).toHaveAttribute("type", "text");
+    await expect(password).toHaveValue("visible field specimen");
+    await page
+      .getByRole("button", {
+        name: pick(locale, "Hide password", "إخفاء كلمة المرور"),
+        exact: true,
+      })
+      .click();
+    await expect(password).toHaveAttribute("type", "password");
+    finish();
+  });
+}
+
+for (const role of ["admin", "second-admin"]) {
+  test(`open folio ${role}: no implicit decision, local filtering and safe modal focus`, async ({
+    page,
+  }) => {
+    const finish = isolation(page);
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await signIn(page, role);
+    await expect(page.getByLabel("Reason for this change")).toHaveCount(0);
+    await page.getByLabel("Find a decision", { exact: true }).fill("Hide unit");
+    const target = page.getByRole("button", { name: /^Hide unit/u });
+    await expect(target).toHaveCount(1);
+    await target.click();
+    await page
+      .getByLabel("Reason for this change")
+      .fill("Synthetic presentation review; no submission.");
+    const review = page.getByRole("button", {
+      name: "Review exact change",
+      exact: true,
+    });
+    await review.click();
+    const dialog = page.getByRole("dialog", {
+      name: "Review before recording",
+      exact: true,
+    });
+    await expect(dialog.getByRole("heading", { level: 2 })).toBeFocused();
+    await expect(
+      dialog.getByText("Expected version", { exact: true }),
+    ).toBeVisible();
+    await expect(
+      dialog.getByText("No failed readiness checks", { exact: true }),
+    ).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(dialog).not.toBeVisible();
+    await expect(review).toBeFocused();
+    await expect(
+      page.getByText("The governed change was recorded."),
+    ).toHaveCount(0);
     finish();
   });
 }

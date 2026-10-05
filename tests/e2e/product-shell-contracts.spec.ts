@@ -306,6 +306,10 @@ test("RSC navigation, action responses and upload receipts remain safe", async (
   await expect(page).toHaveURL(/session=/u);
   await finishPrivacy();
   await page.goto("/preview/admin?lang=en&state=containment");
+  await expect(page.getByLabel("Reason for this change")).toHaveCount(0);
+  await page
+    .getByRole("button", { name: /^Hide unit Synthetic Anatomy/u })
+    .click();
   await page
     .getByLabel("Reason for this change")
     .fill("Synthetic privacy contract check.");
@@ -321,7 +325,7 @@ test("RSC navigation, action responses and upload receipts remain safe", async (
     mimeType: "application/pdf",
     buffer: Buffer.from("%PDF-1.7\nSynthetic only"),
   });
-  await page.getByText("Source details", { exact: true }).click();
+  await expect(page.getByLabel("Source title")).toBeVisible();
   await page
     .getByLabel("Source title")
     .fill("Synthetic privacy contract handout");

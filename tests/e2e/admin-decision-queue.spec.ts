@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 
 test.describe.configure({ timeout: 60_000 });
 
@@ -12,11 +12,25 @@ test.beforeEach(async ({ page }) => {
   });
 });
 
+async function selectOnlyDecision(page: Page, locale = "en") {
+  await expect(
+    page.getByLabel(
+      locale === "ar" ? "سبب هذا التغيير" : "Reason for this change",
+    ),
+  ).toHaveCount(0);
+  const decision = page.getByRole("main").getByRole("list").getByRole("button");
+  await expect(decision).toHaveCount(1);
+  await decision.click();
+}
+
 test("English desktop containment requires a scoped review and announces success", async ({
   page,
 }) => {
   await page.goto("/preview/admin?lang=en&state=containment");
-  await expect(page.getByRole("heading", { name: "Overview" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Decision queue", exact: true }),
+  ).toBeVisible();
+  await selectOnlyDecision(page);
   await expect(
     page.getByRole("heading", {
       name: "Synthetic Anatomy · Cohort A",
@@ -27,14 +41,12 @@ test("English desktop containment requires a scoped review and announces success
     .getByLabel("Reason for this change")
     .fill("Contain this synthetic unit during review.");
   await page.getByRole("button", { name: "Review exact change" }).click();
-  const review = page.getByRole("region", { name: "Review before recording" });
+  const review = page.getByRole("dialog", { name: "Review before recording" });
   await expect(review).toContainText("a0000000-0000-4000-8000-000000000001");
   await expect(review).toContainText(
     "This unit is hidden from student availability immediately",
   );
-  await expect(
-    page.getByRole("button", { name: "Submit this action" }),
-  ).toBeFocused();
+  await expect(review.getByRole("heading", { level: 2 })).toBeFocused();
   await page.getByRole("button", { name: "Cancel and edit" }).click();
   await expect(
     page.getByRole("button", { name: "Review exact change" }),
@@ -53,12 +65,13 @@ test("protected and pending founder paths show distinct confirmation state", asy
   page,
 }) => {
   await page.goto("/preview/admin?lang=en&state=protected");
+  await selectOnlyDecision(page);
   await page
     .getByLabel("Reason for this change")
     .fill("Publish after synthetic readiness review.");
   await page.getByRole("button", { name: "Review exact change" }).click();
   await expect(
-    page.getByRole("region", { name: "Review before recording" }),
+    page.getByRole("dialog", { name: "Review before recording" }),
   ).toContainText("other verified founder");
   await page.getByRole("button", { name: "Confirm this exact change" }).click();
   await expect(
@@ -66,6 +79,7 @@ test("protected and pending founder paths show distinct confirmation state", asy
   ).toBeVisible();
 
   await page.goto("/preview/admin?lang=en&state=pending");
+  await selectOnlyDecision(page);
   await expect(page.getByText("First confirmation: Ahmed")).toBeVisible();
   await expect(page.getByLabel("Reason for this change")).toHaveAttribute(
     "readonly",
@@ -81,6 +95,7 @@ test("blocked readiness remains visible with the action disabled", async ({
   page,
 }) => {
   await page.goto("/preview/admin?lang=en&state=blocked");
+  await selectOnlyDecision(page);
   await expect(
     page.getByText("At least one source must be active and READY."),
   ).toBeVisible();
@@ -103,6 +118,7 @@ test("stale and unavailable results preserve a recoverable scoped review", async
     ],
   ] as const) {
     await page.goto(`/preview/admin?lang=en&state=${state}`);
+    await selectOnlyDecision(page);
     await page
       .getByLabel("Reason for this change")
       .fill("Contain this synthetic target during review.");
@@ -119,18 +135,24 @@ test("Arabic mobile review, keyboard and direction retain the exact scope", asyn
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/preview/admin?lang=ar&state=containment");
   await expect(page.locator("main")).toHaveAttribute("dir", "rtl");
-  await expect(page.getByRole("heading", { name: "نظرة عامة" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "قائمة القرارات", exact: true }),
+  ).toBeVisible();
+  await selectOnlyDecision(page, "ar");
   await page
     .getByLabel("سبب هذا التغيير")
     .fill("إخفاء الوحدة التجريبية حتى تنتهي المراجعة.");
   await page.getByRole("button", { name: "مراجعة التغيير المحدد" }).focus();
   await page.keyboard.press("Enter");
   await expect(
-    page.getByRole("button", { name: "إرسال هذا الإجراء" }),
+    page
+      .getByRole("dialog", { name: "راجع قبل التسجيل" })
+      .getByRole("heading", { level: 2 }),
   ).toBeFocused();
   await expect(
-    page.getByRole("region", { name: "راجع قبل التسجيل" }),
+    page.getByRole("dialog", { name: "راجع قبل التسجيل" }),
   ).toContainText("a0000000-0000-4000-8000-000000000001");
+  await page.getByRole("button", { name: "إرسال هذا الإجراء" }).focus();
   await page.keyboard.press("Enter");
   await expect(page.getByText("تم تسجيل التغيير الحوكمي.")).toBeVisible();
   const overflow = await page.evaluate(
@@ -144,6 +166,7 @@ test("Arabic mobile pending, stale, and unavailable states stay actionable", asy
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/preview/admin?lang=ar&state=pending");
+  await selectOnlyDecision(page, "ar");
   await expect(page.getByText("التأكيد الأول: أحمد")).toBeVisible();
   await expect(page.getByLabel("سبب هذا التغيير")).toHaveAttribute(
     "readonly",
@@ -152,6 +175,11 @@ test("Arabic mobile pending, stale, and unavailable states stay actionable", asy
   await page.getByRole("button", { name: "مراجعة التغيير المحدد" }).click();
   await expect(
     page.getByRole("button", { name: "إضافة تأكيدي كمؤسس مستقل" }),
+  ).toBeVisible();
+  await expect(
+    page
+      .getByRole("dialog", { name: "راجع قبل التسجيل" })
+      .getByRole("heading", { level: 2 }),
   ).toBeFocused();
 
   for (const [state, message] of [
@@ -162,6 +190,7 @@ test("Arabic mobile pending, stale, and unavailable states stay actionable", asy
     ],
   ] as const) {
     await page.goto(`/preview/admin?lang=ar&state=${state}`);
+    await selectOnlyDecision(page, "ar");
     await page
       .getByLabel("سبب هذا التغيير")
       .fill("إخفاء الوحدة التجريبية حتى تنتهي المراجعة.");
@@ -174,8 +203,8 @@ test("Arabic mobile pending, stale, and unavailable states stay actionable", asy
 
 test("both locales reflow at desktop and mobile widths", async ({ page }) => {
   for (const [locale, direction, heading] of [
-    ["en", "ltr", "Overview"],
-    ["ar", "rtl", "نظرة عامة"],
+    ["en", "ltr", "Decision queue"],
+    ["ar", "rtl", "قائمة القرارات"],
   ] as const) {
     for (const width of [1440, 390]) {
       await page.setViewportSize({ width, height: 900 });

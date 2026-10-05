@@ -6,9 +6,11 @@ import styles from "./app-shell.module.css";
 export function Brand({
   href = "/",
   variant = "full",
+  tone,
 }: {
   href?: string;
   variant?: "full" | "compact" | "small";
+  tone?: "light" | "dark";
 }) {
   const asset =
     variant === "full"
@@ -21,6 +23,7 @@ export function Brand({
       href={href as Route}
       className={styles.brand}
       data-variant={variant}
+      data-brand-tone={tone}
       aria-label="UniMind"
       dir="ltr"
       prefetch={false}
