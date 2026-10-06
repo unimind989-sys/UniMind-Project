@@ -1459,6 +1459,19 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 **Pass:** The same live site supports both normal accounts and the approved browser-only synthetic accounts through normal login/sign-out, with identical shared presentation and no real permission granted by fixture credentials.
 
+#### WP03-T12 — Refine the landing page for local founder review
+
+**Dependencies:** Delivered WP03-T10/T11; Ahmed's 6 October 2026 request governs this local frontend follow-up. Earlier delivery and acceptance remain historical proof for unchanged surfaces.
+
+- [x] Audit all landing copy and remove formulaic wording while preserving product truth, the approved English slogan and necessary sample/safety disclosures.
+- [x] Replace pointer-driven folio motion and the layer button with passive motion; respect reduced motion and pause hidden/offscreen work.
+- [x] Polish The experience and How it works in the existing visual system; preserve account links, preview controls, EN/AR, paired themes, keyboard access and responsive reflow.
+- [ ] Verify and present the local candidate with durable evidence, record Ahmed's review response, commit the approved snapshot locally and retain the delivery hold. Ahmed approved the landing refinement and instructed a local branch commit on 6 October 2026. Every continuing agent uses `codex/frontend-refinements`; push, PR creation, merge and deployment wait for Ahmed's explicit instruction.
+
+**Verify:** Focused landing Playwright coverage; lint, typecheck/fresh, module boundaries, secret scan, changed-file formatting, agent readiness, diff review and bounded rendered inspection.
+
+**Pass:** The approved local landing candidate satisfies the requested copy, passive motion and section polish, with truthful verification and no external delivery action. The [task record](../../planning/tasks/wp03-t12-landing-refinements.md) owns the approved snapshot and local commit handoff. This task closes at the explicitly requested local boundary; merge and production delivery are not claimed.
+
 ### 6.1 Routes
 
 Implement at minimum:

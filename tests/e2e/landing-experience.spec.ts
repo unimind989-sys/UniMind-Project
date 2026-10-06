@@ -22,13 +22,9 @@ test("landing preview explains the study loop with local, keyboard-accessible co
   await expect(
     page.getByRole("heading", { name: "Study deeper Go further." }),
   ).toBeVisible();
-  const atlas = page.getByRole("button", { name: "Explore the layers" });
-  await atlas.click();
   await expect(
-    page.getByRole("button", { name: "Bring it together" }),
-  ).toHaveAttribute("aria-pressed", "true");
-  await page.getByRole("button", { name: "Bring it together" }).click();
-  await expect(atlas).toHaveAttribute("aria-pressed", "false");
+    page.getByRole("button", { name: /Explore the layers|Bring it together/ }),
+  ).toHaveCount(0);
 
   await page.getByRole("button", { name: "View supporting material" }).click();
   await expect(
@@ -47,18 +43,20 @@ test("landing preview explains the study loop with local, keyboard-accessible co
   await expect(studio).toHaveAttribute("aria-selected", "true");
   await page.getByRole("button", { name: /Sample flashcard/ }).click();
   await expect(
-    page.getByRole("button", { name: /The connection/ }),
+    page.getByRole("button", { name: /Sample answer/ }),
   ).toHaveAttribute("aria-pressed", "true");
   await studio.press("End");
   await expect(
     page.getByRole("tab", { name: "Quiz", exact: true }),
   ).toBeFocused();
-  await page.getByRole("radio", { name: "An unrelated web search" }).check();
+  await page
+    .getByRole("radio", { name: "Where is this structure located?" })
+    .check();
   await expect(page.getByRole("status")).toContainText("Try again.");
   await page
-    .getByRole("radio", { name: "The approved material for your subject" })
+    .getByRole("radio", { name: "How does this structure function?" })
     .check();
-  await expect(page.getByRole("status")).toContainText("Exactly.");
+  await expect(page.getByRole("status")).toContainText("Correct.");
   await page.getByRole("tab", { name: "Quiz", exact: true }).press("Home");
   await expect(
     page.getByRole("tab", { name: "Chat", exact: true }),
@@ -67,9 +65,69 @@ test("landing preview explains the study loop with local, keyboard-accessible co
     page.getByRole("link", { name: "Start studying", exact: true }),
   ).toHaveAttribute("href", "/register?lang=en");
   await expect(
-    page.getByRole("link", { name: "Create your account", exact: true }),
+    page.getByRole("link", { name: "Create your account", exact: true }).last(),
   ).toHaveAttribute("href", "/register?lang=en");
   expect(externalRequests).toEqual([]);
+});
+
+test("folio moves without input, ignores the pointer and pauses when offscreen or hidden", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/?lang=en");
+  const atlas = page.locator("[data-motion]");
+  await expect(atlas).toHaveAttribute("data-motion", "running");
+  const stage = atlas.locator("[aria-hidden='true'] > div").nth(1);
+  const initialTransform = await stage.evaluate(
+    (element) => getComputedStyle(element).transform,
+  );
+  await expect
+    .poll(async () =>
+      stage.evaluate((element) => getComputedStyle(element).transform),
+    )
+    .not.toBe(initialTransform);
+
+  // Freeze time to distinguish autonomous animation from pointer-driven perspective.
+  await atlas.evaluate((element) => {
+    for (const animation of element.getAnimations({ subtree: true }))
+      animation.pause();
+  });
+  const pausedTransform = await stage.evaluate(
+    (element) => getComputedStyle(element).transform,
+  );
+  await atlas.hover({ position: { x: 30, y: 30 } });
+  await atlas.hover({ position: { x: 180, y: 180 } });
+  expect(
+    await stage.evaluate((element) => getComputedStyle(element).transform),
+  ).toBe(pausedTransform);
+
+  await page
+    .getByRole("heading", { name: "How it works", exact: true })
+    .scrollIntoViewIfNeeded();
+  await expect(atlas).toHaveAttribute("data-motion", "paused");
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await expect(atlas).toHaveAttribute("data-motion", "running");
+  // Simulate the document lifecycle signal, independently of browser focus automation.
+  await page.evaluate(() => {
+    Object.defineProperty(document, "hidden", {
+      configurable: true,
+      value: true,
+    });
+    document.dispatchEvent(new Event("visibilitychange"));
+  });
+  await expect(atlas).toHaveAttribute("data-motion", "paused");
+  await page.evaluate(() => {
+    Reflect.deleteProperty(document, "hidden");
+    document.dispatchEvent(new Event("visibilitychange"));
+  });
+  await expect(atlas).toHaveAttribute("data-motion", "running");
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(atlas).toHaveAttribute("data-motion", "paused");
+  expect(
+    await atlas.evaluate(
+      (element) => element.getAnimations({ subtree: true }).length,
+    ),
+  ).toBe(0);
 });
 
 for (const locale of ["en", "ar"] as const) {

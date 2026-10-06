@@ -8,6 +8,7 @@
 
 ## Execution kernel
 
+- Shared frontend refinement work: use `codex/frontend-refinements`; `planning/tasks/wp03-t12-landing-refinements.md` records the approved landing slice and delivery scope. Implement only areas Ahmed approves and commit only when instructed. Push, PR creation/update, merge, deployment and other external delivery actions each wait for his explicit instruction. This restriction overrides automatic finalization and D-22 delivery defaults for every agent continuing this frontend task, including later areas.
 - Select exactly one runbook task, create/update its controlled task record, and preserve unrelated work found by `git status`. Execute dependency order with synthetic fixtures and deterministic mocks until real-data/provider decisions are approved.
 - The default lifecycle for a selected runbook task is select, implement, verify, deliver, merge, affected production proof, close, and clean. Respect explicit `local only`, `draft only`, `do not merge`, `stop before delivery`, or `prepare for review only` scope. `$finalize` remains a manual/recovery entry point.
 - D-22 is Ahmed and Ziad's standing authorization for task-scoped non-financial completion, including protected actions after every technical gate passes. Stop immediately before anything that can charge an account, create financial liability, start a paid/auto-billing trial, create a billable resource, enable a paid provider, or raise/re-enable a nonzero cap; fresh explicit Ahmed-and-Ziad confirmation must name the exact exposure.
