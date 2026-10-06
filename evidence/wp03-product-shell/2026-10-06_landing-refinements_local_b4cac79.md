@@ -2,7 +2,7 @@
 
 Date: 6 October 2026. Executor: Codex `/root`; speaker/checkpoint: Ahmed. No delegation or independent review is claimed.
 
-Branch: `codex/frontend-refinements`, created from clean main `b4cac79cd6a306e5d011e2d69f916c8c17dc6007`. The filename SHA identifies that starting commit; the reviewed source is bound by the hashes below. Ahmed approved the presented candidate and requested a local commit. No push, PR creation, merge, deployment, provider request or account/project mutation was performed. Ahmed's explicit instruction is required for each external delivery action; AGENTS.md points continuing agents to the controlled task record.
+Branch: `codex/frontend-refinements`, created from clean main `b4cac79cd6a306e5d011e2d69f916c8c17dc6007`. The filename SHA identifies that starting commit; the reviewed source is bound by the hashes below. Ahmed approved the presented candidate and requested a local commit, now `6d16c822cbf9a1c157942ed31c780003762f6a15`. No push, PR creation, merge, deployment, provider request or account/project mutation was performed. Ahmed's explicit instruction is required for each external delivery action; AGENTS.md points continuing agents to the controlled task record.
 
 ## Copy audit
 
@@ -90,8 +90,12 @@ Scope: `routes:/; surfaces:public landing copy,passive folio,The experience,How 
 
 This records approval of the presented source-bound candidate and authorization to commit it locally. It does not claim that Ahmed independently executed the tests or inspected every state. The four source/test hashes above were rechecked before commit and exactly match the passing focused proof; no implementation changed during closeout. Approval does not authorize push, PR creation/update, merge or deployment. Later platform areas still require his direction.
 
+Accepted source commit: `6d16c822cbf9a1c157942ed31c780003762f6a15`, message “Polish landing copy, passive motion and study sections.” The [scoped founder receipt](2026-10-06-wp03-t12-landing-founder-receipt.json) binds actor, observed time, direct-message reference, exact commit and approval scope. The following handoff commit adds that binding and closes the local runbook/task boundary without source or test changes.
+
+Closeout checks: changed-file Prettier passed for matched files under the repository ignore policy; AGENTS, runbook, planning and evidence paths are excluded by that policy and received manual review. Secret scan passed for 3183 files; readiness passed for 794 names, 345 local links, 23 decisions and 115 task contracts after the recorded status correction; staged whitespace/scope review passed. The source-bound implementation proof is reused because all four hashes match. Final receipt/handoff readiness passed for 795 names, 346 links, 23 decisions and 115 contracts; secret scan passed for 3184 files; whitespace/scope review passed. The receipt JSON receives a separate format/parse check. No broad or external proof is implied.
+
 ## Handoff
 
 Local review: `http://127.0.0.1:3101/?lang=en` (Arabic via the language link). Launcher: `$env:UNIMIND_E2E_USE_WEBPACK = '1'; corepack pnpm demo`. The preview is left running for Ahmed's review; a final direct loopback request returned HTTP 200. Native panel opening was queued. If its old tab shows the stopped-server error, use the direct link. To rerun Playwright, stop this task-owned preview first; the repository uses one Next development lock per checkout. Generated `next-env.d.ts` startup drift was restored to the clean baseline and is outside the candidate.
 
-Rollback: restore only this task's changes against starting main in a reviewable follow-up; preserve unrelated work and historical branches/tags. Remain on `codex/frontend-refinements` for approved follow-up work. Persist the authorized local commit, then wait for Ahmed's next area. External delivery remains held.
+Rollback: revert the approved landing commit in a reviewable follow-up when instructed; preserve unrelated work and historical branches/tags. Remain on `codex/frontend-refinements` for approved follow-up work. The landing slice is complete at the local approval/commit boundary. Wait for Ahmed's next area. External delivery remains held.

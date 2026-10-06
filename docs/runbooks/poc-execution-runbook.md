@@ -1466,7 +1466,7 @@ External component catalogs and MCPs are optional implementation aids, never des
 - [x] Audit all landing copy and remove formulaic wording while preserving product truth, the approved English slogan and necessary sample/safety disclosures.
 - [x] Replace pointer-driven folio motion and the layer button with passive motion; respect reduced motion and pause hidden/offscreen work.
 - [x] Polish The experience and How it works in the existing visual system; preserve account links, preview controls, EN/AR, paired themes, keyboard access and responsive reflow.
-- [ ] Verify and present the local candidate with durable evidence, record Ahmed's review response, commit the approved snapshot locally and retain the delivery hold. Ahmed approved the landing refinement and instructed a local branch commit on 6 October 2026. Every continuing agent uses `codex/frontend-refinements`; push, PR creation, merge and deployment wait for Ahmed's explicit instruction.
+- [x] Verify and present the local candidate with durable evidence, record Ahmed's review response, commit the approved snapshot locally and retain the delivery hold. Ahmed approved the landing refinement and instructed a local branch commit on 6 October 2026; the approved source is 6d16c82. Every continuing agent uses `codex/frontend-refinements`; push, PR creation, merge and deployment wait for Ahmed's explicit instruction.
 
 **Verify:** Focused landing Playwright coverage; lint, typecheck/fresh, module boundaries, secret scan, changed-file formatting, agent readiness, diff review and bounded rendered inspection.
 

@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 3,
+  "policyVersion": 10,
+  "task": "WP03-T12",
+  "candidate": "6d16c822cbf9a1c157942ed31c780003762f6a15",
+  "proofs": [
+    {
+      "id": "human-design-acceptance",
+      "check": "Ahmed approval of the presented landing refinement and instruction to commit locally",
+      "status": "PASS",
+      "decisionActor": "Ahmed",
+      "decisionReference": "message:landing-approval-local-commit-20261006T141059Z",
+      "decisionTimestamp": "2026-10-06T14:10:59Z",
+      "acceptedCandidate": "6d16c822cbf9a1c157942ed31c780003762f6a15",
+      "acceptedScope": "routes:/; surfaces:public landing copy,passive folio,The experience,How it works,sample Chat/Studio/Quiz; states:presented EN/AR,Light/Dark,responsive desktop/mobile,keyboard,source disclosure,flashcard,quiz feedback,reduced motion",
+      "invalidatedBy": {
+        "surfaces": [],
+        "pathPatterns": [],
+        "semanticFacts": [
+          { "flag": "visualImpactUnknown", "equals": true, "result": "MISSING" }
+        ]
+      }
+    }
+  ]
+}

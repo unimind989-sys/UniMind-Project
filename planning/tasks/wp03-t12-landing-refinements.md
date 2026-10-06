@@ -2,7 +2,7 @@
 
 **Task ID:** WP03-T12
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** An approved local landing page with concrete copy, passive folio motion and polished experience/entry sections, preserved on the shared frontend branch.
 
@@ -12,7 +12,9 @@
 
 **Branch:** codex/frontend-refinements
 
-**Updated (UTC):** 2026-10-06T14:10:59Z
+**Approved commit:** 6d16c822cbf9a1c157942ed31c780003762f6a15
+
+**Updated (UTC):** 2026-10-06T14:14:47Z
 
 ## Delivery scope for every continuing agent
 
@@ -40,11 +42,11 @@ Ahmed's 6 October request authorizes implementation and local verification of th
 
 | Block | Assigned model | Scope and governing inputs | Independent acceptance checks, including failure cases | Assignment reason | Status and evidence |
 | --- | --- | --- | --- | --- | --- |
-| 1 | Sol High | Ahmed's brief; current landing; DESIGN identity; master-plan 6–8; WP03-T12 | No pointer motion or layer control; passive motion starts without interaction and pauses hidden/offscreen; reduced motion static; truthful EN/AR copy; functioning sample controls/account links; keyboard, themes, 320px/200% reflow; source quality; local delivery hold | Copy and material section refinement need design judgment in one coherent block | Implementation/local proof and Ahmed's approval complete; local commit requested; dated evidence below |
+| 1 | Sol High | Ahmed's brief; current landing; DESIGN identity; master-plan 6–8; WP03-T12 | No pointer motion or layer control; passive motion starts without interaction and pauses hidden/offscreen; reduced motion static; truthful EN/AR copy; functioning sample controls/account links; keyboard, themes, 320px/200% reflow; source quality; local delivery hold | Copy and material section refinement need design judgment in one coherent block | Complete at the requested local boundary: verified, approved by Ahmed and committed as 6d16c82; source-bound evidence and founder receipt below |
 
-**Next model:** Sol High
+**Next model:** NONE
 
-**Current block:** 1; records the manual plan, not certification of the Desktop model.
+**Current block:** NONE; the completed block records the manual plan, not certification of the Desktop model.
 
 ## Execution contract
 
@@ -52,7 +54,7 @@ Ahmed's 6 October request authorizes implementation and local verification of th
 
 **Inputs:** Ahmed's 6 October instruction; synthetic sample content only; incumbent folio, brand, fonts, palette and locale behavior.
 
-**Files:** src/app/_components/landing.tsx; landing-experience.tsx; landing.module.css; tests/e2e/landing-experience.spec.ts; AGENTS.md; DESIGN.md; .impeccable/surfaces/src-app-components-landing-tsx.md; docs/runbooks/poc-execution-runbook.md; this task record; dated sanitized local evidence.
+**Files:** src/app/_components/landing.tsx; landing-experience.tsx; landing.module.css; tests/e2e/landing-experience.spec.ts; AGENTS.md; DESIGN.md; .impeccable/surfaces/src-app-components-landing-tsx.md; docs/runbooks/poc-execution-runbook.md; this task record; dated sanitized local evidence; evidence/wp03-product-shell/2026-10-06-wp03-t12-landing-founder-receipt.json.
 
 **Verify:** corepack pnpm exec playwright test tests/e2e/landing-experience.spec.ts; corepack pnpm lint; corepack pnpm typecheck; corepack pnpm typecheck:fresh; corepack pnpm check:boundaries; corepack pnpm scan:secrets; changed-file Prettier; pwsh -NoProfile -File scripts/verify-agent-readiness.ps1; git diff --check/stat/full review; one detector; bounded EN/AR desktop/mobile side-browser inspection.
 
@@ -68,7 +70,7 @@ Ahmed's 6 October request authorizes implementation and local verification of th
 
 **Design disposition:** MATERIAL
 
-**Design evidence:** evidence/wp03-product-shell/2026-10-06_landing-refinements_local_b4cac79.md#founder-approval-and-local-commit
+**Design evidence:** evidence/wp03-product-shell/2026-10-06-wp03-t12-landing-founder-receipt.json
 
 **Preparation review:** COMPLETE_INLINE
 
@@ -85,16 +87,16 @@ Ahmed's 6 October request authorizes implementation and local verification of th
 - [x] Run focused technical and bounded visual proof, inspect full diff and record limitations.
 - [x] Prepare the running local preview and saved section captures for Ahmed; retain the delivery hold.
 - [x] Record Ahmed's material acceptance and explicit local commit instruction; external delivery remains held.
-- [ ] Commit the approved snapshot and persist its exact commit binding.
+- [x] Commit the approved snapshot and persist its exact commit binding.
 
 ## Handoff
 
-**Changed:** Literal EN/AR copy across the full landing; one invented anatomy/physiology example across Chat/Studio/Quiz; passive folio/source-layer motion with pointer/button work removed; refined experience grid/reading space and numbered entry rows; rejecting motion/preview tests; scoped DESIGN/surface/runbook/evidence and always-loaded delivery hold. No service or protected semantic change. Ahmed approved the presented source-bound candidate and requested a local branch commit.
+**Changed:** Literal EN/AR copy across the full landing; one invented anatomy/physiology example across Chat/Studio/Quiz; passive folio/source-layer motion with pointer/button work removed; refined experience grid/reading space and numbered entry rows; rejecting motion/preview tests; scoped DESIGN/surface/runbook/evidence and always-loaded delivery hold. No service or protected semantic change. Ahmed approved the presented source-bound candidate, committed locally as 6d16c822cbf9a1c157942ed31c780003762f6a15. The approval-receipt follow-up changes documentation only and preserves the verified source bytes.
 
 **Commands:** corepack pnpm exec playwright test tests/e2e/landing-experience.spec.ts exit 0, final 7/7 and zero retries in 57.7s after the sample-description correction; corepack pnpm lint exit 0 plus final Landing-file ESLint exit 0; corepack pnpm typecheck exit 0; corepack pnpm typecheck:fresh exit 0; corepack pnpm check:boundaries exit 0; corepack pnpm scan:secrets exit 0 (3183 files in final run); pwsh -NoProfile -File scripts/verify-agent-readiness.ps1 exit 0 (794 names/344 links/115 contracts); changed-file Prettier exit 0; one detector exit 0 with no findings; bounded desktop/mobile EN/AR rendered inspection, full diff/whitespace/secret/scope review completed. Intent/actual-diff route remains policy 10, R1/Short, docs/frontend/tooling. Source hashes, preserved failures and proof limits are in evidence/wp03-product-shell/2026-10-06_landing-refinements_local_b4cac79.md. The earlier preflight was INCOMPLETE before human approval; no new broad proof preflight or delivery readiness is claimed. NOT_READY is retained. Broad gate/CI/production are outside the requested local boundary.
 
-**Remaining:** Persist the authorized local commit and exact approval binding. Stable broad verification, exact-head CI and production proof are outside this local boundary and are not claimed. Push, PR, merge and deployment remain outside current authorization.
+**Remaining:** NONE within the requested local implementation/approval/commit boundary. Stable broad verification, exact-head CI and production proof are outside this boundary and are not claimed. Push, PR, merge and deployment remain outside current authorization. The completed task status does not claim delivery or waive those future gates.
 
-**Next safe action:** Commit this approved landing snapshot on codex/frontend-refinements. Wait for Ahmed to name the next platform area before further implementation. Restart the preview with UNIMIND_E2E_USE_WEBPACK=1 and corepack pnpm demo if needed. Stop the task-owned preview before another Playwright run to avoid the shared Next dev lock.
+**Next safe action:** Wait for Ahmed to name the next platform area; select one appropriate runbook task for that approved scope and continue on codex/frontend-refinements. Restart the preview with UNIMIND_E2E_USE_WEBPACK=1 and corepack pnpm demo if needed. Stop the task-owned preview before another Playwright run to avoid the shared Next dev lock.
 
 **Reviewer action:** NONE for the approved landing slice. Ahmed will name the next area; external delivery authorization remains separate.
