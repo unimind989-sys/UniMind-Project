@@ -24,7 +24,7 @@ export function CollectionRouteState({
     return (
       <AppShell locale={locale} role="leader" title={text.loading}>
         <section aria-busy="true" role="status">
-          <h1>{locale === "ar" ? "الرفع" : "Uploads"}</h1>
+          <h1>{locale === "ar" ? "استلام المصادر" : "Source intake"}</h1>
           <p>{text.loading}</p>
         </section>
       </AppShell>

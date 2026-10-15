@@ -1,40 +1,113 @@
-import type { ReactNode } from "react";
+"use client";
+
+import { useId, useRef, type ReactNode } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+import type { Route } from "next";
+import { useProductRouter } from "./product-navigation";
 import type { Locale } from "@/lib/i18n/locale";
 import styles from "./student-account.module.css";
 
-/** Section links keep settings discoverable without hiding fields or drafts. */
+export type AccountView = { id: string; label: string; content: ReactNode };
 export function AccountLayout({
   locale,
-  academic,
-  children,
-  privacy = true,
+  views,
+  returnAction,
+  identity,
+  signOutAction,
 }: {
   locale: Locale;
-  academic: boolean;
-  children: ReactNode;
-  privacy?: boolean;
+  views: readonly AccountView[];
+  returnAction?: ReactNode;
+  identity?: { name: string | null; role: string };
+  signOutAction?: ReactNode;
 }) {
-  const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
+  const query = useSearchParams();
+  const pathname = usePathname();
+  const router = useProductRouter();
+  const prefix = useId();
+  const buttons = useRef<(HTMLButtonElement | null)[]>([]);
+  const active = views.findIndex((view) => view.id === query.get("section"));
+  const selected = active < 0 ? 0 : active;
+  function select(index: number) {
+    const next = new URLSearchParams(query);
+    next.set("section", views[index]!.id);
+    router.replace(`${pathname}?${next}` as Route, { scroll: false });
+  }
   return (
-    <div className={styles.layout}>
-      <nav
-        className={styles.sectionNav}
-        aria-label={t("Account sections", "أقسام الحساب")}
-      >
-        <a href="#appearance-settings">{t("Appearance", "المظهر")}</a>
-        {academic ? (
-          <a href="#academic-settings-heading">
-            {t("Academic context", "السياق الدراسي")}
-          </a>
-        ) : null}
-        {privacy ? (
-          <a href="#privacy-settings">{t("Privacy", "الخصوصية")}</a>
-        ) : null}
-        <a href="#identity-settings">
-          {t("Identity and access", "الهوية والوصول")}
-        </a>
-      </nav>
-      <div className={styles.settingsBody}>{children}</div>
-    </div>
+    <>
+      {identity || signOutAction ? (
+        <div className={styles.accountSummary}>
+          {identity ? (
+            <p>
+              {identity.name ? <bdi>{identity.name}</bdi> : null}
+              <small>{identity.role}</small>
+            </p>
+          ) : null}
+          {signOutAction}
+        </div>
+      ) : null}
+      {returnAction ? (
+        <div className={styles.returnAction}>{returnAction}</div>
+      ) : null}
+      <div className={styles.layout}>
+        <div
+          className={styles.sectionNav}
+          role="tablist"
+          aria-label={locale === "ar" ? "أقسام الحساب" : "Account sections"}
+        >
+          {views.map((view, index) => (
+            <button
+              key={view.id}
+              type="button"
+              role="tab"
+              ref={(button) => {
+                buttons.current[index] = button;
+              }}
+              id={`${prefix}-tab-${view.id}`}
+              aria-controls={`${prefix}-panel-${view.id}`}
+              aria-selected={index === selected}
+              tabIndex={index === selected ? 0 : -1}
+              onClick={() => select(index)}
+              onKeyDown={(event) => {
+                const forward = locale === "ar" ? "ArrowLeft" : "ArrowRight";
+                const backward = locale === "ar" ? "ArrowRight" : "ArrowLeft";
+                const offset =
+                  event.key === forward || event.key === "ArrowDown"
+                    ? 1
+                    : event.key === backward || event.key === "ArrowUp"
+                      ? -1
+                      : 0;
+                if (!offset && event.key !== "Home" && event.key !== "End")
+                  return;
+                event.preventDefault();
+                const target =
+                  event.key === "Home"
+                    ? 0
+                    : event.key === "End"
+                      ? views.length - 1
+                      : (index + offset + views.length) % views.length;
+                select(target);
+                buttons.current[target]?.focus();
+              }}
+            >
+              {view.label}
+            </button>
+          ))}
+        </div>
+        <div className={styles.settingsBody}>
+          {views.map((view, index) => (
+            <div
+              key={view.id}
+              role="tabpanel"
+              id={`${prefix}-panel-${view.id}`}
+              aria-labelledby={`${prefix}-tab-${view.id}`}
+              hidden={index !== selected}
+            >
+              {view.content}
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
   );
 }

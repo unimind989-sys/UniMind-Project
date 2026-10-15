@@ -5,7 +5,10 @@ import {
   adminActionRequestSchema,
   type AdminActionRequest,
 } from "../../src/lib/admin/admin-actions.domain";
-import { runAdminAction } from "../../src/lib/admin/admin-actions.application";
+import {
+  parseAdminHoldExpiry,
+  runAdminAction,
+} from "../../src/lib/admin/admin-actions.application";
 import { loadAdminActionQueue } from "../../src/lib/admin/admin-readiness.application";
 
 const targetId = "a0000000-0000-4000-8000-000000000001";
@@ -183,6 +186,18 @@ describe("audited admin action request contract", () => {
 });
 
 describe("audited admin action application", () => {
+  it("normalizes offset expiry without accepting date-parser shortcuts", () => {
+    expect(parseAdminHoldExpiry("2027-01-18T16:00:00+02:00")).toBe(
+      "2027-01-18T14:00:00.000Z",
+    );
+    expect(parseAdminHoldExpiry("2027-01-18T14:00:00.000Z")).toBe(
+      "2027-01-18T14:00:00.000Z",
+    );
+    for (const invalid of ["1", "2027-01-18", "not a date", null]) {
+      expect(parseAdminHoldExpiry(invalid)).toBeNull();
+    }
+  });
+
   it.each(requests)(
     "delegates $action with the verified actor",
     async (request) => {
@@ -277,6 +292,36 @@ const candidateBase = {
 };
 
 describe("audited admin decision queue", () => {
+  it("retains a validated canonical hold expiry in a pending candidate", async () => {
+    const candidate = {
+      ...candidateBase,
+      action: "PLACE_RAW_HOLD",
+      currentState: "STORED",
+      proposedState: "HELD",
+      expectedState: "STORED",
+      commandState: "PENDING_SECOND_CONFIRMATION",
+      pendingActionId: "a0000000-0000-4000-8000-000000000006",
+      reason: "Synthetic preservation review.",
+      initiatorSlot: "AHMED",
+      holdExpiresAt: "2027-01-18T16:00:00.000Z",
+    };
+    const repository = {
+      loadActionQueue: vi.fn().mockResolvedValue([candidate]),
+    };
+    await expect(
+      loadAdminActionQueue(repository, "admin-id"),
+    ).resolves.toMatchObject({
+      status: "READY",
+      candidates: [candidate],
+    });
+    repository.loadActionQueue.mockResolvedValue([
+      { ...candidate, holdExpiresAt: "invalid" },
+    ]);
+    await expect(loadAdminActionQueue(repository, "admin-id")).resolves.toEqual(
+      { status: "UNAVAILABLE" },
+    );
+  });
+
   it("prioritizes pending confirmation and review requests", async () => {
     const repository = {
       loadActionQueue: vi.fn().mockResolvedValue([

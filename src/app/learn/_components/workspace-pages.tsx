@@ -28,7 +28,7 @@ export function WorkspaceOverview({ scope, locale, basePath }: CommonProps) {
   return (
     <>
       <section className={styles.intro}>
-        <h2>{locale === "ar" ? "المواد الدراسية" : "Materials"}</h2>
+        <h2>{locale === "ar" ? "مصادر المذاكرة" : "Materials"}</h2>
         <p>
           {scope.sourceCount} {text.approvedSources} ·{" "}
           <bdi>{scope.curriculumEdition}</bdi> ·{" "}

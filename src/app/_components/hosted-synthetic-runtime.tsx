@@ -11,6 +11,7 @@ import {
 } from "react";
 import type { SyntheticRole } from "@/lib/demo/synthetic-account.application";
 import { SyntheticNavigationContext } from "./product-navigation";
+import { AcademicSetupDraftProvider } from "./academic-setup-draft";
 
 const HostedSyntheticFlow = lazy(() => import("./hosted-synthetic-flow"));
 
@@ -56,14 +57,16 @@ export function HostedSyntheticRuntime({ children }: { children: ReactNode }) {
     [entry, enter, leave, navigate],
   );
   return (
-    <SyntheticNavigationContext.Provider value={navigation}>
-      {entry ? (
-        <Suspense fallback={null}>
-          <HostedSyntheticFlow entry={entry} />
-        </Suspense>
-      ) : (
-        children
-      )}
-    </SyntheticNavigationContext.Provider>
+    <AcademicSetupDraftProvider>
+      <SyntheticNavigationContext.Provider value={navigation}>
+        {entry ? (
+          <Suspense fallback={null}>
+            <HostedSyntheticFlow entry={entry} />
+          </Suspense>
+        ) : (
+          children
+        )}
+      </SyntheticNavigationContext.Provider>
+    </AcademicSetupDraftProvider>
   );
 }

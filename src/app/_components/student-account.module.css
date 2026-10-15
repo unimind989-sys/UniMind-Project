@@ -5,6 +5,9 @@
 .section:first-child {
   padding-block-start: 0;
 }
+.compactSection {
+  max-width: 640px;
+}
 .section h2 {
   font-size: 1.25rem;
   margin: 0 0 12px;
@@ -13,6 +16,18 @@
   color: var(--secondary);
   max-width: 65ch;
 }
+.settingsReference {
+  display: inline-block;
+  max-width: 100%;
+}
+.onboarding {
+  max-width: 640px;
+}
+.onboarding h1 {
+  font-size: 1.5rem;
+  line-height: 1.5;
+  margin: 0 0 12px;
+}
 .fields {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -20,7 +35,7 @@
   border: 0;
   padding: 0;
   margin-block: 24px;
-  max-width: 720px;
+  width: 100%;
 }
 .fields label {
   display: grid;
@@ -59,7 +74,7 @@
   color: var(--on-accent);
   border-color: transparent;
 }
-.primary:hover {
+.primary:hover:not(:disabled) {
   background: var(--accent-hover);
 }
 .secondary {
@@ -84,12 +99,231 @@
   min-width: 0;
 }
 
+.setup {
+  max-width: 640px;
+  margin-block: 32px 12px;
+}
+.setupProgress {
+  margin-block-end: 32px;
+}
+.setupProgress p {
+  font-size: 0.8125rem;
+  margin: 0 0 12px;
+}
+.progressTrack {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  min-height: 6px;
+}
+.progressTrack span {
+  flex: 1;
+  height: 3px;
+  background: var(--border);
+}
+.progressTrack span[data-complete="true"] {
+  background: var(--accent);
+}
+.progressTrack span[data-current="true"] {
+  background: var(--accent);
+  height: 6px;
+}
+.setup h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 20px;
+  line-height: 1.5;
+}
+.progressLabel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  justify-content: space-between;
+}
+.reviewCompletion {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+.reviewCompletion > svg {
+  width: 14px;
+  height: 14px;
+  flex: none;
+}
+.quietAction {
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--accent-ink);
+  font: inherit;
+  cursor: pointer;
+}
+.quietAction:hover {
+  background: var(--hover);
+}
+.choices {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+.choice {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  min-height: 68px;
+  padding: 16px 20px;
+  background: var(--surface);
+  border: 1px solid var(--control-border);
+  border-radius: 8px;
+  cursor: pointer;
+}
+.choices[data-step="termId"] .choice {
+  min-height: 56px;
+  padding-block: 12px;
+}
+.choice:has(input:checked) {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+.choice:hover {
+  border-color: var(--accent);
+}
+.choice:has(input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.choice input {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  accent-color: var(--accent);
+}
+.choice span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.choices:disabled .choice {
+  cursor: wait;
+}
+.setupActions {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-block-start: 28px;
+}
+.setupActions .primary {
+  margin-inline-start: auto;
+}
+.setupActions .primary:disabled {
+  background: var(--surface);
+  color: var(--secondary);
+  border-color: var(--control-border);
+  opacity: 1;
+  cursor: not-allowed;
+}
+.privacyDetails {
+  display: grid;
+  gap: 16px;
+  max-width: 65ch;
+  margin: 20px 0 0;
+}
+.privacyDetails dt {
+  margin-block-end: 4px;
+  font-weight: 600;
+}
+.privacyDetails dd {
+  margin: 0;
+  color: var(--secondary);
+}
+.setupReview {
+  margin: 0;
+}
+.setupReview > div {
+  display: grid;
+  grid-template-columns: minmax(0, max-content) auto;
+  justify-content: start;
+  column-gap: 24px;
+  row-gap: 4px;
+  padding-block: 12px;
+  border-block-end: 1px solid var(--border);
+}
+.setupReview dt {
+  grid-column: 1;
+  color: var(--secondary);
+  font-size: 0.8125rem;
+}
+.setupReview dd {
+  display: contents;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.setupReview bdi {
+  grid-column: 1;
+  min-width: 0;
+}
+.setupReview button {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+  min-height: 44px;
+  padding: 8px 12px;
+  background: transparent;
+  border: 0;
+  color: var(--accent-ink);
+  font-size: 0.875rem;
+}
+@media (max-width: 767px) {
+  .onboarding {
+    padding-block-start: 0;
+  }
+  .setupReview > div {
+    column-gap: 16px;
+  }
+}
+
+.accountSummary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+  max-width: 640px;
+  margin-block-end: 24px;
+}
+.accountSummary p {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.accountSummary small {
+  color: var(--secondary);
+}
+.returnAction {
+  margin-block-end: 24px;
+}
+.returnAction a {
+  max-inline-size: 100%;
+}
+.returnAction a > span {
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
 .layout {
   display: grid;
   grid-template-columns: 176px minmax(0, 1fr);
-  gap: 40px;
+  gap: 24px;
   align-items: start;
-  max-width: 960px;
+  width: 100%;
 }
 .sectionNav {
   display: grid;
@@ -97,17 +331,22 @@
   position: sticky;
   inset-block-start: 24px;
 }
-.sectionNav a {
+.sectionNav button {
+  width: 100%;
   min-height: 44px;
   display: flex;
   align-items: center;
   padding: 8px 12px;
   text-decoration: none;
-  font-size: 0.875rem;
-  color: var(--secondary);
+  font: inherit;
+  text-align: start;
+  border: 1px solid var(--control-border);
+  background: var(--surface);
+  cursor: pointer;
+  color: var(--ink);
   border-radius: 4px;
 }
-.sectionNav a:hover {
+.sectionNav button:hover {
   background: var(--annotation);
   color: var(--accent-ink);
 }
@@ -123,13 +362,25 @@
     gap: 20px;
   }
   .sectionNav {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
     position: static;
-    flex-wrap: wrap;
     border-block-end: 1px solid var(--border);
     padding-block-end: 12px;
   }
-  .sectionNav a {
+  .sectionNav button {
     padding: 8px;
+    font-size: 0.875rem;
+    overflow-wrap: anywhere;
   }
+}
+.sectionNav button[aria-selected="true"] {
+  background: var(--annotation);
+  border-color: var(--accent-ink);
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+.settingsBody > [hidden] {
+  display: none;
 }

@@ -140,6 +140,55 @@ test("the same catalog seam adapts the hierarchy for Thanaweya Amma", async ({
   ).toBeVisible();
 });
 
+test("merged B01 M10: shared shelf keeps mathematics and science catalogs distinct", async ({
+  page,
+}) => {
+  await page.goto("/preview/learn");
+  await page.getByLabel("Education level").selectOption("thanaweya-amma");
+  await page.getByLabel("Study track").selectOption("mathematics-track");
+  await catalogExpect(page.getByLabel("School year")).toHaveValue(
+    "mathematics-track-year-3",
+  );
+  for (const term of [1, 2]) {
+    await page
+      .getByLabel("Term")
+      .selectOption(`mathematics-track-year-3-term-${term}`);
+    const math = page.getByRole("link", {
+      name: "Open Mathematics",
+      exact: true,
+    });
+    await catalogExpect(math).toBeVisible();
+    await catalogExpect(math).toContainText("8 sample materials");
+    await catalogExpect(
+      page.getByRole("link", { name: "Open Biology", exact: true }),
+    ).toHaveCount(0);
+    await catalogExpect(
+      page.getByRole("link", { name: "Open Chemistry", exact: true }),
+    ).toBeVisible();
+    await catalogExpect(
+      page.getByRole("link", { name: "Open Physics", exact: true }),
+    ).toBeVisible();
+    await math.press("Enter");
+    await catalogExpect(page).toHaveURL(
+      new RegExp(`mathematics-track-y3-t${term}-mathematics\\?lang=en$`, "u"),
+    );
+    await catalogExpect(
+      page.getByRole("heading", { level: 1, name: "Mathematics", exact: true }),
+    ).toBeVisible();
+    await page.goBack();
+    await catalogExpect(math).toBeVisible();
+  }
+  await page.getByLabel("Study track").selectOption("science-track");
+  await catalogExpect(page.getByLabel("Term")).toHaveValue("");
+  await catalogExpect(
+    page.getByRole("link", { name: "Open Mathematics", exact: true }),
+  ).toHaveCount(0);
+  await page.getByLabel("Term").selectOption("science-track-year-3-term-1");
+  await catalogExpect(
+    page.getByRole("link", { name: "Open Biology", exact: true }),
+  ).toBeVisible();
+});
+
 test("direct unit navigation preserves the authorized path and academic changes clear downstream choices", async ({
   page,
 }) => {
@@ -272,8 +321,9 @@ test("a valid direct deep link remains stable and locale switching preserves sco
   ).toBeVisible();
 
   await page
-    .getByLabel("Interface language", { exact: true })
-    .selectOption("ar");
+    .getByRole("group", { name: "Interface language", exact: true })
+    .getByRole("button", { name: "العربية", exact: true })
+    .click();
   await catalogExpect(page).toHaveURL(/lang=ar/u);
   await catalogExpect(page).toHaveURL(
     /unit=zagazig-university-human-medicine-y1-t1-anatomy/u,
@@ -296,7 +346,7 @@ test("a valid direct deep link remains stable and locale switching preserves sco
     0,
   );
 
-  await page.getByLabel("البحث عن مادة").fill("وظائف");
+  await page.getByLabel("البحث في وحدات").fill("وظائف");
   await catalogExpect(
     page.getByRole("link", {
       name: "فتح وظائف الأعضاء",
@@ -401,7 +451,7 @@ test("the mobile catalog keeps touch targets, focus, and page width intact", asy
       iconOffsets: items.map((item) => {
         const itemRectangle = item.getBoundingClientRect();
         const iconRectangle = item
-          .querySelector("svg")
+          .querySelector("svg, [class*='profileMarker']")
           ?.getBoundingClientRect();
         return iconRectangle
           ? iconRectangle.left +
@@ -452,7 +502,7 @@ test("reduced motion removes the authored shelf and loading animation", async ({
     page.getByRole("navigation", { name: "Product navigation" }),
   ).toBeVisible();
   await catalogExpect(
-    page.getByRole("searchbox", { name: "Search subjects" }),
+    page.getByRole("searchbox", { name: "Search modules" }),
   ).toBeVisible();
   await catalogExpect(
     page.getByRole("link", { name: "Study" }),

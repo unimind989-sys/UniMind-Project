@@ -1,6 +1,7 @@
 {
   "simulated": true,
   "designCheckpoint": {
+    "historical": true,
     "status": "final-consistency-accepted",
     "acceptedFinalCandidate": "8ad3a9b",
     "acceptedRoleCandidates": {
@@ -18,7 +19,7 @@
     "instructions": "walkthrough.md",
     "chat": "First Send starts a session. Enter sends; Shift+Enter adds a line. Interface language preserves the draft and study-output language.",
     "studio": "Choose an artifact using the radio group. Generate prepares a fixed example; Cancel preparation interrupts it. Only MCQ offers Open quiz.",
-    "remainingPlatform": "Ahmed accepted the final consistency candidate. Database proof, broad verification and delivery remain pending. All study/upload/governance results here are fixed local examples."
+    "remainingPlatform": "The accepted candidate IDs record a historical review. WP03-T09/T10 delivery is complete for the runbook's recorded candidates. Current frontend-refinements audit repairs remain uncommitted local work under WP03-T13, with final acceptance and delivery proof pending. All study/upload/governance results here are fixed local examples."
   },
   "credentials": "accounts.csv",
   "sourceTitle": "Synthetic study source",
@@ -11270,10 +11271,10 @@
         "curriculumEdition": "synthetic-2026-2027"
       },
       "unit": {
-        "id": "egyptian-thanaweya-amma-mathematics-track-y3-t1-biology",
-        "code": "BIOLOGY",
-        "nameEn": "Biology",
-        "nameAr": "الأحياء",
+        "id": "egyptian-thanaweya-amma-mathematics-track-y3-t1-mathematics",
+        "code": "MATHEMATICS",
+        "nameEn": "Mathematics",
+        "nameAr": "الرياضيات",
         "sortOrder": 1,
         "unitType": "SUBJECT",
         "sourceCount": 8
@@ -11450,10 +11451,10 @@
         "curriculumEdition": "synthetic-2026-2027"
       },
       "unit": {
-        "id": "egyptian-thanaweya-amma-mathematics-track-y3-t2-biology",
-        "code": "BIOLOGY",
-        "nameEn": "Biology",
-        "nameAr": "الأحياء",
+        "id": "egyptian-thanaweya-amma-mathematics-track-y3-t2-mathematics",
+        "code": "MATHEMATICS",
+        "nameEn": "Mathematics",
+        "nameAr": "الرياضيات",
         "sortOrder": 1,
         "unitType": "SUBJECT",
         "sourceCount": 8
@@ -11640,7 +11641,144 @@
       }
     }
   ],
+  "preparedStudyDensity": {
+    "id": "dense",
+    "sessionCount": 12,
+    "sourceCount": 24,
+    "localOnly": true,
+    "unitPath": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy",
+    "preparedPath": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=dense",
+    "sourceTitles": [
+      ["Synthetic sequence handout", "ملزمة الترتيب التجريبية"],
+      ["Synthetic comparison recording", "تسجيل المقارنة التجريبي"],
+      [
+        "Synthetic appendix 1 — Review of labelled regional diagrams, their comparison order and the limits of the supplied evidence",
+        "ملحق تجريبي 1 — مراجعة الرسوم الموضعية المسماة وترتيب المقارنة وحدود الأدلة الواردة في المواد التجريبية"
+      ],
+      [
+        "Synthetic appendix 2 — Comparison of the handout and recording, with separate notes for agreements and unresolved differences",
+        "ملحق تجريبي 2 — مقارنة الملزمة والتسجيل مع ملاحظات منفصلة لنقاط الاتفاق والاختلافات التي لم تحسمها المصادر"
+      ],
+      [
+        "Synthetic appendix 3 — Checking source references before preparing a revision outline for the next synthetic study session",
+        "ملحق تجريبي 3 — فحص مراجع المصادر قبل إعداد مخطط مراجعة لجلسة المذاكرة التجريبية التالية"
+      ],
+      [
+        "Synthetic appendix 4 — Organizing identification and comparison notes while keeping unsupported conclusions out of the summary",
+        "ملحق تجريبي 4 — تنظيم ملاحظات تحديد الأسماء والمقارنة مع استبعاد الاستنتاجات غير المدعومة من الملخص"
+      ],
+      [
+        "Synthetic appendix 5 — Revision of diagram labels across several regions and a final check of missing page or time references",
+        "ملحق تجريبي 5 — مراجعة أسماء الرسوم في مناطق متعددة والتحقق النهائي من مراجع الصفحات أو التوقيتات غير المتاحة"
+      ],
+      [
+        "Synthetic appendix 6 — A second pass through the same sample material to distinguish evidence from suggested revision prompts",
+        "ملحق تجريبي 6 — قراءة ثانية للمواد التجريبية نفسها للتمييز بين الأدلة والأسئلة المقترحة للمراجعة"
+      ],
+      [
+        "Synthetic appendix 7 — Review of labelled regional diagrams, their comparison order and the limits of the supplied evidence",
+        "ملحق تجريبي 7 — مراجعة الرسوم الموضعية المسماة وترتيب المقارنة وحدود الأدلة الواردة في المواد التجريبية"
+      ],
+      [
+        "Synthetic appendix 8 — Comparison of the handout and recording, with separate notes for agreements and unresolved differences",
+        "ملحق تجريبي 8 — مقارنة الملزمة والتسجيل مع ملاحظات منفصلة لنقاط الاتفاق والاختلافات التي لم تحسمها المصادر"
+      ],
+      [
+        "Synthetic appendix 9 — Checking source references before preparing a revision outline for the next synthetic study session",
+        "ملحق تجريبي 9 — فحص مراجع المصادر قبل إعداد مخطط مراجعة لجلسة المذاكرة التجريبية التالية"
+      ],
+      [
+        "Synthetic appendix 10 — Organizing identification and comparison notes while keeping unsupported conclusions out of the summary",
+        "ملحق تجريبي 10 — تنظيم ملاحظات تحديد الأسماء والمقارنة مع استبعاد الاستنتاجات غير المدعومة من الملخص"
+      ],
+      [
+        "Synthetic appendix 11 — Revision of diagram labels across several regions and a final check of missing page or time references",
+        "ملحق تجريبي 11 — مراجعة أسماء الرسوم في مناطق متعددة والتحقق النهائي من مراجع الصفحات أو التوقيتات غير المتاحة"
+      ],
+      [
+        "Synthetic appendix 12 — A second pass through the same sample material to distinguish evidence from suggested revision prompts",
+        "ملحق تجريبي 12 — قراءة ثانية للمواد التجريبية نفسها للتمييز بين الأدلة والأسئلة المقترحة للمراجعة"
+      ],
+      [
+        "Synthetic appendix 13 — Review of labelled regional diagrams, their comparison order and the limits of the supplied evidence",
+        "ملحق تجريبي 13 — مراجعة الرسوم الموضعية المسماة وترتيب المقارنة وحدود الأدلة الواردة في المواد التجريبية"
+      ],
+      [
+        "Synthetic appendix 14 — Comparison of the handout and recording, with separate notes for agreements and unresolved differences",
+        "ملحق تجريبي 14 — مقارنة الملزمة والتسجيل مع ملاحظات منفصلة لنقاط الاتفاق والاختلافات التي لم تحسمها المصادر"
+      ],
+      [
+        "Synthetic appendix 15 — Checking source references before preparing a revision outline for the next synthetic study session",
+        "ملحق تجريبي 15 — فحص مراجع المصادر قبل إعداد مخطط مراجعة لجلسة المذاكرة التجريبية التالية"
+      ],
+      [
+        "Synthetic appendix 16 — Organizing identification and comparison notes while keeping unsupported conclusions out of the summary",
+        "ملحق تجريبي 16 — تنظيم ملاحظات تحديد الأسماء والمقارنة مع استبعاد الاستنتاجات غير المدعومة من الملخص"
+      ],
+      [
+        "Synthetic appendix 17 — Revision of diagram labels across several regions and a final check of missing page or time references",
+        "ملحق تجريبي 17 — مراجعة أسماء الرسوم في مناطق متعددة والتحقق النهائي من مراجع الصفحات أو التوقيتات غير المتاحة"
+      ],
+      [
+        "Synthetic appendix 18 — A second pass through the same sample material to distinguish evidence from suggested revision prompts",
+        "ملحق تجريبي 18 — قراءة ثانية للمواد التجريبية نفسها للتمييز بين الأدلة والأسئلة المقترحة للمراجعة"
+      ],
+      [
+        "Synthetic appendix 19 — Review of labelled regional diagrams, their comparison order and the limits of the supplied evidence",
+        "ملحق تجريبي 19 — مراجعة الرسوم الموضعية المسماة وترتيب المقارنة وحدود الأدلة الواردة في المواد التجريبية"
+      ],
+      [
+        "Synthetic appendix 20 — Comparison of the handout and recording, with separate notes for agreements and unresolved differences",
+        "ملحق تجريبي 20 — مقارنة الملزمة والتسجيل مع ملاحظات منفصلة لنقاط الاتفاق والاختلافات التي لم تحسمها المصادر"
+      ],
+      [
+        "Synthetic appendix 21 — Checking source references before preparing a revision outline for the next synthetic study session",
+        "ملحق تجريبي 21 — فحص مراجع المصادر قبل إعداد مخطط مراجعة لجلسة المذاكرة التجريبية التالية"
+      ],
+      [
+        "Synthetic appendix 22 — Organizing identification and comparison notes while keeping unsupported conclusions out of the summary",
+        "ملحق تجريبي 22 — تنظيم ملاحظات تحديد الأسماء والمقارنة مع استبعاد الاستنتاجات غير المدعومة من الملخص"
+      ]
+    ],
+    "note": "Adds twelve fixed sessions once per document, retaining prior work. Twenty-four invented source records share the existing evidence identities and readiness examples. No real capacity, retrieval or provider-quality claim."
+  },
+  "preparedCampaigns": {
+    "localOnly": true,
+    "preparedPath": "/batch-leader?fixture=dense",
+    "campaignIds": [
+      "sample-campaign",
+      "sample-biochemistry-campaign",
+      "sample-physiology-campaign"
+    ],
+    "campaignCount": 3,
+    "requestsPerCampaign": 3,
+    "names": [
+      ["Synthetic Anatomy source call", "حملة مصادر التشريح التجريبية"],
+      [
+        "Synthetic Biochemistry source call — comparison handouts, recordings and diagrams for the first revision cycle",
+        "حملة مصادر الكيمياء الحيوية التجريبية — ملازم المقارنة والتسجيلات والرسوم لدورة المراجعة الأولى"
+      ],
+      [
+        "Synthetic Physiology source call — labelled diagrams and supporting explanations for a separate revision cycle",
+        "حملة مصادر وظائف الأعضاء التجريبية — الرسوم المسماة والشروح الداعمة لدورة مراجعة مستقلة"
+      ]
+    ],
+    "note": "Fixed invented assignments; separate document-local queues, requests and receipts. No real assignment, processing or storage claim."
+  },
   "rawHoldExpiryExample": "2026-10-03T16:00",
+  "calendar": {
+    "now": "2026-10-01T12:00:00.000Z",
+    "timeZone": "UTC",
+    "clockLabel": "2026-10-01 12:00 UTC",
+    "campaignOpensAt": "2026-09-01T00:00:00.000Z",
+    "assignmentExpiresAt": "2026-10-10T20:00:00.000Z",
+    "campaignClosesAt": "2026-10-12T20:00:00.000Z",
+    "expiredAt": "2026-09-30T12:00:00.000Z",
+    "historicalSubmittedAt": "2026-09-20T10:00:00.000Z",
+    "collectionDisplayTimeZone": "Africa/Cairo",
+    "newSubmissionReceivedAt": "2026-10-01T12:00:00.000Z",
+    "note": "Fixed illustrative calendar; normal deadlines are future, expired fixtures are past, and new receipts use this clock. Quiz elapsed timers remain independent. This does not enforce production expiry or retention policy."
+  },
   "note": "All dates, source rows, clocks and statuses are illustrative fixtures, not approved production limits or execution results.",
   "studioArtifacts": [
     ["summary", "Structured summary", "ملخص منظم"],
@@ -11650,6 +11788,18 @@
     ["revision", "Revision pack", "حزمة مراجعة"],
     ["quiz", "MCQ quiz", "اختبار اختيار من متعدد"]
   ],
+  "studioExamples": {
+    "version": "studio-examples-1",
+    "types": ["summary", "guide", "practice", "flashcards", "revision", "quiz"],
+    "topics": ["sequence", "comparison"],
+    "depths": ["concise", "detailed"],
+    "sizes": ["short", "extended"],
+    "languages": ["en", "ar", "mixed"],
+    "combinations": 144,
+    "singleFlashcard": true,
+    "quizPreviewOnly": true,
+    "note": "Fixed invented examples for every exposed setting. Comparison examines supplied instructions and evidence limits, not undisclosed actual diagram facts. No model generation, retrieval or quality claim."
+  },
   "unitScopes": [
     {
       "path": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy",
@@ -11673,11 +11823,11 @@
       "unitAr": "الأحياء"
     },
     {
-      "path": "/learn/egyptian-thanaweya-amma-mathematics-track-year-3-term-1-cohort/egyptian-thanaweya-amma-mathematics-track-y3-t1-biology",
+      "path": "/learn/egyptian-thanaweya-amma-mathematics-track-year-3-term-1-cohort/egyptian-thanaweya-amma-mathematics-track-y3-t1-mathematics",
       "programEn": "Mathematics track",
       "programAr": "شعبة علمي رياضة",
-      "unitEn": "Biology",
-      "unitAr": "الأحياء"
+      "unitEn": "Mathematics",
+      "unitAr": "الرياضيات"
     },
     {
       "path": "/learn/synthetic-credit-cohort/synthetic-credit-unit",

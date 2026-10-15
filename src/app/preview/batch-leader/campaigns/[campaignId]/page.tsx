@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { syntheticDemoTime } from "@/lib/demo/synthetic-clock.application";
 
 import { CollectionFlow } from "@/app/batch-leader/_components/collection-flow";
 import { initialCollectionActionState } from "@/app/batch-leader/collection-actions";
@@ -9,9 +10,19 @@ import { previewCollectionRepository } from "../../preview-collection.server";
 
 import { finalizePreviewCollectionAction } from "./actions";
 
-export const metadata: Metadata = {
-  title: "Synthetic collection desk | UniMind",
-};
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}): Promise<Metadata> {
+  const query = await searchParams;
+  const locale = resolveLocale(
+    Array.isArray(query.lang) ? query.lang[0] : query.lang,
+  );
+  return {
+    title: `${locale === "ar" ? "استلام المصادر" : "Source intake"} · UniMind`,
+  };
+}
 
 export default async function PreviewCollectionCampaignPage({
   params,
@@ -32,6 +43,7 @@ export default async function PreviewCollectionCampaignPage({
   return (
     <CollectionFlow
       campaign={campaign}
+      referenceTime={syntheticDemoTime.now}
       locale={locale}
       uploadEndpoint={`/api/preview/batch-leader/campaigns/${campaign.id}/uploads`}
       finalizeAction={finalizePreviewCollectionAction}

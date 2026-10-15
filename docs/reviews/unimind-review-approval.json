@@ -1,0 +1,1177 @@
+{
+  "schema_version": 1,
+  "recorded_at_utc": "2026-10-11T18:33:29.597081+00:00",
+  "actor": "Ahmed",
+  "actor_basis": "AGENTS.md default speaker; no identity inferred from any service account",
+  "submission_message": "done I filled in the complete form",
+  "status": "PLAN_APPROVED_IMPLEMENTATION_NOT_STARTED",
+  "review_version": "2026-10-11-merged-v1",
+  "fingerprint": "04a21ba74ca62714c080f9190d01d6621832f7e4c91cf23da538eeace8b2c2e4",
+  "branch": "codex/frontend-refinements",
+  "head": "98bcaefca5512817c9d18e87e7bc2e9086fa89b4",
+  "exported_at": "2026-10-11T16:43:29.070Z",
+  "source": {
+    "path": "E:\\UniMind Project\\docs\\unimind-review-choices.json",
+    "sha256": "a504b35100aa6728c871c4acd2529cca482599d7aab88d27d731954711316fc6",
+    "bytes": 8815,
+    "scope": "Proposal review notes only; no automatic implementation or delivery authorization"
+  },
+  "approval_counts": {
+    "issues": 75,
+    "work_batches": 12,
+    "preparation_and_verification_gates": 2,
+    "decisions": 8,
+    "total": 97
+  },
+  "reviews": {
+    "D06": {
+      "status": "approve",
+      "choice": "Reviewable, expired and unscored",
+      "note": ""
+    },
+    "D02": {
+      "status": "approve",
+      "choice": "Processed passages/transcripts first",
+      "note": ""
+    },
+    "D03": {
+      "status": "approve",
+      "choice": "Continuity first; modest recent-work demo",
+      "note": ""
+    },
+    "D01": {
+      "status": "approve",
+      "choice": "Use approved direction; settle missing policy details",
+      "note": ""
+    },
+    "D04": {
+      "status": "approve",
+      "choice": "Keep six; group purposes; single MCQ flow",
+      "note": ""
+    },
+    "D05": {
+      "status": "approve",
+      "choice": "Keep approved structure with targeted improvements",
+      "note": ""
+    },
+    "D07": {
+      "status": "approve",
+      "choice": "Truthful latest view plus one realistic admin case",
+      "note": ""
+    },
+    "D08": {
+      "status": "approve",
+      "choice": "Approved public program summary",
+      "note": ""
+    },
+    "B00": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "B01": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "B02": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "B03": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "B04": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "B05": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "B06": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "B07": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "B08": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "B09": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "B10": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "B11": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "B12": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "B13": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M01": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M02": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M03": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M04": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M05": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M06": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M07": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M08": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M09": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M10": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M11": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M12": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M13": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M14": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M15": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M16": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M17": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M18": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M19": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M20": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M21": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M22": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M23": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M24": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M25": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M26": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M27": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M28": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M29": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M30": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M31": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M32": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M33": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M34": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M35": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M36": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M37": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M38": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M39": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M40": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M41": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M42": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M43": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M44": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M45": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M46": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M47": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M48": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M49": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M50": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M51": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M52": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M53": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M54": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M55": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M56": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M57": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M58": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M59": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M60": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M61": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M62": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M63": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M64": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M65": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M66": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M67": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M68": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M69": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M70": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M71": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M72": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M73": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M74": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M75": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    }
+  },
+  "selected_decisions": [
+    {
+      "id": "D01",
+      "title": "Settle privacy and policy wording",
+      "choice": "Use approved direction; settle missing policy details",
+      "remaining_gate": "Required before real student release and before definitive policy copy. Other UI repairs can proceed separately."
+    },
+    {
+      "id": "D02",
+      "title": "Choose the material-reading experience",
+      "choice": "Processed passages/transcripts first",
+      "remaining_gate": "Choose frontend fidelity before B08; real storage/reader delivery is a separate dependency."
+    },
+    {
+      "id": "D03",
+      "title": "Choose how much recent work to add",
+      "choice": "Continuity first; modest recent-work demo",
+      "remaining_gate": "Optional scope decision; essential continuity repairs do not depend on adding history."
+    },
+    {
+      "id": "D04",
+      "title": "Keep all six Studio formats and make MCQ coherent",
+      "choice": "Keep six; group purposes; single MCQ flow",
+      "remaining_gate": "Approve the grouping and MCQ interaction before B08; no format removal is assumed."
+    },
+    {
+      "id": "D05",
+      "title": "Preserve the approved student structure",
+      "choice": "Keep approved structure with targeted improvements",
+      "remaining_gate": "Existing approval remains the baseline; a different structure requires a new explicit design choice."
+    },
+    {
+      "id": "D06",
+      "title": "Choose what an expired quiz records",
+      "choice": "Reviewable, expired and unscored",
+      "remaining_gate": "Required before changing expiry behavior in B03."
+    },
+    {
+      "id": "D07",
+      "title": "Limit the staff redesign to supported operations",
+      "choice": "Truthful latest view plus one realistic admin case",
+      "remaining_gate": "Approve staff scope before B09/B10. Exact-target and success-state repairs are independently useful."
+    },
+    {
+      "id": "D08",
+      "title": "Choose what visitors can check before signing up",
+      "choice": "Approved public program summary",
+      "remaining_gate": "Optional new public capability; explicit landing scope approval is required before B12."
+    }
+  ],
+  "issues": [
+    {
+      "id": "M01",
+      "batch": "B11",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Each policy opens and returns to the unchanged consent form; no acceptance is recorded without the required action."
+    },
+    {
+      "id": "M02",
+      "batch": "B11",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Expired and replayed verification, recovery and suspension each show the appropriate safe explanation and destination; reset is offered only for password recovery."
+    },
+    {
+      "id": "M03",
+      "batch": "B12",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "At representative laptop heights, sign-in, registration and recovery actions are easy to reach; mobile and Arabic remain usable."
+    },
+    {
+      "id": "M04",
+      "batch": "B11",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Corrected inputs stop displaying obsolete errors; a remaining error names its field and required correction."
+    },
+    {
+      "id": "M05",
+      "batch": "B11",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Both values can be revealed and hidden with keyboard access, without moving input focus unexpectedly."
+    },
+    {
+      "id": "M06",
+      "batch": "B11",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Success and recovery messages give accurate next steps without revealing whether an account exists."
+    },
+    {
+      "id": "M07",
+      "batch": "B12",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Every section answers a different visitor question; identical destinations use consistent labels."
+    },
+    {
+      "id": "M08",
+      "batch": "B07",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Variable choices still appear individually; skipped values remain visible and editable when alternatives exist; parent changes reset dependent values safely."
+    },
+    {
+      "id": "M09",
+      "batch": "B07",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Medicine-to-mathematics, veterinary and flexible-credit changes never show an unnamed old-path primary resume action."
+    },
+    {
+      "id": "M10",
+      "batch": "B01",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Each configured synthetic path contains appropriate subject labels and scope; no real catalog or membership is added."
+    },
+    {
+      "id": "M11",
+      "batch": "B07",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "A recent item names its subject, tool and available result; empty states never invent progress or saved history."
+    },
+    {
+      "id": "M12",
+      "batch": "B07",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Navigation, headings, switchers and no-result messages agree within each configured program and locale."
+    },
+    {
+      "id": "M13",
+      "batch": "B08",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Every row explains whether it supports learning tools, a processed passage or an available viewer; missing reliable locators are never invented."
+    },
+    {
+      "id": "M14",
+      "batch": "B08",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "A user can tell whether a link opens the full library or evidence for this result; duplicate entry points are removed or made meaningfully distinct."
+    },
+    {
+      "id": "M15",
+      "batch": "B02",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "After creating Chat answer A and Studio aid B, inspecting B never submits a report for A; cancel/return preserves B and its origin."
+    },
+    {
+      "id": "M16",
+      "batch": "B07",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Two distinct conversations can be recognized without opening each; changing sessions preserves isolation and drafts."
+    },
+    {
+      "id": "M17",
+      "batch": "B11",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Explain ordinary visibility, future-only effect and bounded per-exchange report/explicit-consent/approved-policy-flag exceptions with audited founder access; no new retention promise."
+    },
+    {
+      "id": "M18",
+      "batch": "B08",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "The reviewer can identify the concern and exact target; cancel restores the study location; duplicate prevention and receipt remain; follow-up wording reflects a supported process."
+    },
+    {
+      "id": "M19",
+      "batch": "B07",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Each of the four accounts can identify itself, open settings/privacy and find sign-out without guessing; no role permissions change."
+    },
+    {
+      "id": "M20",
+      "batch": "B06",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "At 390x844 and 320x720 in EN/AR, the active reading/question area gains measurable space; composer and main actions stay reachable with keyboard and bottom safe area."
+    },
+    {
+      "id": "M21",
+      "batch": "B06",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "A student can read to the end, inspect evidence and reach the next action without guessing which container scrolls; focused controls are not covered."
+    },
+    {
+      "id": "M22",
+      "batch": "B08",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Prepared quota/capacity/offline/error/stale cases have accurate distinct messages; unaffected materials/tools remain accessible when allowed."
+    },
+    {
+      "id": "M23",
+      "batch": "B08",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Each persistent and transient state has an accurate next action; no hidden enrollment, catalog or source details leak."
+    },
+    {
+      "id": "M24",
+      "batch": "B08",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Summary, guide, practice, flashcards, revision pack and MCQ each have a distinct explained outcome; MCQ never makes the user generate a placeholder then repeat setup."
+    },
+    {
+      "id": "M25",
+      "batch": "B08",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "The student knows which result exists and what regeneration replaces. Any approved recent-aid or practice control behaves honestly and stays within its course."
+    },
+    {
+      "id": "M26",
+      "batch": "B08",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "From an aid or quiz explanation, one action opens its supporting excerpt and returns to that result without searching the whole library."
+    },
+    {
+      "id": "M27",
+      "batch": "B03",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "A partially answered timed quiz expires into an immutable reviewable attempt; no answer changes are accepted and the score policy is explicit."
+    },
+    {
+      "id": "M28",
+      "batch": "B03",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "On 0/6, mixed and all-correct results, each outcome and correction is recognizable in both themes and locales."
+    },
+    {
+      "id": "M29",
+      "batch": "B06",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Timing has explicit units and remains available through a long attempt, enlarged text and phone scrolling; untimed mode stays available."
+    },
+    {
+      "id": "M30",
+      "batch": "B03",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Submission and direct review show the same attempt without a misleading extra stage or self-link; scored answers remain immutable."
+    },
+    {
+      "id": "M31",
+      "batch": "B03",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "After a six-question timed attempt, repeat setup retains its values; any default-reset action is explicit; no durable history is claimed."
+    },
+    {
+      "id": "M32",
+      "batch": "B03",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "A six-question partial attempt identifies the remaining questions and submission rule; navigation/language changes preserve selections."
+    },
+    {
+      "id": "M33",
+      "batch": "B03",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Counts 0,7,2.5 fail with count-only guidance; valid untimed input never mentions duration; timed 0/241 fail on duration."
+    },
+    {
+      "id": "M34",
+      "batch": "B04",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Three interrupted/pending files survive campaign-to-status/account-and-back; retry does not duplicate a recorded upload; sign-out/document reset still clear synthetic state."
+    },
+    {
+      "id": "M35",
+      "batch": "B04",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Each needs-information/rejected fixture reaches a permitted repair or a clear escalation route; no circular instruction or unsupported contact promise."
+    },
+    {
+      "id": "M36",
+      "batch": "B04",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Each prepared failure explains its category and correct action; permanent rejections never suggest blindly repeating the same file."
+    },
+    {
+      "id": "M37",
+      "batch": "B04",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "First PDF/WAV/PNG submissions are received/submitted; a later replacement is clearly linked to its predecessor without changing approval rules."
+    },
+    {
+      "id": "M38",
+      "batch": "B09",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "The destination accurately describes its records and opens the correct assigned request; older versions are not implied when absent."
+    },
+    {
+      "id": "M39",
+      "batch": "B09",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "After three successes, the next unfinished request remains prominent; receipts and processing state remain inspectable."
+    },
+    {
+      "id": "M40",
+      "batch": "B09",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "List and detail agree on the personal deadline; overdue/closed states follow the declared demo clock and permit only authorized actions."
+    },
+    {
+      "id": "M41",
+      "batch": "B04",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "At 390 and 320px in EN/AR, each required material shows equivalent completion state; desktop information is preserved."
+    },
+    {
+      "id": "M42",
+      "batch": "B10",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "The attention count equals actionable records; completed/no-op operations do not inflate workload and legitimate containment actions stay available."
+    },
+    {
+      "id": "M43",
+      "batch": "B05",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Hide/Lock/Deactivate/Quarantine/Disable each end in one unambiguous success state; repetition remains blocked without an error-looking completion."
+    },
+    {
+      "id": "M44",
+      "batch": "B05",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Source-to-action-to-preview-and-back retains the exact resource; general queue remains available; URL/context never becomes an authorization source."
+    },
+    {
+      "id": "M45",
+      "batch": "B05",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "A reviewer can name the object and consequence before reading its UUID; exact identity/version remain available for verification."
+    },
+    {
+      "id": "M46",
+      "batch": "B05",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "The admin sees the affected object/consequence before writing a reason; the final button names the exact change in EN/AR."
+    },
+    {
+      "id": "M47",
+      "batch": "B05",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "The error-page fixture can recheck without leaving or signing out; failure never submits or repeats a mutation."
+    },
+    {
+      "id": "M48",
+      "batch": "B05",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Admin B sees exactly Admin A's proposed expiry without retyping; cannot edit it silently or self-confirm; independent attestation remains required."
+    },
+    {
+      "id": "M49",
+      "batch": "B10",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Current state and meaning agree across opposite operations; genuinely distinct states are explained rather than collapsed."
+    },
+    {
+      "id": "M50",
+      "batch": "B05",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Save Subject, leave and return: field and receipt agree. Unsaved changes are retained or deliberately discarded with a clear choice."
+    },
+    {
+      "id": "M51",
+      "batch": "B01",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Each example reaches the outcome its label promises, with no implied email, grant, publish, real draft lifecycle or live operational write."
+    },
+    {
+      "id": "M52",
+      "batch": "B01",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Test edited upload description, ordinary hold-removal reason and alternative valid-looking hold expiry separately: each succeeds or explains its exact constraint before submission; rejected input is preserved."
+    },
+    {
+      "id": "M53",
+      "batch": "B01",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Dates and outcomes agree with the demo clock; exercise long titles, many sessions/sources, mixed availability and multiple campaigns without lost labels or targets. No production date defect is inferred."
+    },
+    {
+      "id": "M54",
+      "batch": "B07",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Every role understands the preview as representative styling; System/Light/Dark behavior remains unchanged."
+    },
+    {
+      "id": "M55",
+      "batch": "B12",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "A visitor can predict the account requirement and sample limits before clicking; both destinations and locale continuity remain correct."
+    },
+    {
+      "id": "M56",
+      "batch": "B12",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Any approved public summary contains only approved public facts; a future checker never exposes protected cohort/material status."
+    },
+    {
+      "id": "M57",
+      "batch": "B12",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Human-facing copy names an action or outcome and preserves factual, safety and demo qualifications."
+    },
+    {
+      "id": "M58",
+      "batch": "B11",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "A successful synthetic callback shows its sample success before sign-in; errors/replayed links never falsely display success."
+    },
+    {
+      "id": "M59",
+      "batch": "B11",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "The outdated-consent case explains the approved changes and retains the intended post-consent destination."
+    },
+    {
+      "id": "M60",
+      "batch": "B07",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Study answers what to start or continue; Subjects remains the searchable authorized catalog; no new progress dashboard is invented."
+    },
+    {
+      "id": "M61",
+      "batch": "B06",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "A student can verify the institution in one clear action on desktop/phone; the added context does not recreate a tall mobile header."
+    },
+    {
+      "id": "M62",
+      "batch": "B08",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "No outside knowledge fills the missing fact; suggested next steps stay inside authorized material and do not invent an unavailable source."
+    },
+    {
+      "id": "M63",
+      "batch": "B08",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "The flow does not choose a winner without approved resolving evidence; any clarification text cites only the conflict and sends nothing externally."
+    },
+    {
+      "id": "M64",
+      "batch": "B02",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Inspect sources during an attempt and review, then return to the same quiz and selections; no unrelated Chat report appears."
+    },
+    {
+      "id": "M65",
+      "batch": "B13",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Before reveal, only the active face is announced; flip announces the new face, remains keyboard-operable and preserves focus. Record the actual result rather than a presumed failure."
+    },
+    {
+      "id": "M66",
+      "batch": "B08",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "The visible and accessible button label matches the next action before and after reveal."
+    },
+    {
+      "id": "M67",
+      "batch": "B01",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Short/extended, concise/detailed, comparison/sequence and EN/AR/mixed examples visibly differ as advertised; no real model-quality claim."
+    },
+    {
+      "id": "M68",
+      "batch": "B09",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Navigation, heading, browser title and return actions describe the same leader destination."
+    },
+    {
+      "id": "M69",
+      "batch": "B01",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "A leader can tell whether an item came from a device or a reference in both languages; rights and allowed-reference rules remain intact."
+    },
+    {
+      "id": "M70",
+      "batch": "B05",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Selecting Place/Remove hold from the bottom of a long desktop list reveals the correct detail immediately; keyboard/mobile remain usable."
+    },
+    {
+      "id": "M71",
+      "batch": "B10",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "No-match, partial-match and cleared searches show consistent totals and filters; clear restores the full pending list."
+    },
+    {
+      "id": "M72",
+      "batch": "B10",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "An admin can inspect a named record, reason, relevant action, resulting student state and safe audit timeline; real operational delivery remains unclaimed."
+    },
+    {
+      "id": "M73",
+      "batch": "B10",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Creating the sample draft changes the next action to Edit draft; saved values can be reopened; discard is deliberate and never publishes."
+    },
+    {
+      "id": "M74",
+      "batch": "B07",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Dense and sparse representative screens use space purposefully; brand, visible destinations, keyboard targets and reading measure remain intact."
+    },
+    {
+      "id": "M75",
+      "batch": "B02",
+      "status": "APPROVED_PLANNED",
+      "acceptance": "Open settings during a quiz and return to the same attempt/review, including selected answers; another course never receives that state."
+    }
+  ],
+  "batches": [
+    {
+      "id": "B00",
+      "status": "APPROVED_PLANNED",
+      "depends": [],
+      "gate": "Planning approval; no implementation yet"
+    },
+    {
+      "id": "B01",
+      "status": "APPROVED_PLANNED",
+      "depends": [
+        "B00"
+      ],
+      "gate": "Approve synthetic-fixture changes"
+    },
+    {
+      "id": "B02",
+      "status": "APPROVED_PLANNED",
+      "depends": [
+        "B01"
+      ],
+      "gate": "Approve context-preservation repairs"
+    },
+    {
+      "id": "B03",
+      "status": "APPROVED_PLANNED",
+      "depends": [
+        "B02"
+      ],
+      "gate": "D06 expiry outcome; D03 if history is added"
+    },
+    {
+      "id": "B04",
+      "status": "APPROVED_PLANNED",
+      "depends": [
+        "B01"
+      ],
+      "gate": "Approve leader repair slice and its allowed correction paths"
+    },
+    {
+      "id": "B05",
+      "status": "APPROVED_PLANNED",
+      "depends": [
+        "B01"
+      ],
+      "gate": "Approve admin presentation repairs; preserve protected semantics"
+    },
+    {
+      "id": "B06",
+      "status": "APPROVED_PLANNED",
+      "depends": [
+        "B02",
+        "B03"
+      ],
+      "gate": "Review compact-header/scroll prototype before implementation"
+    },
+    {
+      "id": "B07",
+      "status": "APPROVED_PLANNED",
+      "depends": [
+        "B02"
+      ],
+      "gate": "D05 approved structure; D03 recent-work scope"
+    },
+    {
+      "id": "B08",
+      "status": "APPROVED_PLANNED",
+      "depends": [
+        "B02"
+      ],
+      "gate": "Essential citation/recovery/label repairs use current contracts; new report notes need D01, reader D02, reuse D03 and format interaction D04. Layout integrates after B06 only when affected."
+    },
+    {
+      "id": "B09",
+      "status": "APPROVED_PLANNED",
+      "depends": [
+        "B04"
+      ],
+      "gate": "D07 latest-status versus real history"
+    },
+    {
+      "id": "B10",
+      "status": "APPROVED_PLANNED",
+      "depends": [
+        "B05"
+      ],
+      "gate": "D07 supported operational/draft scope"
+    },
+    {
+      "id": "B11",
+      "status": "APPROVED_PLANNED",
+      "depends": [
+        "B00"
+      ],
+      "gate": "D01 approved policy content; explicit reopening of access scope"
+    },
+    {
+      "id": "B12",
+      "status": "APPROVED_PLANNED",
+      "depends": [
+        "B11"
+      ],
+      "gate": "D08 public scope; explicit reopening of accepted landing/auth visuals"
+    },
+    {
+      "id": "B13",
+      "status": "APPROVED_PLANNED",
+      "depends": [
+        "B01",
+        "B02",
+        "B03",
+        "B04",
+        "B05",
+        "B06",
+        "B07",
+        "B08",
+        "B09",
+        "B10",
+        "B11",
+        "B12"
+      ],
+      "gate": "Every predecessor is completed or explicitly deferred/outside approved scope with owner, dependency and next action; all implemented slices reviewed"
+    }
+  ],
+  "frozen_report_hashes": {
+    "index.html": "6d2c4470bd8cb5381e96923cef15c2aab22002980d5e10e76607daa00d920f1b",
+    "findings.json": "d4f702d00bafb01fa39d1e9d6ade33adbe23506132d5b784a8ec15981ad21491",
+    "action-plan.md": "2be443e8d7587d86b43223799816b7a1eed16d2bb85293bb48af32a3ff1b18c7",
+    "merged-audit.md": "1dd01992ea8e07b21ac46d96094edae38aed06c3234f5ea1496d21d7fc756f12",
+    "source-manifest.json": "cf0949185f23c5242a2b061b4647f4086d3f1d0c6e850d3a936f1c1dc4e489d3",
+    "source-crosswalk.csv": "f06f34f83048c32a118f01baee25ffcf822f5c57f3991c687bf248be6b2ca572"
+  },
+  "preserved_existing_files": 442,
+  "independent_review": {
+    "agent": "/root/audit_reconciliation",
+    "scope": "Exact coverage, choices, conflicts, policy/prototype/contract gates and authorization meaning",
+    "result": "No conflicts; all recommendations selected; plan approval only",
+    "edits": "None",
+    "nested_workers": 0
+  },
+  "authorization": {
+    "plan_direction_approved": true,
+    "implementation_started": false,
+    "automatic_implementation_authorized_by_export": false,
+    "whole_candidate_accepted": false,
+    "commit_authorized": false,
+    "external_delivery_authorized": false,
+    "paid_provider_or_financial_authorization": false
+  },
+  "remaining_gates": [
+    "Select one owning runbook task or controlled amendment before editing; current WP03-T13 does not automatically own access/landing/staff scope.",
+    "D01 settles a direction, not definitive policy text or repository D-08/D-19 retention/report details.",
+    "Material UI changes require review of the actual rendered prototype/candidate.",
+    "Real services, persistence, security, concurrency, devices and accessibility require their owning proof; unperformed checks remain open."
+  ],
+  "next_slice": {
+    "batch": "B01",
+    "issue": "M52",
+    "scope": "Reproduce edited upload-description/finalization, make the visible synthetic input contract accurate, retain failed input and preserve one receipt.",
+    "later_slices": "Inspect ordinary hold-removal reason and alternative hold-expiry cases separately.",
+    "start_boundary": "Separate direct instruction to start implementation; form itself is proposal review only."
+  }
+}

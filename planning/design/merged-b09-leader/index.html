@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>UniMind · Leader flow review</title>
+    <link rel="stylesheet" href="review.css" />
+    <script defer src="review.js"></script>
+  </head>
+  <body>
+    <!-- THESIS: Outstanding requests and the actual deadline lead the existing leader workspace. OWN-WORLD: Open Folio, neutral surfaces, restrained blue, Manrope/Noto, supplied brand. STORY: Find unfinished work, submit, inspect a compact receipt, correct the exact request. FIRST VIEWPORT: Quiet review controls beside a full responsive working preview; the campaign deadline precedes request actions. FORM: Precisely prescribed B09 extension, no concept roll or replacement world. FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance -->
+    <main class="review">
+      <header>
+        <h1>Put unfinished requests first</h1>
+        <p>Review the Batch Leader flow before we change UniMind.</p>
+      </header>
+      <div class="review-layout">
+        <aside class="controls" aria-label="Prototype review controls">
+          <h2>Try the flow</h2>
+          <p>
+            Open Anatomy, upload the three sample formats, then fix the
+            remaining requests. Inspect a received file’s receipt and open
+            Latest submissions.
+          </p>
+          <label for="size">Preview size</label
+          ><select id="size">
+            <option value="390,844">Phone · 390 × 844</option>
+            <option value="320,720">Small phone · 320 × 720</option>
+            <option value="768,1024">Tablet · 768 × 1024</option>
+            <option value="1440,900">Desktop · 1440 × 900</option>
+          </select>
+          <label for="language">Language</label
+          ><select id="language">
+            <option value="en">English</option>
+            <option value="ar">العربية</option>
+          </select>
+          <label for="theme">Appearance</label
+          ><select id="theme">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+          <label class="check"
+            ><input id="large" type="checkbox" /> Double text size</label
+          >
+          <label for="scenario">Assignment state</label
+          ><select id="scenario">
+            <option value="active">Active · 1 October</option>
+            <option value="expired">
+              Personal deadline passed · 11 October
+            </option>
+            <option value="closed">Campaign closed · 13 October</option>
+            <option value="empty">No assigned campaigns</option>
+          </select>
+          <button id="samples" type="button">Load sample files</button>
+          <p class="quiet">
+            Open Upload files in the preview first. This loads PDF, WAV and PNG
+            filenames; no file data is read.
+          </p>
+          <button id="reset" type="button">Reset sample work</button>
+          <details>
+            <summary>What to review</summary>
+            <ul>
+              <li>
+                The personal deadline appears on both campaign entry and detail.
+              </li>
+              <li>
+                Missing files and corrections lead. Received rows become compact
+                receipts.
+              </li>
+              <li>
+                Latest submissions means one current record per request; each
+                opens its request.
+              </li>
+              <li>
+                Source intake is the destination. Upload files is the action.
+              </li>
+            </ul>
+          </details>
+          <p class="quiet">
+            This isolated prototype uses invented requests and filenames.
+            Actions create sample receipts only. It does not read or upload
+            files, validate file bytes, run processing, change your account or
+            show an archive. Reload clears sample work.
+          </p>
+          <p class="quiet">
+            No product code has changed. Existing upload validation,
+            permissions, rights, retry and deadline safeguards remain
+            requirements for implementation.
+          </p>
+        </aside>
+        <section class="stage" aria-label="Working prototype">
+          <div class="frame-scroll">
+            <iframe
+              id="preview"
+              title="Proposed Batch Leader workspace"
+              src="frame.html?lang=en&theme=light"
+            ></iframe>
+          </div>
+        </section>
+      </div>
+      <section class="decision" id="decision">
+        <h2>Your decision</h2>
+        <p>
+          Approve this flow direction, or describe what you want changed.
+          Approval applies to this prototype; implementation will still be
+          tested.
+        </p>
+        <form id="decision-form">
+          <label for="choice">Decision</label
+          ><select id="choice" required>
+            <option value="">Choose after reviewing</option>
+            <option value="approve">Approve this flow direction</option>
+            <option value="changes">Request changes</option>
+            <option value="hold">Hold this batch</option></select
+          ><label for="notes">Changes or notes</label
+          ><textarea
+            id="notes"
+            rows="4"
+            placeholder="For example: put corrections above missing files."
+          ></textarea
+          ><button type="submit">Export my decision</button>
+          <p id="decision-status" role="status"></p>
+        </form>
+        <p id="fingerprint" class="quiet">Loading candidate identity…</p>
+      </section>
+    </main>
+  </body>
+</html>

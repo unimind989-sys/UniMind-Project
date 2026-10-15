@@ -1,11 +1,16 @@
 import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { syntheticFiles } from "../src/app/_components/synthetic-files";
+import { syntheticDemoTime } from "../src/lib/demo/synthetic-clock.application";
+import { studyDensityManifest } from "../src/app/_components/synthetic-study-density";
+import { syntheticCampaignsManifest } from "../src/app/_components/synthetic-campaigns";
+import { studioFixtureManifest } from "../src/lib/studio/studio-fixture.application";
 import {
   promptExamples,
   artifactTypes,
   actionFixtures,
   scopeChoices,
   reviewCatalogRows,
+  defaultUnitPath,
 } from "../src/app/_components/synthetic-fixtures";
 
 const directory = "public/demo-files";
@@ -40,6 +45,7 @@ writeFileSync(
     {
       simulated: true,
       designCheckpoint: {
+        historical: true,
         status: "final-consistency-accepted",
         acceptedFinalCandidate: "8ad3a9b",
         acceptedRoleCandidates: {
@@ -59,7 +65,7 @@ writeFileSync(
         studio:
           "Choose an artifact using the radio group. Generate prepares a fixed example; Cancel preparation interrupts it. Only MCQ offers Open quiz.",
         remainingPlatform:
-          "Ahmed accepted the final consistency candidate. Database proof, broad verification and delivery remain pending. All study/upload/governance results here are fixed local examples.",
+          "The accepted candidate IDs record a historical review. WP03-T09/T10 delivery is complete for the runbook's recorded candidates. Current frontend-refinements audit repairs remain uncommitted local work under WP03-T13, with final acceptance and delivery proof pending. All study/upload/governance results here are fixed local examples.",
       },
       credentials: "accounts.csv",
       sourceTitle: "Synthetic study source",
@@ -73,9 +79,18 @@ writeFileSync(
       invitationLink: "/batch-leader/invitation",
       chatPrompts: promptExamples,
       catalog: reviewCatalogRows,
+      preparedStudyDensity: studyDensityManifest(defaultUnitPath),
+      preparedCampaigns: syntheticCampaignsManifest(),
       rawHoldExpiryExample: "2026-10-03T16:00",
+      calendar: {
+        ...syntheticDemoTime,
+        collectionDisplayTimeZone: "Africa/Cairo",
+        newSubmissionReceivedAt: syntheticDemoTime.now,
+        note: "Fixed illustrative calendar; normal deadlines are future, expired fixtures are past, and new receipts use this clock. Quiz elapsed timers remain independent. This does not enforce production expiry or retention policy.",
+      },
       note: "All dates, source rows, clocks and statuses are illustrative fixtures, not approved production limits or execution results.",
       studioArtifacts: artifactTypes,
+      studioExamples: studioFixtureManifest(),
       unitScopes: scopeChoices.map((choice) => ({
         path: choice.path,
         programEn: choice.scope.programNameEn,

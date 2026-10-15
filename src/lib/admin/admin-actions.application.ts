@@ -2,6 +2,7 @@ import {
   AdminActionBoundaryError,
   adminActionRequestSchema,
   adminActionResultSchema,
+  adminHoldExpirySchema,
   type AdminActionRequest,
   type AdminActionResult,
 } from "./admin-actions.domain";
@@ -21,6 +22,11 @@ export function parseAdminActionRequest(
 ): AdminActionRequest | null {
   const parsed = adminActionRequestSchema.safeParse(input);
   return parsed.success ? parsed.data : null;
+}
+
+export function parseAdminHoldExpiry(input: unknown): string | null {
+  const parsed = adminHoldExpirySchema.safeParse(input);
+  return parsed.success ? new Date(parsed.data).toISOString() : null;
 }
 
 export async function runAdminAction(

@@ -1,0 +1,23 @@
+{
+  "candidate": "B09-leader-flow-v1",
+  "fingerprint": "749988a2b76f22ab8b7fbd950fe8543d7195f6879a9632abde0f2e0a1dd0cb54",
+  "inputs": {
+    "planning/design/merged-b09-leader/index.html": "b7926311daab49d2b306680e7ddc4322b8cfdccf2c6ad1d4c2c218997fd30db6",
+    "planning/design/merged-b09-leader/frame.html": "3d0865882a4afd8c122efceeb8817cf34d5e80e4273d4fed5e68f938de18dda6",
+    "planning/design/merged-b09-leader/prototype.css": "74e1727e4c1c3c5ded2e9a0cd4d988e16d8baccb5161bf4708c51f743ad74cbd",
+    "planning/design/merged-b09-leader/prototype.js": "00fbac4b1e18f16c5bb0a9ed9f3e122b28f94c7336e25c441bb7c7d04acc17b4",
+    "planning/design/merged-b09-leader/review.css": "758fd3e6aaaa5181367778a399548829022d61eaacd49526a0920840546bb036",
+    "planning/design/merged-b09-leader/review.js": "17d66ffb3a85543504865130cd3442d5bf4699a1098715c6211f61dcd936e8d5",
+    "docs/reviews/uiux-2026-10-04/concepts/assets/manrope.woff2": "e310b55a7fd9677f5e3555e6c6c4d064fa1f1d24393f0ddbe217cea12a8c432f",
+    "docs/reviews/uiux-2026-10-04/refinement/assets/noto-sans-arabic.woff2": "69cdf0bf005fdc9cc13fb5a8581697eb9ba8f761aeaf255fc717d14c62c38891",
+    "public/brand/unimind/unimind-open-folio-horizontal-white.svg": "6e2723f9f25066bb3b047bbf9ae0e11cbc4a44b620b7abfcb68487070bfa9f7a"
+  },
+  "actor": "Ahmed",
+  "observedAt": "2026-10-15T13:57:31.057308+00:00",
+  "decision": "APPROVE_FLOW_DIRECTION",
+  "authority": "Direct human user message: approved, continue. Received immediately after presenting the B09 prototype and its review link.",
+  "scope": "B09 prototype flow direction and local implementation of M38/M39/M40/M68;not final application acceptance,commit or external delivery.",
+  "branch": "codex/frontend-refinements",
+  "baseHead": "98bcaefca5512817c9d18e87e7bc2e9086fa89b4",
+  "materialChangesAfterApproval": false
+}

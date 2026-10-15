@@ -320,6 +320,7 @@ test("RSC navigation, action responses and upload receipts remain safe", async (
   ).toBeVisible();
   await finishPrivacy();
   await page.goto(`/preview/batch-leader/campaigns/${campaign}?lang=en`);
+  await page.getByRole("button", { name: "Upload files", exact: true }).click();
   await page.locator('input[type="file"]').setInputFiles({
     name: "synthetic.pdf",
     mimeType: "application/pdf",
@@ -334,8 +335,10 @@ test("RSC navigation, action responses and upload receipts remain safe", async (
     .fill("Generated test fixture only.");
   await page.getByLabel(/I have permission/u).check();
   await assertAccessible(page);
-  await page.getByRole("button", { name: "Upload files", exact: true }).click();
-  await expect(page.getByText("Submission received")).toBeVisible({
+  await page.getByRole("button", { name: "Submit files", exact: true }).click();
+  await expect(
+    page.locator('[data-record-request] [data-status="RECEIVED"]'),
+  ).toBeVisible({
     timeout: 20_000,
   });
   const counts = await finishPrivacy();

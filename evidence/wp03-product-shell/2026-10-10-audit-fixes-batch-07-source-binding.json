@@ -1,0 +1,386 @@
+{
+  "capturedAt": "2026-10-10T17:59:20.388Z",
+  "branch": "codex/frontend-refinements",
+  "baseHead": "98bcaefca5512817c9d18e87e7bc2e9086fa89b4",
+  "task": "WP03-T13",
+  "state": "Uncommitted local candidate; batch 07 technical proof complete; Ahmed rendered review pending",
+  "scope": "Five bounded weaknesses F118,F150,F347,F192,F217: resume grouping, format scanning, native excerpt affordance, Studio empty hierarchy and existing count-range guidance. Historical verdicts and original fonts preserved.",
+  "previousAcceptedAggregate": "51c905a124c4243837e9bfd1b0b3e37b4f747affe985fdfb8919e349b8b009f9",
+  "baselineManifest": "E:/Unimind audits/analysis/fix-batch-07-baseline/manifest.json",
+  "incrementalBatch": [
+    {
+      "path": "src/app/learn/_components/product-study.tsx",
+      "beforeSha256": "793081f233183a8d66d73825623fed090b89d29878ec292f0484f2579e8ff17c",
+      "afterSha256": "a0bc2bff1329b9be676e3bcf669c53c56b5a5585a87a74caee1ce8d99c82cddb"
+    },
+    {
+      "path": "src/app/_components/product.module.css",
+      "beforeSha256": "c310d3783aae56e9c2d277e9818a6e065d03719a09ca350b81d2f099aeb625c9",
+      "afterSha256": "3ccbd0d43c79bcc32a179e5702b013ce7b60d30f20cb6dc0798a02a7ac2c5cbc"
+    },
+    {
+      "path": "src/app/learn/_components/product-study.module.css",
+      "beforeSha256": "24c5d7d38424b48e9e01532f453815ab0710c9ff876af8de607fa9bada2bd1fd",
+      "afterSha256": "d926133578077783dec9883a8b02c9a5f96aaa75605a99fa263a2dfd5ac31130"
+    },
+    {
+      "path": "src/app/learn/study-shelf.module.css",
+      "beforeSha256": "7acb9b9b55771fc65d9ece41dc0dba4cd85ef6cd6fa3a74b8ec8b6e3ab2d2e3b",
+      "afterSha256": "796c6b563909065805e2c7ad969157f71179b36a5b4ec8cb597ca09ac1ff2288"
+    },
+    {
+      "path": "tests/e2e/native-product-demo.spec.ts",
+      "beforeSha256": "049e7d65da8975dad8fc2c71a075f62788c8c0bf97ad862d1d5f05ae07bb2b19",
+      "afterSha256": "7ee052ddd995a37a7f963ee9793341b5525549659a9ae5677e4df50da5cd1d54"
+    },
+    {
+      "path": "src/app/layout.tsx",
+      "beforeSha256": "993e4ecd22aadebc723873b0489b9837b1000232ffa4c6d47733cb9187d11c50",
+      "afterSha256": "993e4ecd22aadebc723873b0489b9837b1000232ffa4c6d47733cb9187d11c50"
+    },
+    {
+      "path": "src/app/globals.css",
+      "beforeSha256": "3d1f099058203f2610120adcd5c1f6fa03f0d33d0b505263d728cce15f77f16b",
+      "afterSha256": "3d1f099058203f2610120adcd5c1f6fa03f0d33d0b505263d728cce15f77f16b"
+    },
+    {
+      "path": "DESIGN.md",
+      "beforeSha256": "de4edca4d5902eb77d064370ff67c81c899fbdcd8c7b17b400ce19dc38f448dd",
+      "afterSha256": "ad49ad53f976a4f1f1d5c64c6e5c9176e8f70518aa9c9082e646214316d5144f"
+    },
+    {
+      "path": "planning/tasks/wp03-t13-student-entry-navigation.md",
+      "beforeSha256": "7b5c28274f93b088678764f501dc5a1517bb7c9aa8b78be77b613d4da0b6a9ae",
+      "afterSha256": "7999f8ef09095ddd3666c6d7df8816263c5f40e5cc64b63b4e7f185643fc0ab3"
+    }
+  ],
+  "fontSourcePreserved": true,
+  "candidateChangedSources": [
+    {
+      "path": "src/app/_components/academic-settings.tsx",
+      "sha256": "00735e5c11cd31b881e0427ab0fe16fdff933b18771b91b50ab02bb9a0154110"
+    },
+    {
+      "path": "src/app/_components/account-layout.tsx",
+      "sha256": "61a2643977c4f1f2c6a82f453bd2d91729fee155c8fb134b829d8fd6052f1567"
+    },
+    {
+      "path": "src/app/_components/app-shell.module.css",
+      "sha256": "fe3bbfda72d6cd62534ae061bcfc7f49c044e65b61fecaaa3b12d5538878386a"
+    },
+    {
+      "path": "src/app/_components/app-shell.tsx",
+      "sha256": "1e35f014f5351bf75757454da16fb66fbc27a32ecd5b1961c388e7dfde65a765"
+    },
+    {
+      "path": "src/app/_components/appearance.module.css",
+      "sha256": "4024b0e3eb5399cf2bc6519741ff94aab9fb3c0164b98d34303312b208804f88"
+    },
+    {
+      "path": "src/app/_components/appearance.tsx",
+      "sha256": "01af13cd3b153c89c84cd66db534fb67569ed9a4465a5b02e25a73b1c9a32950"
+    },
+    {
+      "path": "src/app/_components/choice-group.module.css",
+      "sha256": "54daff4e03e523b7a632492d7190536d76a7c2d93014ce7abeb20b3058de34c4"
+    },
+    {
+      "path": "src/app/_components/choice-group.tsx",
+      "sha256": "9f664046d69a6213c03690f3b755fc0d3c9def7fd02e6909dd2839f60c1834da"
+    },
+    {
+      "path": "src/app/_components/frontend-controls.tsx",
+      "sha256": "2f29d37e7bea543faaaa97eacee47d6087146a7eef6b90ee7ea79cb78e232e67"
+    },
+    {
+      "path": "src/app/_components/frontend-system.module.css",
+      "sha256": "5c14cd12342d5142d6772254648cf4a57f6ab6619338b1185ecd8ae09ca0a01e"
+    },
+    {
+      "path": "src/app/_components/frontend-system.tsx",
+      "sha256": "b8e3c44bc8561186f2f7f297b6285099bb6e2c7286067125f41207528940ad55"
+    },
+    {
+      "path": "src/app/_components/product-native-page.tsx",
+      "sha256": "f06047e7d7661028ea40374bc0669b0bf3f0e5f55719d7df2abb5aa73d1ac574"
+    },
+    {
+      "path": "src/app/_components/product-profile.tsx",
+      "sha256": "00c84675efa7b04d2dfa9f10912ffc6c4c45763e985997dcb631db597a78bb29"
+    },
+    {
+      "path": "src/app/_components/product-services.tsx",
+      "sha256": "4d8df9906a9e4d5230795585bb3a51b444c632ca0ec861a0887a63cb6d17322e"
+    },
+    {
+      "path": "src/app/_components/product-ui.tsx",
+      "sha256": "ef8be936451f728d8729313f1f16d1f775303e47f91166f8beeeb80af8d6505b"
+    },
+    {
+      "path": "src/app/_components/product.module.css",
+      "sha256": "3ccbd0d43c79bcc32a179e5702b013ce7b60d30f20cb6dc0798a02a7ac2c5cbc"
+    },
+    {
+      "path": "src/app/_components/student-account.module.css",
+      "sha256": "a0e6118bbb65e29a51c9e11ac1cb0d5cfe0bec7c0a115a960e312d1f0bc4b1fa"
+    },
+    {
+      "path": "src/app/learn/[cohortId]/[unitId]/layout.tsx",
+      "sha256": "27305a45846b82be9492dd101021a206134783a8ab1c7b89ac62513f5fa4797e"
+    },
+    {
+      "path": "src/app/learn/_components/product-chat.tsx",
+      "sha256": "09e5907674dbca9d10138e2857fcacde581e12bbecc94aee80eee93526c3359b"
+    },
+    {
+      "path": "src/app/learn/_components/product-studio.tsx",
+      "sha256": "82c904eb09c1463b6d6a5abbf070794299f5578ece6f6c215249a256e9c86747"
+    },
+    {
+      "path": "src/app/learn/_components/product-study.module.css",
+      "sha256": "d926133578077783dec9883a8b02c9a5f96aaa75605a99fa263a2dfd5ac31130"
+    },
+    {
+      "path": "src/app/learn/_components/product-study.tsx",
+      "sha256": "a0bc2bff1329b9be676e3bcf669c53c56b5a5585a87a74caee1ce8d99c82cddb"
+    },
+    {
+      "path": "src/app/learn/_components/study-shelf.tsx",
+      "sha256": "e0d4c76395006eafb2c8dbe96cd4c518b80f86e4a33889f00b95c1932384e873"
+    },
+    {
+      "path": "src/app/learn/_components/workspace-frame.tsx",
+      "sha256": "02afdd0317321a6b18ea0c9508829f611e36904403be59a4ef8da5a6088a2095"
+    },
+    {
+      "path": "src/app/learn/page.tsx",
+      "sha256": "c7a0e030893bdd30ba37c96d3a7521b9fe2e7c317d94393426b53b70031fedfe"
+    },
+    {
+      "path": "src/app/learn/study-shelf.module.css",
+      "sha256": "796c6b563909065805e2c7ad969157f71179b36a5b4ec8cb597ca09ac1ff2288"
+    },
+    {
+      "path": "src/app/settings/page.tsx",
+      "sha256": "ec1a2b15a10f57c40c4e8c38ccf0ed18ccac9707e19c355dda945a2207ae6717"
+    },
+    {
+      "path": "src/lib/demo/synthetic-account.application.ts",
+      "sha256": "2c6de39f4e77c5ec7f7d531c4cb6242da4605ca7dacf1c24de398e7116bf1115"
+    },
+    {
+      "path": "src/lib/quiz/quiz-fixture.application.ts",
+      "sha256": "1426314749581eaa739fcb20ed0c30ca18911af30a3cb518282af0722c382928"
+    },
+    {
+      "path": "tests/e2e/hosted-synthetic-login.spec.ts",
+      "sha256": "1a63c28feb221ec44c1a804672f7be6e3404d476c719fbfd38db7cdd18087ef4"
+    },
+    {
+      "path": "tests/e2e/native-product-demo.spec.ts",
+      "sha256": "7ee052ddd995a37a7f963ee9793341b5525549659a9ae5677e4df50da5cd1d54"
+    },
+    {
+      "path": "tests/e2e/study-shelf.spec.ts",
+      "sha256": "ddd281274249f37f354f717f13e67b472a51f92948b449f5539fbed8290e4d0b"
+    },
+    {
+      "path": "tests/unit/quiz-fixture.test.ts",
+      "sha256": "c6e6053f1e5eef0443c66b8bb0d7406d8a9f5d2bb5780adbeae31affe0985eef"
+    }
+  ],
+  "aggregateSha256": "a8b56922aeee4f72149eba164b3253ca52acbebefe628756537bebb5e1cc527d",
+  "unchangedPriorCandidateCount": 28,
+  "focusedReport": {
+    "path": "E:/Unimind audits/analysis/fix-batch-07-initial-e2e.json",
+    "sha256": "d656bb17b909167faa67fe98c878f514acae9f9a1ea7b5bd5c57d94ead3bfbdb",
+    "startTime": "2026-10-10T17:48:31.316Z",
+    "duration": 231086.026,
+    "expected": 14,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0,
+    "runnerErrors": 0,
+    "cases": [
+      {
+        "title": "en: all six Studio artifacts, untimed quiz, score and source review",
+        "status": "expected",
+        "results": [
+          "passed"
+        ]
+      },
+      {
+        "title": "ar: all six Studio artifacts, untimed quiz, score and source review",
+        "status": "expected",
+        "results": [
+          "passed"
+        ]
+      },
+      {
+        "title": "audit batch 02 en: compact source rows keep keyboard excerpts and contextual returns",
+        "status": "expected",
+        "results": [
+          "passed"
+        ]
+      },
+      {
+        "title": "audit batch 02 ar: compact source rows keep keyboard excerpts and contextual returns",
+        "status": "expected",
+        "results": [
+          "passed"
+        ]
+      },
+      {
+        "title": "workspace revision en: quiz count, difficulty, chosen timer and invalid input",
+        "status": "expected",
+        "results": [
+          "passed"
+        ]
+      },
+      {
+        "title": "workspace revision ar: quiz count, difficulty, chosen timer and invalid input",
+        "status": "expected",
+        "results": [
+          "passed"
+        ]
+      },
+      {
+        "title": "audit batch 03 en: named resume and grouped searchable subjects",
+        "status": "expected",
+        "results": [
+          "passed"
+        ]
+      },
+      {
+        "title": "audit batch 03 ar: named resume and grouped searchable subjects",
+        "status": "expected",
+        "results": [
+          "passed"
+        ]
+      },
+      {
+        "title": "audit batch 04 en: plain material metadata and discoverable Studio options",
+        "status": "expected",
+        "results": [
+          "passed"
+        ]
+      },
+      {
+        "title": "audit batch 04 en: quiz inputs follow one centered path with equivalent labels",
+        "status": "expected",
+        "results": [
+          "passed"
+        ]
+      },
+      {
+        "title": "audit batch 04 ar: plain material metadata and discoverable Studio options",
+        "status": "expected",
+        "results": [
+          "passed"
+        ]
+      },
+      {
+        "title": "audit batch 04 ar: quiz inputs follow one centered path with equivalent labels",
+        "status": "expected",
+        "results": [
+          "passed"
+        ]
+      },
+      {
+        "title": "audit batch 07 en: grouped study actions, source formats, native excerpts and count guidance preserve the learning path",
+        "status": "expected",
+        "results": [
+          "passed"
+        ]
+      },
+      {
+        "title": "audit batch 07 ar: grouped study actions, source formats, native excerpts and count guidance preserve the learning path",
+        "status": "expected",
+        "results": [
+          "passed"
+        ]
+      }
+    ]
+  },
+  "liveEvidence": {
+    "path": "E:/Unimind audits/analysis/fix-batch-07-live-ui.json",
+    "sha256": "72bcbfebf315711765591e27ced0c131ae4629059c2fc0a05f93ce88c2316e68",
+    "afterStates": [
+      "en1440Materials",
+      "en1440ExcerptOpen",
+      "en320Materials",
+      "ar320Materials",
+      "ar820Studio",
+      "en820Studio",
+      "en820Quiz",
+      "en320Quiz",
+      "ar320Quiz",
+      "ar320Resume",
+      "en320Resume",
+      "en1440Resume",
+      "en1440ResumeDark",
+      "en1440MaterialsDark",
+      "en1034StudioDark",
+      "en1034QuizDark",
+      "en1034ResumeDark",
+      "handoff"
+    ],
+    "horizontalOverflow": false
+  },
+  "reviewImages": [
+    {
+      "path": "E:/Unimind audits/analysis/fix-batch-07-materials-review.jpg",
+      "sha256": "0bd8bb27aef609d98b8f9687d9fd3379e672215d6d79e90e10da9a3c609c27ee"
+    },
+    {
+      "path": "E:/Unimind audits/analysis/fix-batch-07-studio-review.jpg",
+      "sha256": "979bf5b438b16bb62f9918b2996e74eb8818a7e2bef9277597a798244f3b1be8"
+    },
+    {
+      "path": "E:/Unimind audits/analysis/fix-batch-07-quiz-review.jpg",
+      "sha256": "482a0a3668da827b4975a68c7f0a8e810c7ed7dc236044f208a738eea3bb9652"
+    },
+    {
+      "path": "E:/Unimind audits/analysis/fix-batch-07-resume-review.jpg",
+      "sha256": "2b8801a875d6c933d1a56e122806764268d28a150b6d3300a4509b60922bf0aa"
+    }
+  ],
+  "checks": {
+    "lint": "PASS repository and narrow",
+    "normalAndFreshTypes": "PASS after normal restart and generated-import restoration",
+    "boundaries": "PASS",
+    "layoutDetector": "PASS; no findings",
+    "incrementalReview": "Complete; 28 unchanged prior source/test hashes reuse prior review",
+    "finalArtifactScans": "PASS; 3207 secret-scanned files; readiness 813 names / 365 local links / 23 decisions / 116 task contracts"
+  },
+  "handoff": {
+    "normalDevSession": 97815,
+    "tab": "10",
+    "url": "http://127.0.0.1:3000/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy?lang=en",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    },
+    "viewportOverrideReset": true,
+    "visible": true,
+    "fixture": "public document-local sample; reload discards fixture data",
+    "otherPriorTab9": "left untouched"
+  },
+  "finalChecks": {
+    "secretScan": {
+      "status": "PASS",
+      "files": 3207
+    },
+    "readiness": {
+      "status": "PASS",
+      "names": 813,
+      "localLinks": 365,
+      "synchronizedDecisions": 23,
+      "taskContracts": 116
+    },
+    "formatting": "PASS under repository ignore policy",
+    "diffIntegrity": "PASS; full incremental review complete; next-env diff empty",
+    "sourceBinding": "33 candidate source/test hashes, report, final live ledger and four images verified; root font sources unchanged"
+  },
+  "sealedAt": "2026-10-10T18:00:03.417Z"
+}

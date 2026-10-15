@@ -12,6 +12,8 @@ related_targets:
 
 # Current student overhaul brief
 
+WP03-T13, 6 October: Ahmed requests one academic setup question at a time with native radio choices, Back, editable review and the existing authorized save. Study is a start/resume destination; Subjects is the searchable catalog. Student opens settings and replaces Account plus the separate Student identity label. Shared product language buttons preserve state and exclude landing/access. This local refinement awaits rendered acceptance; the task record owns scope/proof and the commit/delivery hold. Root DESIGN supersedes historical navigation below.
+
 Operate mode. [Root DESIGN](../../DESIGN.md) is the sole current system contract; Phase 1 is approved. The [student candidate](../../planning/design/frontend-overhaul/phase-2-student.md) awaits rendered implementation approval and database proof. Student navigation is Study, Subjects, Account. Preserve authorized catalog hierarchy, configuration-driven Module/Subject labels, scope/session isolation, six Studio types, viewer/evidence/report context and quiz review. Onboarding uses a validated preference in the existing profile; it never grants access. Mobile Materials/Chat/Studio/Quiz retain one unit identity. Render both themes, EN/AR and all relevant states. The [current audit](../../docs/reviews/wp03-frontend-overhaul.md) owns sequence. Earlier imagery, six-tab navigation and palette values below are historical, not rollout requirements.
 
 # Historical WP03 student catalog and workspace foundation
@@ -65,3 +67,5 @@ The comp establishes a matte, low-elevation component grammar with small-to-medi
 
 - Sample and record exact on-screen colors from the approved comp before defining tokens.
 - Produce the minimum synthetic subject-image set with embedded prompt provenance, or obtain an explicit scope decision before omitting an image-native comp region.
+
+WP03-T13 approved revision, 6 October: remove Study tool guidance and the Subjects instruction/sidebar settings links. Subjects uses the full catalog canvas. Shared profile, independent settings views, cohort-only switching, header output language, first-visit citation help and configurable fixture quizzes follow the student workspace contract in DESIGN. Material rendered acceptance is pending.

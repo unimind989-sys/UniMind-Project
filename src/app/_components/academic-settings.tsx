@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import {
   contextFromSelection,
   type AcademicContext,
@@ -13,6 +13,12 @@ import {
 } from "@/lib/catalog/catalog-journey.application";
 import type { Locale } from "@/lib/i18n/locale";
 import styles from "./student-account.module.css";
+import { FrontendIcon } from "./frontend-controls";
+import { useAcademicSetupDraft } from "./academic-setup-draft";
+import {
+  academicSetupSequence,
+  type AcademicSetupField,
+} from "@/lib/account/academic-setup.application";
 
 export function AcademicSettings({
   locale,
@@ -28,8 +34,12 @@ export function AcademicSettings({
   onboarding?: boolean;
 }) {
   const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
+  const retained = useAcademicSetupDraft();
   const [selection, setSelection] = useState<CatalogSelection>(
-    initialContext ?? {},
+    (onboarding ? retained?.draft?.selection : null) ?? initialContext ?? {},
+  );
+  const [setupStep, setSetupStep] = useState(
+    onboarding ? (retained?.draft?.step ?? 0) : 0,
   );
   const journey = resolveCatalogJourney(rows, selection);
   const university = journey.selectedStage?.code === "UNIVERSITY";
@@ -52,7 +62,7 @@ export function AcademicSettings({
     [
       "programId",
       university
-        ? t("Faculty", "الكلية")
+        ? t("Faculty or program", "الكلية أو البرنامج")
         : highSchool
           ? t("Track", "المسار")
           : t("Program", "البرنامج"),
@@ -63,28 +73,78 @@ export function AcademicSettings({
       university ? t("Academic year", "السنة الدراسية") : t("Level", "المستوى"),
       journey.options.levels,
     ],
-    ["termId", t("Study period", "الفترة الدراسية"), journey.options.terms],
+    [
+      "termId",
+      journey.selectedProgram?.progressionMode === "FLEXIBLE_CREDIT"
+        ? t("Course-plan period", "فترة الخطة الدراسية")
+        : t("Study period", "الفترة الدراسية"),
+      journey.options.terms,
+    ],
     ["cohortId", t("Cohort", "الدفعة"), journey.options.cohorts],
   ] as const;
+  const setupFields = fields.filter(
+    ([key, , options]) => key !== "cohortId" || options.length > 1,
+  );
+  const sequence = academicSetupSequence(
+    setupFields,
+    journey.selection,
+    setupStep,
+  );
+  const step = sequence.step;
   const context = contextFromSelection(journey.selection);
+  const choose = (key: keyof CatalogSelection, value: string) => {
+    const next: Record<string, string> = {};
+    for (const [previousKey] of fields) {
+      if (previousKey === key) break;
+      const previous = journey.selection[previousKey];
+      if (previous) next[previousKey] = previous;
+    }
+    if (value) next[key] = value;
+    setSelection(next);
+    if (onboarding) retained?.remember({ selection: next, step });
+  };
+  const changeStep = (next: number) => {
+    setSetupStep(next);
+    retained?.remember({ selection: journey.selection, step: next });
+  };
   const [result, action, pending] = useActionState<AcademicSaveState, FormData>(
-    async () => (context ? save(context) : { status: "INVALID" }),
+    async () => {
+      if (!context) return { status: "INVALID" };
+      const saved = await save(context);
+      if (saved.status === "SAVED") retained?.remember(null);
+      return saved;
+    },
     { status: "IDLE" },
   );
   return (
     <section
-      className={styles.section}
+      className={`${styles.section} ${onboarding ? styles.onboarding : ""}`}
       aria-labelledby="academic-settings-heading"
     >
-      <h2 id="academic-settings-heading">
-        {onboarding
-          ? t("Set up your Study Shelf", "إعداد رف المذاكرة")
-          : t("Academic settings", "الإعدادات الدراسية")}
-      </h2>
+      {onboarding ? (
+        <h1 id="academic-settings-heading">
+          {t("Set up your Study Shelf", "إعداد رف المذاكرة")}
+        </h1>
+      ) : (
+        <h2 id="academic-settings-heading">
+          {t("Academic settings", "الإعدادات الدراسية")}
+        </h2>
+      )}
       <p>
-        {t(
-          "Choose what you study. You can change this later in Account → Academic settings.",
-          "اختر ما تدرسه. يمكنك تعديله لاحقًا من الحساب ← الإعدادات الدراسية.",
+        {locale === "ar" ? (
+          <>
+            اختر مسارك الدراسي. يمكنك تعديله لاحقًا من{" "}
+            <span className={styles.settingsReference}>
+              ملفك الشخصي ←{"\u00a0"}الإعدادات الدراسية.
+            </span>
+          </>
+        ) : (
+          <>
+            Choose your academic path. You can change it later in{" "}
+            <span className={styles.settingsReference}>
+              your profile →{"\u00a0"}Academic settings.
+            </span>
+          </>
         )}
       </p>
       {initialContext && journey.correction ? (
@@ -104,41 +164,48 @@ export function AcademicSettings({
         </p>
       ) : (
         <form action={action}>
-          <fieldset disabled={pending} className={styles.fields}>
-            <legend className={styles.srOnly}>
-              {t("Academic context", "السياق الدراسي")}
-            </legend>
-            {fields
-              .filter(
-                ([key, , options]) => key !== "cohortId" || options.length > 1,
-              )
-              .map(([key, label, options], index) => (
-                <div key={key}>
-                  <label htmlFor={`academic-${key}`}>{label}</label>
-                  <select
-                    id={`academic-${key}`}
-                    value={journey.selection[key] ?? ""}
-                    disabled={options.length === 0}
-                    onChange={(event) => {
-                      const next: Record<string, string> = {};
-                      for (const [previousKey] of fields.slice(0, index)) {
-                        const value = journey.selection[previousKey];
-                        if (value) next[previousKey] = value;
-                      }
-                      if (event.target.value) next[key] = event.target.value;
-                      setSelection(next);
-                    }}
-                  >
-                    <option value="">{t("Choose…", "اختر…")}</option>
-                    {options.map((option) => (
-                      <option key={option.id} value={option.id}>
-                        {locale === "ar" ? option.nameAr : option.nameEn}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              ))}
-          </fieldset>
+          {onboarding ? (
+            <AcademicSetup
+              locale={locale}
+              fields={setupFields}
+              sequence={sequence}
+              selection={journey.selection}
+              choose={choose}
+              step={step}
+              setStep={changeStep}
+              pending={pending}
+              complete={!!context}
+            />
+          ) : (
+            <fieldset disabled={pending} className={styles.fields}>
+              <legend className={styles.srOnly}>
+                {t("Academic settings", "الإعدادات الدراسية")}
+              </legend>
+              {fields
+                .filter(
+                  ([key, , options]) =>
+                    key !== "cohortId" || options.length > 1,
+                )
+                .map(([key, label, options]) => (
+                  <div key={key}>
+                    <label htmlFor={`academic-${key}`}>{label}</label>
+                    <select
+                      id={`academic-${key}`}
+                      value={journey.selection[key] ?? ""}
+                      disabled={options.length === 0}
+                      onChange={(event) => choose(key, event.target.value)}
+                    >
+                      <option value="">{t("Choose…", "اختر…")}</option>
+                      {options.map((option) => (
+                        <option key={option.id} value={option.id}>
+                          {locale === "ar" ? option.nameAr : option.nameEn}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                ))}
+            </fieldset>
+          )}
           {journey.selectedProgram?.progressionMode === "FLEXIBLE_CREDIT" ? (
             <p>
               {t(
@@ -147,17 +214,17 @@ export function AcademicSettings({
               )}
             </p>
           ) : null}
-          <button
-            className={styles.primary}
-            type="submit"
-            disabled={pending || !context}
-          >
-            {pending
-              ? t("Saving…", "جار الحفظ…")
-              : onboarding
-                ? t("Open Study Shelf", "فتح رف المذاكرة")
+          {!onboarding ? (
+            <button
+              className={styles.primary}
+              type="submit"
+              disabled={pending || !context}
+            >
+              {pending
+                ? t("Saving…", "جار الحفظ…")
                 : t("Save academic settings", "حفظ الإعدادات الدراسية")}
-          </button>
+            </button>
+          ) : null}
           {result.status !== "IDLE" ? (
             <p role={result.status === "SAVED" ? "status" : "alert"}>
               {result.status === "SAVED"
@@ -181,5 +248,179 @@ export function AcademicSettings({
         </form>
       )}
     </section>
+  );
+}
+
+function AcademicSetup({
+  locale,
+  fields,
+  sequence,
+  selection,
+  choose,
+  step,
+  setStep,
+  pending,
+  complete,
+}: {
+  locale: Locale;
+  fields: readonly AcademicSetupField[];
+  sequence: ReturnType<typeof academicSetupSequence>;
+  selection: CatalogSelection;
+  choose: (key: keyof CatalogSelection, value: string) => void;
+  step: number;
+  setStep: (step: number) => void;
+  pending: boolean;
+  complete: boolean;
+}) {
+  const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
+  const heading = useRef<HTMLHeadingElement>(null);
+  const active = fields[step];
+  const number = new Intl.NumberFormat(locale);
+  useEffect(() => {
+    heading.current?.focus({ preventScroll: true });
+  }, [step]);
+  return (
+    <div className={styles.setup}>
+      <div className={styles.setupProgress}>
+        <p className={styles.progressLabel}>
+          <span>
+            {active
+              ? t(
+                  `Step ${number.format(sequence.ordinal + 1)} of ${number.format(sequence.questions.length)}`,
+                  `الخطوة ${number.format(sequence.ordinal + 1)} من ${number.format(sequence.questions.length)}`,
+                )
+              : t("Review your choices", "راجع اختياراتك")}
+          </span>
+          {!active ? (
+            <span className={styles.reviewCompletion}>
+              <FrontendIcon name="check" />
+              <span>{t("Academic path complete", "اكتمل المسار الدراسي")}</span>
+            </span>
+          ) : null}
+        </p>
+        <div className={styles.progressTrack} aria-hidden="true">
+          {sequence.questions.map((index) => (
+            <span
+              key={fields[index]![0]}
+              data-complete={index < step}
+              data-current={index === step}
+            />
+          ))}
+        </div>
+      </div>
+      {active ? (
+        <>
+          <h2 ref={heading} tabIndex={-1}>
+            {active[1]}
+          </h2>
+          <fieldset
+            className={styles.choices}
+            data-step={active[0]}
+            disabled={pending}
+          >
+            <legend className={styles.srOnly}>{active[1]}</legend>
+            {active[2].map((option) => (
+              <label key={option.id} className={styles.choice}>
+                <input
+                  type="radio"
+                  name={`setup-${active[0]}`}
+                  value={option.id}
+                  checked={selection[active[0]] === option.id}
+                  onChange={() => choose(active[0], option.id)}
+                />
+                <span>
+                  <bdi>{locale === "ar" ? option.nameAr : option.nameEn}</bdi>
+                </span>
+              </label>
+            ))}
+            {active[2].length === 0 ? (
+              <p role="status">
+                {t(
+                  "No available choices. Go back and choose another path.",
+                  "لا توجد اختيارات متاحة. ارجع واختر مسارًا آخر.",
+                )}
+              </p>
+            ) : null}
+          </fieldset>
+        </>
+      ) : (
+        <>
+          <h2 ref={heading} tabIndex={-1}>
+            {t("Your academic path", "مسارك الدراسي")}
+          </h2>
+          <dl className={styles.setupReview}>
+            {fields.map(([key, label, options], index) => {
+              const selected = options.find(
+                (option) => option.id === selection[key],
+              );
+              return (
+                <div key={key}>
+                  <dt>{label}</dt>
+                  <dd>
+                    <bdi>
+                      {selected
+                        ? locale === "ar"
+                          ? selected.nameAr
+                          : selected.nameEn
+                        : t("Choose an option", "اختر أحد الخيارات")}
+                    </bdi>
+                    {options.length > 1 ? (
+                      <button
+                        type="button"
+                        disabled={pending}
+                        onClick={() => setStep(index)}
+                        aria-label={`${t("Edit", "تعديل")} ${label}`}
+                      >
+                        {t("Edit", "تعديل")}
+                      </button>
+                    ) : null}
+                  </dd>
+                </div>
+              );
+            })}
+          </dl>
+        </>
+      )}
+      <div className={styles.setupActions}>
+        {sequence.previous !== null ? (
+          <button
+            key="back"
+            type="button"
+            className={styles.secondary}
+            disabled={pending}
+            onClick={() => setStep(sequence.previous!)}
+          >
+            {t("Back", "رجوع")}
+          </button>
+        ) : null}
+        {active ? (
+          <button
+            key="advance"
+            type="button"
+            className={styles.primary}
+            disabled={pending || !selection[active[0]]}
+            onClick={(event) => {
+              event.preventDefault();
+              setStep(sequence.next);
+            }}
+          >
+            {sequence.next === fields.length
+              ? t("Review choices", "مراجعة الاختيارات")
+              : t("Continue", "متابعة")}
+          </button>
+        ) : (
+          <button
+            key="save"
+            type="submit"
+            className={styles.primary}
+            disabled={pending || !complete}
+          >
+            {pending
+              ? t("Saving…", "جار الحفظ…")
+              : t("Open Study Shelf", "فتح رف المذاكرة")}
+          </button>
+        )}
+      </div>
+    </div>
   );
 }

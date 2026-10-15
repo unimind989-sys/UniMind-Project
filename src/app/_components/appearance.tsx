@@ -8,6 +8,7 @@ import {
   type ThemePreference,
 } from "@/lib/theme/theme.application";
 import type { Locale } from "@/lib/i18n/locale";
+import { ChoiceGroup } from "./choice-group";
 import styles from "./appearance.module.css";
 
 const eventName = "unimind-appearance";
@@ -57,47 +58,42 @@ export function Appearance({ locale }: { locale: Locale }) {
   const value = useSyncExternalStore(subscribe, snapshot, serverSnapshot);
   return (
     <div className={styles.appearance}>
-      <div className={styles.preview} aria-hidden="true">
-        <div className={styles.previewRail}>
-          <span />
-          <span />
-          <span />
-        </div>
+      <ChoiceGroup
+        label={locale === "ar" ? "السمة" : "Theme"}
+        value={value}
+        options={[
+          ["system", locale === "ar" ? "النظام" : "System"],
+          ["light", locale === "ar" ? "فاتح" : "Light"],
+          ["dark", locale === "ar" ? "داكن" : "Dark"],
+        ]}
+        onChange={(value) => {
+          const next = themePreference(value);
+          try {
+            window.localStorage.setItem(themeStorageKey, next);
+          } catch {
+            /* Session choice still works. */
+          }
+          apply(next);
+          window.dispatchEvent(new Event(eventName));
+        }}
+      />
+      <figure className={styles.preview}>
+        <div className={styles.previewHeader}>UniMind</div>
         <div className={styles.previewPage}>
-          <span />
-          <span />
-          <div>
-            <i />
-            <i />
-            <i />
+          <strong>{locale === "ar" ? "شاشة نموذجية" : "Example screen"}</strong>
+          <div className={styles.previewMaterial}>
+            <strong>{locale === "ar" ? "المحتوى" : "Content"}</strong>
+            <span>
+              {locale === "ar"
+                ? "نص توضيحي للمعاينة"
+                : "Example supporting text"}
+            </span>
           </div>
         </div>
-      </div>
-      <div className="appearance-field">
-        <label htmlFor="appearance-theme">
-          {locale === "ar" ? "السمة" : "Theme"}
-        </label>
-        <select
-          id="appearance-theme"
-          value={value}
-          onChange={(event) => {
-            const next = themePreference(event.target.value);
-            try {
-              window.localStorage.setItem(themeStorageKey, next);
-            } catch {
-              /* Session choice still works. */
-            }
-            apply(next);
-            window.dispatchEvent(new Event(eventName));
-          }}
-        >
-          <option value="system">
-            {locale === "ar" ? "النظام" : "System"}
-          </option>
-          <option value="light">{locale === "ar" ? "فاتح" : "Light"}</option>
-          <option value="dark">{locale === "ar" ? "داكن" : "Dark"}</option>
-        </select>
-      </div>
+        <figcaption>
+          {locale === "ar" ? "معاينة السمة" : "Theme preview"}
+        </figcaption>
+      </figure>
     </div>
   );
 }

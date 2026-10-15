@@ -16,3 +16,10 @@ export function syntheticLoginRole(email: unknown, password: unknown) {
     ? syntheticAccounts[normalized]!
     : null;
 }
+
+export const syntheticDisplayNames: Readonly<Record<SyntheticRole, string>> = {
+  student: "Samir Hassan",
+  leader: "Mona Ali",
+  admin: "Ahmed (sample)",
+  "second-admin": "Ziad (sample)",
+};

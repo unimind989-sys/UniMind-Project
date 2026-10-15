@@ -18,6 +18,7 @@ export const adminActionNames = [
 export type AdminActionName = (typeof adminActionNames)[number];
 
 const uuid = z.string().uuid();
+export const adminHoldExpirySchema = z.string().datetime({ offset: true });
 const sharedFields = {
   targetId: uuid,
   expectedVersion: z.number().int().min(0),
@@ -72,7 +73,7 @@ const actionSchemas = [
     ...sharedFields,
     action: z.literal("PLACE_RAW_HOLD"),
     expectedState: z.literal("STORED"),
-    holdExpiresAt: z.string().datetime({ offset: true }),
+    holdExpiresAt: adminHoldExpirySchema,
     reviewAttested: z.literal(true),
   }),
   z.object({
@@ -148,6 +149,7 @@ export type AdminActionCandidate = Readonly<{
   commandState: string | null;
   initiatorSlot: "AHMED" | "ZIAD" | null;
   correlationId: string | null;
+  holdExpiresAt?: string | null | undefined;
 }>;
 
 const adminActionCandidateSchema = z.object({
@@ -167,6 +169,7 @@ const adminActionCandidateSchema = z.object({
   commandState: z.string().max(40).nullable(),
   initiatorSlot: z.enum(["AHMED", "ZIAD"]).nullable(),
   correlationId: uuid.nullable(),
+  holdExpiresAt: adminHoldExpirySchema.nullable().optional(),
 });
 
 export function parseAdminActionCandidates(

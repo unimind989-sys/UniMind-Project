@@ -18,6 +18,7 @@ import {
 import { useProductServices } from "./product-services";
 import { ProductLink, Notice } from "./product-ui";
 import type { Locale } from "./synthetic-fixtures";
+import { syntheticCampaignId } from "./synthetic-campaigns";
 import { useSyntheticNavigation } from "./product-navigation";
 import {
   syntheticAccounts as accounts,
@@ -187,9 +188,10 @@ export function ProductAuth({
           : null;
       const allowedReturn =
         requested &&
-        /^\/(learn(?:\/[a-z0-9/-]+)?|settings|admin(?:\/[a-z-]+)?|batch-leader(?:\/campaigns\/sample-campaign|\/invitation)?)$/u.test(
+        (/^\/(learn(?:\/[a-z0-9/-]+)?|settings|admin(?:\/[a-z-]+)?|batch-leader(?:\/campaigns\/sample-campaign|\/invitation)?)$/u.test(
           requested.pathname,
-        );
+        ) ||
+          syntheticCampaignId(requested.pathname) !== null);
       const returnQuery = new URLSearchParams();
       if (requested?.searchParams.has("fixture"))
         returnQuery.set("fixture", requested.searchParams.get("fixture")!);

@@ -1,4 +1,4 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Page, type Request } from "@playwright/test";
 
 test.describe.configure({ timeout: 60_000 });
 
@@ -52,7 +52,9 @@ test("English desktop containment requires a scoped review and announces success
     page.getByRole("button", { name: "Review exact change" }),
   ).toBeFocused();
   await page.getByRole("button", { name: "Review exact change" }).click();
-  await page.getByRole("button", { name: "Submit this action" }).click();
+  await page
+    .getByRole("button", { name: "Submit this action: Hide unit" })
+    .click();
   await expect(
     page.getByText("The governed change was recorded."),
   ).toBeVisible();
@@ -73,7 +75,9 @@ test("protected and pending founder paths show distinct confirmation state", asy
   await expect(
     page.getByRole("dialog", { name: "Review before recording" }),
   ).toContainText("other verified founder");
-  await page.getByRole("button", { name: "Confirm this exact change" }).click();
+  await page
+    .getByRole("button", { name: "Confirm this exact change: Publish unit" })
+    .click();
   await expect(
     page.getByText("needs a distinct founder confirmation."),
   ).toBeVisible();
@@ -87,7 +91,9 @@ test("protected and pending founder paths show distinct confirmation state", asy
   );
   await page.getByRole("button", { name: "Review exact change" }).click();
   await expect(
-    page.getByRole("button", { name: "Add my separate founder confirmation" }),
+    page.getByRole("button", {
+      name: "Add my separate founder confirmation: Publish unit",
+    }),
   ).toBeVisible();
 });
 
@@ -123,7 +129,11 @@ test("stale and unavailable results preserve a recoverable scoped review", async
       .getByLabel("Reason for this change")
       .fill("Contain this synthetic target during review.");
     await page.getByRole("button", { name: "Review exact change" }).click();
-    await page.getByRole("button", { name: "Submit this action" }).click();
+    await page
+      .getByRole("button", {
+        name: `Submit this action: ${state === "stale" ? "Lock cohort" : "Deactivate source version"}`,
+      })
+      .click();
     await expect(page.getByText(message)).toBeVisible();
     await expect(page.getByText(message)).toBeFocused();
   }
@@ -152,7 +162,9 @@ test("Arabic mobile review, keyboard and direction retain the exact scope", asyn
   await expect(
     page.getByRole("dialog", { name: "راجع قبل التسجيل" }),
   ).toContainText("a0000000-0000-4000-8000-000000000001");
-  await page.getByRole("button", { name: "إرسال هذا الإجراء" }).focus();
+  await page
+    .getByRole("button", { name: "إرسال هذا الإجراء: إخفاء الوحدة" })
+    .focus();
   await page.keyboard.press("Enter");
   await expect(page.getByText("تم تسجيل التغيير الحوكمي.")).toBeVisible();
   const overflow = await page.evaluate(
@@ -174,7 +186,7 @@ test("Arabic mobile pending, stale, and unavailable states stay actionable", asy
   );
   await page.getByRole("button", { name: "مراجعة التغيير المحدد" }).click();
   await expect(
-    page.getByRole("button", { name: "إضافة تأكيدي كمؤسس مستقل" }),
+    page.getByRole("button", { name: "إضافة تأكيدي كمؤسس مستقل: نشر الوحدة" }),
   ).toBeVisible();
   await expect(
     page
@@ -195,7 +207,11 @@ test("Arabic mobile pending, stale, and unavailable states stay actionable", asy
       .getByLabel("سبب هذا التغيير")
       .fill("إخفاء الوحدة التجريبية حتى تنتهي المراجعة.");
     await page.getByRole("button", { name: "مراجعة التغيير المحدد" }).click();
-    await page.getByRole("button", { name: "إرسال هذا الإجراء" }).click();
+    await page
+      .getByRole("button", {
+        name: `إرسال هذا الإجراء: ${state === "stale" ? "قفل المجموعة الدراسية" : "إيقاف إصدار المصدر"}`,
+      })
+      .click();
     await expect(page.getByText(message)).toBeVisible();
     await expect(page.getByText(message)).toBeFocused();
   }
@@ -233,5 +249,31 @@ test("empty, unavailable, and forbidden queues fail closed", async ({
     await expect(
       page.getByRole("button", { name: "Review exact change" }),
     ).toHaveCount(0);
+  }
+});
+
+test("both locales keep a persistently unavailable queue closed after recheck", async ({
+  page,
+}) => {
+  for (const [locale, heading, button] of [
+    ["en", "Admin queue unavailable", "Recheck current decisions"],
+    ["ar", "قائمة الإدارة غير متاحة", "إعادة فحص القرارات الحالية"],
+  ] as const) {
+    await page.goto(`/preview/admin?lang=${locale}&state=unavailable`);
+    const writes: string[] = [];
+    const trackWrite = (request: Request) => {
+      if (!["GET", "HEAD"].includes(request.method())) {
+        writes.push(request.method());
+      }
+    };
+    page.on("request", trackWrite);
+    await page.getByRole("button", { name: button, exact: true }).click();
+    await expect(page.getByRole("heading", { name: heading })).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: button, exact: true }),
+    ).toBeEnabled();
+    await expect(page.getByRole("main").getByRole("list")).toHaveCount(0);
+    expect(writes).toEqual([]);
+    page.off("request", trackWrite);
   }
 });

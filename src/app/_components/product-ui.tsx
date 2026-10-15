@@ -2,7 +2,7 @@
 
 import type { Route } from "next";
 import { ProductNavigationLink as Link } from "@/app/_components/product-navigation";
-import type { ReactNode } from "react";
+import type { MouseEventHandler, ReactNode } from "react";
 import { text, type Locale, type Localized } from "./synthetic-fixtures";
 import styles from "./product.module.css";
 
@@ -10,10 +10,14 @@ export function ProductLink({
   href,
   locale,
   children,
+  "aria-current": current,
+  onClick,
 }: {
   href: string;
   locale: Locale;
   children: ReactNode;
+  "aria-current"?: "page" | undefined;
+  onClick?: MouseEventHandler<HTMLAnchorElement>;
 }) {
   const address = new URL(href, "https://synthetic.invalid");
   address.searchParams.set("lang", locale);
@@ -22,6 +26,8 @@ export function ProductLink({
       className={styles.link}
       href={`${address.pathname}${address.search}${address.hash}` as Route}
       prefetch={false}
+      aria-current={current}
+      {...(onClick ? { onClick } : {})}
     >
       {children}
     </Link>

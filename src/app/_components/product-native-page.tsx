@@ -1,6 +1,8 @@
 "use client";
 import { useProductText } from "@/app/_components/product-copy";
 import { useProductRouter } from "@/app/_components/product-navigation";
+import { syntheticDemoTime } from "@/lib/demo/synthetic-clock.application";
+import { formatCollectionDate } from "@/lib/i18n/collection-format";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -15,6 +17,7 @@ import { FrontendShell } from "./frontend-system";
 import { AppShell } from "./app-shell";
 import { AcademicSettings } from "./academic-settings";
 import { AccountLayout } from "./account-layout";
+import { useProductProfileName } from "./product-profile";
 import { Appearance } from "./appearance";
 import { Landing } from "./landing";
 import { authorizedAcademicContext } from "@/lib/account/account.application";
@@ -24,16 +27,26 @@ import {
   resolveCatalogJourney,
 } from "@/lib/catalog/catalog-journey.application";
 import type { WorkspaceScope } from "@/lib/workspace/workspace.application";
-import { useProductServices } from "./product-services";
+import { useProductServices, type ProductState } from "./product-services";
+import { resolveStudyReturnPath } from "@/lib/study/study-origin.application";
+import { recentStudyDetails } from "@/lib/study/recent-work.application";
+import { studyRecovery } from "@/lib/study/study-recovery.application";
 import { ProductAuth } from "./product-auth";
 import { ProductAdmin } from "./product-admin";
+import { adminPreviewReturn } from "./synthetic-admin-context";
 import { AdminWorkspace } from "@/app/admin/_components/admin-workspace";
-import { ProductCollection, makeDemoCampaign } from "./product-collection";
+import { ProductCollection } from "./product-collection";
+import {
+  assignedSyntheticCampaigns,
+  demoCampaignId,
+} from "./synthetic-campaigns";
 import { LeaderHome } from "@/app/batch-leader/_components/leader-home";
 import { ProductCampaigns, ProductResource } from "./product-operations";
-import { ProductLink, Button, Notice, Select } from "./product-ui";
+import { ChoiceGroup } from "./choice-group";
+import { ProductLink, Button, Notice } from "./product-ui";
 import {
   reviewCatalogRows,
+  defaultScope,
   sampleScopeAvailable,
   resourceNames,
   text,
@@ -42,6 +55,10 @@ import {
 import styles from "./product.module.css";
 import accountStyles from "./student-account.module.css";
 import { useSyntheticNavigation } from "./product-navigation";
+import {
+  prepareStudyDensity,
+  studyFixtureSourceCount,
+} from "./synthetic-study-density";
 
 const authModes = {
   login: "login",
@@ -52,28 +69,156 @@ const authModes = {
   "reset-password": "reset",
 } as const;
 
+function currentStudyReturn(state: ProductState, now: number) {
+  if (!state.role || state.role === "leader") return null;
+  const preferred =
+    state.role === "student" && state.academicContext
+      ? authorizedAcademicContext(
+          state.academicContext,
+          reviewCatalogRows.filter((row) =>
+            sampleScopeAvailable(state, row.cohort.id, row.unit.id),
+          ),
+        )
+      : null;
+  if (state.role === "student" && state.academicContext && !preferred)
+    return null;
+  for (const row of reviewCatalogRows) {
+    if (!sampleScopeAvailable(state, row.cohort.id, row.unit.id)) continue;
+    if (preferred && !authorizedAcademicContext(preferred, [row])) continue;
+    const target = resolveStudyReturnPath(
+      state.lastStudyPath,
+      `/learn/${row.cohort.id}/${row.unit.id}`,
+      state.attempts[row.unit.id],
+      now,
+    );
+    if (target) return { ...target, unit: row.unit };
+  }
+  return null;
+}
+
+function currentStudyDetails(state: ProductState, locale: Locale, now: number) {
+  const target = currentStudyReturn(state, now);
+  if (!target) return null;
+  const unitId = target.unit.id;
+  return recentStudyDetails({
+    tool: target.tool,
+    locale,
+    now,
+    conversation: state.sessions.find(
+      (session) =>
+        session.scope === unitId && session.id === state.activeSessions[unitId],
+    ),
+    artifact: state.artifacts[unitId],
+    attempt: state.attempts[unitId],
+  });
+}
+
 export function ProductNativePage({
   screen,
   locale,
   fixture,
-  scope,
+  scope: inputScope,
   callbackToken,
+  campaignId = demoCampaignId,
 }: {
   screen: string;
   locale: Locale;
   fixture: string;
   scope?: WorkspaceScope;
   callbackToken?: string | undefined;
+  campaignId?: string;
 }) {
-  const { state, update } = useProductServices();
+  const { state, update, collectionMemory } = useProductServices();
+  const [studyReturnTime, refreshStudyReturnTime] = useState(() => Date.now());
+  const scope = inputScope
+    ? {
+        ...inputScope,
+        sourceCount: studyFixtureSourceCount(
+          state,
+          inputScope.unitId,
+          inputScope.sourceCount,
+        ),
+      }
+    : undefined;
   const hosted = useSyntheticNavigation();
   const router = useProductRouter();
   const pathname = usePathname();
   const query = useSearchParams();
+  useEffect(() => {
+    if (pathname !== "/learn") return;
+    const target = currentStudyReturn(state, Date.now());
+    if (target?.tool !== "attempt" && target?.tool !== "quiz-review") return;
+    const attempt = target && state.attempts[target.unit.id];
+    if (!attempt?.expiresAt || attempt.submitted || attempt.abandoned) return;
+    const expiresAt = attempt.expiresAt;
+    const timer = setInterval(() => {
+      const now = Date.now();
+      refreshStudyReturnTime(now);
+      if (now >= expiresAt) clearInterval(timer);
+    }, 500);
+    return () => clearInterval(timer);
+  }, [pathname, state]);
   const [loading, setLoading] = useState(fixture === "loading");
   const signingOut = useRef(false);
   const t = useProductText(locale);
   const auth = Object.hasOwn(authModes, screen);
+  useEffect(() => {
+    if (
+      fixture !== "dense" ||
+      hosted?.active ||
+      !["campaign-list", "collection"].includes(screen)
+    )
+      return;
+    update((current) =>
+      current.role === "leader" &&
+      current.verified &&
+      current.consent &&
+      !current.campaignDensity
+        ? { ...current, campaignDensity: true }
+        : current,
+    );
+  }, [
+    fixture,
+    hosted?.active,
+    screen,
+    state.role,
+    state.verified,
+    state.consent,
+    update,
+  ]);
+  useEffect(() => {
+    if (
+      fixture !== "dense" ||
+      hosted?.active ||
+      inputScope?.unitId !== defaultScope.unitId
+    )
+      return;
+    update((current) => {
+      if (
+        !current.verified ||
+        !current.consent ||
+        !["student", "admin", "second-admin"].includes(current.role ?? "") ||
+        !sampleScopeAvailable(current, inputScope.cohortId, inputScope.unitId)
+      )
+        return current;
+      return prepareStudyDensity(
+        current,
+        inputScope.unitId,
+        current.studyLanguage ?? locale,
+      );
+    });
+  }, [
+    fixture,
+    hosted?.active,
+    inputScope?.cohortId,
+    inputScope?.unitId,
+    locale,
+    state.consent,
+    state.verified,
+    state.role,
+    state.availability,
+    update,
+  ]);
   const home =
     state.role === "leader"
       ? "/batch-leader"
@@ -131,15 +276,24 @@ export function ProductNativePage({
     state.verified,
   ]);
   const signedOut = () => {
+    collectionMemory.clear();
     if (hosted?.active) {
       update(() => ({
         ...state,
         role: null,
+        displayName: null,
+        studyLanguage: null,
+        evidenceHintSeen: false,
         account: "NEW",
         consent: false,
+        campaignDensity: false,
+        submissions: [],
         chatDrafts: {},
+        quizDrafts: {},
         lastStudyPath: null,
         academicContext: null,
+        adminPreview: null,
+        catalogChoice: state.catalogDraft ?? "MODULE",
       }));
       hosted.leave(locale);
       return;
@@ -148,12 +302,20 @@ export function ProductNativePage({
     update((current) => ({
       ...current,
       role: null,
+      displayName: null,
+      studyLanguage: null,
+      evidenceHintSeen: false,
       account: "NEW",
       consent: false,
+      campaignDensity: false,
+      submissions: [],
       verified: true,
       chatDrafts: {},
+      quizDrafts: {},
       lastStudyPath: null,
       academicContext: null,
+      adminPreview: null,
+      catalogChoice: current.catalogDraft ?? "MODULE",
     }));
     router.push(`/login?lang=${locale}` as Route);
   };
@@ -163,6 +325,9 @@ export function ProductNativePage({
         "Synthetic demo · Simulated services · Reload clears demo data",
         "عرض تجريبي · خدمات محاكاة · إعادة التحميل تمسح بيانات العرض",
       )}
+      {" · "}
+      {t("Demo clock", "ساعة العرض التجريبي")}:{" "}
+      <bdi>{syntheticDemoTime.clockLabel}</bdi>
     </div>
   );
   if (screen === "home" && !state.role) return <Landing locale={locale} />;
@@ -211,7 +376,17 @@ export function ProductNativePage({
   ];
   const blocked =
     !allowedRole ||
+    (screen === "collection" &&
+      campaignId !== demoCampaignId &&
+      !state.campaignDensity) ||
     (scope && !sampleScopeAvailable(state, scope.cohortId, scope.unitId));
+  const studyView = Boolean(scope) || screen === "catalog";
+  const recovery =
+    studyView && !blocked ? studyRecovery(screen, fixture, locale) : null;
+  const visibleStudyScope =
+    scope &&
+    !blocked &&
+    (!general.includes(fixture) || recovery?.transient === true);
   const special =
     screen === "decisions" ||
     (screen === "collection" &&
@@ -229,83 +404,146 @@ export function ProductNativePage({
   if (loading || blocked || (!special && general.includes(fixture))) {
     const message = loading
       ? t("Loading…", "جار التحميل…")
-      : !allowedRole || fixture === "forbidden" || fixture === "wrong-scope"
-        ? t(
-            "Access unavailable for this account or scope.",
-            "الوصول غير متاح لهذا الحساب أو النطاق.",
-          )
-        : blocked ||
-            ["locked", "unpublished", "no-ready-source"].includes(fixture)
+      : (recovery?.message ??
+        (!allowedRole ||
+        (screen === "collection" &&
+          campaignId !== demoCampaignId &&
+          !state.campaignDensity) ||
+        fixture === "forbidden" ||
+        fixture === "wrong-scope"
           ? t(
-              "This unit is unavailable. Its cohort, publication or approved sources do not meet availability requirements.",
-              "هذه الوحدة غير متاحة. المجموعة أو النشر أو المصادر المعتمدة لا تستوفي شروط الإتاحة.",
+              "Access unavailable for this account or scope.",
+              "الوصول غير متاح لهذا الحساب أو النطاق.",
             )
-          : fixture === "empty" || fixture === "no-membership"
-            ? t(
-                "Nothing to show yet. No assigned or available records.",
-                "لا توجد سجلات متاحة أو مسندة للعرض بعد.",
-              )
-            : fixture === "quota"
+          : scope && blocked
+            ? t("Study access unavailable", "الوصول للمذاكرة غير متاح")
+            : blocked ||
+                ["locked", "unpublished", "no-ready-source"].includes(fixture)
               ? t(
-                  "Allowance unavailable. Try again later; no numeric limit is approved.",
-                  "الرصيد غير متاح. حاول لاحقًا؛ لم يعتمد حد رقمي.",
+                  "This unit is unavailable. Its cohort, publication or approved sources do not meet availability requirements.",
+                  "هذه الوحدة غير متاحة. المجموعة أو النشر أو المصادر المعتمدة لا تستوفي شروط الإتاحة.",
                 )
-              : fixture === "capacity"
+              : fixture === "empty" || fixture === "no-membership"
                 ? t(
-                    "Capacity is temporarily unavailable. Try again later.",
-                    "السعة غير متاحة مؤقتًا. حاول لاحقًا.",
+                    "Nothing to show yet. No assigned or available records.",
+                    "لا توجد سجلات متاحة أو مسندة للعرض بعد.",
                   )
-                : fixture === "offline"
+                : fixture === "quota"
                   ? t(
-                      "Connection interrupted. Your current demo records remain in this tab.",
-                      "توقف الاتصال. سجلات العرض الحالية تبقى في هذا التبويب.",
+                      "Allowance unavailable. Try again later; no numeric limit is approved.",
+                      "الرصيد غير متاح. حاول لاحقًا؛ لم يعتمد حد رقمي.",
                     )
-                  : ["expired", "replayed"].includes(fixture)
+                  : fixture === "capacity"
                     ? t(
-                        "This link or assignment has expired or was already used. Return and request a fresh link.",
-                        "انتهى الرابط أو التكليف أو استخدم سابقًا. ارجع واطلب رابطًا جديدًا.",
+                        "Capacity is temporarily unavailable. Try again later.",
+                        "السعة غير متاحة مؤقتًا. حاول لاحقًا.",
                       )
-                    : fixture === "stale"
+                    : fixture === "offline"
                       ? t(
-                          "This view changed. Reload its current state before continuing.",
-                          "تغيرت هذه الصفحة. أعد تحميل حالتها الحالية قبل المتابعة.",
+                          "Connection interrupted. Your current demo records remain in this tab.",
+                          "توقف الاتصال. سجلات العرض الحالية تبقى في هذا التبويب.",
                         )
-                      : t(
-                          "This view could not be loaded. Please retry.",
-                          "تعذر تحميل هذا العرض. أعد المحاولة.",
-                        );
+                      : ["expired", "replayed"].includes(fixture)
+                        ? t(
+                            "This link or assignment has expired or was already used. Return and request a fresh link.",
+                            "انتهى الرابط أو التكليف أو استخدم سابقًا. ارجع واطلب رابطًا جديدًا.",
+                          )
+                        : fixture === "stale"
+                          ? t(
+                              "This view changed. Reload its current state before continuing.",
+                              "تغيرت هذه الصفحة. أعد تحميل حالتها الحالية قبل المتابعة.",
+                            )
+                          : t(
+                              "This view could not be loaded. Please retry.",
+                              "تعذر تحميل هذا العرض. أعد المحاولة.",
+                            )));
     content = (
       <section className={styles.panel} aria-live="polite">
         <h2>{message}</h2>
+        {recovery && !loading ? <p>{recovery.detail}</p> : null}
+        {!loading &&
+        !blocked &&
+        allowedRole &&
+        fixture === "expired" &&
+        ["collection", "campaign-list"].includes(screen) ? (
+          <p>
+            {t("Assignment expired", "انتهى التكليف")}:{" "}
+            {formatCollectionDate(locale, syntheticDemoTime.expiredAt)}
+          </p>
+        ) : null}
         {!loading ? (
           <div className={styles.actions}>
-            <Button
-              onClick={() => {
-                const next = new URLSearchParams(query);
-                next.delete("fixture");
-                router.replace(`${pathname}?${next}` as Route);
-              }}
-            >
-              {t("Retry", "إعادة المحاولة")}
-            </Button>
-            <ProductLink href={home} locale={locale}>
-              {t("Back", "العودة")}
-            </ProductLink>
+            {!studyView || (!blocked && recovery?.transient) ? (
+              <Button
+                onClick={() => {
+                  const next = new URLSearchParams(query);
+                  next.delete("fixture");
+                  router.replace(`${pathname}?${next}` as Route);
+                }}
+              >
+                {recovery?.retryLabel ?? t("Retry", "إعادة المحاولة")}
+              </Button>
+            ) : null}
+            {scope && recovery?.transient && !blocked ? (
+              <ProductLink
+                href={`/learn/${scope.cohortId}/${scope.unitId}`}
+                locale={locale}
+              >
+                {t("View available materials", "عرض مصادر المذاكرة المتاحة")}
+              </ProductLink>
+            ) : null}
+            {!(
+              scope &&
+              recovery?.transient &&
+              ["admin", "second-admin"].includes(state.role)
+            ) ? (
+              <ProductLink
+                href={
+                  scope &&
+                  (state.role === "admin" || state.role === "second-admin")
+                    ? adminPreviewReturn(state, scope, locale)
+                    : studyView && state.role === "student"
+                      ? "/learn?view=subjects"
+                      : home
+                }
+                locale={locale}
+              >
+                {scope &&
+                (state.role === "admin" || state.role === "second-admin")
+                  ? t("Return to Admin", "العودة للإدارة")
+                  : studyView && state.role === "student"
+                    ? t("Browse available subjects", "تصفح المواد المتاحة")
+                    : t("Back", "العودة")}
+              </ProductLink>
+            ) : null}
           </div>
         ) : null}
       </section>
     );
   } else if (screen === "catalog") {
-    const rows = reviewCatalogRows.filter((row) =>
-      sampleScopeAvailable(state, row.cohort.id, row.unit.id),
-    );
+    const rows = reviewCatalogRows
+      .filter((row) => sampleScopeAvailable(state, row.cohort.id, row.unit.id))
+      .map((row) =>
+        row.unit.id === state.studyDensityUnitId
+          ? {
+              ...row,
+              unit: {
+                ...row.unit,
+                sourceCount: studyFixtureSourceCount(
+                  state,
+                  row.unit.id,
+                  row.unit.sourceCount ?? 8,
+                ),
+              },
+            }
+          : row,
+      );
     if (
       !authorizedAcademicContext(state.academicContext, rows) &&
       !query.has("stage")
     )
       return (
         <AppShell locale={locale} synthetic title={t("Study", "المذاكرة")}>
-          <h1>{t("Welcome to UniMind", "مرحبًا بك في UniMind")}</h1>
           <AcademicSettings
             locale={locale}
             rows={rows}
@@ -333,7 +571,8 @@ export function ProductNativePage({
         basePath="/learn"
         synthetic
         completeNavigation
-        lastStudyPath={state.lastStudyPath}
+        lastStudyPath={currentStudyReturn(state, studyReturnTime)?.href ?? null}
+        lastStudyDetails={currentStudyDetails(state, locale, studyReturnTime)}
         unitPresentationById={syntheticUnitPresentationById}
       />
     );
@@ -352,11 +591,18 @@ export function ProductNativePage({
   else if (screen === "decisions")
     content = <ProductAdmin locale={locale} fixture={fixture} />;
   else if (screen === "collection")
-    content = <ProductCollection locale={locale} fixture={fixture} />;
+    content = (
+      <ProductCollection
+        locale={locale}
+        fixture={fixture}
+        campaignId={campaignId}
+      />
+    );
   else if (screen === "campaign-list")
     content = (
       <LeaderHome
-        campaigns={[makeDemoCampaign(state, locale)]}
+        referenceTime={syntheticDemoTime.now}
+        campaigns={assignedSyntheticCampaigns(state, locale)}
         locale={locale}
         history={query.get("view") === "history"}
         synthetic
@@ -370,16 +616,48 @@ export function ProductNativePage({
     content = (
       <ProductResource locale={locale} screen={screen} scenario={fixture} />
     );
+  if (scope && !visibleStudyScope) {
+    return (
+      <AppShell
+        locale={locale}
+        synthetic
+        role={
+          state.role === "leader"
+            ? "leader"
+            : state.role === "student"
+              ? "student"
+              : "admin"
+        }
+        roleLabel={
+          state.role === "second-admin"
+            ? t("Second Admin", "المسؤول الثاني")
+            : undefined
+        }
+        title={t("Study", "المذاكرة")}
+      >
+        <h1>{t("Study", "المذاكرة")}</h1>
+        <div className={styles.studyBody}>{content}</div>
+      </AppShell>
+    );
+  }
   const standalone =
     ["catalog", "decisions", "collection"].includes(screen) &&
     !loading &&
     !blocked &&
     (special || !general.includes(fixture));
-  if (scope) {
+  if (scope && visibleStudyScope) {
     return (
       <FrontendShell
         locale={locale}
         title={locale === "ar" ? scope.unitTitleAr : scope.unitTitleEn}
+        unitLabel={
+          locale === "ar"
+            ? scope.unitLabelSingularAr
+            : scope.unitLabelSingularEn
+        }
+        institution={
+          locale === "ar" ? scope.institutionNameAr : scope.institutionNameEn
+        }
         context={`${locale === "ar" ? scope.programNameAr : scope.programNameEn} · ${locale === "ar" ? scope.levelNameAr : scope.levelNameEn} · ${locale === "ar" ? scope.termNameAr : scope.termNameEn}`}
         base={`/learn/${scope.cohortId}/${scope.unitId}`}
         scopeControl={
@@ -389,9 +667,10 @@ export function ProductNativePage({
             base={`/learn/${scope.cohortId}/${scope.unitId}`}
           />
         }
-        available={!blocked && !general.includes(fixture)}
+        available={Boolean(visibleStudyScope)}
         account={`${state.role}@example.invalid`}
         returnToAdmin={state.role === "admin" || state.role === "second-admin"}
+        adminReturnHref={adminPreviewReturn(state, scope, locale)}
         signOut={signedOut}
       >
         <div className={styles.studyBody}>{content}</div>
@@ -446,6 +725,7 @@ export function ProductNativePage({
     )
       return (
         <LeaderHome
+          referenceTime={syntheticDemoTime.now}
           campaigns={[]}
           locale={locale}
           history={query.get("view") === "history"}
@@ -466,8 +746,8 @@ export function ProductNativePage({
         : screen === "invitation"
           ? t("Campaign invitation", "دعوة حملة")
           : query.get("view") === "history"
-            ? t("History", "السجل")
-            : t("Uploads", "الرفع");
+            ? t("Latest submissions", "آخر الإرسالات")
+            : t("Source intake", "استلام المصادر");
     return (
       <AppShell locale={locale} role="leader" synthetic title={leaderTitle}>
         <h1>{leaderTitle}</h1>
@@ -482,13 +762,13 @@ export function ProductNativePage({
         synthetic
         title={
           screen === "settings"
-            ? t("Account", "الحساب")
+            ? t("Settings", "الإعدادات")
             : t("Study", "المذاكرة")
         }
       >
         <h1>
           {screen === "settings"
-            ? t("Account", "الحساب")
+            ? t("Settings", "الإعدادات")
             : t("Your Study Shelf", "رف المذاكرة")}
         </h1>
         {content}
@@ -613,94 +893,200 @@ function ProductSettings({
   signOut: () => void;
 }) {
   const { state, update } = useProductServices();
+  const profileName = useProductProfileName();
+  const [studyReturnTime] = useState(() => Date.now());
   const t = useProductText(locale);
   const sectionClass = accountStyles.section;
+  const studyReturn = currentStudyReturn(state, studyReturnTime);
+  const roleLabel =
+    state.role === "second-admin"
+      ? t("Second Admin", "المسؤول الثاني")
+      : state.role === "admin"
+        ? t("Admin", "مسؤول")
+        : state.role === "leader"
+          ? t("Batch Leader", "مسؤول الدفعة")
+          : t("Student", "طالب");
+  const returnLabels = {
+    chat: t("Return to Chat", "العودة إلى المحادثة"),
+    studio: t("Return to Studio", "العودة إلى الاستوديو"),
+    quiz: t("Return to Quiz", "العودة إلى الاختبار"),
+    attempt: t("Return to quiz attempt", "العودة إلى محاولة الاختبار"),
+    "quiz-review": t("Return to quiz review", "العودة إلى مراجعة الاختبار"),
+  };
   return (
-    <AccountLayout locale={locale} academic={state.role === "student"}>
-      {state.lastStudyPath ? (
-        <ProductLink href={state.lastStudyPath} locale={locale}>
-          {t("Return to last study tool", "العودة إلى آخر أداة مذاكرة")}
-        </ProductLink>
-      ) : null}
-      <section id="appearance-settings" className={sectionClass}>
-        <h2>{t("Appearance", "المظهر")}</h2>
-        <Appearance locale={locale} />
-      </section>
-      {state.role === "student" ? (
-        <AcademicSettings
-          locale={locale}
-          rows={reviewCatalogRows.filter((row) =>
-            sampleScopeAvailable(state, row.cohort.id, row.unit.id),
-          )}
-          initialContext={state.academicContext}
-          save={async (context) => {
-            const rows = reviewCatalogRows.filter((row) =>
-              sampleScopeAvailable(state, row.cohort.id, row.unit.id),
-            );
-            if (!authorizedAcademicContext(context, rows))
-              return { status: "INVALID" };
-            update((current) => ({ ...current, academicContext: context }));
-            return { status: "SAVED" };
-          }}
-        />
-      ) : null}
-      <section id="privacy-settings" className={sectionClass}>
-        <h2>{t("Future exchange sharing", "مشاركة المحادثات القادمة")}</h2>
-        <Select
-          id="sharing-mode"
-          label={t("Sharing mode", "وضع المشاركة")}
-          value={state.sharing}
-          options={[
-            [
-              "shared",
-              t("Founder-visible by default", "ظاهر للمؤسسين افتراضيًا"),
-            ],
-            ["private", t("Private / no sharing", "خاص / عدم مشاركة")],
-          ]}
-          onChange={(value) =>
-            update((current) => ({
-              ...current,
-              sharing: value === "private" ? "private" : "shared",
-            }))
-          }
-        />
-        <p>
-          {t(
-            "Earlier exchanges keep their recorded mode. Private mode is separate from saving and retention. Qualifying reports permit audited review of the reported exchange only; the disclosure wording is still being confirmed.",
-            "تحتفظ المحادثات السابقة بوضعها المسجل. الخصوصية منفصلة عن الحفظ والاحتفاظ. البلاغ المؤهل يسمح بمراجعة المحادثة المبلغ عنها فقط مع التدقيق؛ صياغة الإفصاح ما زالت قيد التأكيد.",
-          )}
-        </p>
-      </section>
-      <section className={sectionClass}>
-        <h2>{t("Saving and retention", "الحفظ والاحتفاظ")}</h2>
-        <Notice>
-          {t(
-            "Retention settings are still being confirmed. No retention period or deletion action is available here yet.",
-            "إعدادات الاحتفاظ ما زالت قيد التأكيد. لا تتوفر هنا مدة احتفاظ أو إجراءات حذف بعد.",
-          )}
-        </Notice>
-      </section>
-      <section id="identity-settings" className={sectionClass}>
-        <h2>{t("Your account", "حسابك")}</h2>
-        <p>
-          {t("Assigned role", "الدور المسند")}:{" "}
-          <strong>
-            {state.role === "second-admin"
-              ? t("Second Admin", "المسؤول الثاني")
-              : state.role === "admin"
-                ? t("Admin", "مسؤول")
-                : state.role === "leader"
-                  ? t("Batch Leader", "مسؤول الدفعة")
-                  : t("Student", "طالب")}
-          </strong>
-        </p>
-        <div className={styles.actions}>
-          <ProductLink href="/forgot-password" locale={locale}>
-            {t("Reset password", "تغيير كلمة المرور")}
-          </ProductLink>
-          <Button onClick={signOut}>{t("Sign out", "تسجيل الخروج")}</Button>
-        </div>
-      </section>
-    </AccountLayout>
+    <>
+      <AccountLayout
+        locale={locale}
+        identity={{ name: profileName, role: roleLabel }}
+        signOutAction={
+          <Button variant="quiet" onClick={signOut}>
+            {t("Sign out", "تسجيل الخروج")}
+          </Button>
+        }
+        returnAction={
+          studyReturn ? (
+            <ProductLink href={studyReturn.href} locale={locale}>
+              <span>
+                {returnLabels[studyReturn.tool]} ·{" "}
+                <bdi>
+                  {locale === "ar"
+                    ? studyReturn.unit.nameAr
+                    : studyReturn.unit.nameEn}
+                </bdi>
+              </span>
+            </ProductLink>
+          ) : state.role === "student" && state.academicContext ? (
+            <ProductLink href="/learn" locale={locale}>
+              {t("Open current study path", "فتح المسار الدراسي الحالي")}
+            </ProductLink>
+          ) : null
+        }
+        views={[
+          {
+            id: "appearance",
+            label: t("Appearance", "المظهر"),
+            content: (
+              <section
+                id="appearance-settings"
+                className={`${sectionClass} ${accountStyles.compactSection}`}
+              >
+                <h2>{t("Appearance", "المظهر")}</h2>
+                <Appearance locale={locale} />
+              </section>
+            ),
+          },
+          ...(state.role === "student"
+            ? [
+                {
+                  id: "academic",
+                  label: t("Academic settings", "الإعدادات الدراسية"),
+                  content: (
+                    <AcademicSettings
+                      locale={locale}
+                      rows={reviewCatalogRows.filter((row) =>
+                        sampleScopeAvailable(state, row.cohort.id, row.unit.id),
+                      )}
+                      initialContext={state.academicContext}
+                      save={async (context) => {
+                        const rows = reviewCatalogRows.filter((row) =>
+                          sampleScopeAvailable(
+                            state,
+                            row.cohort.id,
+                            row.unit.id,
+                          ),
+                        );
+                        if (!authorizedAcademicContext(context, rows))
+                          return { status: "INVALID" };
+                        update((current) => ({
+                          ...current,
+                          academicContext: context,
+                        }));
+                        return { status: "SAVED" };
+                      }}
+                    />
+                  ),
+                },
+              ]
+            : []),
+          {
+            id: "privacy",
+            label: t("Privacy", "الخصوصية"),
+            content: (
+              <>
+                {" "}
+                <section id="privacy-settings" className={sectionClass}>
+                  <h2>
+                    {t("Future exchange sharing", "مشاركة المحادثات القادمة")}
+                  </h2>
+                  <ChoiceGroup
+                    label={t("Sharing mode", "وضع المشاركة")}
+                    value={state.sharing}
+                    options={[
+                      [
+                        "shared",
+                        t(
+                          "Founder-visible by default",
+                          "ظاهر للمؤسسين افتراضيًا",
+                        ),
+                      ],
+                      [
+                        "private",
+                        t("Private / no sharing", "خاص / عدم مشاركة"),
+                      ],
+                    ]}
+                    onChange={(value) =>
+                      update((current) => ({
+                        ...current,
+                        sharing: value === "private" ? "private" : "shared",
+                      }))
+                    }
+                  />
+                  <dl className={accountStyles.privacyDetails}>
+                    <div>
+                      <dt>{t("Earlier exchanges", "المحادثات السابقة")}</dt>
+                      <dd>
+                        {t(
+                          "Earlier exchanges keep their recorded mode.",
+                          "تحتفظ المحادثات السابقة بوضعها المسجل.",
+                        )}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>{t("Saving and retention", "الحفظ والاحتفاظ")}</dt>
+                      <dd>
+                        {t(
+                          "Private mode is separate from saving and retention.",
+                          "الخصوصية منفصلة عن الحفظ والاحتفاظ.",
+                        )}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>
+                        {t("Reported exchanges", "المحادثات المبلغ عنها")}
+                      </dt>
+                      <dd>
+                        {t(
+                          "Qualifying reports permit audited review of the reported exchange only; the disclosure wording is still being confirmed.",
+                          "البلاغ المؤهل يسمح بمراجعة المحادثة المبلغ عنها فقط مع التدقيق؛ صياغة الإفصاح ما زالت قيد التأكيد.",
+                        )}
+                      </dd>
+                    </div>
+                  </dl>
+                </section>
+                <section className={sectionClass}>
+                  <h2>{t("Saving and retention", "الحفظ والاحتفاظ")}</h2>
+                  <Notice>
+                    {t(
+                      "Retention settings are still being confirmed. No retention period or deletion action is available here yet.",
+                      "إعدادات الاحتفاظ ما زالت قيد التأكيد. لا تتوفر هنا مدة احتفاظ أو إجراءات حذف بعد.",
+                    )}
+                  </Notice>
+                </section>
+              </>
+            ),
+          },
+          {
+            id: "identity",
+            label: t("Identity and access", "الهوية والوصول"),
+            content: (
+              <section
+                id="identity-settings"
+                className={`${sectionClass} ${accountStyles.compactSection}`}
+              >
+                <h2>{t("Your account", "حسابك")}</h2>
+                <p>
+                  {t("Manage your account access.", "إدارة الوصول إلى حسابك.")}
+                </p>
+                <div className={styles.actions}>
+                  <ProductLink href="/forgot-password" locale={locale}>
+                    {t("Reset password", "تغيير كلمة المرور")}
+                  </ProductLink>
+                </div>
+              </section>
+            ),
+          },
+        ]}
+      />
+    </>
   );
 }

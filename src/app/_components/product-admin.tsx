@@ -1,8 +1,10 @@
 "use client";
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { selectedAdminDecision } from "@/lib/admin/admin-presentation.application";
 import { AdminDecisionQueue } from "@/app/admin/_components/admin-decision-queue";
 import type { AdminActionFormState } from "@/app/admin/actions";
-import type { AdminActionCandidate } from "@/lib/admin/admin-actions.application";
+import { parseAdminHoldExpiry } from "@/lib/admin/admin-actions.application";
 import { useProductServices } from "./product-services";
 import {
   actionFixtures,
@@ -10,23 +12,15 @@ import {
   type Locale,
 } from "./synthetic-fixtures";
 import { ProductLink } from "./product-ui";
-import { defaultUnitPath, defaultScope } from "./synthetic-fixtures";
-import { useSyntheticNavigation } from "./product-navigation";
+import {
+  syntheticAdminCandidates,
+  selectedAdminOrigin,
+  adminResourceHref,
+  adminPreviewContext,
+} from "./synthetic-admin-context";
+import { resourceNames } from "./synthetic-fixtures";
+import { defaultUnitPath } from "./synthetic-fixtures";
 
-const actionNames = [
-  "PUBLISH_UNIT",
-  "HIDE_UNIT",
-  "UNLOCK_COHORT",
-  "LOCK_COHORT",
-  "ACTIVATE_SOURCE",
-  "DEACTIVATE_SOURCE",
-  "QUARANTINE_SOURCE",
-  "RETRY_SOURCE",
-  "PLACE_RAW_HOLD",
-  "REMOVE_RAW_HOLD",
-  "ENABLE_FLAG",
-  "DISABLE_FLAG",
-] as const;
 export function ProductAdmin({
   locale,
   fixture,
@@ -35,95 +29,12 @@ export function ProductAdmin({
   fixture: string;
 }) {
   const { state, update } = useProductServices();
-  const hosted = useSyntheticNavigation();
+  const query = useSearchParams();
   const [queueVersion, setQueueVersion] = useState(0);
+  const [selectedId, setSelectedId] = useState("");
+  const origin = selectedAdminOrigin(query);
   const slot = state.role === "second-admin" ? "ZIAD" : "AHMED";
-  const candidates: AdminActionCandidate[] = actionFixtures.map(
-    (action, index) => {
-      const derived =
-        action.id === "publish"
-          ? state.availability.published
-            ? "PUBLISHED"
-            : "DRAFT"
-          : action.id === "hide"
-            ? state.availability.published
-              ? "PUBLISHED"
-              : "WITHDRAWN"
-            : action.id === "unlock"
-              ? state.availability.unlocked
-                ? "UNLOCKED"
-                : "LOCKED"
-              : action.id === "lock"
-                ? state.availability.unlocked
-                  ? "UNLOCKED"
-                  : "LOCKED"
-                : action.id === "activate"
-                  ? state.availability.sourceActive
-                    ? "ACTIVE"
-                    : "INACTIVE"
-                  : action.id === "deactivate"
-                    ? state.availability.sourceActive
-                      ? "ACTIVE"
-                      : "DEACTIVATED"
-                    : action.before;
-      const current =
-        state.adminStates[action.id] === "PENDING" ||
-        (fixture === "pending" && action.id === "publish")
-          ? "PENDING"
-          : [
-                "publish",
-                "hide",
-                "unlock",
-                "lock",
-                "activate",
-                "deactivate",
-              ].includes(action.id)
-            ? derived
-            : (state.adminStates[action.id] ?? derived);
-      return {
-        candidateId: `sample-${action.id}`,
-        action: actionNames[index]!,
-        targetId: `a0000000-0000-4000-8000-${String(index + 1).padStart(12, "0")}`,
-        targetLabelEn: `${defaultScope.unitTitleEn} · ${defaultScope.cohortName}`,
-        targetLabelAr: `${defaultScope.unitTitleAr} · ${defaultScope.programNameAr} · ${defaultScope.levelNameAr} · ${defaultScope.termNameAr}`,
-        currentState:
-          current === "PENDING" || action.id === "retry"
-            ? action.before
-            : current,
-        proposedState: action.after,
-        expectedState: current === "PENDING" ? action.before : current,
-        expectedVersion: current === action.before ? 2 : 3,
-        failedPredicates:
-          action.id === "enable"
-            ? ["budget.approval_required"]
-            : fixture === "blocked"
-              ? ["source.active_ready", "source.rights_current"]
-              : current === action.after
-                ? ["target.already_applied"]
-                : [],
-        protected: action.protected,
-        pendingActionId:
-          current === "PENDING"
-            ? `b0000000-0000-4000-8000-${String(index + 1).padStart(12, "0")}`
-            : null,
-        reason:
-          current === "PENDING"
-            ? (state.pendingReasons[action.id] ?? "Synthetic readiness review.")
-            : null,
-        commandState:
-          current === "PENDING"
-            ? "PENDING_SECOND_CONFIRMATION"
-            : action.id === "retry" && current === action.after
-              ? "PENDING_OWNER_REVIEW"
-              : null,
-        initiatorSlot:
-          current === "PENDING"
-            ? (state.pendingActors[action.id] ?? "AHMED")
-            : null,
-        correlationId: null,
-      };
-    },
-  );
+  const candidates = syntheticAdminCandidates(state, fixture);
   async function submit(
     _previous: AdminActionFormState,
     data: FormData,
@@ -139,32 +50,30 @@ export function ProductAdmin({
       return { status: "ERROR", code: "READINESS_BLOCKED" };
     if (
       fixture === "stale" ||
-      Number(data.get("expectedVersion")) !== candidate.expectedVersion
+      Number(data.get("expectedVersion")) !== candidate.expectedVersion ||
+      data.get("expectedState") !== candidate.expectedState
     )
       return { status: "ERROR", code: "STALE_VERSION" };
     if (fixture === "error") return { status: "ERROR", code: "UNAVAILABLE" };
     if (candidate.pendingActionId && candidate.initiatorSlot === slot)
       return { status: "ERROR", code: "DIFFERENT_FOUNDER_REQUIRED" };
-    if (
-      candidate.action === "PLACE_RAW_HOLD" &&
-      ((hosted?.active
-        ? !Number.isFinite(Date.parse(String(data.get("holdExpiresAt")))) ||
-          Date.parse(String(data.get("holdExpiresAt"))) <= Date.now()
-        : data.get("holdExpiresAtLocal") !== "2026-10-03T16:00") ||
-        data.get("reviewAttested") !== "true")
-    )
-      return { status: "ERROR", code: "INVALID_REQUEST" };
+    const holdExpiresAt = parseAdminHoldExpiry(data.get("holdExpiresAt"));
     const reason = data.get("reason");
     if (
-      hosted?.active
-        ? typeof reason !== "string" ||
-          reason.trim().length < 8 ||
-          reason.trim().length > 500
-        : !["Synthetic readiness review.", "مراجعة جاهزية تجريبية."].includes(
-            String(reason),
-          )
+      typeof reason !== "string" ||
+      reason.trim().length < 8 ||
+      reason.trim().length > 500 ||
+      (candidate.action === "PLACE_RAW_HOLD" &&
+        (holdExpiresAt === null || data.get("reviewAttested") !== "true"))
     )
       return { status: "ERROR", code: "INVALID_REQUEST" };
+    if (
+      candidate.pendingActionId &&
+      (reason.trim() !== candidate.reason ||
+        (candidate.action === "PLACE_RAW_HOLD" &&
+          holdExpiresAt !== candidate.holdExpiresAt))
+    )
+      return { status: "ERROR", code: "CONFLICT" };
     const definition = actionFixtures[candidates.indexOf(candidate)]!;
     const pending = candidate.protected && !candidate.pendingActionId;
     const next = pending ? "PENDING" : definition.after;
@@ -174,13 +83,33 @@ export function ProductAdmin({
       pendingActors: pending
         ? { ...current.pendingActors, [definition.id]: slot }
         : current.pendingActors,
-      pendingReasons:
-        pending && hosted?.active
+      pendingVersions: pending
+        ? {
+            ...current.pendingVersions,
+            [definition.id]: candidate.expectedVersion,
+          }
+        : current.pendingVersions,
+      pendingReasons: pending
+        ? {
+            ...current.pendingReasons,
+            [definition.id]: reason.trim(),
+          }
+        : Object.fromEntries(
+            Object.entries(current.pendingReasons).filter(
+              ([id]) => id !== definition.id,
+            ),
+          ),
+      pendingHoldExpiries:
+        pending && candidate.action === "PLACE_RAW_HOLD"
           ? {
-              ...current.pendingReasons,
-              [definition.id]: String(reason).trim(),
+              ...current.pendingHoldExpiries,
+              [definition.id]: String(holdExpiresAt),
             }
-          : current.pendingReasons,
+          : Object.fromEntries(
+              Object.entries(current.pendingHoldExpiries).filter(
+                ([id]) => id !== definition.id,
+              ),
+            ),
       availability: pending
         ? current.availability
         : applySampleAvailability(current, definition.id),
@@ -203,7 +132,7 @@ export function ProductAdmin({
   const queue =
     fixture === "forbidden"
       ? { status: "FORBIDDEN" as const }
-      : fixture === "error-page"
+      : fixture === "error-page" && queueVersion === 0
         ? { status: "UNAVAILABLE" as const }
         : {
             status: "READY" as const,
@@ -212,16 +141,56 @@ export function ProductAdmin({
   return (
     <>
       <AdminDecisionQueue
-        key={queueVersion}
+        key={`${queueVersion}-${JSON.stringify(["decision", "action", "target", "version", "pending"].map((field) => query.getAll(field)))}`}
         initialLocale={locale}
         queue={queue}
         submitAction={submit}
-        reloadAction={() => setQueueVersion((value) => value + 1)}
+        reloadAction={async () => {
+          await new Promise((resolve) => setTimeout(resolve, 300));
+          setQueueVersion((value) => value + 1);
+        }}
+        initialSelection={selectedAdminDecision(candidates, query)}
+        recheckComplete={fixture === "error-page" && queueVersion > 0}
         embedded
         refreshOnSelect={false}
+        onSelection={setSelectedId}
       />
       <div>
-        <ProductLink href={defaultUnitPath} locale={locale}>
+        {origin && (
+          <ProductLink href={adminResourceHref(origin, locale)} locale={locale}>
+            {locale === "ar"
+              ? "العودة إلى " + resourceNames[origin][1]
+              : "Return to " + resourceNames[origin][0]}
+          </ProductLink>
+        )}
+        <ProductLink href="/admin" locale={locale}>
+          {locale === "ar" ? "كل القرارات" : "All decisions"}
+        </ProductLink>
+        <ProductLink
+          href={defaultUnitPath}
+          locale={locale}
+          onClick={(event) => {
+            if (
+              event.defaultPrevented ||
+              event.button !== 0 ||
+              event.metaKey ||
+              event.ctrlKey ||
+              event.shiftKey ||
+              event.altKey
+            )
+              return;
+            update((current) => ({
+              ...current,
+              adminPreview: adminPreviewContext(
+                current,
+                origin,
+                candidates.find(
+                  (candidate) => candidate.candidateId === selectedId,
+                ) ?? null,
+              ),
+            }));
+          }}
+        >
           {locale === "ar" ? "معاينة الطالب" : "Preview student"}
         </ProductLink>
       </div>

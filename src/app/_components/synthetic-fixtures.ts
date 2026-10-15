@@ -267,10 +267,25 @@ export type SampleAnswer = {
 export type ReviewSession = {
   id: number;
   scope: string;
+  title?: Localized;
   answers: SampleAnswer[];
 };
-export type ReviewSubmission = { id: number; format: string; status: string };
+export type ReviewSubmission = {
+  id: number;
+  format: string;
+  status: string;
+  campaignId?: string;
+  requestedItemId?: string;
+  sourceName?: string;
+  correction?: {
+    action: "FIX_INFORMATION" | "REPLACE_FILE";
+    reasonEn: string;
+    reasonAr: string;
+  };
+};
 export type ReviewState = {
+  campaignDensity: boolean;
+  studyDensityUnitId: string | null;
   account: "NEW" | "UNVERIFIED" | "VERIFIED" | "SIGNED_IN" | "SUSPENDED";
   consent: boolean;
   recoveryUsed: boolean;
@@ -304,6 +319,8 @@ export type ReviewState = {
 };
 export function initialReviewState(): ReviewState {
   return {
+    campaignDensity: false,
+    studyDensityUnitId: null,
     account: "NEW",
     consent: false,
     recoveryUsed: false,

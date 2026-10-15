@@ -56,7 +56,8 @@ const adminCopy = {
     founderAhmed: "Ahmed",
     founderZiad: "Ziad",
     reason: "Reason for this change",
-    reasonHint: "Use a short governance reason. Do not include source content.",
+    reasonHint:
+      "Use 8–500 characters after trimming spaces. Do not include source content.",
     reasonPlaceholder: "Why is this change needed?",
     holdExpiry: "Hold expiry and review date",
     holdReview: "I reviewed this synthetic object and its expiry.",
@@ -65,6 +66,25 @@ const adminCopy = {
     confirmSecond: "Add my separate founder confirmation",
     reviewAction: "Review exact change",
     checkingState: "Checking current state…",
+    recheckQueue: "Recheck current decisions",
+    recheckDone: "Current decisions checked. No action was submitted.",
+    alreadyInState: "Already in requested state",
+    alreadyInStateBody:
+      "No further change is needed. Repeating this action is unavailable.",
+    reviewChanged:
+      "This candidate changed after review. Recheck current decisions before acting.",
+    missingHoldExpiry:
+      "The recorded hold expiry is unavailable. Confirmation is unavailable until the current proposal can be checked.",
+    pendingLink: "Open this pending decision",
+    invalidSelection:
+      "This decision link does not match a current authorized candidate. Choose a current decision from the queue.",
+    targetKinds: {
+      UNIT: "Unit",
+      COHORT: "Cohort",
+      SOURCE: "Source version",
+      RAW_OBJECT: "Raw object",
+      FLAG: "Provider or artifact control",
+    },
     reloadQueue: "Reload current decisions",
     reviewHeading: "Review before recording",
     cancelReview: "Cancel and edit",
@@ -201,7 +221,8 @@ const adminCopy = {
     founderAhmed: "أحمد",
     founderZiad: "زياد",
     reason: "سبب هذا التغيير",
-    reasonHint: "اكتب سببًا حوكميًا موجزًا. لا تضف محتوى المصدر.",
+    reasonHint:
+      "اكتب من 8 إلى 500 حرف بعد حذف المسافات الطرفية. لا تضف محتوى المصدر.",
     reasonPlaceholder: "لماذا نحتاج إلى هذا التغيير؟",
     holdExpiry: "تاريخ انتهاء الحجز ومراجعته",
     holdReview: "راجعت هذا العنصر التجريبي وتاريخ انتهائه.",
@@ -210,6 +231,24 @@ const adminCopy = {
     confirmSecond: "إضافة تأكيدي كمؤسس مستقل",
     reviewAction: "مراجعة التغيير المحدد",
     checkingState: "جارٍ فحص الحالة الحالية…",
+    recheckQueue: "إعادة فحص القرارات الحالية",
+    recheckDone: "تم فحص القرارات الحالية. لم يُرسل أي إجراء.",
+    alreadyInState: "في الحالة المطلوبة بالفعل",
+    alreadyInStateBody: "لا يلزم تغيير آخر. تكرار هذا الإجراء غير متاح.",
+    reviewChanged:
+      "تغير هذا الطلب بعد المراجعة. أعد فحص القرارات الحالية قبل التنفيذ.",
+    missingHoldExpiry:
+      "تاريخ انتهاء الحفظ المسجل غير متاح. لا يتوفر التأكيد حتى يمكن فحص الطلب الحالي.",
+    pendingLink: "فتح هذا القرار المعلق",
+    invalidSelection:
+      "رابط القرار لا يطابق طلبًا حاليًا مصرحًا به. اختر قرارًا حاليًا من القائمة.",
+    targetKinds: {
+      UNIT: "وحدة",
+      COHORT: "مجموعة",
+      SOURCE: "إصدار مصدر",
+      RAW_OBJECT: "عنصر خام",
+      FLAG: "تحكم بمزود أو أداة",
+    },
     reloadQueue: "تحديث القرارات الحالية",
     reviewHeading: "راجع قبل التسجيل",
     cancelReview: "إلغاء والعودة للتعديل",

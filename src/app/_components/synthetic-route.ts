@@ -4,6 +4,7 @@ import {
   type Locale,
 } from "./synthetic-fixtures";
 import type { WorkspaceScope } from "@/lib/workspace/workspace.application";
+import { syntheticCampaignId } from "./synthetic-campaigns";
 
 type SyntheticPage = {
   screen: string;
@@ -11,6 +12,7 @@ type SyntheticPage = {
   fixture: string;
   scope?: WorkspaceScope;
   callbackToken?: string | undefined;
+  campaignId?: string;
 };
 const screens: Readonly<Record<string, string>> = {
   "": "home",
@@ -68,6 +70,8 @@ export function resolveSyntheticPage(
   }
   if (Object.hasOwn(screens, joined))
     return { ...common, screen: screens[joined]! };
+  const campaignId = syntheticCampaignId(pathname);
+  if (campaignId) return { ...common, screen: "collection", campaignId };
   if (
     path[0] === "admin" &&
     path.length === 2 &&
