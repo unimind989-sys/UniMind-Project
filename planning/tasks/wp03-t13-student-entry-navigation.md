@@ -74,7 +74,7 @@ Implement and verify locally for review. Do not commit until Ahmed instructs it.
 
 **Preparation review:** COMPLETE_INLINE
 
-**Preparation fingerprint:** fa7a6cc988cea1656d71d5516df3691deec36ae2756bec85e93e9758c22f1de8
+**Preparation fingerprint:** 6bc20df2ec75078732c8e06b8fee8371c0ec8cf70abec9af8d84f7202059b5f9
 
 **Unresolved findings:** NONE
 
@@ -1034,3 +1034,5 @@ The first exact-head CI run of the corrected candidate (8906a42) passed the depe
 - The full `verify:ci` chain, now including about 284 demo cases, needs roughly 75–80 minutes on the hosted runner. The application job timeout and its CI policy pin move from 25 to 120 minutes, and the governed workflow SHA-256 in the agent execution policy follows the edited workflow. The repository is public and uses standard GitHub-hosted runners, so there is no billable exposure.
 
 The demo `signIn` helper retries a login click that lands before the form hydrates (observed once in a local full chain), without changing any assertion.
+
+Exact-head CI on 7fcd67b completed the full chain within the new limit (hosted 146/146; demo 280 passed, 4 failed on the Linux runner, all passing locally). Phone settings tabs wrapped `Academic settings` and `Identity and access` to two lines under Linux font metrics, growing the tab grid to 146.6px against its 130px budget; phone tab labels now use a 1.25 line height so wrapped labels stay within budget. The B06 sources-visibility check now polls until the shell's post-resize layout settles, and the M52 admin accessibility audit waits for running animations to finish so it checks settled colours rather than a dialog fade. No assertion or threshold changed.

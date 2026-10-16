@@ -3426,34 +3426,39 @@ for (const locale of ["en", "ar"] as const) {
       });
       await sources.focus();
       await expect(sources).toBeFocused();
-      expect(
-        await sources.evaluate((e) => {
-          const r = e.getBoundingClientRect();
-          const owners = Array.from(
-            document.querySelectorAll<HTMLElement>("*"),
-          ).filter(
-            (item) =>
-              item.checkVisibility() &&
-              !item.matches("input,textarea,select") &&
-              ["auto", "scroll"].includes(getComputedStyle(item).overflowY) &&
-              item.scrollHeight > item.clientHeight + 2 &&
-              item.clientHeight > 0,
-          );
-          const nav = document.querySelector<HTMLElement>(
-            'nav[aria-label="Product navigation"],nav[aria-label="تنقل المنتج"]',
-          )!;
-          const bottom =
-            getComputedStyle(nav).position === "fixed"
-              ? nav.getBoundingClientRect().top
-              : innerHeight;
-          return {
-            owners:
-              owners.length +
-              (document.documentElement.scrollHeight > innerHeight + 2 ? 1 : 0),
-            actionVisible: r.top >= 0 && r.bottom <= bottom + 1,
-          };
-        }),
-      ).toEqual({ owners: 1, actionVisible: true });
+      // The shell re-measures on the next frame after a resize; read settled geometry.
+      await expect
+        .poll(() =>
+          sources.evaluate((e) => {
+            const r = e.getBoundingClientRect();
+            const owners = Array.from(
+              document.querySelectorAll<HTMLElement>("*"),
+            ).filter(
+              (item) =>
+                item.checkVisibility() &&
+                !item.matches("input,textarea,select") &&
+                ["auto", "scroll"].includes(getComputedStyle(item).overflowY) &&
+                item.scrollHeight > item.clientHeight + 2 &&
+                item.clientHeight > 0,
+            );
+            const nav = document.querySelector<HTMLElement>(
+              'nav[aria-label="Product navigation"],nav[aria-label="تنقل المنتج"]',
+            )!;
+            const bottom =
+              getComputedStyle(nav).position === "fixed"
+                ? nav.getBoundingClientRect().top
+                : innerHeight;
+            return {
+              owners:
+                owners.length +
+                (document.documentElement.scrollHeight > innerHeight + 2
+                  ? 1
+                  : 0),
+              actionVisible: r.top >= 0 && r.bottom <= bottom + 1,
+            };
+          }),
+        )
+        .toEqual({ owners: 1, actionVisible: true });
     }
     await navigate(page, `${unit}/chat`, locale);
     await expect(page.locator("#message")).toHaveValue(
@@ -9538,6 +9543,12 @@ for (const locale of ["en", "ar"] as const) {
         .press("Enter");
       await expect(page.getByRole("status").last()).toContainText(
         t("governed change", "التغيير الحوكمي"),
+      );
+      // Audit settled colours, not a dialog fade still in progress.
+      await page.waitForFunction(() =>
+        document
+          .getAnimations()
+          .every((animation) => animation.playState !== "running"),
       );
       expect(
         (await new AxeBuilder({ page }).include("main").analyze()).violations,

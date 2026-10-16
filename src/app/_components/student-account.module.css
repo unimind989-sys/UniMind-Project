@@ -372,6 +372,8 @@
   .sectionNav button {
     padding: 8px;
     font-size: 0.875rem;
+    /* A label that wraps on narrow phones still keeps the two rows compact. */
+    line-height: 1.25;
     overflow-wrap: anywhere;
   }
 }
