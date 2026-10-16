@@ -2,7 +2,7 @@
 
 **Task ID:** WP00-T18
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** Codex and Claude Code share one short rule set, one lifecycle, one skill source and lightweight checks, with no pasted routing fields and no duplicated or contradictory process rules.
 
@@ -12,7 +12,7 @@
 
 **Branch:** claude/wp00-t18-agent-workflow-v2
 
-**Updated (UTC):** 2026-10-16T16:30:00Z
+**Updated (UTC):** 2026-10-16T18:00:00Z
 
 ## Contract
 
@@ -39,7 +39,7 @@
 - [x] Skills: 23 to 16, `frontend-design` (Apache-2.0, `anthropics/skills@41bbe19`), `skills:sync`, sub-agents.
 - [x] Tooling: `agent:status`, `lint:agents`, `check`, `verify`; selector config; old scripts removed.
 - [x] Docs dedupe: README, CONTRIBUTING, DESIGN, PRODUCT, decision register.
-- [ ] Checks, review, commit; PR and protection change after Ahmed's go-ahead.
+- [x] Checks, review, commit; PR #76 with squash auto-merge; `main` protection set to a required PR and green checks with 0 approvals; repository auto-merge enabled (Ahmed, 2026-10-16).
 
 ## Decisions
 
@@ -57,8 +57,8 @@
 
 **Approved commit:** NOT REQUIRED: no rendered UI change.
 
-**Remaining:** push, PR, required CI, squash merge; then change `main` protection to require a PR and green checks with no approving review.
+**Remaining:** NONE once PR #76 merges. These closure markers become authoritative only when PR #76's required checks pass and it merges.
 
 ## Next action
 
-Ask Ahmed to approve push, PR and the branch-protection change.
+After merge: delete the task branch and worktree; the next task follows `pnpm agent:status`.

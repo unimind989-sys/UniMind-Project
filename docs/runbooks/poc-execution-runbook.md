@@ -531,12 +531,12 @@ This bounded tooling task installs a pinned third-party logo-design skill for de
 
 This workflow-maintenance task supersedes the execution-policy router, proof preflight, fingerprints, founder receipt JSON and Sol/Luna model blocks introduced by WP00-T09 through WP00-T16. Historical records stay as evidence of their runs.
 
-- [~] Replace the always-on instructions with one tool-neutral `AGENTS.md`, a `CLAUDE.md` that imports it, and one lifecycle in `docs/agents/workflow.md`; merge the frontend and communication guidance; remove Sol/Luna, worker-budget, envelope and side-browser rules.
-- [~] Replace the task-record template with a 120-line current-state record and make the runbook checkbox the only task status.
-- [~] Keep one shared skill source in `.agents/skills/`, generate Claude Code copies with `pnpm skills:sync`, reduce 23 skills to 16, add the pinned Anthropic `frontend-design` skill, and validate skills for both agents.
-- [~] Replace the PowerShell router, readiness, work-state and handoff scripts with `pnpm agent:status`, `pnpm lint:agents` and `pnpm check`; make `pnpm verify` the CI suite; keep the conditional CI selector with a standalone path config.
-- [~] Remove duplicated rules and contradictions across README, CONTRIBUTING, DESIGN, the runbook and the decision register; move progress logs out of authority documents.
-- [ ] Deliver through a PR with required CI; then change `main` protection to require a PR and green checks without an approving review (founder-approved).
+- [x] Replace the always-on instructions with one tool-neutral `AGENTS.md`, a `CLAUDE.md` that imports it, and one lifecycle in `docs/agents/workflow.md`; merge the frontend and communication guidance; remove Sol/Luna, worker-budget, envelope and side-browser rules.
+- [x] Replace the task-record template with a 120-line current-state record and make the runbook checkbox the only task status.
+- [x] Keep one shared skill source in `.agents/skills/`, generate Claude Code copies with `pnpm skills:sync`, reduce 23 skills to 16, add the pinned Anthropic `frontend-design` skill, and validate skills for both agents.
+- [x] Replace the PowerShell router, readiness, work-state and handoff scripts with `pnpm agent:status`, `pnpm lint:agents` and `pnpm check`; make `pnpm verify` the CI suite; keep the conditional CI selector with a standalone path config.
+- [x] Remove duplicated rules and contradictions across README, CONTRIBUTING, DESIGN, the runbook and the decision register; move progress logs out of authority documents.
+- [x] Deliver through PR #76 with required CI and squash auto-merge; `main` protection now requires a PR and green required checks with no approving review (approved by Ahmed, 2026-10-16). These closure markers become authoritative only when PR #76 merges.
 
 **Pass:** both agents load the same rules and skills; a task can be selected, built, verified and delivered with no pasted routing fields; `pnpm lint:agents` and required CI pass; no hard rule (D-22, money stop, no false PASS, data safety, architecture) is weakened.
 
