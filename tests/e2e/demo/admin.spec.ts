@@ -1729,3 +1729,74 @@ for (const role of ["admin", "second-admin"]) {
     },
   );
 }
+
+// Queue states and announcements of the shared decision queue (formerly
+// covered through the retired fixture route), reached through the runtime.
+inLocales(["ar"], (locale) => {
+  test(
+    `empty and forbidden queues fail closed; outcomes and the first founder are announced`,
+    { tag: ["@B05-A", `@${locale}`] },
+    async ({ page }) => {
+      const finish = isolation(page);
+      const copy = getAdminCopy(locale);
+      await page.setViewportSize({ width: 390, height: 844 });
+      for (const [fixture, title] of [
+        ["empty", copy.emptyTitle],
+        ["forbidden", copy.forbiddenTitle],
+      ] as const) {
+        await signIn(page, "admin", locale, `/admin?fixture=${fixture}`);
+        await expect(
+          page.getByRole("heading", { name: title, exact: true }),
+        ).toBeVisible();
+        await expect(
+          page.getByRole("button", { name: copy.reviewAction, exact: true }),
+        ).toHaveCount(0);
+      }
+      await signIn(page, "admin", locale, "/admin?fixture=stale");
+      await b05Select(page, 1, locale);
+      await page
+        .getByLabel(copy.reason)
+        .fill("Contain this exact synthetic object during review.");
+      await page
+        .getByRole("button", { name: copy.reviewAction, exact: true })
+        .press("Enter");
+      await expect(
+        page.getByRole("dialog").getByRole("heading", { level: 2 }),
+      ).toBeFocused();
+      await page
+        .getByRole("button", { name: b05Confirm(locale, 1), exact: true })
+        .press("Enter");
+      await expect(
+        page.getByText(copy.errors.STALE_VERSION, { exact: true }),
+      ).toBeFocused();
+      await expectReflow(page);
+      await signIn(page, "admin", locale);
+      await b05Select(page, 8, locale);
+      await page
+        .getByLabel(copy.reason)
+        .fill("Preserve this synthetic object for review.");
+      await page
+        .getByLabel(copy.holdExpiry, { exact: true })
+        .fill("2027-01-18T16:00");
+      await page.locator('input[name="reviewAttested"]').check();
+      await page
+        .getByRole("button", { name: copy.reviewAction, exact: true })
+        .click();
+      await page
+        .getByRole("button", { name: b05Confirm(locale, 8), exact: true })
+        .click();
+      await page
+        .getByRole("button", { name: copy.reloadQueue, exact: true })
+        .click();
+      await b05Select(page, 8, locale);
+      await expect(
+        page.getByRole("status").filter({ hasText: copy.pendingFounder }),
+      ).toContainText(`${copy.initiatedBy}: ${copy.founderAhmed}`);
+      await expect(page.getByLabel(copy.reason)).toHaveAttribute(
+        "readonly",
+        "",
+      );
+      finish();
+    },
+  );
+});

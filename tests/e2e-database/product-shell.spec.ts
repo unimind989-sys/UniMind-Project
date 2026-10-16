@@ -461,3 +461,156 @@ test("revoked leader loses campaign access in the same browser", async ({
   expect(upload.status()).toBe(403);
   expect(await upload.json()).toEqual({ error: "UPLOAD_REJECTED" });
 });
+
+// Real-mode-only screens. These contracts were previously exercised through the
+// retired fixture routes; the synthetic runtime renders different study UI.
+test("student: real workspace overview, chat sessions, placeholders and canonical catalog", async ({
+  page,
+}) => {
+  test.setTimeout(90_000);
+  await login(page, "student");
+  await page.goto(
+    `/learn?lang=en&level=forged-level&cohort=forged-cohort&unit=forged-unit`,
+  );
+  await expect(page).toHaveURL(/\/learn\?/u);
+  await expect(page).not.toHaveURL(/forged/u);
+
+  const base = `/learn/${cohort}/${unit}`;
+  await page.goto(`${base}?lang=en`);
+  await expect(
+    page.getByRole("heading", { name: "Synthetic Unit A", level: 1 }),
+  ).toBeVisible();
+  await expect(page.getByText(/\d+ approved sources/u)).toBeVisible();
+  await expect(page.getByText("Planned capability")).toHaveCount(5);
+  await page.getByRole("link", { name: "Skip to content" }).focus();
+  await page.keyboard.press("Enter");
+  await expect(page.getByRole("main")).toBeFocused();
+  await page.getByRole("link", { name: "View status" }).first().click();
+  await expect(page).toHaveURL(new RegExp(`${base}/chat\\?lang=en`, "u"));
+  await expect(
+    page.getByText("Messaging is not available in WP03-T04.").first(),
+  ).toBeVisible();
+
+  await page.getByRole("button", { name: "Start a scoped session" }).click();
+  await expect(page).toHaveURL(/session=[0-9a-f-]+/u);
+  const firstSession = new URL(page.url()).searchParams.get("session");
+  expect(firstSession).not.toBeNull();
+  await page.reload();
+  await expect(
+    page.getByText(firstSession?.slice(0, 8) ?? "missing"),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Start a scoped session" }).click();
+  await page.waitForURL(
+    (url) => url.searchParams.get("session") !== firstSession,
+  );
+  await page
+    .getByRole("main")
+    .locator(`a[href$="session=${firstSession}"]`)
+    .click();
+  await expect(page).toHaveURL(new RegExp(`session=${firstSession}`, "u"));
+
+  for (const [tool, heading] of [
+    ["studio", "Studio is planned"],
+    ["quiz", "Quiz is planned"],
+  ] as const) {
+    await page.goto(`${base}/${tool}?lang=en`);
+    await expect(page.getByRole("heading", { name: heading })).toBeVisible();
+  }
+
+  await page.goto(
+    `/learn/${cohort}/20000000-0000-4000-8000-000000000099/chat?lang=en`,
+  );
+  await expect(
+    page.getByRole("heading", { name: "Workspace unavailable" }),
+  ).toBeVisible();
+  await expect(page.getByText("Synthetic Unit A", { exact: true })).toHaveCount(
+    0,
+  );
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(`${base}?lang=ar`);
+  await expect(page.locator("html")).toHaveAttribute("lang", "ar");
+  await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
+  await expect(
+    page.getByRole("heading", { name: "وحدة تجريبية أ", level: 1 }),
+  ).toBeVisible();
+  const geometry = await page.evaluate(() => ({
+    documentWidth: document.documentElement.scrollWidth,
+    viewportWidth: window.innerWidth,
+    controls: Array.from(document.querySelectorAll("a,button,textarea"))
+      .filter((element) => (element as HTMLElement).offsetParent !== null)
+      .map((element) => element.getBoundingClientRect().height),
+  }));
+  expect(geometry.documentWidth).toBeLessThanOrEqual(geometry.viewportWidth);
+  expect(Math.min(...geometry.controls)).toBeGreaterThanOrEqual(44);
+});
+
+test("leader: real intake validates files in the browser, records a receipt and closes forged campaigns", async ({
+  page,
+}) => {
+  test.setTimeout(90_000);
+  await login(page, "leader");
+  await page.goto(`/batch-leader/campaigns/${campaign}?lang=en`);
+  await expect(
+    page.getByRole("heading", { name: "Synthetic collection campaign" }),
+  ).toBeVisible();
+  await page.keyboard.press("Tab");
+  await expect(
+    page.getByRole("link", { name: "Skip to content" }),
+  ).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(page.locator("#app-content")).toBeFocused();
+  await page.getByRole("button", { name: "Upload files", exact: true }).click();
+  const rows = page
+    .getByRole("list", { name: "Upload queue" })
+    .getByRole("listitem");
+  await page.locator('input[type="file"]').setInputFiles([
+    {
+      name: "too-big.pdf",
+      mimeType: "application/pdf",
+      buffer: Buffer.alloc(10 * 1024 * 1024 + 1),
+    },
+    {
+      name: "wrong.pdf",
+      mimeType: "application/pdf",
+      buffer: Buffer.from("not PDF bytes"),
+    },
+  ]);
+  await expect(
+    rows.getByText("This file exceeds the 10 MB limit.", { exact: false }),
+  ).toBeVisible();
+  await expect(rows.getByText(/not a supported/u)).toBeVisible();
+  await page
+    .getByRole("button", { name: "Remove file: too-big.pdf", exact: true })
+    .click();
+  await page.locator('input[type="file"]').setInputFiles({
+    name: "synthetic-gate.pdf",
+    mimeType: "text/plain",
+    buffer: Buffer.from("%PDF-1.7\nSynthetic UniMind fixture only\n"),
+  });
+  await expect(
+    rows.getByText("Ready to upload", { exact: true }),
+  ).toBeVisible();
+  await page
+    .getByLabel("Professor or source description")
+    .fill("Generated fixture for the real collection gate.");
+  await page.getByLabel("I have permission").check();
+  await page.getByRole("button", { name: "Submit files", exact: true }).click();
+  await expect(
+    page.locator('[data-record-request] [data-status="RECEIVED"]'),
+  ).toBeVisible();
+
+  await page.goto(
+    "/batch-leader/campaigns/30000000-0000-4000-8000-000000000099?lang=ar",
+  );
+  await expect(
+    page.getByRole("heading", { name: "الحملة غير متاحة" }),
+  ).toBeVisible();
+  await expect(page.locator('[data-role="leader"]')).toHaveAttribute(
+    "dir",
+    "rtl",
+  );
+  await expect(
+    page.getByRole("heading", { name: "Synthetic collection campaign" }),
+  ).toHaveCount(0);
+});

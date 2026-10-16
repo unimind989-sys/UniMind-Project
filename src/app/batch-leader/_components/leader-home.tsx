@@ -25,7 +25,6 @@ export function CollectionHistory({
   campaigns,
   locale,
   heading,
-  preview = false,
   compact = false,
   acknowledgements = [],
   referenceTime,
@@ -33,7 +32,6 @@ export function CollectionHistory({
   campaigns: readonly CollectionCampaign[];
   locale: Locale;
   heading: string;
-  preview?: boolean;
   compact?: boolean;
   acknowledgements?: readonly CollectionAcknowledgement[];
   referenceTime?: string;
@@ -185,7 +183,6 @@ export function CollectionHistory({
                         item.id,
                         submission.id,
                         locale,
-                        preview,
                       ) as Route
                     }
                   >
@@ -200,7 +197,7 @@ export function CollectionHistory({
                     <Link
                       className={styles.open}
                       href={
-                        `${preview ? "/preview" : ""}/batch-leader/campaigns/${encodeURIComponent(campaign.id)}?request=${encodeURIComponent(item.id)}&submission=${encodeURIComponent(submission.id)}&lang=${locale}#collection-intake` as Route
+                        `/batch-leader/campaigns/${encodeURIComponent(campaign.id)}?request=${encodeURIComponent(item.id)}&submission=${encodeURIComponent(submission.id)}&lang=${locale}#collection-intake` as Route
                       }
                     >
                       {submission.correction?.action === "FIX_INFORMATION"
@@ -269,30 +266,21 @@ export function LeaderHome({
   locale,
   history = false,
   synthetic = false,
-  preview = false,
   referenceTime,
 }: {
   campaigns: readonly CollectionCampaign[];
   locale: Locale;
   history?: boolean;
   synthetic?: boolean;
-  preview?: boolean;
   referenceTime?: string;
 }) {
   const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
   const title = history
     ? t("Latest submissions", "آخر الإرسالات")
     : t("Source intake", "استلام المصادر");
-  const now = useCollectionClock(referenceTime),
-    prefix = preview ? "/preview" : "";
+  const now = useCollectionClock(referenceTime);
   return (
-    <AppShell
-      locale={locale}
-      role="leader"
-      title={title}
-      synthetic={synthetic}
-      preview={preview}
-    >
+    <AppShell locale={locale} role="leader" title={title} synthetic={synthetic}>
       <div className={`${styles.workspace} ${styles.campaignOverview}`}>
         <header className={styles.header}>
           <h1>{title}</h1>
@@ -313,7 +301,6 @@ export function LeaderHome({
             campaigns={campaigns}
             locale={locale}
             heading={t("Requests with submissions", "الطلبات ذات الإرسالات")}
-            preview={preview}
             {...(referenceTime ? { referenceTime } : {})}
           />
         ) : (
@@ -333,7 +320,7 @@ export function LeaderHome({
                         <h3>
                           <Link
                             href={
-                              `${prefix}/batch-leader/campaigns/${encodeURIComponent(campaign.id)}?lang=${locale}` as Route
+                              `/batch-leader/campaigns/${encodeURIComponent(campaign.id)}?lang=${locale}` as Route
                             }
                           >
                             {campaign.name}
@@ -381,7 +368,7 @@ export function LeaderHome({
                       <Link
                         className={styles.open}
                         href={
-                          `${prefix}/batch-leader/campaigns/${encodeURIComponent(campaign.id)}?lang=${locale}` as Route
+                          `/batch-leader/campaigns/${encodeURIComponent(campaign.id)}?lang=${locale}` as Route
                         }
                       >
                         {window === "ACTIVE"

@@ -81,19 +81,27 @@ describe("Supabase session proxy", () => {
     },
   );
   it.each([
-    "/preview",
-    "/preview/review",
-    "/preview/review/access/consent",
-    "/preview/learn",
-    "/wp03-review.html",
+    ["GET", "/preview"],
+    ["GET", "/preview/review"],
+    ["GET", "/preview/review/access/consent"],
+    ["GET", "/preview/learn"],
+    ["GET", "/preview/admin?state=containment"],
+    ["GET", "/wp03-review.html"],
+    ["POST", "/api/preview/batch-leader/campaigns/sample/uploads"],
+    ["POST", "/preview/learn/cohort/unit/chat"],
   ])(
-    "keeps public fixture %s independent from real Auth and cookies",
-    async (path) => {
+    "answers 404 for retired fixture route %s %s without Auth or cookies",
+    async (method, path) => {
       const { proxy } = await import("../../src/proxy");
       const request = new NextRequest(`https://app.unimind.invalid${path}`, {
-        headers: { cookie: "synthetic-session=untouched-cookie" },
+        method,
+        headers: {
+          cookie: "synthetic-session=untouched-cookie",
+          ...(method === "POST" ? { "next-action": "synthetic-action" } : {}),
+        },
       });
       const response = await proxy(request);
+      expect(response.status).toBe(404);
       expect(mocks.createServerClient).not.toHaveBeenCalled();
       expect(mocks.getClaims).not.toHaveBeenCalled();
       expect(response.cookies.getAll()).toEqual([]);

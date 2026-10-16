@@ -537,7 +537,6 @@ export function AdminDecisionQueue({
   initialLocale,
   queue,
   submitAction = submitAdminAction,
-  syntheticPreview = false,
   reloadAction,
   embedded = false,
   refreshOnSelect = true,
@@ -548,7 +547,6 @@ export function AdminDecisionQueue({
   initialLocale: Locale;
   queue: AdminQueueState;
   submitAction?: typeof submitAdminAction;
-  syntheticPreview?: boolean;
   reloadAction?: () => void | Promise<void>;
   embedded?: boolean;
   refreshOnSelect?: boolean;
@@ -604,8 +602,7 @@ export function AdminDecisionQueue({
         ?.querySelector<HTMLElement>("#decision-detail-heading")
         ?.focus(),
     );
-    if (!syntheticPreview && refreshOnSelect)
-      startRefresh(() => router.refresh());
+    if (refreshOnSelect) startRefresh(() => router.refresh());
   }
   const [rechecked, setRechecked] = useState(false);
   function recheck() {
@@ -843,12 +840,6 @@ export function AdminDecisionQueue({
   return embedded ? (
     body
   ) : (
-    <AdminWorkspace
-      locale={locale}
-      synthetic={syntheticPreview}
-      preview={syntheticPreview}
-    >
-      {body}
-    </AdminWorkspace>
+    <AdminWorkspace locale={locale}>{body}</AdminWorkspace>
   );
 }

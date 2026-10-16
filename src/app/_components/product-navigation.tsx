@@ -6,7 +6,11 @@ import { createContext, useContext, useMemo, type ComponentProps } from "react";
 import type { SyntheticRole } from "@/lib/demo/synthetic-account.application";
 
 export type SyntheticNavigation = {
+  /** A browser-only synthetic runtime owns rendering and navigation. */
   active: boolean;
+  /** The runtime was entered from the real login (WP03-T11), not from the
+   * loopback demo; hosted presentation omits every local review extra. */
+  hosted: boolean;
   enter: (role: SyntheticRole, locale: string, returnPath: string) => void;
   leave: (locale: string) => void;
   navigate: (href: string, replace?: boolean) => void;
@@ -16,6 +20,28 @@ export const SyntheticNavigationContext =
 
 export function useSyntheticNavigation() {
   return useContext(SyntheticNavigationContext);
+}
+
+/** True only inside the synthetic runtime entered from the real login. */
+export function useHostedSynthetic() {
+  const synthetic = useSyntheticNavigation();
+  return Boolean(synthetic?.active && synthetic.hosted);
+}
+
+/** Same-document navigation for the synthetic runtime. Next's native history
+ * integration updates pathname/search hooks without fetching a server route.
+ * No identity marker is written into history. */
+export function navigateInDocument(href: string, replace = false) {
+  const address = new URL(href, window.location.href);
+  if (address.origin !== window.location.origin) return;
+  const path = address.pathname + address.search + address.hash;
+  if (
+    path ===
+    window.location.pathname + window.location.search + window.location.hash
+  )
+    return;
+  window.history[replace ? "replaceState" : "pushState"](null, "", path);
+  window.scrollTo(0, 0);
 }
 
 export function useProductRouter() {

@@ -1168,10 +1168,10 @@ inLocales(["en"], (locale) => {
         })
         .press("Enter");
       await expect(rights).not.toBeChecked();
-      const queue = page.getByRole("list", {
-        name: t("Upload queue", "قائمة الرفع"),
-        exact: true,
-      });
+      // The language switch below renames the queue; it is one list throughout.
+      const queue = page.locator(
+        'ul[aria-label="Upload queue"], ul[aria-label="قائمة الرفع"]',
+      );
       await expect(queue.getByRole("listitem")).toHaveCount(2);
       await expect(
         queue.getByText(t("Origin: Your device", "المصدر: جهازك"), {

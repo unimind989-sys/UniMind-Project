@@ -19,7 +19,7 @@ import {
 } from "@/lib/demo/synthetic-files.application";
 import type { Locale } from "@/lib/demo/synthetic-fixtures.application";
 import { syntheticDemoTime } from "@/lib/demo/synthetic-clock.application";
-import { useSyntheticNavigation } from "./product-navigation";
+import { useHostedSynthetic } from "./product-navigation";
 
 import {
   demoCampaignId,
@@ -39,7 +39,7 @@ export function ProductCollection({
   campaignId?: string;
 }) {
   const { state, update, collectionMemory } = useProductServices();
-  const hosted = useSyntheticNavigation();
+  const hosted = useHostedSynthetic();
   const query = useSearchParams();
   const router = useProductRouter();
   const generation = collectionMemory.generation;
@@ -50,7 +50,7 @@ export function ProductCollection({
   }, [state]);
   useEffect(() => {
     if (
-      hosted?.active ||
+      hosted ||
       !prepareSyntheticCollectionCorrections(state, campaignId, fixture).length
     )
       return;
@@ -61,7 +61,7 @@ export function ProductCollection({
         ...prepareSyntheticCollectionCorrections(current, campaignId, fixture),
       ],
     }));
-  }, [state, campaignId, fixture, hosted?.active, update]);
+  }, [state, campaignId, fixture, hosted, update]);
   const requested = query.getAll("request");
   const previous = query.getAll("submission");
   const hasCorrection = query.has("request") || query.has("submission");
@@ -163,7 +163,7 @@ export function ProductCollection({
       draft={collectionMemory.draft(campaignId)}
       locale={locale}
       dateReference={
-        hosted?.active ? undefined : (
+        hosted ? undefined : (
           <>
             {locale === "ar" ? "ساعة العرض التجريبي" : "Demo clock"}:{" "}
             <bdi>{syntheticDemoTime.clockLabel}</bdi>

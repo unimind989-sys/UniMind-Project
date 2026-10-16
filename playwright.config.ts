@@ -35,7 +35,7 @@ export default defineConfig({
   ],
   webServer: {
     command: "corepack pnpm exec tsx scripts/run-playwright-server.ts",
-    url: `${baseURL}/preview/learn?lang=en`,
+    url: `${baseURL}/login?lang=en`,
     reuseExistingServer: false,
     timeout: 120_000,
     env: {

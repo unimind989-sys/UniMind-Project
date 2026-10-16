@@ -85,4 +85,65 @@ describe("production upload API denial contract", () => {
     expect(await response.json()).toEqual({ error: "UPLOAD_REJECTED" });
     expect(response.headers.get("cache-control")).toBe("no-store");
   });
+
+  it("returns only the public receipt for an accepted upload", async () => {
+    const repo = repository();
+    vi.mocked(repo.loadCampaign).mockResolvedValue({
+      id: campaignId,
+      name: "Synthetic Anatomy source call",
+      cohortName: "Synthetic cohort",
+      opensAt: "2026-09-01T00:00:00.000Z",
+      closesAt: "2099-10-12T20:00:00.000Z",
+      assignmentExpiresAt: "2099-10-10T20:00:00.000Z",
+      requestedItems: [
+        {
+          id: "22222222-2222-4222-8222-222222222221",
+          unitId: "33333333-3333-4333-8333-333333333333",
+          title: "Week 3 lecture handout",
+          unitTitleEn: "Anatomy",
+          unitTitleAr: "علم التشريح",
+          expectedType: "DOCUMENT",
+          required: true,
+          status: "REQUESTED",
+          latestSubmission: null,
+        },
+      ],
+    });
+    vi.mocked(repo.registerUpload).mockImplementation(async (input) => ({
+      uploadId: "44444444-4444-4444-8444-444444444444",
+      checksum: input.checksum,
+      mimeType: input.mimeType,
+      byteSize: input.byteSize,
+    }));
+    const body = new FormData();
+    body.set("requestedItemId", "22222222-2222-4222-8222-222222222221");
+    body.set("clientIdempotencyKey", "synthetic-client-key");
+    body.set(
+      "file",
+      new File(["%PDF-1.7\nSynthetic UniMind fixture only\n"], "handout.pdf", {
+        type: "text/plain",
+      }),
+    );
+
+    const response = await handleCollectionUpload(
+      new Request("http://localhost/upload", { method: "POST", body }),
+      campaignId,
+      repo,
+    );
+
+    expect(response.status).toBe(201);
+    expect(response.headers.get("cache-control")).toBe("no-store");
+    const receipt = (await response.json()) as Record<string, unknown>;
+    expect(Object.keys(receipt).sort()).toEqual([
+      "byteSize",
+      "checksum",
+      "mimeType",
+      "uploadId",
+    ]);
+    expect(receipt.mimeType).toBe("application/pdf");
+    expect(vi.mocked(repo.registerUpload).mock.calls[0]?.[0]).toMatchObject({
+      clientIdempotencyKey: "synthetic-client-key",
+      provider: "mock-object-storage-provider",
+    });
+  });
 });

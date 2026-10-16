@@ -1,8 +1,13 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { ProductNativePage } from "@/app/_components/product-native-page";
-import { resolveSyntheticPage } from "@/lib/demo/synthetic-route.application";
 import { resolveDemoRuntime } from "@/lib/demo/demo-runtime.application";
+import { resolveSyntheticPage } from "@/lib/demo/synthetic-route.application";
+
+// The loopback demo proxy rewrites product URLs here so a reload or deep link
+// gets a document without running a real route's Auth and data loaders. The
+// root layout renders the synthetic client runtime in place of this segment;
+// the segment only keeps the previous titles and 404 status. Outside the
+// loopback demo the route does not exist (the proxy also answers 404).
 
 export async function generateMetadata({
   params,
@@ -28,19 +33,14 @@ export async function generateMetadata({
 
 export default async function SyntheticProductRoute({
   params,
-  searchParams,
 }: {
   params: Promise<{ path: string[] }>;
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   if (resolveDemoRuntime(process.env) !== "ENABLED") notFound();
-  const [{ path }, query] = await Promise.all([params, searchParams]);
-  const parameters = new URLSearchParams();
-  for (const [name, value] of Object.entries(query)) {
-    const first = Array.isArray(value) ? value[0] : value;
-    if (first !== undefined) parameters.set(name, first);
-  }
-  const page = resolveSyntheticPage(`/${path.join("/")}`, parameters);
-  if (!page) notFound();
-  return <ProductNativePage key={path.join("/") + page.fixture} {...page} />;
+  const { path } = await params;
+  // A URL outside the synthetic route table keeps its 404 status; the client
+  // runtime renders the same not-found page.
+  if (!resolveSyntheticPage(`/${path.join("/")}`, new URLSearchParams()))
+    notFound();
+  return null;
 }

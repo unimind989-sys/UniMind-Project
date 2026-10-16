@@ -14,7 +14,8 @@ export type BoundaryViolationCode =
   | "application-imports-concrete-adapter"
   | "ui-imports-provider"
   | "ui-imports-inner-implementation"
-  | "real-mode-imports-demo";
+  | "real-mode-imports-demo"
+  | "route-imports-synthetic-runtime";
 
 export type BoundaryViolation = Readonly<{
   code: BoundaryViolationCode;
@@ -142,10 +143,10 @@ function isDemoPath(filePath: string): boolean {
   return filePath.startsWith("src/lib/demo/");
 }
 
-// Real-mode code must never reach the synthetic demo runtime. Synthetic preview
-// routes under src/app/preview and the hosted demo UI remain explicit exceptions.
+// Real-mode code must never reach the synthetic demo runtime. Shared UI under
+// src/app may render synthetic data while the hosted runtime is mounted.
 function isRealModePath(filePath: string): boolean {
-  if (isDemoPath(filePath) || filePath.startsWith("src/app/preview/")) {
+  if (isDemoPath(filePath)) {
     return false;
   }
   return (
@@ -155,12 +156,56 @@ function isRealModePath(filePath: string): boolean {
   );
 }
 
-function isClientComponent(sourceText: string): boolean {
+function leadingDirective(sourceText: string, directive: string): boolean {
   const withoutLeadingComments = sourceText.replace(
     /^\s*(?:(?:\/\/[^\n]*\n)|(?:\/\*[\s\S]*?\*\/\s*))*/,
     "",
   );
-  return /^["']use client["'];/.test(withoutLeadingComments);
+  return new RegExp(`^["']${directive}["'];`).test(withoutLeadingComments);
+}
+
+function isClientComponent(sourceText: string): boolean {
+  return leadingDirective(sourceText, "use client");
+}
+
+// Next.js route entry files and Server Action modules are the real runtime's
+// composition roots. They reach the synthetic client runtime (src/lib/demo and
+// src/app/_synthetic) only through the explicit mount points below: the root
+// layout's demo gate and runtime mounts, and the loopback demo's document
+// route. Hosted entry from the real login stays inside the auth form.
+const routeEntryFile =
+  /^src\/app\/(?:.*\/)?(?:page|layout|template|default|loading|error|not-found|global-error|route)\.[cm]?[jt]sx?$/;
+const syntheticRuntimeEntryPoints: Readonly<Record<string, readonly string[]>> =
+  {
+    "src/app/layout.tsx": [
+      "src/lib/demo/demo-runtime.application",
+      "src/app/_synthetic/hosted-synthetic-runtime",
+      "src/app/_synthetic/loopback-synthetic-runtime",
+    ],
+    "src/app/synthetic-runtime/[...path]/page.tsx": [
+      "src/lib/demo/demo-runtime.application",
+      "src/lib/demo/synthetic-route.application",
+    ],
+  };
+
+function isRealRouteEntry(filePath: string, sourceText: string): boolean {
+  return (
+    routeEntryFile.test(filePath) ||
+    /^src\/app\/(?:.*\/)?actions\.[cm]?[jt]sx?$/.test(filePath) ||
+    (filePath.startsWith("src/app/") &&
+      leadingDirective(sourceText, "use server"))
+  );
+}
+
+function isSyntheticRuntimePath(filePath: string): boolean {
+  return isDemoPath(filePath) || filePath.startsWith("src/app/_synthetic/");
+}
+
+function isAllowedSyntheticEntry(sourcePath: string, target: string): boolean {
+  const withoutExtension = target.replace(/\.[cm]?[jt]sx?$/, "");
+  return (
+    syntheticRuntimeEntryPoints[sourcePath]?.includes(withoutExtension) ?? false
+  );
 }
 
 function violation(
@@ -179,6 +224,7 @@ export function inspectModuleDependencies(
   const normalizedSourcePath = toPosix(sourcePath);
   const sourceLayer = classifyModule(normalizedSourcePath);
   const clientComponent = isClientComponent(sourceText);
+  const realRouteEntry = isRealRouteEntry(normalizedSourcePath, sourceText);
   const violations: BoundaryViolation[] = [];
 
   for (const specifier of collectImportSpecifiers(sourceText)) {
@@ -213,6 +259,22 @@ export function inspectModuleDependencies(
           normalizedSourcePath,
           specifier,
           "Server adapters and real-mode library modules cannot import the synthetic demo runtime in src/lib/demo.",
+        ),
+      );
+    }
+
+    if (
+      realRouteEntry &&
+      internalTarget !== undefined &&
+      isSyntheticRuntimePath(internalTarget) &&
+      !isAllowedSyntheticEntry(normalizedSourcePath, internalTarget)
+    ) {
+      violations.push(
+        violation(
+          "route-imports-synthetic-runtime",
+          normalizedSourcePath,
+          specifier,
+          "Real route files and Server Actions reach the synthetic runtime only through the root layout mount and the loopback demo route.",
         ),
       );
     }

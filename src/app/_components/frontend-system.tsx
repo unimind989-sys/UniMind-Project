@@ -25,7 +25,6 @@ type ShellProps = {
   signOut?: () => void;
   children: ReactNode;
   synthetic?: boolean;
-  preview?: boolean;
   returnToAdmin?: boolean;
   adminReturnHref?: string;
 };
@@ -42,7 +41,6 @@ export function FrontendShell({
   available,
   children,
   synthetic = true,
-  preview = false,
   returnToAdmin = false,
   adminReturnHref,
 }: ShellProps) {
@@ -59,7 +57,6 @@ export function FrontendShell({
       locale={locale}
       profileName={profileName}
       synthetic={synthetic}
-      preview={preview}
       title={`${title} · ${t("Study", "المذاكرة")}`}
       workspace
     >
@@ -75,11 +72,7 @@ export function FrontendShell({
         <div>
           <Link
             className={styles.back}
-            href={
-              ((preview ? "/preview/learn" : "/learn") +
-                "?view=subjects&lang=" +
-                locale) as Route
-            }
+            href={("/learn?view=subjects&lang=" + locale) as Route}
             prefetch={false}
           >
             <FrontendIcon name="back" />

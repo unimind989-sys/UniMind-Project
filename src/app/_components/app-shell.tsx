@@ -4,7 +4,7 @@ import { useId, useLayoutEffect, useRef, type ReactNode } from "react";
 import { ProductNavigationLink as Link } from "@/app/_components/product-navigation";
 import type { Route } from "next";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useSyntheticNavigation } from "./product-navigation";
+import { useHostedSynthetic } from "./product-navigation";
 import { syntheticDemoTime } from "@/lib/demo/synthetic-clock.application";
 import type { Locale } from "@/lib/i18n/locale";
 import { useProductProfileName } from "./product-profile";
@@ -22,7 +22,6 @@ export function AppShell({
   children,
   synthetic = false,
   title,
-  preview = false,
   roleLabel,
   workspace = false,
   profileName,
@@ -32,7 +31,6 @@ export function AppShell({
   children: ReactNode;
   synthetic?: boolean;
   title?: string;
-  preview?: boolean;
   roleLabel?: string | undefined;
   workspace?: boolean;
   profileName?: string | null | undefined;
@@ -45,7 +43,7 @@ export function AppShell({
   const initial = Array.from(name)[0]?.toLocaleUpperCase(locale) ?? "?";
   const profileDestinationId = useId();
   const pathname = usePathname();
-  const hosted = useSyntheticNavigation();
+  const hosted = useHostedSynthetic();
   const query = useSearchParams();
   const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
   useLayoutEffect(() => {
@@ -55,8 +53,7 @@ export function AppShell({
   useLayoutEffect(() => {
     if (title) document.title = `${title} · UniMind`;
   }, [title, pathname]);
-  const prefix = preview ? "/preview" : "";
-  const homeHref = `${prefix}${role === "leader" ? "/batch-leader" : role === "admin" ? "/admin" : "/learn"}?lang=${locale}`;
+  const homeHref = `${role === "leader" ? "/batch-leader" : role === "admin" ? "/admin" : "/learn"}?lang=${locale}`;
   const identity =
     roleLabel ??
     t(
@@ -165,30 +162,22 @@ export function AppShell({
   const nav: [string, string, FrontendIconName][] =
     role === "student"
       ? [
-          [prefix + "/learn", t("Study", "المذاكرة"), "shelf"],
-          [prefix + "/learn?view=subjects", t("Subjects", "المواد"), "sources"],
+          ["/learn", t("Study", "المذاكرة"), "shelf"],
+          ["/learn?view=subjects", t("Subjects", "المواد"), "sources"],
           ["/settings", name, "account"],
         ]
       : role === "leader"
         ? [
+            ["/batch-leader", t("Source intake", "استلام المصادر"), "upload"],
             [
-              prefix + "/batch-leader",
-              t("Source intake", "استلام المصادر"),
-              "upload",
-            ],
-            [
-              prefix + "/batch-leader?view=history",
+              "/batch-leader?view=history",
               t("Latest submissions", "آخر الإرسالات"),
               "sources",
             ],
             ["/settings", t("Account", "الحساب"), "settings"],
           ]
         : [
-            [
-              prefix + "/admin",
-              t("Decision queue", "قائمة القرارات"),
-              "shield",
-            ],
+            ["/admin", t("Decision queue", "قائمة القرارات"), "shield"],
             ["/admin/sources", t("Content", "المحتوى"), "sources"],
             ["/admin/catalog", t("Academics", "الدراسة"), "studio"],
             [
@@ -215,13 +204,6 @@ export function AppShell({
                 ? 1
                 : 0)
           : index === adminIndex;
-    if (role === "admin" && preview && index > 0)
-      return (
-        <span key={href} className={styles.previewDestination}>
-          <FrontendIcon name={icon} />
-          {label}
-        </span>
-      );
     return (
       <Link
         key={href}
@@ -292,7 +274,7 @@ export function AppShell({
         >
           {navigation}
         </nav>
-        {role === "admin" && !preview ? (
+        {role === "admin" ? (
           <Link
             className={styles.adminAccount}
             href={`/settings?lang=${locale}` as Route}
@@ -330,7 +312,7 @@ export function AppShell({
           </span>
           <LanguageSwitch locale={locale} />
         </header>
-        {role === "admin" && !preview ? (
+        {role === "admin" ? (
           <div
             className={styles.adminMenuRow}
             role="navigation"
@@ -360,7 +342,7 @@ export function AppShell({
             </Link>
           </div>
         ) : null}
-        {synthetic && !hosted?.active ? (
+        {synthetic && !hosted ? (
           <p className={styles.simulation} role="note" data-workspace-chrome>
             {t(
               "Synthetic demo · Simulated services · Reload clears demo data",

@@ -75,8 +75,7 @@
 .rail .globalNav a[data-account] {
   margin-block-start: auto;
 }
-.globalNav a,
-.previewDestination {
+.globalNav a {
   display: flex;
   position: relative;
   align-items: center;

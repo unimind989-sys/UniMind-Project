@@ -91,7 +91,7 @@ describe("module boundary checker", () => {
     for (const sourcePath of [
       "src/lib/demo/synthetic-route.application.ts",
       "src/app/_components/product-collection.tsx",
-      "src/app/preview/learn/preview-workspace.server.ts",
+      "src/app/_synthetic/screens/study-screens.tsx",
     ])
       expect(
         codes(
@@ -99,5 +99,65 @@ describe("module boundary checker", () => {
           'import { syntheticCatalogRows } from "@/lib/demo/synthetic-catalog.application";',
         ),
       ).toEqual([]);
+  });
+
+  it("lets real route files reach the synthetic runtime only through its mounts", () => {
+    for (const [sourcePath, sourceText] of [
+      [
+        "src/app/learn/page.tsx",
+        'import { syntheticCatalogRows } from "@/lib/demo/synthetic-catalog.application";',
+      ],
+      [
+        "src/app/learn/[cohortId]/[unitId]/layout.tsx",
+        'import { loadSyntheticWorkspaceScope } from "@/lib/demo/synthetic-workspace.application";',
+      ],
+      [
+        "src/app/api/batch-leader/campaigns/[campaignId]/uploads/route.ts",
+        'import { demoCampaignId } from "@/lib/demo/synthetic-campaigns.application";',
+      ],
+      [
+        "src/app/admin/actions.ts",
+        'import { actionFixtures } from "@/lib/demo/synthetic-fixtures.application";',
+      ],
+      [
+        "src/app/learn/chat-helpers.ts",
+        '"use server"; import { syntheticCatalogRows } from "@/lib/demo/synthetic-catalog.application";',
+      ],
+      [
+        "src/app/settings/page.tsx",
+        'import SyntheticRuntime from "@/app/_synthetic/synthetic-runtime";',
+      ],
+      [
+        "src/app/layout.tsx",
+        'import { syntheticCatalogRows } from "@/lib/demo/synthetic-catalog.application";',
+      ],
+      [
+        "src/app/layout.tsx",
+        'import SyntheticRuntime from "./_synthetic/synthetic-runtime";',
+      ],
+    ] as const)
+      expect(codes(sourcePath, sourceText)).toContain(
+        "route-imports-synthetic-runtime",
+      );
+    expect(
+      codes(
+        "src/app/layout.tsx",
+        'import { resolveDemoRuntime } from "@/lib/demo/demo-runtime.application"; import { HostedSyntheticRuntime } from "./_synthetic/hosted-synthetic-runtime"; import { LoopbackSyntheticRuntime } from "./_synthetic/loopback-synthetic-runtime";',
+      ),
+    ).toEqual([]);
+    expect(
+      codes(
+        "src/app/synthetic-runtime/[...path]/page.tsx",
+        'import { resolveSyntheticPage } from "@/lib/demo/synthetic-route.application";',
+      ),
+    ).toEqual([]);
+    // Shared UI below the route files (the auth form intercept, leaf screens)
+    // is not a route entry.
+    expect(
+      codes(
+        "src/app/(auth)/_components/auth-form.tsx",
+        '"use client"; import { syntheticLoginRole } from "@/lib/demo/synthetic-account.application";',
+      ),
+    ).toEqual([]);
   });
 });

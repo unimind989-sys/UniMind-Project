@@ -51,7 +51,6 @@ export function CollectionFlow({
   uploadEndpoint,
   finalizeAction,
   initialActionState,
-  syntheticPreview = false,
   uploadClient,
   allowFile,
   reference,
@@ -69,7 +68,6 @@ export function CollectionFlow({
   finalizeAction: CollectionFinalizeAction;
   initialActionState: CollectionActionState;
   initialClientKey: string;
-  syntheticPreview?: boolean;
   uploadClient?: CollectionUploadClient;
   allowFile?: (file: File) => Promise<boolean>;
   reference?: Readonly<{ name: string; file: () => File }>;
@@ -90,7 +88,6 @@ export function CollectionFlow({
   };
   onCorrectionPrepared?: (href: Route) => void;
 }>) {
-  const prefix = syntheticPreview ? "/preview" : "";
   const text = getCollectionCopy(locale);
   const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
   const query = useSearchParams();
@@ -191,7 +188,7 @@ export function CollectionFlow({
     next.set("upload", itemId ?? "all");
     next.set("lang", locale);
     router.push(
-      `${prefix}/batch-leader/campaigns/${encodeURIComponent(campaign.id)}?${next}#collection-intake` as Route,
+      `/batch-leader/campaigns/${encodeURIComponent(campaign.id)}?${next}#collection-intake` as Route,
     );
   }
   const uploadFocus =
@@ -225,8 +222,7 @@ export function CollectionFlow({
     )
       picker.current.previousElementSibling.focus();
   }, [correctionAction, correctionSubmissionId]);
-  const back =
-    homeHref ?? (syntheticPreview ? "/preview/batch-leader" : "/batch-leader");
+  const back = homeHref ?? "/batch-leader";
   const ready = queue.files.filter(
     (row) =>
       row.inspection &&
@@ -393,7 +389,7 @@ export function CollectionFlow({
         <Link
           className={styles.open}
           href={
-            `${prefix}/batch-leader/campaigns/${encodeURIComponent(campaign.id)}?lang=${locale}` as Route
+            `/batch-leader/campaigns/${encodeURIComponent(campaign.id)}?lang=${locale}` as Route
           }
         >
           {t("Open campaign", "فتح الحملة")}
@@ -404,8 +400,6 @@ export function CollectionFlow({
     <AppShell
       locale={locale}
       role="leader"
-      synthetic={syntheticPreview}
-      preview={syntheticPreview}
       title={t("Source intake", "استلام المصادر")}
     >
       <div className={`${styles.workspace} ${styles.requestWorkspace}`}>
@@ -528,7 +522,7 @@ export function CollectionFlow({
                         <Link
                           className={styles.open}
                           href={
-                            `${prefix}/batch-leader/campaigns/${encodeURIComponent(campaign.id)}?request=${encodeURIComponent(item.id)}&submission=${encodeURIComponent(item.latestSubmission!.id)}&lang=${locale}#collection-intake` as Route
+                            `/batch-leader/campaigns/${encodeURIComponent(campaign.id)}?request=${encodeURIComponent(item.id)}&submission=${encodeURIComponent(item.latestSubmission!.id)}&lang=${locale}#collection-intake` as Route
                           }
                         >
                           {action === "FIX_INFORMATION"
@@ -991,7 +985,6 @@ export function CollectionFlow({
           campaigns={[campaign]}
           acknowledgements={acknowledgements}
           compact
-          preview={syntheticPreview}
           {...(referenceTime ? { referenceTime } : {})}
           locale={locale}
           heading={t("Recorded submissions", "الإرسالات المسجلة")}

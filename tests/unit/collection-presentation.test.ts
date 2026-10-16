@@ -145,8 +145,8 @@ describe("collection request presentation", () => {
       item: recorded.requestedItems[0],
     });
     expect(url.searchParams.has("request")).toBe(false);
-    expect(collectionInspectionHref("a/b", "x y", "r&z", "en", true)).toContain(
-      "/preview/batch-leader/campaigns/a%2Fb",
+    expect(collectionInspectionHref("a/b", "x y", "r&z", "en")).toContain(
+      "/batch-leader/campaigns/a%2Fb?",
     );
   });
   it.each([
