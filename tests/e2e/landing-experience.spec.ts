@@ -97,9 +97,20 @@ test("folio moves without input, ignores the pointer and pauses when offscreen o
   );
   await atlas.hover({ position: { x: 30, y: 30 } });
   await atlas.hover({ position: { x: 180, y: 180 } });
-  expect(
+  // Pointer-driven perspective would move these values far beyond float noise.
+  const matrix = (transform: string) =>
+    (
+      transform
+        .slice(transform.indexOf("(") + 1)
+        .match(/-?\d+(?:\.\d+)?(?:e-?\d+)?/gu) ?? []
+    ).map(Number);
+  const hovered = matrix(
     await stage.evaluate((element) => getComputedStyle(element).transform),
-  ).toBe(pausedTransform);
+  );
+  expect(hovered).toHaveLength(matrix(pausedTransform).length);
+  matrix(pausedTransform).forEach((value, index) =>
+    expect(hovered[index]).toBeCloseTo(value, 3),
+  );
 
   await page
     .getByRole("heading", { name: "How it works", exact: true })
