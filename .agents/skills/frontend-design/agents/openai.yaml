@@ -1,0 +1,6 @@
+interface:
+  display_name: "Frontend Design"
+  short_description: "Intentional visual direction for new or reshaped UI"
+
+policy:
+  allow_implicit_invocation: true

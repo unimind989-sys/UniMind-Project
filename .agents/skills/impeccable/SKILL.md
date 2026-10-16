@@ -1,20 +1,28 @@
 ---
 name: impeccable
-description: Use for frontend design direction, redesign, significant UX restructuring, interaction-design judgment, critique/audit, or substantial visual refinement. Covers product UI and visitor surfaces when design quality is a material part of the request. A tiny copy, spacing, or routine behavior correction uses the frontend quality floor without activating this full workflow. Not for backend-only work.
+description: Critique, audit, and polish frontend UI, with an anti-pattern detector and focused refinement commands (layout, typeset, clarify, harden, adapt, and others). Use for design review, technical UI audits, or substantial visual refinement inside the approved design. Not for a tiny copy or spacing fix, choosing a new visual direction (use frontend-design), or backend-only work.
 ---
+
+## UniMind scope
+
+- Design direction comes from root `DESIGN.md` (the authority) and the [`frontend-design`](../frontend-design/SKILL.md) skill. [`docs/agents/frontend.md`](../../../docs/agents/frontend.md) holds the quality floor.
+- In UniMind, use Impeccable for `critique`, `audit`, `polish`, the detector, and the refinement commands (`layout`, `typeset`, `clarify`, `harden`, `adapt`, `distill`, `quieter`, `optimize`, `onboard`, `animate`, `colorize`, `delight`, `bolder`, `document`, `extract`).
+- Disabled: the new-work and redesign concept-roll flow ([reference/new-work.md](reference/new-work.md), `craft`, `shape`'s visual-world step, `visualize`, `overdrive`'s new-direction work, `live` variant generation) and all image or comp generation (`scripts/generate-image.mjs`, the OpenAI image API, the asset producer). They create paid exposure and conflict with the approved design. `.impeccable/config.json` `buildPath: "comp"` is not used.
+- Run scripts from `.agents/skills/impeccable/scripts/` with the working directory at the repository root.
+- Sub-agents: read-only review agents (critique's two assessments, the finish reviewer, the documenter) are allowed; none on small tasks, at most one code-writing sub-agent, and no nesting.
 
 This skill gives you the tools and permission to create design that earns to be called out-of-distribution craft: Whereas before, your design work would have been safe, timid and measured, you now approach every design task as a award-winning design director with impeccable understanding for what makes exceptional design work: production-grade code, peak creativity, a clear POV, deep understanding of the needs of the client and users, and exceptional craft.
 
 Core principles:
 - Go all out. No hedging, no shortcuts. The deliverable must be complete (except assets the user must provide).
 - Dream big and bold. Distinct, beautiful, outstanding and highly inspiring work.
-- Verify in bounded passes, not a loop, and the ceiling covers the whole cycle: screenshots, defect scans, micro-edits, and rebuilds alike. Build fully, inspect once with a batched round (desktop and mobile together on the web; the shipped device classes on a native platform), fix everything it shows in one batch, confirm with at most one more round, and stop polishing. Open-ended self-QA burns the user's money doing worse what the finish handoffs do better.
-- The central execution policy owns workers. Helper roles and reference files create no additional worker budget; run them inline unless the policy and user-authorized delegation permit the single bounded worker.
+- Verify in bounded passes, not a loop, and the ceiling covers the whole cycle: screenshots, defect scans, micro-edits, and rebuilds alike. Build fully, inspect once with a batched round (desktop and mobile together on the web; the shipped device classes on a native platform), fix everything it shows in one batch, confirm with at most one more round, and stop polishing. Open-ended self-QA does worse what the finish handoffs do better.
+- Helper roles follow the sub-agent rule in UniMind scope above; run them inline when no sub-agent is available.
 
 ## Setup
 
-1. Run `node <skill-base-dir>/scripts/context.mjs` once per session, where `<skill-base-dir>` is the loaded base directory the runtime reports for this skill; keep cwd at the user's project. That base directory resolves every `node .agents/skills/impeccable/scripts/...` command in this skill and its references, and `.agents/skills/impeccable/scripts` is the fallback only when the runtime reports no base directory. Pass a named source file or route as `--target <path>`. It loads PRODUCT.md, DESIGN.md, the matching surface brief, and native-platform guidance when applicable; follow its directives and do not rerun it.
-2. Before acting, load the one playbook that owns the request: the Commands table's reference for an explicit or clearly implied sub-command, or [reference/new-work.md](reference/new-work.md) for a new surface or replacement visual world. Then inspect the target and at least one representative source of incumbent visual truth (tokens, theme, CSS, component, or asset) before editing.
+1. Run `node .agents/skills/impeccable/scripts/context.mjs` once per session with cwd at the repository root. In UniMind the scripts always live in `.agents/skills/impeccable/scripts`, whichever directory the agent loaded this file from. Pass a named source file or route as `--target <path>`. It loads PRODUCT.md, DESIGN.md, the matching surface brief, and native-platform guidance when applicable; follow its directives and do not rerun it.
+2. Before acting, load the one playbook that owns the request: the Commands table's reference for an explicit or clearly implied sub-command, or [reference/new-work.md](reference/new-work.md) for a new surface or replacement visual world (disabled in UniMind; use `frontend-design` within `DESIGN.md` instead). Then inspect the target and at least one representative source of incumbent visual truth (tokens, theme, CSS, component, or asset) before editing.
 3. After analysis and direction are resolved, load [reference/craft-floor.md](reference/craft-floor.md) immediately before editing UI. It carries the quality floor, the absolute bans, and the reflexes no detector catches. Do not load it for planning-only work.
 
 ### UniMind authority and integration

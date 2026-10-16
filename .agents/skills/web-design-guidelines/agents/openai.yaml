@@ -1,7 +1,0 @@
-interface:
-  display_name: "Web Design Guidelines"
-  short_description: "Review UI against pinned Vercel rules"
-  default_prompt: "Use $web-design-guidelines to review these UI files against the pinned Vercel rules."
-
-policy:
-  allow_implicit_invocation: false

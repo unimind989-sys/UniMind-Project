@@ -18,7 +18,7 @@ Show this to the user, then immediately proceed to Step 2. The explanation fixes
 
 ### 2. Generate alternatives
 
-The primary agent produces at least two **radically different** interfaces itself. A single bounded challenger may be used only when the central execution policy permits one worker and the user or task has authorized delegation. Skill instructions never add worker budget, and nested workers are prohibited.
+The primary agent produces at least two **radically different** interfaces itself. On a larger design, one read-only sub-agent may draft a challenger alternative independently; small tasks use none, and sub-agents never spawn further sub-agents.
 
 Apply a different constraint to each alternative:
 

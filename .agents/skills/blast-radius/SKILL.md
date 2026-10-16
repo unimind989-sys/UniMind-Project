@@ -1,11 +1,11 @@
 ---
 name: blast-radius
-description: Find and prove what a code or schema change could break outside its visible diff.
+description: Manual review that finds and proves what a code or schema change could break outside its visible diff, from a named fixed point. Use only when the user invokes it. Not a replacement for the ordinary checks or the independent review of a candidate.
 ---
 
 # Blast radius
 
-Assess change risk beyond direct callers. This is an explicit review workflow for `$blast-radius`, not a replacement for ordinary implementation checks.
+Assess change risk beyond direct callers. This is an explicit review workflow (`$blast-radius` in Codex, `/blast-radius` in Claude Code), not a replacement for ordinary implementation checks.
 
 ## Inputs
 

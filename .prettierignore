@@ -1,4 +1,5 @@
 .agents/
+.claude/
 .codex/
 .git/
 .next/
@@ -14,6 +15,7 @@ planning/
 playwright-report/
 test-results/
 AGENTS.md
+CLAUDE.md
 CONTEXT.md
 PRODUCT.md
 README.md

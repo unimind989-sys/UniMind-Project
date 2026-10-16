@@ -6,7 +6,7 @@ This is a code-level audit, not a design critique. Check what's measurable and v
 
 ## UniMind pinned web-guidelines pass
 
-Before scoring a web target, read [`../../web-design-guidelines/references/guidelines.md`](../../web-design-guidelines/references/guidelines.md) completely and apply every relevant rule to the selected files. The file is a reviewed snapshot of Vercel's Web Interface Guidelines. Do not fetch the mutable upstream `main` branch during an audit. Merge verified findings into the dimensions below, preserve `file:line` evidence, and remove duplicate findings rather than reporting the same defect twice.
+Before scoring a web target, read [`vercel-web-interface-guidelines.md`](vercel-web-interface-guidelines.md) completely and apply every relevant rule to the selected files. The file is a reviewed snapshot of Vercel's Web Interface Guidelines (MIT, `../../VERCEL-WEB-GUIDELINES-LICENSE.txt`). Do not fetch the mutable upstream `main` branch during an audit. Merge verified findings into the dimensions below, preserve `file:line` evidence, and remove duplicate findings rather than reporting the same defect twice.
 
 ## Diagnostic Scan
 

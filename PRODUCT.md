@@ -8,7 +8,7 @@ web
 
 ## Stack
 
-The approved architecture is a strict TypeScript repository using Next.js App Router on Node.js, Supabase Auth, PostgreSQL, explicit grants, and row-level security. Provider, queue, storage, and model integrations remain behind adapters and use deterministic mocks until their decision and budget gates pass.
+A strict TypeScript Next.js App Router web application on Supabase Auth and PostgreSQL; provider, queue, storage, and model integrations stay behind adapters with deterministic mocks until their gates pass. The [master plan, section 8.1](docs/plans/poc-master-plan.md#81-application-architecture) owns the architecture.
 
 ## Users
 
@@ -28,16 +28,15 @@ The PoC begins with Human Medicine and Veterinary Medicine, while the same confi
 
 ## Capabilities and Constraints
 
-- Availability is derived from membership, cohort release, unit publication, active ready sources, valid rights, and matching curriculum edition.
-- PostgreSQL is authoritative for durable jobs, reservations, budgets, release state, provenance, usage, and audit.
-- Long-running work runs in idempotent durable workers, not browser lifetimes or short web requests.
-- Strict RAG has no web-search or outside-knowledge fallback.
-- Real cohorts, source rights, deletion policy, providers, budgets, retention, deployment, and beta release remain blocked until their named decisions and reviews pass.
+- Unit availability is derived, never a stored toggle; the [master plan, section 8.2](docs/plans/poc-master-plan.md#82-availability-model) owns its conditions.
+- PostgreSQL owns durable state, and long-running work runs in durable workers rather than the browser or a short web request ([master plan, section 8.8](docs/plans/poc-master-plan.md#88-automation-and-reliability)).
+- Strict RAG has no web-search or outside-knowledge fallback ([master plan, section 6.1](docs/plans/poc-master-plan.md#61-strict-rag-sourcing)).
+- Real cohorts, source rights, deletion policy, providers, budgets, retention, deployment, and beta release remain blocked until their named decisions and reviews pass ([master plan, section 15](docs/plans/poc-master-plan.md#15-decision-log)).
 - The current implementation phase is mock-only and may not use real private data, paid provider calls, or live release controls.
 
 ## Evidence on Hand
 
-Product and architecture facts are defined in `docs/plans/poc-master-plan.md`, execution contracts in `docs/runbooks/poc-execution-runbook.md`, and shared domain language in `CONTEXT.md`. Current visual rules live in canonical `DESIGN.md`. Ahmed approved the Phase 1 overhaul and supplied the Open Folio kit; selected unchanged assets and guides live at `planning/design/unimind-logo/open-folio-kit/`. The historical Phase 1 sample retains its temporary wordmark. The exact slogan is two lines: “Study deeper” then “Go further.” Phase 2 implementation has separate student, Batch Leader, Admin and final approval checkpoints. Do not fabricate testimonials, commercial usage, benchmark claims or pricing. Deployment/task evidence remains in the owning runbook and evidence records.
+Product and architecture facts are defined in `docs/plans/poc-master-plan.md`, execution contracts in `docs/runbooks/poc-execution-runbook.md`, and shared domain language in `CONTEXT.md`. Current visual rules live in canonical `DESIGN.md`; dated design approvals live in `evidence/wp03-product-shell/design-approval-history.md`. The Open Folio brand kit's selected unchanged assets and guides live at `planning/design/unimind-logo/open-folio-kit/`. The exact slogan is two lines: “Study deeper” then “Go further.” Do not fabricate testimonials, commercial usage, benchmark claims or pricing. Deployment/task evidence remains in the owning runbook and evidence records.
 
 ## Product Principles
 

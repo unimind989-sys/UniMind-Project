@@ -39,10 +39,8 @@ jobs:
         run: corepack enable
       - name: Install from the immutable lockfile
         run: corepack pnpm install --frozen-lockfile
-      - name: Verify the governed selector and workflow
-        run: |
-          corepack pnpm verify:agent-policy
-          corepack pnpm verify:ci-workflow
+      - name: Verify the governed workflow
+        run: corepack pnpm verify:ci-workflow
       - name: Select exact-head CI jobs
         id: select
         env:
@@ -55,7 +53,7 @@ jobs:
         run: |
           corepack pnpm exec prettier . --check
           corepack pnpm scan:secrets
-          pwsh -NoProfile -File scripts/verify-agent-readiness.ps1
+          corepack pnpm lint:agents
 
   dependency-audit:
     needs: ci_selector

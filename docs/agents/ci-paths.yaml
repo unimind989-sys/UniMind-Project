@@ -1,0 +1,73 @@
+# Conditional CI path rules, read by scripts/lib/conditional-ci-selector.ts.
+# Pull requests skip heavyweight jobs only when every changed path is known and safe.
+# Unknown paths, malformed diffs, main pushes and selector errors run every job.
+
+surfaces: [docs, frontend, runtime, auth, data, storage, delivery, tooling]
+
+paths:
+  - pattern: '^public/'
+    surfaces: [docs, frontend, runtime, auth, data, storage, delivery, tooling]
+  - pattern: '^(\.impeccable/(design\.json|(review|work)/.+\.md)|eslint\.config\.mjs|next\.config\.ts|playwright\.demo\.config\.ts|src/proxy\.ts|src/app/(icon\.svg|apple-icon\.png|favicon\.ico))$'
+    surfaces: [docs, frontend, runtime, auth, data, storage, delivery, tooling]
+  - pattern: '(^|/)(docs|planning|evidence|\.impeccable/surfaces)/|(^|/)(README|CONTRIBUTING|PRODUCT|DESIGN|CONTEXT|AGENTS|CLAUDE)\.md$'
+    surfaces: [docs]
+  - pattern: '^src/(app/(?!api/).+\.(tsx|css)|components/)'
+    surfaces: [frontend]
+  - pattern: '^src/(lib|app/api)/.+\.(ts|tsx)$'
+    surfaces: [runtime]
+  - pattern: '^src/app/(?!api/).+\.ts$'
+    surfaces: [runtime]
+  - pattern: '^workers/'
+    surfaces: [runtime]
+  - pattern: '^src/(lib|app)/(.*/)?auth([/-]|\.)'
+    surfaces: [auth, runtime]
+  - pattern: '^src/types/database\.generated\.ts$'
+    surfaces: [data, tooling]
+  - pattern: '^supabase/migrations/'
+    surfaces: [data]
+  - pattern: '^supabase/tests/'
+    surfaces: [data, tooling]
+  - pattern: '(^|/)(storage|upload|download|signed-url)([/-]|\.)'
+    surfaces: [storage]
+  - pattern: '^(vercel\.json|\.github/workflows/|\.env\.example)'
+    surfaces: [delivery]
+  - pattern: '(^|/)(release|deployment)/|(^|/)(NEXT_PUBLIC_RELEASE_ID|release-fingerprint)(/|$|\.)'
+    surfaces: [delivery]
+  - pattern: '^(scripts|tests|evals|\.agents|\.claude|\.codex)/|^(package\.json|pnpm-lock\.yaml|tsconfig[^/]*\.json|vitest\.config\.ts|playwright\.config\.ts|next-env\.d\.ts)$'
+    surfaces: [tooling]
+
+safe_docs_only_patterns:
+  - '^(README|CONTRIBUTING|PRODUCT|DESIGN|CONTEXT|AGENTS|CLAUDE)\.md$'
+  - '^docs/(?!security/|policies/).+\.md$'
+  - '^planning/.+\.md$'
+  - '^evidence/.+\.md$'
+  - '^\.impeccable/surfaces/.+\.md$'
+
+force_full_patterns:
+  - '^public/'
+  - '^(\.impeccable/(design\.json|(review|work)/.+\.md)|eslint\.config\.mjs|next\.config\.ts|playwright\.demo\.config\.ts|src/proxy\.ts|src/app/(icon\.svg|apple-icon\.png|favicon\.ico))$'
+  - '^\.github/workflows/'
+  - '^docs/agents/ci-paths\.yaml$'
+  - '^scripts/'
+  - '^src/lib/db/'
+  - '^tests/(integration|security)/'
+  - '^(package\.json|pnpm-lock\.yaml|\.npmrc|\.nvmrc)$'
+  - '^tests/unit/(ci-workflow-policy|conditional-ci-selector)\.test\.ts$'
+  - '^tests/fixtures/ci/'
+
+jobs:
+  - id: dependency-audit
+    required_surfaces: []
+    path_patterns:
+      - '^(package\.json|pnpm-lock\.yaml|\.npmrc|\.nvmrc)$'
+    needs: []
+  - id: application
+    required_surfaces: [frontend, runtime, auth, data, storage, delivery, tooling]
+    path_patterns: []
+    needs: []
+  - id: database-ci
+    required_surfaces: [auth, data, storage]
+    path_patterns:
+      - '^supabase/'
+      - '^src/types/database\.generated\.ts$'
+    needs: [application]

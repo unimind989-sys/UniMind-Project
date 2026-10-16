@@ -3,48 +3,56 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
 import {
-  assessConditionalCiEvidence,
-  loadAgentExecutionPolicy,
-} from "../../scripts/lib/agent-execution-policy";
-import {
   assertExactPrMergeParents,
+  loadCiPathConfig,
   selectCiJobs,
+  validateCiPathConfig,
 } from "../../scripts/lib/conditional-ci-selector";
 
-const policy = loadAgentExecutionPolicy();
+const config = loadCiPathConfig();
+
+type RegressionCase = {
+  id: string;
+  input: { changedPaths: string[] };
+  expected: Record<"dependency-audit" | "application" | "database-ci", string>;
+};
+
+const regressionCases = (
+  JSON.parse(
+    readFileSync("tests/fixtures/ci/conditional-ci-cases.json", "utf8"),
+  ) as { cases: RegressionCase[] }
+).cases;
 
 describe("conditional CI selector", () => {
-  it("replays source-bound broad outcomes to READY for every required job", () => {
-    const evidence = JSON.parse(
-      readFileSync(
-        "evidence/wp00-pilot/conditional-ci-shadow-evidence.json",
-        "utf8",
-      ),
-    ) as unknown;
-    const readiness = assessConditionalCiEvidence(policy, evidence);
-    expect(readiness.recommendedState).toBe("READY");
-    expect(readiness.regressionCoverage).toBe(true);
-    expect(readiness.jobs).toHaveLength(3);
+  it("loads a valid path config", () => {
+    expect(validateCiPathConfig(config)).toEqual([]);
+  });
+
+  it.each(regressionCases)("selects jobs for $id", (regression) => {
     expect(
-      readiness.jobs.every(
-        (job) =>
-          job.state === "READY" &&
-          job.runEvidence &&
-          job.skipEvidence &&
-          job.contradictions === 0,
-      ),
-    ).toBe(true);
+      selectCiJobs({
+        config,
+        event: "pull_request",
+        changedPaths: regression.input.changedPaths,
+      }),
+    ).toMatchObject({
+      dependencyAudit: regression.expected["dependency-audit"],
+      application: regression.expected.application,
+      databaseCi: regression.expected["database-ci"],
+    });
   });
 
   it("skips heavy jobs only for safe documentation", () => {
     expect(
       selectCiJobs({
-        policy,
+        config,
         event: "pull_request",
         changedPaths: [
           "docs/runbooks/poc-execution-runbook.md",
-          "planning/tasks/wp00-t16-conditional-ci-promotion.md",
+          "planning/tasks/wp00-t18-agent-workflow-v2.md",
           "evidence/wp00-pilot/proof.md",
+          "AGENTS.md",
+          "CLAUDE.md",
         ],
       }),
     ).toMatchObject({
@@ -59,7 +67,7 @@ describe("conditional CI selector", () => {
     "docs/policies/auth-session-revocation.md",
     "planning/load-profile-100-students.yaml",
     ".github/workflows/ci.yml",
-    "docs/agents/agent-execution-policy.yaml",
+    "docs/agents/ci-paths.yaml",
     "src/lib/db/supabase/admin.server.ts",
     "tests/integration/supabase-auth-hosted.test.ts",
     "scripts/lib/ephemeral-supabase.ts",
@@ -68,7 +76,7 @@ describe("conditional CI selector", () => {
   ])("runs full CI for protected or uncertain path %s", (changedPath) => {
     expect(
       selectCiJobs({
-        policy,
+        config,
         event: "pull_request",
         changedPaths: [changedPath],
       }),
@@ -79,53 +87,34 @@ describe("conditional CI selector", () => {
     });
   });
 
-  it("keeps the dependency, application, and database decisions distinct", () => {
+  it("runs the application job for agent skill changes", () => {
     expect(
       selectCiJobs({
-        policy,
+        config,
         event: "pull_request",
-        changedPaths: ["src/lib/catalog/resolve-unit.ts"],
+        changedPaths: [
+          ".agents/skills/tdd/SKILL.md",
+          ".claude/skills/tdd/SKILL.md",
+        ],
       }),
     ).toMatchObject({
       dependencyAudit: "WOULD_SKIP",
       application: "RUN",
       databaseCi: "WOULD_SKIP",
     });
-    expect(
-      selectCiJobs({
-        policy,
-        event: "pull_request",
-        changedPaths: ["supabase/migrations/20260921000000_gate.sql"],
-      }),
-    ).toMatchObject({
-      dependencyAudit: "WOULD_SKIP",
-      application: "RUN",
-      databaseCi: "RUN",
-    });
-    expect(
-      selectCiJobs({
-        policy,
-        event: "pull_request",
-        changedPaths: ["package.json"],
-      }),
-    ).toMatchObject({
-      dependencyAudit: "RUN",
-      application: "RUN",
-      databaseCi: "RUN",
-    });
   });
 
   it("runs full CI on absent or malformed PR paths and main push", () => {
     for (const changedPaths of [[], ["../other-repo"], ["/absolute"]]) {
       expect(
-        selectCiJobs({ policy, event: "pull_request", changedPaths }),
+        selectCiJobs({ config, event: "pull_request", changedPaths }),
       ).toMatchObject({
         dependencyAudit: "RUN",
         application: "RUN",
         databaseCi: "RUN",
       });
     }
-    expect(selectCiJobs({ policy, event: "push" })).toMatchObject({
+    expect(selectCiJobs({ config, event: "push" })).toMatchObject({
       dependencyAudit: "RUN",
       application: "RUN",
       databaseCi: "RUN",
@@ -135,7 +124,7 @@ describe("conditional CI selector", () => {
   it("preserves opt-in manual database feedback and full default dispatch", () => {
     expect(
       selectCiJobs({
-        policy,
+        config,
         event: "workflow_dispatch",
         databaseFeedback: true,
       }),
@@ -144,7 +133,7 @@ describe("conditional CI selector", () => {
       application: "WOULD_SKIP",
       databaseCi: "RUN",
     });
-    expect(selectCiJobs({ policy, event: "workflow_dispatch" })).toMatchObject({
+    expect(selectCiJobs({ config, event: "workflow_dispatch" })).toMatchObject({
       dependencyAudit: "RUN",
       application: "RUN",
       databaseCi: "RUN",

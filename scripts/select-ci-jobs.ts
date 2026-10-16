@@ -1,45 +1,13 @@
-import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
-import { appendFileSync, readFileSync } from "node:fs";
-import path from "node:path";
+import { appendFileSync } from "node:fs";
 
 import {
-  assessConditionalCiEvidence,
-  loadAgentExecutionPolicy,
-  validateAgentExecutionPolicy,
-} from "./lib/agent-execution-policy";
-import {
   assertExactPrMergeParents,
+  loadCiPathConfig,
   selectCiJobs,
 } from "./lib/conditional-ci-selector";
 
-const policy = loadAgentExecutionPolicy();
-const policyFailures = validateAgentExecutionPolicy(policy);
-if (policyFailures.length > 0)
-  throw new Error(`Invalid agent policy: ${policyFailures.join("; ")}`);
-if (policy.activation.conditional_ci !== "ENFORCED")
-  throw new Error("Conditional CI selector requires ENFORCED policy state.");
-
-const workflow = readFileSync(
-  path.resolve(policy.conditional_ci.enforcement.workflow_path),
-);
-const actualWorkflowHash = createHash("sha256").update(workflow).digest("hex");
-if (actualWorkflowHash !== policy.conditional_ci.enforcement.workflow_sha256)
-  throw new Error(
-    "CI workflow does not match the governed policy fingerprint.",
-  );
-
-const evidence = JSON.parse(
-  readFileSync(
-    "evidence/wp00-pilot/conditional-ci-shadow-evidence.json",
-    "utf8",
-  ),
-) as unknown;
-const readiness = assessConditionalCiEvidence(policy, evidence);
-if (readiness.recommendedState !== "READY")
-  throw new Error(
-    "Conditional CI lacks complete current-policy readiness evidence.",
-  );
+const config = loadCiPathConfig();
 
 const event = process.env.GITHUB_EVENT_NAME;
 if (
@@ -82,7 +50,7 @@ if (event === "pull_request") {
 }
 
 const selection = selectCiJobs({
-  policy,
+  config,
   event,
   ...(changedPaths === undefined ? {} : { changedPaths }),
   databaseFeedback:

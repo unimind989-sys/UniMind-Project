@@ -1,11 +1,11 @@
 ---
 name: trust-boundaries
-description: Check UniMind identity, authorization, storage, and protected trust semantics when an execution envelope includes material auth or storage surfaces. Not for code that merely runs after login or reads an existing authorized abstraction unchanged.
+description: Map and prove UniMind identity, authorization, RLS, and storage trust semantics. Use when a change touches auth, authorization, RLS, or storage trust behavior. Not for code that merely runs after login or calls an existing authorized abstraction unchanged.
 ---
 
 # Trust Boundaries
 
-Use the task's authority and execution envelope. This capability sharpens protected implementation; deterministic policies and tests own recurring guarantees.
+Use this when the change touches auth, authorization, RLS, or storage trust semantics. These are protected paths: plan first, follow the task's authority, and get an independent review agent on the candidate (see `docs/agents/workflow.md`). This skill sharpens the implementation; deterministic policies and tests own the recurring guarantees.
 
 Before mutation, record the smallest complete trust map in the task record or evidence:
 

@@ -1,5 +1,0 @@
-interface:
-  display_name: "UniMind Skills"
-  short_description: "Choose the right UniMind workflow skill"
-policy:
-  allow_implicit_invocation: false

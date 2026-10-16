@@ -1,6 +1,6 @@
 ---
 name: unslop
-description: Edit human-facing English to remove formulaic AI writing while preserving meaning, evidence, and technical precision. Use for documentation prose, product copy, decision summaries, PR text, or an explicit unslop request; do not rewrite code, logs, exact quotations, schemas, contracts, or controlled evidence fields.
+description: Edit human-facing English to remove formulaic AI writing without changing meaning. Use for documentation prose, product copy, decision summaries, PR text, or an explicit unslop request. Not for code, logs, exact quotations, schemas, contracts, or controlled evidence fields.
 ---
 
 # Unslop
