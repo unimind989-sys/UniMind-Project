@@ -1,6 +1,6 @@
 ---
 name: tdd
-description: Test-driven development. Use when the user wants to build features or fix bugs test-first, mentions "red-green-refactor", or wants integration tests.
+description: Test-driven development through red-green vertical slices at public seams. Use when the user wants a feature or bug fix built test-first, mentions red-green-refactor, or asks for integration tests. Not for adding tests after the fact to an unchanged design or for diagnosing an unexplained failure (use diagnosing-bugs).
 ---
 
 # Test-Driven Development
@@ -23,7 +23,7 @@ A **seam** is the public boundary you test at: the interface where you observe b
 
 Ask: "What's the public interface, and which established seam proves this behavior?"
 
-When the shape of that interface is itself in question (how deep the module is, where the seam belongs, what the interface should expose), read [`../codebase-design/SKILL.md`](../codebase-design/SKILL.md) before choosing the seam. It is the shared source of the module, interface, depth, seam, adapter, leverage, and locality terms. Consult it as a reference inside the TDD workflow; do not look for a separate "Skill tool."
+When the shape of that interface is itself in question (how deep the module is, where the seam belongs, what the interface should expose), read [`../codebase-design/SKILL.md`](../codebase-design/SKILL.md) before choosing the seam. It is the shared source of the module, interface, depth, seam, adapter, leverage, and locality terms. Consult it as a reference inside the TDD workflow.
 
 ## Anti-patterns
 

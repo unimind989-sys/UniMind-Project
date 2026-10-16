@@ -1,6 +1,6 @@
 ---
 name: diagnosing-bugs
-description: Diagnosis loop for genuinely hard, unclear, reproduction-dependent, performance, or non-converging bugs, and when the user explicitly asks to diagnose or debug. A routine failing test with a direct cause uses the ordinary edit loop.
+description: Disciplined diagnosis loop (reproduce, minimise, hypothesise, instrument, fix, clean up) for hard, unclear, flaky, performance, or non-converging bugs, or when the user explicitly asks to diagnose or debug. Not for a routine failing test with a direct, visible cause.
 ---
 
 # Diagnosing Bugs

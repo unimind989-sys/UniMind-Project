@@ -1,0 +1,6 @@
+interface:
+  display_name: "Skill Authoring"
+  short_description: "Write and change skills and agent instructions"
+
+policy:
+  allow_implicit_invocation: true

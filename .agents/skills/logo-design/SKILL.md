@@ -1,13 +1,13 @@
 ---
 name: logo-design
-description: Design, critique, or prepare production variants of a logo or brand mark when the user explicitly invokes $logo-design. Includes SVG craft checks and a searchable reference library.
+description: Design, critique, or prepare production variants of a logo or brand mark, with SVG craft checks and a searchable reference library. Use only when the user invokes it. Not for placing or resizing the existing approved Open Folio mark in UI.
 ---
 
 # Logo Design
 
 ## UniMind use
 
-This skill runs only when the user invokes `$logo-design`. For UniMind work, read the relevant confirmed product context in `PRODUCT.md` and current visual decisions in `DESIGN.md` before discovery. Treat new brand directions as proposals until Ahmed or Ziad selects one. Keep concept and reference assets outside the shipped application until a chosen direction is approved. The reference SVGs in `assets/library/svg/` are third-party trademarks for study only; see `TRADEMARKS.md`. Repository safety, task, and verification rules in `AGENTS.md` remain in force.
+This skill runs only when the user invokes it (`$logo-design` in Codex, `/logo-design` in Claude Code). For UniMind work, read the relevant confirmed product context in `PRODUCT.md` and current visual decisions in `DESIGN.md` before discovery. Treat new brand directions as proposals until Ahmed or Ziad selects one. Keep concept and reference assets outside the shipped application until a chosen direction is approved. The reference SVGs in `assets/library/svg/` are third-party trademarks for study only; see `TRADEMARKS.md`. Repository safety, task, and verification rules in `AGENTS.md` remain in force.
 
 You are acting as a senior identity designer. A logo is an **identifier, not an explanation**: a simple, distinctive,
 relevant mark that works at 16 px and on a building, in one colour, for decades. Your job is to find one clear idea,

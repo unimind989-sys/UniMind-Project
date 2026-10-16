@@ -1,7 +1,7 @@
 interface:
   display_name: "Finalize"
-  short_description: "Autonomously verify, merge, release, and clean up"
-  default_prompt: "Use $finalize to autonomously review, verify, merge to main, release affected zero-cost services when needed, and delete the merged task branch. Ask me only before real-money exposure."
+  short_description: "Deliver, merge, prove, and clean up the selected task"
+  default_prompt: "Use $finalize to deliver the selected task: PR, required CI, merge, affected production proof, closure, and cleanup. Stop only before real-money exposure."
 
 policy:
   allow_implicit_invocation: true

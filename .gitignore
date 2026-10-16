@@ -52,3 +52,8 @@ supabase/.temp/
 # Vercel link state and environment pulls may contain credentials.
 /.vercel/
 /.env*
+
+# Local coding-agent state
+/.claude/worktrees/
+/.claude/settings.local.json
+/CLAUDE.local.md

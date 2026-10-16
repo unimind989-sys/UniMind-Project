@@ -24,7 +24,7 @@ Form a platform hypothesis: `web`, `ios`, `android`, or `adaptive` (one product 
 
 ## Step 3: Interview for product truth
 
-STOP and use Codex's structured user-input/question tool when available; if unavailable, ask directly in chat to clarify what you cannot infer. Ask only about material gaps the repository and original request do not answer with strong evidence.
+STOP and use the agent's structured question tool (Codex request_user_input / Claude AskUserQuestion) when available; if unavailable, ask directly in chat to clarify what you cannot infer. Ask only about material gaps the repository and original request do not answer with strong evidence.
 
 Use the structured question tool when available; otherwise ask and wait. Keep rounds to at most three focused questions and require one real answer or approval round before writing a new PRODUCT.md. Confirm inferences.
 
@@ -108,6 +108,8 @@ When the platform you just recorded is `ios`, `android`, or `adaptive`, load [io
 Before loading new-work or resuming shape/build, verify that PRODUCT.md exists at the resolved path and contains the confirmed product record. If the file is absent, init is incomplete. Do not substitute interview notes, a planning packet, or later design prose for the file.
 
 ## Step 5: Record workflow defaults
+
+UniMind: image generation is disabled, so skip the build-path question and record no `buildPath`; code-first is the only path.
 
 When image generation is available and no `buildPath` is recorded yet, ask once how new surfaces should be built. Availability means a harness-native image tool or the API fallback that context.mjs reports as `IMAGE_GEN_AVAILABLE`, and the first of those leaves no trace in the boot output: context.mjs only sees the key, so a silent boot on a harness that generates images is not evidence there is nothing to ask about. This is its own question, never a clause riding inside another one. The stack round asks what to build with; this asks how the building starts, and an answer to the first carries no consent about the second. State the trade in the question the user actually reads, because the two names mean nothing to someone meeting them for the first time: **comp-first** (an image sets the bar before any code; bolder composition, slower, and the build must match the image) or **code-first** (build directly; the ambition is written into the direction contract and audited at the finish; leaner, faster).
 

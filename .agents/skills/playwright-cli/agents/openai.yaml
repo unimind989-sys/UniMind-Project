@@ -1,7 +1,0 @@
-interface:
-  display_name: "Playwright CLI"
-  short_description: "Explicit CLI tracing and Playwright test debugging"
-  default_prompt: "Use $playwright-cli for this explicit CLI tracing or Playwright test-debugging task."
-
-policy:
-  allow_implicit_invocation: false

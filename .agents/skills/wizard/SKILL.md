@@ -1,11 +1,11 @@
 ---
 name: wizard
-description: User-invoked only. Generate an interactive PowerShell wizard when the user explicitly asks for the Wizard skill or a PowerShell setup wizard.
+description: Generate an interactive PowerShell wizard that walks a human through manual setup steps (dashboards, secrets, consent). Use only when the user invokes it or explicitly asks for a PowerShell setup wizard. Not for setup work the agent can do directly.
 ---
 
 # Wizard
 
-Run this workflow only when the user explicitly requests the Wizard skill or an interactive PowerShell wizard.
+Run this workflow only when the user explicitly requests it (`$wizard` in Codex, `/wizard` in Claude Code) or asks for an interactive PowerShell wizard.
 
 Create a PowerShell script that walks a human through a manual procedure one stage at a time. A wizard may open exact documentation or dashboard URLs, explain what to click, capture public or secret values, update a local `.env`, set required GitHub Actions secrets or variables, and confirm irreversible actions.
 
@@ -30,7 +30,7 @@ The journey is ready when a new contributor could complete every stage without g
 
 ## 3. Author the PowerShell wizard
 
-Copy `template.ps1` to the agreed scratch or `scripts/` path. Keep the library above `STAGES` byte-for-byte unless a demonstrated template defect requires a skill-maintainer change.
+Copy `template.ps1` to the agreed scratch or `scripts/` path. Keep the library above `STAGES` byte-for-byte unless a demonstrated template defect requires a `skill-authoring` change.
 
 Use these helpers below the marker:
 

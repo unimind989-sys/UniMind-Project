@@ -1,6 +1,6 @@
 ---
 name: image-to-code
-description: Implement a supplied screenshot, mockup, or generated reference as a faithful responsive frontend. Use for "image to code", "build this screenshot", or "match this design"; a written brief without a selected image uses impeccable instead.
+description: Implement a selected screenshot or mockup as a faithful responsive frontend and verify the rendered match. Use only when the user invokes it with a selected image. Not for a written brief without an image (use frontend-design or impeccable).
 ---
 
 # Image to Code — Faithful Website Implementation
@@ -12,13 +12,13 @@ Turn design images into a website that someone could mistake for the images. The
 - Read `AGENTS.md`, the relevant product authority, and root `DESIGN.md` when it exists. Product behavior, accessibility, security, and confirmed design decisions override a visual reference.
 - Inspect every local source image with the available image-viewing tool before editing. If a required image is missing, ask the user to attach or select it instead of guessing.
 - Implement through the repository's existing Next.js and component seams. A screenshot does not authorize new backend behavior, routes, dependencies, providers, or invented product state.
-- Use the Codex side browser at the same source viewport for ordinary rendered comparison, then check a narrow mobile viewport. Reserve the project-pinned Playwright CLI for explicitly requested trace, locator-discovery, or test-debugging work. Run the applicable automated checks and Vercel guidelines review before handoff.
+- Use the agent's built-in browser (Codex in-app browser / Claude Code browser pane) at the same source viewport for rendered comparison, then check a narrow mobile viewport. Run the applicable automated checks and an `impeccable audit` (which applies the pinned Vercel rules) before handoff.
 - Keep analysis notes in the task record or evidence bundle. Do not create an ungoverned root design document from a screenshot.
 
 ## Phase 0 — Resolve the selected image
 
 - If the user provided design images, map each image to its page, section, viewport, and interaction state, then proceed to Phase 1.
-- If no selected image exists, stop this workflow. Use `impeccable` to shape from a written brief or the `imagegen` skill to create options; resume only after the user selects a result.
+- If no selected image exists, stop this workflow. Shape a written brief with `frontend-design` or `impeccable` instead; there is no image generation in UniMind. Resume only after the user supplies or selects an image.
 - If the selected set leaves required sections ambiguous, ask for the missing reference or record the exact approved deviation. Do not freestyle the gaps.
 
 ## Phase 1 — Deep analysis pass (before writing any code)
@@ -75,4 +75,4 @@ After the build renders, compare against EVERY source image, one by one:
 4. Check the 13" laptop viewport for the hero rule, and one mobile width for sane stacking.
 5. Only report done when every section passes or remaining deviations are listed explicitly for the user.
 
-See `references/checklists.md` for the full analysis and verification checklists in copy-paste form.
+See [references/checklists.md](references/checklists.md) for the full analysis and verification checklists in copy-paste form.

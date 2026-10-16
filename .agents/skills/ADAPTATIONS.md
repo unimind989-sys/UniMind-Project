@@ -1,5 +1,24 @@
 # Skill adaptations
 
+This log records evidence-based changes to repo-scoped skills; add new entries at the top. It is not a record of ordinary task corrections. Older entries describe skills and documents that have since been removed; they are kept as history.
+
+## 2026-10-16 — Shared skills for Codex and Claude Code (23 → 16)
+
+- **Evidence:** UniMind now runs two coding agents. Claude Code reads only `.claude/skills`, so the Codex-only library was invisible to it, and many skills carried Codex-only mechanics plus workflow concepts being retired in WP00-T18 (execution policy and router, worker budgets, model work blocks, proof preflight, side browser, second-account approval).
+- **Change:**
+  - One source in `.agents/skills`; `scripts/agent/sync-skills.ts` (`pnpm skills:sync`) generates `.claude/skills/<name>/SKILL.md` only, rewrites relative links to `.agents/skills/<name>/...`, and adds `disable-model-invocation: true` for manual skills. `pnpm lint:agents` runs it with `--check`.
+  - Every skill now has `agents/openai.yaml` with an explicit mode and a description stating what, when, and when not. Manual: `blast-radius`, `image-to-code` (was automatic), `logo-design`, `wizard`.
+  - Merged `grill-me` into `grilling`; folded `wait-what` into `clear-english` as the Re-explain mode (its seven rules kept); merged `skill-maintainer` and `writing-for-agents` into `skill-authoring` with a cross-agent `SKILL-MECHANICS.md`. Deleted the PowerShell skill validator.
+  - Rewrote `finalize` (about 80 lines): PR, exact-head CI, squash merge, affected production proof only, honest review provenance, `gh` first, D-22 and the real-money stop kept; no second-account approval.
+  - `trust-boundaries` now triggers on auth, authorization, RLS, or storage changes and requires an independent review agent; `image-to-code` uses the built-in browser and no image generation; `codebase-design` allows one read-only challenger.
+  - `impeccable`: added a UniMind scope block (direction from `DESIGN.md` and `frontend-design`; use for critique, audit, polish, detector, refinement commands; new-work concept roll and all image/comp generation disabled; `buildPath: "comp"` unused; scripts always run from `.agents/skills/impeccable/scripts`); neutral question-tool wording in every reference; the sub-agent rule replaces worker-budget and model-block routing in `SKILL.md` and `new-work.md`; dropped the "burns the user's money" phrase while keeping the two-round ceiling; the finish reviewer now stops reading once it has enough to write; moved the Vercel rules snapshot to `impeccable/reference/vercel-web-interface-guidelines.md`; `init.md` skips the build-path question. Script logic unchanged.
+  - Added Anthropic's `frontend-design` (commit `41bbe19d1a1a7eaab5e7bb9050a417e5c6cffc8f`, Apache-2.0, license kept as `frontend-design/LICENSE.txt` because its frontmatter points there), unchanged except an appended UniMind adaptation section.
+  - Deleted `taste`, `awesome-design-md`, `unimind-skills`, `playwright-cli`, and `web-design-guidelines`, with the Taste, Awesome DESIGN.md, and Playwright CLI license files.
+  - Sub-agents: added `independent-reviewer` (`.claude/agents/`) and `independent_reviewer` (`.codex/agents/`); converted Impeccable's finish reviewer and documenter to `.claude/agents/`. The asset producer and manual-edit applier have no Claude Code version because the features they serve are disabled.
+  - `impeccable/scripts/context.mjs`: removed the UniMind `compactUniMindAuthority` shortcut. It depended on the retired execution policy and the task record's "Established facts" ledger; context loading now always returns the actual `PRODUCT.md` and `DESIGN.md` content.
+- **Validation:** `pnpm skills:sync` then `sync-skills.ts --check` (zero drift), local link resolution, a stale-term search over all skill files, and the rewritten `EVALS.md` table.
+- **Upstream:** Pins unchanged except the new Anthropic source; all edits are UniMind adaptations.
+
 ## 2026-09-29 — Manual logo-design skill
 
 ### `logo-design`
@@ -71,8 +90,6 @@
 - **Change:** Finalization now consumes the central actual-diff envelope and starts automatically for full-lifecycle selected tasks while retaining `$finalize` for manual/recovery entry. Added the small UniMind-owned `trust-boundaries` capability.
 - **Validation:** Agent-policy historical regressions, evidence-invalidation cases, skill validator, agent readiness, isolated handoff rehearsal, and `EVALS.md`.
 - **Upstream:** UniMind-owned behavior; no third-party source changed.
-
-This log records evidence-based changes to repo-scoped skills. It is not a record of ordinary task corrections.
 
 ## 2026-09-15 — Lean verification and side-browser ownership
 

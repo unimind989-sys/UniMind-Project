@@ -224,11 +224,7 @@ function hasGuardedSelector(job: UnknownRecord | undefined): boolean {
     hasExactRunner(job) &&
     hasFrozenInstall(job) &&
     hasCorepackActivationBeforeInstall(job) &&
-    runs(job).some(
-      (run) =>
-        run.includes("corepack pnpm verify:agent-policy") &&
-        run.includes("corepack pnpm verify:ci-workflow"),
-    ) &&
+    runs(job).some((run) => run.includes("corepack pnpm verify:ci-workflow")) &&
     selection?.run === "corepack pnpm exec tsx scripts/select-ci-jobs.ts" &&
     isRecord(selection.env) &&
     selection.env.PR_BASE_SHA === "${{ github.event.pull_request.base.sha }}" &&
@@ -237,7 +233,7 @@ function hasGuardedSelector(job: UnknownRecord | undefined): boolean {
     typeof docsCheck?.run === "string" &&
     docsCheck.run.includes("corepack pnpm exec prettier . --check") &&
     docsCheck.run.includes("corepack pnpm scan:secrets") &&
-    docsCheck.run.includes("scripts/verify-agent-readiness.ps1")
+    docsCheck.run.includes("corepack pnpm lint:agents")
   );
 }
 

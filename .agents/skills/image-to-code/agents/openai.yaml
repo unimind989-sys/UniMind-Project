@@ -4,4 +4,4 @@ interface:
   default_prompt: "Use $image-to-code to implement this selected screenshot or mockup and verify the rendered match."
 
 policy:
-  allow_implicit_invocation: true
+  allow_implicit_invocation: false

@@ -1,99 +1,59 @@
 # Task record: <WPXX-TYY short outcome>
 
+<!-- Keep this record at or under 120 lines (checked by `pnpm lint:agents`). It holds the CURRENT state of one task. Overwrite "Current state" and "Next action"; never append session logs. History lives in commits and the PR. -->
+
 **Task ID:** WPXX-TYY
 
 **Status:** [ ] | [~] | [?] | [x] | [!]
 
 **Outcome:** <one observable result>
 
-**Owner:** <agent executor; name any human signed-in operator separately>
+**Acceptance:** <link to the runbook task heading, e.g. docs/runbooks/poc-execution-runbook.md#wp03-t14>
 
-**Reviewer:** <selected Ahmed-or-Ziad checkpoint; D-22 standing authorization applies to protected non-financial delivery>
+**Owner:** <agent and selected Ahmed-or-Ziad checkpoint>
 
-**Branch:** <wpNN/short-outcome or current branch when no delivery branch was requested>
+**Branch:** <agent>/<task-id>-<slug>
 
 **Updated (UTC):** <timestamp>
 
-## Derived execution envelope
+## Contract
 
-Complete this compact block for tasks created under the central execution policy. Historical records without it remain valid.
-
-**Policy version:** <integer>
-
-**Surfaces:** <comma-separated semantic surfaces>
-
-**Risk:** <R0 | R1 | R2 | R3>
-
-**Planning:** <Minimal | Short | Deliberate | Protected>
-
-**Worker budget:** <used, maximum, and nested-worker rule>
-
-**Capabilities:** <surface capabilities or NONE>
-
-**Procedural skills:** <selected methods or NONE>
-
-**Routing reason:** <one compact semantic reason; do not copy acceptance criteria>
-
-## Manual model work blocks
-
-Sol High plans these before implementation using `docs/agents/model-work-blocks.md`. Keep the fewest useful ordered blocks. The user selects the model in Codex Desktop and opens a fresh chat at each model boundary; this record does not verify that selection.
-
-| Block | Assigned model | Scope and governing inputs | Independent acceptance checks, including failure cases | Assignment reason | Status and evidence |
-| --- | --- | --- | --- | --- | --- |
-| 1 | <Sol High or Luna Max> | <coherent scope; authority/decision references> | <observable pass and failure/forbidden checks> | <why this model; for Luna, all four guide conditions> | <pending/in progress/complete/handoff; links> |
-
-**Next model:** <Sol High | Luna Max | NONE when complete>
-
-**Current block:** <number | NONE when complete>
-
-## Execution contract
-
-**Dependencies:** <earlier task IDs and reviewed evidence>
+**Dependencies:** <earlier task IDs>
 
 **Inputs:** <fixtures, decisions, migrations, contracts>
 
-**Files:** <exact expected files>
+**Files:** <expected files or areas>
 
-**Verify:** <exact commands or test IDs>
+**Protected paths:** <none | which ones, with the allowed and forbidden paths to prove>
+
+**Verify:** <exact commands or test IDs mapped to acceptance criteria>
 
 **Pass:** <observable expected result>
 
-**Evidence:** <expected evidence path>
-
-**Rollback:** <migration, flag, deployment, or disable action>
+**Rollback:** <migration, flag, deployment or disable action>
 
 **Hard stop:** <conditions that prohibit continuation>
 
-## Candidate preparation
-
-Required for active/new records under policy v6 or later. The review fingerprint is copied from router proof preflight after the last candidate-changing review.
-
-**Design disposition:** <NOT_APPLICABLE | NONVISUAL | OBJECTIVE_PRESERVING | APPROVED_REFERENCE | MATERIAL | UNKNOWN>
-
-**Design evidence:** <receipt/reference | NOT_REQUIRED | PENDING>
-
-Use `rationale:<why no rendered effect>` for `NONVISUAL`, `rationale:<why>; baseline:<approved baseline>` for `OBJECTIVE_PRESERVING`, and `reference:<exact path#section or message:id>` for `APPROVED_REFERENCE`. To retain an earlier material receipt after a demonstrated nonvisual correction, use `receipt:<path.json>; rationale:<why>; baseline:<accepted baseline>`.
-
-**Preparation review:** <PENDING | COMPLETE_INLINE | COMPLETE_INDEPENDENT>
-
-**Preparation fingerprint:** <sha256 | NOT_READY>
-
-**Unresolved findings:** <NONE | IDs/pointers>
-
-**Established facts:** <fact | source-path#heading-or-symbol | git-hash-object | reopen-condition, or NONE>
-
 ## Steps
 
-- [ ] <ordered implementation action>
+- [ ] <ordered implementation slice>
 
-## Handoff
+## Decisions
+
+- <decision, reason, and who made it; only what changes behaviour or acceptance>
+
+## Current state
 
 **Changed:** <files and outcomes, or NOT STARTED>
 
-**Commands:** <command, exit code, result, or NOT RUN>
+**Proof:** <command → result; unrun checks with a one-line reason>
 
-**Remaining:** <unfinished criteria, blockers, or NONE>
+**Review:** <self-review | independent review by …; result>
 
-**Next safe action:** <one concrete action>
+**Approved commit:** <sha and approver for material UI | NOT REQUIRED: reason | PENDING>
 
-**Reviewer action:** <genuine unresolved human judgment, fresh real-money confirmation, or NONE>
+**Remaining:** <unfinished criteria or blockers, or NONE>
+
+## Next action
+
+<one concrete next step, or the exact remaining delivery action when scope was narrowed>
