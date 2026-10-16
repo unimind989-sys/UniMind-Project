@@ -110,9 +110,9 @@ const hostedCopy: Readonly<Record<string, readonly [string, string]>> = {
       "Source-readiness incident isolated for review.",
       "حادثة جاهزية المصدر معزولة للمراجعة.",
     ],
-  "Sample cohort draft saved. No cohort unlocked.": [
-    "Cohort draft saved.",
-    "حفظت مسودة المجموعة.",
+  "Cohort configuration reviewed. No cohort unlocked.": [
+    "Cohort configuration reviewed.",
+    "تمت مراجعة إعدادات المجموعة.",
   ],
   "Fixed name: Synthetic Anatomy source call. Handout, recording and diagram requests; fixed expiry, rights declaration and naming guidance.":
     ["Handout, recording and diagram requests.", "طلبات ملزمة وتسجيل ورسم."],
@@ -125,9 +125,10 @@ const hostedCopy: Readonly<Record<string, readonly [string, string]>> = {
     "مراجعة دعوة الحملة",
   ],
   "Invitation example reviewed. No email, assignment or access grant.": [
-    "Invitation sent.",
-    "أرسلت الدعوة.",
+    "Invitation reviewed.",
+    "تمت مراجعة الدعوة.",
   ],
+  "Review invitation example": ["Review invitation", "مراجعة الدعوة"],
   "Use the invitation link supplied in the synthetic test pack as the recipient. No email is delivered.":
     ["", ""],
   "Inspect student conflict example": [
@@ -147,17 +148,23 @@ const hostedCopy: Readonly<Record<string, readonly [string, string]>> = {
     ],
 };
 
+export function productText(
+  en: string,
+  ar: string,
+  locale: Locale,
+  hosted: boolean,
+): string {
+  const ordinary =
+    hosted && Object.hasOwn(hostedCopy, en) ? hostedCopy[en] : undefined;
+  return ordinary
+    ? ordinary[locale === "ar" ? 1 : 0]
+    : locale === "ar"
+      ? ar
+      : en;
+}
+
 export function useProductText(locale: Locale) {
   const hosted = useSyntheticNavigation();
-  return (en: string, ar: string) => {
-    const ordinary =
-      hosted?.active && Object.hasOwn(hostedCopy, en)
-        ? hostedCopy[en]
-        : undefined;
-    return ordinary
-      ? ordinary[locale === "ar" ? 1 : 0]
-      : locale === "ar"
-        ? ar
-        : en;
-  };
+  return (en: string, ar: string) =>
+    productText(en, ar, locale, Boolean(hosted?.active));
 }

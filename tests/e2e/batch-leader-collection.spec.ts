@@ -63,6 +63,7 @@ test("mixed files infer requests, register separately and finish before processi
     }
   });
   await page.goto(`${base}?lang=en`);
+  await page.getByRole("button", { name: "Upload files", exact: true }).click();
   await proof(
     page.getByRole("heading", { name: "Synthetic Anatomy source call" }),
   ).toBeVisible();
@@ -88,9 +89,9 @@ test("mixed files infer requests, register separately and finish before processi
     .getByLabel("Source title")
     .fill("Synthetic Week 3 handout");
   await prepare(page);
-  await page.getByRole("button", { name: "Upload files", exact: true }).click();
+  await page.getByRole("button", { name: "Submit files", exact: true }).click();
   await proof(
-    rows(page).getByText("Submission received", { exact: true }),
+    page.locator('[data-record-request] [data-status="RECEIVED"]'),
   ).toHaveCount(3);
   expect(uploads.map((upload) => upload.type)).toEqual([
     "application/pdf",
@@ -103,11 +104,19 @@ test("mixed files infer requests, register separately and finish before processi
       (upload) => upload.key && upload.bytes > 0 && !upload.privateFields,
     ),
   ).toBe(true);
-  await proof(
-    page.getByText(
-      "Received safely. Processing will continue separately; you can upload the next file.",
-    ),
-  ).toHaveCount(3);
+  const received = page
+    .locator("[data-record-request] details")
+    .filter({ has: page.locator('[data-status="RECEIVED"]') });
+  for (const receipt of await received.all()) {
+    if (
+      !(await receipt.evaluate(
+        (element) => (element as HTMLDetailsElement).open,
+      ))
+    )
+      await receipt.locator("summary").click();
+    await proof(receipt).toContainText("Processing and review are separate");
+    await proof(receipt.locator("input, textarea, select")).toHaveCount(0);
+  }
 });
 
 test("interrupted retry preserves the same per-file key", async ({ page }) => {
@@ -116,6 +125,7 @@ test("interrupted retry preserves the same per-file key", async ({ page }) => {
     if (request.url().includes("/uploads")) keys.push(key(request.postData()));
   });
   await page.goto(`${base}?lang=en`);
+  await page.getByRole("button", { name: "Upload files", exact: true }).click();
   await page.locator('input[type="file"]').setInputFiles(pdf);
   await proof(
     rows(page).getByText("Ready to upload", { exact: true }),
@@ -126,11 +136,11 @@ test("interrupted retry preserves the same per-file key", async ({ page }) => {
     (route) => route.abort("internetdisconnected"),
     { times: 1 },
   );
-  await page.getByRole("button", { name: "Upload files", exact: true }).click();
+  await page.getByRole("button", { name: "Submit files", exact: true }).click();
   await proof(rows(page).getByText(/interrupted/u)).toBeVisible();
   await page.getByRole("button", { name: "Retry upload", exact: true }).click();
   await proof(
-    rows(page).getByText("Submission received", { exact: true }),
+    page.locator('[data-record-request] [data-status="RECEIVED"]'),
   ).toBeVisible();
   expect(keys).toHaveLength(2);
   expect(keys[0]).toBeTruthy();
@@ -145,6 +155,7 @@ test("cancel stops the active batch, retains the next file, and retries safely",
     if (request.url().includes("/uploads")) keys.push(key(request.postData()));
   });
   await page.goto(`${base}?lang=en`);
+  await page.getByRole("button", { name: "Upload files", exact: true }).click();
   await page.locator('input[type="file"]').setInputFiles([pdf, audio]);
   await proof(
     rows(page).getByText("Ready to upload", { exact: true }),
@@ -158,7 +169,7 @@ test("cancel stops the active batch, retains the next file, and retries safely",
     },
     { times: 1 },
   );
-  await page.getByRole("button", { name: "Upload files", exact: true }).click();
+  await page.getByRole("button", { name: "Submit files", exact: true }).click();
   await proof(
     page.getByRole("button", { name: "Cancel upload", exact: true }),
   ).toBeVisible();
@@ -175,11 +186,11 @@ test("cancel stops the active batch, retains the next file, and retries safely",
     rows(page).nth(1).getByText("Ready to upload", { exact: true }),
   ).toBeVisible();
   await proof(
-    rows(page).getByText("Submission received", { exact: true }),
+    page.locator('[data-record-request] [data-status="RECEIVED"]'),
   ).toHaveCount(0);
-  await page.getByRole("button", { name: "Upload files", exact: true }).click();
+  await page.getByRole("button", { name: "Submit files", exact: true }).click();
   await proof(
-    rows(page).getByText("Submission received", { exact: true }),
+    page.locator('[data-record-request] [data-status="RECEIVED"]'),
   ).toHaveCount(2);
   expect(keys[0]).toBeTruthy();
   expect(keys[1]).toBe(keys[0]);
@@ -199,6 +210,7 @@ test("a failed submission retries its retained receipt without uploading twice",
       uploads++;
   });
   await page.goto(`${base}?lang=en`);
+  await page.getByRole("button", { name: "Upload files", exact: true }).click();
   await page.locator('input[type="file"]').setInputFiles(pdf);
   await proof(
     rows(page).getByText("Ready to upload", { exact: true }),
@@ -213,7 +225,7 @@ test("a failed submission retries its retained receipt without uploading twice",
       } else await route.continue();
     },
   );
-  await page.getByRole("button", { name: "Upload files", exact: true }).click();
+  await page.getByRole("button", { name: "Submit files", exact: true }).click();
   await proof(
     page.getByRole("button", { name: "Retry submission", exact: true }),
   ).toBeVisible();
@@ -221,7 +233,7 @@ test("a failed submission retries its retained receipt without uploading twice",
     .getByRole("button", { name: "Retry submission", exact: true })
     .click();
   await proof(
-    rows(page).getByText("Submission received", { exact: true }),
+    page.locator('[data-record-request] [data-status="RECEIVED"]'),
   ).toBeVisible();
   expect(uploads).toBe(1);
 });
@@ -230,6 +242,7 @@ test("invalid bytes do not block valid files and new files need a fresh rights d
   page,
 }) => {
   await page.goto(`${base}?lang=en`);
+  await page.getByRole("button", { name: "Upload files", exact: true }).click();
   await page.locator('input[type="file"]').setInputFiles([
     pdf,
     {
@@ -241,19 +254,19 @@ test("invalid bytes do not block valid files and new files need a fresh rights d
   await proof(rows(page).getByText(/not a supported/u)).toBeVisible();
   await prepare(page);
   await proof(
-    page.getByRole("button", { name: "Upload files", exact: true }),
+    page.getByRole("button", { name: "Submit files", exact: true }),
   ).toBeEnabled();
   await page
     .locator('input[type="file"]')
     .setInputFiles("public/demo-files/synthetic-recording.wav");
   await proof(page.getByLabel("I have permission")).not.toBeChecked();
   await proof(
-    page.getByRole("button", { name: "Upload files", exact: true }),
+    page.getByRole("button", { name: "Submit files", exact: true }),
   ).toBeDisabled();
   await page.getByLabel("I have permission").check();
-  await page.getByRole("button", { name: "Upload files", exact: true }).click();
+  await page.getByRole("button", { name: "Submit files", exact: true }).click();
   await proof(
-    rows(page).getByText("Submission received", { exact: true }),
+    page.locator('[data-record-request] [data-status="RECEIVED"]'),
   ).toHaveCount(2);
   await proof(rows(page).getByText(/not a supported/u)).toBeVisible();
 });
@@ -268,6 +281,9 @@ test("keyboard skip, picker and source details remain reachable", async ({
   ).toBeFocused();
   await page.keyboard.press("Enter");
   await proof(page.locator("#app-content")).toBeFocused();
+  await page
+    .getByRole("button", { name: "Upload files", exact: true })
+    .press("Enter");
   const choose = page
     .getByRole("button", {
       name: "Choose files",
@@ -351,13 +367,16 @@ test("mixed drop retains every file and rejects oversized content before uploadi
   page,
 }) => {
   await page.goto(`${base}?lang=en`);
+  await page.getByRole("button", { name: "Upload files", exact: true }).click();
   await page.locator('input[type="file"]').setInputFiles({
     name: "too-big.pdf",
     mimeType: "application/pdf",
     buffer: Buffer.alloc(10 * 1024 * 1024 + 1),
   });
   await proof(
-    rows(page).getByText("This file exceeds the 10 MB limit.", { exact: true }),
+    rows(page).getByText("This file exceeds the 10 MB limit.", {
+      exact: false,
+    }),
   ).toBeVisible();
   await page
     .getByRole("button", { name: "Remove file: too-big.pdf", exact: true })

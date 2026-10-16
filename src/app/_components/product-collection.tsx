@@ -1,10 +1,15 @@
 "use client";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
+import { useSearchParams } from "next/navigation";
+import type { Route } from "next";
+import { AppShell } from "./app-shell";
+import { ProductLink } from "./product-ui";
+import { useProductRouter } from "./product-navigation";
+import { resolveCollectionCorrection } from "@/lib/collection/collection-queue.application";
 import {
   CollectionFlow,
   type CollectionUploadClient,
 } from "@/app/batch-leader/_components/collection-flow";
-import type { CollectionCampaign } from "@/lib/collection/collection.application";
 import type { CollectionActionState } from "@/app/batch-leader/collection-actions";
 import { useProductServices } from "./product-services";
 import {
@@ -13,105 +18,64 @@ import {
   syntheticFiles,
 } from "./synthetic-files";
 import type { Locale } from "./synthetic-fixtures";
-import type { ProductState } from "./product-services";
+import { syntheticDemoTime } from "@/lib/demo/synthetic-clock.application";
+import { useSyntheticNavigation } from "./product-navigation";
 
-export const demoCampaignId = "sample-campaign";
-export function makeDemoCampaign(
-  state: ProductState,
-  locale: Locale,
-): CollectionCampaign {
-  const types = ["DOCUMENT", "AUDIO", "IMAGE"] as const;
-  const statuses = [
-    "PROCESSING",
-    "NEEDS_INFORMATION",
-    "ACCEPTED",
-    "REJECTED",
-    "COMPLETED",
-  ] as const;
-  return {
-    id: demoCampaignId,
-    name:
-      locale === "ar"
-        ? "حملة مصادر التشريح التجريبية"
-        : "Synthetic Anatomy source call",
-    cohortName:
-      locale === "ar"
-        ? "الطب البشري · السنة الأولى · الفصل الأول"
-        : "Human Medicine · Year 1 · Term 1",
-    opensAt: "2026-09-01T00:00:00Z",
-    closesAt: "2026-10-12T20:00:00Z",
-    assignmentExpiresAt: "2026-10-10T20:00:00Z",
-    requestedItems: [
-      ...types.map((type, index) => {
-        const latest = state.submissions
-          .filter((submission) => submission.format === type)
-          .at(-1);
-        return {
-          id: `sample-item-${index + 1}`,
-          unitId: `sample-unit-${index + 1}`,
-          title:
-            locale === "ar"
-              ? ["ملزمة التشريح", "تسجيل تشريح", "رسم تشريح"][index]!
-              : ["Anatomy handout", "Anatomy recording", "Anatomy diagram"][
-                  index
-                ]!,
-          unitTitleEn: "Anatomy",
-          unitTitleAr: "التشريح",
-          expectedType: type,
-          required: true,
-          status: latest ? ("RECEIVED" as const) : ("REQUESTED" as const),
-          latestSubmission: latest
-            ? {
-                id: String(latest.id),
-                sourceName: "Synthetic study source",
-                status: latest.status as "RECEIVED",
-                createdAt: "2026-09-30T10:00:00Z",
-              }
-            : null,
-        };
-      }),
-      ...statuses.map((status, index) => ({
-        id: `sample-history-${index}`,
-        unitId: "sample-unit-1",
-        title:
-          locale === "ar"
-            ? `مثال متابعة ${index + 1}`
-            : `Tracking example ${index + 1}`,
-        unitTitleEn: "Anatomy",
-        unitTitleAr: "التشريح",
-        expectedType: "DOCUMENT" as const,
-        required: false,
-        status: "RECEIVED" as const,
-        latestSubmission: {
-          id: `history-${index}`,
-          sourceName: "Synthetic historical source",
-          status,
-          createdAt: "2026-09-20T10:00:00Z",
-        },
-      })),
-    ],
-  };
-}
+import {
+  demoCampaignId,
+  makeSyntheticCampaign,
+  registerSyntheticCollectionReceipt,
+  finalizeSyntheticCollectionSubmission,
+  prepareSyntheticCollectionCorrections,
+} from "./synthetic-campaigns";
 
 export function ProductCollection({
   locale,
   fixture,
+  campaignId = demoCampaignId,
 }: {
   locale: Locale;
   fixture: string;
+  campaignId?: string;
 }) {
-  const { state, update } = useProductServices();
-  const receipts = useRef(new Map<string, { itemId: string; key: string }>());
-  const finalized = useRef(new Map<string, string>());
-  const sequence = useRef(state.submissions.length);
-  const campaign = makeDemoCampaign(state, locale);
-  const types = ["DOCUMENT", "AUDIO", "IMAGE"] as const;
+  const { state, update, collectionMemory } = useProductServices();
+  const hosted = useSyntheticNavigation();
+  const query = useSearchParams();
+  const router = useProductRouter();
+  const generation = collectionMemory.generation;
+  const campaign = makeSyntheticCampaign(state, locale, campaignId)!;
+  const latestState = useRef(state);
+  useEffect(() => {
+    latestState.current = state;
+  }, [state]);
+  useEffect(() => {
+    if (
+      hosted?.active ||
+      !prepareSyntheticCollectionCorrections(state, campaignId, fixture).length
+    )
+      return;
+    update((current) => ({
+      ...current,
+      submissions: [
+        ...current.submissions,
+        ...prepareSyntheticCollectionCorrections(current, campaignId, fixture),
+      ],
+    }));
+  }, [state, campaignId, fixture, hosted?.active, update]);
+  const requested = query.getAll("request");
+  const previous = query.getAll("submission");
+  const hasCorrection = query.has("request") || query.has("submission");
+  const target =
+    requested.length === 1 && previous.length === 1
+      ? resolveCollectionCorrection(campaign, requested[0]!, previous[0]!)
+      : null;
   const upload: CollectionUploadClient = async (
     file,
     itemId,
     key,
     progress,
     signal,
+    correction,
   ) => {
     if (!(await isSyntheticFile(file)))
       throw new Error("Use supplied synthetic files.");
@@ -121,96 +85,120 @@ export function ProductCollection({
         throw new Error("Sample interrupted.");
       progress(value);
     }
-    if (["checksum", "duplicate", "oversize", "rights"].includes(fixture))
-      throw new Error("VALIDATION_REJECTED");
-    const uploadId = `sample-upload-${key}`;
-    receipts.current.set(uploadId, { itemId, key });
-    return {
-      uploadId,
-      checksum: "invented-checksum",
-      mimeType: syntheticFiles[file.name as keyof typeof syntheticFiles].mime,
-      byteSize: file.size,
-    };
+    const failure = (
+      {
+        checksum: "CHECKSUM_MISMATCH",
+        duplicate: "DUPLICATE_FILE",
+        oversize: "FILE_TOO_LARGE",
+        rights: "RIGHTS_REJECTED",
+      } as Record<string, string | undefined>
+    )[fixture];
+    if (failure) throw new Error(failure);
+    if (collectionMemory.generation !== generation)
+      throw new Error("Sample interrupted.");
+    const spec = syntheticFiles[file.name as keyof typeof syntheticFiles];
+    return registerSyntheticCollectionReceipt(
+      latestState.current,
+      collectionMemory,
+      campaignId,
+      itemId,
+      key,
+      spec.mime,
+      file.size,
+      correction,
+    );
   };
   async function finalize(
     _previous: CollectionActionState,
     data: FormData,
   ): Promise<CollectionActionState> {
-    const requestedItemId = String(data.get("requestedItemId"));
-    const clientIdempotencyKey = String(data.get("clientIdempotencyKey"));
-    const replay = finalized.current.get(
-      `${requestedItemId}:${clientIdempotencyKey}`,
-    );
-    if (replay)
-      return {
-        status: "SUCCESS",
-        submissionId: replay,
-        requestedItemId,
-        clientIdempotencyKey,
-      };
-    const receipt = receipts.current.get(String(data.get("uploadId")));
-    if (
-      !receipt ||
-      receipt.itemId !== requestedItemId ||
-      receipt.key !== clientIdempotencyKey ||
-      data.get("sourceName") !== "Synthetic study source" ||
-      data.get("sourceDescription") !==
-        "Invented source for the UniMind synthetic product flow."
-    )
+    if (collectionMemory.generation !== generation)
       return {
         status: "ERROR",
         message: "INVALID_SUBMISSION",
-        requestedItemId,
-        clientIdempotencyKey,
+        requestedItemId: String(data.get("requestedItemId")),
+        clientIdempotencyKey: String(data.get("clientIdempotencyKey")),
       };
-    if (data.get("declaredRights") !== "DECLARED")
-      return {
-        status: "ERROR",
-        message: "RIGHTS_REQUIRED",
-        requestedItemId,
-        clientIdempotencyKey,
-      };
-    const id = ++sequence.current;
-    update((current) => ({
-      ...current,
-      submissions: [
-        ...current.submissions,
-        {
-          id,
-          format: types[Number(requestedItemId.at(-1)) - 1]!,
-          status: "RECEIVED",
-        },
-      ],
-    }));
-    receipts.current.delete(String(data.get("uploadId")));
-    finalized.current.set(
-      `${requestedItemId}:${clientIdempotencyKey}`,
-      String(id),
+    const { result, submission } = finalizeSyntheticCollectionSubmission(
+      latestState.current,
+      collectionMemory,
+      campaignId,
+      data,
     );
-    return {
-      status: "SUCCESS",
-      submissionId: String(id),
-      requestedItemId,
-      clientIdempotencyKey,
-    };
+    if (submission)
+      update((current) =>
+        current.submissions.some((row) => row.id === submission.id)
+          ? current
+          : { ...current, submissions: [...current.submissions, submission] },
+      );
+    return result;
   }
+  if (hasCorrection && !target)
+    return (
+      <AppShell
+        locale={locale}
+        role="leader"
+        title={locale === "ar" ? "التصحيح غير متاح" : "Correction unavailable"}
+      >
+        <h1>
+          {locale === "ar" ? "التصحيح غير متاح" : "Correction unavailable"}
+        </h1>
+        <p>
+          {locale === "ar"
+            ? "هذا الطلب أو الإرسال السابق لم يعد متاحًا للتصحيح. افتح الحملة للاطلاع على الطلبات الحالية."
+            : "This request or earlier submission is no longer available for correction. Open the campaign to inspect its current requests."}
+        </p>
+        <ProductLink
+          href={`/batch-leader/campaigns/${campaignId}`}
+          locale={locale}
+        >
+          {locale === "ar" ? "فتح الحملة" : "Open campaign"}
+        </ProductLink>
+      </AppShell>
+    );
   return (
     <CollectionFlow
       campaign={campaign}
+      referenceTime={syntheticDemoTime.now}
+      draft={collectionMemory.draft(campaignId)}
       locale={locale}
+      dateReference={
+        hosted?.active ? undefined : (
+          <>
+            {locale === "ar" ? "ساعة العرض التجريبي" : "Demo clock"}:{" "}
+            <bdi>{syntheticDemoTime.clockLabel}</bdi>
+            {locale === "ar"
+              ? " · تُعرض المواعيد بتوقيت القاهرة."
+              : " · Dates are shown in Cairo time."}
+          </>
+        )
+      }
       homeHref="/batch-leader"
       uploadEndpoint="/api/unavailable"
       uploadClient={upload}
       allowFile={isSyntheticFile}
       finalizeAction={finalize}
       initialActionState={{ status: "IDLE" }}
+      {...(target?.latestSubmission?.correction
+        ? {
+            correction: {
+              requestedItemId: target.id,
+              submissionId: target.latestSubmission.id,
+              ...target.latestSubmission.correction,
+            },
+            onCorrectionPrepared: (href: Route) => router.replace(href),
+          }
+        : {})}
       initialClientKey="sample-initial"
       initialMetadata={{
         title: "Synthetic study source",
         description: "Invented source for the UniMind synthetic product flow.",
       }}
       reference={{
-        name: "Synthetic approved handout reference · no storage URL",
+        name:
+          locale === "ar"
+            ? "مرجع الملزمة التجريبي المعتمد"
+            : "Approved synthetic handout reference",
         file: () => makeSyntheticFile("synthetic-handout.pdf"),
       }}
     />

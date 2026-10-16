@@ -70,6 +70,7 @@ export default async function LearnPage({
   let catalogState: CatalogAccessState | "ERROR" = "ERROR";
   let journey = resolveCatalogJourney([], {});
   let lastStudyPath: string | null = null;
+  let profileName: string | null = null;
   let setup: {
     rows: readonly AuthorizedCatalogRow[];
     academicContext: AcademicContext | null;
@@ -80,6 +81,7 @@ export default async function LearnPage({
       loadCurrentStudentCatalog(),
       loadCurrentAccount(),
     ]);
+    profileName = account.displayName;
     catalogState = catalog.state;
     const saved = authorizedAcademicContext(
       account.academicContext,
@@ -110,10 +112,11 @@ export default async function LearnPage({
   const requestedQuery = serializeCatalogSelection(hints);
   if (setup)
     return (
-      <AppShell locale={locale} title={locale === "ar" ? "المذاكرة" : "Study"}>
-        <h1>
-          {locale === "ar" ? "مرحبًا بك في UniMind" : "Welcome to UniMind"}
-        </h1>
+      <AppShell
+        locale={locale}
+        profileName={profileName}
+        title={locale === "ar" ? "المذاكرة" : "Study"}
+      >
         <AcademicSettings
           locale={locale}
           rows={setup.rows}
@@ -147,6 +150,7 @@ export default async function LearnPage({
       basePath="/learn"
       showLogout
       lastStudyPath={lastStudyPath}
+      profileName={profileName}
     />
   );
 }

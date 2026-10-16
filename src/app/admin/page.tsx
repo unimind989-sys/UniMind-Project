@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { getCurrentAuthAccess } from "@/lib/auth/auth-access.supabase.server";
 import { requireVerifiedIdentity } from "@/lib/auth/verified-identity.server";
 import { loadVerifiedAdminActionQueue } from "@/lib/admin/admin-actions.supabase.server";
+import { selectedAdminDecision } from "@/lib/admin/admin-presentation.application";
 import { resolveLocale } from "@/lib/i18n/locale";
 
 import { AdminDecisionQueue } from "./_components/admin-decision-queue";
@@ -54,5 +55,21 @@ export default async function AdminPage({
   }
 
   const queue = await loadVerifiedAdminActionQueue();
-  return <AdminDecisionQueue initialLocale={locale} queue={queue} />;
+  const selector = new URLSearchParams();
+  for (const field of ["decision", "action", "target", "version", "pending"]) {
+    const value = parameters[field];
+    for (const entry of Array.isArray(value) ? value : [value])
+      if (typeof entry === "string") selector.append(field, entry);
+  }
+  return (
+    <AdminDecisionQueue
+      key={JSON.stringify([...selector.entries()])}
+      initialLocale={locale}
+      queue={queue}
+      initialSelection={selectedAdminDecision(
+        queue.status === "READY" ? queue.candidates : [],
+        selector,
+      )}
+    />
+  );
 }

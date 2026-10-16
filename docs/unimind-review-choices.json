@@ -1,0 +1,494 @@
+{
+  "review_version": "2026-10-11-merged-v1",
+  "fingerprint": "04a21ba74ca62714c080f9190d01d6621832f7e4c91cf23da538eeace8b2c2e4",
+  "branch": "codex/frontend-refinements",
+  "exported_at": "2026-10-11T16:43:29.070Z",
+  "scope": "Proposal review notes only; no automatic implementation or delivery authorization",
+  "reviews": {
+    "D06": {
+      "status": "approve",
+      "choice": "Reviewable, expired and unscored",
+      "note": ""
+    },
+    "D02": {
+      "status": "approve",
+      "choice": "Processed passages/transcripts first",
+      "note": ""
+    },
+    "D03": {
+      "status": "approve",
+      "choice": "Continuity first; modest recent-work demo",
+      "note": ""
+    },
+    "D01": {
+      "status": "approve",
+      "choice": "Use approved direction; settle missing policy details",
+      "note": ""
+    },
+    "D04": {
+      "status": "approve",
+      "choice": "Keep six; group purposes; single MCQ flow",
+      "note": ""
+    },
+    "D05": {
+      "status": "approve",
+      "choice": "Keep approved structure with targeted improvements",
+      "note": ""
+    },
+    "D07": {
+      "status": "approve",
+      "choice": "Truthful latest view plus one realistic admin case",
+      "note": ""
+    },
+    "D08": {
+      "status": "approve",
+      "choice": "Approved public program summary",
+      "note": ""
+    },
+    "B00": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "B01": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "B02": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "B03": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "B04": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "B05": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "B06": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "B07": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "B08": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "B09": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "B10": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "B11": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "B12": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "B13": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M01": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M02": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M03": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M04": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M05": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M06": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M07": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M08": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M09": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M10": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M11": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M12": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M13": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M14": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M15": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M16": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M17": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M18": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M19": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M20": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M21": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M22": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M23": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M24": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M25": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M26": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M27": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M28": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M29": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M30": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M31": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M32": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M33": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M34": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M35": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M36": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M37": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M38": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M39": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M40": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M41": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M42": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M43": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M44": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M45": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M46": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M47": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M48": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M49": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M50": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M51": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M52": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M53": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M54": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M55": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M56": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M57": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M58": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M59": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M60": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M61": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M62": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M63": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M64": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M65": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M66": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M67": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M68": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M69": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M70": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M71": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M72": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M73": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M74": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    },
+    "M75": {
+      "status": "approve",
+      "choice": "",
+      "note": ""
+    }
+  }
+}

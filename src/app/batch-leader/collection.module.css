@@ -430,6 +430,152 @@
 .receiptStages .helper {
   color: var(--secondary);
 }
+
+.workspace.requestWorkspace {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+}
+.requestWorkspace > .assignment,
+.requestWorkspace > .intake,
+.requestWorkspace > .history,
+.requestWorkspace > .workRequests {
+  grid-column: 1 / -1;
+  grid-row: auto;
+  min-width: 0;
+}
+.requestWorkspace > .assignment {
+  padding: 8px 0 16px;
+  background: transparent;
+  border-block-end: 1px solid var(--border);
+}
+.requestWorkspace .assignment > strong {
+  font-size: 1.125rem;
+}
+.requestHeading,
+.recordHeading,
+.recordSummary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+}
+.requestHeading {
+  flex-wrap: wrap;
+  margin-block-end: 12px;
+}
+.workRequests h2 {
+  font-size: 1.25rem;
+  margin: 0;
+}
+.requestList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.requestList > li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+  padding-block: 16px;
+  border-block-start: 1px solid var(--border);
+}
+.requestList h3 {
+  font-size: 1rem;
+  margin: 0 0 6px;
+}
+.requestList p {
+  margin: 6px 0 0;
+  max-width: 70ch;
+}
+.requestList button,
+.requestList .open {
+  flex-shrink: 0;
+}
+.compactRecords > li {
+  display: block;
+  padding-block: 0;
+}
+.recordDisclosure > summary {
+  display: list-item;
+  min-height: 44px;
+  padding-block: 14px;
+  cursor: pointer;
+}
+.recordDisclosure > summary::marker {
+  color: var(--accent-ink);
+}
+.recordSummary {
+  display: inline-flex;
+  vertical-align: middle;
+  width: calc(100% - 1rem);
+}
+.recordSource {
+  display: block;
+  color: var(--secondary);
+  font-size: 0.875rem;
+  font-weight: 400;
+  overflow-wrap: anywhere;
+}
+.recordBody {
+  min-width: 0;
+  padding-block-end: 12px;
+}
+.recordBody p {
+  margin: 8px 0;
+  max-width: 70ch;
+}
+.receiptDetails {
+  display: grid;
+  grid-template-columns: minmax(7rem, 11rem) minmax(0, 1fr);
+  gap: 8px 20px;
+  font-size: 0.875rem;
+}
+.receiptDetails dt {
+  color: var(--secondary);
+}
+.receiptDetails dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.recordActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+}
+.recordLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--accent-ink);
+}
+.campaignList .personalDeadline {
+  color: var(--ink);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-block-start: 12px;
+}
+@media (max-width: 767px) {
+  .requestList > li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .requestHeading > button {
+    width: 100%;
+  }
+  .recordSummary {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .receiptDetails {
+    display: block;
+  }
+  .receiptDetails dt {
+    margin-block-start: 12px;
+  }
+}
 @media (max-width: 767px) {
   .workspace {
     grid-template-columns: 1fr;
@@ -452,7 +598,9 @@
     gap: 4px 12px;
   }
   .assignment .requests li > span:last-child {
-    display: none;
+    display: block;
+    overflow-wrap: anywhere;
+    flex-basis: 100%;
   }
   .assignment .requests p {
     margin-block: 8px;

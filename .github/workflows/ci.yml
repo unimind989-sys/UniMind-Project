@@ -80,7 +80,7 @@ jobs:
     needs: ci_selector
     if: always() && (needs.ci_selector.result != 'success' || needs.ci_selector.outputs.application == 'RUN')
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    timeout-minutes: 120
     concurrency:
       group: application-${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: true

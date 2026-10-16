@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f6f7f8" />
+    <title>UniMind phone layout review</title>
+    <link rel="stylesheet" href="prototype.css" />
+    <script src="prototype.js" defer></script>
+  </head>
+  <body class="review-page">
+    <main class="review">
+      <div class="review-intro">
+        <h1>More room to study</h1>
+        <p>Review the proposed phone layout before it changes UniMind.</p>
+        <p class="quiet">
+          Fixed synthetic content and timer samples. Studio shows one
+          representative summary; global destinations and the extra unit are
+          outside this preview. This preview does not generate answers, score a
+          quiz or change your account.
+        </p>
+      </div>
+      <div class="review-layout">
+        <aside class="review-controls" aria-label="Layout review controls">
+          <fieldset>
+            <legend>Compare</legend>
+            <label
+              ><input type="radio" name="version" value="proposed" checked />
+              Proposed layout</label
+            ><label
+              ><input type="radio" name="version" value="current" /> Current
+              website capture</label
+            >
+          </fieldset>
+          <label for="review-tool">Study tool</label
+          ><select id="review-tool">
+            <option value="chat">Chat</option>
+            <option value="studio">Studio</option>
+            <option value="quiz">Quiz</option>
+            <option value="materials">Materials</option>
+          </select>
+          <label for="review-size">Screen size</label
+          ><select id="review-size">
+            <option value="390,844">Phone · 390 × 844</option>
+            <option value="320,720">Small phone · 320 × 720</option>
+            <option value="768,1024">Tablet · 768 × 1024</option>
+            <option value="1440,900">Desktop · 1440 × 900</option>
+          </select>
+          <label for="review-language">Interface language</label
+          ><select id="review-language">
+            <option value="en">English</option>
+            <option value="ar">العربية</option>
+          </select>
+          <label for="review-theme">Appearance</label
+          ><select id="review-theme">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+          <label
+            ><input type="checkbox" id="review-large" /> Double the text
+            size</label
+          >
+          <label
+            ><input type="checkbox" id="review-long" checked /> Long sample
+            content</label
+          >
+          <label for="review-time">Quiz timing example</label
+          ><select id="review-time">
+            <option value="timed">Timed · 08:42 remaining</option>
+            <option value="low">Low time · 00:45 remaining</option>
+            <option value="untimed">Untimed</option>
+          </select>
+          <p id="measurement" class="measurement" role="status">
+            Loading the comparison…
+          </p>
+          <p class="quiet">
+            Current captures show Chat with three supported exchanges. Other
+            tools and doubled text show the proposed layout only. Phone
+            keyboard, physical safe areas and screen-reader behavior still need
+            device testing.
+          </p>
+          <details class="review-notes">
+            <summary>What changes</summary>
+            <ul>
+              <li>
+                Keep the course title and current tool clear; open Course
+                details for institution, program and period.
+              </li>
+              <li>
+                Read in one main scroll area. Keep the question box nearby.
+              </li>
+              <li>
+                Keep time remaining and answered/total progress visible in Quiz.
+              </li>
+              <li>
+                Retain Study, Subjects, your named profile and all four course
+                tools. At doubled text, navigation moves into page flow at the
+                bottom so it cannot cover focused content.
+              </li>
+            </ul>
+          </details>
+        </aside>
+        <section class="review-canvas" aria-label="Interactive layout preview">
+          <p id="preview-label">Proposed layout · 390 × 844</p>
+          <div class="preview-stage">
+            <iframe
+              id="prototype"
+              title="Proposed UniMind study layout"
+              src="frame.html"
+            ></iframe
+            ><img
+              id="current-capture"
+              alt="Current UniMind Chat website at the selected language, theme and screen size"
+              hidden
+            />
+          </div>
+          <p id="review-status" role="status"></p>
+        </section>
+      </div>
+      <section class="review-decision" aria-labelledby="decision-title">
+        <h2 id="decision-title">Your layout decision</h2>
+        <p>
+          Try Course details, scroll the long answer, open its supporting
+          material, and switch to Quiz. This decision covers the layout
+          direction; the application repair and its behavior checks follow
+          separately.
+        </p>
+        <label for="decision">Decision</label
+        ><select id="decision">
+          <option value="pending">Still reviewing</option>
+          <option value="approve">Approve this layout direction</option>
+          <option value="revise">
+            Change the layout before implementation
+          </option>
+        </select>
+        <label for="decision-notes">Changes or comments</label
+        ><textarea
+          id="decision-notes"
+          name="decision-notes"
+          rows="3"
+          placeholder="Tell me what you would change…"
+        ></textarea>
+        <button id="export-decision" type="button">
+          Download your decision
+        </button>
+        <p>You can also give your decision directly in this chat.</p>
+      </section>
+    </main>
+  </body>
+</html>

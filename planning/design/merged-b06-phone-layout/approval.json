@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "candidate": "B06-phone-prototype-v1",
+  "fingerprint": "834a1bc27c1ceac7e65dede73ffc408414f355b41083e2b8ffe284b17edbbf2d",
+  "inputs": {
+    "planning/design/merged-b06-phone-layout/index.html": "0ca160381171f1a4641832e86f9b66db4d8f56d3a6b3f4cc888da33e716d0fdc",
+    "planning/design/merged-b06-phone-layout/frame.html": "e8af66ace188be7aa1efd76229f4d87059bf4164fba53b9fe44da21d4c8edcda",
+    "planning/design/merged-b06-phone-layout/prototype.css": "b94c626d41eeebcd665cd91008ce5d18d1bbf29b2a97ce5c8a0a47bbc512dbe3",
+    "planning/design/merged-b06-phone-layout/prototype.js": "3b41f378578ec68baa7391779b8b71ef6e87e13835e5f645e8acf7db09ca019f"
+  },
+  "actor": "Ahmed",
+  "observedAt": "2026-10-14T00:47:40.881727+00:00",
+  "decision": "APPROVE_LAYOUT_DIRECTION",
+  "notes": "",
+  "authority": "Human user said continue, also I filled the form; read-only CUA observed Decision=Approve this layout direction, notes empty at http://127.0.0.1:3198/index.html. No agent input to decision fields.",
+  "scope": "Prototype layout direction only; application behavior/material acceptance and external delivery remain separate.",
+  "branch": "codex/frontend-refinements",
+  "baseHead": "98bcaefca5512817c9d18e87e7bc2e9086fa89b4",
+  "materialChangesAfterObservedDecision": false,
+  "nonvisualCorrections": "Final matching-fixture claim gate, focus restoration and export fingerprint plumbing preserve the presented layout/CSS; focused proof covers them."
+}

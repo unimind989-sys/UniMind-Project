@@ -1,8 +1,21 @@
 "use client";
 import { useProductText } from "@/app/_components/product-copy";
 import { useState } from "react";
+import type { MouseEvent } from "react";
+import {
+  adminPreviewContext,
+  syntheticResourceDecision,
+  syntheticDecisionHref,
+} from "./synthetic-admin-context";
+import { getAdminCopy } from "@/lib/i18n/admin-copy";
 import { useSearchParams } from "next/navigation";
 import { useSyntheticNavigation } from "./product-navigation";
+import {
+  canReviewConflictPreview,
+  reviewConflictPreview,
+} from "./synthetic-conflict-preview";
+import { syntheticDemoTime } from "@/lib/demo/synthetic-clock.application";
+import { formatCollectionDate } from "@/lib/i18n/collection-format";
 import adminStyles from "@/app/admin/admin.module.css";
 import {
   defaultScope,
@@ -28,6 +41,12 @@ export function ProductCampaigns({ screen, locale, scenario }: Props) {
             "التكليف أو الدعوة التجريبية منتهية أو مستخدمة. لا يمكن منح وصول للحملة. اطلب دعوة جديدة من الإدارة في المنتج الحقيقي.",
           )}
         </Notice>
+        {scenario === "expired" ? (
+          <p>
+            {t("Invitation expired", "انتهت الدعوة")}:{" "}
+            {formatCollectionDate(locale, syntheticDemoTime.expiredAt)}
+          </p>
+        ) : null}
         <ProductLink href={reviewBase + "/batch-leader"} locale={locale}>
           {t("Return to campaigns", "العودة للحملات")}
         </ProductLink>
@@ -48,7 +67,7 @@ export function ProductCampaigns({ screen, locale, scenario }: Props) {
           {new Intl.DateTimeFormat(locale === "ar" ? "ar-EG" : "en-GB", {
             dateStyle: "medium",
             timeZone: "UTC",
-          }).format(new Date("2026-10-10T20:00:00Z"))}
+          }).format(new Date(syntheticDemoTime.assignmentExpiresAt))}
         </p>
         <p>
           {t(
@@ -134,10 +153,26 @@ export function ProductResource({ screen, locale }: Props) {
   const query = useSearchParams();
   const [step, setStep] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
-  const [unitType, setUnitType] = useState("MODULE");
+  const unitType = state.catalogChoice;
   const t = useProductText(locale);
   const resource = screen.slice(6) as keyof typeof resourceNames;
   if (!Object.hasOwn(resourceNames, resource)) return null;
+  const candidate = syntheticResourceDecision(state, resource);
+  const preview = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey
+    )
+      return;
+    update((current) => ({
+      ...current,
+      adminPreview: adminPreviewContext(current, resource),
+    }));
+  };
   const summaries = {
     sources: [
       "Received → processed verification → independent raw absence proof → deletion audit → indexing → READY. Failed/low-confidence versions remain isolated. Every stage is a fixture, not executed processing; no raw data is exposed.",
@@ -233,7 +268,11 @@ export function ProductResource({ screen, locale }: Props) {
             id="catalog-unit-type"
             label={t("Configured unit label", "اسم الوحدة من الإعدادات")}
             value={unitType}
-            onChange={setUnitType}
+            onChange={(value) => {
+              if (value !== "MODULE" && value !== "SUBJECT") return;
+              setStep(false);
+              update((current) => ({ ...current, catalogChoice: value }));
+            }}
             options={[
               ["MODULE", t("Module", "وحدة دراسية")],
               ["SUBJECT", t("Subject", "مادة دراسية")],
@@ -242,6 +281,14 @@ export function ProductResource({ screen, locale }: Props) {
           <Button onClick={() => setStep(true)}>
             {t("Review changes", "مراجعة التغييرات")}
           </Button>
+          {unitType !== (state.catalogDraft ?? "MODULE") ? (
+            <p role="status">
+              {t(
+                "Unsaved changes. Review before saving.",
+                "تغييرات غير محفوظة. راجعها قبل الحفظ.",
+              )}
+            </p>
+          ) : null}
           {step ? (
             <>
               <p>
@@ -284,8 +331,8 @@ export function ProductResource({ screen, locale }: Props) {
           </p>
           <p>
             {t(
-              "Fixed cohort/edition draft. Membership, release, publication, READY sources, valid rights and matching edition remain separate availability predicates.",
-              "مسودة مجموعة وإصدار ثابتة. العضوية والفتح والنشر والمصادر الجاهزة والحقوق والإصدار المتطابق شروط إتاحة منفصلة.",
+              "Fixed cohort/edition configuration. Membership, release, publication, READY sources, valid rights and matching edition remain separate availability predicates.",
+              "إعدادات ثابتة للمجموعة وإصدار المنهج. العضوية والفتح والنشر والمصادر الجاهزة والحقوق والإصدار المتطابق شروط إتاحة منفصلة.",
             )}
           </p>
           <Button
@@ -293,13 +340,13 @@ export function ProductResource({ screen, locale }: Props) {
               update((current) => ({ ...current, cohortDraft: true }))
             }
           >
-            {t("Save cohort draft", "محاكاة مسودة المجموعة")}
+            {t("Review cohort configuration", "مراجعة إعدادات المجموعة")}
           </Button>
           {state.cohortDraft ? (
             <Notice>
               {t(
-                "Sample cohort draft saved. No cohort unlocked.",
-                "حفظت مسودة المجموعة. لم تفتح مجموعة.",
+                "Cohort configuration reviewed. No cohort unlocked.",
+                "تمت مراجعة إعدادات المجموعة. لم تُفتح المجموعة.",
               )}
             </Notice>
           ) : null}
@@ -354,7 +401,7 @@ export function ProductResource({ screen, locale }: Props) {
                   update((current) => ({ ...current, invitation: true }))
                 }
               >
-                {t("Send invitation", "إرسال الدعوة")}
+                {t("Review invitation example", "مراجعة مثال الدعوة")}
               </Button>
               {state.invitation ? (
                 <Notice>
@@ -415,9 +462,36 @@ export function ProductResource({ screen, locale }: Props) {
             <p>{t(summaries[resource][0], summaries[resource][1])}</p>
           </details>
           {resource === "quality" ? (
-            <ProductLink href={defaultUnitPath + "/chat"} locale={locale}>
-              {t("Inspect student conflict example", "فحص مثال تعارض الطالب")}
-            </ProductLink>
+            canReviewConflictPreview(state) ? (
+              <ProductLink
+                href={defaultUnitPath + "/chat"}
+                locale={locale}
+                onClick={(event) => {
+                  if (
+                    event.defaultPrevented ||
+                    event.button !== 0 ||
+                    event.metaKey ||
+                    event.ctrlKey ||
+                    event.shiftKey ||
+                    event.altKey
+                  )
+                    return;
+                  preview(event);
+                  update((current) =>
+                    reviewConflictPreview(current, defaultScope.unitId, locale),
+                  );
+                }}
+              >
+                {t("Inspect student conflict example", "فحص مثال تعارض الطالب")}
+              </ProductLink>
+            ) : (
+              <p>
+                {t(
+                  "Conflict review is unavailable for this unit's current source and access state.",
+                  "مراجعة التعارض غير متاحة وفق حالة مصادر هذه الوحدة والوصول إليها.",
+                )}
+              </p>
+            )
           ) : resource === "usage" ? (
             hosted?.active ? (
               <p>
@@ -430,6 +504,7 @@ export function ProductResource({ screen, locale }: Props) {
               <ProductLink
                 href={defaultUnitPath + "/chat?fixture=capacity"}
                 locale={locale}
+                onClick={preview}
               >
                 {t("Preview capacity delay", "معاينة تأخير السعة")}
               </ProductLink>
@@ -438,10 +513,22 @@ export function ProductResource({ screen, locale }: Props) {
         </section>
       )}
       <div className={adminStyles.actions}>
-        <ProductLink href={reviewBase + "/admin"} locale={locale}>
-          {t("Open governed decisions", "فتح القرارات المنضبطة")}
+        {candidate && (
+          <ProductLink
+            href={syntheticDecisionHref(candidate, locale, resource)}
+            locale={locale}
+          >
+            {t("Open governed decisions", "فتح القرارات المنضبطة")} ·{" "}
+            {getAdminCopy(locale).actions[candidate.action]} ·{" "}
+            {locale === "ar"
+              ? candidate.targetLabelAr
+              : candidate.targetLabelEn}
+          </ProductLink>
+        )}
+        <ProductLink href="/admin" locale={locale}>
+          {t("All decisions", "كل القرارات")}
         </ProductLink>
-        <ProductLink href={defaultUnitPath} locale={locale}>
+        <ProductLink href={defaultUnitPath} locale={locale} onClick={preview}>
           {t("Preview exact student scope", "معاينة نطاق الطالب المحدد")}
         </ProductLink>
       </div>

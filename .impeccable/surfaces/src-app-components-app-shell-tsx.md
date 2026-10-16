@@ -16,6 +16,8 @@ related_targets:
 
 # Open Folio implementation
 
+WP03-T13, 6 October: preserve the approved system while replacing the product language dropdown with English / العربية buttons. Student navigation is Study, Subjects and the caller’s named profile with a circular initial. The profile opens independent settings views. The product canvas uses the remaining rail width with 24px desktop gutters; Chat owns its working width and opens citations on demand. Other roles retain their destinations. Landing/access controls stay unchanged. The local candidate awaits Ahmed's rendered acceptance; its task record retains the commit/delivery hold.
+
 Operate mode. Current visual authority is Ahmed's approved refinement, exact reference SHA in planning/design/open-folio/approval.md. No new direction roll is needed: the human has selected and approved the concrete interactive reference. Earlier premium-product directions below are historical, not authority for this replacement composition.
 
 **THESIS:** Make UniMind recognizable through a navigation spine, reading paper and source annotations, with distinct study, intake and governance compositions.

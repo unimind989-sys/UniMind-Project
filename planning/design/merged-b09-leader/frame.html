@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Source intake · UniMind prototype</title>
+    <link rel="stylesheet" href="prototype.css" />
+    <script defer src="prototype.js"></script>
+  </head>
+  <body>
+    <!-- B09 prescribed extension: existing Open Folio brand, request-first hierarchy, personal cutoff, compact inspectable receipts. Synthetic presentation only; no new service or permission. -->
+    <a class="skip" href="#main">Skip to content</a>
+    <div class="shell">
+      <aside class="rail">
+        <img src="assets/logo.svg" alt="UniMind" width="160" height="42" />
+        <nav id="nav" aria-label="Main navigation"></nav>
+        <div class="rail-end">
+          <span id="person"></span><span id="role"></span>
+        </div>
+      </aside>
+      <div class="canvas">
+        <header class="simulation" id="simulation"></header>
+        <main id="main" tabindex="-1"></main>
+      </div>
+    </div>
+    <div
+      class="announcement"
+      role="status"
+      aria-live="polite"
+      id="announcement"
+    ></div>
+  </body>
+</html>

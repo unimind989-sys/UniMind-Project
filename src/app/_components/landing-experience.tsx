@@ -8,58 +8,33 @@ import styles from "./landing.module.css";
 export function StudyAtlas({ locale }: { locale: Locale }) {
   const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
   const scene = useRef<HTMLDivElement>(null);
-  const [expanded, setExpanded] = useState(false);
-
   useEffect(() => {
     const element = scene.current;
     if (!element) return;
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
-    let frame = 0;
-    let visible = true;
-    const reset = () => {
-      window.cancelAnimationFrame(frame);
-      element.style.setProperty("--atlas-x", "0deg");
-      element.style.setProperty("--atlas-y", "0deg");
-    };
-    const move = (event: PointerEvent) => {
-      if (
-        preference.matches ||
-        !finePointer.matches ||
-        !visible ||
-        document.hidden
-      )
-        return;
-      const bounds = element.getBoundingClientRect();
-      const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * 10;
-      const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * -8;
-      window.cancelAnimationFrame(frame);
-      frame = window.requestAnimationFrame(() => {
-        element.style.setProperty("--atlas-x", x.toFixed(2) + "deg");
-        element.style.setProperty("--atlas-y", y.toFixed(2) + "deg");
-      });
+    let visible = false;
+    const syncMotion = () => {
+      element.dataset.motion =
+        visible && !document.hidden && !preference.matches
+          ? "running"
+          : "paused";
     };
     const observer = new IntersectionObserver(([entry]) => {
       visible = entry?.isIntersecting ?? false;
-      if (!visible) reset();
+      syncMotion();
     });
     observer.observe(element);
-    element.addEventListener("pointermove", move);
-    element.addEventListener("pointerleave", reset);
-    preference.addEventListener("change", reset);
-    document.addEventListener("visibilitychange", reset);
+    preference.addEventListener("change", syncMotion);
+    document.addEventListener("visibilitychange", syncMotion);
     return () => {
       observer.disconnect();
-      window.cancelAnimationFrame(frame);
-      element.removeEventListener("pointermove", move);
-      element.removeEventListener("pointerleave", reset);
-      preference.removeEventListener("change", reset);
-      document.removeEventListener("visibilitychange", reset);
+      preference.removeEventListener("change", syncMotion);
+      document.removeEventListener("visibilitychange", syncMotion);
     };
   }, []);
 
   return (
-    <div className={styles.atlas} ref={scene} data-expanded={expanded}>
+    <div className={styles.atlas} ref={scene} data-motion="paused">
       <div className={styles.atlasVisual} aria-hidden="true" dir="ltr">
         <div className={styles.atlasOrbit}>
           <span />
@@ -73,7 +48,7 @@ export function StudyAtlas({ locale }: { locale: Locale }) {
             <span className={styles.paperIcon}>
               <LandingIcon name="book" />
             </span>
-            <strong>{t("The bigger picture", "الصورة الكاملة")}</strong>
+            <strong>{t("Course topics", "موضوعات المقرر")}</strong>
             <div className={styles.folioMap}>
               <svg viewBox="0 0 150 135" fill="none">
                 <path
@@ -119,14 +94,14 @@ export function StudyAtlas({ locale }: { locale: Locale }) {
               </svg>
             </div>
             <span className={styles.paperFoot}>
-              {t("Make the connections", "اربط الأفكار")}
+              {t("Topic outline", "مخطط الموضوعات")}
             </span>
           </div>
           <div className={styles.folioLeafRight}>
             <span className={styles.paperIcon}>
               <LandingIcon name="source" />
             </span>
-            <strong>{t("Your understanding", "فهمك")}</strong>
+            <strong>{t("Study notes", "ملاحظات المذاكرة")}</strong>
             <div className={styles.paperLines}>
               <i />
               <i />
@@ -143,7 +118,7 @@ export function StudyAtlas({ locale }: { locale: Locale }) {
               <i />
             </div>
             <span className={styles.paperFoot}>
-              {t("Go one layer deeper", "تعمق أكثر")}
+              {t("Source passage", "مقتطف من المصدر")}
             </span>
           </div>
           <div className={styles.floatingSource}>
@@ -169,30 +144,15 @@ export function StudyAtlas({ locale }: { locale: Locale }) {
           </div>
           <div className={styles.floatingCitation}>
             <LandingIcon name="check" />
-            <span>{t("Follow the evidence", "تتبع الأدلة")}</span>
+            <span>{t("Supporting material", "المادة الداعمة")}</span>
           </div>
         </div>
         <span className={styles.atlasLabelMaterial}>
           {t("Your materials", "موادك")}
         </span>
         <span className={styles.atlasLabelUnderstanding}>
-          {t("Connected understanding", "فهم مترابط")}
+          {t("Your study tools", "أدوات مذاكرتك")}
         </span>
-      </div>
-      <div className={styles.atlasControls}>
-        <span>
-          {t("A different perspective on studying.", "منظور مختلف للمذاكرة.")}
-        </span>
-        <button
-          type="button"
-          aria-pressed={expanded}
-          onClick={() => setExpanded(!expanded)}
-        >
-          <LandingIcon name="expand" />
-          {expanded
-            ? t("Bring it together", "اجمع الأفكار")
-            : t("Explore the layers", "اكتشف الطبقات")}
-        </button>
       </div>
     </div>
   );
@@ -258,8 +218,8 @@ export function WorkspacePreview({ locale }: { locale: Locale }) {
         </div>
         <p className={styles.previewDisclaimer}>
           {t(
-            "Interactive preview · sample material",
-            "معاينة تفاعلية · مواد تجريبية",
+            "Try the tools with sample material",
+            "جرّب الأدوات بمواد تجريبية",
           )}
         </p>
       </div>
@@ -267,7 +227,7 @@ export function WorkspacePreview({ locale }: { locale: Locale }) {
         <div className={styles.windowHeader}>
           <span>
             <LandingIcon name="book" />
-            {t("Your subject workspace", "مساحة مادتك")}
+            {t("Anatomy & physiology", "التشريح ووظائف الأعضاء")}
           </span>
           <span className={styles.sampleLabel}>{t("Sample", "نموذج")}</span>
         </div>
@@ -277,23 +237,23 @@ export function WorkspacePreview({ locale }: { locale: Locale }) {
             aria-label={t("Sample materials", "المواد التجريبية")}
           >
             <h3>{t("Materials", "المواد")}</h3>
-            <p>{t("One connected knowledge pool", "مجموعة معرفة مترابطة")}</p>
+            <p>{t("Sources for this subject", "مصادر هذه المادة")}</p>
             <ul>
               {[
                 [
                   "PDF",
                   t("Lecture notes", "ملاحظات المحاضرة"),
-                  t("The core concepts", "الأفكار الأساسية"),
+                  t("Anatomy and physiology", "التشريح ووظائف الأعضاء"),
                 ],
                 [
                   "PDF",
                   t("Course reading", "قراءة المقرر"),
-                  t("The detail behind them", "التفاصيل الداعمة"),
+                  t("Structure and function", "التركيب والوظيفة"),
                 ],
                 [
                   "AUDIO",
                   t("Professor insight", "ملاحظات الأستاذ"),
-                  t("What to pay attention to", "ما يستحق التركيز"),
+                  t("Class discussion", "مناقشة المحاضرة"),
                 ],
               ].map(([format, title, description]) => (
                 <li key={title}>
@@ -328,8 +288,8 @@ export function WorkspacePreview({ locale }: { locale: Locale }) {
                 <>
                   <p className={styles.previewQuestion}>
                     {t(
-                      "How do these ideas connect?",
-                      "كيف تترابط هذه الأفكار؟",
+                      "How is anatomy different from physiology?",
+                      "ما الفرق بين التشريح ووظائف الأعضاء؟",
                     )}
                   </p>
                   <div className={styles.answerIdentity}>
@@ -337,11 +297,11 @@ export function WorkspacePreview({ locale }: { locale: Locale }) {
                     <strong>UniMind</strong>
                     <span>{t("Sample answer", "إجابة تجريبية")}</span>
                   </div>
-                  <h3>{t("See the whole picture.", "شاهد الصورة الكاملة.")}</h3>
+                  <h3>{t("Structure and function", "التركيب والوظيفة")}</h3>
                   <p>
                     {t(
-                      "Bring the core ideas together, then follow each connection back to the material. The explanation and its evidence stay side by side.",
-                      "اجمع الأفكار الأساسية، ثم تتبع كل رابط إلى المادة الدراسية. يظل الشرح وأدلته جنبًا إلى جنب.",
+                      "Anatomy describes the structures of the body. Physiology explains how those structures function. The lecture notes use this distinction to introduce both subjects.",
+                      "يصف التشريح تراكيب الجسم، وتشرح وظائف الأعضاء كيف تعمل هذه التراكيب. تستخدم ملاحظات المحاضرة هذا الفرق للتعريف بالمجالين.",
                     )}
                   </p>
                   <button
@@ -365,16 +325,16 @@ export function WorkspacePreview({ locale }: { locale: Locale }) {
                       </strong>
                       <p>
                         {t(
-                          "“Bring the core ideas together, then follow each connection back to the material.”",
-                          "«اجمع الأفكار الأساسية، ثم تتبع كل رابط إلى المادة الدراسية.»",
+                          "“Anatomy describes body structures. Physiology explains how those structures function.”",
+                          "«يصف التشريح تراكيب الجسم، وتشرح وظائف الأعضاء كيف تعمل هذه التراكيب.»",
                         )}
                       </p>
                     </div>
                   )}
                   <p className={styles.previewHint}>
                     {t(
-                      "An illustrative explanation, not a generated course answer.",
-                      "شرح توضيحي، وليس إجابة مولدة من مقرر دراسي.",
+                      "This is a fixed sample answer using invented lecture notes.",
+                      "هذه إجابة تجريبية ثابتة تستخدم ملاحظات محاضرة غير حقيقية.",
                     )}
                   </p>
                 </>
@@ -383,18 +343,15 @@ export function WorkspacePreview({ locale }: { locale: Locale }) {
                 <>
                   <div className={styles.answerIdentity}>
                     <LandingIcon name="studio" />
-                    <strong>{t("Make it your own.", "ذاكر بطريقتك.")}</strong>
+                    <strong>{t("Studio", "الاستوديو")}</strong>
                   </div>
                   <h3>
-                    {t(
-                      "A new angle on the same material.",
-                      "زاوية جديدة لنفس المادة.",
-                    )}
+                    {t("Review with flashcards", "راجع ببطاقات المذاكرة")}
                   </h3>
                   <p>
                     {t(
-                      "Summaries, flashcards, mind maps, reports, audio overviews and presentations. Different ways to work with one subject.",
-                      "ملخصات وبطاقات مذاكرة وخرائط ذهنية وتقارير وملخصات صوتية وعروض. طرق مختلفة للعمل على مادة واحدة.",
+                      "Make summaries, study guides and practice questions from your subject’s sources. Try a sample flashcard below.",
+                      "أعد ملخصات وأدلة مذاكرة وأسئلة تدريب من مصادر مادتك. جرّب بطاقة المذاكرة أدناه.",
                     )}
                   </p>
                   <button
@@ -405,18 +362,18 @@ export function WorkspacePreview({ locale }: { locale: Locale }) {
                   >
                     <span className={styles.flashcardLabel}>
                       {flipped
-                        ? t("The connection", "الرابط")
+                        ? t("Sample answer", "إجابة تجريبية")
                         : t("Sample flashcard", "بطاقة تجريبية")}
                     </span>
                     <strong>
                       {flipped
                         ? t(
-                            "Return to the source. Check the relationship. Explain it in your own words.",
-                            "عد إلى المصدر. راجع العلاقة. اشرحها بكلماتك.",
+                            "Physiology studies how body structures function.",
+                            "تدرس وظائف الأعضاء كيف تعمل تراكيب الجسم.",
                           )
                         : t(
-                            "What makes an explanation worth trusting?",
-                            "ما الذي يجعل الشرح جديرًا بالثقة؟",
+                            "What does physiology study?",
+                            "ماذا تدرس وظائف الأعضاء؟",
                           )}
                     </strong>
                     <span className={styles.flashcardAction}>
@@ -432,31 +389,24 @@ export function WorkspacePreview({ locale }: { locale: Locale }) {
                 <>
                   <div className={styles.answerIdentity}>
                     <LandingIcon name="quiz" />
-                    <strong>
-                      {t("Find what sticks.", "اكتشف ما أتقنته.")}
-                    </strong>
+                    <strong>{t("Quiz", "الاختبار")}</strong>
                   </div>
-                  <h3>
-                    {t(
-                      "Turn understanding into practice.",
-                      "حول الفهم إلى تدريب.",
-                    )}
-                  </h3>
+                  <h3>{t("Check what you remember", "اختبر ما تتذكره")}</h3>
                   <fieldset className={styles.sampleQuiz}>
                     <legend>
                       {t(
-                        "In UniMind, what supports a course answer?",
-                        "في UniMind، ما الذي يدعم إجابة المقرر؟",
+                        "Which question is about physiology?",
+                        "أي سؤال يتعلق بوظائف الأعضاء؟",
                       )}
                     </legend>
                     {[
                       t(
-                        "The approved material for your subject",
-                        "المواد المعتمدة لمادتك",
+                        "How does this structure function?",
+                        "كيف يعمل هذا التركيب؟",
                       ),
                       t(
-                        "An unrelated web search",
-                        "بحث على الإنترنت خارج المقرر",
+                        "Where is this structure located?",
+                        "أين يوجد هذا التركيب؟",
                       ),
                     ].map((option, index) => (
                       <label key={option} data-selected={answer === index}>
@@ -475,12 +425,12 @@ export function WorkspacePreview({ locale }: { locale: Locale }) {
                       ? t("Try the sample question.", "جرب السؤال التجريبي.")
                       : answer === 0
                         ? t(
-                            "Exactly. Your subject’s approved material is the source.",
-                            "صحيح. المواد المعتمدة لمادتك هي المصدر.",
+                            "Correct. Physiology explains function; anatomy describes structure.",
+                            "صحيح. تشرح وظائف الأعضاء الوظيفة، ويصف التشريح التركيب.",
                           )
                         : t(
-                            "Try again. UniMind works from your subject’s approved material.",
-                            "حاول مجددًا. يعتمد UniMind على المواد المعتمدة لمادتك.",
+                            "Try again. Location is part of anatomy; physiology explains function.",
+                            "حاول مجددًا. الموقع جزء من التشريح، وتشرح وظائف الأعضاء الوظيفة.",
                           )}
                   </p>
                 </>
@@ -490,9 +440,7 @@ export function WorkspacePreview({ locale }: { locale: Locale }) {
         </div>
       </div>
       <div className={styles.previewFootnote}>
-        <span>
-          {t("Your material stays at the center.", "تظل مادتك في قلب التجربة.")}
-        </span>
+        <span>{t("Sample workspace", "مساحة تجريبية")}</span>
         <p>
           {t(
             "Sample materials. Access and available tools depend on your subject. This preview does not generate or save content.",

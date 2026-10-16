@@ -1,6 +1,15 @@
 "use client";
 
 import { useProductRouter } from "@/app/_components/product-navigation";
+import { ProductNavigationLink } from "@/app/_components/product-navigation";
+import type { Route } from "next";
+import {
+  adminAlreadyInState,
+  adminDecisionGroup,
+  adminTargetKind,
+  adminReviewBinding,
+  adminDecisionHref,
+} from "@/lib/admin/admin-presentation.application";
 import {
   useActionState,
   useEffect,
@@ -26,6 +35,8 @@ import { FrontendIcon } from "@/app/_components/frontend-controls";
 import { AdminWorkspace } from "./admin-workspace";
 
 function candidateState(candidate: AdminActionCandidate, locale: Locale) {
+  if (adminAlreadyInState(candidate))
+    return getAdminCopy(locale).alreadyInState;
   if (candidate.commandState === "PENDING_SECOND_CONFIRMATION") {
     return locale === "ar" ? "تأكيد ثانٍ مطلوب" : "Second confirmation needed";
   }
@@ -50,6 +61,12 @@ function stateLabel(value: string, locale: Locale) {
   return labels[value] ?? value;
 }
 
+function localExpiryValue(value: string) {
+  const date = new Date(value);
+  const two = (part: number) => String(part).padStart(2, "0");
+  return `${date.getFullYear()}-${two(date.getMonth() + 1)}-${two(date.getDate())}T${two(date.getHours())}:${two(date.getMinutes())}`;
+}
+
 function ActionPanel({
   candidate,
   locale,
@@ -61,7 +78,7 @@ function ActionPanel({
   locale: Locale;
   submitAction: typeof submitAdminAction;
   refreshing: boolean;
-  reloadAction?: (() => void) | undefined;
+  reloadAction?: (() => void | Promise<void>) | undefined;
 }>) {
   const copy = getAdminCopy(locale);
   const predicateLabels = copy.predicates as Readonly<Record<string, string>>;
@@ -71,13 +88,29 @@ function ActionPanel({
   const [reviewOpen, setReviewOpen] = useState(false);
   const [reviewReason, setReviewReason] = useState("");
   const [reviewExpiry, setReviewExpiry] = useState("");
+  const [reviewBinding, setReviewBinding] = useState("");
+  const [reasonDraft, setReasonDraft] = useState("");
+  const [expiryDraft, setExpiryDraft] = useState("");
+  const [reviewAttested, setReviewAttested] = useState(false);
+  const [correlationId, setCorrelationId] = useState(
+    candidate.correlationId ?? "",
+  );
+  const [idempotencyKey, setIdempotencyKey] = useState("");
   const reviewButton = useRef<HTMLButtonElement>(null);
   const confirmButton = useRef<HTMLButtonElement>(null);
   const feedbackRef = useRef<HTMLParagraphElement>(null);
   const direction = getTextDirection(locale);
   const actionable = candidate.commandState !== "PENDING_OWNER_REVIEW";
   const blocked = candidate.failedPredicates.length > 0;
+  const completed = adminAlreadyInState(candidate);
   const secondConfirmation = candidate.pendingActionId !== null;
+  const boundExpiry = secondConfirmation ? candidate.holdExpiresAt : null;
+  const missingExpiry =
+    secondConfirmation && candidate.action === "PLACE_RAW_HOLD" && !boundExpiry;
+  const changedAfterReview =
+    reviewOpen &&
+    state.status === "IDLE" &&
+    reviewBinding !== adminReviewBinding(candidate);
   const ownerReviewPending = candidate.commandState === "PENDING_OWNER_REVIEW";
 
   useEffect(() => {
@@ -86,11 +119,22 @@ function ActionPanel({
 
   function openReview() {
     const form = reviewButton.current?.form;
-    if (form === undefined || form === null || !form.reportValidity()) return;
+    if (form === undefined || form === null) return;
     const reason = form.elements.namedItem("reason");
     const expiry = form.elements.namedItem("holdExpiresAtLocal");
-    setReviewReason(reason instanceof HTMLTextAreaElement ? reason.value : "");
+    if (reason instanceof HTMLTextAreaElement) {
+      reason.setCustomValidity(
+        reason.value.trim().length < 8 || reason.value.trim().length > 500
+          ? copy.reasonHint
+          : "",
+      );
+    }
+    if (!form.reportValidity()) return;
+    setReviewReason(
+      reason instanceof HTMLTextAreaElement ? reason.value.trim() : "",
+    );
     setReviewExpiry(expiry instanceof HTMLInputElement ? expiry.value : "");
+    setReviewBinding(adminReviewBinding(candidate));
     setReviewOpen(true);
   }
 
@@ -100,7 +144,7 @@ function ActionPanel({
   }
 
   function prepareAction(event: FormEvent<HTMLFormElement>) {
-    if (!reviewOpen) {
+    if (!reviewOpen || changedAfterReview || missingExpiry) {
       event.preventDefault();
       return;
     }
@@ -109,9 +153,11 @@ function ActionPanel({
     const idempotency = form.elements.namedItem("idempotencyKey");
     if (correlation instanceof HTMLInputElement && correlation.value === "") {
       correlation.value = crypto.randomUUID();
+      setCorrelationId(correlation.value);
     }
     if (idempotency instanceof HTMLInputElement && idempotency.value === "") {
       idempotency.value = crypto.randomUUID();
+      setIdempotencyKey(idempotency.value);
     }
 
     if (candidate.action === "PLACE_RAW_HOLD") {
@@ -122,7 +168,7 @@ function ActionPanel({
         expiry instanceof HTMLInputElement &&
         localExpiry.value !== ""
       ) {
-        expiry.value = new Date(localExpiry.value).toISOString();
+        expiry.value = boundExpiry ?? new Date(localExpiry.value).toISOString();
       }
     }
   }
@@ -131,6 +177,7 @@ function ActionPanel({
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) {
     setReviewOpen(false);
+    event.currentTarget.setCustomValidity("");
     const form = event.currentTarget.form;
     if (form === null) return;
     const correlation = form.elements.namedItem("correlationId");
@@ -138,9 +185,14 @@ function ActionPanel({
     if (
       correlation instanceof HTMLInputElement &&
       candidate.pendingActionId === null
-    )
+    ) {
       correlation.value = "";
-    if (idempotency instanceof HTMLInputElement) idempotency.value = "";
+      setCorrelationId("");
+    }
+    if (idempotency instanceof HTMLInputElement) {
+      idempotency.value = "";
+      setIdempotencyKey("");
+    }
   }
 
   let feedback: string | null = null;
@@ -161,15 +213,22 @@ function ActionPanel({
     >
       <div className={styles.detailHeading}>
         <div>
-          <h2 id="decision-detail-heading" dir="auto">
+          <h2 id="decision-detail-heading" dir="auto" tabIndex={-1}>
             {candidateLabel(candidate, locale)}
           </h2>
           <p className={styles.actionName}>{copy.actions[candidate.action]}</p>
+          <p>{copy.targetKinds[adminTargetKind(candidate.action)]}</p>
         </div>
         <span
           className={styles.statusCue}
           data-tone={
-            blocked ? "blocked" : secondConfirmation ? "pending" : "ready"
+            completed
+              ? "ready"
+              : blocked
+                ? "blocked"
+                : secondConfirmation
+                  ? "pending"
+                  : "ready"
           }
         >
           {candidateState(candidate, locale)}
@@ -197,7 +256,9 @@ function ActionPanel({
 
       <div className={styles.readiness}>
         <h3>{copy.readiness}</h3>
-        {candidate.failedPredicates.length === 0 ? (
+        {completed ? (
+          <p>{copy.alreadyInStateBody}</p>
+        ) : candidate.failedPredicates.length === 0 ? (
           <p className={styles.readyState}>{copy.ready}</p>
         ) : (
           <ul>
@@ -208,12 +269,32 @@ function ActionPanel({
         )}
       </div>
 
+      <p>{copy.consequences[candidate.action]}</p>
+      <details className={styles.readiness}>
+        <summary>{copy.targetId}</summary>
+        <code dir="ltr">{candidate.targetId}</code>
+      </details>
+
       {secondConfirmation && (
         <p className={styles.pendingNote} role="status">
           {copy.pendingFounder}
           {candidate.initiatorSlot
             ? ` · ${copy.initiatedBy}: ${candidate.initiatorSlot === "AHMED" ? copy.founderAhmed : copy.founderZiad}`
             : ""}
+        </p>
+      )}
+      {secondConfirmation && (
+        <p>
+          <ProductNavigationLink
+            href={adminDecisionHref(candidate, locale) as Route}
+          >
+            {copy.pendingLink}
+          </ProductNavigationLink>
+        </p>
+      )}
+      {missingExpiry && (
+        <p role="alert" className={styles.errorMessage}>
+          {copy.missingHoldExpiry}
         </p>
       )}
       {candidate.commandState === "PENDING_OWNER_REVIEW" && (
@@ -245,12 +326,8 @@ function ActionPanel({
           name="pendingActionId"
           value={candidate.pendingActionId ?? ""}
         />
-        <input
-          type="hidden"
-          name="correlationId"
-          defaultValue={candidate.correlationId ?? ""}
-        />
-        <input type="hidden" name="idempotencyKey" defaultValue="" />
+        <input type="hidden" name="correlationId" value={correlationId} />
+        <input type="hidden" name="idempotencyKey" value={idempotencyKey} />
         <label className={styles.field}>
           <span>{copy.reason}</span>
           {secondConfirmation || ownerReviewPending ? (
@@ -269,7 +346,11 @@ function ActionPanel({
               maxLength={500}
               placeholder={copy.reasonPlaceholder}
               autoComplete="off"
-              onChange={resetRequestKey}
+              value={reasonDraft}
+              onChange={(event) => {
+                setReasonDraft(event.currentTarget.value);
+                resetRequestKey(event);
+              }}
               rows={3}
               dir={direction}
             />
@@ -286,7 +367,14 @@ function ActionPanel({
                 name="holdExpiresAtLocal"
                 required
                 autoComplete="off"
-                onChange={resetRequestKey}
+                value={
+                  boundExpiry ? localExpiryValue(boundExpiry) : expiryDraft
+                }
+                readOnly={secondConfirmation}
+                onChange={(event) => {
+                  setExpiryDraft(event.currentTarget.value);
+                  resetRequestKey(event);
+                }}
               />
             </label>
             <label className={styles.reviewAttestation}>
@@ -295,7 +383,11 @@ function ActionPanel({
                 name="reviewAttested"
                 value="true"
                 required
-                onChange={resetRequestKey}
+                checked={reviewAttested}
+                onChange={(event) => {
+                  setReviewAttested(event.currentTarget.checked);
+                  resetRequestKey(event);
+                }}
               />
               <span>{copy.holdReview}</span>
             </label>
@@ -317,14 +409,23 @@ function ActionPanel({
             {feedback}
           </p>
         )}
-        {blocked && <p className={styles.blockedMessage}>{copy.blocked}</p>}
+        {blocked && !completed && (
+          <p className={styles.blockedMessage}>{copy.blocked}</p>
+        )}
+        {changedAfterReview && (
+          <p role="alert" className={styles.errorMessage}>
+            {copy.reviewChanged}
+          </p>
+        )}
         {state.status !== "IDLE" && (
           <button
             className={styles.secondaryAction}
             type="button"
+            disabled={refreshing}
+            aria-busy={refreshing}
             onClick={reloadAction ?? (() => window.location.reload())}
           >
-            {copy.reloadQueue}
+            {refreshing ? copy.checkingState : copy.reloadQueue}
           </button>
         )}
         <ProductDialog
@@ -395,6 +496,8 @@ function ActionPanel({
               disabled={
                 !actionable ||
                 blocked ||
+                missingExpiry ||
+                changedAfterReview ||
                 pending ||
                 refreshing ||
                 state.status !== "IDLE"
@@ -403,11 +506,7 @@ function ActionPanel({
             >
               {pending
                 ? copy.working
-                : secondConfirmation
-                  ? copy.confirmSecond
-                  : candidate.protected
-                    ? copy.confirmProtected
-                    : copy.confirmAction}
+                : `${secondConfirmation ? copy.confirmSecond : candidate.protected ? copy.confirmProtected : copy.confirmAction}: ${copy.actions[candidate.action]}`}
             </button>
           </div>
         </ProductDialog>
@@ -420,6 +519,7 @@ function ActionPanel({
             disabled={
               !actionable ||
               blocked ||
+              missingExpiry ||
               pending ||
               refreshing ||
               state.status !== "IDLE"
@@ -441,14 +541,20 @@ export function AdminDecisionQueue({
   reloadAction,
   embedded = false,
   refreshOnSelect = true,
+  initialSelection,
+  recheckComplete = false,
+  onSelection,
 }: Readonly<{
   initialLocale: Locale;
   queue: AdminQueueState;
   submitAction?: typeof submitAdminAction;
   syntheticPreview?: boolean;
-  reloadAction?: () => void;
+  reloadAction?: () => void | Promise<void>;
   embedded?: boolean;
   refreshOnSelect?: boolean;
+  initialSelection?: { id: string; error: boolean };
+  recheckComplete?: boolean;
+  onSelection?: (candidateId: string) => void;
 }>) {
   const router = useProductRouter();
   const [refreshing, startRefresh] = useTransition();
@@ -456,18 +562,15 @@ export function AdminDecisionQueue({
   const copy = getAdminCopy(locale);
   const direction = getTextDirection(locale);
   const candidates = queue.status === "READY" ? queue.candidates : [];
-  const [selectedId, setSelectedId] = useState("");
-  const [detailOpen, setDetailOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState(initialSelection?.id ?? "");
+  const [detailOpen, setDetailOpen] = useState(Boolean(initialSelection?.id));
+  const [selectionError, setSelectionError] = useState(
+    initialSelection?.error ?? false,
+  );
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
   const detail = useRef<HTMLDivElement>(null);
-  const group = (candidate: AdminActionCandidate) =>
-    candidate.commandState === "PENDING_SECOND_CONFIRMATION" ||
-    candidate.commandState === "PENDING_OWNER_REVIEW"
-      ? "pending"
-      : candidate.failedPredicates.length
-        ? "blocked"
-        : "available";
+  const group = adminDecisionGroup;
   const matching = candidates.filter((candidate) =>
     `${copy.actions[candidate.action]} ${candidateLabel(candidate, locale)}`
       .toLocaleLowerCase(locale)
@@ -480,12 +583,13 @@ export function AdminDecisionQueue({
     candidates.find((candidate) => candidate.candidateId === selectedId) ??
     null;
   useEffect(() => {
-    if (
-      selectedId &&
-      detailOpen &&
-      window.matchMedia("(max-width:767px)").matches
-    )
-      detail.current?.focus({ preventScroll: true });
+    onSelection?.(selectedId);
+  }, [selectedId, onSelection]);
+  useEffect(() => {
+    if (selectedId && detailOpen)
+      detail.current
+        ?.querySelector<HTMLElement>("#decision-detail-heading")
+        ?.focus();
   }, [selectedId, detailOpen]);
   useEffect(() => {
     document.documentElement.lang = locale;
@@ -493,12 +597,32 @@ export function AdminDecisionQueue({
   }, [direction, locale]);
   function selectCandidate(candidateId: string) {
     setSelectedId(candidateId);
+    setSelectionError(false);
     setDetailOpen(true);
+    requestAnimationFrame(() =>
+      detail.current
+        ?.querySelector<HTMLElement>("#decision-detail-heading")
+        ?.focus(),
+    );
     if (!syntheticPreview && refreshOnSelect)
       startRefresh(() => router.refresh());
   }
+  const [rechecked, setRechecked] = useState(false);
+  function recheck() {
+    startRefresh(async () => {
+      if (reloadAction) await reloadAction();
+      else router.refresh();
+      setRechecked(true);
+    });
+  }
   const body = (
     <div className={styles.queue}>
+      {recheckComplete && <p role="status">{copy.recheckDone}</p>}
+      {selectionError && (
+        <p role="alert" className={styles.errorMessage}>
+          {copy.invalidSelection}
+        </p>
+      )}
       {queue.status === "FORBIDDEN" || queue.status === "UNAVAILABLE" ? (
         <section className={styles.notice} role="alert">
           <h2>
@@ -511,6 +635,18 @@ export function AdminDecisionQueue({
               ? copy.forbiddenBody
               : copy.unavailableBody}
           </p>
+          {queue.status === "UNAVAILABLE" && (
+            <button
+              className={styles.secondaryAction}
+              type="button"
+              onClick={recheck}
+              disabled={refreshing}
+              aria-busy={refreshing}
+            >
+              {refreshing ? copy.checkingState : copy.recheckQueue}
+            </button>
+          )}
+          {rechecked && <p role="status">{copy.unavailableBody}</p>}
         </section>
       ) : candidates.length === 0 ? (
         <section className={styles.emptyState}>
@@ -526,7 +662,13 @@ export function AdminDecisionQueue({
             <h2 id="decision-list-heading">
               {copy.decisionsHeading}{" "}
               <span className={styles.queueCountCompact}>
-                ({new Intl.NumberFormat(locale).format(candidates.length)})
+                (
+                {new Intl.NumberFormat(locale).format(
+                  candidates.filter(
+                    (candidate) => !adminAlreadyInState(candidate),
+                  ).length,
+                )}
+                )
               </span>
             </h2>
             <label className={styles.queueSearch}>
@@ -551,6 +693,7 @@ export function AdminDecisionQueue({
                   ["available", "Available", "متاح"],
                   ["blocked", "Blocked", "محجوب"],
                   ["pending", "Pending", "معلق"],
+                  ["completed", "Completed", "مكتمل"],
                 ] as const
               ).map(([id, en, ar]) => (
                 <button
@@ -586,6 +729,7 @@ export function AdminDecisionQueue({
               <select
                 id="admin-decision"
                 name="decision"
+                disabled={refreshing}
                 value={selected?.candidateId ?? ""}
                 onChange={(event) => selectCandidate(event.target.value)}
               >
@@ -615,6 +759,7 @@ export function AdminDecisionQueue({
                       candidate.candidateId === selected?.candidateId
                     }
                     type="button"
+                    disabled={refreshing}
                     aria-pressed={
                       candidate.candidateId === selected?.candidateId
                     }
@@ -629,7 +774,8 @@ export function AdminDecisionQueue({
                     <span
                       className={styles.listStatus}
                       data-tone={
-                        candidate.failedPredicates.length > 0
+                        candidate.failedPredicates.length > 0 &&
+                        !adminAlreadyInState(candidate)
                           ? "blocked"
                           : "ready"
                       }
@@ -647,7 +793,19 @@ export function AdminDecisionQueue({
                 <button
                   className={styles.detailBack}
                   type="button"
-                  onClick={() => setDetailOpen(false)}
+                  onClick={() => {
+                    setDetailOpen(false);
+                    requestAnimationFrame(() => {
+                      const chooser = document.getElementById("admin-decision");
+                      if (chooser?.getClientRects().length) chooser.focus();
+                      else
+                        document
+                          .querySelector<HTMLElement>(
+                            "#decision-list [aria-pressed='true']",
+                          )
+                          ?.focus();
+                    });
+                  }}
                 >
                   {locale === "ar"
                     ? "العودة إلى القرارات"
@@ -659,7 +817,7 @@ export function AdminDecisionQueue({
                   locale={locale}
                   submitAction={submitAction}
                   refreshing={refreshing}
-                  reloadAction={reloadAction}
+                  reloadAction={recheck}
                 />
               </>
             ) : (

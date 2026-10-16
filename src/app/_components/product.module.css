@@ -85,8 +85,8 @@
 }
 .main {
   min-width: 0;
-  padding: clamp(1rem, 3vw, 3rem);
-  max-width: 90rem;
+  padding: 24px;
+  width: 100%;
 }
 .main h1 {
   font-size: var(--type-display-size);
@@ -277,6 +277,49 @@
   color: var(--ready);
   background: var(--ready-surface);
 }
+.sourceContext {
+  /* Heading and purpose on one row; the return action and its note on the next. */
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 8px 16px;
+  margin-block-end: 16px;
+}
+.sourceContext > h2 {
+  margin: 0;
+}
+.sourceContext > :not(h2, p, a) {
+  grid-column: 1 / -1;
+}
+.sourceContext > p:last-child {
+  grid-column: 2;
+}
+@media (max-width: 767px) {
+  .sourceContext > h2,
+  .sourceContext > h2 + p,
+  .materialsHeading h2 {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+}
+.sourceContext > a {
+  justify-self: start;
+  min-height: 44px;
+  max-width: 100%;
+  padding: 8px 12px;
+  font-size: 0.875rem;
+  overflow-wrap: anywhere;
+}
+.sourceContext > p {
+  min-width: 0;
+  margin: 0;
+  color: var(--secondary);
+  font-size: 0.875rem;
+}
 .sources {
   padding-inline-start: 1.5rem;
 }
@@ -445,8 +488,159 @@
   border-radius: 14px;
   padding: 0 20px;
 }
+.sourceRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 8px 24px;
+  padding-block: 16px;
+  border-block-end: 1px solid var(--border);
+}
+.sourceRow:last-child {
+  border-block-end: 0;
+}
+.sourceIdentity {
+  min-width: 0;
+}
+.sourceTitle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+}
+.sourceFormat {
+  color: var(--ink);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.sourceRow h3 {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.sourceRow p {
+  margin: 4px 0 0;
+  color: var(--secondary);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.sourceIdentity p {
+  margin-block-start: 2px;
+  line-height: 1.5;
+}
+.sourceRow > .pill {
+  justify-self: end;
+  max-width: 20rem;
+}
+.sourceRow details {
+  grid-column: 1 / -1;
+}
+.sourceRow summary {
+  width: fit-content;
+  max-width: 100%;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--control-border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 0.875rem;
+  font-weight: 600;
+  list-style-position: inside;
+  cursor: pointer;
+}
+.sourceRow summary:hover {
+  background: var(--hover);
+}
+.sourceRow details p {
+  max-width: 68ch;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+@media (max-width: 767px) {
+  .sourceRow {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+  .sourceRow > .pill {
+    justify-self: start;
+    max-width: 100%;
+  }
+}
 
 .button:active:not(:disabled),
 .link:active {
   transform: translateY(1px);
+}
+
+.unitChoices {
+  display: grid;
+  gap: 4px;
+}
+.unitChoices a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 12px;
+  text-decoration: none;
+  border-radius: 4px;
+  color: var(--secondary);
+}
+.unitChoices a:hover,
+.unitChoices a[aria-current] {
+  background: var(--annotation);
+  color: var(--accent-ink);
+}
+
+.quizConfiguration {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: 20px;
+  width: min(100%, 32rem);
+  margin-block: 24px;
+  margin-inline: auto;
+}
+.quizConfiguration > fieldset > legend {
+  font-size: 1rem;
+  color: var(--ink);
+}
+.quizConfiguration > :not(label):not(fieldset) {
+  grid-column: 1 / -1;
+}
+.quizConfiguration input[type="number"] {
+  width: 100%;
+  max-width: 12rem;
+  min-height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: var(--ink);
+  background: var(--surface);
+  font: inherit;
+}
+.questionCount {
+  min-width: 0;
+}
+.fieldHint {
+  margin: 4px 0 0;
+  color: var(--secondary);
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.6;
+}
+.quizStart {
+  display: flex;
+  width: min(100%, 32rem);
+  margin-inline: auto;
+  /* Stack actions so Start stays centered on the configuration path. */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding-block: 20px;
+  border-block-start: 1px solid var(--border);
 }

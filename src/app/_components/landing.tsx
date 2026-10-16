@@ -6,8 +6,6 @@ import { StudyAtlas, WorkspacePreview } from "./landing-experience";
 import { LandingIcon } from "./landing-icons";
 import styles from "./landing.module.css";
 
-// Existing UniMind identity at an architectural scale; the folio connects material to evidence.
-// Motion belongs to assembly and user-driven state changes, never a scroll gate.
 export function Landing({ locale }: { locale: Locale }) {
   const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
   const login = ("/login?lang=" + locale) as Route;
@@ -56,8 +54,8 @@ export function Landing({ locale }: { locale: Locale }) {
             </h1>
             <p className={styles.heroDescription}>
               {t(
-                "Your course materials, a clearer place to study. Ask questions, follow the evidence and make study aids from the subjects you’re learning.",
-                "مكان أوضح لمذاكرة موادك الدراسية. اطرح أسئلتك، وراجع الأدلة، وأعد أدوات مذاكرة من المواد التي تتعلمها.",
+                "Ask questions about your course material and check the sources behind each answer. Use the same material to make study aids and practice with quizzes.",
+                "اسأل عن مواد مقررك وراجع المصادر التي تستند إليها كل إجابة. استخدم نفس المواد لإعداد أدوات مذاكرة والتدرب بالاختبارات.",
               )}
             </p>
             <div className={styles.heroActions}>
@@ -66,15 +64,15 @@ export function Landing({ locale }: { locale: Locale }) {
                 <LandingIcon name="arrow" />
               </Link>
               <a className={styles.textLink} href="#workspace">
-                {t("Explore the workspace", "اكتشف مساحة المذاكرة")}
+                {t("Try the workspace", "جرّب مساحة المذاكرة")}
                 <LandingIcon name="arrow" />
               </a>
             </div>
             <p className={styles.heroNote}>
               <span className={styles.noteLine} aria-hidden="true" />
               {t(
-                "Built around your course. Designed around you.",
-                "مبني حول مقررك. مصمم من أجلك.",
+                "Answers use your subject’s approved material.",
+                "الإجابات تعتمد على المواد المعتمدة لمادتك.",
               )}
             </p>
           </div>
@@ -82,14 +80,16 @@ export function Landing({ locale }: { locale: Locale }) {
         </section>
         <div className={styles.principleStrip}>
           <p>
-            {t("From information", "من المعلومات")}
+            {t("Course material", "مواد المقرر")}
             <LandingIcon name="arrow" />
-            <strong>{t("to understanding.", "إلى الفهم.")}</strong>
+            <strong>
+              {t("Answers you can check", "إجابات يمكنك مراجعتها")}
+            </strong>
           </p>
           <span>
             {t(
-              "One subject. One connected workspace.",
-              "مادة واحدة. مساحة مترابطة.",
+              "Chat and Studio use the same sources.",
+              "الدردشة والاستوديو يستخدمان نفس المصادر.",
             )}
           </span>
         </div>
@@ -100,14 +100,14 @@ export function Landing({ locale }: { locale: Locale }) {
         >
           <div className={styles.sectionHeading}>
             <h2 id="experience-title">
-              {t("Everything connects.", "كل شيء مترابط.")}
+              {t("Study with", "ذاكر من")}
               <br />
-              <span>{t("Understanding follows.", "والفهم يأتي بعدها.")}</span>
+              <span>{t("your course material.", "مواد مقررك.")}</span>
             </h2>
             <p>
               {t(
-                "Keep your materials, questions and study aids together. Move between them without losing the thread.",
-                "اجمع موادك وأسئلتك وأدوات مذاكرتك معًا. انتقل بينها دون أن تفقد تسلسل أفكارك.",
+                "Read a sample answer, flip a flashcard or try a quiz below. In your workspace, each tool uses your subject’s approved material.",
+                "راجع الإجابة التجريبية أو اقلب بطاقة المذاكرة أو جرّب الاختبار أدناه. تعتمد أدوات مساحة المذاكرة على مواد مادتك المعتمدة.",
               )}
             </p>
           </div>
@@ -156,18 +156,18 @@ export function Landing({ locale }: { locale: Locale }) {
           </div>
           <div className={styles.evidenceCopy}>
             <h2 id="evidence-title">
-              {t("A little less guessing.", "حيرة أقل.")}
+              {t("See what supports", "راجع ما تستند إليه")}
               <br />
-              <span>{t("A lot more clarity.", "ووضوح أكبر.")}</span>
+              <span>{t("the answer.", "الإجابة.")}</span>
             </h2>
             <p>
               {t(
-                "An answer is only the beginning. Follow its supporting evidence back to your approved course material, and see where the explanation comes from.",
-                "الإجابة هي البداية فقط. تتبع أدلتها الداعمة إلى مواد مقررك المعتمدة، واعرف من أين جاء الشرح.",
+                "Open an answer’s supporting material to read the passage it uses. If the approved sources do not cover your question, UniMind tells you.",
+                "افتح المادة الداعمة للإجابة لقراءة المقتطف الذي تعتمد عليه. إذا لم تغطِ المصادر المعتمدة سؤالك، يوضح لك UniMind ذلك.",
               )}
             </p>
             <a className={styles.textLink} href="#workspace">
-              {t("See the connection", "اكتشف الترابط")}
+              {t("Try the sample answer", "جرّب الإجابة التجريبية")}
               <LandingIcon name="arrow" />
             </a>
           </div>
@@ -177,32 +177,40 @@ export function Landing({ locale }: { locale: Locale }) {
           id="how-it-works"
           aria-labelledby="how-title"
         >
-          <h2 id="how-title">
-            {t("Find your focus.", "ابدأ تركيزك.")}
-            <br />
-            <span>{t("Then go further.", "وانطلق أبعد.")}</span>
-          </h2>
+          <div className={styles.howIntro}>
+            <h2 id="how-title">{t("How it works", "كيف تعمل")}</h2>
+            <p>
+              {t(
+                "Start with the subject you’re studying. Your questions and study aids stay with its course material.",
+                "ابدأ بالمادة التي تذاكرها. تبقى أسئلتك وأدوات مذاكرتك مع مواد مقررك.",
+              )}
+            </p>
+            <Link className={styles.textLink} href={register}>
+              {t("Create your account", "أنشئ حسابك")}
+              <LandingIcon name="arrow" />
+            </Link>
+          </div>
           <ol className={styles.steps}>
             {[
               [
-                t("Set your academic context", "حدد سياقك الدراسي"),
+                t("Choose your program", "اختر برنامجك الدراسي"),
                 t(
-                  "Choose your program and study period once. Your Study Shelf brings the available subjects together.",
-                  "اختر برنامجك وفترتك الدراسية مرة واحدة. يجمع رف المذاكرة المواد المتاحة لك.",
+                  "Select your program and academic year, then your term where needed. Your Study Shelf shows the subjects available to you.",
+                  "حدد برنامجك وسنتك الدراسية، ثم الفصل الدراسي عند الحاجة. يعرض رف المذاكرة المواد المتاحة لك.",
                 ),
               ],
               [
                 t("Open a subject", "افتح مادة"),
                 t(
-                  "Keep materials, questions, study aids and quizzes in the same workspace.",
-                  "اجمع المواد والأسئلة وأدوات المذاكرة والاختبارات في نفس المساحة.",
+                  "Read its approved material or ask a question in Chat. Open the supporting passage to check an answer.",
+                  "اقرأ موادها المعتمدة أو اطرح سؤالًا في الدردشة. افتح المقتطف الداعم لمراجعة الإجابة.",
                 ),
               ],
               [
-                t("Study with supporting evidence", "ذاكر مع أدلة داعمة"),
+                t("Practice with the same sources", "تدرّب من نفس المصادر"),
                 t(
-                  "Check the material behind an answer and return to what you were studying.",
-                  "راجع المادة التي تستند إليها الإجابة ثم عد إلى ما كنت تذاكره.",
+                  "Use Studio for study aids, then take a quiz and review the explanations for questions you missed.",
+                  "استخدم الاستوديو لإعداد أدوات مذاكرة، ثم اختبر نفسك وراجع شرح الأسئلة التي أخطأت فيها.",
                 ),
               ],
             ].map(([title, description], index) => (
@@ -216,7 +224,6 @@ export function Landing({ locale }: { locale: Locale }) {
                   <h3>{title}</h3>
                   <p>{description}</p>
                 </div>
-                <LandingIcon name="arrow" />
               </li>
             ))}
           </ol>
@@ -226,14 +233,14 @@ export function Landing({ locale }: { locale: Locale }) {
             <LandingIcon name="book" width="88" height="88" />
           </div>
           <h2 id="cta-title">
-            {t("Make room", "امنح المذاكرة")}
+            {t("Open your next", "افتح مادتك")}
             <br />
-            {t("for your next idea.", "مساحة لأفكارك.")}
+            {t("subject.", "القادمة.")}
           </h2>
           <p>
             {t(
-              "A clearer place for the subjects you’re learning.",
-              "مكان أوضح للمواد التي تتعلمها.",
+              "Create an account to find the subjects available to you.",
+              "أنشئ حسابًا للوصول إلى المواد المتاحة لك.",
             )}
           </p>
           <Link className={styles.primary} href={register}>

@@ -1,4 +1,5 @@
 import { defineConfig } from "vitest/config";
+import { fileURLToPath } from "node:url";
 
 export default defineConfig({
   test: {
@@ -6,6 +7,19 @@ export default defineConfig({
     retry: 0,
     projects: [
       {
+        resolve: {
+          alias: Object.fromEntries(
+            [
+              "app/learn/synthetic-catalog",
+              "app/learn/synthetic-workspace",
+              "lib/admin/admin-presentation.application",
+              "lib/demo/synthetic-account.application",
+            ].map((module) => [
+              `@/${module}`,
+              fileURLToPath(new URL(`./src/${module}`, import.meta.url)),
+            ]),
+          ),
+        },
         test: {
           name: "unit",
           include: ["tests/unit/**/*.test.ts"],

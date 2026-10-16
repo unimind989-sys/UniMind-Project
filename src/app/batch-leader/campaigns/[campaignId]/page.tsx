@@ -9,10 +9,20 @@ import { resolveLocale } from "@/lib/i18n/locale";
 
 import { finalizeCollectionAction } from "./actions";
 
-export const metadata: Metadata = {
-  title: "Collection desk | UniMind",
-  description: "Campaign-scoped source submission for UniMind Batch Leaders.",
-};
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}): Promise<Metadata> {
+  const query = await searchParams;
+  const locale = resolveLocale(
+    Array.isArray(query.lang) ? query.lang[0] : query.lang,
+  );
+  return {
+    title: `${locale === "ar" ? "استلام المصادر" : "Source intake"} · UniMind`,
+    description: "Campaign-scoped source submission for UniMind Batch Leaders.",
+  };
+}
 
 export default async function CollectionCampaignPage({
   params,

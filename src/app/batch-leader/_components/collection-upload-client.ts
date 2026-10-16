@@ -6,6 +6,10 @@ export type CollectionUploadClient = (
   clientKey: string,
   progress: (value: number) => void,
   signal: AbortSignal,
+  correction?: {
+    submissionId: string;
+    action: "FIX_INFORMATION" | "REPLACE_FILE";
+  },
 ) => Promise<RegisteredCollectionUpload>;
 
 // Existing one-file endpoint and cancellation semantics, without new transport.
@@ -35,7 +39,17 @@ export function collectionUploadClient(
       xhr.addEventListener("load", () => {
         cleanup();
         if (xhr.status < 200 || xhr.status >= 300) {
-          reject(new Error("UPLOAD_FAILED"));
+          reject(
+            new Error(
+              xhr.status === 413
+                ? "FILE_TOO_LARGE"
+                : xhr.status === 403
+                  ? "CAMPAIGN_UNAVAILABLE"
+                  : xhr.status >= 400 && xhr.status < 500
+                    ? "VALIDATION_REJECTED"
+                    : "UPLOAD_FAILED",
+            ),
+          );
           return;
         }
         try {

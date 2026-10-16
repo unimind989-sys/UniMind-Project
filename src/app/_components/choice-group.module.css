@@ -1,0 +1,44 @@
+.group {
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+.group legend {
+  padding: 0;
+  margin-block-end: 8px;
+  font-size: 0.875rem;
+  color: var(--secondary);
+}
+.group > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+.group label:has(:checked) {
+  border-color: var(--accent-ink);
+  background: var(--annotation);
+  color: var(--accent-ink);
+}
+.group label:has(:focus-visible) {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 3px;
+}
+.group input {
+  accent-color: var(--accent-ink);
+}
+.group:disabled {
+  opacity: 0.7;
+}

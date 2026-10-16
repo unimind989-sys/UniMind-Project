@@ -1,11 +1,13 @@
 "use client";
 
-import { useLayoutEffect, useRef, type ReactNode } from "react";
+import { useId, useLayoutEffect, useRef, type ReactNode } from "react";
 import { ProductNavigationLink as Link } from "@/app/_components/product-navigation";
 import type { Route } from "next";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useSyntheticNavigation } from "./product-navigation";
+import { syntheticDemoTime } from "@/lib/demo/synthetic-clock.application";
 import type { Locale } from "@/lib/i18n/locale";
+import { useProductProfileName } from "./product-profile";
 import { Brand } from "./brand";
 import {
   FrontendIcon,
@@ -23,6 +25,7 @@ export function AppShell({
   preview = false,
   roleLabel,
   workspace = false,
+  profileName,
 }: {
   locale: Locale;
   role?: "student" | "leader" | "admin";
@@ -32,7 +35,15 @@ export function AppShell({
   preview?: boolean;
   roleLabel?: string | undefined;
   workspace?: boolean;
+  profileName?: string | null | undefined;
 }) {
+  const sampleName = useProductProfileName();
+  const name =
+    profileName?.trim() ||
+    sampleName ||
+    (locale === "ar" ? "ملفك الشخصي" : "Your profile");
+  const initial = Array.from(name)[0]?.toLocaleUpperCase(locale) ?? "?";
+  const profileDestinationId = useId();
   const pathname = usePathname();
   const hosted = useSyntheticNavigation();
   const query = useSearchParams();
@@ -57,6 +68,85 @@ export function AppShell({
       role === "leader" ? "مسؤول الدفعة" : role === "admin" ? "مسؤول" : "طالب",
     );
   const menu = useRef<HTMLDetailsElement>(null);
+  const workspaceRoot = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const root = workspaceRoot.current;
+    if (!workspace || !root) return;
+    let frame = 0;
+    let previousChrome: number | null = null;
+    let previousHeight: number | null = null;
+    const measure = () => {
+      frame = 0;
+      const height = Math.min(
+        window.innerHeight,
+        window.visualViewport?.height ?? window.innerHeight,
+      );
+      const chrome = Array.from(
+        root.querySelectorAll<HTMLElement>("[data-workspace-chrome]"),
+      ).reduce((total, element) => {
+        const box = element.getBoundingClientRect();
+        if (!box.width || !box.height) return total;
+        const style = getComputedStyle(element);
+        return (
+          total +
+          box.height +
+          parseFloat(style.marginTop || "0") +
+          parseFloat(style.marginBottom || "0")
+        );
+      }, 0);
+      const navigation = root.querySelector<HTMLElement>(
+        `nav.${styles.globalNav}`,
+      );
+      const navigationHeight = navigation?.getBoundingClientRect().height ?? 64;
+      root.dataset.workspaceFlow =
+        window.innerWidth < 768 && height - chrome - navigationHeight < 160
+          ? "page"
+          : "pane";
+      const focused = document.activeElement;
+      if (
+        previousChrome !== null &&
+        previousHeight !== null &&
+        (Math.abs(previousChrome - chrome) > 1 ||
+          Math.abs(previousHeight - height) > 1) &&
+        window.innerWidth < 768 &&
+        focused instanceof HTMLElement &&
+        root.contains(focused) &&
+        focused.matches("input,textarea,select,button,a")
+      ) {
+        focused.scrollIntoView({
+          block: "center",
+          inline: "nearest",
+          behavior: "instant",
+        });
+      }
+      previousChrome = chrome;
+      previousHeight = height;
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(measure);
+    };
+    const resize = new ResizeObserver(schedule);
+    const observe = () => {
+      resize.disconnect();
+      root
+        .querySelectorAll<HTMLElement>("[data-workspace-chrome]")
+        .forEach((element) => resize.observe(element));
+      schedule();
+    };
+    const content = new MutationObserver(observe);
+    content.observe(root, { childList: true, subtree: true });
+    window.addEventListener("resize", schedule);
+    window.visualViewport?.addEventListener("resize", schedule);
+    observe();
+    measure();
+    return () => {
+      resize.disconnect();
+      content.disconnect();
+      window.removeEventListener("resize", schedule);
+      window.visualViewport?.removeEventListener("resize", schedule);
+      cancelAnimationFrame(frame);
+    };
+  }, [workspace]);
   const adminResource = pathname.split("/").at(-1);
   const adminIndex =
     pathname === "/settings"
@@ -77,18 +167,18 @@ export function AppShell({
       ? [
           [prefix + "/learn", t("Study", "المذاكرة"), "shelf"],
           [prefix + "/learn?view=subjects", t("Subjects", "المواد"), "sources"],
-          ["/settings", t("Account", "الحساب"), "settings"],
+          ["/settings", name, "account"],
         ]
       : role === "leader"
         ? [
             [
               prefix + "/batch-leader",
-              t("Source intake", "استقبال المصادر"),
+              t("Source intake", "استلام المصادر"),
               "upload",
             ],
             [
               prefix + "/batch-leader?view=history",
-              t("History", "السجل"),
+              t("Latest submissions", "آخر الإرسالات"),
               "sources",
             ],
             ["/settings", t("Account", "الحساب"), "settings"],
@@ -140,17 +230,43 @@ export function AppShell({
         aria-current={isCurrent ? "page" : undefined}
         title={label}
         data-account={href === "/settings" ? true : undefined}
+        aria-describedby={
+          role === "student" && href === "/settings"
+            ? profileDestinationId
+            : undefined
+        }
         onClick={() => {
           if (menu.current) menu.current.open = false;
         }}
       >
-        <FrontendIcon name={icon} />
-        <span>{label}</span>
+        {role === "student" && href === "/settings" ? (
+          <>
+            <span className={styles.profileMarker}>
+              <b className={styles.profileAvatar} aria-hidden="true">
+                {initial}
+              </b>
+              <span
+                id={profileDestinationId}
+                className={styles.profileDestination}
+                aria-hidden="true"
+              >
+                {t("Settings", "الإعدادات")}
+              </span>
+            </span>
+            <bdi className={styles.profileName}>{name}</bdi>
+          </>
+        ) : (
+          <>
+            <FrontendIcon name={icon} />
+            <span>{label}</span>
+          </>
+        )}
       </Link>
     );
   });
   return (
     <div
+      ref={workspaceRoot}
       className={styles.shell}
       lang={locale}
       dir={locale === "ar" ? "rtl" : "ltr"}
@@ -185,18 +301,15 @@ export function AppShell({
             {t("Account", "الحساب")}
           </Link>
         ) : null}
-        <div className={styles.identity}>
-          <FrontendIcon name="account" />
-          <span>{identity}</span>
-        </div>
-        <p className={styles.slogan} lang="en" dir="ltr">
-          Study deeper
-          <br />
-          Go further.
-        </p>
+        {role !== "student" ? (
+          <div className={styles.identity}>
+            <FrontendIcon name="account" />
+            <span>{identity}</span>
+          </div>
+        ) : null}
       </aside>
       <div className={styles.stage}>
-        <header className={styles.utility}>
+        <header className={styles.utility} data-workspace-chrome>
           <div className={styles.mobileBrand}>
             <Brand href={homeHref} variant="compact" tone="dark" />
           </div>
@@ -206,12 +319,12 @@ export function AppShell({
                 role === "student"
                   ? "Study"
                   : role === "leader"
-                    ? "Uploads"
+                    ? "Source intake"
                     : "Overview",
                 role === "student"
                   ? "المذاكرة"
                   : role === "leader"
-                    ? "الرفع"
+                    ? "استلام المصادر"
                     : "نظرة عامة",
               )}
           </span>
@@ -248,11 +361,14 @@ export function AppShell({
           </div>
         ) : null}
         {synthetic && !hosted?.active ? (
-          <p className={styles.simulation} role="note">
+          <p className={styles.simulation} role="note" data-workspace-chrome>
             {t(
               "Synthetic demo · Simulated services · Reload clears demo data",
               "عرض تجريبي · خدمات محاكاة · إعادة التحميل تمسح بيانات العرض",
             )}
+            {" · "}
+            {t("Demo clock", "ساعة العرض التجريبي")}:{" "}
+            <bdi>{syntheticDemoTime.clockLabel}</bdi>
           </p>
         ) : null}
         <main

@@ -21,6 +21,11 @@ export type CollectionSubmissionSummary = Readonly<{
   sourceName: string;
   status: CollectionSubmissionStatus;
   createdAt: string;
+  correction?: Readonly<{
+    action: "FIX_INFORMATION" | "REPLACE_FILE";
+    reasonEn: string;
+    reasonAr: string;
+  }>;
 }>;
 
 export type CollectionRequestedItem = Readonly<{
@@ -31,6 +36,7 @@ export type CollectionRequestedItem = Readonly<{
   unitTitleAr: string;
   expectedType: CollectionExpectedType;
   required: boolean;
+  uploadAllowed?: boolean;
   status: "REQUESTED" | "RECEIVED";
   latestSubmission: CollectionSubmissionSummary | null;
 }>;

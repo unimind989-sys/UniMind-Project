@@ -117,24 +117,36 @@ export function LanguageSwitch({ locale }: { locale: Locale }) {
   const pathname = usePathname();
   const query = useSearchParams();
   return (
-    <label className={styles.language}>
-      <span>{locale === "ar" ? "لغة الواجهة" : "Interface language"}</span>
-      <select
-        aria-label={locale === "ar" ? "لغة الواجهة" : "Interface language"}
-        value={locale}
-        onChange={(event) => {
-          const next = new URLSearchParams(query.toString());
-          next.set("lang", event.target.value);
-          router.replace(`${pathname}?${next}` as Route, { scroll: false });
-        }}
-      >
-        <option lang="en" value="en">
-          English
-        </option>
-        <option lang="ar" value="ar">
-          العربية
-        </option>
-      </select>
-    </label>
+    <div
+      className={styles.language}
+      role="group"
+      aria-label={locale === "ar" ? "لغة الواجهة" : "Interface language"}
+      dir="ltr"
+    >
+      {(["en", "ar"] as const).map((language) => (
+        <button
+          key={language}
+          type="button"
+          lang={language}
+          aria-pressed={locale === language}
+          onClick={() => {
+            if (locale === language) return;
+            const next = new URLSearchParams(query.toString());
+            next.set("lang", language);
+            router.replace(
+              `${pathname}?${next}${window.location.hash}` as Route,
+              {
+                scroll: false,
+              },
+            );
+          }}
+        >
+          <span className={styles.languageCheck} aria-hidden="true">
+            {locale === language ? <FrontendIcon name="check" /> : null}
+          </span>
+          {language === "en" ? "English" : "العربية"}
+        </button>
+      ))}
+    </div>
   );
 }

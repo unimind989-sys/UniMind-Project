@@ -1,0 +1,505 @@
+{
+  "capturedAt": "2026-10-11T01:14:33.911Z",
+  "branch": "codex/frontend-refinements",
+  "baseHead": "98bcaefca5512817c9d18e87e7bc2e9086fa89b4",
+  "task": "WP03-T13",
+  "state": "Uncommitted local batch 11 candidate; scoped rendered review pending; whole task NOT_READY",
+  "scope": "One setup interruption fix relevant to F264/F288/F311; 54 remaining claims dispositioned individually",
+  "previousAcceptedAggregate": "8cc21ec7e381944d2b369c83853368534d5d2589f3b5f07e5f25ef616d8570d4",
+  "baselineManifest": "E:/Unimind audits/analysis/fix-batch-11-baseline/manifest.json",
+  "incrementalBatch": [
+    {
+      "path": "src/app/_components/academic-settings.tsx",
+      "beforeSha256": "53313d646e4034ccd76cdaef09915374004d46109ac24a3e9202043029b7b6a3",
+      "afterSha256": "ace644267e7aa2f44e5952ac6155065104d22f6ed2cc2b1baaa7d3fbdacf0766"
+    },
+    {
+      "path": "src/app/_components/academic-setup-draft.tsx",
+      "beforeSha256": null,
+      "afterSha256": "24131a51f061605ecbbe38e40f9fd9dcb60ea49fa2b604b8e43d8187c5ed8dfc"
+    },
+    {
+      "path": "src/app/_components/hosted-synthetic-runtime.tsx",
+      "beforeSha256": "17e52428d28d290fb9e2d0b9310bbff87e21b9a0eece003cb02b63d9b7e04d15",
+      "afterSha256": "420832d4a6e04e606722c7ca0e480e7ed37d9cdfaa36d1fa4344e2a8c47ce131"
+    },
+    {
+      "path": "src/app/_components/product-services.tsx",
+      "beforeSha256": "4d8df9906a9e4d5230795585bb3a51b444c632ca0ec861a0887a63cb6d17322e",
+      "afterSha256": "c38960c177d5d57a60e50e7d0c4400240d3ad09be1229dceb1633faed897bea5"
+    },
+    {
+      "path": "tests/e2e/hosted-synthetic-login.spec.ts",
+      "beforeSha256": "1a63c28feb221ec44c1a804672f7be6e3404d476c719fbfd38db7cdd18087ef4",
+      "afterSha256": "d8ebd76f0c30dcffb707b95968e0a7d23179afcd84139e47a647427971e45abf"
+    },
+    {
+      "path": "tests/e2e/native-product-demo.spec.ts",
+      "beforeSha256": "10e41c2c701c18396bd92ae6d02d88bdfef79dc179635b22eeaa5b9d02ae16c5",
+      "afterSha256": "8c0d476965b7a8c59fcf32229436050f73732b68d89aa995c32ef7072a57c2c7"
+    }
+  ],
+  "unchangedPrior": [
+    {
+      "path": "src/app/_components/account-layout.tsx",
+      "sha256": "61a2643977c4f1f2c6a82f453bd2d91729fee155c8fb134b829d8fd6052f1567"
+    },
+    {
+      "path": "src/app/_components/app-shell.module.css",
+      "sha256": "2eed0ec95a5e422cb15ffe139ee72668994c7275ff8601dcbc1fe6b1bc25da01"
+    },
+    {
+      "path": "src/app/_components/app-shell.tsx",
+      "sha256": "9a223fce2afdf08a38f0438ec075c682a863cc1a64b0cc9f875ce59eb0097f12"
+    },
+    {
+      "path": "src/app/_components/appearance.module.css",
+      "sha256": "4024b0e3eb5399cf2bc6519741ff94aab9fb3c0164b98d34303312b208804f88"
+    },
+    {
+      "path": "src/app/_components/appearance.tsx",
+      "sha256": "01af13cd3b153c89c84cd66db534fb67569ed9a4465a5b02e25a73b1c9a32950"
+    },
+    {
+      "path": "src/app/_components/choice-group.module.css",
+      "sha256": "54daff4e03e523b7a632492d7190536d76a7c2d93014ce7abeb20b3058de34c4"
+    },
+    {
+      "path": "src/app/_components/choice-group.tsx",
+      "sha256": "9f664046d69a6213c03690f3b755fc0d3c9def7fd02e6909dd2839f60c1834da"
+    },
+    {
+      "path": "src/app/_components/frontend-controls.tsx",
+      "sha256": "3cf9cba28696fe73e18e0a571614557c40648ed1e3f25dd32f53200d973b08e3"
+    },
+    {
+      "path": "src/app/_components/frontend-system.module.css",
+      "sha256": "e716887048db5d4d1f7f3ff12c11f44dd6aacfe8dbf52d57ae3562d9050153c7"
+    },
+    {
+      "path": "src/app/_components/frontend-system.tsx",
+      "sha256": "b8e3c44bc8561186f2f7f297b6285099bb6e2c7286067125f41207528940ad55"
+    },
+    {
+      "path": "src/app/_components/product-native-page.tsx",
+      "sha256": "a1d49f2df1dff2a5cc2bc74102d419df40ea206ff2a7b07eaf93cbc911c62c2f"
+    },
+    {
+      "path": "src/app/_components/product-profile.tsx",
+      "sha256": "00c84675efa7b04d2dfa9f10912ffc6c4c45763e985997dcb631db597a78bb29"
+    },
+    {
+      "path": "src/app/_components/product-ui.tsx",
+      "sha256": "ef8be936451f728d8729313f1f16d1f775303e47f91166f8beeeb80af8d6505b"
+    },
+    {
+      "path": "src/app/_components/product.module.css",
+      "sha256": "1269d57a7b1de75dc3c0e3fd61e445cdf9904151dd5a2b6dcd6672af301d9ba0"
+    },
+    {
+      "path": "src/app/_components/student-account.module.css",
+      "sha256": "1205eb162c62eecf70a8c96ae8c6ba04b814c3c1322932d54e5fa2a746cca935"
+    },
+    {
+      "path": "src/app/learn/[cohortId]/[unitId]/layout.tsx",
+      "sha256": "27305a45846b82be9492dd101021a206134783a8ab1c7b89ac62513f5fa4797e"
+    },
+    {
+      "path": "src/app/learn/_components/product-chat.tsx",
+      "sha256": "eee849861a1d2dee74f6707b22ef26622e44b8f91117212683c14028c978050e"
+    },
+    {
+      "path": "src/app/learn/_components/product-studio.tsx",
+      "sha256": "82c904eb09c1463b6d6a5abbf070794299f5578ece6f6c215249a256e9c86747"
+    },
+    {
+      "path": "src/app/learn/_components/product-study.module.css",
+      "sha256": "2640c885566a8e6ac3ea23953b35c336fe9d9a77f2dfb7a94dffbec7ed3702b4"
+    },
+    {
+      "path": "src/app/learn/_components/product-study.tsx",
+      "sha256": "3758734f4d18cae1d75d32ea04331043945b674c092be2b8ea8b8b0f7cebbce4"
+    },
+    {
+      "path": "src/app/learn/_components/study-shelf.tsx",
+      "sha256": "a3986310234824a49d421e5bdcdf8119768b73d6c1ffe4da15ec5ef486d9feb9"
+    },
+    {
+      "path": "src/app/learn/_components/workspace-frame.tsx",
+      "sha256": "02afdd0317321a6b18ea0c9508829f611e36904403be59a4ef8da5a6088a2095"
+    },
+    {
+      "path": "src/app/learn/page.tsx",
+      "sha256": "4ced83deeaffcfe34cdda26a0d552cbb0e175add7b7838e1e8238e296ab2a69d"
+    },
+    {
+      "path": "src/app/learn/study-shelf.module.css",
+      "sha256": "c2569f69b6f684a5ef815d0c9eeae3015be05e7541f4d78aa4bcbabf4c6ee274"
+    },
+    {
+      "path": "src/app/settings/page.tsx",
+      "sha256": "d265ef6e53a166ba1532fca7247e7b98100b5fc6aa6ccbf2fc976db44d2016ff"
+    },
+    {
+      "path": "src/lib/demo/synthetic-account.application.ts",
+      "sha256": "2c6de39f4e77c5ec7f7d531c4cb6242da4605ca7dacf1c24de398e7116bf1115"
+    },
+    {
+      "path": "src/lib/quiz/quiz-fixture.application.ts",
+      "sha256": "1426314749581eaa739fcb20ed0c30ca18911af30a3cb518282af0722c382928"
+    },
+    {
+      "path": "tests/e2e/study-shelf.spec.ts",
+      "sha256": "ddd281274249f37f354f717f13e67b472a51f92948b449f5539fbed8290e4d0b"
+    },
+    {
+      "path": "tests/unit/quiz-fixture.test.ts",
+      "sha256": "c6e6053f1e5eef0443c66b8bb0d7406d8a9f5d2bb5780adbeae31affe0985eef"
+    }
+  ],
+  "candidateChangedSources": [
+    {
+      "path": "src/app/_components/academic-settings.tsx",
+      "sha256": "ace644267e7aa2f44e5952ac6155065104d22f6ed2cc2b1baaa7d3fbdacf0766"
+    },
+    {
+      "path": "src/app/_components/academic-setup-draft.tsx",
+      "sha256": "24131a51f061605ecbbe38e40f9fd9dcb60ea49fa2b604b8e43d8187c5ed8dfc"
+    },
+    {
+      "path": "src/app/_components/account-layout.tsx",
+      "sha256": "61a2643977c4f1f2c6a82f453bd2d91729fee155c8fb134b829d8fd6052f1567"
+    },
+    {
+      "path": "src/app/_components/app-shell.module.css",
+      "sha256": "2eed0ec95a5e422cb15ffe139ee72668994c7275ff8601dcbc1fe6b1bc25da01"
+    },
+    {
+      "path": "src/app/_components/app-shell.tsx",
+      "sha256": "9a223fce2afdf08a38f0438ec075c682a863cc1a64b0cc9f875ce59eb0097f12"
+    },
+    {
+      "path": "src/app/_components/appearance.module.css",
+      "sha256": "4024b0e3eb5399cf2bc6519741ff94aab9fb3c0164b98d34303312b208804f88"
+    },
+    {
+      "path": "src/app/_components/appearance.tsx",
+      "sha256": "01af13cd3b153c89c84cd66db534fb67569ed9a4465a5b02e25a73b1c9a32950"
+    },
+    {
+      "path": "src/app/_components/choice-group.module.css",
+      "sha256": "54daff4e03e523b7a632492d7190536d76a7c2d93014ce7abeb20b3058de34c4"
+    },
+    {
+      "path": "src/app/_components/choice-group.tsx",
+      "sha256": "9f664046d69a6213c03690f3b755fc0d3c9def7fd02e6909dd2839f60c1834da"
+    },
+    {
+      "path": "src/app/_components/frontend-controls.tsx",
+      "sha256": "3cf9cba28696fe73e18e0a571614557c40648ed1e3f25dd32f53200d973b08e3"
+    },
+    {
+      "path": "src/app/_components/frontend-system.module.css",
+      "sha256": "e716887048db5d4d1f7f3ff12c11f44dd6aacfe8dbf52d57ae3562d9050153c7"
+    },
+    {
+      "path": "src/app/_components/frontend-system.tsx",
+      "sha256": "b8e3c44bc8561186f2f7f297b6285099bb6e2c7286067125f41207528940ad55"
+    },
+    {
+      "path": "src/app/_components/hosted-synthetic-runtime.tsx",
+      "sha256": "420832d4a6e04e606722c7ca0e480e7ed37d9cdfaa36d1fa4344e2a8c47ce131"
+    },
+    {
+      "path": "src/app/_components/product-native-page.tsx",
+      "sha256": "a1d49f2df1dff2a5cc2bc74102d419df40ea206ff2a7b07eaf93cbc911c62c2f"
+    },
+    {
+      "path": "src/app/_components/product-profile.tsx",
+      "sha256": "00c84675efa7b04d2dfa9f10912ffc6c4c45763e985997dcb631db597a78bb29"
+    },
+    {
+      "path": "src/app/_components/product-services.tsx",
+      "sha256": "c38960c177d5d57a60e50e7d0c4400240d3ad09be1229dceb1633faed897bea5"
+    },
+    {
+      "path": "src/app/_components/product-ui.tsx",
+      "sha256": "ef8be936451f728d8729313f1f16d1f775303e47f91166f8beeeb80af8d6505b"
+    },
+    {
+      "path": "src/app/_components/product.module.css",
+      "sha256": "1269d57a7b1de75dc3c0e3fd61e445cdf9904151dd5a2b6dcd6672af301d9ba0"
+    },
+    {
+      "path": "src/app/_components/student-account.module.css",
+      "sha256": "1205eb162c62eecf70a8c96ae8c6ba04b814c3c1322932d54e5fa2a746cca935"
+    },
+    {
+      "path": "src/app/learn/[cohortId]/[unitId]/layout.tsx",
+      "sha256": "27305a45846b82be9492dd101021a206134783a8ab1c7b89ac62513f5fa4797e"
+    },
+    {
+      "path": "src/app/learn/_components/product-chat.tsx",
+      "sha256": "eee849861a1d2dee74f6707b22ef26622e44b8f91117212683c14028c978050e"
+    },
+    {
+      "path": "src/app/learn/_components/product-studio.tsx",
+      "sha256": "82c904eb09c1463b6d6a5abbf070794299f5578ece6f6c215249a256e9c86747"
+    },
+    {
+      "path": "src/app/learn/_components/product-study.module.css",
+      "sha256": "2640c885566a8e6ac3ea23953b35c336fe9d9a77f2dfb7a94dffbec7ed3702b4"
+    },
+    {
+      "path": "src/app/learn/_components/product-study.tsx",
+      "sha256": "3758734f4d18cae1d75d32ea04331043945b674c092be2b8ea8b8b0f7cebbce4"
+    },
+    {
+      "path": "src/app/learn/_components/study-shelf.tsx",
+      "sha256": "a3986310234824a49d421e5bdcdf8119768b73d6c1ffe4da15ec5ef486d9feb9"
+    },
+    {
+      "path": "src/app/learn/_components/workspace-frame.tsx",
+      "sha256": "02afdd0317321a6b18ea0c9508829f611e36904403be59a4ef8da5a6088a2095"
+    },
+    {
+      "path": "src/app/learn/page.tsx",
+      "sha256": "4ced83deeaffcfe34cdda26a0d552cbb0e175add7b7838e1e8238e296ab2a69d"
+    },
+    {
+      "path": "src/app/learn/study-shelf.module.css",
+      "sha256": "c2569f69b6f684a5ef815d0c9eeae3015be05e7541f4d78aa4bcbabf4c6ee274"
+    },
+    {
+      "path": "src/app/settings/page.tsx",
+      "sha256": "d265ef6e53a166ba1532fca7247e7b98100b5fc6aa6ccbf2fc976db44d2016ff"
+    },
+    {
+      "path": "src/lib/demo/synthetic-account.application.ts",
+      "sha256": "2c6de39f4e77c5ec7f7d531c4cb6242da4605ca7dacf1c24de398e7116bf1115"
+    },
+    {
+      "path": "src/lib/quiz/quiz-fixture.application.ts",
+      "sha256": "1426314749581eaa739fcb20ed0c30ca18911af30a3cb518282af0722c382928"
+    },
+    {
+      "path": "tests/e2e/hosted-synthetic-login.spec.ts",
+      "sha256": "d8ebd76f0c30dcffb707b95968e0a7d23179afcd84139e47a647427971e45abf"
+    },
+    {
+      "path": "tests/e2e/native-product-demo.spec.ts",
+      "sha256": "8c0d476965b7a8c59fcf32229436050f73732b68d89aa995c32ef7072a57c2c7"
+    },
+    {
+      "path": "tests/e2e/study-shelf.spec.ts",
+      "sha256": "ddd281274249f37f354f717f13e67b472a51f92948b449f5539fbed8290e4d0b"
+    },
+    {
+      "path": "tests/unit/quiz-fixture.test.ts",
+      "sha256": "c6e6053f1e5eef0443c66b8bb0d7406d8a9f5d2bb5780adbeae31affe0985eef"
+    }
+  ],
+  "aggregateSha256": "a8db0b1143004c1017637116400e3ab24bcf9f5e9a2d9c165c8b38bec1f2a47b",
+  "fontSources": [
+    {
+      "path": "src/app/layout.tsx",
+      "sha256": "993e4ecd22aadebc723873b0489b9837b1000232ffa4c6d47733cb9187d11c50"
+    },
+    {
+      "path": "src/app/globals.css",
+      "sha256": "3d1f099058203f2610120adcd5c1f6fa03f0d33d0b505263d728cce15f77f16b"
+    }
+  ],
+  "focusedProof": {
+    "distinctPassingCases": 14,
+    "cases": [
+      {
+        "title": "audit batch 11 en: setup interruption survives settings and clears on same-document sign-out",
+        "project": "default",
+        "report": "E:/Unimind audits/analysis/fix-batch-11-native-e2e.json"
+      },
+      {
+        "title": "audit batch 10 en: compact settings and period choices preserve readable context, drafts and native controls",
+        "project": "default",
+        "report": "E:/Unimind audits/analysis/fix-batch-11-native-e2e.json"
+      },
+      {
+        "title": "audit batch 11 ar: setup interruption survives settings and clears on same-document sign-out",
+        "project": "default",
+        "report": "E:/Unimind audits/analysis/fix-batch-11-native-e2e.json"
+      },
+      {
+        "title": "audit batch 10 ar: compact settings and period choices preserve readable context, drafts and native controls",
+        "project": "default",
+        "report": "E:/Unimind audits/analysis/fix-batch-11-native-e2e.json"
+      },
+      {
+        "title": "en: academic setup, editable account settings and persistent appearance",
+        "project": "default",
+        "report": "E:/Unimind audits/analysis/fix-batch-11-native-e2e.json"
+      },
+      {
+        "title": "ar: academic setup, editable account settings and persistent appearance",
+        "project": "default",
+        "report": "E:/Unimind audits/analysis/fix-batch-11-native-e2e.json"
+      },
+      {
+        "title": "audit batch 06 en: academic setup hierarchy, category copy and bounded references preserve configured paths",
+        "project": "default",
+        "report": "E:/Unimind audits/analysis/fix-batch-11-native-e2e.json"
+      },
+      {
+        "title": "audit batch 06 ar: academic setup hierarchy, category copy and bounded references preserve configured paths",
+        "project": "default",
+        "report": "E:/Unimind audits/analysis/fix-batch-11-native-e2e.json"
+      },
+      {
+        "title": "audit batch 09 en: task headings, review completion and explicit destinations preserve the study flow",
+        "project": "default",
+        "report": "E:/Unimind audits/analysis/fix-batch-11-native-e2e.json"
+      },
+      {
+        "title": "audit batch 09 ar: task headings, review completion and explicit destinations preserve the study flow",
+        "project": "default",
+        "report": "E:/Unimind audits/analysis/fix-batch-11-native-e2e.json"
+      },
+      {
+        "title": "hosted en student: normal login and browser-only role navigation",
+        "project": "chromium",
+        "report": "E:/Unimind audits/analysis/fix-batch-11-hosted-initial-e2e.json"
+      },
+      {
+        "title": "hosted ar student: normal login and browser-only role navigation",
+        "project": "chromium",
+        "report": "E:/Unimind audits/analysis/fix-batch-11-hosted-initial-e2e.json"
+      },
+      {
+        "title": "audit batch 11 hosted en: interrupted setup retains choices and review without saving",
+        "project": "chromium",
+        "report": "E:/Unimind audits/analysis/fix-batch-11-hosted-repair-e2e.json"
+      },
+      {
+        "title": "audit batch 11 hosted ar: interrupted setup retains choices and review without saving",
+        "project": "chromium",
+        "report": "E:/Unimind audits/analysis/fix-batch-11-hosted-repair-e2e.json"
+      }
+    ],
+    "reports": [
+      {
+        "path": "E:/Unimind audits/analysis/fix-batch-11-native-e2e.json",
+        "sha256": "82d320c58799be89ff3b290d6159dab29470e057119672377aa45b92e145a356",
+        "stats": {
+          "startTime": "2026-10-11T01:03:46.249Z",
+          "duration": 186172.22999999998,
+          "expected": 10,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        }
+      },
+      {
+        "path": "E:/Unimind audits/analysis/fix-batch-11-hosted-initial-e2e.json",
+        "sha256": "3d42caf74ac99817b3bd80106c1f79fdb4296eb4e9bbb341711ed4c9a8abdf82",
+        "stats": {
+          "startTime": "2026-10-11T01:07:15.721Z",
+          "duration": 63314.031,
+          "expected": 2,
+          "skipped": 0,
+          "unexpected": 2,
+          "flaky": 0
+        }
+      },
+      {
+        "path": "E:/Unimind audits/analysis/fix-batch-11-hosted-repair-e2e.json",
+        "sha256": "d7bed815b9af79f887246a6e95a32566f4aca4ba992dc4c4aa9aebf8ba1882ff",
+        "stats": {
+          "startTime": "2026-10-11T01:08:52.208Z",
+          "duration": 39134.438,
+          "expected": 2,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        }
+      }
+    ],
+    "startupAttempt": "E:/Unimind audits/analysis/fix-batch-11-startup-attempt.json"
+  },
+  "live": {
+    "path": "E:/Unimind audits/analysis/batch-11-live-triage.json",
+    "sha256": "c7505a004fb94ccf653ba697728e611e4728469210e4177354b819f0f37a80ba",
+    "pair": {
+      "sameProtocol": "University/Zagazig/Medicine → Settings → Study",
+      "before": {
+        "path": "E:/Unimind audits/analysis/batch-11-setup-return390-before.jpg",
+        "sha256": "cfa3086e044b24d3d0e9aa07c919bb970ed266756668e3b16ba2f74b6cc696e2"
+      },
+      "after": {
+        "path": "E:/Unimind audits/analysis/batch-11-setup-return390-after.jpg",
+        "sha256": "3a00ee5fcb271fec2e1d19095e19166f6caa01066d553905425cb106a0c10a27"
+      },
+      "nativeSize": {
+        "width": 390,
+        "height": 844
+      }
+    }
+  },
+  "reviewArtifacts": {
+    "evidencePath": "E:/UniMind Project/evidence/wp03-product-shell/2026-10-11_audit-fixes-batch-11_local_98bcaef.md",
+    "comparisonPath": "E:/Unimind audits/analysis/fix-batch-11-comparison.md",
+    "dispositionPath": "E:/Unimind audits/analysis/remaining-findings-live-disposition.md",
+    "taskPath": "E:/UniMind Project/planning/tasks/wp03-t13-student-entry-navigation.md",
+    "trackerPath": "E:/Unimind audits/fix-batches.md"
+  },
+  "finalized": true,
+  "finalArtifactChecks": {
+    "formatting": "PASS",
+    "secretScan": "PASS",
+    "agentReadiness": "PASS",
+    "diffIntegrity": "PASS",
+    "sourceAndProofHashes": "PASS",
+    "inlineReview": "COMPLETE_INLINE",
+    "incrementalDiff": {
+      "path": "E:/Unimind audits/analysis/fix-batch-11-incremental.diff",
+      "sha256": "75e15816e7e0cfde21c30754e55d5e2d2ad7de6cdaf729c22a3a366d8bb3caeb"
+    },
+    "reviewArtifacts": [
+      {
+        "path": "E:/UniMind Project/evidence/wp03-product-shell/2026-10-11_audit-fixes-batch-11_local_98bcaef.md",
+        "sha256": "be3135f1f37242fad229e887e17d0270eb4ff044da4cb51b7764d0ee59d27730"
+      },
+      {
+        "path": "E:/Unimind audits/analysis/fix-batch-11-comparison.md",
+        "sha256": "3e1994f5f8d3a613857ad7448bbb3a186a6025b6eb4384fdf50325915b49769d"
+      },
+      {
+        "path": "E:/Unimind audits/analysis/remaining-findings-live-disposition.md",
+        "sha256": "422646c5d2432c752f95b6345dcef8e8c98331bdc40d589e3ef097be09b7e9d9"
+      },
+      {
+        "path": "E:/UniMind Project/planning/tasks/wp03-t13-student-entry-navigation.md",
+        "sha256": "91eec249b837722b542606a0c402eb06b0894ee78aab23095ca2ddfb0b497f64"
+      },
+      {
+        "path": "E:/Unimind audits/fix-batches.md",
+        "sha256": "c33bb80edcb89f33c90cfb184ac670240a120bd81ec958b02aff3e0e49f16c42"
+      },
+      {
+        "path": "E:/UniMind Project/DESIGN.md",
+        "sha256": "b157067aff4ff755bd38e45796739aacffb5314d7c29191f8b84f43e71f76ce7"
+      },
+      {
+        "path": "E:/Unimind audits/analysis/batch-11-remaining-dispositions.json",
+        "sha256": "47591d6f23d12fd88266d1f3cd5180fc1ec12155ebe2d598530c49476996dd4a"
+      },
+      {
+        "path": "E:/Unimind audits/analysis/batch-11-remaining-candidates.json",
+        "sha256": "9e33dfc093f2aad24b95d85f1bc122b4c92aaf0d6d9de43fb178759e1e7d2285"
+      },
+      {
+        "path": "E:/Unimind audits/analysis/fix-batch-11-startup-attempt.json",
+        "sha256": "883a8fd6584389d3a2bd516db049383ba6073cb60e9aad2c7bedc5b3e4c207f2"
+      }
+    ]
+  },
+  "sealedAt": "2026-10-11T05:17:10.116Z"
+}

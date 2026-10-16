@@ -1,14 +1,109 @@
 .chatLayout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 252px;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: minmax(0, 1fr);
   gap: 24px;
   height: 100%;
-  min-height: 18rem;
+  min-height: 28rem;
+}
+.studyOptions {
+  display: contents;
+}
+.studyOptions > summary {
+  display: none;
+}
+.phoneSources {
+  display: none !important;
+}
+.quizProgress {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  padding: 12px;
+  margin-block-end: 16px;
+  background: var(--surface);
+  border-block-end: 1px solid var(--border);
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+.quizProgress p {
+  margin: 0;
+}
+.quizProgress .lowTime {
+  color: var(--danger);
+}
+@media (max-width: 767px) {
+  .chatLayout {
+    flex: 1;
+    min-height: 0;
+    grid-template-rows: minmax(0, 1fr);
+    gap: 0;
+  }
+  .transcript {
+    min-height: 0;
+  }
+  .studyOptions {
+    display: block;
+    position: static;
+  }
+  .studyOptions > summary {
+    display: block;
+    min-height: 44px;
+    padding: 10px 4px;
+    font-size: 0.875rem;
+    cursor: pointer;
+  }
+  .studyOptions > .chatPreferences {
+    position: absolute;
+    inset-block-start: 100%;
+    inset-inline-end: 0;
+    z-index: 4;
+    width: 100%;
+    box-sizing: border-box;
+    max-height: 60dvh;
+    overflow: auto;
+    padding: 12px;
+    border: 1px solid var(--control-border);
+    border-radius: 8px;
+    background: var(--surface);
+  }
+  .studyOptions .evidenceTip {
+    position: static;
+    max-width: 100%;
+  }
+  .composer {
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding: 8px;
+  }
+  .composer > label,
+  .composerMeta {
+    grid-column: 1 / -1;
+  }
+  .composerTools {
+    align-items: start;
+  }
+  :global([data-workspace-flow="page"]) .chatLayout {
+    height: auto;
+    min-height: 0;
+  }
+  :global([data-workspace-flow="page"]) .transcript {
+    overflow: visible;
+    flex: none;
+  }
+  :global([data-workspace-flow="page"]) .studyOptions > .chatPreferences {
+    position: static;
+    width: auto;
+    max-height: none;
+  }
+  :global([data-workspace-flow="page"]) .studyOptions {
+    flex-basis: 100%;
+  }
 }
 .history {
   position: relative;
-  grid-column: 1 / -1;
   min-width: 0;
   font-size: 0.8125rem;
 }
@@ -75,15 +170,23 @@
   padding: 20px;
 }
 .sectionHeading {
-  display: flex;
-  flex-wrap: wrap;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
   padding-block-end: 12px;
   border-block-end: 1px solid var(--border);
   margin-block-end: 12px;
   flex: none;
+}
+.chatTools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: end;
+  gap: 8px 16px;
+  min-width: 0;
 }
 .sectionHeading h2 {
   margin: 0;
@@ -96,7 +199,7 @@
 }
 .transcript {
   flex: 1;
-  min-height: 0;
+  min-height: 8rem;
   overflow: auto;
   overscroll-behavior: contain;
   padding-inline-end: 6px;
@@ -146,6 +249,28 @@
 .suggestions button:hover {
   background: var(--surface-active);
   color: var(--text-primary);
+}
+@media (min-width: 768px) and (max-height: 960px) {
+  /* Short desktop viewports keep the composer and every suggestion in view. */
+  .chatEmpty {
+    max-width: 48rem;
+    padding: 8px 4px;
+  }
+  .chatEmpty > svg,
+  .chatEmpty > .caption {
+    display: none;
+  }
+  .chatEmpty h3 {
+    margin: 4px 0 8px;
+    font-size: 1.25rem;
+  }
+  .chatEmpty p {
+    max-width: none;
+    margin-block-end: 8px;
+  }
+  .suggestions {
+    margin-block: 8px 0;
+  }
 }
 .exchange {
   padding-block: 1rem 1.75rem;
@@ -249,8 +374,8 @@
   color: var(--text-muted);
 }
 .composerTools {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  display: flex;
+  flex-wrap: wrap;
   gap: 12px;
   align-items: end;
 }
@@ -279,13 +404,31 @@
   margin: 8px 0 0;
   overflow-wrap: anywhere;
 }
+.composerMeta {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 20px;
+  row-gap: 4px;
+  color: var(--secondary);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  margin: 12px 0 0;
+  overflow-wrap: anywhere;
+}
+.composerMeta strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+.composerMeta > * {
+  min-width: 0;
+}
 .intro {
   color: var(--text-secondary);
   max-width: 65ch;
   margin-block: -0.25rem 1.5rem;
 }
 .studio {
-  max-width: 80rem;
+  width: 100%;
   margin-inline: auto;
   min-width: 0;
 }
@@ -424,7 +567,7 @@
   height: 22px;
 }
 .artifactEmpty h3 {
-  font-size: var(--type-workspace-title-size);
+  font-size: 1rem;
   line-height: 1.5;
   font-weight: 600;
   margin-block: 1rem 0.5rem;
@@ -501,13 +644,23 @@
 .history > summary {
   cursor: pointer;
   min-height: 44px;
-  padding: 8px 0;
+  padding: 10px 8px;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--control-border);
+  border-radius: 8px;
+  font-size: 0.875rem;
+  height: 100%;
+  overflow-wrap: anywhere;
+}
+.history > summary:hover {
+  background: var(--surface-active);
   color: var(--accent-ink);
 }
 .history > div {
   position: absolute;
-  inset-block-start: 44px;
-  inset-inline-start: 0;
+  inset-block-start: calc(100% + 8px);
+  inset-inline-end: 0;
   z-index: 20;
   width: min(480px, calc(100vw - 64px));
   max-height: min(480px, 70dvh);
@@ -532,7 +685,7 @@
   min-height: 44px;
 }
 .historyList {
-  flex: 1;
+  flex: 1 0 100%;
 }
 .evidenceMargin {
   min-width: 0;
@@ -590,14 +743,22 @@
   margin: 0 0 4px;
   font-size: 1.125rem;
 }
+/* Generate stays reachable when the controls are taller than the viewport. */
+.studioControls > button[type="submit"] {
+  position: sticky;
+  inset-block-end: 12px;
+  z-index: 1;
+  box-shadow: 0 0 0 8px var(--surface);
+}
 .secondaryOptions {
-  font-size: 0.8125rem;
-  color: var(--secondary);
   border-block-start: 1px solid var(--border);
 }
 .secondaryOptions summary {
   min-height: 44px;
   padding-block: 12px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ink);
   cursor: pointer;
 }
 .secondaryOptions > div {
@@ -639,8 +800,29 @@
   }
 }
 @media (max-width: 767px) {
+  .chatHeading {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
   .sectionHeading {
+    grid-template-columns: minmax(0, 1fr);
     gap: 8px;
+  }
+  .chatTools {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 8px;
+  }
+  .chatTools > a {
+    min-width: 0;
+    padding-inline: 8px;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
   .history > div {
     position: fixed;
@@ -717,4 +899,67 @@
   .transcript {
     min-height: 12rem;
   }
+}
+
+.chatPreferences {
+  grid-column: 1 / -1;
+  display: flex;
+  min-width: 0;
+  max-width: 100%;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 12px;
+  flex: none;
+  position: relative;
+}
+@media (max-width: 767px) {
+  .sectionHeading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: start;
+    gap: 8px;
+  }
+  .chatTools {
+    display: contents;
+  }
+  .chatTools > .desktopSources {
+    display: none;
+  }
+  .phoneSources {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 8px;
+  }
+  .studyOptions > summary {
+    display: list-item;
+    list-style-position: inside;
+  }
+}
+.evidenceTip {
+  position: absolute;
+  inset-inline-end: 0;
+  inset-block-start: 100%;
+  z-index: 3;
+  max-width: min(320px, 100%);
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: 0 6px 24px #0002;
+}
+.evidenceTip p {
+  margin: 0 0 8px;
+  font-size: 0.875rem;
+}
+.evidenceTip button {
+  min-height: 44px;
+  border: 0;
+  padding: 8px;
+  background: var(--annotation);
+  color: var(--accent-ink);
+  cursor: pointer;
+}
+.composerTools {
+  justify-content: flex-end;
 }

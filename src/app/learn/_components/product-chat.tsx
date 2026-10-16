@@ -1,7 +1,7 @@
 "use client";
 import { useProductText } from "@/app/_components/product-copy";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useProductServices } from "@/app/_components/product-services";
 import { Button, Notice, ProductLink } from "@/app/_components/product-ui";
@@ -14,9 +14,12 @@ import {
   type ResponseKind,
   type SampleAnswer,
 } from "@/app/_components/synthetic-fixtures";
+import { ChoiceGroup } from "@/app/_components/choice-group";
 import { ProductDialog } from "@/app/_components/product-dialog";
 import type { ProductStudyProps } from "./product-study";
+import { conversationTitle } from "@/lib/study/recent-work.application";
 import styles from "./product-study.module.css";
+import productStyles from "@/app/_components/product.module.css";
 
 const kindNames: Record<ResponseKind, readonly [string, string]> = {
   supported: ["Supported", "مدعوم"],
@@ -53,7 +56,60 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
     sessionId: number;
   } | null>(null);
   const [evidenceDialog, setEvidenceDialog] = useState(false);
-  const sourceHeading = useRef<HTMLHeadingElement>(null);
+  const [showHint, setShowHint] = useState(() => {
+    if (state.evidenceHintSeen) return false;
+    try {
+      return (
+        window.localStorage.getItem("unimind.citation-onboarding.v1") !== "seen"
+      );
+    } catch {
+      return true;
+    }
+  });
+  const studyOptions = useRef<HTMLDetailsElement>(null);
+  useLayoutEffect(() => {
+    const media = window.matchMedia("(max-width: 767px)");
+    // The desktop summary is hidden, so the browser may move its focus to the
+    // body before the change event runs; remember it until focus goes elsewhere.
+    let summaryFocused = false;
+    const track = (event: FocusEvent) => {
+      summaryFocused =
+        event.target === studyOptions.current?.querySelector("summary");
+    };
+    const adapt = () => {
+      const options = studyOptions.current;
+      if (!options) return;
+      const summary = options.querySelector("summary");
+      const active = document.activeElement;
+      if (media.matches && active && options.contains(active)) summary?.focus();
+      options.open = !media.matches;
+      if (
+        !media.matches &&
+        (active === summary ||
+          (summaryFocused && (active === null || active === document.body)))
+      )
+        options.querySelector<HTMLInputElement>("input:checked")?.focus();
+    };
+    adapt();
+    document.addEventListener("focusin", track);
+    media.addEventListener("change", adapt);
+    return () => {
+      document.removeEventListener("focusin", track);
+      media.removeEventListener("change", adapt);
+    };
+  }, []);
+  useEffect(() => {
+    update((current) =>
+      current.evidenceHintSeen
+        ? current
+        : { ...current, evidenceHintSeen: true },
+    );
+    try {
+      window.localStorage.setItem("unimind.citation-onboarding.v1", "seen");
+    } catch {
+      /* Document-local fallback. */
+    }
+  }, [update]);
   const history = useRef<HTMLDetailsElement>(null);
   const input = useRef<HTMLTextAreaElement>(null);
   const end = useRef<HTMLDivElement>(null);
@@ -67,7 +123,11 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
   const evidence =
     selectedEvidence?.sessionId === selected?.id ? selectedEvidence : null;
   const key = `${scope.unitId}:${selected?.id ?? "new"}`;
-  const draft = state.chatDrafts[key] ?? { message: "", language: locale };
+  const savedDraft = state.chatDrafts[key] ?? { message: "", language: locale };
+  const draft = {
+    ...savedDraft,
+    language: state.studyLanguage ?? savedDraft.language,
+  };
   useEffect(() => {
     update((current) =>
       current.chatDrafts[key]
@@ -76,7 +136,7 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
             ...current,
             chatDrafts: {
               ...current.chatDrafts,
-              [key]: { message: "", language: locale },
+              [key]: { message: "", language: current.studyLanguage ?? locale },
             },
           },
     );
@@ -117,13 +177,9 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
       end.current?.scrollIntoView({ block: "nearest" });
   }, [selected?.answers.length, sending]);
 
-  useEffect(() => {
-    if (evidence && !evidenceDialog)
-      sourceHeading.current?.focus({ preventScroll: true });
-  }, [evidence, evidenceDialog]);
   function inspect(answer: SampleAnswer, exchange: number, sessionId: number) {
     setEvidence({ answer, exchange, sessionId });
-    setEvidenceDialog(window.matchMedia("(max-width: 1050px)").matches);
+    setEvidenceDialog(true);
   }
   const sourceContent = evidence ? (
     <>
@@ -233,87 +289,164 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
   return (
     <div className={styles.chatLayout}>
       <div className={styles.conversation}>
-        <div className={styles.sectionHeading}>
-          <h2>{t("Chat", "المحادثة")}</h2>
+        <div className={styles.sectionHeading} data-workspace-chrome>
+          <h2 className={styles.chatHeading}>{t("Chat", "المحادثة")}</h2>
+          <div className={styles.chatTools}>
+            <details
+              ref={history}
+              className={styles.history}
+              onKeyDown={(event) => {
+                if (event.key === "Escape") {
+                  event.preventDefault();
+                  event.currentTarget.open = false;
+                  event.currentTarget.querySelector("summary")?.focus();
+                }
+              }}
+            >
+              <summary
+                aria-label={t("Sessions and privacy", "الجلسات والخصوصية")}
+              >
+                {t("Sessions", "الجلسات")}
+              </summary>
+              <div>
+                <Button onClick={start} disabled={sending !== null}>
+                  <FrontendIcon name="plus" />
+                  {t("New session", "جلسة جديدة")}
+                </Button>
+                <ProductLink href="/settings?section=privacy" locale={locale}>
+                  <FrontendIcon name="settings" />
+                  {t("Privacy settings", "إعدادات الخصوصية")}
+                </ProductLink>
+                <details className={styles.historyList} open>
+                  <summary>
+                    {t(
+                      `Sessions in this ${scope.unitLabelSingularEn.toLowerCase()}`,
+                      `جلسات ${scope.unitLabelSingularAr}`,
+                    )}{" "}
+                    · {new Intl.NumberFormat(locale).format(sessions.length)}
+                  </summary>
+                  {sessions.length ? (
+                    <ul>
+                      {sessions.map((session) => (
+                        <li key={session.id}>
+                          <button
+                            type="button"
+                            aria-pressed={selected?.id === session.id}
+                            onClick={() => {
+                              if (history.current) history.current.open = false;
+                              update((current) => ({
+                                ...current,
+                                activeSessions: {
+                                  ...current.activeSessions,
+                                  [scope.unitId]: session.id,
+                                },
+                              }));
+                              setSending(null);
+                              setNotice("");
+                              setEvidence(null);
+                              setEvidenceDialog(false);
+                            }}
+                          >
+                            <bdi>{conversationTitle(session, locale)}</bdi>
+                            <span>
+                              {t("Session", "جلسة")}{" "}
+                              {new Intl.NumberFormat(locale).format(session.id)}
+                            </span>
+                            <span>
+                              {t("Replies", "الإجابات")} ·{" "}
+                              {new Intl.NumberFormat(locale).format(
+                                session.answers.length,
+                              )}
+                            </span>
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>
+                      {t(
+                        "Your first message starts a session here.",
+                        "أول رسالة تبدأ جلسة هنا.",
+                      )}
+                    </p>
+                  )}
+                </details>
+              </div>
+            </details>
+            <span className={styles.desktopSources}>
+              <ProductLink href={base + "/sources"} locale={locale}>
+                <FrontendIcon name="sources" />
+                {t(
+                  `${scope.unitLabelSingularEn} sources`,
+                  `مصادر ${scope.unitLabelSingularAr}`,
+                )}
+              </ProductLink>
+            </span>
+          </div>
           <details
-            ref={history}
-            className={styles.history}
+            ref={studyOptions}
+            open
+            className={styles.studyOptions}
             onKeyDown={(event) => {
-              if (event.key === "Escape") {
-                event.preventDefault();
+              if (
+                event.key === "Escape" &&
+                window.matchMedia("(max-width: 767px)").matches &&
+                event.currentTarget.open
+              ) {
                 event.currentTarget.open = false;
                 event.currentTarget.querySelector("summary")?.focus();
+                event.stopPropagation();
               }
             }}
           >
-            <summary
-              aria-label={t("Sessions and privacy", "الجلسات والخصوصية")}
-            >
-              {t("Sessions", "الجلسات")}
-            </summary>
-            <div>
-              <Button onClick={start} disabled={sending !== null}>
-                <FrontendIcon name="plus" />
-                {t("New session", "جلسة جديدة")}
-              </Button>
-              <details className={styles.historyList} open>
-                <summary>
-                  {t("Sessions in this unit", "جلسات هذه الوحدة")} ·{" "}
-                  {new Intl.NumberFormat(locale).format(sessions.length)}
-                </summary>
-                {sessions.length ? (
-                  <ul>
-                    {sessions.map((session) => (
-                      <li key={session.id}>
-                        <button
-                          type="button"
-                          aria-pressed={selected?.id === session.id}
-                          onClick={() => {
-                            if (history.current) history.current.open = false;
-                            update((current) => ({
-                              ...current,
-                              activeSessions: {
-                                ...current.activeSessions,
-                                [scope.unitId]: session.id,
-                              },
-                            }));
-                            setSending(null);
-                            setNotice("");
-                            setEvidence(null);
-                            setEvidenceDialog(false);
-                          }}
-                        >
-                          {t("Session", "جلسة")}{" "}
-                          {new Intl.NumberFormat(locale).format(session.id)}
-                          <span>
-                            {t("Replies", "الإجابات")} ·{" "}
-                            {new Intl.NumberFormat(locale).format(
-                              session.answers.length,
-                            )}
-                          </span>
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>
-                    {t(
-                      "Your first message starts a session here.",
-                      "أول رسالة تبدأ جلسة هنا.",
-                    )}
-                  </p>
-                )}
-              </details>
-              <ProductLink href="/settings" locale={locale}>
-                <FrontendIcon name="settings" />
-                {t("Privacy settings", "إعدادات الخصوصية")}
-              </ProductLink>
+            <summary>{t("Study options", "خيارات المذاكرة")}</summary>
+            <div className={styles.chatPreferences}>
+              <span className={styles.phoneSources}>
+                <ProductLink href={base + "/sources"} locale={locale}>
+                  <FrontendIcon name="sources" />
+                  {t(
+                    `${scope.unitLabelSingularEn} sources`,
+                    `مصادر ${scope.unitLabelSingularAr}`,
+                  )}
+                </ProductLink>
+              </span>
+              <ChoiceGroup
+                label={t("Study language", "لغة المذاكرة")}
+                value={draft.language}
+                disabled={sending !== null}
+                options={[
+                  ["en", t("English", "الإنجليزية")],
+                  ["ar", t("Arabic", "العربية")],
+                  [
+                    "mixed",
+                    t("Mixed Arabic and English", "عربي وإنجليزي مختلط"),
+                  ],
+                ]}
+                onChange={(value) =>
+                  update((current) => ({
+                    ...current,
+                    studyLanguage: value as "en" | "ar" | "mixed",
+                  }))
+                }
+              />
             </div>
           </details>
-          <ProductLink href={base + "/sources"} locale={locale}>
-            <FrontendIcon name="sources" />
-            {t("Unit sources", "مصادر الوحدة")}
-          </ProductLink>
+          {showHint ? (
+            <aside
+              className={styles.evidenceTip}
+              aria-label={t("Citation help", "مساعدة الاستشهادات")}
+            >
+              <p>
+                {t(
+                  "Click a citation below an answer to read the source passage.",
+                  "اضغط على الاستشهاد أسفل الإجابة لقراءة نص المصدر.",
+                )}
+              </p>
+              <button type="button" onClick={() => setShowHint(false)}>
+                {t("Got it", "فهمت")}
+              </button>
+            </aside>
+          ) : null}
         </div>
         <section
           className={styles.transcript}
@@ -327,8 +460,8 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
               </h3>
               <p>
                 {t(
-                  "Ask about this unit’s sources. Missing evidence and disagreements stay visible.",
-                  "اسأل عن مصادر هذه الوحدة. تظهر المعلومات الناقصة والتعارضات بوضوح.",
+                  `Ask about this ${scope.unitLabelSingularEn.toLowerCase()}’s sources. Missing evidence and disagreements stay visible.`,
+                  `اسأل عن مصادر ${scope.unitLabelSingularAr}. تظهر المعلومات الناقصة والتعارضات بوضوح.`,
                 )}
               </p>
               <div className={styles.suggestions}>
@@ -405,6 +538,93 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
                     </>
                   ) : null}
                 </p>
+                {answer.kind === "unavailable" ? (
+                  <div>
+                    <p>
+                      {handoutAvailable
+                        ? answer.promptKind &&
+                          !["unavailable", "unmatched"].includes(
+                            answer.promptKind,
+                          )
+                          ? t(
+                              "The handout is currently available. This saved reply is unchanged; inspect materials or send a covered question for a new answer.",
+                              "الملزمة متاحة حاليًا. هذه الإجابة المحفوظة كما هي؛ افحص المصادر أو أرسل سؤالًا تغطيه للحصول على إجابة جديدة.",
+                            )
+                          : t(
+                              "The current sources do not support an answer to this question. You can inspect available materials or try a question they cover.",
+                              "المصادر الحالية لا تدعم إجابة لهذا السؤال. يمكنك فحص المصادر المتاحة أو تجربة سؤال تغطيه.",
+                            )
+                        : t(
+                            "The handout is currently inactive, so new answers cannot use it. The recording remains available; you can inspect materials or ask about its emphasis.",
+                            "الملزمة غير نشطة حاليًا، فلا تستخدمها الإجابات الجديدة. التسجيل ما زال متاحًا؛ يمكنك فحص المصادر أو السؤال عن النقطة التي يؤكدها.",
+                          )}
+                    </p>
+                    <details className={styles.secondaryOptions}>
+                      <summary>
+                        {t(
+                          "Questions covered by these materials",
+                          "أسئلة تغطيها هذه المصادر",
+                        )}
+                      </summary>
+                      <ul>
+                        {handoutAvailable ? (
+                          <li>
+                            <bdi>{text(promptExamples.supported, locale)}</bdi>
+                          </li>
+                        ) : null}
+                        <li>
+                          <bdi>{text(promptExamples.hint, locale)}</bdi>
+                        </li>
+                      </ul>
+                      <p>
+                        {t(
+                          "You can copy a question into Message. Your current draft stays unchanged.",
+                          "يمكنك نسخ سؤال إلى خانة السؤال. مسودتك الحالية تبقى كما هي.",
+                        )}
+                      </p>
+                    </details>
+                    <ProductLink href={base} locale={locale}>
+                      {t(
+                        "View available materials",
+                        "عرض مصادر المذاكرة المتاحة",
+                      )}
+                    </ProductLink>
+                  </div>
+                ) : null}
+                {answer.kind === "conflict" ? (
+                  <details className={styles.secondaryOptions}>
+                    <summary>
+                      {t(
+                        "Question to ask about this conflict",
+                        "سؤال للاستفسار عن هذا التعارض",
+                      )}
+                    </summary>
+                    <p>
+                      {t(
+                        "Inspect both excerpts, then copy this question if you want to ask for clarification. Nothing is sent from here.",
+                        "افحص النصين، ثم انسخ هذا السؤال إن أردت طلب توضيح. لا يُرسل شيء من هنا.",
+                      )}
+                    </p>
+                    <div className={productStyles.field}>
+                      <label
+                        htmlFor={`conflict-clarification-${selected.id}-${index + 1}`}
+                      >
+                        {t("Clarification question", "سؤال التوضيح")}
+                      </label>
+                      <textarea
+                        id={`conflict-clarification-${selected.id}-${index + 1}`}
+                        readOnly
+                        rows={4}
+                        lang={locale}
+                        dir={locale === "ar" ? "rtl" : "ltr"}
+                        value={t(
+                          `The handout places identification before comparison, but the recording places comparison first. Which sequence should I follow for this ${scope.unitLabelSingularEn.toLowerCase()}, and is there an approved source resolving the difference?`,
+                          `الملزمة تضع التحديد قبل المقارنة، لكن التسجيل يضع المقارنة أولًا. أي ترتيب أتبع في ${scope.unitLabelSingularAr}، وهل يوجد مصدر معتمد يحسم الاختلاف؟`,
+                        )}
+                      />
+                    </div>
+                  </details>
+                ) : null}
                 <div className={styles.replyActions}>
                   {!["unavailable", "patient"].includes(answer.kind) ? (
                     <button
@@ -465,6 +685,7 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
         </section>
         <form
           className={styles.composer}
+          data-workspace-chrome
           onSubmit={(event) => {
             event.preventDefault();
             send();
@@ -479,7 +700,10 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
             rows={2}
             maxLength={1000}
             autoComplete="off"
-            placeholder={t("Ask about your unit…", "اسأل عن وحدتك…")}
+            placeholder={t(
+              `Ask about this ${scope.unitLabelSingularEn.toLowerCase()}…`,
+              `اسأل عن ${scope.unitLabelSingularAr}…`,
+            )}
             value={draft.message}
             onChange={(event) => setDraft({ message: event.target.value })}
             readOnly={sending !== null}
@@ -495,27 +719,6 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
             }}
           />
           <div className={styles.composerTools}>
-            <label htmlFor="study-language">
-              {t("Study language", "لغة المذاكرة")}
-              <select
-                id="study-language"
-                name="study-language"
-                aria-label={t("Study language", "لغة المذاكرة")}
-                value={draft.language}
-                disabled={sending !== null}
-                onChange={(event) =>
-                  setDraft({
-                    language: event.target.value as typeof draft.language,
-                  })
-                }
-              >
-                <option value="en">{t("English", "الإنجليزية")}</option>
-                <option value="ar">{t("Arabic", "العربية")}</option>
-                <option value="mixed">
-                  {t("Mixed Arabic and English", "عربي وإنجليزي مختلط")}
-                </option>
-              </select>
-            </label>
             {sending ? (
               <Button
                 key="cancel"
@@ -544,34 +747,23 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
               </Button>
             )}
           </div>
-          <p className={styles.caption}>
-            {state.sharing === "private"
-              ? t("Private for future exchanges", "المحادثات القادمة خاصة")
-              : t("Founder-visible by default", "ظاهر للمؤسسين افتراضيًا")}{" "}
-            ·{" "}
-            {t(
-              "Enter to send; Shift+Enter for a new line",
-              "Enter للإرسال؛ Shift+Enter لسطر جديد",
-            )}
+          <p className={styles.composerMeta}>
+            <strong>
+              {state.sharing === "private"
+                ? t("Private for future exchanges", "المحادثات القادمة خاصة")
+                : t("Founder-visible by default", "ظاهر للمؤسسين افتراضيًا")}
+            </strong>
+            <span>
+              {t(
+                "Enter to send; Shift+Enter for a new line",
+                "Enter للإرسال؛ Shift+Enter لسطر جديد",
+              )}
+            </span>
           </p>
         </form>
         {notice ? <Notice>{notice}</Notice> : null}
       </div>
-      <aside
-        className={styles.evidenceMargin}
-        aria-label={t("Source evidence", "أدلة المصدر")}
-      >
-        <h2 ref={sourceHeading} tabIndex={-1}>
-          {evidence
-            ? t("Source excerpt", "نص المصدر")
-            : t("An evidence margin", "هامش للأدلة")}
-        </h2>
-        {sourceContent}
-        <p className={styles.caption}>
-          {new Intl.NumberFormat(locale).format(scope.sourceCount)}{" "}
-          {t("sample materials available", "مواد تجريبية متاحة")}
-        </p>
-      </aside>
+
       <ProductDialog
         open={!!evidence && evidenceDialog}
         title={t("Source excerpt", "نص المصدر")}

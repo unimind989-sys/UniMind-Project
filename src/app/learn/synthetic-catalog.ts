@@ -128,7 +128,7 @@ const veterinaryMedicineUnits: readonly SyntheticUnit[] = [
   },
 ];
 
-const highSchoolUnits: readonly SyntheticUnit[] = [
+const scienceTrackUnits: readonly SyntheticUnit[] = [
   {
     id: "biology",
     nameEn: "Biology",
@@ -156,6 +156,19 @@ const highSchoolUnits: readonly SyntheticUnit[] = [
     descriptionEn: "Synthetic Thanaweya Amma physics material.",
     descriptionAr: "محتوى تجريبي لمادة الفيزياء بالثانوية العامة.",
   },
+];
+
+const mathematicsTrackUnits: readonly SyntheticUnit[] = [
+  {
+    id: "mathematics",
+    nameEn: "Mathematics",
+    nameAr: "الرياضيات",
+    image: "/brand/unimind/icons/app-icon.svg",
+    sourceCount: 8,
+    descriptionEn: "Synthetic Thanaweya Amma mathematics material.",
+    descriptionAr: "محتوى تجريبي لمادة الرياضيات بالثانوية العامة.",
+  },
+  ...scienceTrackUnits.filter((unit) => unit.id !== "biology"),
 ];
 
 const universityPrograms: readonly SyntheticProgram[] = [
@@ -205,7 +218,7 @@ const highSchoolPrograms: readonly SyntheticProgram[] = [
     unitLabelSingularAr: "مادة",
     unitLabelPluralAr: "مواد",
     years: [3],
-    units: highSchoolUnits,
+    units: scienceTrackUnits,
   },
   {
     id: "mathematics-track",
@@ -220,7 +233,7 @@ const highSchoolPrograms: readonly SyntheticProgram[] = [
     unitLabelSingularAr: "مادة",
     unitLabelPluralAr: "مواد",
     years: [3],
-    units: highSchoolUnits,
+    units: mathematicsTrackUnits,
   },
 ];
 

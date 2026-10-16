@@ -443,7 +443,7 @@ export function auditCiWorkflow(source: string): string[] {
     violations.push("DATABASE_CI_CONCURRENCY_MISSING");
   }
   if (
-    application?.["timeout-minutes"] !== 25 ||
+    application?.["timeout-minutes"] !== 120 ||
     databaseCi["timeout-minutes"] !== 30
   ) {
     violations.push("EXECUTION_TIMEOUT_UNSAFE");

@@ -1,0 +1,27 @@
+# WP03-T13 — B03/M27/M28 preserved quiz work and clear corrections
+
+Expired quizzes now keep their questions and selections for read-only review. The page names the expired, unscored outcome and shows answered/unanswered counts. Each reviewed question names Correct, Incorrect or Unanswered, your answer, the correct answer and its existing synthetic explanation. This applies to submitted results too.
+
+**M27 and M28 are LOCALLY_COMPLETE.** B03 remains IN_PROGRESS with M30/M31/M32/M33 open. B01/B02 remain locally complete. The approved merged plan now has 11 of 75 findings locally complete and 64 remaining. The [plain-English progress page](../../docs/reviews/unimind-repair-progress.md) explains the remaining batches. WP03-T13 remains IN_PROGRESS; the whole frontend is MATERIAL/PENDING/NOT_READY. Work is uncommitted on `codex/frontend-refinements`, base `98bcaefca5512817c9d18e87e7bc2e9086fa89b4`.
+
+## Behavior and proof
+
+Pure synthetic quiz transitions check the deadline on every answer and submission. Expiry freezes the existing object without marking it submitted. Already submitted results remain immutable after their old deadline. Timer and interaction updates check the current unit's inspection key; stale callbacks cannot overwrite replacements. New review/submission links carry the exact key, and active unsubmitted reviews still fail closed. The one scoped study timer continues during Sources detours. Settings/Shelf entry-time snapshots and explicit-time selectors recognize an expired review immediately. Existing availability, role, catalog and source guards remain unchanged.
+
+Thirty-four distinct native browser cases pass: twelve new English/Arabic cases for submitted 0/6, mixed and all-correct results and zero/partial/all-answered expiry, plus twenty-two existing Settings/source/role/isolation/timer/configuration cases. The retained matrix has thirty passes and four superseded test failures; the focused four-case result passes after adding actual-screen navigation waits. Independent review reconstructs the previous native file by reversing only those waits, proving the other thirty bodies are unaffected. No failed result is reported as passing.
+
+Seven ordinary-login standard-runtime cases pass, including both expiry/source/Settings journeys, prior source/Settings returns and existing memory/locale/sign-out/reload/new-document isolation. Request guards detect no POST/API/RSC/foreign-host request or page error. All 108 unit cases pass, including exact-deadline mutation denial and immediate-expiry selector checks. These are synthetic/mock proofs, not real-provider or production authorization certification.
+
+Both languages/themes, 1440/390/320px reflow, partial-expiry doubled text, keyboard return controls, affected-main Axe and bounded actual English/Arabic rendered inspection pass. Numeric isolation corrects the new Arabic answered ratio without adding CSS or changing existing score presentation. Browser zoom, whole-page accessibility and actual screen-reader proof remain separate. Normal/fresh types, affected lint, module boundaries, formatting, secret/readiness and diff/preservation results are bound in the companion record.
+
+## Scope, review and continuation
+
+OBJECTIVE_PRESERVING against DESIGN's existing native quiz review, source-backed explanations, unit context and bilingual controls, plus Ahmed's exact D06 expiry and M28 correction approval. No control hierarchy, palette, CSS, history, persistence, per-question citation, backend grading or provider changes. The guide and its copies are current; only README/walkthrough change in the nine-member ZIP. All other package members remain identical.
+
+Independent read-only review covers twelve exact source/test/guide/package inputs. It corrected immediate expiry while Quiz was unmounted, stale navigation to a replacement and the hosted helper signature. Code-quality feedback moved the countdown to the shared study screen. Initial unit/import/render-purity failures, connection-refused/interrupted browser attempts and paused-clock/navigation races remain in the [external repair folder](<E:/Unimind audits/flow audit/Merged/repairs/B03-M27-M28-quiz-review>). Two inherited expired-zero-input expectations now assert preserved, disabled inputs; one inherited M75 setup body adds an actual-screen wait. No assertions were removed.
+
+![Expired work keeps its answers and shows corrections](<E:/Unimind audits/flow audit/Merged/repairs/B03-M27-M28-quiz-review/expired-review-en.png>)
+
+[Arabic review](<E:/Unimind audits/flow audit/Merged/repairs/B03-M27-M28-quiz-review/expired-review-ar.png>) and [source binding](2026-10-13-merged-b03-m27-m28-quiz-review-source-binding.json) retain exact proof and preservation. The original task/runbook prefixes, all 170 prior evidence files, frozen audit and approval are unchanged. Policy v10 conservative whole R3/protected; one read-only worker maximum/used, no nested. Whole proof preflight remains INCOMPLETE for human-design-acceptance. Broad CI, final whole-design acceptance and external/production proof remain held.
+
+Next: M30 one review destination, M31 repeat setup, M32 active progress and M33 field-specific validation through another scoped B03 amendment. Restore only fourteen changed before-copy paths and remove this slice's three new progress/evidence/binding files for rollback. Preserve unrelated work. Demo3101 is restored. No commit, push, PR, merge, deployment or paid action occurred.

@@ -1,0 +1,599 @@
+{
+  "capturedAt": "2026-10-10T22:19:23.166Z",
+  "branch": "codex/frontend-refinements",
+  "baseHead": "98bcaefca5512817c9d18e87e7bc2e9086fa89b4",
+  "task": "WP03-T13",
+  "state": "Uncommitted local candidate; batch 08 technical proof complete; Ahmed rendered review pending",
+  "scope": "Five bounded observations F038,F136,F274,F156,F365; original fonts and historical verdicts preserved",
+  "previousAcceptedAggregate": "a8b56922aeee4f72149eba164b3253ca52acbebefe628756537bebb5e1cc527d",
+  "baselineManifest": "E:/Unimind audits/analysis/fix-batch-08-baseline/manifest.json",
+  "incrementalBatch": [
+    {
+      "path": "src/app/_components/frontend-controls.tsx",
+      "beforeSha256": "2f29d37e7bea543faaaa97eacee47d6087146a7eef6b90ee7ea79cb78e232e67",
+      "afterSha256": "3cf9cba28696fe73e18e0a571614557c40648ed1e3f25dd32f53200d973b08e3"
+    },
+    {
+      "path": "src/app/_components/frontend-system.module.css",
+      "beforeSha256": "5c14cd12342d5142d6772254648cf4a57f6ab6619338b1185ecd8ae09ca0a01e",
+      "afterSha256": "3be9d8f7332489ab0b9766e5990b60d6690dc84d9e61a8cf3be0ff8bf24f9f40"
+    },
+    {
+      "path": "src/app/_components/app-shell.module.css",
+      "beforeSha256": "fe3bbfda72d6cd62534ae061bcfc7f49c044e65b61fecaaa3b12d5538878386a",
+      "afterSha256": "67f72d4217cf8dbf5a7db89a92a48612f6f1dc168efb02519923bfc5b257411c"
+    },
+    {
+      "path": "src/app/_components/student-account.module.css",
+      "beforeSha256": "a0e6118bbb65e29a51c9e11ac1cb0d5cfe0bec7c0a115a960e312d1f0bc4b1fa",
+      "afterSha256": "48c107536953d147b3dd3722681d7cd61e1e0f6397337973cae413c39ec11248"
+    },
+    {
+      "path": "src/app/learn/_components/study-shelf.tsx",
+      "beforeSha256": "e0d4c76395006eafb2c8dbe96cd4c518b80f86e4a33889f00b95c1932384e873",
+      "afterSha256": "a3986310234824a49d421e5bdcdf8119768b73d6c1ffe4da15ec5ef486d9feb9"
+    },
+    {
+      "path": "src/app/learn/study-shelf.module.css",
+      "beforeSha256": "796c6b563909065805e2c7ad969157f71179b36a5b4ec8cb597ca09ac1ff2288",
+      "afterSha256": "c2569f69b6f684a5ef815d0c9eeae3015be05e7541f4d78aa4bcbabf4c6ee274"
+    },
+    {
+      "path": "src/app/learn/_components/product-study.tsx",
+      "beforeSha256": "a0bc2bff1329b9be676e3bcf669c53c56b5a5585a87a74caee1ce8d99c82cddb",
+      "afterSha256": "3758734f4d18cae1d75d32ea04331043945b674c092be2b8ea8b8b0f7cebbce4"
+    },
+    {
+      "path": "src/app/_components/product.module.css",
+      "beforeSha256": "3ccbd0d43c79bcc32a179e5702b013ce7b60d30f20cb6dc0798a02a7ac2c5cbc",
+      "afterSha256": "1a03e77b730947f5c6c14cf5c3f6c9fef6b908625ca89a584559d77e17466805"
+    },
+    {
+      "path": "tests/e2e/native-product-demo.spec.ts",
+      "beforeSha256": "7ee052ddd995a37a7f963ee9793341b5525549659a9ae5677e4df50da5cd1d54",
+      "afterSha256": "f4092c57d01f194a453441c2fe5e1e4fdf0355df877bfb51b7519d28853de39d"
+    },
+    {
+      "path": "src/app/layout.tsx",
+      "beforeSha256": "993e4ecd22aadebc723873b0489b9837b1000232ffa4c6d47733cb9187d11c50",
+      "afterSha256": "993e4ecd22aadebc723873b0489b9837b1000232ffa4c6d47733cb9187d11c50"
+    },
+    {
+      "path": "src/app/globals.css",
+      "beforeSha256": "3d1f099058203f2610120adcd5c1f6fa03f0d33d0b505263d728cce15f77f16b",
+      "afterSha256": "3d1f099058203f2610120adcd5c1f6fa03f0d33d0b505263d728cce15f77f16b"
+    },
+    {
+      "path": "DESIGN.md",
+      "beforeSha256": "ad49ad53f976a4f1f1d5c64c6e5c9176e8f70518aa9c9082e646214316d5144f",
+      "afterSha256": "10a149199567223bb1c583c61f6b94d87b281fa07d936ec5fd86944a7f5a6094"
+    },
+    {
+      "path": "planning/tasks/wp03-t13-student-entry-navigation.md",
+      "beforeSha256": "7999f8ef09095ddd3666c6d7df8816263c5f40e5cc64b63b4e7f185643fc0ab3",
+      "afterSha256": "3934bc72cd5d26c79ab7fc2077a8027551be617c781d1340334b64d6e5c5c4ed"
+    }
+  ],
+  "fontSourcePreserved": true,
+  "candidateChangedSources": [
+    {
+      "path": "src/app/_components/academic-settings.tsx",
+      "sha256": "00735e5c11cd31b881e0427ab0fe16fdff933b18771b91b50ab02bb9a0154110"
+    },
+    {
+      "path": "src/app/_components/account-layout.tsx",
+      "sha256": "61a2643977c4f1f2c6a82f453bd2d91729fee155c8fb134b829d8fd6052f1567"
+    },
+    {
+      "path": "src/app/_components/app-shell.module.css",
+      "sha256": "67f72d4217cf8dbf5a7db89a92a48612f6f1dc168efb02519923bfc5b257411c"
+    },
+    {
+      "path": "src/app/_components/app-shell.tsx",
+      "sha256": "1e35f014f5351bf75757454da16fb66fbc27a32ecd5b1961c388e7dfde65a765"
+    },
+    {
+      "path": "src/app/_components/appearance.module.css",
+      "sha256": "4024b0e3eb5399cf2bc6519741ff94aab9fb3c0164b98d34303312b208804f88"
+    },
+    {
+      "path": "src/app/_components/appearance.tsx",
+      "sha256": "01af13cd3b153c89c84cd66db534fb67569ed9a4465a5b02e25a73b1c9a32950"
+    },
+    {
+      "path": "src/app/_components/choice-group.module.css",
+      "sha256": "54daff4e03e523b7a632492d7190536d76a7c2d93014ce7abeb20b3058de34c4"
+    },
+    {
+      "path": "src/app/_components/choice-group.tsx",
+      "sha256": "9f664046d69a6213c03690f3b755fc0d3c9def7fd02e6909dd2839f60c1834da"
+    },
+    {
+      "path": "src/app/_components/frontend-controls.tsx",
+      "sha256": "3cf9cba28696fe73e18e0a571614557c40648ed1e3f25dd32f53200d973b08e3"
+    },
+    {
+      "path": "src/app/_components/frontend-system.module.css",
+      "sha256": "3be9d8f7332489ab0b9766e5990b60d6690dc84d9e61a8cf3be0ff8bf24f9f40"
+    },
+    {
+      "path": "src/app/_components/frontend-system.tsx",
+      "sha256": "b8e3c44bc8561186f2f7f297b6285099bb6e2c7286067125f41207528940ad55"
+    },
+    {
+      "path": "src/app/_components/product-native-page.tsx",
+      "sha256": "f06047e7d7661028ea40374bc0669b0bf3f0e5f55719d7df2abb5aa73d1ac574"
+    },
+    {
+      "path": "src/app/_components/product-profile.tsx",
+      "sha256": "00c84675efa7b04d2dfa9f10912ffc6c4c45763e985997dcb631db597a78bb29"
+    },
+    {
+      "path": "src/app/_components/product-services.tsx",
+      "sha256": "4d8df9906a9e4d5230795585bb3a51b444c632ca0ec861a0887a63cb6d17322e"
+    },
+    {
+      "path": "src/app/_components/product-ui.tsx",
+      "sha256": "ef8be936451f728d8729313f1f16d1f775303e47f91166f8beeeb80af8d6505b"
+    },
+    {
+      "path": "src/app/_components/product.module.css",
+      "sha256": "1a03e77b730947f5c6c14cf5c3f6c9fef6b908625ca89a584559d77e17466805"
+    },
+    {
+      "path": "src/app/_components/student-account.module.css",
+      "sha256": "48c107536953d147b3dd3722681d7cd61e1e0f6397337973cae413c39ec11248"
+    },
+    {
+      "path": "src/app/learn/[cohortId]/[unitId]/layout.tsx",
+      "sha256": "27305a45846b82be9492dd101021a206134783a8ab1c7b89ac62513f5fa4797e"
+    },
+    {
+      "path": "src/app/learn/_components/product-chat.tsx",
+      "sha256": "09e5907674dbca9d10138e2857fcacde581e12bbecc94aee80eee93526c3359b"
+    },
+    {
+      "path": "src/app/learn/_components/product-studio.tsx",
+      "sha256": "82c904eb09c1463b6d6a5abbf070794299f5578ece6f6c215249a256e9c86747"
+    },
+    {
+      "path": "src/app/learn/_components/product-study.module.css",
+      "sha256": "d926133578077783dec9883a8b02c9a5f96aaa75605a99fa263a2dfd5ac31130"
+    },
+    {
+      "path": "src/app/learn/_components/product-study.tsx",
+      "sha256": "3758734f4d18cae1d75d32ea04331043945b674c092be2b8ea8b8b0f7cebbce4"
+    },
+    {
+      "path": "src/app/learn/_components/study-shelf.tsx",
+      "sha256": "a3986310234824a49d421e5bdcdf8119768b73d6c1ffe4da15ec5ef486d9feb9"
+    },
+    {
+      "path": "src/app/learn/_components/workspace-frame.tsx",
+      "sha256": "02afdd0317321a6b18ea0c9508829f611e36904403be59a4ef8da5a6088a2095"
+    },
+    {
+      "path": "src/app/learn/page.tsx",
+      "sha256": "c7a0e030893bdd30ba37c96d3a7521b9fe2e7c317d94393426b53b70031fedfe"
+    },
+    {
+      "path": "src/app/learn/study-shelf.module.css",
+      "sha256": "c2569f69b6f684a5ef815d0c9eeae3015be05e7541f4d78aa4bcbabf4c6ee274"
+    },
+    {
+      "path": "src/app/settings/page.tsx",
+      "sha256": "ec1a2b15a10f57c40c4e8c38ccf0ed18ccac9707e19c355dda945a2207ae6717"
+    },
+    {
+      "path": "src/lib/demo/synthetic-account.application.ts",
+      "sha256": "2c6de39f4e77c5ec7f7d531c4cb6242da4605ca7dacf1c24de398e7116bf1115"
+    },
+    {
+      "path": "src/lib/quiz/quiz-fixture.application.ts",
+      "sha256": "1426314749581eaa739fcb20ed0c30ca18911af30a3cb518282af0722c382928"
+    },
+    {
+      "path": "tests/e2e/hosted-synthetic-login.spec.ts",
+      "sha256": "1a63c28feb221ec44c1a804672f7be6e3404d476c719fbfd38db7cdd18087ef4"
+    },
+    {
+      "path": "tests/e2e/native-product-demo.spec.ts",
+      "sha256": "f4092c57d01f194a453441c2fe5e1e4fdf0355df877bfb51b7519d28853de39d"
+    },
+    {
+      "path": "tests/e2e/study-shelf.spec.ts",
+      "sha256": "ddd281274249f37f354f717f13e67b472a51f92948b449f5539fbed8290e4d0b"
+    },
+    {
+      "path": "tests/unit/quiz-fixture.test.ts",
+      "sha256": "c6e6053f1e5eef0443c66b8bb0d7406d8a9f5d2bb5780adbeae31affe0985eef"
+    }
+  ],
+  "aggregateSha256": "480751b28436d223e319fa7ade0205b8c5b4e0fda50e4072a5dc18df6a0acf57",
+  "unchangedPriorCandidateCount": 24,
+  "initialReport": {
+    "path": "E:/Unimind audits/analysis/fix-batch-08-initial-e2e.json",
+    "sha256": "e4b5fbcb745aa09b2ff9eaac934b7d83c6e5b3d110e22f30dca9a7532b541345",
+    "startTime": "2026-10-10T18:48:24.563Z",
+    "duration": 296893.601,
+    "expected": 6,
+    "skipped": 0,
+    "unexpected": 11,
+    "flaky": 0
+  },
+  "repairReport": {
+    "path": "E:/Unimind audits/analysis/fix-batch-08-repair-e2e.json",
+    "sha256": "3e206536a4f54d05428091f912a20e4de50e49ce622c69501849ca72bba8e7e6",
+    "startTime": "2026-10-10T18:57:36.328Z",
+    "duration": 336292.924,
+    "expected": 16,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0,
+    "runnerErrors": 0
+  },
+  "selectorFailureReport": {
+    "path": "E:/Unimind audits/analysis/fix-batch-08-confirmation-e2e.json",
+    "sha256": "dc366287ad33785a27406e40058a3ad7e3f89073a25f394c6f34a9ab5768de52",
+    "startTime": "2026-10-10T22:08:46.446Z",
+    "duration": 197069.688,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 2,
+    "flaky": 0,
+    "reason": "Wrong test heading; Studio was used instead of Shape the result. No UI change."
+  },
+  "focusedReport": {
+    "path": "E:/Unimind audits/analysis/fix-batch-08-final-e2e.json",
+    "sha256": "aac680a2cc99c25dee21b87fa9e01b0a5b524d0c406bf0acf8b7ec52209cae15",
+    "startTime": "2026-10-10T22:12:34.339Z",
+    "duration": 80576.578,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0,
+    "runnerErrors": 0,
+    "cases": [
+      {
+        "title": "audit batch 08 en: visible targets, selected language and grouped source returns preserve navigation",
+        "status": "expected",
+        "results": [
+          "passed"
+        ],
+        "proofPath": "E:/Unimind audits/analysis/fix-batch-08-final-e2e.json"
+      },
+      {
+        "title": "audit batch 08 ar: visible targets, selected language and grouped source returns preserve navigation",
+        "status": "expected",
+        "results": [
+          "passed"
+        ],
+        "proofPath": "E:/Unimind audits/analysis/fix-batch-08-final-e2e.json"
+      }
+    ]
+  },
+  "uniqueVerifiedCaseCount": 17,
+  "verifiedCases": [
+    {
+      "title": "product language student: direct switch preserves route and works in both directions",
+      "status": "expected",
+      "results": [
+        "passed"
+      ],
+      "proofPath": "E:/Unimind audits/analysis/fix-batch-08-repair-e2e.json"
+    },
+    {
+      "title": "product language leader: direct switch preserves route and works in both directions",
+      "status": "expected",
+      "results": [
+        "passed"
+      ],
+      "proofPath": "E:/Unimind audits/analysis/fix-batch-08-repair-e2e.json"
+    },
+    {
+      "title": "product language admin: direct switch preserves route and works in both directions",
+      "status": "expected",
+      "results": [
+        "passed"
+      ],
+      "proofPath": "E:/Unimind audits/analysis/fix-batch-08-repair-e2e.json"
+    },
+    {
+      "title": "audit batch 02 en: compact source rows keep keyboard excerpts and contextual returns",
+      "status": "expected",
+      "results": [
+        "passed"
+      ],
+      "proofPath": "E:/Unimind audits/analysis/fix-batch-08-repair-e2e.json"
+    },
+    {
+      "title": "audit batch 01 en: visible navigation, separated return and compact settings",
+      "status": "expected",
+      "results": [
+        "passed"
+      ],
+      "proofPath": "E:/Unimind audits/analysis/fix-batch-08-repair-e2e.json"
+    },
+    {
+      "title": "audit batch 02 ar: compact source rows keep keyboard excerpts and contextual returns",
+      "status": "expected",
+      "results": [
+        "passed"
+      ],
+      "proofPath": "E:/Unimind audits/analysis/fix-batch-08-repair-e2e.json"
+    },
+    {
+      "title": "audit batch 01 ar: visible navigation, separated return and compact settings",
+      "status": "expected",
+      "results": [
+        "passed"
+      ],
+      "proofPath": "E:/Unimind audits/analysis/fix-batch-08-repair-e2e.json"
+    },
+    {
+      "title": "workspace revision en: profile, independent settings, scoped subjects and first-visit citations",
+      "status": "expected",
+      "results": [
+        "passed"
+      ],
+      "proofPath": "E:/Unimind audits/analysis/fix-batch-08-repair-e2e.json"
+    },
+    {
+      "title": "workspace revision ar: profile, independent settings, scoped subjects and first-visit citations",
+      "status": "expected",
+      "results": [
+        "passed"
+      ],
+      "proofPath": "E:/Unimind audits/analysis/fix-batch-08-repair-e2e.json"
+    },
+    {
+      "title": "workspace revision en: all student sections use available width and reflow in both themes",
+      "status": "expected",
+      "results": [
+        "passed"
+      ],
+      "proofPath": "E:/Unimind audits/analysis/fix-batch-08-repair-e2e.json"
+    },
+    {
+      "title": "workspace revision ar: all student sections use available width and reflow in both themes",
+      "status": "expected",
+      "results": [
+        "passed"
+      ],
+      "proofPath": "E:/Unimind audits/analysis/fix-batch-08-repair-e2e.json"
+    },
+    {
+      "title": "audit batch 03 en: named resume and grouped searchable subjects",
+      "status": "expected",
+      "results": [
+        "passed"
+      ],
+      "proofPath": "E:/Unimind audits/analysis/fix-batch-08-repair-e2e.json"
+    },
+    {
+      "title": "audit batch 03 ar: named resume and grouped searchable subjects",
+      "status": "expected",
+      "results": [
+        "passed"
+      ],
+      "proofPath": "E:/Unimind audits/analysis/fix-batch-08-repair-e2e.json"
+    },
+    {
+      "title": "audit batch 07 en: grouped study actions, source formats, native excerpts and count guidance preserve the learning path",
+      "status": "expected",
+      "results": [
+        "passed"
+      ],
+      "proofPath": "E:/Unimind audits/analysis/fix-batch-08-repair-e2e.json"
+    },
+    {
+      "title": "audit batch 07 ar: grouped study actions, source formats, native excerpts and count guidance preserve the learning path",
+      "status": "expected",
+      "results": [
+        "passed"
+      ],
+      "proofPath": "E:/Unimind audits/analysis/fix-batch-08-repair-e2e.json"
+    },
+    {
+      "title": "audit batch 08 en: visible targets, selected language and grouped source returns preserve navigation",
+      "status": "expected",
+      "results": [
+        "passed"
+      ],
+      "proofPath": "E:/Unimind audits/analysis/fix-batch-08-final-e2e.json"
+    },
+    {
+      "title": "audit batch 08 ar: visible targets, selected language and grouped source returns preserve navigation",
+      "status": "expected",
+      "results": [
+        "passed"
+      ],
+      "proofPath": "E:/Unimind audits/analysis/fix-batch-08-final-e2e.json"
+    }
+  ],
+  "liveEvidence": {
+    "path": "E:/Unimind audits/analysis/fix-batch-08-live-ui.json",
+    "sha256": "784bc06ad49044daf08ed49a85f5a57574bf4cb24e711073312836eba7b3df79",
+    "afterStates": [
+      "subjects1440",
+      "materials1440",
+      "settings390",
+      "sources390",
+      "sourcesArabic320",
+      "subjectsArabic320",
+      "settingsLight820",
+      "studioSources820"
+    ],
+    "horizontalOverflow": false
+  },
+  "reviewImages": [
+    {
+      "view": "materials",
+      "phase": "before",
+      "path": "E:/Unimind audits/analysis/fix-batch-08-materials-before.jpg",
+      "sha256": "2d00ba1f162d647d923900cd1a91677b8091b4782cb4fbd773851189783c23fd",
+      "size": {
+        "width": 1440,
+        "height": 900
+      },
+      "url": "http://127.0.0.1:3000/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy?lang=en",
+      "theme": "dark",
+      "locale": "en"
+    },
+    {
+      "view": "materials",
+      "phase": "after",
+      "path": "E:/Unimind audits/analysis/fix-batch-08-materials-after.jpg",
+      "sha256": "d6b72f220f586a7137efe5f0dda7514a6f12e808603366705bc8537021815932",
+      "size": {
+        "width": 1440,
+        "height": 900
+      },
+      "cssViewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "url": "http://127.0.0.1:3000/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy?lang=en",
+      "locale": "en",
+      "theme": "dark"
+    },
+    {
+      "view": "subjects",
+      "phase": "before",
+      "path": "E:/Unimind audits/analysis/fix-batch-08-subjects-before.jpg",
+      "sha256": "a150fe85a526c5844e134b6d03683e8fa48ac9584ea119f7d07f803860bb992c",
+      "size": {
+        "width": 1440,
+        "height": 900
+      },
+      "url": "http://127.0.0.1:3000/learn?view=subjects&lang=en",
+      "theme": "dark",
+      "locale": "en"
+    },
+    {
+      "view": "subjects",
+      "phase": "after",
+      "path": "E:/Unimind audits/analysis/fix-batch-08-subjects-after.jpg",
+      "sha256": "9dd22d00c61e9955e8fc26d52433911041bd1c5a19755a76782c2640bfef1164",
+      "size": {
+        "width": 1440,
+        "height": 900
+      },
+      "cssViewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "url": "http://127.0.0.1:3000/learn?view=subjects&lang=en",
+      "locale": "en",
+      "theme": "dark"
+    },
+    {
+      "view": "settings",
+      "phase": "before",
+      "path": "E:/Unimind audits/analysis/fix-batch-08-settings-before.jpg",
+      "sha256": "814f953dace087f61de020198930d41f73fab355da93fa033ab234455ca15978",
+      "size": {
+        "width": 380,
+        "height": 822
+      },
+      "cssViewport": {
+        "height": 844,
+        "width": 390
+      },
+      "url": "http://127.0.0.1:3000/settings?lang=en",
+      "theme": "dark",
+      "locale": "en"
+    },
+    {
+      "view": "settings",
+      "phase": "after",
+      "path": "E:/Unimind audits/analysis/fix-batch-08-settings-after.jpg",
+      "sha256": "4290c4844ee12217bea1aaa36b95c447f87f57504ea291fefe020523bf986390",
+      "size": {
+        "width": 380,
+        "height": 822
+      },
+      "cssViewport": {
+        "height": 844,
+        "width": 390
+      },
+      "url": "http://127.0.0.1:3000/settings?lang=en",
+      "locale": "en",
+      "theme": "dark"
+    },
+    {
+      "view": "sources",
+      "phase": "before",
+      "path": "E:/Unimind audits/analysis/fix-batch-08-sources-before.jpg",
+      "sha256": "7e7c370ad133532050fb651fd603272e3a4969df2cee3401c6a524da6c5f0392",
+      "size": {
+        "width": 390,
+        "height": 844
+      },
+      "cssViewport": {
+        "height": 844,
+        "width": 390
+      },
+      "url": "http://127.0.0.1:3000/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/sources?lang=en",
+      "theme": "dark",
+      "locale": "en"
+    },
+    {
+      "view": "sources",
+      "phase": "after",
+      "path": "E:/Unimind audits/analysis/fix-batch-08-sources-after.jpg",
+      "sha256": "a735e73091cccd8e848ef653b26d9acd78dd7666d88b7ae0161593b9dc7f5657",
+      "size": {
+        "width": 390,
+        "height": 844
+      },
+      "cssViewport": {
+        "height": 844,
+        "width": 390
+      },
+      "url": "http://127.0.0.1:3000/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/sources?lang=en",
+      "locale": "en",
+      "theme": "dark"
+    }
+  ],
+  "comparison": {
+    "path": "E:/Unimind audits/analysis/fix-batch-08-comparison.md",
+    "sha256": "5c9ca53c0091262ab9bd075274827c1aa1c9358d38a605dea1f5f44f3f2d23b4"
+  },
+  "checks": {
+    "lint": "PASS repository and narrow",
+    "normalAndFreshTypes": "PASS after final normal dev restart and generated-import restoration",
+    "boundaries": "PASS",
+    "layoutDetector": "One unchanged static false positive: zero-size active-navigation triangle; no new findings or suppression",
+    "incrementalReview": "Complete; 24 prior source/test hashes identical",
+    "finalArtifactScans": "PASS; see finalChecks"
+  },
+  "handoff": {
+    "normalDevSession": 37384,
+    "tabId": "1",
+    "view": "Anatomy Materials",
+    "viewportOverrideReset": true,
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    },
+    "url": "http://127.0.0.1:3000/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy?lang=en"
+  },
+  "finalChecks": {
+    "secretScan": {
+      "status": "PASS",
+      "files": 3209
+    },
+    "readiness": {
+      "status": "PASS",
+      "names": 815,
+      "localLinks": 368,
+      "synchronizedDecisions": 23,
+      "taskContracts": 116
+    },
+    "formatting": "PASS under repository ignore policy",
+    "diffIntegrity": "PASS; full incremental scope review; next-env diff empty",
+    "sourceBinding": "All candidate source hashes, reports, ledger and eight matched images verified; original font sources identical"
+  },
+  "sealedAt": "2026-10-10T22:21:38.193Z"
+}
