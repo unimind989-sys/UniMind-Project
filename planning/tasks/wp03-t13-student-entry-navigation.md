@@ -12,7 +12,7 @@
 
 **Branch:** codex/frontend-refinements
 
-**Updated (UTC):** 2026-10-15T22:14:19Z
+**Updated (UTC):** 2026-10-16T12:00:00Z
 
 ## Authorized scope
 
@@ -36,7 +36,7 @@ Implement and verify locally for review. Do not commit until Ahmed instructs it.
 
 **Procedural skills:** impeccable (onboard/distill); browser:control-in-app-browser; diagnosing-bugs (earlier resume assertion); vercel:react-best-practices (inline review)
 
-**Routing reason:** Material changes to product interaction and student navigation through established UI adapters, with scoped rejecting tests and local-only evidence.
+**Routing reason:** The implemented frontend checkpoint and necessary security dependency corrections reach the protected delivery envelope. No new product scope or persistent service mutation.
 
 ## Manual model work blocks
 
@@ -62,7 +62,7 @@ Implement and verify locally for review. Do not commit until Ahmed instructs it.
 
 **Evidence:** evidence/wp03-product-shell/2026-10-16_frontend-refinements_delivery_98bcaef.md
 
-**Rollback:** Restore only this slice's uncommitted changes to 98bcaef; preserve accepted landing commits and unrelated work.
+**Rollback:** Revert the checkpoint merge through a protected pull request; retain public deployment dpl_7vzJmYUCUkCQZN1hCwJFsHuuqc2V until its replacement passes production proof.
 
 **Hard stop:** Real-money exposure; private data or secret disclosure; lost unrelated work; protection bypass; false PASS or false claim that all75 findings are complete.
 
@@ -70,11 +70,11 @@ Implement and verify locally for review. Do not commit until Ahmed instructs it.
 
 **Design disposition:** MATERIAL
 
-**Design evidence:** PENDING exact current-checkpoint receipt:evidence/wp03-product-shell/2026-10-16-frontend-refinements-founder-receipt.json
+**Design evidence:** receipt:evidence/wp03-product-shell/2026-10-16-frontend-refinements-founder-receipt.json; rationale:Corrections after the accepted c1 checkpoint affect dependency security, two browser test drivers and delivery records only; application markup, styles, copy and product interactions are unchanged; baseline:878e9402a73cdcbe017b5a8877f723222fd19d22
 
-**Preparation review:** PENDING
+**Preparation review:** COMPLETE_INLINE
 
-**Preparation fingerprint:** NOT_READY
+**Preparation fingerprint:** b6ca52fc36957631ec2f27fd11770ec9232d0c4f64251c870ddc64543275046c
 
 **Unresolved findings:** NONE
 
@@ -99,7 +99,7 @@ Ahmed approved implementation of the voice-note review, expanding reduced margin
 
 **Changed:** Progressive entry and distinct Study/Subjects remain; Study guidance and Subjects settings links are removed. The profile uses the caller's account name and circular initial. Settings panels are independently visible, deep-linkable and retain drafts. Shared product width and desktop gutters improve space use. Unit switching retains the active tool and only lists current authorized cohort subjects. Chat uses full width, header output-language choices, on-demand citation excerpts and a dismissible first-visit tip. Quiz choices drive fixture difficulty, question count, attempts, scoring and user-selected deadlines; Start is centered. Studio capabilities and landing/access source remain intact.
 
-**Commands:** Current55-finding checkpoint has source-bound focused proof with exit0 recorded in its slice reports, including B09 case-level43native/27ordinary/1065unit proof with documented qualifications. Finalization lint/format/full-chain/exact-head CI are pending and will be recorded without relabelling mixed or unrun results.
+**Commands:** Pinned production dependency audit (zero advisories); hosted e2e 146/146; first full guarded chain stopped at the demo suite (261 passed, 23 failed: stale drivers plus four layout budgets). After the corrections below, the 23 failing demo cases pass in focused reruns; format, lint and typecheck exit 0. Fresh full guarded `pnpm verify` and exact-head required CI follow for the corrected candidate and are recorded in the delivery evidence.
 
 **Remaining:** Deliver the current checkpoint under Ahmed's16October2026 direct commit/merge/finalize instruction. Twenty audit findings remain open after this release; no blanket audit completion or production-service readiness claim.
 
@@ -1006,3 +1006,24 @@ M38/M39/M40/M68 LOCALLY_COMPLETE;55/75 findings locally verified,20 remain;8/12 
 Ahmed directly requested “commit and merge this branch with main” and explicitly invoked `.agents/skills/finalize/SKILL.md`, immediately after the55/75 progress and B09 result were presented. This supersedes the earlier local-only hold for this checkpoint and its necessary protected push/PR/review/merge and zero-cost finalization steps. It accepts release of the presented implemented checkpoint; it does not mark the remaining20 findings fixed or supply missing privacy/program policies. The receipt will bind the exact committed presentation; any later material UI change still needs its own acceptance. D-22 remains the standing non-financial policy and does not create design acceptance by itself. No identity is inferred from provider accounts. The selected task remains WP03-T13 IN_PROGRESS for remaining audit work. Manual Sol High block1 includes this delivery; no Desktop-model certification.
 
 Finalization preserves all historical snapshot evidence. The sole initial lint blocker is an unused parameter in the archived B06 prototype: removing it changes no generated markup, text, data, style or interaction. The old prototype bytes and approval hashes remain available in the captured checkpoint and historical receipts; new delivery evidence qualifies the exact nonvisual difference. Generated next-env.d.ts is restored to normal build/typegen paths rather than shipping incidental demo paths. One known owned demo is stopped before the full sequential verification chain to avoid shared Next cache/port conflicts.
+
+
+## Delivery corrections before protected merge
+
+The initial GitHub dependency gate rejected three high-severity production advisories. Next and its matching ESLint configuration move from 16.3.6 to 16.3.8; the resolved lock includes sharp 0.35.5 and source-map-js 1.2.2. pnpm also refreshed allowed transitive versions. Node, React, TypeScript, provider capacity and CI policy remain unchanged. The patched production audit reports zero advisories. Earlier broad dependency-bound results cannot prove this new graph and will be rerun.
+
+Two hosted Batch Leader browser tests still assumed the old always-open upload form and submission copy. They now open the existing intake and assert the exact request's immutable received receipt and bilingual file-count announcement. Both cases pass. This changes test drivers, not the product. The separate read-only reviewer found no blocker and confirmed no application source, auth or storage revision after the accepted c1 presentation. All original approval and historical source receipts retain their original hashes.
+
+## Layout corrections before protected merge (16 October 2026)
+
+Ahmed directed: fix everything, change what needs to be changed, and ship, push, merge and clean the branch autonomously while away. The first full demo chain for this checkpoint exposed four layout budgets the presented c1 checkpoint broke, alongside stale demo drivers:
+
+- Chat at 1440×900 and 1280×800 pushed Send below the fold. `.chatLayout` now lets its row shrink (`minmax(0, 1fr)`) so the transcript scrolls and the composer stays in view; short desktop viewports compact the empty state (no icon or caption, one-line purpose, smaller heading) so every suggestion stays visible.
+- Studio at 1280×800 pushed Generate below the fold. Generate is sticky to the bottom of the workspace scroll area with a surface band.
+- Quiz Start sat 90px off-centre beside Use default setup. Quiz actions now stack, Start first and centred.
+- Source rows measured 161.8px against the 160px compact budget. Identity lines tighten to 2px/1.5, giving 155px.
+- The Sources context mixed heading, purpose, Return and notice in one wrapping row, misaligning Return and its notice from 820–1024px and stacking to 245px on phones. It is now a two-row grid (heading with purpose; Return with notice); phones keep the heading and purpose for assistive technology only, matching the existing Materials heading rule.
+
+Demo drivers updated without changing intent: the B09 intake opens before its heading is read (`Upload files`), the student settings title is `Settings`, the timer reads `03:00`, Study's start link may read `Open Anatomy`, two URLs use the running origin instead of a fixed port, the shell location selector no longer depends on CSS-module naming, phone Chat opens Study options before reaching sources or study language, and the Sources notice is the context's last paragraph.
+
+Design acceptance for the corrected presentation is Ahmed's delegated instruction above, bound to the exact candidate commit in the c2 receipt; he has not inspected the corrected screens hands-on. Review is inline by the executor; the earlier independent review covers only the dependency and hosted-driver hashes. No auth, storage, domain, provider or copy change.

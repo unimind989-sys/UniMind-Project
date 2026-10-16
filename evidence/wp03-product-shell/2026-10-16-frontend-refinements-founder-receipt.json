@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 3,
+  "policyVersion": 10,
+  "task": "WP03-T13",
+  "candidate": "878e9402a73cdcbe017b5a8877f723222fd19d22",
+  "proofs": [
+    {
+      "id": "human-design-acceptance",
+      "check": "founder hands-on design acceptance",
+      "status": "PASS",
+      "decisionActor": "Ahmed",
+      "decisionReference": "message:2026-10-16-commit-and-merge-presented-checkpoint",
+      "decisionTimestamp": "2026-10-15T22:14:19Z",
+      "acceptedScope": "routes:/,/login,/learn/**,/settings,/batch-leader/**,/admin/**,/preview/**; surfaces:presented frontend-refinements checkpoint; states:implemented55findings with tested normal empty loading error expired and recovery states,remaining20auditfindings open",
+      "acceptedCandidate": "878e9402a73cdcbe017b5a8877f723222fd19d22",
+      "invalidatedBy": {
+        "surfaces": [],
+        "pathPatterns": [],
+        "semanticFacts": [
+          {
+            "flag": "visualImpactUnknown",
+            "equals": true,
+            "result": "MISSING"
+          }
+        ]
+      }
+    }
+  ],
+  "provenance": {
+    "actor": "Ahmed",
+    "authority": "Direct user request after the current checkpoint was presented: commit and merge this branch with main; explicit finalize invocation.",
+    "interpretation": "Accept release of the presented55/75 implementation checkpoint, not completion of the remaining20 audit findings. D-22 alone is not used as design acceptance.",
+    "observedAt": "2026-10-15T22:14:19Z",
+    "presentationBinding": "evidence/wp03-product-shell/2026-10-16-merged-b09-leader-requests-source-binding.json; exact source/test inputs unchanged except output-equivalent unused prototype parameter removal.",
+    "financialAuthorization": false
+  }
+}

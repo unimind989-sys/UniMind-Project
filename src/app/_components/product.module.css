@@ -278,13 +278,25 @@
   background: var(--ready-surface);
 }
 .sourceContext {
-  display: flex;
-  flex-wrap: wrap;
+  /* Heading and purpose on one row; the return action and its note on the next. */
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
   gap: 8px 16px;
   margin-block-end: 16px;
 }
+.sourceContext > h2 {
+  margin: 0;
+}
+.sourceContext > :not(h2, p, a) {
+  grid-column: 1 / -1;
+}
+.sourceContext > p:last-child {
+  grid-column: 2;
+}
 @media (max-width: 767px) {
+  .sourceContext > h2,
+  .sourceContext > h2 + p,
   .materialsHeading h2 {
     position: absolute;
     width: 1px;
@@ -295,6 +307,7 @@
   }
 }
 .sourceContext > a {
+  justify-self: start;
   min-height: 44px;
   max-width: 100%;
   padding: 8px 12px;
@@ -302,7 +315,6 @@
   overflow-wrap: anywhere;
 }
 .sourceContext > p {
-  flex: 1 1 280px;
   min-width: 0;
   margin: 0;
   color: var(--secondary);
@@ -515,6 +527,10 @@
   line-height: 1.6;
   overflow-wrap: anywhere;
 }
+.sourceIdentity p {
+  margin-block-start: 2px;
+  line-height: 1.5;
+}
 .sourceRow > .pill {
   justify-self: end;
   max-width: 20rem;
@@ -620,10 +636,11 @@
   display: flex;
   width: min(100%, 32rem);
   margin-inline: auto;
-  flex-wrap: wrap;
+  /* Stack actions so Start stays centered on the configuration path. */
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   padding-block: 20px;
   border-block-start: 1px solid var(--border);
 }

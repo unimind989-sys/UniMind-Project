@@ -4064,6 +4064,7 @@ for (const locale of ["en", "ar"]) {
           .filter({ visible: true })
           .first()
           .click();
+        await ensureB09Intake(page, locale);
         await page
           .getByRole("button", {
             name: pick(
@@ -4083,12 +4084,14 @@ for (const locale of ["en", "ar"]) {
             exact: true,
           })
           .click();
+        const receipt = page.locator('[data-record-request="sample-item-1"]');
+        await expect(receipt.locator('[data-status="RECEIVED"]')).toBeVisible();
         await expect(
-          page.getByText(
-            pick(locale, "Submission received", "تم استلام الإرسال"),
-            { exact: true },
-          ),
-        ).toBeVisible();
+          page.getByRole("status").filter({
+            hasText: pick(locale, "Received files", "الملفات المستلمة"),
+          }),
+        ).toContainText(locale === "ar" ? "١" : "1");
+        await expect(receipt.locator("input, textarea, select")).toHaveCount(0);
       }
       await expect(
         page.getByText("Synthetic demo · Simulated services", { exact: false }),

@@ -96,6 +96,19 @@ const b07SourcesName = (locale: string) =>
   locale === "ar" ? /^مصادر (وحدة|مادة)$/u : /^(Module|Subject) sources$/u;
 const b07DetailsName = (locale: string) =>
   locale === "ar" ? /^تفاصيل (وحدة|مادة)$/u : /^(Module|Subject) details$/u;
+const studyOptionsSummary = (page: Page, locale: string) =>
+  page
+    .locator("summary")
+    .filter({ hasText: locale === "ar" ? "خيارات المذاكرة" : "Study options" });
+// Phone Chat keeps sources and study language inside the Study options menu.
+async function openStudyOptions(page: Page, locale: string) {
+  const summary = studyOptionsSummary(page, locale);
+  if (
+    (await summary.isVisible()) &&
+    (await summary.locator("..").getAttribute("open")) === null
+  )
+    await summary.click();
+}
 const b07ChooseName = (locale: string) =>
   locale === "ar"
     ? /^(اختر (وحدة|مادة)|تصفح كل المواد)$/u
@@ -1996,9 +2009,10 @@ for (const locale of ["en", "ar"] as const) {
       locale,
       "/batch-leader/campaigns/sample-campaign",
     );
+    await ensureB09Intake(page, locale);
     await expect(
       page.getByRole("heading", {
-        name: t("Add files", "إضافة ملفات"),
+        name: t("Upload files", "رفع الملفات"),
         exact: true,
       }),
     ).toBeVisible();
@@ -2008,7 +2022,7 @@ for (const locale of ["en", "ar"] as const) {
         await page.setViewportSize({ width, height: 900 });
         await expect(
           page.getByRole("heading", {
-            name: t("Add files", "إضافة ملفات"),
+            name: t("Upload files", "رفع الملفات"),
             exact: true,
           }),
         ).toBeVisible();
@@ -2502,7 +2516,7 @@ for (const locale of ["en", "ar"] as const) {
       );
       const destination = await start.getAttribute("href");
       await start.press("Enter");
-      await expect(page).toHaveURL(`http://127.0.0.1:3101${destination}`);
+      await expect(page).toHaveURL(new URL(destination!, page.url()).href);
       await expect(
         page.getByRole("heading", {
           name: t("Materials", "مصادر المذاكرة"),
@@ -5242,7 +5256,7 @@ for (const locale of ["en", "ar"] as const) {
       page.locator('input[name^="sample-question-"]:checked'),
     ).toHaveCount(0);
     await expect(page.getByRole("timer")).toContainText(
-      new Intl.NumberFormat(locale).format(180),
+      `${clock(locale, 3)}:${clock(locale, 0)}`,
     );
     await page
       .getByRole("link", {
@@ -8020,7 +8034,7 @@ for (const locale of ["en", "ar"] as const) {
       })
       .click();
     await expect(page).toHaveURL(
-      `http://127.0.0.1:3101${unit}/chat?lang=${locale}`,
+      new URL(`${unit}/chat?lang=${locale}`, page.url()).href,
     );
     await expect(message).toHaveValue(
       "Synthetic unsent draft for the new thirteenth session.",
@@ -10089,6 +10103,11 @@ const campaign = "/batch-leader/campaigns/sample-campaign";
 type Locale = "en" | "ar";
 const pick = (locale: Locale, en: string, ar: string) =>
   locale === "ar" ? ar : en;
+const clock = (locale: Locale, value: number) =>
+  new Intl.NumberFormat(locale, {
+    minimumIntegerDigits: 2,
+    useGrouping: false,
+  }).format(value);
 
 for (const locale of ["en", "ar"] as const) {
   test(`student entry ${locale}: progressive choices, upstream reset, review and distinct destinations`, async ({
@@ -12200,7 +12219,7 @@ test("normal sign-out changes roles without carrying the previous role's screen"
   await signIn(page, "student", "en", unit + "/chat");
   await navigate(page, "/settings");
   await expect(
-    page.getByRole("heading", { name: "Account", exact: true }),
+    page.getByRole("heading", { name: "Settings", exact: true }),
   ).toBeVisible();
   await showAccountView(page, "identity");
   await page.getByRole("button", { name: "Sign out", exact: true }).click();
@@ -13503,7 +13522,7 @@ for (const locale of ["en", "ar"] as const) {
       ),
     ).toBeVisible();
     await expect(page.getByRole("timer")).toContainText(
-      new Intl.NumberFormat(locale).format(180),
+      `${clock(locale, 3)}:${clock(locale, 0)}`,
     );
     await page.clock.fastForward(61_000);
     await expect(
@@ -13928,11 +13947,16 @@ for (const locale of ["en", "ar"] as const) {
         await page.setViewportSize({ width, height: 1000 });
         await expect(scopeLabel()).toHaveCount(0);
         await expect(interfaceGroup()).toBeVisible();
+        const narrow = width < 768;
         const first = await sessions.boundingBox();
-        const second = await sources.boundingBox();
+        const second = await (
+          narrow ? studyOptionsSummary(page, locale) : sources
+        ).boundingBox();
         expect(Math.abs(first!.y - second!.y)).toBeLessThan(2);
+        await openStudyOptions(page, locale);
         const choices = await languages.boundingBox();
         expect(choices!.y).toBeGreaterThanOrEqual(first!.y + first!.height);
+        if (narrow) await studyOptionsSummary(page, locale).click();
         await sessions.press("Enter");
         const popup = await sessions
           .locator("..")
@@ -13977,6 +14001,7 @@ for (const locale of ["en", "ar"] as const) {
     ).toBeVisible();
     await sessions.press("Escape");
     await expect(sessions).toBeFocused();
+    await openStudyOptions(page, locale);
     await languages.locator('input[value="mixed"]').check();
     const message = page.getByLabel(pick(locale, "Message", "السؤال"), {
       exact: true,
@@ -14028,6 +14053,7 @@ for (const locale of ["en", "ar"] as const) {
       })
       .click();
     await expect(page.locator("article")).toHaveCount(1);
+    await openStudyOptions(page, locale);
     await sources.press("Enter");
     await expect(
       page.getByRole("link", {
@@ -14979,8 +15005,8 @@ for (const locale of ["en", "ar"] as const) {
       has: page.getByRole("link", {
         name:
           locale === "en"
-            ? /^(Choose a (module|subject)|Resume Anatomy)$/u
-            : /^(اختر (وحدة|مادة)|متابعة علم التشريح)$/u,
+            ? /^(Choose a (module|subject)|(Open|Resume) Anatomy)$/u
+            : /^(اختر (وحدة|مادة)|(فتح|متابعة) علم التشريح)$/u,
       }),
     });
     const inspectResume = async () => {
@@ -15302,7 +15328,7 @@ for (const locale of ["en", "ar"] as const) {
         .poll(() =>
           page.locator("#app-content h1").evaluate((heading) => {
             const label = document.querySelector(
-              "[class*='app-shell_location']",
+              "header[data-workspace-chrome] [class*='location']",
             )!;
             const first = label.getBoundingClientRect(),
               second = heading.getBoundingClientRect();
@@ -15398,6 +15424,7 @@ for (const locale of ["en", "ar"] as const) {
       await page
         .getByLabel(pick(locale, "Message", "السؤال"), { exact: true })
         .fill(draft);
+      await openStudyOptions(page, locale);
       await page
         .getByRole("link", {
           name: b07SourcesName(locale),
@@ -15414,7 +15441,7 @@ for (const locale of ["en", "ar"] as const) {
             exact: true,
           }),
         ).toHaveAttribute("href", `${unit}/chat?lang=${locale}`);
-        await expect(sourceContext.locator("p")).toContainText(
+        await expect(sourceContext.locator("p").last()).toContainText(
           pick(
             locale,
             "Excerpts and page references below are illustrative.",
@@ -15423,7 +15450,7 @@ for (const locale of ["en", "ar"] as const) {
         );
         const geometry = await sourceContext.evaluate((e) => {
           const action = e.querySelector("a")!,
-            caption = e.querySelector("p")!;
+            caption = e.querySelector("p:last-of-type")!;
           const link = action.getBoundingClientRect(),
             note = caption.getBoundingClientRect();
           return {

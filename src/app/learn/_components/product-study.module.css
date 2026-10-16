@@ -1,7 +1,7 @@
 .chatLayout {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: minmax(min-content, 1fr);
+  grid-template-rows: minmax(0, 1fr);
   gap: 24px;
   height: 100%;
   min-height: 28rem;
@@ -249,6 +249,28 @@
 .suggestions button:hover {
   background: var(--surface-active);
   color: var(--text-primary);
+}
+@media (min-width: 768px) and (max-height: 960px) {
+  /* Short desktop viewports keep the composer and every suggestion in view. */
+  .chatEmpty {
+    max-width: 48rem;
+    padding: 8px 4px;
+  }
+  .chatEmpty > svg,
+  .chatEmpty > .caption {
+    display: none;
+  }
+  .chatEmpty h3 {
+    margin: 4px 0 8px;
+    font-size: 1.25rem;
+  }
+  .chatEmpty p {
+    max-width: none;
+    margin-block-end: 8px;
+  }
+  .suggestions {
+    margin-block: 8px 0;
+  }
 }
 .exchange {
   padding-block: 1rem 1.75rem;
@@ -720,6 +742,13 @@
 .studioControls > h2 {
   margin: 0 0 4px;
   font-size: 1.125rem;
+}
+/* Generate stays reachable when the controls are taller than the viewport. */
+.studioControls > button[type="submit"] {
+  position: sticky;
+  inset-block-end: 12px;
+  z-index: 1;
+  box-shadow: 0 0 0 8px var(--surface);
 }
 .secondaryOptions {
   border-block-start: 1px solid var(--border);
