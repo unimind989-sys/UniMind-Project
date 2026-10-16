@@ -1439,6 +1439,20 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 **Pass:** The requested UI slice works through existing authorized catalog, save and navigation seams, with truthful proof and no landing/access or protected semantic change. Completion is scoped to the requested local review boundary.
 
+#### WP03-T15 — Consolidate tests, CI and the synthetic render paths
+
+**Dependencies:** WP00-T18 (agent workflow v2); WP03-T11 hosted synthetic login stays an intended production feature. Ahmed delegated execution and design choices for this task on 2026-10-16; product-visible behaviour must not change.
+
+- [~] Remove duplicated and low-value tests across unit, security, integration, eval and load layers; keep every forbidden-path and RLS proof or name its equivalent.
+- [~] Split the demo e2e suite into area specs with shared helpers; cut repeated locale, theme, width and axe loops into one layout matrix while keeping RTL, accessibility, denial and core-journey coverage.
+- [~] Run CI as parallel jobs with sharded browser tests while keeping the required check names and workflow hardening.
+- [~] Move synthetic demo logic from `src/app` into `src/lib/demo` so module-boundary checks cover it.
+- [~] Remove the `/preview` fixture routes and the separate loopback `/synthetic-runtime` path; serve synthetic mode through one client runtime and route table without weakening real-mode auth, the production 404 for synthetic routes, or hosted-mode isolation (no server requests, no cookies, reset on reload).
+- [~] Split source files over 800 lines and enforce a line limit.
+- [~] Repository hygiene: delete per-file evidence hash manifests, remove duplicate scripts, placeholder modules and duplicate demo copies, list large binaries for a founder decision, and normalize line endings once at the end.
+
+**Pass:** the same product behaviour in real, hosted-synthetic and local demo modes; required CI green with a much shorter wall time; fewer tests with no lost forbidden-path, RLS, accessibility or RTL protection; no source file over the limit.
+
 ### 6.1 Routes
 
 Implement at minimum:
