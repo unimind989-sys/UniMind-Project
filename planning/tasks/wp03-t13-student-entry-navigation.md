@@ -60,7 +60,7 @@ Implement and verify locally for review. Do not commit until Ahmed instructs it.
 
 **Pass:** Merge the currently presented frontend refinement checkpoint through protected main with required green checks and affected synthetic Preview production proof. Keep the merged audit at55/75 locally verified;20 remaining findings and WP03-T13 follow-up stay open. This is not completion of the whole audit or readiness for real users/providers.
 
-**Evidence:** evidence/wp03-product-shell/2026-10-16_frontend-refinements_delivery_98bcaef.md
+**Evidence:** evidence/wp03-product-shell/2026-10-16_frontend-refinements_delivery_98bcaef.md; evidence/wp03-product-shell/2026-10-16_frontend-refinements_production_45a8c8c.md
 
 **Rollback:** Revert the checkpoint merge through a protected pull request; retain public deployment dpl_7vzJmYUCUkCQZN1hCwJFsHuuqc2V until its replacement passes production proof.
 
@@ -74,7 +74,7 @@ Implement and verify locally for review. Do not commit until Ahmed instructs it.
 
 **Preparation review:** COMPLETE_INLINE
 
-**Preparation fingerprint:** 4d8bca74249b505a54b2107ac04eab7c6f0c3a97907ee591cdbd7c4a054091f2
+**Preparation fingerprint:** 9aec2caf71b756b1627d012f5118c30e1a677d7ff6380251efa985803ec367cf
 
 **Unresolved findings:** NONE
 
@@ -101,7 +101,7 @@ Ahmed approved implementation of the voice-note review, expanding reduced margin
 
 **Commands:** Pinned production dependency audit (zero advisories); hosted e2e 146/146; first full guarded chain stopped at the demo suite (261 passed, 23 failed: stale drivers plus four layout budgets). After the corrections below, the 23 failing demo cases pass in focused reruns; format, lint and typecheck exit 0. Fresh full guarded `pnpm verify` and exact-head required CI follow for the corrected candidate and are recorded in the delivery evidence.
 
-**Remaining:** Deliver the current checkpoint under Ahmed's16October2026 direct commit/merge/finalize instruction. Twenty audit findings remain open after this release; no blanket audit completion or production-service readiness claim.
+**Remaining:** Checkpoint delivered: PR #73 merged as 45a8c8c and production serves release wp03-t13-frontend-refinements-45a8c8c-production (rollback dpl_7vzJmYUCUkCQZN1hCwJFsHuuqc2V). Ahmed's hands-on look at the corrected Chat, Studio, Quiz, Sources and Settings screens remains open. Twenty audit findings remain after this release; no blanket audit completion or production-service readiness claim.
 
 **Next safe action:** Complete current checkpoint verification, protected PR/merge, affected synthetic Preview production proof and cleanup. Resume B10 only as later frontend work after this delivery.
 

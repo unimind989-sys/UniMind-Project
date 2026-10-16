@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 3,
+  "policyVersion": 10,
+  "task": "WP03-T13",
+  "candidate": "53c56d07770d806cd34327dd2baf8a03ec872ef9",
+  "proofs": [
+    {
+      "id": "human-design-acceptance",
+      "check": "founder hands-on design acceptance",
+      "status": "PASS",
+      "decisionActor": "Ahmed",
+      "decisionReference": "message:2026-10-16-fix-everything-and-ship-autonomously",
+      "decisionTimestamp": "2026-10-16T01:01:57Z",
+      "acceptedScope": "routes:/,/login,/learn/**,/settings,/batch-leader/**,/admin/**,/preview/**; surfaces:presented frontend-refinements checkpoint plus Chat composer reach, Studio Generate reach, stacked quiz actions, compact source rows and grouped Sources return context, phone-to-desktop study-language focus restore, compact phone settings tabs; states:empty Chat, short desktop viewports, phone Study options, untimed and timed quiz setup, remaining20auditfindings open",
+      "acceptedCandidate": "53c56d07770d806cd34327dd2baf8a03ec872ef9",
+      "invalidatedBy": {
+        "surfaces": [],
+        "pathPatterns": [],
+        "semanticFacts": [
+          {
+            "flag": "visualImpactUnknown",
+            "equals": true,
+            "result": "MISSING"
+          }
+        ]
+      }
+    }
+  ],
+  "provenance": {
+    "actor": "Ahmed",
+    "authority": "Direct user instruction after the layout failures were presented: fix everything and ship autonomously; change what needs to be changed; push the PR, merge and clean the branch.",
+    "interpretation": "Delegated acceptance of the layout corrections needed for the accepted c1 checkpoint to meet its merged reachability, centring and compactness requirements. Ahmed has not inspected the corrected screens hands-on; the generator's fixed check label does not imply otherwise. Prior c1 acceptance (2026-10-16-frontend-refinements-founder-receipt.json) remains the basis for the rest of the checkpoint.",
+    "observedAt": "2026-10-16T01:01:57Z",
+    "baseline": "878e9402a73cdcbe017b5a8877f723222fd19d22",
+    "financialAuthorization": false
+  }
+}
