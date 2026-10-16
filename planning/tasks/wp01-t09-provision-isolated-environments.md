@@ -1,5 +1,31 @@
 # Task record: WP01-T09 provision isolated environments
 
+## 2026-10-08 custom domain maintenance
+
+**Maintenance status:** COMPLETE. Ahmed explicitly authorized autonomous setup of the already-purchased Hostinger domain, using main only and preserving the unfinished frontend branch.
+
+**Maintenance branch:** main at b4cac79, separate checkout E:/UniMind-domain-main. The original checkout and its unrelated edits are preserved. No application source changed. This maintenance record and its evidence were committed later through a protected docs pull request; no main-protection exception was needed.
+
+**Scope:** Connect unimind.space and www.unimind.space to the existing synthetic Preview production site; preserve Hostinger nameservers and unrelated email records; verify DNS, HTTPS, canonical redirects, health, and anonymous authorization boundaries. Keep Beta locked and spending unchanged.
+
+**Envelope:** Policy v10; docs, delivery, runtime, auth; R3/Protected; one executor, zero workers. Design disposition NOT_APPLICABLE; provider configuration only. One coherent Sol work block covers provider configuration, affected public proof, and evidence. No separate model boundary is needed for this bounded maintenance request.
+
+**Trust map:** Supabase Auth and existing server/database guards remain authoritative. Domain names, Host headers, next parameters, and callback inputs are untrusted. Existing server-owned APP_ORIGIN controls verification/recovery URLs; Supabase permits only explicitly listed callback URLs. Allowed path: canonical HTTPS landing/login and invalid callback return to the same canonical domain. Forbidden path: anonymous access cannot enter protected product routes or invoke uploads; external next cannot produce an external redirect. Cookies remain host-scoped, callback responses private/no-store. No tokens, personal domain-owner data, or source text enters evidence.
+
+**Verification:** Inspect exact project/team and deployed source; record old DNS values; use provider-returned DNS targets; verify authoritative/public DNS, valid TLS, www and HTTP redirects, health/live and health/ready, invalid callback and protected-route behavior. Reuse unchanged source proof from WP03-T10; broad application/database CI is not a rejecting check for external DNS configuration. Any redeployment must reuse a reviewed main source with mock providers and zero budget.
+
+**Rollback:** Restore A @ to 2.57.91.91 (TTL 50), CNAME www to unimind.space (TTL 300), old APP_ORIGIN/callback settings, and the verified prior production deployment dpl_4gRN7d4ytvkFGnEaVwEmQBWw92cd. Preserve MX/TXT records and nameservers.
+
+**Maintenance result:** Both domains have valid Vercel configuration. Authoritative Hostinger DNS has A @ 216.198.79.1 and 64.29.17.1, plus CNAME www 54121ff874de4767.vercel-dns-017.com, all TTL 300. HTTPS serves unimind.space; www returns 308 to the apex while retaining path/query. Production APP_ORIGIN and Preview Supabase Site URL are https://unimind.space; the exact /auth/callback URLs for the new and retained public domains were added while preserving the earlier entries. Vercel Preview APP_ORIGIN retains its prior value in a separate scope.
+
+**Release binding:** Rebuilt the already-reviewed deployment using immutable source 1013cd5961edd9b3eb8670c0363b712e2e0747a0, an ancestor of main whose executable files equal main. READY deployment dpl_7vzJmYUCUkCQZN1hCwJFsHuuqc2V serves the three public aliases; release fingerprint wp03-t10-open-folio-1013cd5-production is retained. No WIP source was deployed. The prior deployment remains available for rollback. The existing automation bypass was reused; its creation date predates this maintenance and no new bypass was created.
+
+**Maintenance proof:** Seven existing deployment smoke checks passed under pinned Node 24.19.0. Eleven additional public checks passed, including canonical release identity, HTTP/www redirects, private login, invalid/recovery callbacks, external-next denial, three anonymous protected-route redirects, private simulation denial, and anonymous upload rejection. The protected pages use Next.js streamed redirects with HTTP 200; browser navigation independently returned to login. The synthetic student account reached consent on the new domain, then reload cleared its document-local state. Evidence: evidence/wp01-foundation/2026-10-08_custom-domain_production_1013cd5.md. Live email delivery was not exercised.
+
+**Future releases:** Keep unimind.space as Production APP_ORIGIN and the Supabase Site URL. Existing controlled promotion has automatic custom-domain assignment disabled; explicitly bind unimind.space, www.unimind.space, and project-xwrez.vercel.app to the reviewed production deployment and preserve the www redirect. Do not assume rebuilding updates public aliases. No remaining domain-setup action or founder decision is required.
+
+**Hard stops:** Paid resource/trial/upgrade, weakening authorization, modifying Beta or unfinished frontend work, bypassing main branch protection, or false PASS. No commit or branch-protection exception is needed for domain connection itself.
+
 **Task ID:** WP01-T09
 
 **Status:** [x]
