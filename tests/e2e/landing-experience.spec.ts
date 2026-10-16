@@ -88,29 +88,20 @@ test("folio moves without input, ignores the pointer and pauses when offscreen o
     .not.toBe(initialTransform);
 
   // Freeze time to distinguish autonomous animation from pointer-driven perspective.
-  await atlas.evaluate((element) => {
-    for (const animation of element.getAnimations({ subtree: true }))
-      animation.pause();
+  // pause() stays pending until the next frame; wait so the hold time is fixed.
+  await atlas.evaluate(async (element) => {
+    const animations = element.getAnimations({ subtree: true });
+    for (const animation of animations) animation.pause();
+    await Promise.all(animations.map((animation) => animation.ready));
   });
   const pausedTransform = await stage.evaluate(
     (element) => getComputedStyle(element).transform,
   );
   await atlas.hover({ position: { x: 30, y: 30 } });
   await atlas.hover({ position: { x: 180, y: 180 } });
-  // Pointer-driven perspective would move these values far beyond float noise.
-  const matrix = (transform: string) =>
-    (
-      transform
-        .slice(transform.indexOf("(") + 1)
-        .match(/-?\d+(?:\.\d+)?(?:e-?\d+)?/gu) ?? []
-    ).map(Number);
-  const hovered = matrix(
+  expect(
     await stage.evaluate((element) => getComputedStyle(element).transform),
-  );
-  expect(hovered).toHaveLength(matrix(pausedTransform).length);
-  matrix(pausedTransform).forEach((value, index) =>
-    expect(hovered[index]).toBeCloseTo(value, 3),
-  );
+  ).toBe(pausedTransform);
 
   await page
     .getByRole("heading", { name: "How it works", exact: true })

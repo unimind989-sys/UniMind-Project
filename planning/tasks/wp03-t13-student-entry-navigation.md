@@ -74,7 +74,7 @@ Implement and verify locally for review. Do not commit until Ahmed instructs it.
 
 **Preparation review:** COMPLETE_INLINE
 
-**Preparation fingerprint:** 40b1f8071d2b65751aa089c8c10757d9800942cf7c2e6fe19f1a29c0b19235a0
+**Preparation fingerprint:** 4d8bca74249b505a54b2107ac04eab7c6f0c3a97907ee591cdbd7c4a054091f2
 
 **Unresolved findings:** NONE
 
@@ -1037,4 +1037,4 @@ The demo `signIn` helper retries a login click that lands before the form hydrat
 
 Exact-head CI on 7fcd67b completed the full chain within the new limit (hosted 146/146; demo 280 passed, 4 failed on the Linux runner, all passing locally). Phone settings tabs wrapped `Academic settings` and `Identity and access` to two lines under Linux font metrics, growing the tab grid to 146.6px against its 130px budget; phone tab labels now use a 1.25 line height so wrapped labels stay within budget. The B06 sources-visibility check now polls until the shell's post-resize layout settles, and the M52 admin accessibility audit waits for running animations to finish so it checks settled colours rather than a dialog fade. No assertion or threshold changed.
 
-Exact-head CI at dc25646 passed 283/284 demo cases; the one failure was a Next dev-server rewrite-proxy `ECONNRESET` that returned HTTP 500 on an RSC settings request and forced a demo reload (the same case passed in the previous run and locally). The re-run of that job then failed one hosted landing case: the paused folio transform differed from its hovered value by 0.000005px of float noise under exact string equality. The landing check now compares matrix values to three decimals, still rejecting any pointer-driven perspective. The guarded local chain at dc25646 passed (fingerprint 40b1f807…, unit 1065, hosted 146, demo 284, safe build).
+Exact-head CI at dc25646 passed 283/284 demo cases; the one failure was a Next dev-server rewrite-proxy `ECONNRESET` that returned HTTP 500 on an RSC settings request and forced a demo reload (the same case passed in the previous run and locally). The re-run of that job then failed one hosted landing case: the paused folio transform differed from its hovered value by 0.000005px of float noise under exact string equality. A three-decimal tolerance then failed at 0.0023 on the next run, exposing the real cause: `Animation.pause()` is pending until the next frame, so the test read its reference transform before the hold time was fixed. The check now awaits each paused animation's `ready` promise and keeps the original exact comparison (10/10 local repeats). The guarded local chain at dc25646 passed (fingerprint 40b1f807…, unit 1065, hosted 146, demo 284, safe build).
