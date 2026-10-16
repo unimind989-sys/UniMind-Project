@@ -36,7 +36,7 @@ Additional live inspection confirms Arabic/light at 320px, original loaded fonts
 ## Artifacts and handoff
 
 - [Matched screenshot comparison](<E:/Unimind audits/analysis/fix-batch-09-comparison.md>).
-- [Source binding](2026-10-11-audit-fixes-batch-09-source-binding.json): 33 source/test candidate hashes, nine incremental changes, 24 unchanged prior hashes, original fonts, both reports, final live ledger and eight review images. Aggregate 5c7615d942ef131b6ab3fa46e46ee47ed101a206856e4bfd34ca849a72235daf.
+- Source binding (hash manifest removed in WP03-T15; see git history): 33 source/test candidate hashes, nine incremental changes, 24 unchanged prior hashes, original fonts, both reports, final live ledger and eight review images. Aggregate 5c7615d942ef131b6ab3fa46e46ee47ed101a206856e4bfd34ca849a72235daf.
 - [Before/after tracker](<E:/Unimind audits/fix-batches.md>), [live ledger](<E:/Unimind audits/analysis/fix-batch-09-live-ui.json>), [repair report](<E:/Unimind audits/analysis/fix-batch-09-repair-e2e.json>).
 
 Normal dev session 27236 remains running on port 3000 with process-local mock providers and zero budget. In-app tab 2 shows Anatomy Materials; viewport override reset. Stop it before another E2E server starts in the same checkout. Reload discards the public document-local sample; the approved sample entry restores Medicine / First year / Term 1. No environment file changed.

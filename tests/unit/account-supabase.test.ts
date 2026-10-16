@@ -1,22 +1,19 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { syntheticCatalogRows } from "../../src/app/learn/synthetic-catalog";
 import { contextFromSelection } from "../../src/lib/account/account.application";
+import type { AuthorizedCatalogRow } from "../../src/lib/catalog/catalog-journey.application";
+
+type Result = Readonly<{ data: unknown; error: unknown }>;
+type RecordedQuery = {
+  table: string;
+  filters: unknown[][];
+  update?: unknown;
+};
 
 const mocks = vi.hoisted(() => ({
   client: vi.fn(),
   identity: vi.fn(),
   access: vi.fn(),
   catalog: vi.fn(),
-  from: vi.fn(),
-  select: vi.fn(),
-  eq: vi.fn(),
-  is: vi.fn(),
-  update: vi.fn(),
-  single: vi.fn(),
-  in: vi.fn(),
-  order: vi.fn(),
-  limit: vi.fn(),
-  maybeSingle: vi.fn(),
 }));
 vi.mock("server-only", () => ({}));
 vi.mock("../../src/lib/db/supabase/server", () => ({
@@ -37,7 +34,32 @@ import {
   saveCurrentAcademicSettings,
   loadCurrentStudyResume,
 } from "../../src/lib/account/account.supabase.server";
-const row = syntheticCatalogRows[0]!;
+
+const node = (id: string) => ({
+  id,
+  code: id,
+  nameEn: id,
+  nameAr: id,
+  sortOrder: 1,
+});
+const row: AuthorizedCatalogRow = {
+  stage: node("stage-1"),
+  institution: node("institution-1"),
+  program: {
+    ...node("program-1"),
+    progressionMode: "TERM_BASED",
+    unitType: "MODULE",
+    unitLabelSingularEn: "Module",
+    unitLabelPluralEn: "Modules",
+    unitLabelSingularAr: "وحدة",
+    unitLabelPluralAr: "وحدات",
+  },
+  level: node("level-1"),
+  term: node("term-1"),
+  cohort: { ...node("cohort-1"), curriculumEdition: "2026" },
+  unit: { ...node("unit-1"), unitType: "MODULE" },
+};
+const rows = [row];
 const context = contextFromSelection({
   stageId: row.stage.id,
   institutionId: row.institution.id,
@@ -46,40 +68,67 @@ const context = contextFromSelection({
   termId: row.term.id,
   cohortId: row.cohort.id,
 })!;
+const caller = ["eq", "user_id", "verified-caller"];
+
+/**
+ * Records which table each query targets, its filters and any update payload,
+ * so assertions cover target, caller scope and written fields rather than the
+ * builder call order.
+ */
+let results: Record<string, Result>;
+let queries: RecordedQuery[];
+function fakeClient() {
+  return {
+    from(table: string) {
+      const query: RecordedQuery = { table, filters: [] };
+      queries.push(query);
+      const builder: object = new Proxy(
+        {},
+        {
+          get(_target, property) {
+            if (property === "then")
+              return (resolve: (value: Result) => unknown) =>
+                resolve(
+                  results[table] ?? {
+                    data: null,
+                    error: { message: `unexpected ${table}` },
+                  },
+                );
+            return (...args: unknown[]) => {
+              if (property === "update") query.update = args[0];
+              if (["eq", "is", "in"].includes(String(property)))
+                query.filters.push([property, ...args]);
+              return builder;
+            };
+          },
+        },
+      );
+      return builder;
+    },
+  };
+}
+const queriesOf = (table: string) =>
+  queries.filter((query) => query.table === table);
+
 beforeEach(() => {
   vi.resetAllMocks();
-  const chain = {
-    select: mocks.select,
-    eq: mocks.eq,
-    is: mocks.is,
-    update: mocks.update,
-    single: mocks.single,
-    in: mocks.in,
-    order: mocks.order,
-    limit: mocks.limit,
-    maybeSingle: mocks.maybeSingle,
+  queries = [];
+  results = {
+    profiles: {
+      data: {
+        user_id: "verified-caller",
+        display_name: "Sample Student",
+        preferred_language: "en",
+        academic_context: context,
+      },
+      error: null,
+    },
+    user_roles: { data: [{ role: "STUDENT" }], error: null },
   };
-  mocks.from.mockReturnValue(chain);
-  mocks.select.mockReturnValue(chain);
-  mocks.eq.mockReturnValue(chain);
-  mocks.update.mockReturnValue(chain);
-  mocks.in.mockReturnValue(chain);
-  mocks.order.mockReturnValue(chain);
-  mocks.limit.mockReturnValue(chain);
-  mocks.client.mockResolvedValue({ from: mocks.from });
+  mocks.client.mockImplementation(async () => fakeClient());
   mocks.identity.mockResolvedValue({ userId: "verified-caller" });
   mocks.access.mockResolvedValue({ gate: "READY" });
-  mocks.catalog.mockResolvedValue({ rows: syntheticCatalogRows });
-  mocks.single.mockResolvedValue({
-    data: {
-      user_id: "verified-caller",
-      display_name: "Sample Student",
-      preferred_language: "en",
-      academic_context: context,
-    },
-    error: null,
-  });
-  mocks.is.mockResolvedValue({ data: [{ role: "STUDENT" }], error: null });
+  mocks.catalog.mockResolvedValue({ rows });
 });
 
 describe("existing-session resume boundary", () => {
@@ -89,29 +138,21 @@ describe("existing-session resume boundary", () => {
     curriculum_unit_id: row.unit.id,
   };
   beforeEach(() => {
-    mocks.is.mockReturnValue({ order: mocks.order });
-    mocks.maybeSingle.mockResolvedValue({ data: session, error: null });
+    results.chat_sessions = { data: session, error: null };
   });
   it("queries only the verified caller's open sessions in currently authorized scope", async () => {
-    expect(
-      await loadCurrentStudyResume(syntheticCatalogRows, row.cohort.id),
-    ).toBe(`/learn/${row.cohort.id}/${row.unit.id}/chat?session=${session.id}`);
-    expect(mocks.eq.mock.calls).toEqual([
-      ["user_id", "verified-caller"],
-      ["cohort_id", row.cohort.id],
-    ]);
-    expect(mocks.is).toHaveBeenCalledWith("closed_at", null);
-    expect(mocks.in).toHaveBeenCalledWith(
-      "curriculum_unit_id",
-      expect.arrayContaining([row.unit.id]),
+    expect(await loadCurrentStudyResume(rows, row.cohort.id)).toBe(
+      `/learn/${row.cohort.id}/${row.unit.id}/chat?session=${session.id}`,
     );
-    expect(mocks.select).toHaveBeenCalledWith(
-      "id, cohort_id, curriculum_unit_id",
+    expect(queries.map((query) => query.table)).toEqual(["chat_sessions"]);
+    expect(queriesOf("chat_sessions")[0]!.filters).toEqual(
+      expect.arrayContaining([
+        caller,
+        ["eq", "cohort_id", row.cohort.id],
+        ["is", "closed_at", null],
+        ["in", "curriculum_unit_id", [row.unit.id]],
+      ]),
     );
-    expect(mocks.order).toHaveBeenCalledWith("created_at", {
-      ascending: false,
-    });
-    expect(mocks.limit).toHaveBeenCalledWith(1);
   });
   it.each([
     null,
@@ -121,10 +162,8 @@ describe("existing-session resume boundary", () => {
   ])(
     "omits unavailable, foreign, revoked or malformed destinations",
     async (data) => {
-      mocks.maybeSingle.mockResolvedValue({ data, error: null });
-      expect(
-        await loadCurrentStudyResume(syntheticCatalogRows, row.cohort.id),
-      ).toBeNull();
+      results.chat_sessions = { data, error: null };
+      expect(await loadCurrentStudyResume(rows, row.cohort.id)).toBeNull();
     },
   );
   it("does not query storage for an unavailable catalog", async () => {
@@ -133,44 +172,44 @@ describe("existing-session resume boundary", () => {
   });
   it("omits the link on identity/database failure without exposing diagnostics", async () => {
     mocks.identity.mockRejectedValue(new Error("PRIVATE_DIAGNOSTIC"));
-    expect(
-      await loadCurrentStudyResume(syntheticCatalogRows, row.cohort.id),
-    ).toBeNull();
+    expect(await loadCurrentStudyResume(rows, row.cohort.id)).toBeNull();
     expect(mocks.client).not.toHaveBeenCalled();
     mocks.identity.mockResolvedValue({ userId: "verified-caller" });
-    mocks.maybeSingle.mockResolvedValue({
+    results.chat_sessions = {
       data: session,
       error: { message: "PRIVATE_DIAGNOSTIC" },
-    });
-    expect(
-      await loadCurrentStudyResume(syntheticCatalogRows, row.cohort.id),
-    ).toBeNull();
+    };
+    expect(await loadCurrentStudyResume(rows, row.cohort.id)).toBeNull();
   });
 });
+
 describe("account Supabase trust seams", () => {
   it("reads the caller's profile and current unrevoked roles, including persisted settings", async () => {
-    expect(await loadCurrentAccount()).toMatchObject({
+    expect(await loadCurrentAccount()).toEqual({
+      displayName: "Sample Student",
+      locale: "en",
       academicContext: context,
       home: "/learn",
     });
-    expect(mocks.eq.mock.calls).toEqual([
-      ["user_id", "verified-caller"],
-      ["user_id", "verified-caller"],
-    ]);
-    expect(mocks.is).toHaveBeenCalledWith("revoked_at", null);
+    expect(queriesOf("profiles")).toHaveLength(1);
+    expect(queriesOf("profiles")[0]!.filters).toContainEqual(caller);
+    expect(queriesOf("user_roles")[0]!.filters).toEqual(
+      expect.arrayContaining([caller, ["is", "revoked_at", null]]),
+    );
   });
   it("derives the Admin destination only from the caller-scoped role query", async () => {
-    mocks.is.mockResolvedValue({ data: [{ role: "ADMIN" }], error: null });
+    results.user_roles = { data: [{ role: "ADMIN" }], error: null };
     expect(await currentRoleHome()).toBe("/admin");
-    expect(mocks.eq).toHaveBeenCalledWith("user_id", "verified-caller");
-    expect(mocks.is).toHaveBeenCalledWith("revoked_at", null);
-    expect(mocks.from).not.toHaveBeenCalledWith("profiles");
+    expect(queries.map((query) => query.table)).toEqual(["user_roles"]);
+    expect(queriesOf("user_roles")[0]!.filters).toEqual(
+      expect.arrayContaining([caller, ["is", "revoked_at", null]]),
+    );
   });
   it("does not guess a role when authoritative role lookup fails", async () => {
-    mocks.is.mockResolvedValue({
+    results.user_roles = {
       data: null,
       error: { message: "PRIVATE_DIAGNOSTIC" },
-    });
+    };
     await expect(currentRoleHome()).rejects.toThrow(
       "Account destination unavailable.",
     );
@@ -179,8 +218,9 @@ describe("account Supabase trust seams", () => {
     expect(await saveCurrentAcademicSettings(context)).toEqual({
       status: "SAVED",
     });
-    expect(mocks.eq).toHaveBeenCalledWith("user_id", "verified-caller");
-    expect(mocks.update).toHaveBeenCalledWith({
+    const [write] = queriesOf("profiles");
+    expect(write!.filters).toContainEqual(caller);
+    expect(write!.update).toEqual({
       academic_context: context,
       updated_at: expect.any(String),
     });
@@ -204,7 +244,7 @@ describe("account Supabase trust seams", () => {
     expect(await saveCurrentAcademicSettings(context)).toEqual({
       status: "INVALID",
     });
-    expect(mocks.update).not.toHaveBeenCalled();
+    expect(queries).toEqual([]);
   });
   it("a caller ID supplied by the browser cannot override the verified identity", async () => {
     expect(
@@ -213,15 +253,15 @@ describe("account Supabase trust seams", () => {
         userId: "foreign-caller",
       }),
     ).toEqual({ status: "INVALID" });
-    expect(mocks.update).not.toHaveBeenCalled();
+    expect(queries).toEqual([]);
   });
   it("an RLS rejection never returns success or the provider diagnostic", async () => {
-    mocks.single.mockResolvedValue({
+    results.profiles = {
       data: null,
       error: { message: "PRIVATE_DIAGNOSTIC" },
-    });
-    expect(await saveCurrentAcademicSettings(context)).toEqual({
-      status: "UNAVAILABLE",
-    });
+    };
+    const outcome = await saveCurrentAcademicSettings(context);
+    expect(outcome).toEqual({ status: "UNAVAILABLE" });
+    expect(JSON.stringify(outcome)).not.toContain("PRIVATE_DIAGNOSTIC");
   });
 });

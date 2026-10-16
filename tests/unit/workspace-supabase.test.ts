@@ -1,5 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { supabaseWorkspaceRepository } from "../../src/lib/workspace/workspace.supabase.server";
+
 const mocks = vi.hoisted(() => ({
   createServerSupabaseClient: vi.fn(),
   rpc: vi.fn(),
@@ -59,8 +61,6 @@ describe("workspace Supabase adapter", () => {
       ],
       error: null,
     });
-    const { supabaseWorkspaceRepository } =
-      await import("../../src/lib/workspace/workspace.supabase.server");
     const result = await supabaseWorkspaceRepository.loadScope(
       row.cohort_id,
       row.curriculum_unit_id,
@@ -80,8 +80,6 @@ describe("workspace Supabase adapter", () => {
   });
 
   it("loads one caller-scoped workspace through the protected RPC", async () => {
-    const { supabaseWorkspaceRepository } =
-      await import("../../src/lib/workspace/workspace.supabase.server");
     const result = await supabaseWorkspaceRepository.loadScope(
       row.cohort_id,
       row.curriculum_unit_id,
@@ -99,8 +97,6 @@ describe("workspace Supabase adapter", () => {
   });
 
   it("rejects malformed route IDs before querying the database", async () => {
-    const { supabaseWorkspaceRepository } =
-      await import("../../src/lib/workspace/workspace.supabase.server");
     await expect(
       supabaseWorkspaceRepository.loadScope("forged", "forged"),
     ).resolves.toBeNull();
@@ -112,8 +108,6 @@ describe("workspace Supabase adapter", () => {
       data: [{ ...row, material_updated_at: null }, row],
       error: null,
     });
-    const { supabaseWorkspaceRepository } =
-      await import("../../src/lib/workspace/workspace.supabase.server");
     await expect(
       supabaseWorkspaceRepository.loadScope(
         row.cohort_id,

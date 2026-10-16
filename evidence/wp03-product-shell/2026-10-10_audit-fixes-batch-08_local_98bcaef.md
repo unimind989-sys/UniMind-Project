@@ -36,7 +36,7 @@ Comparison uses identical route, English, dark theme, academic fixture and colla
 ## Artifacts and handoff
 
 - [Matched screenshot comparison](<E:/Unimind audits/analysis/fix-batch-08-comparison.md>).
-- [Source binding](2026-10-10-audit-fixes-batch-08-source-binding.json): 33 source/test candidate hashes, nine incremental changes, 24 unchanged prior hashes, original fonts, all four reports, final live ledger and eight review images. Aggregate 480751b28436d223e319fa7ade0205b8c5b4e0fda50e4072a5dc18df6a0acf57.
+- Source binding (hash manifest removed in WP03-T15; see git history): 33 source/test candidate hashes, nine incremental changes, 24 unchanged prior hashes, original fonts, all four reports, final live ledger and eight review images. Aggregate 480751b28436d223e319fa7ade0205b8c5b4e0fda50e4072a5dc18df6a0acf57.
 - [Before/after tracker](<E:/Unimind audits/fix-batches.md>), [normal live ledger](<E:/Unimind audits/analysis/fix-batch-08-live-ui.json>), [final focused report](<E:/Unimind audits/analysis/fix-batch-08-final-e2e.json>).
 
 Normal dev session 37384 remains running on port 3000 with process-local mock providers and zero budget. In-app tab 1 shows Anatomy Materials; viewport override reset. Stop this session before another E2E server starts in the same checkout. Public document-local fixture is Medicine / First year / Term 1; reload discards it and the approved sample entry restores it. No environment file changed.

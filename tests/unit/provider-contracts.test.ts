@@ -269,6 +269,13 @@ describe("provider mock contract", () => {
     }
   });
 
+  it("answers cite exactly the supplied evidence segments", async () => {
+    const [answer] = harnesses("success");
+    await expect(answer?.invoke(baseContext)).resolves.toMatchObject({
+      value: { citedSegmentIds: ["segment-1"] },
+    });
+  });
+
   it("keeps the required provider error taxonomy explicit", () => {
     expect(providerErrorCodes).toEqual([
       "INVALID_INPUT",

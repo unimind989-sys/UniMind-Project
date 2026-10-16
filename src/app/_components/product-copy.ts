@@ -1,7 +1,7 @@
 "use client";
 
 import { useSyntheticNavigation } from "./product-navigation";
-import type { Locale } from "./synthetic-fixtures";
+import type { Locale } from "@/lib/demo/synthetic-fixtures.application";
 
 // Local review keeps its setup guidance. Hosted fixture services use ordinary
 // product wording; fixture material titles/content remain the selected data.

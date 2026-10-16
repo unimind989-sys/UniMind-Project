@@ -1,6 +1,6 @@
 import "server-only";
 
-import { loadSyntheticWorkspaceScope } from "@/app/learn/synthetic-workspace";
+import { loadSyntheticWorkspaceScope } from "@/lib/demo/synthetic-workspace.application";
 import {
   WorkspaceDataError,
   type WorkspaceChatSession,

@@ -13,7 +13,7 @@ import {
   artifactTypes,
   defaultScope,
   text,
-} from "@/app/_components/synthetic-fixtures";
+} from "@/lib/demo/synthetic-fixtures.application";
 import { FrontendIcon } from "@/app/_components/frontend-system";
 import type { ProductStudyProps } from "./product-study";
 import styles from "@/app/_components/product.module.css";

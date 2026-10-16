@@ -1,5 +1,4 @@
 import AxeBuilder from "@axe-core/playwright";
-import { getAdminCopy } from "../../src/lib/i18n/admin-copy";
 import { expect, test, type Page } from "@playwright/test";
 import {
   b09Campaign,
@@ -8,7 +7,7 @@ import {
   b09ReceiptJourney,
   openB09Upload,
   ensureB09Intake,
-} from "./collection-b09.checks";
+} from "./support/collection-b09";
 
 for (const locale of ["en", "ar"] as const) {
   test(`merged B09 hosted ${locale}: delayed inspection preserves a newer request and locale`, async ({
@@ -26,7 +25,7 @@ for (const locale of ["en", "ar"] as const) {
   });
   test(`merged B09 hosted ${locale}: request-first intake, three receipts, exact latest return and accessible reflow`, async ({
     page,
-  }, info) => {
+  }) => {
     test.setTimeout(150_000);
     const finish = await enter(
       page,
@@ -34,7 +33,7 @@ for (const locale of ["en", "ar"] as const) {
       locale,
       `/batch-leader?lang=${locale}`,
     );
-    await b09ReceiptJourney(page, locale, info);
+    await b09ReceiptJourney(page, locale);
     finish();
   });
   test(`merged B09 hosted ${locale}: named uploads reject a wrong format and retain two request bindings`, async ({
@@ -54,8 +53,9 @@ for (const locale of ["en", "ar"] as const) {
 import nodePath from "node:path";
 import {
   answerExamples,
+  getAdminCopy,
   promptExamples,
-} from "../../src/app/_components/synthetic-fixtures";
+} from "./support/app-fixtures";
 
 // Older return/guard journeys may use either configured course type. New B07-B
 // journeys assert the exact program label; these retain locale-specific names.

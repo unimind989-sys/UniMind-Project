@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import { WorkspaceFrame } from "@/app/learn/_components/workspace-frame";
-import { loadSyntheticWorkspaceScope } from "@/app/learn/synthetic-workspace";
+import { loadSyntheticWorkspaceScope } from "@/lib/demo/synthetic-workspace.application";
 import type { WorkspaceLayoutProps } from "@/lib/workspace/workspace-route.types";
 
 export default async function PreviewWorkspaceLayout({

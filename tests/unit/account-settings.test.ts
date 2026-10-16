@@ -4,9 +4,33 @@ import {
   authorizedAcademicContext,
   roleHome,
 } from "../../src/lib/account/account.application";
-import { syntheticCatalogRows } from "../../src/app/learn/synthetic-catalog";
+import type { AuthorizedCatalogRow } from "../../src/lib/catalog/catalog-journey.application";
 
-const row = syntheticCatalogRows[0]!;
+const node = (id: string) => ({
+  id,
+  code: id,
+  nameEn: id,
+  nameAr: id,
+  sortOrder: 1,
+});
+const row: AuthorizedCatalogRow = {
+  stage: node("stage-1"),
+  institution: node("institution-1"),
+  program: {
+    ...node("program-1"),
+    progressionMode: "TERM_BASED",
+    unitType: "MODULE",
+    unitLabelSingularEn: "Module",
+    unitLabelPluralEn: "Modules",
+    unitLabelSingularAr: "وحدة",
+    unitLabelPluralAr: "وحدات",
+  },
+  level: node("level-1"),
+  term: node("term-1"),
+  cohort: { ...node("cohort-1"), curriculumEdition: "2026" },
+  unit: { ...node("unit-1"), unitType: "MODULE" },
+};
+const catalogRows = [row];
 const context = {
   version: 1,
   stageId: row.stage.id,
@@ -22,7 +46,7 @@ describe("academic profile preference boundary", () => {
     const save = vi.fn();
     const repository = {
       eligibleCaller: async () => "verified-caller",
-      catalog: async () => syntheticCatalogRows,
+      catalog: async () => catalogRows,
       save,
     };
     expect(await saveAcademicSettings(repository, context)).toEqual({
@@ -45,7 +69,7 @@ describe("academic profile preference boundary", () => {
         await saveAcademicSettings(
           {
             eligibleCaller: async () => "caller",
-            catalog: async () => syntheticCatalogRows,
+            catalog: async () => catalogRows,
             save,
           },
           input,
@@ -71,7 +95,7 @@ describe("academic profile preference boundary", () => {
       await saveAcademicSettings(
         {
           eligibleCaller: async () => "caller",
-          catalog: async () => syntheticCatalogRows,
+          catalog: async () => catalogRows,
           save: async () => {
             throw new Error("fixture database unavailable");
           },

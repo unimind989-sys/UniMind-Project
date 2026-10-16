@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ProductNativePage } from "@/app/_components/product-native-page";
-import { resolveSyntheticPage } from "@/app/_components/synthetic-route";
+import { resolveSyntheticPage } from "@/lib/demo/synthetic-route.application";
 import { resolveDemoRuntime } from "@/lib/demo/demo-runtime.application";
 
 export async function generateMetadata({

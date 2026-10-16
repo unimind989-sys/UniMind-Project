@@ -1,8 +1,13 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import {
+  CatalogDataAccessError,
+  loadCurrentStudentCatalog,
+} from "../../src/lib/catalog/catalog-journey.supabase.server";
+import { createFakeSupabase } from "../helpers/fake-supabase";
+
 const mocks = vi.hoisted(() => ({
   createServerSupabaseClient: vi.fn(),
-  rpc: vi.fn(),
 }));
 
 vi.mock("server-only", () => ({}));
@@ -53,26 +58,32 @@ const entry = {
   source_count: 1,
 };
 
+function useCatalog(rows: readonly unknown[], state: unknown) {
+  const fake = createFakeSupabase({
+    rpc: {
+      available_catalog_entries: { data: rows, error: null },
+      current_student_catalog_state: { data: state, error: null },
+    },
+  });
+  mocks.createServerSupabaseClient.mockResolvedValue(fake.client);
+  return fake;
+}
+
 beforeEach(() => {
   vi.clearAllMocks();
-  mocks.createServerSupabaseClient.mockResolvedValue({ rpc: mocks.rpc });
-  mocks.rpc.mockImplementation((functionName: string) => {
-    if (functionName === "available_catalog_entries") {
-      return Promise.resolve({ data: [entry], error: null });
-    }
-    return Promise.resolve({ data: "READY", error: null });
-  });
 });
 
 describe("current-student catalog database adapter", () => {
   it("loads identifiers only through the two caller-scoped catalog functions", async () => {
-    const { loadCurrentStudentCatalog } =
-      await import("../../src/lib/catalog/catalog-journey.supabase.server");
+    const fake = useCatalog([entry], "READY");
 
     const catalog = await loadCurrentStudentCatalog();
 
-    expect(mocks.rpc).toHaveBeenCalledWith("available_catalog_entries");
-    expect(mocks.rpc).toHaveBeenCalledWith("current_student_catalog_state");
+    expect(fake.calls.rpc.map(({ name }) => name).sort()).toEqual([
+      "available_catalog_entries",
+      "current_student_catalog_state",
+    ]);
+    expect(fake.calls.tables).toEqual([]);
     expect(catalog.state).toBe("READY");
     expect(catalog.rows).toHaveLength(1);
     expect(catalog.rows[0]?.program.progressionMode).toBe("TERM_BASED");
@@ -88,53 +99,22 @@ describe("current-student catalog database adapter", () => {
   });
 
   it("fails closed when rows and safe state disagree", async () => {
-    mocks.rpc.mockImplementation((functionName: string) =>
-      Promise.resolve(
-        functionName === "available_catalog_entries"
-          ? { data: [entry], error: null }
-          : { data: "COHORT_LOCKED", error: null },
-      ),
-    );
-
-    const { CatalogDataAccessError, loadCurrentStudentCatalog } =
-      await import("../../src/lib/catalog/catalog-journey.supabase.server");
+    useCatalog([entry], "COHORT_LOCKED");
 
     await expect(loadCurrentStudentCatalog()).rejects.toBeInstanceOf(
       CatalogDataAccessError,
     );
   });
 
-  it("fails closed when the database returns an unknown progression mode", async () => {
-    mocks.rpc.mockImplementation((functionName: string) =>
-      Promise.resolve(
-        functionName === "available_catalog_entries"
-          ? {
-              data: [{ ...entry, program_progression_mode: "UNSAFE_MODE" }],
-              error: null,
-            }
-          : { data: "READY", error: null },
-      ),
-    );
-
-    const { loadCurrentStudentCatalog } =
-      await import("../../src/lib/catalog/catalog-journey.supabase.server");
-
-    await expect(loadCurrentStudentCatalog()).rejects.toThrow(
-      "The authorized catalog could not be loaded.",
-    );
-  });
-
-  it("rejects unknown state values without returning provider diagnostics", async () => {
-    mocks.rpc.mockImplementation((functionName: string) =>
-      Promise.resolve(
-        functionName === "available_catalog_entries"
-          ? { data: [], error: null }
-          : { data: "PRIVATE_REASON", error: null },
-      ),
-    );
-
-    const { loadCurrentStudentCatalog } =
-      await import("../../src/lib/catalog/catalog-journey.supabase.server");
+  it.each([
+    [
+      "an unknown progression mode",
+      [{ ...entry, program_progression_mode: "UNSAFE_MODE" }],
+      "READY",
+    ],
+    ["an unknown state without provider diagnostics", [], "PRIVATE_REASON"],
+  ] as const)("fails closed on %s", async (_, rows, state) => {
+    useCatalog(rows, state);
 
     await expect(loadCurrentStudentCatalog()).rejects.toThrow(
       "The authorized catalog could not be loaded.",

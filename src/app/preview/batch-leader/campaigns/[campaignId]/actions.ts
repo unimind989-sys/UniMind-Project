@@ -1,9 +1,7 @@
 "use server";
 
-import {
-  runCollectionFinalizeAction,
-  type CollectionActionState,
-} from "@/app/batch-leader/collection-actions";
+import { runCollectionFinalizeAction } from "@/app/batch-leader/collection-actions";
+import type { CollectionActionState } from "@/lib/collection/collection-client-state.application";
 import { previewCollectionRepository } from "../../preview-collection.server";
 
 export async function finalizePreviewCollectionAction(

@@ -18,4 +18,4 @@ All 11 captured pre-existing files are accounted for, 3282 other baseline files 
 
 Physical phone keyboards, safe areas, screen readers, other engines, real durable/provider behaviour and production are unverified. Final founder acceptance, exact-head delivery CI and external delivery are pending. Remaining B08 work: processed reader/evidence navigation M13/M14/M26, format purposes/single-MCQ M24, and separately governed contextual reporting M18. Review choices do not resolve retention/report policy decisions.
 
-[Progress](../../docs/reviews/unimind-repair-progress.md) · [Source binding](2026-10-14-merged-b08-b-study-recovery-source-binding.json)
+[Progress](../../docs/reviews/unimind-repair-progress.md) · Source binding (hash manifest removed in WP03-T15; see git history)

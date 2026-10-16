@@ -1,8 +1,8 @@
 import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { syntheticFiles } from "../src/app/_components/synthetic-files";
+import { syntheticFiles } from "../src/lib/demo/synthetic-files.application";
 import { syntheticDemoTime } from "../src/lib/demo/synthetic-clock.application";
-import { studyDensityManifest } from "../src/app/_components/synthetic-study-density";
-import { syntheticCampaignsManifest } from "../src/app/_components/synthetic-campaigns";
+import { studyDensityManifest } from "../src/lib/demo/synthetic-study-density.application";
+import { syntheticCampaignsManifest } from "../src/lib/demo/synthetic-campaigns.application";
 import { studioFixtureManifest } from "../src/lib/studio/studio-fixture.application";
 import {
   promptExamples,
@@ -11,7 +11,7 @@ import {
   scopeChoices,
   reviewCatalogRows,
   defaultUnitPath,
-} from "../src/app/_components/synthetic-fixtures";
+} from "../src/lib/demo/synthetic-fixtures.application";
 
 const directory = "public/demo-files";
 mkdirSync(directory, { recursive: true });
@@ -19,8 +19,7 @@ const walkthrough = readFileSync(
   "docs/reviews/wp03-synthetic-frontend-review.md",
   "utf8",
 ).replace("(wp03-frontend-overhaul.md)", "(frontend-overhaul.md)");
-for (const name of ["README.md", "walkthrough.md"])
-  writeFileSync(`${directory}/${name}`, walkthrough);
+writeFileSync(`${directory}/README.md`, walkthrough);
 copyFileSync(
   "docs/reviews/wp03-frontend-overhaul.md",
   `${directory}/frontend-overhaul.md`,
@@ -60,7 +59,7 @@ writeFileSync(
           "Admin console",
         ],
         entry: "/?lang=en",
-        instructions: "walkthrough.md",
+        instructions: "README.md",
         chat: "First Send starts a session. Enter sends; Shift+Enter adds a line. Interface language preserves the draft and study-output language.",
         studio:
           "Choose an artifact using the radio group. Generate prepares a fixed example; Cancel preparation interrupts it. Only MCQ offers Open quiz.",

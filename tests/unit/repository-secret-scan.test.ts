@@ -1,25 +1,24 @@
-import { mkdtemp, mkdir, writeFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
+import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { describe, expect, it } from "vitest";
 
 import { scanFilesForRepositorySecrets } from "../../scripts/lib/repository-secret-scan";
+import { tempDirectoryPerTest } from "../helpers/repository-files";
+
+const workspace = tempDirectoryPerTest("unimind-secret-scan-");
 
 describe("repository secret scan", () => {
   it("reports a credential rule without copying the matched value", async () => {
-    const workspace = await mkdtemp(
-      path.join(tmpdir(), "unimind-secret-scan-"),
-    );
-    await mkdir(path.join(workspace, "src"));
+    await mkdir(path.join(workspace.path, "src"));
     const secret = ["sb", "secret", "actualcredentialmaterial123456"].join("_");
     await writeFile(
-      path.join(workspace, "src", "unsafe.ts"),
+      path.join(workspace.path, "src", "unsafe.ts"),
       `export const leaked = "${secret}"; // synthetic example label must not suppress detection\n`,
       "utf8",
     );
 
-    const violations = await scanFilesForRepositorySecrets(workspace, [
+    const violations = await scanFilesForRepositorySecrets(workspace.path, [
       "src/unsafe.ts",
     ]);
 
@@ -30,11 +29,8 @@ describe("repository secret scan", () => {
   });
 
   it("allows explicit synthetic and invalid-domain fixtures", async () => {
-    const workspace = await mkdtemp(
-      path.join(tmpdir(), "unimind-secret-scan-"),
-    );
     await writeFile(
-      path.join(workspace, "safe.txt"),
+      path.join(workspace.path, "safe.txt"),
       [
         "SUPABASE_SERVICE_ROLE_KEY=synthetic-server-credential-only",
         "postgresql://synthetic:synthetic@db.synthetic.invalid:5432/test",
@@ -43,27 +39,24 @@ describe("repository secret scan", () => {
     );
 
     await expect(
-      scanFilesForRepositorySecrets(workspace, ["safe.txt"]),
+      scanFilesForRepositorySecrets(workspace.path, ["safe.txt"]),
     ).resolves.toEqual([]);
   });
 
   it("does not let prose labels suppress a database credential", async () => {
-    const workspace = await mkdtemp(
-      path.join(tmpdir(), "unimind-secret-scan-"),
-    );
     const credential = [
       "postgresql",
       "//synthetic",
       "synthetic@db.live-host.test:5432/app",
     ].join(":");
     await writeFile(
-      path.join(workspace, "unsafe.txt"),
+      path.join(workspace.path, "unsafe.txt"),
       `${credential} # example connection\n`,
       "utf8",
     );
 
     await expect(
-      scanFilesForRepositorySecrets(workspace, ["unsafe.txt"]),
+      scanFilesForRepositorySecrets(workspace.path, ["unsafe.txt"]),
     ).resolves.toEqual([
       { path: "unsafe.txt", line: 1, code: "DATABASE_CREDENTIAL" },
     ]);

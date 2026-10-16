@@ -11,7 +11,11 @@ import { AppShell } from "@/app/_components/app-shell";
 import { Button } from "@/app/_components/product-ui";
 import { FrontendIcon } from "@/app/_components/frontend-controls";
 import type { CollectionCampaign } from "@/lib/collection/collection.application";
-import type { CollectionActionState } from "../collection-actions";
+import type {
+  CollectionActionState,
+  CollectionFlowDraft,
+  CollectionQueueFile,
+} from "@/lib/collection/collection-client-state.application";
 import {
   compatibleCollectionItems,
   collectionRetryable,
@@ -25,7 +29,6 @@ import {
 } from "./collection-upload-client";
 import {
   useCollectionQueue,
-  type CollectionQueueFile,
   type CollectionFinalizeAction,
 } from "./use-collection-queue";
 import { CollectionHistory, collectionWindowMessage } from "./leader-home";
@@ -41,11 +44,6 @@ import {
 import styles from "../collection.module.css";
 
 export type { CollectionUploadClient } from "./collection-upload-client";
-export type CollectionFlowDraft = {
-  files: CollectionQueueFile[];
-  description: string;
-  rights: boolean;
-};
 
 export function CollectionFlow({
   campaign,

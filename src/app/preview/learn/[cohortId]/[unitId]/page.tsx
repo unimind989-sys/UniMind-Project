@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { WorkspaceOverview } from "@/app/learn/_components/workspace-pages";
-import { loadSyntheticWorkspaceScope } from "@/app/learn/synthetic-workspace";
+import { loadSyntheticWorkspaceScope } from "@/lib/demo/synthetic-workspace.application";
 import { resolveLocale } from "@/lib/i18n/locale";
 import type { WorkspacePageProps } from "@/lib/workspace/workspace-route.types";
 

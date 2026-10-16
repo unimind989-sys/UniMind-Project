@@ -28,7 +28,7 @@ Slice design disposition: **OBJECTIVE_PRESERVING**, against DESIGN.md's existing
 
 The unchanged real server/database guards remain the identity/scope authority. Invented accounts, fixture/scenario, file and metadata remain client-controlled synthetic inputs; dates grant no permission. Executed allowed/denied journeys prove mock behavior, no campaign leakage in denied views and loopback GET/HEAD-only isolation without APIs/cookies/service mutations. No storage URLs, private payloads or paid providers are added.
 
-The [source binding](2026-10-11-merged-b01-m53-clock-source-binding.json) records 376 source/test/fixture/doc inputs at aggregate `55f8c0467f68f962b8782fa03eb54b7c23f7ca648bc3bc728af44f63cd023d58`, baseline preservation, fourteen independently reviewed hashes and retained artifacts. The frozen merged audit, approval export, prior M52 evidence and unrelated work remain intact. Roll back only this slice against the retained before copies, including removal of its two new source/test files and evidence; preserve all prior work.
+The source binding (hash manifest removed in WP03-T15; see git history) records 376 source/test/fixture/doc inputs at aggregate `55f8c0467f68f962b8782fa03eb54b7c23f7ca648bc3bc728af44f63cd023d58`, baseline preservation, fourteen independently reviewed hashes and retained artifacts. The frozen merged audit, approval export, prior M52 evidence and unrelated work remain intact. Roll back only this slice against the retained before copies, including removal of its two new source/test files and evidence; preserve all prior work.
 
 ## Rendered result and next work
 

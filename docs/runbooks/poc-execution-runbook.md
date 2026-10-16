@@ -880,7 +880,7 @@ Use one TypeScript repository unless measured deployment needs justify a monorep
 
 ### 4.2 Create the directory boundaries
 
-Create at minimum:
+These are the planned module boundaries. Create each directory with its first real module; README-only placeholders were removed in WP03-T15. Planned:
 
 - `src/app` for routes/layouts.
 - `src/components` for UI.

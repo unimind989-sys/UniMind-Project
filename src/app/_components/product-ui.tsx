@@ -3,7 +3,11 @@
 import type { Route } from "next";
 import { ProductNavigationLink as Link } from "@/app/_components/product-navigation";
 import type { MouseEventHandler, ReactNode } from "react";
-import { text, type Locale, type Localized } from "./synthetic-fixtures";
+import {
+  text,
+  type Locale,
+  type Localized,
+} from "@/lib/demo/synthetic-fixtures.application";
 import styles from "./product.module.css";
 
 export function ProductLink({

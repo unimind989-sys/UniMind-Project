@@ -13,7 +13,8 @@ export type BoundaryViolationCode =
   | "application-imports-provider"
   | "application-imports-concrete-adapter"
   | "ui-imports-provider"
-  | "ui-imports-inner-implementation";
+  | "ui-imports-inner-implementation"
+  | "real-mode-imports-demo";
 
 export type BoundaryViolation = Readonly<{
   code: BoundaryViolationCode;
@@ -137,6 +138,23 @@ function isServerOnlyPath(filePath: string): boolean {
   );
 }
 
+function isDemoPath(filePath: string): boolean {
+  return filePath.startsWith("src/lib/demo/");
+}
+
+// Real-mode code must never reach the synthetic demo runtime. Synthetic preview
+// routes under src/app/preview and the hosted demo UI remain explicit exceptions.
+function isRealModePath(filePath: string): boolean {
+  if (isDemoPath(filePath) || filePath.startsWith("src/app/preview/")) {
+    return false;
+  }
+  return (
+    filePath.startsWith("src/lib/") ||
+    filePath.startsWith("workers/") ||
+    isServerOnlyPath(filePath)
+  );
+}
+
 function isClientComponent(sourceText: string): boolean {
   const withoutLeadingComments = sourceText.replace(
     /^\s*(?:(?:\/\/[^\n]*\n)|(?:\/\*[\s\S]*?\*\/\s*))*/,
@@ -180,6 +198,21 @@ export function inspectModuleDependencies(
           normalizedSourcePath,
           specifier,
           "Client Components cannot import server-only modules; move the read to a Server Component or Server Action.",
+        ),
+      );
+    }
+
+    if (
+      internalTarget !== undefined &&
+      isDemoPath(internalTarget) &&
+      isRealModePath(normalizedSourcePath)
+    ) {
+      violations.push(
+        violation(
+          "real-mode-imports-demo",
+          normalizedSourcePath,
+          specifier,
+          "Server adapters and real-mode library modules cannot import the synthetic demo runtime in src/lib/demo.",
         ),
       );
     }

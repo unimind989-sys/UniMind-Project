@@ -1,17 +1,9 @@
 import type { CollectionRepository } from "@/lib/collection/collection.application";
+import type { CollectionActionState } from "@/lib/collection/collection-client-state.application";
 import {
   CollectionBoundaryError,
   finalizeCollectionSubmission,
 } from "@/lib/collection/collection.application";
-
-export type CollectionActionState = Readonly<{
-  status: "IDLE" | "SUCCESS" | "ERROR";
-  requestedItemId?: string;
-  clientIdempotencyKey?: string;
-  submissionId?: string;
-  replayed?: boolean;
-  message?: "RIGHTS_REQUIRED" | "INVALID_SUBMISSION" | "UNAVAILABLE";
-}>;
 
 export const initialCollectionActionState: CollectionActionState = {
   status: "IDLE",

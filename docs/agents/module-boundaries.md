@@ -12,6 +12,10 @@ Use this map before adding application code. A module exposes a small interface 
 | Adapter | `*.adapter.ts` or `adapters/` | the interface it satisfies, provider SDKs needed by that adapter | UI modules or business-state authority |
 | Server-only | `*.server.ts` or `server/` | server dependencies | Client Components |
 
+## Synthetic demo runtime
+
+Synthetic demo logic and fixtures live in `src/lib/demo/` as `*.application.ts` modules, so the checker covers them like any other application module. UI files under `src/app/**` may import them while the hosted synthetic runtime is still mounted in the product UI. Real-mode code must not: Supabase/server adapters (`*.server.ts`, `*.supabase.server.ts`, `server/`, `src/lib/db/**`), workers, and every `src/lib/**` module outside `src/lib/demo/` are rejected with `real-mode-imports-demo` when they import `src/lib/demo/**`. Synthetic preview routes under `src/app/preview/**` are the one server-side exception.
+
 Client Components are files whose first directive is `"use client"`. Keep them narrow and pass only serializable data across the server/client seam. A privileged module must use the server-only naming convention; application implementation tasks also add `import "server-only"` when the module is loaded by Next.js.
 
 ## Automated enforcement

@@ -4,7 +4,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import type { SyntheticRole } from "@/lib/demo/synthetic-account.application";
 import { SyntheticProductProvider } from "./product-services";
 import { ProductNativePage } from "./product-native-page";
-import { resolveSyntheticPage } from "./synthetic-route";
+import { resolveSyntheticPage } from "@/lib/demo/synthetic-route.application";
 import { ProductNavigationLink } from "./product-navigation";
 
 export default function HostedSyntheticFlow({

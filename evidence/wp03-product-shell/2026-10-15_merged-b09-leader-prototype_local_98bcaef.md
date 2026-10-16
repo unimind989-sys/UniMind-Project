@@ -16,4 +16,4 @@ Prototype public seams are isolated HTML/CSS/JS and a loopback whitelisted previ
 
 Founder approval is absent. The review form offers approve/request changes/hold, exports the exact candidate fingerprint, and records no automatic approval. Review at http://127.0.0.1:3199/index.html before product implementation. Approval of the plan did not accept an unseen screen. External delivery and final application acceptance remain held. Physical devices, screen readers, other engines, production and real services remain unverified. Rollback removes this prototype's new files/report/binding and restores only the three captured controlled files; prior app work/audits/choices/accepted prototype and evidence chain remain preserved.
 
-[Progress](../../docs/reviews/unimind-repair-progress.md) · [Prototype guide](../../planning/design/merged-b09-leader/README.md) · [Source binding](2026-10-15-merged-b09-leader-prototype-source-binding.json)
+[Progress](../../docs/reviews/unimind-repair-progress.md) · [Prototype guide](../../planning/design/merged-b09-leader/README.md) · Source binding (hash manifest removed in WP03-T15; see git history)

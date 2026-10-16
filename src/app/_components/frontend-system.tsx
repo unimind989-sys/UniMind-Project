@@ -4,7 +4,7 @@ import { ProductNavigationLink as Link } from "@/app/_components/product-navigat
 import type { Route } from "next";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
-import type { Locale } from "./synthetic-fixtures";
+import type { Locale } from "@/lib/demo/synthetic-fixtures.application";
 import styles from "./frontend-system.module.css";
 import { AppShell } from "./app-shell";
 import { FrontendIcon } from "./frontend-controls";

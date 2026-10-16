@@ -1,9 +1,7 @@
 "use server";
 
-import {
-  runCollectionFinalizeAction,
-  type CollectionActionState,
-} from "../../collection-actions";
+import { runCollectionFinalizeAction } from "../../collection-actions";
+import type { CollectionActionState } from "@/lib/collection/collection-client-state.application";
 import { supabaseCollectionRepository } from "@/lib/collection/collection.supabase.server";
 
 export async function finalizeCollectionAction(

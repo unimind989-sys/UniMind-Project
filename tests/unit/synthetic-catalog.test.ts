@@ -3,8 +3,8 @@ import { describe, expect, it } from "vitest";
 import {
   syntheticCatalogRows,
   syntheticUnitPresentationById,
-} from "../../src/app/learn/synthetic-catalog";
-import { loadSyntheticWorkspaceScope } from "../../src/app/learn/synthetic-workspace";
+} from "../../src/lib/demo/synthetic-catalog.application";
+import { loadSyntheticWorkspaceScope } from "../../src/lib/demo/synthetic-workspace.application";
 
 describe("synthetic high-school catalogs", () => {
   for (const term of [1, 2]) {

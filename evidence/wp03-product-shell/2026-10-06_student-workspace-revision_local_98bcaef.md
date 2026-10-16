@@ -65,6 +65,6 @@ Preview: `http://127.0.0.1:3101/login?lang=en&email=student@example.invalid`; ta
 
 ## Binding and handoff
 
-The companion [source binding](2026-10-06-student-workspace-revision-source-binding.json) records the base HEAD, branch, sorted changed implementation/test paths, their SHA-256 hashes and an aggregate hash. Documentation and evidence are excluded from this implementation binding to avoid self-reference. Reopen only proof whose assertions depend on a changed bound input.
+The companion source binding (hash manifest removed in WP03-T15; see git history) records the base HEAD, branch, sorted changed implementation/test paths, their SHA-256 hashes and an aggregate hash. Documentation and evidence are excluded from this implementation binding to avoid self-reference. Reopen only proof whose assertions depend on a changed bound input.
 
 Ahmed's rendered acceptance of this revised material candidate remains pending. Record an exact-scope founder receipt only after he actually accepts it; preparation fingerprint stays NOT_READY until then. Review or apply his next requested revision locally. Commit and every external delivery action remain held. Rollback restores only this slice's uncommitted paths relative to 98bcaef, retaining approved landing commits and unrelated work. Real chat/quiz generation remains unavailable behind the existing production adapters; working sample interactions are fixtures.

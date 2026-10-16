@@ -33,7 +33,7 @@ Normal server UI on port 3000 confirms English desktop/tablet/mobile and Arabic 
 
 ## Artifacts and review boundary
 
-- [Source binding](2026-10-10-audit-fixes-batch-04-source-binding.json) binds the current source, baseline, both passing reports and live ledger.
+- Source binding (hash manifest removed in WP03-T15; see git history) binds the current source, baseline, both passing reports and live ledger.
 - [Before/after tracker](<E:/Unimind audits/fix-batches.md>) records the five changes and scoped prior acceptance.
 - Live ledger: `E:/Unimind audits/analysis/fix-batch-04-live-ui.json`.
 - Reports: `E:/Unimind audits/analysis/fix-batch-04-initial-e2e.json` and `fix-batch-04-final-e2e.json`.

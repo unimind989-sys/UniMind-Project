@@ -10,16 +10,16 @@ import {
   actionFixtures,
   applySampleAvailability,
   type Locale,
-} from "./synthetic-fixtures";
+} from "@/lib/demo/synthetic-fixtures.application";
 import { ProductLink } from "./product-ui";
 import {
   syntheticAdminCandidates,
   selectedAdminOrigin,
   adminResourceHref,
   adminPreviewContext,
-} from "./synthetic-admin-context";
-import { resourceNames } from "./synthetic-fixtures";
-import { defaultUnitPath } from "./synthetic-fixtures";
+} from "@/lib/demo/synthetic-admin-context.application";
+import { resourceNames } from "@/lib/demo/synthetic-fixtures.application";
+import { defaultUnitPath } from "@/lib/demo/synthetic-fixtures.application";
 
 export function ProductAdmin({
   locale,

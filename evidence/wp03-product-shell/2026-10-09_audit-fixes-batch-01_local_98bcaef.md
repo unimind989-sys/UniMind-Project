@@ -43,7 +43,7 @@ Read-only live DOM/accessibility state and computed geometry are the proof. Orig
 
 ## Binding and review handoff
 
-The companion [source binding](2026-10-09-audit-fixes-batch-01-source-binding.json) records current implementation/test hashes, before-batch hashes and the aggregate candidate hash. Documentation is excluded to avoid self-reference. Before/after live measurements are recorded in [the live UI ledger](<E:/Unimind audits/analysis/fix-batch-01-live-ui.json>).
+The companion source binding (hash manifest removed in WP03-T15; see git history) records current implementation/test hashes, before-batch hashes and the aggregate candidate hash. Documentation is excluded to avoid self-reference. Before/after live measurements are recorded in [the live UI ledger](<E:/Unimind audits/analysis/fix-batch-01-live-ui.json>).
 
 The normal dev server remains running on port 3000, task-owned session 65936. Chrome's “🧭 Audit fixes” review tab is open on `http://127.0.0.1:3000/settings?lang=en`, using the approved synthetic student fixture with System theme and the default viewport. The return link points to Biochemistry Chat after the demonstrated unit switch. To see all five changes, inspect settings at tablet/phone widths, open Academic settings, then use Return to last study tool and open Switch unit. Reload starts a new fixture document; the approved sample login is required again.
 

@@ -13,7 +13,7 @@ import {
   text,
   type ResponseKind,
   type SampleAnswer,
-} from "@/app/_components/synthetic-fixtures";
+} from "@/lib/demo/synthetic-fixtures.application";
 import { ChoiceGroup } from "@/app/_components/choice-group";
 import { ProductDialog } from "@/app/_components/product-dialog";
 import type { ProductStudyProps } from "./product-study";

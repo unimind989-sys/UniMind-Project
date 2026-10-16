@@ -1,7 +1,7 @@
 "use client";
 import { useProductText } from "@/app/_components/product-copy";
 import { useProductRouter } from "@/app/_components/product-navigation";
-import { studyDensitySourceTitles } from "@/app/_components/synthetic-study-density";
+import { studyDensitySourceTitles } from "@/lib/demo/synthetic-study-density.application";
 
 import { Fragment, useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -15,7 +15,7 @@ import {
   text,
   type Locale,
   type ResponseKind,
-} from "@/app/_components/synthetic-fixtures";
+} from "@/lib/demo/synthetic-fixtures.application";
 import { ChoiceGroup } from "@/app/_components/choice-group";
 import {
   defaultQuizConfiguration,

@@ -6,12 +6,6 @@ import { parse } from "yaml";
 import { auditCiWorkflow } from "../../scripts/lib/ci-workflow-policy";
 
 describe("CI workflow policy", () => {
-  it("accepts the repository workflow contract", async () => {
-    const workflow = await readFile(".github/workflows/ci.yml", "utf8");
-
-    expect(auditCiWorkflow(workflow)).toEqual([]);
-  });
-
   it("rejects floating actions and write permissions", () => {
     const unsafe = `
 name: unsafe
@@ -30,7 +24,9 @@ jobs:
         "FORBIDDEN_TRIGGER",
         "WRITE_PERMISSION",
         "UNPINNED_ACTION",
-        "APPLICATION_CONCURRENCY_MISSING",
+        "APPLICATION_JOB_MISSING:static",
+        "APPLICATION_JOB_MISSING:e2e_demo",
+        "APPLICATION_GATE_UNSAFE",
         "DATABASE_CI_JOB_MISSING",
       ]),
     );
@@ -64,21 +60,36 @@ jobs:
     expect(parsed.on.workflow_dispatch.inputs.database_feedback.default).toBe(
       false,
     );
-    expect(parsed.jobs.application?.if).toBe(
-      "always() && (needs.ci_selector.result != 'success' || needs.ci_selector.outputs.application == 'RUN')",
-    );
+    for (const job of [
+      "static",
+      "node_tests",
+      "e2e",
+      "e2e_demo",
+      "application",
+    ]) {
+      expect(parsed.jobs[job]?.if).toBe(
+        "always() && (needs.ci_selector.result != 'success' || needs.ci_selector.outputs.application == 'RUN')",
+      );
+    }
     expect(parsed.jobs["database-ci"]?.if).toBe(
       "always() && (needs.ci_selector.result != 'success' || needs.ci_selector.outputs.database_ci == 'RUN')",
     );
-    expect(auditCiWorkflow(workflow)).toEqual([]);
     expect(
       auditCiWorkflow(
-        workflow.replace(
+        workflow.replaceAll(
           "if: always() && (needs.ci_selector.result != 'success' || needs.ci_selector.outputs.application == 'RUN')",
           "if: inputs.database_feedback",
         ),
       ),
-    ).toContain("APPLICATION_TRIGGER_UNSAFE");
+    ).toEqual(
+      expect.arrayContaining([
+        "APPLICATION_TRIGGER_UNSAFE:static",
+        "APPLICATION_TRIGGER_UNSAFE:node_tests",
+        "APPLICATION_TRIGGER_UNSAFE:e2e",
+        "APPLICATION_TRIGGER_UNSAFE:e2e_demo",
+        "APPLICATION_TRIGGER_UNSAFE:application",
+      ]),
+    );
     expect(
       auditCiWorkflow(
         workflow.replace("        default: false", "        default: true"),
@@ -116,7 +127,8 @@ jobs:
     ).toEqual(
       expect.arrayContaining([
         "DATABASE_CI_RUNNER_UNSAFE",
-        "APPLICATION_RUNNER_UNPINNED",
+        "APPLICATION_RUNNER_UNPINNED:e2e",
+        "APPLICATION_RUNNER_UNPINNED:application",
       ]),
     );
     expect(
@@ -189,7 +201,7 @@ jobs:
     ).toContain("COREPACK_ENABLE_MISSING");
   });
 
-  it("rejects caching and incomplete application gates", async () => {
+  it("rejects caching and verify:ci components missing from CI", async () => {
     const workflow = await readFile(".github/workflows/ci.yml", "utf8");
 
     expect(
@@ -203,23 +215,61 @@ jobs:
     expect(
       auditCiWorkflow(
         workflow.replace(
-          "        run: corepack pnpm verify:ci\n",
-          "        run: corepack pnpm typecheck\n",
+          "      - name: Lint\n        run: corepack pnpm lint\n",
+          "",
         ),
       ),
-    ).toContain("APPLICATION_GATE_MISSING");
+    ).toContain("VERIFY_CI_COMPONENT_MISSING:lint");
+    const manifest = JSON.parse(await readFile("package.json", "utf8")) as {
+      scripts: Record<string, string>;
+    };
+    const withScript = (verifyCi: string) =>
+      JSON.stringify({
+        ...manifest,
+        scripts: { ...manifest.scripts, "verify:ci": verifyCi },
+      });
+    expect(
+      auditCiWorkflow(workflow, {
+        packageJson: withScript(
+          `${manifest.scripts["verify:ci"] ?? ""} && pnpm test:new`,
+        ),
+      }),
+    ).toContain("VERIFY_CI_COMPONENT_MISSING:test:new");
+    expect(
+      auditCiWorkflow(workflow, {
+        packageJson: withScript("pnpm lint; pnpm typecheck"),
+      }),
+    ).toContain("VERIFY_CI_UNPARSEABLE");
+    expect(
+      auditCiWorkflow(workflow, {
+        packageJson: withScript("pnpm lint && pnpm test:e2e"),
+      }),
+    ).toEqual([]);
   });
 
   it("preserves required job names and runs independently after selection", async () => {
     const workflow = await readFile(".github/workflows/ci.yml", "utf8");
     const parsed = parse(workflow) as {
-      jobs: Record<string, { needs?: string }>;
+      jobs: Record<string, { name?: string; needs?: string | string[] }>;
     };
     expect(Object.keys(parsed.jobs)).toEqual(
-      expect.arrayContaining(["ci_selector", "application", "database-ci"]),
+      expect.arrayContaining([
+        "ci_selector",
+        "dependency-audit",
+        "application",
+        "database-ci",
+      ]),
     );
+    expect(parsed.jobs.ci_selector?.name).toBe("ci-selector");
+    expect(parsed.jobs.application?.name).toBeUndefined();
     expect(parsed.jobs["database-ci"]?.needs).toBe("ci_selector");
-    expect(parsed.jobs.application?.needs).toBe("ci_selector");
+    expect(parsed.jobs.application?.needs).toEqual([
+      "ci_selector",
+      "static",
+      "node_tests",
+      "e2e",
+      "e2e_demo",
+    ]);
     expect(
       auditCiWorkflow(
         workflow.replace(
@@ -275,7 +325,7 @@ jobs:
     const diagnostics = steps.filter((step) =>
       step.if?.includes("database_setup.outcome"),
     );
-    expect(diagnostics).toHaveLength(8);
+    expect(diagnostics).toHaveLength(7);
     expect(
       diagnostics.every(
         (step) =>
@@ -293,9 +343,16 @@ jobs:
         "corepack pnpm test:integration:database",
         "corepack pnpm exec playwright install --with-deps chromium",
         "corepack pnpm test:e2e:database",
-        "corepack pnpm test:security",
       ]),
     );
+    expect(
+      auditCiWorkflow(
+        workflow.replace(
+          "      - name: Remove the disposable stack and volumes",
+          "      - name: Run security tests again\n        if: ${{ always() && steps.database_setup.outcome == 'success' }}\n        run: corepack pnpm test:security\n      - name: Remove the disposable stack and volumes",
+        ),
+      ),
+    ).toContain("DATABASE_CI_STAGES_UNSAFE");
     expect(
       auditCiWorkflow(
         workflow.replace(
@@ -358,7 +415,9 @@ jobs:
       ),
     ).toEqual(
       expect.arrayContaining([
-        "APPLICATION_REPORT_UPLOAD_MISSING",
+        "APPLICATION_REPORT_UPLOAD_MISSING:node_tests",
+        "APPLICATION_REPORT_UPLOAD_MISSING:e2e",
+        "APPLICATION_REPORT_UPLOAD_MISSING:e2e_demo",
         "DATABASE_CI_REPORT_UPLOAD_MISSING",
         "DATABASE_CI_CLEANUP_MISSING",
       ]),
@@ -372,5 +431,114 @@ jobs:
         ),
       ),
     ).toContain("DATABASE_CI_REPORT_UPLOAD_MISSING");
+  });
+
+  it("fails the required application gate unless every application job succeeds", async () => {
+    const workflow = await readFile(".github/workflows/ci.yml", "utf8");
+    const parsed = parse(workflow) as {
+      jobs: { application: { steps: Array<{ env?: Record<string, string> }> } };
+    };
+    expect(parsed.jobs.application.steps).toHaveLength(1);
+    expect(parsed.jobs.application.steps[0]?.env).toEqual({
+      STATIC_RESULT: "${{ needs.static.result }}",
+      NODE_TESTS_RESULT: "${{ needs.node_tests.result }}",
+      E2E_RESULT: "${{ needs.e2e.result }}",
+      E2E_DEMO_RESULT: "${{ needs.e2e_demo.result }}",
+    });
+    for (const unsafe of [
+      workflow.replace(
+        "needs: [ci_selector, static, node_tests, e2e, e2e_demo]",
+        "needs: [ci_selector, static, node_tests, e2e]",
+      ),
+      workflow.replace(
+        'test "$E2E_DEMO_RESULT" = success || { echo "e2e_demo: $E2E_DEMO_RESULT"; exit 1; }',
+        'test "$E2E_DEMO_RESULT" = success || true',
+      ),
+      workflow.replace(
+        "E2E_DEMO_RESULT: ${{ needs.e2e_demo.result }}",
+        "E2E_DEMO_RESULT: success",
+      ),
+      workflow.replace(
+        "      - name: Require every application job to pass\n",
+        "      - name: Run heavy work in the gate\n        run: corepack pnpm verify:ci\n      - name: Require every application job to pass\n",
+      ),
+      workflow.replace(
+        "      - name: Require every application job to pass\n",
+        "      - name: Require every application job to pass\n        continue-on-error: true\n",
+      ),
+    ]) {
+      expect(auditCiWorkflow(unsafe)).toContain("APPLICATION_GATE_UNSAFE");
+    }
+  });
+
+  it("requires complete fail-slow e2e shards", async () => {
+    const workflow = await readFile(".github/workflows/ci.yml", "utf8");
+
+    expect(
+      auditCiWorkflow(
+        workflow.replace("shard: [1, 2, 3, 4]", "shard: [1, 2, 4]"),
+      ),
+    ).toContain("E2E_SHARDING_UNSAFE:e2e_demo");
+    expect(
+      auditCiWorkflow(workflow.replace("fail-fast: false", "fail-fast: true")),
+    ).toContain("E2E_SHARDING_UNSAFE:e2e");
+    expect(
+      auditCiWorkflow(
+        workflow.replace(
+          "--fully-parallel --shard=${{ matrix.shard }}/${{ strategy.job-total }}",
+          "--fully-parallel --shard=${{ matrix.shard }}/8",
+        ),
+      ),
+    ).toContain("E2E_SHARDING_UNSAFE:e2e_demo");
+    expect(
+      auditCiWorkflow(
+        workflow.replace(
+          "group: e2e-${{ matrix.shard }}-${{ github.workflow }}-${{ github.ref }}",
+          "group: e2e-${{ github.workflow }}-${{ github.ref }}",
+        ),
+      ),
+    ).toContain("APPLICATION_CONCURRENCY_MISSING:e2e");
+  });
+
+  it("rejects masked, conditional, advisory or secret application work", async () => {
+    const workflow = await readFile(".github/workflows/ci.yml", "utf8");
+
+    expect(
+      auditCiWorkflow(
+        workflow.replace(
+          "        run: corepack pnpm lint\n",
+          "        run: corepack pnpm lint || true\n",
+        ),
+      ),
+    ).toContain("APPLICATION_COMMAND_UNSAFE:static");
+    expect(
+      auditCiWorkflow(
+        workflow.replace(
+          "      - name: Lint\n",
+          "      - name: Lint\n        if: github.event_name == 'push'\n",
+        ),
+      ),
+    ).toContain("APPLICATION_STEP_CONDITIONAL:static");
+    expect(
+      auditCiWorkflow(
+        workflow.replace("  e2e:\n", "  e2e:\n    continue-on-error: true\n"),
+      ),
+    ).toContain("APPLICATION_ADVISORY_FAILURE:e2e");
+    expect(
+      auditCiWorkflow(
+        workflow.replace(
+          "  static:\n",
+          "  static:\n    env:\n      LEAK_PROBE: ${{ secrets.UNIMIND_CI_SUPABASE_ACCESS_TOKEN }}\n",
+        ),
+      ),
+    ).toContain("APPLICATION_SECRET_PRESENT:static");
+    expect(
+      auditCiWorkflow(
+        workflow.replace(
+          "          persist-credentials: false\n",
+          "          persist-credentials: true\n",
+        ),
+      ),
+    ).toContain("CHECKOUT_CREDENTIALS_PERSISTED");
   });
 });

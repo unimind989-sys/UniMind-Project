@@ -17,8 +17,8 @@ import {
 } from "@/lib/auth/auth-actions.application";
 import { useProductServices } from "./product-services";
 import { ProductLink, Notice } from "./product-ui";
-import type { Locale } from "./synthetic-fixtures";
-import { syntheticCampaignId } from "./synthetic-campaigns";
+import type { Locale } from "@/lib/demo/synthetic-fixtures.application";
+import { syntheticCampaignId } from "@/lib/demo/synthetic-campaigns.application";
 import { useSyntheticNavigation } from "./product-navigation";
 import {
   syntheticAccounts as accounts,

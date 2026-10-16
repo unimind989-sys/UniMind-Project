@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { CollectionActionState } from "../collection-actions";
+import type { CollectionCampaign } from "@/lib/collection/collection.application";
 import type {
-  CollectionCampaign,
-  RegisteredCollectionUpload,
-} from "@/lib/collection/collection.application";
+  CollectionActionState,
+  CollectionQueueFile,
+} from "@/lib/collection/collection-client-state.application";
 import {
   collectionFileIdentity,
   collectionSourceTitle,
@@ -25,38 +25,6 @@ export type CollectionFinalizeAction = (
   state: CollectionActionState,
   data: FormData,
 ) => Promise<CollectionActionState>;
-type Inspection = Extract<
-  ReturnType<typeof inspectCollectionFileForBrowser>,
-  { ok: true }
->;
-export type CollectionQueueFile = {
-  id: string;
-  key: string;
-  identity: string;
-  file: File;
-  origin: "DEVICE" | "APPROVED_REFERENCE";
-  title: string;
-  itemId: string | null;
-  inspection: Inspection | null;
-  state:
-    | "CHECKING"
-    | "READY"
-    | "INVALID"
-    | "UPLOADING"
-    | "FINALIZING"
-    | "ERROR"
-    | "RECEIVED";
-  progress: number;
-  error: string | null;
-  receipt: RegisteredCollectionUpload | null;
-  metadata: { title: string; description: string } | null;
-  predecessor?: { id: string; sourceName: string } | null;
-  correctionSubmissionId?: string;
-  correctionRequestedItemId?: string;
-  correctionAction?: "FIX_INFORMATION" | "REPLACE_FILE";
-  boundRequestedItemId?: string;
-  submissionId?: string;
-};
 
 export function useCollectionQueue({
   campaign,

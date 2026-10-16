@@ -10,14 +10,14 @@ import {
   CollectionFlow,
   type CollectionUploadClient,
 } from "@/app/batch-leader/_components/collection-flow";
-import type { CollectionActionState } from "@/app/batch-leader/collection-actions";
+import type { CollectionActionState } from "@/lib/collection/collection-client-state.application";
 import { useProductServices } from "./product-services";
 import {
   isSyntheticFile,
   makeSyntheticFile,
   syntheticFiles,
-} from "./synthetic-files";
-import type { Locale } from "./synthetic-fixtures";
+} from "@/lib/demo/synthetic-files.application";
+import type { Locale } from "@/lib/demo/synthetic-fixtures.application";
 import { syntheticDemoTime } from "@/lib/demo/synthetic-clock.application";
 import { useSyntheticNavigation } from "./product-navigation";
 
@@ -27,7 +27,7 @@ import {
   registerSyntheticCollectionReceipt,
   finalizeSyntheticCollectionSubmission,
   prepareSyntheticCollectionCorrections,
-} from "./synthetic-campaigns";
+} from "@/lib/demo/synthetic-campaigns.application";
 
 export function ProductCollection({
   locale,

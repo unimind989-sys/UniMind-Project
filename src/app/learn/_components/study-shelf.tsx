@@ -16,7 +16,7 @@ import {
 import { getCatalogCopy } from "@/lib/i18n/catalog-copy";
 import type { Locale } from "@/lib/i18n/locale";
 import type { RecentStudyDetails } from "@/lib/study/recent-work.application";
-import type { UnitPresentation } from "../synthetic-catalog";
+import type { UnitPresentation } from "@/lib/demo/synthetic-catalog.application";
 import styles from "../study-shelf.module.css";
 
 export function StudyShelf({

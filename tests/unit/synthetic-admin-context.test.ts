@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { initialProductState } from "../../src/app/_components/product-services";
-import { defaultScope } from "../../src/app/_components/synthetic-fixtures";
+import { defaultScope } from "../../src/lib/demo/synthetic-fixtures.application";
 import {
   adminOrigins,
   selectedAdminOrigin,
@@ -9,7 +9,7 @@ import {
   syntheticDecisionHref,
   adminPreviewContext,
   adminPreviewReturn,
-} from "../../src/app/_components/synthetic-admin-context";
+} from "../../src/lib/demo/synthetic-admin-context.application";
 const fixture = () => ({
   ...initialProductState(),
   role: "admin" as const,

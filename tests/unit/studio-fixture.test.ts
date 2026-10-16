@@ -57,27 +57,31 @@ const body = (model: StudioFixtureContent) =>
     .join("\n");
 
 describe("fixed Studio examples", () => {
-  it.each(combinations)(
-    "supports $type/$topic/$depth/$size/$language deterministically",
-    (options) => {
+  it("supports every type/topic/depth/size/language deterministically", () => {
+    expect(combinations).toHaveLength(studioFixtureTypes.length * 24);
+    for (const options of combinations) {
+      const label = `${options.type}/${options.topic}/${options.depth}/${options.size}/${options.language}`;
       const input = { ...options };
       const before = structuredClone(input);
       const model = buildStudioFixture(input)!;
-      expect(model).not.toBeNull();
-      expect(model.options).toEqual(input);
-      expect(input).toEqual(before);
-      expect(model).toEqual(buildStudioFixture(input));
-      expect(body(model).length).toBeGreaterThan(60);
+      expect(model, label).not.toBeNull();
+      expect(model.options, label).toEqual(input);
+      expect(input, label).toEqual(before);
+      expect(model, label).toEqual(buildStudioFixture(input));
+      expect(body(model).length, label).toBeGreaterThan(60);
       for (const text of texts(model)) {
-        expect(text[0].length).toBeGreaterThan(10);
-        expect(text[1]).toMatch(/[\u0600-\u06ff]/u);
+        expect(text[0].length, label).toBeGreaterThan(10);
+        expect(text[1], label).toMatch(/[\u0600-\u06ff]/u);
         const segments = studioFixtureSegments(text, options.language);
-        expect(segments.map((segment) => segment.language)).toEqual(
+        expect(
+          segments.map((segment) => segment.language),
+          label,
+        ).toEqual(
           options.language === "mixed" ? ["ar", "en"] : [options.language],
         );
       }
-    },
-  );
+    }
+  });
   it.each(studioFixtureTypes)(
     "all 24 choices for %s have distinct content without metadata labels",
     (type) => {

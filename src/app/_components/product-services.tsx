@@ -1,56 +1,17 @@
 "use client";
 
 import { createContext, useContext, useState, type ReactNode } from "react";
-import { initialReviewState, type ReviewState } from "./synthetic-fixtures";
+import { initialReviewState } from "@/lib/demo/synthetic-fixtures.application";
 import { ProductProfileContext } from "./product-profile";
 import { AcademicSetupDraftProvider } from "./academic-setup-draft";
-import { createSyntheticCollectionMemory } from "./synthetic-campaigns";
-import type { AcademicContext } from "@/lib/account/account.application";
-import type { QuizConfiguration } from "@/lib/quiz/quiz-fixture.application";
-import type { AdminPreviewContext } from "./synthetic-admin-context";
+import { createSyntheticCollectionMemory } from "@/lib/demo/synthetic-campaigns.application";
+import type { ProductState } from "@/lib/demo/synthetic-product-state.application";
 import {
   syntheticDisplayNames,
   type SyntheticRole,
 } from "@/lib/demo/synthetic-account.application";
 
 export type DemoRole = SyntheticRole;
-export type ProductState = Omit<ReviewState, "attempts"> & {
-  attempts: Record<
-    string,
-    {
-      inspectionKey: string;
-      answers: number[];
-      submitted: boolean;
-      configuration: QuizConfiguration;
-      expiresAt?: number;
-      abandoned?: boolean;
-    }
-  >;
-  role: DemoRole | null;
-  displayName: string | null;
-  studyLanguage: "en" | "ar" | "mixed" | null;
-  evidenceHintSeen: boolean;
-  verified: boolean;
-  recoveryToken: boolean;
-  verificationUsed: boolean;
-  invitationUsed: boolean;
-  qualityConflictSessionId: number | null;
-  returnPath: string | null;
-  pendingActors: Record<string, "AHMED" | "ZIAD">;
-  pendingReasons: Record<string, string>;
-  pendingHoldExpiries: Record<string, string>;
-  pendingVersions: Record<string, number>;
-  adminPreview: AdminPreviewContext | null;
-  catalogChoice: "MODULE" | "SUBJECT";
-  chatDrafts: Record<
-    string,
-    { message: string; language: "en" | "ar" | "mixed" }
-  >;
-  lastStudyPath: string | null;
-  studioDrafts: ProductState["artifacts"];
-  quizDrafts: Record<string, QuizConfiguration>;
-  academicContext: AcademicContext | null;
-};
 export function initialProductState(): ProductState {
   return {
     ...initialReviewState(),

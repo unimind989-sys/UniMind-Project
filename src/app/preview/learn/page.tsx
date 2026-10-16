@@ -13,7 +13,7 @@ import { StudyShelf } from "../../learn/_components/study-shelf";
 import {
   syntheticCatalogRows,
   syntheticUnitPresentationById,
-} from "../../learn/synthetic-catalog";
+} from "@/lib/demo/synthetic-catalog.application";
 
 export const metadata: Metadata = {
   title: "Study Shelf synthetic preview | UniMind",

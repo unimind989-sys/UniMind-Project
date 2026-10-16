@@ -21,25 +21,26 @@ import { useProductProfileName } from "./product-profile";
 import { Appearance } from "./appearance";
 import { Landing } from "./landing";
 import { authorizedAcademicContext } from "@/lib/account/account.application";
-import { syntheticUnitPresentationById } from "@/app/learn/synthetic-catalog";
+import { syntheticUnitPresentationById } from "@/lib/demo/synthetic-catalog.application";
 import {
   parseCatalogSelectionHints,
   resolveCatalogJourney,
 } from "@/lib/catalog/catalog-journey.application";
 import type { WorkspaceScope } from "@/lib/workspace/workspace.application";
-import { useProductServices, type ProductState } from "./product-services";
+import { useProductServices } from "./product-services";
+import type { ProductState } from "@/lib/demo/synthetic-product-state.application";
 import { resolveStudyReturnPath } from "@/lib/study/study-origin.application";
 import { recentStudyDetails } from "@/lib/study/recent-work.application";
 import { studyRecovery } from "@/lib/study/study-recovery.application";
 import { ProductAuth } from "./product-auth";
 import { ProductAdmin } from "./product-admin";
-import { adminPreviewReturn } from "./synthetic-admin-context";
+import { adminPreviewReturn } from "@/lib/demo/synthetic-admin-context.application";
 import { AdminWorkspace } from "@/app/admin/_components/admin-workspace";
 import { ProductCollection } from "./product-collection";
 import {
   assignedSyntheticCampaigns,
   demoCampaignId,
-} from "./synthetic-campaigns";
+} from "@/lib/demo/synthetic-campaigns.application";
 import { LeaderHome } from "@/app/batch-leader/_components/leader-home";
 import { ProductCampaigns, ProductResource } from "./product-operations";
 import { ChoiceGroup } from "./choice-group";
@@ -51,14 +52,14 @@ import {
   resourceNames,
   text,
   type Locale,
-} from "./synthetic-fixtures";
+} from "@/lib/demo/synthetic-fixtures.application";
 import styles from "./product.module.css";
 import accountStyles from "./student-account.module.css";
 import { useSyntheticNavigation } from "./product-navigation";
 import {
   prepareStudyDensity,
   studyFixtureSourceCount,
-} from "./synthetic-study-density";
+} from "@/lib/demo/synthetic-study-density.application";
 
 const authModes = {
   login: "login",

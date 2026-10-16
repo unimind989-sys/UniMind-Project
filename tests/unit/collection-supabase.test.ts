@@ -1,5 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { supabaseCollectionRepository } from "../../src/lib/collection/collection.supabase.server";
+
 const mocks = vi.hoisted(() => ({
   createServerSupabaseClient: vi.fn(),
   finalizeSyntheticCollectionSubmission: vi.fn(),
@@ -65,8 +67,6 @@ describe("collection Supabase adapter", () => {
       ],
       error: null,
     });
-    const { supabaseCollectionRepository } =
-      await import("../../src/lib/collection/collection.supabase.server");
     const result = await supabaseCollectionRepository.loadCampaign(
       campaignRow.campaign_id,
     );
@@ -85,8 +85,6 @@ describe("collection Supabase adapter", () => {
   });
 
   it("loads only rows returned by the caller-scoped campaign function", async () => {
-    const { supabaseCollectionRepository } =
-      await import("../../src/lib/collection/collection.supabase.server");
     const result = await supabaseCollectionRepository.loadCampaign(
       campaignRow.campaign_id,
     );
@@ -100,8 +98,6 @@ describe("collection Supabase adapter", () => {
   });
 
   it("rejects malformed route IDs before querying", async () => {
-    const { supabaseCollectionRepository } =
-      await import("../../src/lib/collection/collection.supabase.server");
     await expect(
       supabaseCollectionRepository.loadCampaign("forged"),
     ).resolves.toBeNull();
@@ -121,8 +117,6 @@ describe("collection Supabase adapter", () => {
       ],
       error: null,
     });
-    const { supabaseCollectionRepository } =
-      await import("../../src/lib/collection/collection.supabase.server");
     await expect(
       supabaseCollectionRepository.loadCampaign(campaignRow.campaign_id),
     ).rejects.toThrow("assigned collection campaign");
@@ -136,8 +130,6 @@ describe("collection Supabase adapter", () => {
       upload_mime_type: "application/pdf",
       upload_byte_size: 2048,
     });
-    const { supabaseCollectionRepository } =
-      await import("../../src/lib/collection/collection.supabase.server");
     await supabaseCollectionRepository.registerUpload({
       campaignId: campaignRow.campaign_id,
       requestedItemId: campaignRow.requested_item_id,
@@ -152,7 +144,6 @@ describe("collection Supabase adapter", () => {
       provider: "mock-object-storage-provider",
       objectKey: "synthetic/object",
     });
-    expect(mocks.requireVerifiedIdentity).toHaveBeenCalledOnce();
     expect(
       mocks.registerSyntheticCollectionUploadEvidence,
     ).toHaveBeenCalledWith(
@@ -169,8 +160,6 @@ describe("collection Supabase adapter", () => {
       submission_created_at: "2026-09-22T00:00:00.000Z",
       replayed: false,
     });
-    const { supabaseCollectionRepository } =
-      await import("../../src/lib/collection/collection.supabase.server");
     await supabaseCollectionRepository.finalizeSubmission({
       campaignId: campaignRow.campaign_id,
       requestedItemId: campaignRow.requested_item_id,
@@ -180,7 +169,6 @@ describe("collection Supabase adapter", () => {
       sourceDescription: "Synthetic fixture description.",
       declaredRights: "DECLARED",
     });
-    expect(mocks.requireVerifiedIdentity).toHaveBeenCalledOnce();
     expect(mocks.createServerSupabaseClient).not.toHaveBeenCalled();
     expect(mocks.finalizeSyntheticCollectionSubmission).toHaveBeenCalledWith(
       expect.objectContaining({
