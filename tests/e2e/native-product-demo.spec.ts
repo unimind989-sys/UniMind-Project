@@ -10673,13 +10673,17 @@ async function signIn(
   await expect(
     page.getByLabel(pick(locale, "Email address", "البريد الإلكتروني")),
   ).toHaveValue(`${role}@example.invalid`);
-  await page
-    .getByRole("button", {
-      name: pick(locale, "Continue", "متابعة"),
-      exact: true,
-    })
-    .click();
-  await expect(page).toHaveURL(/\/consent\?/u);
+  // A click that lands before the login form hydrates is ignored; retry it.
+  await expect(async () => {
+    if (!/\/consent\?/u.test(page.url()))
+      await page
+        .getByRole("button", {
+          name: pick(locale, "Continue", "متابعة"),
+          exact: true,
+        })
+        .click({ timeout: 5_000 });
+    await expect(page).toHaveURL(/\/consent\?/u, { timeout: 5_000 });
+  }).toPass({ timeout: 30_000 });
   await page.getByRole("checkbox").check();
   await page
     .getByRole("button", {

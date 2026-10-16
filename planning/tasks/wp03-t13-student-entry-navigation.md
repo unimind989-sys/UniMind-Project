@@ -70,11 +70,11 @@ Implement and verify locally for review. Do not commit until Ahmed instructs it.
 
 **Design disposition:** MATERIAL
 
-**Design evidence:** receipt:evidence/wp03-product-shell/2026-10-16-frontend-refinements-founder-receipt.json; rationale:Corrections after the accepted c1 checkpoint affect dependency security, two browser test drivers and delivery records only; application markup, styles, copy and product interactions are unchanged; baseline:878e9402a73cdcbe017b5a8877f723222fd19d22
+**Design evidence:** receipt:evidence/wp03-product-shell/2026-10-16-frontend-refinements-founder-receipt-c2.json
 
 **Preparation review:** COMPLETE_INLINE
 
-**Preparation fingerprint:** b6ca52fc36957631ec2f27fd11770ec9232d0c4f64251c870ddc64543275046c
+**Preparation fingerprint:** f806cdbab7422b26f1925098be2a8bb43f233850e22b2277553b70eea02226c2
 
 **Unresolved findings:** NONE
 
@@ -1027,3 +1027,10 @@ Ahmed directed: fix everything, change what needs to be changed, and ship, push,
 Demo drivers updated without changing intent: the B09 intake opens before its heading is read (`Upload files`), the student settings title is `Settings`, the timer reads `03:00`, Study's start link may read `Open Anatomy`, two URLs use the running origin instead of a fixed port, the shell location selector no longer depends on CSS-module naming, phone Chat opens Study options before reaching sources or study language, and the Sources notice is the context's last paragraph.
 
 Design acceptance for the corrected presentation is Ahmed's delegated instruction above, bound to the exact candidate commit in the c2 receipt; he has not inspected the corrected screens hands-on. Review is inline by the executor; the earlier independent review covers only the dependency and hosted-driver hashes. No auth, storage, domain, provider or copy change.
+
+The first exact-head CI run of the corrected candidate (8906a42) passed the dependency audit and hosted suite but was cancelled at the application job's 25-minute limit partway through the demo suite, after one B06 English case failed. Two further corrections follow:
+
+- Phone Chat restores focus to the checked study language when widening past 767px. The handler previously required the hidden Study options summary to still hold focus; the browser may move that focus to the body first. A `focusin` tracker now remembers summary focus until focus moves elsewhere.
+- The full `verify:ci` chain, now including about 284 demo cases, needs roughly 75–80 minutes on the hosted runner. The application job timeout and its CI policy pin move from 25 to 120 minutes. The repository is public and uses standard GitHub-hosted runners, so there is no billable exposure.
+
+The demo `signIn` helper retries a login click that lands before the form hydrates (observed once in a local full chain), without changing any assertion.

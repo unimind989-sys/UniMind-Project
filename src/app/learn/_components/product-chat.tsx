@@ -69,19 +69,34 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
   const studyOptions = useRef<HTMLDetailsElement>(null);
   useLayoutEffect(() => {
     const media = window.matchMedia("(max-width: 767px)");
+    // The desktop summary is hidden, so the browser may move its focus to the
+    // body before the change event runs; remember it until focus goes elsewhere.
+    let summaryFocused = false;
+    const track = (event: FocusEvent) => {
+      summaryFocused =
+        event.target === studyOptions.current?.querySelector("summary");
+    };
     const adapt = () => {
       const options = studyOptions.current;
       if (!options) return;
+      const summary = options.querySelector("summary");
       const active = document.activeElement;
-      if (media.matches && active && options.contains(active))
-        options.querySelector("summary")?.focus();
+      if (media.matches && active && options.contains(active)) summary?.focus();
       options.open = !media.matches;
-      if (!media.matches && active === options.querySelector("summary"))
+      if (
+        !media.matches &&
+        (active === summary ||
+          (summaryFocused && (active === null || active === document.body)))
+      )
         options.querySelector<HTMLInputElement>("input:checked")?.focus();
     };
     adapt();
+    document.addEventListener("focusin", track);
     media.addEventListener("change", adapt);
-    return () => media.removeEventListener("change", adapt);
+    return () => {
+      document.removeEventListener("focusin", track);
+      media.removeEventListener("change", adapt);
+    };
   }, []);
   useEffect(() => {
     update((current) =>
