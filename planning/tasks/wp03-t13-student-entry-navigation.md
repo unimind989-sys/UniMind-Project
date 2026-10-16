@@ -74,7 +74,7 @@ Implement and verify locally for review. Do not commit until Ahmed instructs it.
 
 **Preparation review:** COMPLETE_INLINE
 
-**Preparation fingerprint:** f806cdbab7422b26f1925098be2a8bb43f233850e22b2277553b70eea02226c2
+**Preparation fingerprint:** fa7a6cc988cea1656d71d5516df3691deec36ae2756bec85e93e9758c22f1de8
 
 **Unresolved findings:** NONE
 
@@ -1031,6 +1031,6 @@ Design acceptance for the corrected presentation is Ahmed's delegated instructio
 The first exact-head CI run of the corrected candidate (8906a42) passed the dependency audit and hosted suite but was cancelled at the application job's 25-minute limit partway through the demo suite, after one B06 English case failed. Two further corrections follow:
 
 - Phone Chat restores focus to the checked study language when widening past 767px. The handler previously required the hidden Study options summary to still hold focus; the browser may move that focus to the body first. A `focusin` tracker now remembers summary focus until focus moves elsewhere.
-- The full `verify:ci` chain, now including about 284 demo cases, needs roughly 75–80 minutes on the hosted runner. The application job timeout and its CI policy pin move from 25 to 120 minutes. The repository is public and uses standard GitHub-hosted runners, so there is no billable exposure.
+- The full `verify:ci` chain, now including about 284 demo cases, needs roughly 75–80 minutes on the hosted runner. The application job timeout and its CI policy pin move from 25 to 120 minutes, and the governed workflow SHA-256 in the agent execution policy follows the edited workflow. The repository is public and uses standard GitHub-hosted runners, so there is no billable exposure.
 
 The demo `signIn` helper retries a login click that lands before the form hydrates (observed once in a local full chain), without changing any assertion.
