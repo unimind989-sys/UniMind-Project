@@ -1,0 +1,1268 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Landing variants</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&family=Noto+Sans+Arabic:wght@400..800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="board.css" />
+    <style>
+      /* ------------------------------------------------ Direction B tokens */
+      .lp {
+        --night: #0c1823;
+        --night-2: #16283c;
+        --night-line: #243a51;
+        --on-night: #ecf3f9;
+        --on-night-2: #b3c2d3;
+        --on-night-blue: #8fb2ff;
+        --paper: #ecf3f9;
+        --surface: #ffffff;
+        --cobalt: #3977f7;
+        --action: #2a62e0;
+        --ink: #0c1823;
+        --secondary: #4b5b6e;
+        --line: #d4dfeb;
+        --control: #7a8ca3;
+        --tint: #e8effd;
+        --stage: #0c1823;
+        --hl: rgb(57 119 247 / 0.3);
+        --float: 0 22px 44px -20px rgb(12 24 35 / 0.42),
+          0 3px 10px -2px rgb(12 24 35 / 0.1);
+        --float-night: 0 30px 60px -24px rgb(0 0 0 / 0.65);
+        --ease: cubic-bezier(0.22, 1, 0.36, 1);
+        font-family: "Manrope", system-ui, sans-serif;
+        font-size: 15px;
+        line-height: 1.5;
+        color: var(--ink);
+        background: var(--paper);
+        -webkit-font-smoothing: antialiased;
+      }
+      html[data-theme="dark"] .lp {
+        --night: #050b12;
+        --night-2: #12233a;
+        --night-line: #1d3045;
+        --paper: #0a1520;
+        --surface: #102030;
+        --action: #8fb2ff;
+        --ink: #ecf3f9;
+        --secondary: #a6b5c7;
+        --line: #203347;
+        --control: #5d7189;
+        --tint: #17294a;
+        --stage: #050b12;
+        --float: 0 26px 50px -18px rgb(0 0 0 / 0.72), 0 0 0 1px #203347;
+      }
+      .lp *,
+      .lp *::before,
+      .lp *::after {
+        box-sizing: border-box;
+      }
+      .lp :is(h1, h2, h3, p, ul, ol, blockquote) {
+        margin: 0;
+      }
+      .lp :is(ul, ol) {
+        list-style: none;
+        padding: 0;
+      }
+      .lp a {
+        color: inherit;
+        text-decoration: none;
+      }
+      .lp button {
+        font: inherit;
+        color: inherit;
+        background: none;
+        border: 0;
+        padding: 0;
+        cursor: pointer;
+      }
+      .lp :focus-visible {
+        outline: 2px solid var(--cobalt);
+        outline-offset: 3px;
+      }
+      .lp [lang="ar"] {
+        font-family: "Noto Sans Arabic", "Manrope", sans-serif;
+        letter-spacing: 0;
+      }
+      .lp .ico {
+        width: 20px;
+        height: 20px;
+        flex: none;
+      }
+      .lp bdi {
+        unicode-bidi: isolate;
+        font-family: "Manrope", sans-serif;
+      }
+
+      /* ------------------------------------------------ shared kit */
+      .lp .top {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        padding: 24px 56px;
+        position: relative;
+        z-index: 2;
+      }
+      .lp .top .logo {
+        width: 150px;
+        height: 41px;
+        color: var(--ink);
+      }
+      .lp .top nav {
+        margin-inline-start: auto;
+        display: flex;
+        gap: 30px;
+        font-weight: 600;
+        color: var(--secondary);
+      }
+      .lp .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        min-height: 46px;
+        padding: 0 20px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 15px;
+        white-space: nowrap;
+      }
+      .lp .btn-ring {
+        box-shadow: inset 0 0 0 1.5px var(--control);
+      }
+      .lp .btn-go {
+        min-height: 62px;
+        padding: 0 30px;
+        border-radius: 16px;
+        background: var(--cobalt);
+        color: #fff;
+        font-size: 19px;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+      }
+      .lp .btn-quiet {
+        min-height: 62px;
+        padding: 0 10px;
+        font-size: 17px;
+      }
+      .lp .slogan {
+        font-weight: 800;
+        letter-spacing: -0.048em;
+        line-height: 0.94;
+      }
+      .lp .slogan span {
+        display: block;
+      }
+      .lp .proof {
+        display: grid;
+        gap: 12px;
+        font-size: 15px;
+        font-weight: 600;
+      }
+      .lp .proof li {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .lp .proof .tick {
+        display: grid;
+        place-items: center;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: var(--cobalt);
+        color: #fff;
+        flex: none;
+      }
+      .lp .proof .tick .ico {
+        width: 15px;
+        height: 15px;
+      }
+      /* the printed handout: content, so it keeps a book face in both themes */
+      .lp .handout {
+        background: #fff;
+        color: #1f2a37;
+        border-radius: 6px;
+        padding: 44px 46px;
+        box-shadow: 0 2px 2px rgb(12 24 35 / 0.06),
+          0 44px 80px -40px rgb(0 0 0 / 0.6);
+        overflow: hidden;
+      }
+      .lp .handout .meta {
+        display: flex;
+        justify-content: space-between;
+        font: 600 12px "Manrope", sans-serif;
+        color: #6a7787;
+      }
+      .lp .handout h3 {
+        margin-top: 18px;
+        font: 600 30px/1.15 "Source Serif 4", serif;
+        color: #0c1823;
+        letter-spacing: -0.01em;
+      }
+      .lp .handout p {
+        margin-top: 14px;
+        font: 400 15.5px/1.62 "Source Serif 4", serif;
+        color: #26323f;
+      }
+      .lp .handout .fig {
+        margin-top: 16px;
+        height: 96px;
+        border-radius: 4px;
+        background: #f2f5f9;
+        display: grid;
+        place-items: center;
+      }
+      .lp .handout .num {
+        position: absolute;
+        bottom: 26px;
+        right: 46px;
+        font: 500 13px "Source Serif 4", serif;
+        color: #6a7787;
+      }
+      .lp .sweep {
+        background-image: linear-gradient(var(--hl), var(--hl));
+        background-repeat: no-repeat;
+        background-size: 100% 60%;
+        background-position: 0 92%;
+        -webkit-box-decoration-break: clone;
+        box-decoration-break: clone;
+        color: inherit;
+      }
+      .lp .bubble {
+        justify-self: end;
+        max-width: 340px;
+        padding: 14px 18px;
+        border-radius: 20px 20px 6px 20px;
+        background: var(--cobalt);
+        color: #fff;
+        font-size: 19px;
+        font-weight: 700;
+        line-height: 1.55;
+        box-shadow: var(--float-night);
+      }
+      .lp .bubble[dir="rtl"] {
+        border-radius: 20px 20px 20px 6px;
+        justify-self: start;
+      }
+      .lp .answer {
+        padding: 18px 20px;
+        border-radius: 18px;
+        background: var(--surface);
+        color: var(--ink);
+        display: grid;
+        gap: 12px;
+        box-shadow: var(--float-night);
+      }
+      .lp .answer p {
+        font-size: 17px;
+        line-height: 1.75;
+      }
+      .lp .answer .from {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font: 700 13px "Manrope", sans-serif;
+        color: var(--secondary);
+      }
+      .lp .answer .from svg {
+        width: 20px;
+        height: 20px;
+        color: var(--ink);
+      }
+      .lp .cites {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .lp .cite {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 34px;
+        padding: 0 12px 0 6px;
+        border-radius: 999px;
+        background: var(--tint);
+        font-size: 13.5px;
+        font-weight: 700;
+      }
+      .lp [dir="rtl"] .cite {
+        padding: 0 6px 0 12px;
+      }
+      .lp .cite b {
+        display: inline-grid;
+        place-items: center;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: var(--cobalt);
+        color: #fff;
+        font-size: 12px;
+      }
+      .lp .prof {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 4px 14px;
+        align-items: center;
+        padding: 16px 18px;
+        border-radius: 18px;
+        background: var(--night-2);
+        color: var(--on-night);
+        box-shadow: var(--float-night), inset 0 0 0 1px var(--night-line);
+      }
+      .lp .prof .play {
+        grid-row: span 2;
+        display: grid;
+        place-items: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: var(--cobalt);
+        color: #fff;
+      }
+      .lp .prof strong {
+        font-size: 14px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .lp .prof strong span {
+        color: var(--on-night-blue);
+        font-weight: 700;
+        font-size: 13px;
+      }
+      .lp .prof p {
+        font-size: 15px;
+        color: #d4e0ee;
+        line-height: 1.6;
+      }
+      .lp .sample-note {
+        font-size: 13px;
+        color: var(--on-night-2);
+      }
+
+      /* ------------------------------------------------ motion: one moment */
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+      }
+      @keyframes sweep {
+        from {
+          background-size: 0% 60%;
+        }
+      }
+      @keyframes draw {
+        from {
+          stroke-dashoffset: 1;
+        }
+      }
+      @keyframes reveal-rtl {
+        from {
+          clip-path: inset(0 0 0 100%);
+        }
+      }
+      .lp.play .m-q {
+        animation: rise 420ms var(--ease) 300ms both;
+      }
+      .lp.play .m-a {
+        animation: rise 420ms var(--ease) 1100ms both;
+      }
+      .lp.play .m-a p {
+        animation: reveal-rtl 900ms linear 1300ms both;
+      }
+      .lp.play .m-line {
+        animation: rise 420ms var(--ease) 2300ms both;
+      }
+      .lp.play .sweep {
+        animation: sweep 800ms var(--ease) 2700ms both;
+      }
+      .lp.play .m-p {
+        animation: rise 420ms var(--ease) 3500ms both;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .lp *,
+        .lp *::before {
+          animation: none !important;
+        }
+      }
+
+      /* ------------------------------------------------ L1: the page answers */
+      .lp.l1 {
+        height: 100%;
+        min-height: 100%;
+        background: var(--stage);
+        color: var(--on-night);
+        overflow: hidden;
+      }
+      .l1 .top .logo {
+        color: var(--on-night);
+      }
+      .l1 .top nav {
+        color: var(--on-night-2);
+      }
+      .l1 .top .btn-ring {
+        box-shadow: inset 0 0 0 1.5px #5a7493;
+      }
+      .l1 .hero {
+        display: grid;
+        grid-template-columns: 620px minmax(0, 1fr);
+        gap: 20px;
+        padding: 26px 56px 0;
+      }
+      .l1 .slogan {
+        margin-top: 46px;
+        font-size: 94px;
+      }
+      .l1 .lede {
+        margin-top: 34px;
+        max-width: 26em;
+        font-size: 19px;
+        line-height: 1.6;
+        color: var(--on-night-2);
+      }
+      .l1 .cta {
+        margin-top: 34px;
+        display: flex;
+        gap: 14px;
+        align-items: center;
+      }
+      .l1 .proof {
+        margin-top: 46px;
+        color: #d4e0ee;
+      }
+      .l1 .stage {
+        position: relative;
+        height: 760px;
+      }
+      .l1 .handout {
+        position: absolute;
+        top: 14px;
+        right: 0;
+        width: 456px;
+        height: 640px;
+        transform: rotate(1.4deg);
+      }
+      .l1 .convo {
+        position: absolute;
+        left: 0;
+        top: 336px;
+        width: 372px;
+        display: grid;
+        gap: 12px;
+      }
+      .l1 .link {
+        position: absolute;
+        inset: 0;
+        overflow: visible;
+        pointer-events: none;
+      }
+      .l1 .replay {
+        position: absolute;
+        right: 0;
+        bottom: 34px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 40px;
+        padding: 0 14px;
+        border-radius: 999px;
+        color: var(--on-night-2);
+        font-size: 13px;
+        font-weight: 700;
+        box-shadow: inset 0 0 0 1px var(--night-line);
+      }
+
+      /* ------------------------------------------------ L2: ask it yourself */
+      .lp.l2 {
+        min-height: 100%;
+        background: var(--paper);
+      }
+      .l2 .head {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 400px;
+        gap: 40px;
+        align-items: end;
+        padding: 34px 56px 0;
+      }
+      .l2 .slogan {
+        font-size: 128px;
+      }
+      .l2 .slogan span + span {
+        color: var(--cobalt);
+      }
+      .l2 .lede {
+        font-size: 18px;
+        line-height: 1.6;
+        color: var(--secondary);
+      }
+      .l2 .cta {
+        margin-top: 22px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .l2 .ask {
+        margin: 46px 56px 0;
+      }
+      .l2 .askbar {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        min-height: 82px;
+        padding: 12px 12px 12px 14px;
+        border-radius: 24px;
+        background: var(--surface);
+        box-shadow: var(--float), inset 0 0 0 1.5px var(--cobalt);
+      }
+      .l2 .subject {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 54px;
+        padding: 0 16px;
+        border-radius: 16px;
+        background: var(--night);
+        color: var(--on-night);
+        font-weight: 800;
+        font-size: 16px;
+        flex: none;
+      }
+      html[data-theme="dark"] .l2 .subject {
+        background: #1a2f48;
+      }
+      .l2 .subject small {
+        font-weight: 600;
+        color: var(--on-night-2);
+        font-size: 13px;
+      }
+      .l2 .askbar .text {
+        flex: 1;
+        font-size: 21px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        min-width: 0;
+      }
+      .l2 .askbar .text[dir="rtl"] {
+        text-align: right;
+      }
+      .l2 .send {
+        display: grid;
+        place-items: center;
+        width: 58px;
+        height: 58px;
+        border-radius: 18px;
+        background: var(--cobalt);
+        color: #fff;
+        flex: none;
+      }
+      .l2 .suggest {
+        margin-top: 14px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+      }
+      .l2 .suggest button {
+        min-height: 44px;
+        padding: 0 16px;
+        border-radius: 999px;
+        background: var(--surface);
+        box-shadow: inset 0 0 0 1px var(--line);
+        font-weight: 700;
+        font-size: 14.5px;
+      }
+      .l2 .suggest button[aria-pressed="true"] {
+        background: var(--night);
+        color: var(--on-night);
+        box-shadow: none;
+      }
+      html[data-theme="dark"] .l2 .suggest button[aria-pressed="true"] {
+        background: #24405e;
+      }
+      .l2 .suggest small {
+        margin-inline-start: auto;
+        font-size: 13px;
+        color: var(--secondary);
+      }
+      .l2 .result {
+        margin: 22px 56px 0;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 440px;
+        border-radius: 24px;
+        background: var(--surface);
+        box-shadow: var(--float);
+        overflow: hidden;
+      }
+      .l2 .result .body {
+        padding: 28px 32px;
+        display: grid;
+        gap: 14px;
+        align-content: start;
+      }
+      .l2 .result .body p {
+        font-size: 18px;
+        line-height: 1.7;
+      }
+      .l2 .result .body p[dir="rtl"] {
+        font-size: 18.5px;
+        line-height: 1.9;
+      }
+      .l2 .evidence {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        font-size: 14px;
+        color: #236746;
+      }
+      html[data-theme="dark"] .l2 .evidence {
+        color: #91d2ad;
+      }
+      .l2 .result .side {
+        background: var(--night);
+        color: var(--on-night);
+        padding: 26px 26px;
+        display: grid;
+        gap: 14px;
+        align-content: start;
+      }
+      .l2 .excerpt {
+        background: #fff;
+        color: #1f2a37;
+        border-radius: 10px;
+        padding: 16px 18px;
+        font: 400 15.5px/1.6 "Source Serif 4", serif;
+      }
+      .l2 .excerpt-head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .l2 .excerpt-head small {
+        display: block;
+        font-weight: 500;
+        color: var(--on-night-2);
+        font-size: 12.5px;
+      }
+      .l2 .cards {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .l2 .card {
+        min-height: 120px;
+        border-radius: 16px;
+        padding: 18px;
+        background: var(--tint);
+        display: grid;
+        align-content: space-between;
+        gap: 10px;
+        font-weight: 700;
+        font-size: 16px;
+      }
+      .l2 .card small {
+        font-weight: 600;
+        color: var(--secondary);
+        font-size: 13px;
+      }
+
+      /* ------------------------------------------------ L3: folio spread */
+      .lp.l3 {
+        min-height: 100%;
+        background: var(--paper);
+      }
+      .l3 .spread {
+        position: relative;
+        margin: 6px auto 0;
+        width: 1336px;
+        height: 742px;
+      }
+      .l3 .pages {
+        position: absolute;
+        inset: 0;
+        overflow: visible;
+        filter: drop-shadow(0 30px 40px rgb(12 24 35 / 0.25));
+      }
+      html[data-theme="dark"] .l3 .pages {
+        filter: drop-shadow(0 30px 40px rgb(0 0 0 / 0.6));
+      }
+      .l3 .left {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 664px;
+        height: 742px;
+        padding: 92px 64px 0 66px;
+        color: var(--on-night);
+      }
+      .l3 .slogan {
+        font-size: 84px;
+      }
+      .l3 .lede {
+        margin-top: 30px;
+        max-width: 25em;
+        font-size: 18.5px;
+        line-height: 1.6;
+        color: var(--on-night-2);
+      }
+      .l3 .cta {
+        margin-top: 32px;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      .l3 .proof {
+        margin-top: 42px;
+        color: #d4e0ee;
+      }
+      .l3 .right {
+        position: absolute;
+        left: 672px;
+        top: 0;
+        width: 664px;
+        height: 742px;
+        padding: 96px 64px 0 70px;
+        color: #1f2a37;
+      }
+      .l3 .right .meta {
+        display: flex;
+        justify-content: space-between;
+        font: 600 12px "Manrope", sans-serif;
+        color: #6a7787;
+      }
+      .l3 .right h3 {
+        margin-top: 16px;
+        font: 600 32px/1.15 "Source Serif 4", serif;
+        color: #0c1823;
+      }
+      .l3 .right > p {
+        margin-top: 14px;
+        max-width: 30em;
+        font: 400 16px/1.62 "Source Serif 4", serif;
+        color: #26323f;
+      }
+      .l3 .right .fig {
+        margin-top: 16px;
+        height: 92px;
+        width: 380px;
+        border-radius: 4px;
+        background: #f2f5f9;
+        display: grid;
+        place-items: center;
+      }
+      .l3 .right .num {
+        position: absolute;
+        left: 70px;
+        bottom: 70px;
+        font: 500 13px "Source Serif 4", serif;
+        color: #6a7787;
+      }
+      .l3 .pinned {
+        position: absolute;
+        right: 30px;
+        top: 392px;
+        width: 360px;
+        display: grid;
+        gap: 10px;
+      }
+      .lp .margin-mark {
+        position: absolute;
+        left: 34px;
+        top: 300px;
+        display: grid;
+        place-items: center;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: var(--cobalt);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      /* ------------------------------------------------ phones */
+      .lp.phone {
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      .lp .status {
+        height: 44px;
+        flex: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 28px;
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .lp.phone .top {
+        padding: 6px 20px 8px;
+        gap: 12px;
+      }
+      .lp.phone .top .logo {
+        width: 118px;
+        height: 32px;
+      }
+      .lp.phone .top .btn {
+        margin-inline-start: auto;
+        min-height: 40px;
+        padding: 0 14px;
+        font-size: 14px;
+      }
+      .lp.phone .slogan {
+        margin-top: 8px;
+        font-size: 54px;
+      }
+      .lp.phone .lede {
+        margin-top: 18px;
+        font-size: 16.5px;
+        line-height: 1.6;
+      }
+      .lp.phone .btn-go {
+        width: 100%;
+        margin-top: 22px;
+        min-height: 58px;
+        font-size: 19px;
+      }
+      .lp .p-body {
+        padding: 16px 20px 0;
+      }
+      .lp .p-stage {
+        margin-top: 26px;
+        padding: 0 16px 24px;
+        display: grid;
+        gap: 10px;
+      }
+      .lp .p-stage .bubble {
+        font-size: 17px;
+        max-width: 300px;
+      }
+      .lp .p-stage .answer p {
+        font-size: 16px;
+      }
+      .lp .p-excerpt {
+        border-radius: 14px;
+        background: #fff;
+        color: #26323f;
+        padding: 14px 16px;
+        font: 400 15px/1.6 "Source Serif 4", serif;
+        box-shadow: var(--float-night);
+      }
+      .lp .p-excerpt .meta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 6px;
+        font: 700 12.5px "Manrope", sans-serif;
+        color: #4b5b6e;
+      }
+      .lp .p-excerpt .meta b {
+        display: inline-grid;
+        place-items: center;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #3977f7;
+        color: #fff;
+        font-size: 11px;
+      }
+    </style>
+  </head>
+  <body>
+    <svg hidden>
+      <symbol id="logo-h" viewBox="0 0 944 256"><path fill="currentColor" d="M40 48C70 49 96 59 112 78V208C92 190 64 182 40 182Q32 182 32 174V56Q32 48 40 48Z"/><path fill="#3977f7" d="M216 48C186 49 160 59 144 78V208C164 190 192 182 216 182Q224 182 224 174V56Q224 48 216 48Z"/><path fill="currentColor" d="M350.64 187.37Q337.17 187.37 326.9 181.87Q316.63 176.37 310.85 166.39Q305.06 156.4 305.06 142.93V71.36L323.07 71.24V142.26Q323.07 149.09 325.38 154.38Q327.69 159.66 331.61 163.28Q335.53 166.91 340.48 168.77Q345.43 170.62 350.64 170.62Q355.98 170.62 360.92 168.74Q365.87 166.85 369.76 163.23Q373.65 159.6 375.93 154.32Q378.21 149.04 378.21 142.26V71.24H396.23V142.93Q396.23 156.38 390.44 166.37Q384.65 176.35 374.38 181.86Q364.11 187.37 350.64 187.37Z"/><path fill="currentColor" d="M477 185V143.49Q477 139 476.3 133.93Q475.6 128.85 473.45 124.32Q471.3 119.79 467.19 116.94Q463.08 114.1 456.27 114.1Q452.24 114.1 448.49 115.43Q444.75 116.76 441.83 119.82Q438.91 122.87 437.18 128.02Q435.45 133.18 435.45 140.88L424.67 136.53Q424.67 125.3 428.95 116.42Q433.24 107.54 441.41 102.43Q449.59 97.31 461.36 97.31Q470.51 97.31 476.6 100.31Q482.69 103.31 486.38 108.08Q490.08 112.85 491.93 118.33Q493.79 123.81 494.4 128.9Q495.02 133.99 495.02 137.48V185ZM417.44 185V99.68H433.32V125.24H435.45V185Z"/><path fill="currentColor" d="M516.38 86.21V69.46H534.16V86.21ZM516.38 185V99.68H534.16V185Z"/><path fill="currentColor" d="M557.07 185V71.24H573.11L613.4 154.31L653.57 71.24H669.68V184.96H652.98V109.59L617.15 185H609.61L573.78 109.59V185Z"/><path fill="currentColor" d="M692.63 86.21V69.46H710.41V86.21ZM692.63 185V99.68H710.41V185Z"/><path fill="currentColor" d="M792.77 185V143.49Q792.77 139 792.07 133.93Q791.36 128.85 789.21 124.32Q787.06 119.79 782.95 116.94Q778.84 114.1 772.03 114.1Q768 114.1 764.26 115.43Q760.51 116.76 757.59 119.82Q754.67 122.87 752.94 128.02Q751.21 133.18 751.21 140.88L740.43 136.53Q740.43 125.3 744.71 116.42Q749 107.54 757.18 102.43Q765.35 97.31 777.12 97.31Q786.27 97.31 792.36 100.31Q798.45 103.31 802.15 108.08Q805.84 112.85 807.7 118.33Q809.55 123.81 810.17 128.9Q810.78 133.99 810.78 137.48V185ZM733.2 185V99.68H749.08V125.24H751.21V185Z"/><path fill="currentColor" d="M864.62 187.37Q852.77 187.37 844.07 181.44Q835.37 175.5 830.6 165.3Q825.83 155.1 825.83 142.3Q825.83 129.38 830.64 119.22Q835.45 109.06 844.26 103.19Q853.08 97.31 865.13 97.31Q877.24 97.31 885.5 103.21Q893.77 109.1 898.01 119.28Q902.26 129.46 902.26 142.3Q902.26 155.08 897.99 165.28Q893.73 175.48 885.35 181.43Q876.98 187.37 864.62 187.37ZM867.22 171.37Q875.12 171.37 880.04 167.68Q884.96 163.99 887.23 157.42Q889.5 150.85 889.5 142.3Q889.5 133.71 887.22 127.16Q884.94 120.61 880.14 116.96Q875.34 113.31 867.82 113.31Q859.88 113.31 854.74 117.2Q849.61 121.09 847.14 127.67Q844.67 134.24 844.67 142.3Q844.67 150.44 847.12 157.03Q849.57 163.63 854.55 167.5Q859.54 171.37 867.22 171.37ZM889.5 185V124.37H887.37V71.24H905.26V185Z"/></symbol>
+      <symbol id="logo-s" viewBox="0 0 256 256">
+        <path fill="currentColor" d="M40 48C70 49 96 59 112 78V208C92 190 64 182 40 182Q32 182 32 174V56Q32 48 40 48Z" />
+        <path fill="#3977f7" d="M216 48C186 49 160 59 144 78V208C164 190 192 182 216 182Q224 182 224 174V56Q224 48 216 48Z" />
+      </symbol>
+      <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17l9-10" /></symbol>
+      <symbol id="i-check-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5" /><path d="m8.5 12.3 2.4 2.3 4.6-5" /></symbol>
+      <symbol id="i-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6" /></symbol>
+      <symbol id="i-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l10-6.5-10-6.5Z" /></symbol>
+      <symbol id="i-replay" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4.5v4h4" /></symbol>
+      <symbol id="i-chev-d" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9.5 6 6 6-6" /></symbol>
+      <symbol id="plexus" viewBox="0 0 300 80">
+        <g fill="none" stroke="#9aa9bb" stroke-width="1.6" stroke-linecap="round">
+          <path d="M10 14h60M10 30h60M10 46h60M10 62h60M70 14c30 0 30 8 60 8M70 30c30 0 30-8 60-8M70 46c30 0 40 6 60 6M70 62c30 0 30-10 60-10M130 22c40 0 40 18 80 18M130 52c40 0 40-12 80-12M210 40h80" />
+        </g>
+        <circle cx="70" cy="14" r="3.4" fill="#3977f7" />
+        <circle cx="70" cy="30" r="3.4" fill="#3977f7" />
+      </symbol>
+    </svg>
+
+    <header class="board-bar">
+      <strong>Landing variants (Direction B system)</strong>
+      <nav data-screens aria-label="Screens"></nav>
+      <span class="board-spacer"></span>
+      <button type="button" data-theme-choice value="light">Light</button>
+      <button type="button" data-theme-choice value="dark">Dark</button>
+      <a href="./">All mockups</a>
+    </header>
+
+    <main class="board-stage">
+      <!-- ======================================================= L1 desktop -->
+      <section class="screen" data-screen="l1" data-label="L1 The page answers">
+        <p class="board-caption">
+          L1: one choreographed moment on a Night stage. A student asks in
+          Egyptian Arabic, the answer arrives, its citation draws a line to the
+          English handout and the cited sentence is highlighted, then the
+          professor's exam note lands. With reduced motion it opens on the final
+          state. Use Replay to watch it again.
+        </p>
+        <div class="frame-desktop">
+          <div class="lp l1 play">
+            <header class="top">
+              <svg class="logo" role="img" aria-label="UniMind"><use href="#logo-h" /></svg>
+              <nav><a href="#">How it works</a><a href="#">For batch leaders</a><a href="#" lang="ar">العربية</a></nav>
+              <a class="btn btn-ring" href="#">Sign in</a>
+            </header>
+            <div class="hero">
+              <div>
+                <h1 class="slogan"><span>Study deeper</span><span>Go further.</span></h1>
+                <p class="lede">
+                  Ask about your own lectures, in Arabic or English. UniMind
+                  answers only from your faculty's material and shows you the
+                  page it came from.
+                </p>
+                <div class="cta">
+                  <a class="btn btn-go" href="#">Start studying</a>
+                  <a class="btn btn-quiet" href="#">See how it works</a>
+                </div>
+                <ul class="proof">
+                  <li><span class="tick"><svg class="ico"><use href="#i-check" /></svg></span>Answers only from your approved material</li>
+                  <li><span class="tick"><svg class="ico"><use href="#i-check" /></svg></span>A page or timestamp behind every claim</li>
+                  <li><span class="tick"><svg class="ico"><use href="#i-check" /></svg></span>Says so when your material doesn't cover it</li>
+                </ul>
+              </div>
+              <div class="stage">
+                <article class="handout" style="position: absolute">
+                  <div class="meta"><span>Anatomy, Lecture 6</span><span>Year 1, Term 1</span></div>
+                  <h3>The brachial plexus</h3>
+                  <p>The plexus is formed by the ventral rami of C5 to T1. The roots unite to form the upper, middle and lower trunks at the root of the neck.</p>
+                  <p><span class="sweep">Injury to the upper trunk (C5, C6) produces Erb–Duchenne paralysis, commonly from excessive separation of the head and shoulder</span>, as in a fall on the shoulder or a difficult delivery.</p>
+                  <div class="fig"><svg width="300" height="80"><use href="#plexus" /></svg></div>
+                  <p>The lower trunk (C8, T1) is injured by excessive abduction of the arm, producing Klumpke's paralysis of the small muscles of the hand.</p>
+                  <p>Lesions of the posterior cord paralyse the extensors of the elbow, wrist and fingers.</p>
+                  <span class="num">14</span>
+                  <span class="margin-mark m-line" style="left: 14px; top: 236px">1</span>
+                </article>
+                
+                <div class="convo">
+                  <p class="bubble m-q" lang="ar" dir="rtl">إيه اللي بيحصل لو الجذع العلوي للضفيرة العضدية اتصاب؟</p>
+                  <div class="answer m-a" lang="ar" dir="rtl">
+                    <span class="from"><svg viewBox="0 0 256 256" aria-hidden="true"><use href="#logo-s" /></svg>UniMind</span>
+                    <p>شلل إرب: يتأثر الجذران <bdi>C5</bdi> و<bdi>C6</bdi>، فيتدلى الذراع مقرّبًا ومدوّرًا للداخل في وضع «بقشيش النادل».</p>
+                    <div class="cites">
+                      <span class="cite"><b>١</b>محاضرة 6، صفحة 14</span>
+                      <span class="cite"><b>٢</b>العملي 3، 18:42</span>
+                    </div>
+                  </div>
+                  <div class="prof m-p" lang="ar" dir="rtl">
+                    <span class="play"><svg class="ico"><use href="#i-play" /></svg></span>
+                    <strong>د. هالة منصور <span>تركيز امتحاني</span></strong>
+                    <p>«شلل إرب بييجي في الامتحان كل سنة تقريبًا.»</p>
+                  </div>
+                </div>
+                <button class="replay" type="button" data-replay><svg class="ico" style="width: 16px"><use href="#i-replay" /></svg>Replay</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================= L1 phone -->
+      <section class="screen" data-screen="l1-phone" data-label="L1 phone">
+        <p class="board-caption">L1 on a phone: slogan, one full-width action, then the same moment stacked, ending on the handout excerpt itself.</p>
+        <div class="phone-row">
+          <div class="frame-phone">
+            <div class="lp l1 phone play" style="height: auto">
+              <div class="status"><span>9:41</span><span>5G</span></div>
+              <header class="top">
+                <svg class="logo" role="img" aria-label="UniMind"><use href="#logo-h" /></svg>
+                <a class="btn btn-ring" href="#">Sign in</a>
+              </header>
+              <div class="p-body">
+                <h1 class="slogan"><span>Study deeper</span><span>Go further.</span></h1>
+                <p class="lede" style="color: var(--on-night-2)">Ask about your own lectures, in Arabic or English. Every answer shows the page it came from.</p>
+                <a class="btn btn-go" href="#">Start studying</a>
+              </div>
+              <div class="p-stage">
+                <p class="bubble m-q" lang="ar" dir="rtl">إيه اللي بيحصل لو الجذع العلوي للضفيرة العضدية اتصاب؟</p>
+                <div class="answer m-a" lang="ar" dir="rtl">
+                  <p>شلل إرب: يتأثر الجذران <bdi>C5</bdi> و<bdi>C6</bdi>، فيتدلى الذراع في وضع «بقشيش النادل».</p>
+                  <div class="cites"><span class="cite"><b>١</b>محاضرة 6، صفحة 14</span></div>
+                </div>
+                <div class="p-excerpt m-p">
+                  <div class="meta"><b>1</b>Lecture 6 handout, page 14</div>
+                  <span class="sweep">Injury to the upper trunk (C5, C6) produces Erb–Duchenne paralysis</span>, commonly from excessive separation of the head and shoulder.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================= L2 desktop -->
+      <section class="screen" data-screen="l2" data-label="L2 Ask it yourself">
+        <p class="board-caption">
+          L2: the hero is a working sample. The question bar is the biggest
+          control on the page; the three suggestions are clickable and swap the
+          answer below (English answer, Arabic answer, flashcards). Sample
+          content is labelled.
+        </p>
+        <div class="frame-desktop">
+          <div class="lp l2">
+            <header class="top">
+              <svg class="logo" role="img" aria-label="UniMind"><use href="#logo-h" /></svg>
+              <nav><a href="#">How it works</a><a href="#">For batch leaders</a><a href="#" lang="ar">العربية</a></nav>
+              <a class="btn btn-ring" href="#">Sign in</a>
+            </header>
+            <div class="head">
+              <h1 class="slogan"><span>Study deeper</span><span>Go further.</span></h1>
+              <div>
+                <p class="lede">Ask about your own lectures, in Arabic or English. UniMind answers only from your faculty's material and shows you the page it came from.</p>
+                <div class="cta">
+                  <a class="btn btn-go" href="#">Start studying</a>
+                  <a class="btn btn-quiet" href="#" style="font-size: 16px">How it works</a>
+                </div>
+              </div>
+            </div>
+            <div class="ask">
+              <div class="askbar">
+                <span class="subject"><svg viewBox="0 0 256 256" style="width: 22px; height: 22px; color: #ecf3f9"><use href="#logo-s" /></svg>Anatomy <small>Year 1</small><svg class="ico" style="width: 16px"><use href="#i-chev-d" /></svg></span>
+                <span class="text" data-q>What happens if the upper trunk of the brachial plexus is injured?</span>
+                <span class="send"><svg class="ico"><use href="#i-send" /></svg></span>
+              </div>
+              <div class="suggest" role="group" aria-label="Sample questions">
+                <button type="button" aria-pressed="true" data-sample="0">Upper trunk injury</button>
+                <button type="button" aria-pressed="false" data-sample="1" lang="ar">الفرق بين إرب وكلومبكه</button>
+                <button type="button" aria-pressed="false" data-sample="2">Flashcards on the plexus</button>
+                <small>Sample answers from invented lecture notes</small>
+              </div>
+            </div>
+            <div class="result" data-result></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================= L2 phone -->
+      <section class="screen" data-screen="l2-phone" data-label="L2 phone">
+        <p class="board-caption">L2 on a phone: the question bar sits right under the slogan; suggestions scroll sideways.</p>
+        <div class="phone-row">
+          <div class="frame-phone">
+            <div class="lp l2 phone">
+              <div class="status"><span>9:41</span><span>5G</span></div>
+              <header class="top">
+                <svg class="logo" role="img" aria-label="UniMind"><use href="#logo-h" /></svg>
+                <a class="btn btn-ring" href="#">Sign in</a>
+              </header>
+              <div class="p-body">
+                <h1 class="slogan"><span>Study deeper</span><span style="color: var(--cobalt)">Go further.</span></h1>
+                <p class="lede" style="color: var(--secondary)">Ask about your own lectures, in Arabic or English. Every answer shows the page it came from.</p>
+              </div>
+              <div style="padding: 20px 16px 0">
+                <div class="askbar" style="min-height: 0; padding: 10px; border-radius: 20px; display: grid; gap: 10px">
+                  <span class="subject" style="min-height: 40px; width: fit-content; font-size: 14px">Anatomy <small>Year 1</small></span>
+                  <span style="display: flex; gap: 10px; align-items: flex-end">
+                    <span class="text" style="font-size: 17px; padding: 0 4px">What happens if the upper trunk of the brachial plexus is injured?</span>
+                    <span class="send" style="width: 48px; height: 48px; border-radius: 14px"><svg class="ico"><use href="#i-send" /></svg></span>
+                  </span>
+                </div>
+                <div class="suggest" style="flex-wrap: nowrap; overflow: hidden">
+                  <button type="button" aria-pressed="true">Upper trunk injury</button>
+                  <button type="button" lang="ar">الفرق بين إرب وكلومبكه</button>
+                </div>
+              </div>
+              <div style="padding: 16px 16px 24px">
+                <div class="answer" style="box-shadow: var(--float)">
+                  <p>An upper trunk injury damages C5 and C6: Erb's palsy. The arm hangs in the "waiter's tip" position.</p>
+                  <div class="cites"><span class="cite"><b>1</b>Lecture 6, page 14</span><span class="cite"><b>2</b>18:42</span></div>
+                </div>
+              </div>
+              <a class="btn btn-go" href="#" style="margin: auto 16px 22px; width: auto">Start studying</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================= L3 desktop -->
+      <section class="screen" data-screen="l3" data-label="L3 Folio spread">
+        <p class="board-caption">
+          L3: the logo becomes an open book. The Night page carries the slogan
+          and the action; the facing page is the real handout, with the cited
+          sentence highlighted and the student's question and answer pinned to
+          its margin. Both page edges slope toward the spine like the logo.
+        </p>
+        <div class="frame-desktop">
+          <div class="lp l3 play">
+            <header class="top">
+              <svg class="logo" role="img" aria-label="UniMind"><use href="#logo-h" /></svg>
+              <nav><a href="#">How it works</a><a href="#">For batch leaders</a><a href="#" lang="ar">العربية</a></nav>
+              <a class="btn btn-ring" href="#">Sign in</a>
+            </header>
+            <div class="spread">
+              <svg class="pages" viewBox="0 0 1336 742" aria-hidden="true">
+                <path d="M26 0 C 300 3, 520 16, 664 50 L 664 742 C 520 712, 300 700, 26 696 Q 0 696 0 670 L 0 26 Q 0 0 26 0 Z" fill="var(--night)" stroke="var(--night-line)" stroke-width="1" />
+                <path d="M672 50 C 816 16, 1036 3, 1310 0 Q 1336 0 1336 26 L 1336 670 Q 1336 696 1310 696 C 1036 700, 816 712, 672 742 Z" fill="#ffffff" />
+                <rect x="664" y="50" width="8" height="692" fill="#0c1823" opacity=".55" />
+              </svg>
+              <div class="left">
+                <h1 class="slogan"><span>Study deeper</span><span>Go further.</span></h1>
+                <p class="lede">Ask about your own lectures, in Arabic or English. UniMind answers only from your faculty's material and shows you the page it came from.</p>
+                <div class="cta">
+                  <a class="btn btn-go" href="#">Start studying</a>
+                  <a class="btn btn-quiet" href="#" style="color: var(--on-night)">See how it works</a>
+                </div>
+                <ul class="proof">
+                  <li><span class="tick"><svg class="ico"><use href="#i-check" /></svg></span>Answers only from your approved material</li>
+                  <li><span class="tick"><svg class="ico"><use href="#i-check" /></svg></span>A page or timestamp behind every claim</li>
+                  <li><span class="tick"><svg class="ico"><use href="#i-check" /></svg></span>Says so when your material doesn't cover it</li>
+                </ul>
+              </div>
+              <div class="right">
+                <div class="meta"><span>Anatomy, Lecture 6</span><span>Year 1, Term 1</span></div>
+                <h3>The brachial plexus</h3>
+                <p>The plexus is formed by the ventral rami of C5 to T1. The roots unite to form the upper, middle and lower trunks at the root of the neck.</p>
+                <p><span class="sweep">Injury to the upper trunk (C5, C6) produces Erb–Duchenne paralysis, commonly from excessive separation of the head and shoulder</span>, as in a fall on the shoulder or a difficult delivery.</p>
+                <div class="fig"><svg width="300" height="80"><use href="#plexus" /></svg></div>
+                <p style="max-width: 18em">The lower trunk (C8, T1) is injured by excessive abduction of the arm.</p>
+                <span class="margin-mark">1</span>
+                <span class="num">14</span>
+                <div class="pinned">
+                  <p class="bubble m-q" lang="ar" dir="rtl" style="max-width: 320px">إيه اللي بيحصل لو الجذع العلوي اتصاب؟</p>
+                  <div class="answer m-a" lang="ar" dir="rtl" style="box-shadow: var(--float)">
+                    <p style="font-size: 16px">شلل إرب: يتأثر <bdi>C5</bdi> و<bdi>C6</bdi>، فيتدلى الذراع في وضع «بقشيش النادل».</p>
+                    <div class="cites"><span class="cite"><b>١</b>صفحة 14</span><span class="cite"><b>٢</b>العملي 3، 18:42</span></div>
+                  </div>
+                  <div class="prof m-p" lang="ar" dir="rtl">
+                    <span class="play"><svg class="ico"><use href="#i-play" /></svg></span>
+                    <strong>د. هالة منصور <span>تركيز امتحاني</span></strong>
+                    <p>«بييجي في الامتحان كل سنة تقريبًا.»</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================= L3 phone -->
+      <section class="screen" data-screen="l3-phone" data-label="L3 phone">
+        <p class="board-caption">L3 on a phone: the two pages stack; the Night page ends on a curve and the handout page continues below it.</p>
+        <div class="phone-row">
+          <div class="frame-phone">
+            <div class="lp l3 phone play">
+              <div style="background: var(--night); color: var(--on-night); padding-bottom: 20px">
+                <div class="status"><span>9:41</span><span>5G</span></div>
+                <header class="top">
+                  <svg class="logo" role="img" aria-label="UniMind" style="color: var(--on-night)"><use href="#logo-h" /></svg>
+                  <a class="btn btn-ring" href="#" style="box-shadow: inset 0 0 0 1.5px #5a7493">Sign in</a>
+                </header>
+                <div class="p-body">
+                  <h1 class="slogan"><span>Study deeper</span><span>Go further.</span></h1>
+                  <p class="lede" style="color: var(--on-night-2)">Ask about your own lectures, in Arabic or English. Every answer shows the page it came from.</p>
+                  <a class="btn btn-go" href="#">Start studying</a>
+                  <ul class="proof" style="margin-top: 26px; color: #d4e0ee; font-size: 14px">
+                    <li><span class="tick"><svg class="ico"><use href="#i-check" /></svg></span>Only your approved material</li>
+                    <li><span class="tick"><svg class="ico"><use href="#i-check" /></svg></span>A page behind every claim</li>
+                  </ul>
+                </div>
+              </div>
+              <svg viewBox="0 0 390 44" width="390" height="44" style="display: block; margin-top: -1px" aria-hidden="true"><path d="M0 0 H390 V2 C 300 30, 130 42, 0 44 Z" fill="var(--night)" /></svg>
+              <div style="margin: 4px 14px 24px; padding: 22px 22px 22px; background: #fff; color: #26323f; border-radius: 6px; box-shadow: 0 24px 40px -24px rgb(0 0 0 / 0.5)">
+                <div style="display: flex; justify-content: space-between; font: 600 11.5px Manrope, sans-serif; color: #6a7787"><span>Anatomy, Lecture 6</span><span>Page 14</span></div>
+                <p style="margin-top: 10px; font: 400 15px/1.6 'Source Serif 4', serif"><span class="sweep">Injury to the upper trunk (C5, C6) produces Erb–Duchenne paralysis</span>, commonly from excessive separation of the head and shoulder.</p>
+              </div>
+              <div style="margin: 0 14px 28px; display: grid; gap: 10px">
+                <p class="bubble" lang="ar" dir="rtl" style="font-size: 17px; max-width: 300px; box-shadow: var(--float)">إيه اللي بيحصل لو الجذع العلوي اتصاب؟</p>
+                <div class="answer" lang="ar" dir="rtl" style="box-shadow: var(--float)">
+                  <p style="font-size: 16px">شلل إرب: يتأثر <bdi>C5</bdi> و<bdi>C6</bdi>، فيتدلى الذراع في وضع «بقشيش النادل».</p>
+                  <div class="cites"><span class="cite"><b>١</b>صفحة 14</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="board.js"></script>
+    <script>
+      // Replay restarts the one choreographed moment.
+      for (const button of document.querySelectorAll("[data-replay]"))
+        button.addEventListener("click", () => {
+          const stage = button.closest(".lp");
+          stage.classList.remove("play");
+          void stage.offsetWidth;
+          stage.classList.add("play");
+        });
+
+      // L2 sample questions swap the answer. Fixed, invented content only.
+      const samples = [
+        {
+          q: "What happens if the upper trunk of the brachial plexus is injured?",
+          html: `<div class="body">
+              <p>An upper trunk injury damages the C5 and C6 roots: Erb's palsy. The deltoid, supraspinatus, infraspinatus, biceps and brachialis weaken, so the arm hangs adducted and medially rotated, with the forearm extended and pronated: the "waiter's tip" position.</p>
+              <div class="cites"><span class="cite"><b>1</b>Lecture 6, page 14</span><span class="cite"><b>2</b>Practical 3, 18:42</span></div>
+              <p class="evidence"><svg class="ico"><use href="#i-check-circle" /></svg>Supported by 3 materials</p>
+            </div>
+            <aside class="side">
+              <div class="excerpt-head"><span class="cite" style="background:none;padding:0"><b>1</b></span><span>Lecture 6 handout<small>Brachial plexus, page 14</small></span></div>
+              <p class="excerpt"><span class="sweep">Injury to the upper trunk (C5, C6) produces Erb–Duchenne paralysis</span>, commonly from excessive separation of the head and shoulder.</p>
+            </aside>`,
+        },
+        {
+          q: "إيه الفرق بين شلل إرب وشلل كلومبكه؟",
+          rtl: true,
+          html: `<div class="body" lang="ar" dir="rtl">
+              <p dir="rtl">شلل إرب يصيب الجذع العلوي (<bdi>C5</bdi> و<bdi>C6</bdi>) فيضعف الكتف والكوع. أما شلل كلومبكه فيصيب الجذع السفلي (<bdi>C8</bdi> و<bdi>T1</bdi>) بعد شد الذراع لأعلى، فتضعف عضلات اليد الصغيرة.</p>
+              <div class="cites"><span class="cite"><b>١</b>محاضرة 6، صفحة 14</span><span class="cite"><b>٢</b>محاضرة 6، صفحة 15</span></div>
+              <p class="evidence"><svg class="ico"><use href="#i-check-circle" /></svg>مدعومة بمادتين</p>
+            </div>
+            <aside class="side">
+              <div class="excerpt-head"><span class="cite" style="background:none;padding:0"><b>2</b></span><span>Lecture 6 handout<small>Brachial plexus, page 15</small></span></div>
+              <p class="excerpt">The lower trunk (C8, T1) is injured by <span class="sweep">excessive abduction of the arm, producing Klumpke's paralysis</span> of the small muscles of the hand.</p>
+            </aside>`,
+        },
+        {
+          q: "Make flashcards on the brachial plexus",
+          html: `<div class="body">
+              <div class="cards">
+                <div class="card">Roots of the brachial plexus<small>Answer: ventral rami of C5 to T1</small></div>
+                <div class="card">Erb's palsy position<small>Answer: waiter's tip</small></div>
+                <div class="card">Trunk injured in Klumpke's palsy<small>Answer: lower trunk, C8 and T1</small></div>
+                <div class="card">Muscle weak in Erb's palsy<small>Answer: deltoid, among others</small></div>
+              </div>
+            </div>
+            <aside class="side">
+              <div class="excerpt-head"><span>Every card cites its page<small>Studio uses the same sources as Chat</small></span></div>
+              <div class="cites"><span class="cite" style="background:#16283c;color:#ecf3f9"><b>1</b>Lecture 6, page 14</span><span class="cite" style="background:#16283c;color:#ecf3f9"><b>2</b>Lecture 6, page 15</span></div>
+            </aside>`,
+        },
+      ];
+      const result = document.querySelector("[data-result]");
+      const question = document.querySelector("[data-q]");
+      function pick(index) {
+        const sample = samples[index];
+        result.innerHTML = sample.html;
+        question.textContent = sample.q;
+        question.dir = sample.rtl ? "rtl" : "ltr";
+        question.lang = sample.rtl ? "ar" : "en";
+        for (const button of document.querySelectorAll("[data-sample]"))
+          button.setAttribute("aria-pressed", String(button.dataset.sample === String(index)));
+      }
+      for (const button of document.querySelectorAll("[data-sample]"))
+        button.addEventListener("click", () => pick(Number(button.dataset.sample)));
+      pick(0);
+    </script>
+  </body>
+</html>
