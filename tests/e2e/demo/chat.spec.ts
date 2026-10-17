@@ -238,7 +238,7 @@ inLocales(["ar"], (locale) => {
       await page
         .locator("#exchange-2")
         .getByRole("button", {
-          name: t("Recording · 02:10", "التسجيل · ٠٢:١٠"),
+          name: t("Practical 3, 18:42", "العملي 3، ١٨:٤٢"),
           exact: true,
         })
         .click();
@@ -514,7 +514,7 @@ inLocales(["en"], (locale) => {
         await studyOptions.press("Escape");
         await page
           .getByRole("button", {
-            name: t("Handout · p. 3", "الملزمة · ص ٣"),
+            name: t("Lecture 6, p. 14", "المحاضرة 6، ص ١٤"),
             exact: true,
           })
           .last()
@@ -527,7 +527,7 @@ inLocales(["en"], (locale) => {
         await expect(
           page
             .getByRole("button", {
-              name: t("Handout · p. 3", "الملزمة · ص ٣"),
+              name: t("Lecture 6, p. 14", "المحاضرة 6، ص ١٤"),
               exact: true,
             })
             .last(),
@@ -953,10 +953,9 @@ inLocales(["en"], (locale) => {
       await expect(page.locator("article")).toHaveCount(7);
       await page.locator(`a[href*="${unit}/evidence?"]`).first().click();
       await expect(
-        page.getByText(
-          pick(locale, "Synthetic sequence handout", "ملزمة الترتيب التجريبية"),
-          { exact: true },
-        ),
+        page.getByText(pick(locale, "Lecture 6 handout", "ملزمة المحاضرة 6"), {
+          exact: true,
+        }),
       ).toBeVisible();
       await navigate(page, unit + "/chat", locale);
       await page.locator(`a[href*="${unit}/report?"]`).first().click();
@@ -1278,7 +1277,7 @@ inLocales(["ar"], (locale) => {
       }
       await send(page, "supported", locale);
       const citation = page.getByRole("button", {
-        name: pick(locale, "Handout · p. 3", "الملزمة · ص ٣"),
+        name: pick(locale, "Lecture 6, p. 14", "المحاضرة 6، ص ١٤"),
         exact: true,
       });
       await citation.click();
@@ -1324,7 +1323,7 @@ inLocales(["ar"], (locale) => {
         .click();
       await expect(
         page.getByRole("button", {
-          name: pick(locale, "Handout · p. 3", "الملزمة · ص ٣"),
+          name: pick(locale, "Lecture 6, p. 14", "المحاضرة 6، ص ١٤"),
         }),
       ).toHaveCount(0);
       await expect(input).toHaveValue("");
@@ -1402,7 +1401,7 @@ inLocales(["en"], (locale) => {
       await languages().locator('input[value="mixed"]').check();
       await send(page, "supported", locale);
       const citation = page.getByRole("button", {
-        name: pick(locale, "Handout · p. 3", "الملزمة · ص ٣"),
+        name: pick(locale, "Lecture 6, p. 14", "المحاضرة 6، ص ١٤"),
         exact: true,
       });
       await citation.click();
@@ -1412,7 +1411,7 @@ inLocales(["en"], (locale) => {
       });
       await expect(dialog).toBeVisible();
       await expect(dialog.getByRole("blockquote")).toContainText(
-        pick(locale, "Identify the labels", "حدد الأسماء"),
+        pick(locale, "Injury to the upper trunk", "إصابة الجذع العلوي"),
       );
       await page.keyboard.press("Escape");
       await expect(citation).toBeFocused();
@@ -1677,7 +1676,7 @@ inLocales(["en"], (locale) => {
       );
       const meta = page.locator("form p[class*='composerMeta']");
       await expect(meta.locator("strong")).toHaveText(
-        pick(locale, "Founder-visible by default", "ظاهر للمؤسسين افتراضيًا"),
+        pick(locale, "Visible to UniMind’s founders", "ظاهرة لمؤسسي UniMind"),
       );
       await expect(meta.locator("span")).toHaveText(
         pick(

@@ -181,13 +181,13 @@ inLocales(["ar"], (locale) => {
           name: pick(locale, "Open Anatomy", "فتح علم التشريح"),
           exact: true,
         }),
-      ).toContainText(/(?:24|٢٤) (?:sample materials|مصادر تجريبية)/u);
+      ).toContainText(/(?:24|٢٤) (?:materials|مصادر)/u);
       await expect(
         page.getByRole("link", {
           name: pick(locale, "Open Biochemistry", "فتح الكيمياء الحيوية"),
           exact: true,
         }),
-      ).toContainText(/(?:8|٨) (?:sample materials|مصادر تجريبية)/u);
+      ).toContainText(/(?:8|٨) (?:materials|مصادر)/u);
       finish();
     },
   );
@@ -227,7 +227,7 @@ inLocales(["en"], (locale) => {
       await language.check();
       await send(page, "supported", locale);
       await expect(page.locator("#exchange-1")).toContainText(
-        "Synthetic source · study sequence",
+        "Lecture 6 handout, page 14",
       );
       const message = page.getByLabel(t("Message", "السؤال"), { exact: true });
       await message.fill(

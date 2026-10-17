@@ -18,8 +18,8 @@ function beforePaint(value: unknown, dark: boolean, denied = false) {
 }
 describe("appearance before first paint", () => {
   it.each([
-    ["dark", "#1b1c1f"],
-    ["light", "#f6f7f8"],
+    ["dark", "#050b12"],
+    ["light", "#0c1823"],
   ])("sets browser chrome for saved %s before hydration", (saved, color) => {
     const setAttribute = vi.fn();
     runInNewContext(themeBootstrap, {

@@ -310,7 +310,7 @@ it. The local **missing-pending-expiry** case exercises that safe failure.
 
 Use the local **error-page** queue case, then **Recheck current decisions**. The read
 shows pending feedback and a current queue without submitting an action. A persistent
-unavailable real queue remains unavailable and reports no submission. Stale or
+unavailable real/preview queue remains unavailable and reports no submission. Stale or
 uncertain action results keep their existing explicit reload/review process; a recheck
 never automatically resends a mutation. Resource and catalog continuity are described below.
 

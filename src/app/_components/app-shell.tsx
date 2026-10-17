@@ -258,10 +258,7 @@ export function AppShell({
       <a className={styles.skip} href="#app-content">
         {t("Skip to content", "تخطي إلى المحتوى")}
       </a>
-      <aside
-        className={styles.rail}
-        aria-label={t("UniMind sidebar", "الشريط الجانبي لـUniMind")}
-      >
+      <header className={styles.topbar} data-workspace-chrome>
         <div className={styles.railBrand}>
           <Brand href={homeHref} tone="dark" />
         </div>
@@ -274,44 +271,26 @@ export function AppShell({
         >
           {navigation}
         </nav>
-        {role === "admin" ? (
-          <Link
-            className={styles.adminAccount}
-            href={`/settings?lang=${locale}` as Route}
-            prefetch={false}
-          >
-            {t("Account", "الحساب")}
-          </Link>
-        ) : null}
-        {role !== "student" ? (
-          <div className={styles.identity}>
-            <FrontendIcon name="account" />
-            <span>{identity}</span>
-          </div>
-        ) : null}
-      </aside>
-      <div className={styles.stage}>
-        <header className={styles.utility} data-workspace-chrome>
-          <div className={styles.mobileBrand}>
-            <Brand href={homeHref} variant="compact" tone="dark" />
-          </div>
-          <span className={styles.location}>
-            {title ??
-              t(
-                role === "student"
-                  ? "Study"
-                  : role === "leader"
-                    ? "Source intake"
-                    : "Overview",
-                role === "student"
-                  ? "المذاكرة"
-                  : role === "leader"
-                    ? "استلام المصادر"
-                    : "نظرة عامة",
-              )}
-          </span>
+        <div className={styles.utility}>
           <LanguageSwitch locale={locale} />
-        </header>
+          {role === "admin" ? (
+            <Link
+              className={styles.adminAccount}
+              href={`/settings?lang=${locale}` as Route}
+              prefetch={false}
+            >
+              {t("Account", "الحساب")}
+            </Link>
+          ) : null}
+          {role !== "student" ? (
+            <div className={styles.identity}>
+              <FrontendIcon name="account" />
+              <span>{identity}</span>
+            </div>
+          ) : null}
+        </div>
+      </header>
+      <div className={styles.stage}>
         {role === "admin" ? (
           <div
             className={styles.adminMenuRow}

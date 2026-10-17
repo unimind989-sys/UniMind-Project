@@ -11,13 +11,13 @@ describe("recorded recent-study metadata", () => {
         { answers: [{ kind: "supported" }, { kind: "conflict" }] },
         "en",
       ),
-    ).toBe("Study sequence");
+    ).toBe("Upper trunk injury");
     expect(
       conversationTitle(
         { answers: [{ kind: "unavailable", promptKind: "partial" }] },
         "ar",
       ),
-    ).toBe("الترتيب والمدة غير المذكورة");
+    ).toBe("الجذع العلوي ومدة التعافي");
   });
   it("preserves prepared titles and uses neutral empty or unknown fallbacks", () => {
     expect(
@@ -61,7 +61,7 @@ describe("recorded recent-study metadata", () => {
         now: 0,
         artifact: { type: "flashcards", topic: "comparison" },
       }),
-    ).toEqual({ title: "بطاقات مراجعة", detail: "مقارنة الرسوم" });
+    ).toEqual({ title: "بطاقات مراجعة", detail: "جذور الضفيرة" });
     expect(
       recentStudyDetails({
         tool: "studio",
@@ -87,7 +87,7 @@ describe("recorded recent-study metadata", () => {
         now: 0,
         conversation: { answers: [{ kind: "supported" }] },
       }),
-    ).toEqual({ title: "Study sequence", detail: "Replies · 1" });
+    ).toEqual({ title: "Upper trunk injury", detail: "Replies · 1" });
   });
   it("shows submitted status before expiry and never infers a score", () => {
     expect(

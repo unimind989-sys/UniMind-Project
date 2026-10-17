@@ -351,8 +351,8 @@ inLocales(["ar"], (locale) => {
             .nth(0)
             .getByText(
               t(
-                "Identify the labels, then compare the diagrams.",
-                "حدد الأسماء ثم قارن الرسوم.",
+                "Injury to the upper trunk (C5, C6) produces Erb–Duchenne paralysis, commonly from excessive separation of the head and shoulder. The plexus is formed by the ventral rami of C5 to T1.",
+                "إصابة الجذع العلوي (C5 وC6) تسبب شلل إرب-دوشين، غالبًا من المباعدة الشديدة بين الرأس والكتف. تتكون الضفيرة من الفروع الأمامية للأعصاب من C5 إلى T1.",
               ),
               { exact: true },
             ),
@@ -363,8 +363,8 @@ inLocales(["ar"], (locale) => {
             .nth(1)
             .getByText(
               t(
-                "Compare first, then identify the labels.",
-                "قارن أولًا ثم حدد الأسماء.",
+                "Count the roots first. In some people the plexus is prefixed and takes a branch from C4, so check before you name the trunks.",
+                "عُدّ الجذور أولًا. في بعض الناس تكون الضفيرة متقدمة وتأخذ فرعًا من C4، فتأكد قبل أن تسمي الجذوع.",
               ),
               { exact: true },
             ),
@@ -414,11 +414,9 @@ inLocales(["en"], (locale) => {
         });
         await expect(dialog).toBeVisible();
         await expect(dialog.locator("blockquote")).toHaveCount(2);
+        await expect(dialog).toContainText(t("Page 14", "صفحة ١٤"));
         await expect(dialog).toContainText(
-          t("Sample page 3", "صفحة تجريبية ٣"),
-        );
-        await expect(dialog).toContainText(
-          t("Sample timestamp 02:10", "توقيت تجريبي ٠٢:١٠"),
+          t("Timestamp 18:42", "التوقيت ١٨:٤٢"),
         );
         await expect(dialog.getByRole("link")).toHaveCount(1);
         await expect(dialog.getByRole("link")).toHaveAttribute(
@@ -539,11 +537,8 @@ inLocales(["ar"], (locale) => {
             const heading = dialog.getByRole("heading", {
               name:
                 source === 0
-                  ? t("Synthetic sequence handout", "ملزمة الترتيب التجريبية")
-                  : t(
-                      "Synthetic comparison recording",
-                      "تسجيل المقارنة التجريبي",
-                    ),
+                  ? t("Lecture 6 handout", "ملزمة المحاضرة 6")
+                  : t("Practical 3 recording", "تسجيل العملي 3"),
               exact: true,
             });
             await expect(heading).toHaveCount(
@@ -1201,9 +1196,7 @@ inLocales(["ar"], (locale) => {
       await historical.click();
       await expect(page).toHaveURL(/exchange=2&session=1/u);
       await expect(
-        page
-          .getByText(t("Sample page 3", "صفحة تجريبية ٣"), { exact: false })
-          .first(),
+        page.getByText(t("Page 14", "صفحة ١٤"), { exact: false }).first(),
       ).toBeVisible();
       await page
         .getByRole("link", {
@@ -1257,8 +1250,8 @@ inLocales(["en"], (locale) => {
           .getByText(
             pick(
               locale,
-              "Identify the labels, then compare the diagrams.",
-              "حدد الأسماء ثم قارن الرسوم.",
+              "Injury to the upper trunk (C5, C6) produces Erb–Duchenne paralysis, commonly from excessive separation of the head and shoulder. The plexus is formed by the ventral rami of C5 to T1.",
+              "إصابة الجذع العلوي (C5 وC6) تسبب شلل إرب-دوشين، غالبًا من المباعدة الشديدة بين الرأس والكتف. تتكون الضفيرة من الفروع الأمامية للأعصاب من C5 إلى T1.",
             ),
             { exact: true },
           ),
@@ -1331,7 +1324,7 @@ inLocales(["ar"], (locale) => {
       ).toHaveCount(6);
       await expect(page.locator("article")).toHaveCount(8);
       await expect(
-        page.getByText(pick(locale, "Sample page 3", "صفحة تجريبية ٣"), {
+        page.getByText(pick(locale, "Page 14", "صفحة ١٤"), {
           exact: false,
         }),
       ).toHaveCount(2);
@@ -1341,8 +1334,8 @@ inLocales(["ar"], (locale) => {
         page.getByText(
           pick(
             locale,
-            "Identify the labels, then compare the diagrams.",
-            "حدد الأسماء ثم قارن الرسوم.",
+            "Injury to the upper trunk (C5, C6) produces Erb–Duchenne paralysis, commonly from excessive separation of the head and shoulder. The plexus is formed by the ventral rami of C5 to T1.",
+            "إصابة الجذع العلوي (C5 وC6) تسبب شلل إرب-دوشين، غالبًا من المباعدة الشديدة بين الرأس والكتف. تتكون الضفيرة من الفروع الأمامية للأعصاب من C5 إلى T1.",
           ),
           { exact: true },
         ),
@@ -1439,7 +1432,7 @@ inLocales(["en"], (locale) => {
         ).toEqual(["PDF", "AUDIO"]);
         await expect(
           page
-            .getByText(pick(locale, "Sample page 3", "صفحة تجريبية ٣"), {
+            .getByText(pick(locale, "Page 14", "صفحة ١٤"), {
               exact: true,
             })
             .first(),
@@ -1470,8 +1463,8 @@ inLocales(["en"], (locale) => {
         page.getByText(
           pick(
             locale,
-            "Identify the labels, then compare the diagrams.",
-            "حدد الأسماء ثم قارن الرسوم.",
+            "Injury to the upper trunk (C5, C6) produces Erb–Duchenne paralysis, commonly from excessive separation of the head and shoulder. The plexus is formed by the ventral rami of C5 to T1.",
+            "إصابة الجذع العلوي (C5 وC6) تسبب شلل إرب-دوشين، غالبًا من المباعدة الشديدة بين الرأس والكتف. تتكون الضفيرة من الفروع الأمامية للأعصاب من C5 إلى T1.",
           ),
           { exact: true },
         ),

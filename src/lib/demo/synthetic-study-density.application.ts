@@ -13,41 +13,41 @@ export const studyDensityFixture = {
 
 const topics: readonly Localized[] = [
   [
-    "Review of labelled regional diagrams, their comparison order and the limits of the supplied evidence",
-    "مراجعة الرسوم الموضعية المسماة وترتيب المقارنة وحدود الأدلة الواردة في المواد التجريبية",
+    "Brachial plexus: roots, trunks, divisions, cords and branches, with the variants your notes mention",
+    "الضفيرة العضدية: الجذور والجذوع والأقسام والحبال والفروع، مع الاختلافات المذكورة في ملاحظاتك",
   ],
   [
-    "Comparison of the handout and recording, with separate notes for agreements and unresolved differences",
-    "مقارنة الملزمة والتسجيل مع ملاحظات منفصلة لنقاط الاتفاق والاختلافات التي لم تحسمها المصادر",
+    "Upper limb nerve injuries side by side: Erb's palsy, Klumpke's palsy and the radial nerve in the spiral groove",
+    "إصابات أعصاب الطرف العلوي جنبًا إلى جنب: شلل إرب وشلل كلومبكه والعصب الكعبري في الميزاب الحلزوني",
   ],
   [
-    "Checking source references before preparing a revision outline for the next synthetic study session",
-    "فحص مراجع المصادر قبل إعداد مخطط مراجعة لجلسة المذاكرة التجريبية التالية",
+    "Checking page references before writing a revision outline for the axilla and the arm",
+    "مراجعة أرقام الصفحات والتوقيتات قبل كتابة مخطط مراجعة شامل للإبط والذراع",
   ],
   [
-    "Organizing identification and comparison notes while keeping unsupported conclusions out of the summary",
-    "تنظيم ملاحظات تحديد الأسماء والمقارنة مع استبعاد الاستنتاجات غير المدعومة من الملخص",
+    "Muscles of the shoulder and arm grouped by nerve supply, keeping unsupported conclusions out",
+    "عضلات الكتف والذراع مرتبة حسب التغذية العصبية، مع استبعاد الاستنتاجات غير المدعومة",
   ],
   [
-    "Revision of diagram labels across several regions and a final check of missing page or time references",
-    "مراجعة أسماء الرسوم في مناطق متعددة والتحقق النهائي من مراجع الصفحات أو التوقيتات غير المتاحة",
+    "Practical revision of the boundaries and contents of the axilla, with timestamps from the recording",
+    "مراجعة عملية لحدود الإبط ومحتوياته من العضلات والأوعية، مع توقيتات من التسجيل",
   ],
   [
-    "A second pass through the same sample material to distinguish evidence from suggested revision prompts",
-    "قراءة ثانية للمواد التجريبية نفسها للتمييز بين الأدلة والأسئلة المقترحة للمراجعة",
+    "A second pass through Lecture 6 to separate evidence from suggested revision questions",
+    "قراءة ثانية متأنية للمحاضرة 6 للفصل بين الأدلة وأسئلة المراجعة المقترحة",
   ],
 ];
 
 export const studyDensitySourceTitles: readonly Localized[] = [
-  ["Synthetic sequence handout", "ملزمة الترتيب التجريبية"],
-  ["Synthetic comparison recording", "تسجيل المقارنة التجريبي"],
+  ["Lecture 6 handout", "ملزمة المحاضرة 6"],
+  ["Practical 3 recording", "تسجيل العملي 3"],
   ...Array.from(
     { length: studyDensityFixture.sourceCount - 2 },
     (_, index): Localized => {
       const topic = topics[index % topics.length]!;
       return [
-        `Synthetic appendix ${index + 1} — ${topic[0]}`,
-        `ملحق تجريبي ${index + 1} — ${topic[1]}`,
+        `Revision notes ${index + 1}: ${topic[0]}`,
+        `ملاحظات مراجعة ${index + 1}: ${topic[1]}`,
       ];
     },
   ),

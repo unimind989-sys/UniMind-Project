@@ -1,4 +1,6 @@
 // Fixed invented teaching examples. No source loading, retrieval or provider.
+// Topic ids stay "sequence" and "comparison"; their labels are
+// "Upper trunk injury" and "Roots of the plexus".
 export const studioFixtureTypes = [
   "summary",
   "guide",
@@ -21,223 +23,223 @@ type Question = {
   answer: StudioFixtureText;
   explanation: StudioFixtureText;
 };
+// "sequence" is the upper trunk injury (Erb's palsy) from the Lecture 6
+// handout and the Practical 3 recording; "comparison" is the roots of the
+// plexus, where the two sources disagree about a C4 branch.
 const sequence = {
   intro: [
-    "Follow the handout's two-step instruction and check it against the recording.",
-    "اتبع تعليمات الملزمة ذات الخطوتين ثم تحقق منها بمقارنتها بالتسجيل.",
+    "Learn the upper trunk injury from the handout, then check the arm position against the practical recording.",
+    "تعلّم إصابة الجذع العلوي من الملزمة، ثم راجع وضع الذراع في تسجيل العملي.",
   ] as const,
   facts: [
     {
       text: [
-        "Identify the labelled structures before comparing the diagrams.",
-        "حدد الأجزاء المسماة قبل مقارنة الرسمين.",
+        "An upper trunk injury damages the C5 and C6 roots and produces Erb's palsy.",
+        "إصابة الجذع العلوي تؤثر على الجذرين C5 وC6 وتسبب شلل إرب.",
       ],
       explanation: [
-        "The handout explicitly places identification first. This describes its instruction, not a verified diagram interpretation.",
-        "تضع الملزمة التحديد أولًا صراحة. يصف ذلك تعليماتها، ولا يقدم تفسيرًا موثقًا للرسم.",
+        "The Lecture 6 handout states this on page 14. It names the roots; it does not grade how severe an injury is.",
+        "تذكر ملزمة المحاضرة 6 ذلك في صفحة 14. تسمي الجذور، لكنها لا تصنف شدة الإصابة.",
       ],
     },
     {
       text: [
-        "The recording places comparison before identification; the sources disagree on order.",
-        "يضع التسجيل المقارنة قبل التحديد؛ يختلف المصدران في الترتيب.",
+        "The arm hangs adducted and medially rotated, with the forearm extended and pronated: the waiter's tip position.",
+        "يتدلى الذراع مقرّبًا ومدوّرًا للداخل والساعد ممدود ومكبوب: وضع «بقشيش النادل».",
       ],
       explanation: [
-        "Keep both instructions attributed to their sources. Neither sample passage explains which order should override the other.",
-        "انسب كل تعليمات إلى مصدرها. لا يوضح أي نص تجريبي لماذا يجب تقديم ترتيب أحدهما على الآخر.",
+        "The Practical 3 recording describes this position at 18:42. Keep the handout's cause and the recording's description attributed to each source.",
+        "يصف تسجيل العملي 3 هذا الوضع عند 18:42. انسب السبب إلى الملزمة والوصف إلى التسجيل.",
       ],
     },
     {
       text: [
-        "No duration is supplied for either step.",
-        "لا توجد مدة محددة لأي من الخطوتين.",
+        "Neither source says how long recovery takes.",
+        "لا يذكر أي من المصدرين مدة التعافي.",
       ],
       explanation: [
-        "An extended study plan can flag that missing detail, but it cannot turn an invented duration into a source-backed instruction.",
-        "يمكن لخطة مراجعة موسعة إبراز هذا النقص، لكن لا يمكنها تحويل مدة مصطنعة إلى تعليمات مدعومة بالمصدر.",
+        "A revision plan can flag that gap, but it cannot turn a guessed recovery time into a source-backed fact.",
+        "يمكن لخطة المراجعة إبراز هذا النقص، لكن لا يمكنها تحويل مدة مخمّنة إلى معلومة مدعومة بالمصدر.",
       ],
     },
     {
       text: [
-        "Separate the handout's instruction, the recording's instruction and your unanswered questions.",
-        "افصل تعليمات الملزمة عن تعليمات التسجيل وعن أسئلتك التي لم تجد إجابة.",
+        "Separate what the handout states, what the recording shows and your open questions.",
+        "افصل ما تذكره الملزمة عما يعرضه التسجيل وعن أسئلتك المفتوحة.",
       ],
       explanation: [
-        "This review structure makes the conflict visible and leaves unsupported details open for later approved material.",
-        "يظهر هذا التنظيم التعارض ويترك التفاصيل غير المدعومة مفتوحة لمواد معتمدة لاحقًا.",
+        "This structure keeps the evidence visible and leaves unsupported details open for later approved material.",
+        "يُبقي هذا التنظيم الأدلة واضحة ويترك التفاصيل غير المدعومة مفتوحة لمواد معتمدة لاحقًا.",
       ],
     },
   ] as readonly Item[],
   steps: [
     {
-      text: ["Read the sample labels.", "اقرأ أسماء المثال."],
+      text: ["Name the roots of the upper trunk.", "سمِّ جذور الجذع العلوي."],
       explanation: [
-        "Use only labels actually supplied. The sample passage does not establish a list of specific labels.",
-        "استخدم الأسماء الواردة فقط. لا يثبت النص التجريبي قائمة بأسماء محددة.",
+        "Use the handout's wording: C5 and C6. Do not add roots the page does not name.",
+        "استخدم صياغة الملزمة: C5 وC6. لا تضف جذورًا لم تذكرها الصفحة.",
+      ],
+    },
+    {
+      text: ["Explain the cause using the handout.", "اشرح السبب من الملزمة."],
+      explanation: [
+        "The handout gives excessive separation of the head and shoulder, as in a fall on the shoulder or a difficult delivery.",
+        "تذكر الملزمة المباعدة الشديدة بين الرأس والكتف، كما في السقوط على الكتف أو الولادة المتعسرة.",
       ],
     },
     {
       text: [
-        "Explain the comparison using the source.",
-        "اشرح المقارنة بالمصدر.",
+        "Describe the arm position from the recording.",
+        "صِف وضع الذراع من التسجيل.",
       ],
       explanation: [
-        "Follow the handout's stated order when describing the handout. Attribute the different recording order separately.",
-        "اتبع ترتيب الملزمة المعلن عند وصفها. وانسب الترتيب المختلف في التسجيل إليه بصورة منفصلة.",
+        "Recording, 18:42: arm medially rotated, forearm pronated, palm facing backwards. Attribute it to the practical, not the handout.",
+        "التسجيل عند 18:42: الذراع مدوّر للداخل والساعد مكبوب وراحة اليد للخلف. انسبه إلى العملي لا إلى الملزمة.",
       ],
     },
     {
       text: [
-        "Write the two source orders side by side.",
-        "اكتب ترتيب المصدرين بجوار بعضهما.",
+        "End with the unanswered recovery question.",
+        "اختم بسؤال التعافي الذي لم تجب عنه المصادر.",
       ],
       explanation: [
-        "Handout: identify then compare. Recording: compare then identify. Do not merge them into one agreed sequence.",
-        "الملزمة: تحديد ثم مقارنة. التسجيل: مقارنة ثم تحديد. لا تدمجهما في ترتيب واحد متفق عليه.",
-      ],
-    },
-    {
-      text: [
-        "End with the unanswered timing question.",
-        "اختم بسؤال المدة الذي لم تجب عنه المصادر.",
-      ],
-      explanation: [
-        "Record that neither source supplies timing, rather than suggesting a schedule as if it came from the material.",
-        "سجل أن المصدرين لا يقدمان مدة، بدلًا من اقتراح جدول وكأنه مستخرج من المواد.",
+        "Record that neither source gives a recovery time, rather than suggesting one as if it came from the material.",
+        "سجّل أن المصدرين لا يذكران مدة للتعافي، بدلًا من اقتراح مدة وكأنها من المواد.",
       ],
     },
   ] as readonly Item[],
   questions: [
     {
       prompt: [
-        "Question: Which step comes first in the sample handout?",
-        "سؤال: ما الخطوة الأولى في الملزمة التجريبية؟",
+        "Question: Which roots does an upper trunk injury damage?",
+        "سؤال: ما الجذور التي تتأثر عند إصابة الجذع العلوي؟",
       ],
       answer: [
-        "Identification comes first in the sample handout (sample page 3).",
-        "التحديد أولًا في الملزمة التجريبية (صفحة تجريبية ٣).",
+        "C5 and C6 (Lecture 6 handout, page 14).",
+        "الجذران C5 وC6 (ملزمة المحاضرة 6، صفحة ١٤).",
       ],
       explanation: [
-        "The answer identifies one source's instruction. It does not claim that the recording agrees.",
-        "تحدد الإجابة تعليمات مصدر واحد. ولا تدعي أن التسجيل يتفق معها.",
+        "The answer uses one source's statement. It does not claim that the recording repeats it.",
+        "تعتمد الإجابة على كلام مصدر واحد، ولا تدّعي أن التسجيل يكرره.",
       ],
     },
     {
       prompt: [
-        "Question: What follows identification in the handout?",
-        "سؤال: ما الذي يأتي بعد التحديد في الملزمة؟",
+        "Question: What position does the arm take in Erb's palsy?",
+        "سؤال: ما وضع الذراع في شلل إرب؟",
       ],
       answer: [
-        "The handout asks for comparison of the labelled diagrams next.",
-        "تطلب الملزمة بعد ذلك مقارنة الرسوم المسماة.",
+        "The waiter's tip: adducted and medially rotated, with the forearm extended and pronated.",
+        "وضع «بقشيش النادل»: مقرّب ومدوّر للداخل والساعد ممدود ومكبوب.",
       ],
       explanation: [
-        "This is the handout's second step, not evidence of any specific similarity or difference.",
-        "هذه هي الخطوة الثانية في الملزمة، وليست دليلًا على تشابه أو اختلاف بعينه.",
+        "This comes from the Practical 3 recording at 18:42, not from a diagram interpretation.",
+        "هذا من تسجيل العملي 3 عند 18:42، وليس تفسيرًا لرسم.",
       ],
     },
     {
       prompt: [
-        "Question: How should you record the opposite order in the recording?",
-        "سؤال: كيف تسجل الترتيب العكسي الوارد في التسجيل؟",
+        "Question: Which mechanism does the handout give for the injury?",
+        "سؤال: ما آلية الإصابة التي تذكرها الملزمة؟",
       ],
       answer: [
-        "Mark an unresolved conflict: the recording puts comparison first.",
-        "سجل تعارضًا غير محسوم: يقدم التسجيل المقارنة أولًا.",
+        "Excessive separation of the head and shoulder, as in a fall on the shoulder or a difficult delivery.",
+        "المباعدة الشديدة بين الرأس والكتف، كما في السقوط على الكتف أو الولادة المتعسرة.",
       ],
       explanation: [
-        "Preserving attribution prevents either passage from silently overriding the other.",
-        "يمنع الحفاظ على نسبة الكلام إلى مصدره تقديم أحد النصين على الآخر دون توضيح.",
+        "Keep the handout's wording; it does not list other mechanisms.",
+        "التزم بصياغة الملزمة؛ فهي لا تذكر آليات أخرى.",
       ],
     },
     {
       prompt: [
-        "Question: How many minutes should the first step take?",
-        "سؤال: كم دقيقة يجب أن تستغرق الخطوة الأولى؟",
+        "Question: How many weeks does recovery take?",
+        "سؤال: كم أسبوعًا يستغرق التعافي؟",
       ],
       answer: [
-        "The sample materials do not supply a duration.",
-        "لا تقدم المواد التجريبية مدة محددة.",
+        "Your materials do not give a recovery time.",
+        "لا تذكر موادك مدة للتعافي.",
       ],
       explanation: [
-        "The correct evidence-limited answer is unavailable timing, not a guessed number.",
-        "الإجابة المنضبطة بحدود الأدلة هي عدم توافر المدة، وليست رقمًا مخمنًا.",
+        "The evidence-limited answer is that timing is unavailable, not a guessed number.",
+        "الإجابة المنضبطة بحدود الأدلة هي أن المدة غير متاحة، وليست رقمًا مخمّنًا.",
       ],
     },
   ] as readonly Question[],
 };
 const comparison = {
   intro: [
-    "Compare the two sample instructions and the limits of their evidence; no actual diagram differences are established.",
-    "قارن تعليمات المصدرين التجريبيين وحدود أدلتهما؛ لا تثبت هذه الأمثلة فروقًا فعلية بين الرسوم.",
+    "Compare what the two sources say about the roots of the plexus; they disagree on whether C4 contributes.",
+    "قارن ما يقوله المصدران عن جذور الضفيرة؛ فهما يختلفان حول مساهمة C4.",
   ] as const,
   facts: [
     {
       text: [
-        "The handout asks for identification before comparison; the recording asks for comparison first.",
-        "تطلب الملزمة التحديد قبل المقارنة، بينما يطلب التسجيل المقارنة أولًا.",
+        "The handout says the plexus is formed by C5 to T1; the recording says it can also take a branch from C4.",
+        "تقول الملزمة إن الضفيرة تتكون من C5 إلى T1، ويقول التسجيل إنها قد تأخذ فرعًا من C4 أيضًا.",
       ],
       explanation: [
-        "These are two different instructions. Compare their wording and attribution rather than declaring one correct.",
-        "هذه تعليمات مختلفة. قارن صياغتها ونسبتها إلى مصدرها بدلًا من إعلان صحة أحد الترتيبين.",
+        "These are two different statements. Compare their wording and attribution rather than declaring one correct.",
+        "هذان قولان مختلفان. قارن صياغتهما ونسبتهما إلى مصدريهما بدلًا من إعلان صحة أحدهما.",
       ],
     },
     {
       text: [
-        "The passages do not name the diagrams' actual labels or list their visual differences.",
-        "لا تسمي النصوص الأسماء الفعلية في الرسوم ولا تسرد الفروق البصرية بينها.",
+        "Neither passage says how often a prefixed plexus occurs.",
+        "لا يذكر أي من النصين مدى تكرار الضفيرة المتقدمة.",
       ],
       explanation: [
-        "A comparison should leave those fields unspecified. The fixed example cannot supply facts absent from both sources.",
-        "يجب أن تترك المقارنة هذه الخانات غير محددة. لا يستطيع المثال الثابت تقديم حقائق غائبة عن المصدرين.",
+        "A comparison should leave that unspecified. The fixed example cannot supply facts absent from both sources.",
+        "يجب أن تترك المقارنة ذلك غير محدد. لا يستطيع المثال الثابت تقديم معلومات غائبة عن المصدرين.",
       ],
     },
     {
       text: [
-        "Keep claims about labels separate from claims about the order of study.",
-        "افصل الادعاءات المتعلقة بالأسماء عن الادعاءات المتعلقة بترتيب الدراسة.",
+        "Keep claims about the roots separate from claims about injuries.",
+        "افصل ما يخص الجذور عما يخص الإصابات.",
       ],
       explanation: [
-        "The instruction to identify labels does not itself establish what those labels are.",
-        "لا تثبت تعليمات تحديد الأسماء ماهية هذه الأسماء في حد ذاتها.",
+        "A statement about which roots form the plexus does not by itself establish which injury follows from which root.",
+        "القول بأي الجذور تكوّن الضفيرة لا يحدد وحده أي إصابة تنتج عن أي جذر.",
       ],
     },
     {
       text: [
-        "Record which comparison questions still need another approved passage.",
-        "سجل أسئلة المقارنة التي لا تزال تحتاج إلى نص معتمد آخر.",
+        "Record which questions still need another approved passage.",
+        "سجّل الأسئلة التي لا تزال تحتاج إلى نص معتمد آخر.",
       ],
       explanation: [
-        "Neither unstated visual differences nor missing timing can be resolved from these two excerpts.",
-        "لا يمكن حسم الفروق البصرية غير المذكورة أو المدة الناقصة من هذين المقتطفين.",
+        "Neither the frequency of a prefixed plexus nor other root variants can be resolved from these two excerpts.",
+        "لا يمكن حسم مدى تكرار الضفيرة المتقدمة أو اختلافات الجذور الأخرى من هذين المقتطفين.",
       ],
     },
   ] as readonly Item[],
   steps: [
     {
       text: [
-        "Create separate notes for the handout and recording.",
+        "Create separate notes for the handout and the recording.",
         "أنشئ ملاحظات منفصلة للملزمة والتسجيل.",
       ],
       explanation: [
-        "Write each source's stated instruction with its own locator, rather than combining the opposite orders.",
-        "اكتب تعليمات كل مصدر مع مرجعه الخاص، بدلًا من دمج الترتيبين المتعارضين.",
+        "Write each source's statement with its own locator (page 14, 18:42) rather than merging them.",
+        "اكتب قول كل مصدر مع مرجعه (صفحة 14، 18:42) بدلًا من دمجهما.",
       ],
     },
     {
       text: [
-        "Mark the disagreement and the unprovided diagram details.",
-        "حدد موضع الخلاف وتفاصيل الرسوم التي لم ترد في النصوص.",
+        "Mark the disagreement and the missing details.",
+        "حدّد موضع الخلاف والتفاصيل الناقصة.",
       ],
       explanation: [
-        "The order differs. The actual labels and diagram differences are not supplied.",
-        "يختلف الترتيب. ولا ترد الأسماء الفعلية أو الفروق بين الرسوم.",
+        "The roots differ by C4. How often each pattern occurs is not supplied.",
+        "يختلف المصدران في C4. ولا يرد مدى تكرار كل نمط.",
       ],
     },
     {
       text: [
-        "Check whether each proposed comparison claim has explicit evidence.",
-        "تحقق من وجود دليل صريح لكل ادعاء تقترحه في المقارنة.",
+        "Check whether each claim in your notes has explicit evidence.",
+        "تحقق من وجود دليل صريح لكل قول في ملاحظاتك.",
       ],
       explanation: [
         "If no supplied excerpt states it, leave it as a question instead of adding outside knowledge.",
@@ -246,70 +248,70 @@ const comparison = {
     },
     {
       text: [
-        "List the extra approved material needed to finish the comparison.",
-        "اسرد المواد المعتمدة الإضافية اللازمة لاستكمال المقارنة.",
+        "List the extra approved material needed to finish.",
+        "اسرد المواد المعتمدة الإضافية اللازمة للإكمال.",
       ],
       explanation: [
-        "Ask for the diagram labels or a passage describing differences; do not pretend those details are already available.",
-        "اطلب أسماء الرسوم أو نصًا يصف الفروق، ولا توحِ بأن هذه التفاصيل متاحة بالفعل.",
+        "Ask for a passage on variants of the plexus; do not pretend those details are already available.",
+        "اطلب نصًا عن اختلافات الضفيرة، ولا توحِ بأن هذه التفاصيل متاحة بالفعل.",
       ],
     },
   ] as readonly Item[],
   questions: [
     {
       prompt: [
-        "Question: Which labels can you compare from these sample passages?",
-        "سؤال: ما الأسماء التي يمكنك مقارنتها من هذه النصوص التجريبية؟",
+        "Question: Which roots does the handout list?",
+        "سؤال: ما الجذور التي تذكرها الملزمة؟",
       ],
       answer: [
-        "No specific label identities are supplied; do not invent a list.",
-        "لا ترد أسماء محددة؛ فلا تنشئ قائمة من عندك.",
+        "C5 to T1 (Lecture 6 handout, page 14).",
+        "من C5 إلى T1 (ملزمة المحاضرة 6، صفحة ١٤).",
       ],
       explanation: [
-        "The handout mentions labelled diagrams, but that instruction is not a description of their labels.",
-        "تذكر الملزمة رسومًا مسماة، لكن هذه التعليمات لا تصف الأسماء الموجودة فيها.",
+        "This is the handout's statement; the recording adds a possible C4 branch.",
+        "هذا قول الملزمة؛ ويضيف التسجيل فرعًا محتملًا من C4.",
       ],
     },
     {
       prompt: [
-        "Question: What disagreement should your comparison notes show?",
-        "سؤال: ما الخلاف الذي يجب أن تظهره ملاحظات المقارنة؟",
+        "Question: What disagreement should your notes show?",
+        "سؤال: ما الخلاف الذي يجب أن تظهره ملاحظاتك؟",
       ],
       answer: [
-        "The handout identifies first; the recording compares first.",
-        "تبدأ الملزمة بالتحديد، ويبدأ التسجيل بالمقارنة.",
+        "The handout lists C5 to T1; the recording says a prefixed plexus also takes C4.",
+        "تذكر الملزمة C5 إلى T1، ويقول التسجيل إن الضفيرة المتقدمة تأخذ C4 أيضًا.",
       ],
       explanation: [
-        "Attribute each order to its source and retain the conflict without deciding between them.",
-        "انسب كل ترتيب إلى مصدره واحتفظ بالتعارض دون ترجيح أحدهما.",
+        "Attribute each statement to its source and keep the conflict without deciding between them.",
+        "انسب كل قول إلى مصدره واحتفظ بالتعارض دون ترجيح أحدهما.",
       ],
     },
     {
       prompt: [
-        "Question: Can the recording prove a specific visual difference between the diagrams?",
-        "سؤال: هل يثبت التسجيل فرقًا بصريًا محددًا بين الرسمين؟",
+        "Question: How common is a prefixed plexus?",
+        "سؤال: ما مدى شيوع الضفيرة المتقدمة؟",
       ],
       answer: [
-        "No such difference is stated in the sample recording.",
-        "لا يذكر التسجيل التجريبي فرقًا من هذا النوع.",
+        "Your materials do not say how often it occurs.",
+        "لا تذكر موادك مدى تكرارها.",
       ],
       explanation: [
-        "Its instruction concerns comparison order. A specific difference needs its own approved evidence.",
-        "تتعلق تعليماته بترتيب المقارنة. ويحتاج الفرق المحدد إلى دليل معتمد خاص به.",
+        "The recording says it happens in some people. A frequency needs its own approved evidence.",
+        "يقول التسجيل إنها تحدث عند بعض الناس. أما معدل حدوثها فيحتاج إلى دليل معتمد خاص.",
       ],
     },
     {
       prompt: [
-        "Question: What would support a new claim about a diagram label?",
-        "سؤال: ما الذي يدعم ادعاءً جديدًا عن اسم في أحد الرسوم؟",
+        "Question: What would support a new claim about a root variant?",
+        "سؤال: ما الذي يدعم قولًا جديدًا عن اختلاف في الجذور؟",
       ],
       answer: [
-        "An approved passage that explicitly names it with a usable reference.",
-        "نص معتمد يسميه صراحة مع مرجع يمكن فحصه.",
+        "An approved passage that names it with a usable page or timestamp.",
+        "نص معتمد يذكره صراحة مع صفحة أو توقيت يمكن الرجوع إليه.",
       ],
       explanation: [
-        "A general request to compare diagrams cannot substitute for evidence of a particular label.",
-        "لا يحل طلب عام لمقارنة الرسوم محل الدليل على اسم بعينه.",
+        "A general instruction to count the roots cannot substitute for evidence of a particular variant.",
+        "لا يحل توجيه عام بعدّ الجذور محل الدليل على اختلاف بعينه.",
       ],
     },
   ] as readonly Question[],
@@ -361,12 +363,12 @@ export function buildStudioFixture(
     result.intro =
       options.topic === "comparison"
         ? [
-            "Revision checklist: evidence, attribution and unanswered comparison claims.",
-            "قائمة مراجعة: الأدلة ونسبة الكلام إلى مصادره وادعاءات المقارنة غير المجابة.",
+            "Revision checklist: the two statements about the roots, their disagreement and what is missing.",
+            "قائمة مراجعة: قولا المصدرين عن الجذور والخلاف بينهما وما ينقصهما.",
           ]
         : [
-            "Revision checklist: the two instructions, their disagreement and missing timing.",
-            "قائمة مراجعة: التعليمات والتعارض بينها والمدة غير المتاحة.",
+            "Revision checklist: the roots, the cause, the arm position and the missing recovery time.",
+            "قائمة مراجعة: الجذور والسبب ووضع الذراع ومدة التعافي غير المذكورة.",
           ];
     result.steps = lesson.facts.slice(0, extended ? 4 : 2).map((item) => ({
       text: item.text,
@@ -400,23 +402,20 @@ export function buildStudioFixture(
     const front: StudioFixtureText[] = [
       options.topic === "sequence"
         ? [
-            "What sequence does the sample handout use?",
-            "ما ترتيب الملزمة التجريبية؟",
+            "Which roots does an upper trunk injury damage?",
+            "ما الجذور التي تتأثر عند إصابة الجذع العلوي؟",
           ]
         : [
-            "What can these sources establish about the diagrams' labels?",
-            "ما الذي تثبته هذه المصادر عن الأسماء الموجودة في الرسوم؟",
+            "What do your sources say about the roots of the plexus?",
+            "ماذا تقول مصادرك عن جذور الضفيرة؟",
           ],
     ];
     const back: StudioFixtureText[] = [
       options.topic === "sequence"
-        ? [
-            "Identify labels, then compare diagrams.",
-            "حدد الأسماء ثم قارن الرسوم.",
-          ]
+        ? ["C5 and C6: Erb's palsy.", "الجذران C5 وC6: شلل إرب."]
         : [
-            "They request comparison but do not supply specific label identities.",
-            "تطلب المصادر المقارنة لكنها لا تقدم أسماء محددة.",
+            "The handout lists C5 to T1; the recording adds a possible C4 branch.",
+            "تذكر الملزمة C5 إلى T1، ويضيف التسجيل فرعًا محتملًا من C4.",
           ],
     ];
     if (detailed) back.push(lesson.facts[0]!.explanation);
@@ -454,6 +453,6 @@ export function studioFixtureManifest() {
     combinations: 144,
     singleFlashcard: true,
     quizPreviewOnly: true,
-    note: "Fixed invented examples for every exposed setting. Comparison examines supplied instructions and evidence limits, not undisclosed actual diagram facts. No model generation, retrieval or quality claim.",
+    note: "Fixed invented examples for every exposed setting. The roots topic compares two supplied statements and their evidence limits. No model generation, retrieval or quality claim.",
   };
 }

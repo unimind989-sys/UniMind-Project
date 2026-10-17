@@ -7,12 +7,12 @@ type Conversation = {
   answers: readonly { kind: string; promptKind?: string }[];
 };
 const topics: Record<string, Words> = {
-  supported: ["Study sequence", "ترتيب الدراسة"],
-  partial: ["Sequence and missing duration", "الترتيب والمدة غير المذكورة"],
+  supported: ["Upper trunk injury", "إصابة الجذع العلوي"],
+  partial: ["Upper trunk and recovery time", "الجذع العلوي ومدة التعافي"],
   unavailable: ["Source coverage", "ما تغطيه المصادر"],
-  conflict: ["Handout and recording comparison", "مقارنة الملزمة والتسجيل"],
+  conflict: ["Roots of the plexus", "جذور الضفيرة"],
   hint: ["Professor emphasis", "تركيز المحاضر"],
-  educational: ["Fictional educational case", "حالة تعليمية خيالية"],
+  educational: ["Teaching case", "حالة تعليمية"],
   patient: ["Educational-use boundary", "حدود الاستخدام التعليمي"],
   unmatched: ["Other question", "سؤال آخر"],
 };
@@ -75,9 +75,9 @@ export function recentStudyDetails({
       : undefined;
     const topic =
       artifact.topic === "sequence"
-        ? t("Study sequence", "ترتيب الدراسة")
+        ? t("Upper trunk injury", "إصابة الجذع العلوي")
         : artifact.topic === "comparison"
-          ? t("Diagram comparison", "مقارنة الرسوم")
+          ? t("Roots of the plexus", "جذور الضفيرة")
           : null;
     if (!format || !topic) return null;
     return { title: word(format, locale), detail: topic };

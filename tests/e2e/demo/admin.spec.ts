@@ -59,7 +59,7 @@ inLocales(["en"], (locale) => {
       await send(page, "supported", locale);
       await page
         .getByRole("button", {
-          name: t("Handout · p. 3", "الملزمة · ص ٣"),
+          name: t("Lecture 6, p. 14", "المحاضرة 6، ص ١٤"),
           exact: true,
         })
         .click();
@@ -841,7 +841,7 @@ inLocales(["en"], (locale) => {
       await evidence.click();
       await expect(page).toHaveURL(/\/evidence\?exchange=1&session=2/u);
       await expect(page.getByRole("main")).toContainText(
-        t("Synthetic comparison recording", "تسجيل المقارنة التجريبي"),
+        t("Practical 3 recording", "تسجيل العملي 3"),
       );
       await page
         .getByRole("link", {
@@ -867,7 +867,7 @@ inLocales(["en"], (locale) => {
       ).toHaveValue(originalDraft);
       await expect(
         page.getByRole("button", {
-          name: t("Handout · p. 3", "الملزمة · ص ٣"),
+          name: t("Lecture 6, p. 14", "المحاضرة 6، ص ١٤"),
           exact: true,
         }),
       ).toBeVisible();

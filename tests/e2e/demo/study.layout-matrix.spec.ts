@@ -75,7 +75,12 @@ const chatStates: readonly ScreenState[] = [
           exact: true,
         })
         .boundingBox();
-      expect(choices!.y).toBeGreaterThanOrEqual(first!.y + first!.height);
+      // The language choice may share the toolbar row; it never overlaps Sessions.
+      expect(
+        choices!.y >= first!.y + first!.height ||
+          choices!.x >= first!.x + first!.width ||
+          choices!.x + choices!.width <= first!.x,
+      ).toBe(true);
       // audit 10: the visually hidden heading, sources and Sessions target.
       const heading = page.getByRole("heading", {
         name: t("Chat", "المحادثة"),
@@ -84,10 +89,10 @@ const chatStates: readonly ScreenState[] = [
       });
       await expect(heading).toHaveCount(1);
       const box = await boxOf(heading);
-      if (narrow) {
-        expect(box.width).toBe(1);
-        expect(box.height).toBe(1);
-      } else expect(box.height).toBeGreaterThan(20);
+      // The subject band names the current tool; the heading stays for
+      // assistive technology at every width (Direction B).
+      expect(box.width).toBe(1);
+      expect(box.height).toBe(1);
       await expect(sources).toBeVisible();
       if (narrow) {
         const options = studyOptionsSummary(page, locale);
@@ -98,10 +103,12 @@ const chatStates: readonly ScreenState[] = [
       const style = await sessions.evaluate((e) => ({
         height: e.getBoundingClientRect().height,
         border: getComputedStyle(e).borderTopWidth,
+        filled: getComputedStyle(e).backgroundColor !== "rgba(0, 0, 0, 0)",
         size: parseFloat(getComputedStyle(e).fontSize),
       }));
       expect(style.height).toBeGreaterThanOrEqual(44);
-      expect(style.border).toBe("1px");
+      // A visible boundary: a 1px border or, in Direction B, a filled pill.
+      expect(style.border === "1px" || style.filled).toBe(true);
       expect(style.size).toBeGreaterThanOrEqual(14);
       const note = await page
         .locator("form p[class*='composerMeta'] strong")
@@ -471,7 +478,7 @@ const studioStates: readonly ScreenState[] = [
     },
   },
   {
-    name: "quiz setup keeps one centered path with equivalent labels and count help",
+    name: "quiz setup keeps one aligned path with equivalent labels and count help",
     enter: (page, locale) => navigate(page, `${unit}/quiz`, locale),
     widths: [1440, 820, 390, 320],
     height: 1000,
@@ -533,9 +540,18 @@ const studioStates: readonly ScreenState[] = [
               layout.fields[index - 1]!.bottom + 19,
             );
         }
+        // Start shares the fields' inline start edge (Direction B left-aligns forms).
         const action = await boxOf(start);
+        const field = layout.fields[0]!;
+        const rtl = await page.evaluate(
+          () => document.documentElement.dir === "rtl",
+        );
         expect(
-          Math.abs(action.x + action.width / 2 - layout.center),
+          Math.abs(
+            rtl
+              ? action.x + action.width - (field.x + field.width)
+              : action.x - field.x,
+          ),
         ).toBeLessThan(2);
       }
       await page

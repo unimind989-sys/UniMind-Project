@@ -346,10 +346,10 @@ inLocales(["en", "ar"], (locale) => {
       await expect(output.locator("details")).toHaveCount(3, {
         timeout: 5_000,
       });
-      await expect(output).toContainText("Which labels can you compare");
-      await expect(output).toContainText("ما الأسماء التي يمكنك مقارنتها");
+      await expect(output).toContainText("Which roots does the handout list");
+      await expect(output).toContainText("ما الجذور التي تذكرها الملزمة");
       await expect(output).not.toContainText(
-        "Question: Which step comes first",
+        "Question: Which roots does an upper trunk injury damage",
       );
       finish();
     },
@@ -697,10 +697,19 @@ inLocales(["en", "ar"], (locale) => {
           exact: true,
         })
         .fill("3");
+      // Start shares the setup column's inline start edge (Direction B).
       const rect = await start.boundingBox();
-      const panel = await start.locator("..").boundingBox();
+      const field = await page
+        .getByLabel(pick(locale, "Duration (minutes)", "المدة (بالدقائق)"), {
+          exact: true,
+        })
+        .boundingBox();
       expect(
-        Math.abs(rect!.x + rect!.width / 2 - panel!.x - panel!.width / 2),
+        Math.abs(
+          locale === "ar"
+            ? rect!.x + rect!.width - field!.x - field!.width
+            : rect!.x - field!.x,
+        ),
       ).toBeLessThan(2);
       await page.clock.install();
       await start.click();

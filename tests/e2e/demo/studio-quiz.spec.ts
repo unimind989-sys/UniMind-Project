@@ -1443,7 +1443,9 @@ inLocales(["en"], (locale) => {
         "lang",
         locale,
       );
-      await expect(output).toContainText(t("Study sequence", "ترتيب الدراسة"));
+      await expect(output).toContainText(
+        t("Upper trunk injury", "إصابة الجذع العلوي"),
+      );
       await expect(
         page.getByLabel(t("Output language", "لغة المخرج"), { exact: true }),
       ).toHaveValue("mixed");
@@ -1461,11 +1463,7 @@ inLocales(["ar"], (locale) => {
       await page.setViewportSize({ width: 390, height: 844 });
       await signIn(page, "student", locale, unit);
       const source = page.getByRole("heading", {
-        name: pick(
-          locale,
-          "Synthetic sequence handout",
-          "ملزمة الترتيب التجريبية",
-        ),
+        name: pick(locale, "Lecture 6 handout", "ملزمة المحاضرة 6"),
         exact: true,
       });
       await expect(source).toBeVisible();
@@ -1501,13 +1499,13 @@ inLocales(["ar"], (locale) => {
       });
       const question = pick(
         locale,
-        "What sequence does the sample handout use?",
-        "ما ترتيب الملزمة التجريبية؟",
+        "Which roots does an upper trunk injury damage?",
+        "ما الجذور التي تتأثر عند إصابة الجذع العلوي؟",
       );
       const answer = pick(
         locale,
-        "Identify labels, then compare diagrams.",
-        "حدد الأسماء ثم قارن الرسوم.",
+        "C5 and C6: Erb's palsy.",
+        "الجذران C5 وC6: شلل إرب.",
       );
       await expect(
         card.getByRole("paragraph").filter({ hasText: question }),
@@ -1573,13 +1571,17 @@ inLocales(["ar"], (locale) => {
       await expect(quizTab).toHaveAttribute("aria-current", "page");
       await page
         .getByRole("radio", {
-          name: pick(locale, "Identify labels", "تحديد الأسماء"),
+          name: pick(locale, "C5 and C6", "C5 وC6"),
           exact: true,
         })
         .check();
       await page
         .getByRole("radio", {
-          name: pick(locale, "No duration is supplied", "لا توجد مدة محددة"),
+          name: pick(
+            locale,
+            "No recovery time is given",
+            "لا توجد مدة للتعافي",
+          ),
           exact: true,
         })
         .check();
@@ -1655,8 +1657,8 @@ inLocales(["ar"], (locale) => {
         page.getByText(
           pick(
             locale,
-            "Identify the labels, then compare the diagrams.",
-            "حدد الأسماء ثم قارن الرسوم.",
+            "Injury to the upper trunk (C5, C6) produces Erb–Duchenne paralysis, commonly from excessive separation of the head and shoulder. The plexus is formed by the ventral rami of C5 to T1.",
+            "إصابة الجذع العلوي (C5 وC6) تسبب شلل إرب-دوشين، غالبًا من المباعدة الشديدة بين الرأس والكتف. تتكون الضفيرة من الفروع الأمامية للأعصاب من C5 إلى T1.",
           ),
           { exact: true },
         ),
@@ -1704,13 +1706,17 @@ inLocales(["ar"], (locale) => {
       ).toBeDisabled();
       await page
         .getByRole("radio", {
-          name: pick(locale, "Identify labels", "تحديد الأسماء"),
+          name: pick(locale, "C5 and C6", "C5 وC6"),
           exact: true,
         })
         .check();
       await page
         .getByRole("radio", {
-          name: pick(locale, "No duration is supplied", "لا توجد مدة محددة"),
+          name: pick(
+            locale,
+            "No recovery time is given",
+            "لا توجد مدة للتعافي",
+          ),
           exact: true,
         })
         .check();

@@ -40,19 +40,19 @@ describe("fixed processed passage presentation", () => {
   it("preserves the two distinct positions and their only supplied locators in both locales", () => {
     expect(studyPassage("handout", "en")).toMatchObject({
       format: "PDF",
-      locator: "Sample page 3",
-      text: "Identify the labels, then compare the diagrams.",
+      locator: "Page 14",
+      text: "Injury to the upper trunk (C5, C6) produces Erb–Duchenne paralysis, commonly from excessive separation of the head and shoulder. The plexus is formed by the ventral rami of C5 to T1.",
     });
     expect(studyPassage("recording", "en")).toMatchObject({
       format: "AUDIO",
-      locator: "Sample timestamp 02:10",
-      text: "Compare first, then identify the labels.",
+      locator: "Timestamp 18:42",
+      text: "Count the roots first. In some people the plexus is prefixed and takes a branch from C4, so check before you name the trunks.",
     });
     expect(studyPassage("handout", "ar")?.text).toBe(
-      "حدد الأسماء ثم قارن الرسوم.",
+      "إصابة الجذع العلوي (C5 وC6) تسبب شلل إرب-دوشين، غالبًا من المباعدة الشديدة بين الرأس والكتف. تتكون الضفيرة من الفروع الأمامية للأعصاب من C5 إلى T1.",
     );
     expect(studyPassage("recording", "ar")?.text).toBe(
-      "قارن أولًا ثم حدد الأسماء.",
+      "عُدّ الجذور أولًا. في بعض الناس تكون الضفيرة متقدمة وتأخذ فرعًا من C4، فتأكد قبل أن تسمي الجذوع.",
     );
   });
 });

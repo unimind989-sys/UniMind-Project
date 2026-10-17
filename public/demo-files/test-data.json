@@ -31,28 +31,25 @@
   "invitationLink": "/batch-leader/invitation",
   "chatPrompts": {
     "supported": [
-      "Explain the sample unit's study sequence.",
-      "اشرح ترتيب المذاكرة في الوحدة التجريبية."
+      "What happens if the upper trunk of the brachial plexus is injured?",
+      "إيه اللي بيحصل لو الجذع العلوي للضفيرة العضدية اتصاب؟"
     ],
     "partial": [
-      "Explain the sequence and its missing timing.",
-      "اشرح الترتيب والتوقيت غير الموجود."
+      "How long does recovery from Erb's palsy take?",
+      "التعافي من شلل إرب بياخد وقت قد إيه؟"
     ],
     "unavailable": [
-      "What is not covered by these sample sources?",
-      "ما المعلومات غير الموجودة في المصادر التجريبية؟"
+      "What does the brachial plexus look like on an MRI?",
+      "شكل الضفيرة العضدية في الرنين المغناطيسي عامل إزاي؟"
     ],
     "conflict": [
-      "Do the two sample sources agree?",
-      "هل المصدران التجريبيان متفقان؟"
+      "Which spinal roots form the brachial plexus?",
+      "إيه الجذور اللي بتكوّن الضفيرة العضدية؟"
     ],
-    "hint": [
-      "What did the sample professor emphasize?",
-      "ما النقطة التي أكد عليها المحاضر التجريبي؟"
-    ],
+    "hint": ["What did the practical session stress?", "العملي ركّز على إيه؟"],
     "educational": [
-      "In this fictional teaching case, what is the study sequence?",
-      "في حالة تعليمية خيالية، ما ترتيب الدراسة؟"
+      "In a teaching case, a newborn's arm hangs limp after a difficult delivery. Which trunk is injured?",
+      "في حالة تعليمية، ذراع مولود مرتخية بعد ولادة متعسرة. أي جذع اتصاب؟"
     ],
     "patient": [
       "Treat an identifiable real patient.",
@@ -11649,95 +11646,95 @@
     "unitPath": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy",
     "preparedPath": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=dense",
     "sourceTitles": [
-      ["Synthetic sequence handout", "ملزمة الترتيب التجريبية"],
-      ["Synthetic comparison recording", "تسجيل المقارنة التجريبي"],
+      ["Lecture 6 handout", "ملزمة المحاضرة 6"],
+      ["Practical 3 recording", "تسجيل العملي 3"],
       [
-        "Synthetic appendix 1 — Review of labelled regional diagrams, their comparison order and the limits of the supplied evidence",
-        "ملحق تجريبي 1 — مراجعة الرسوم الموضعية المسماة وترتيب المقارنة وحدود الأدلة الواردة في المواد التجريبية"
+        "Revision notes 1: Brachial plexus: roots, trunks, divisions, cords and branches, with the variants your notes mention",
+        "ملاحظات مراجعة 1: الضفيرة العضدية: الجذور والجذوع والأقسام والحبال والفروع، مع الاختلافات المذكورة في ملاحظاتك"
       ],
       [
-        "Synthetic appendix 2 — Comparison of the handout and recording, with separate notes for agreements and unresolved differences",
-        "ملحق تجريبي 2 — مقارنة الملزمة والتسجيل مع ملاحظات منفصلة لنقاط الاتفاق والاختلافات التي لم تحسمها المصادر"
+        "Revision notes 2: Upper limb nerve injuries side by side: Erb's palsy, Klumpke's palsy and the radial nerve in the spiral groove",
+        "ملاحظات مراجعة 2: إصابات أعصاب الطرف العلوي جنبًا إلى جنب: شلل إرب وشلل كلومبكه والعصب الكعبري في الميزاب الحلزوني"
       ],
       [
-        "Synthetic appendix 3 — Checking source references before preparing a revision outline for the next synthetic study session",
-        "ملحق تجريبي 3 — فحص مراجع المصادر قبل إعداد مخطط مراجعة لجلسة المذاكرة التجريبية التالية"
+        "Revision notes 3: Checking page references before writing a revision outline for the axilla and the arm",
+        "ملاحظات مراجعة 3: مراجعة أرقام الصفحات والتوقيتات قبل كتابة مخطط مراجعة شامل للإبط والذراع"
       ],
       [
-        "Synthetic appendix 4 — Organizing identification and comparison notes while keeping unsupported conclusions out of the summary",
-        "ملحق تجريبي 4 — تنظيم ملاحظات تحديد الأسماء والمقارنة مع استبعاد الاستنتاجات غير المدعومة من الملخص"
+        "Revision notes 4: Muscles of the shoulder and arm grouped by nerve supply, keeping unsupported conclusions out",
+        "ملاحظات مراجعة 4: عضلات الكتف والذراع مرتبة حسب التغذية العصبية، مع استبعاد الاستنتاجات غير المدعومة"
       ],
       [
-        "Synthetic appendix 5 — Revision of diagram labels across several regions and a final check of missing page or time references",
-        "ملحق تجريبي 5 — مراجعة أسماء الرسوم في مناطق متعددة والتحقق النهائي من مراجع الصفحات أو التوقيتات غير المتاحة"
+        "Revision notes 5: Practical revision of the boundaries and contents of the axilla, with timestamps from the recording",
+        "ملاحظات مراجعة 5: مراجعة عملية لحدود الإبط ومحتوياته من العضلات والأوعية، مع توقيتات من التسجيل"
       ],
       [
-        "Synthetic appendix 6 — A second pass through the same sample material to distinguish evidence from suggested revision prompts",
-        "ملحق تجريبي 6 — قراءة ثانية للمواد التجريبية نفسها للتمييز بين الأدلة والأسئلة المقترحة للمراجعة"
+        "Revision notes 6: A second pass through Lecture 6 to separate evidence from suggested revision questions",
+        "ملاحظات مراجعة 6: قراءة ثانية متأنية للمحاضرة 6 للفصل بين الأدلة وأسئلة المراجعة المقترحة"
       ],
       [
-        "Synthetic appendix 7 — Review of labelled regional diagrams, their comparison order and the limits of the supplied evidence",
-        "ملحق تجريبي 7 — مراجعة الرسوم الموضعية المسماة وترتيب المقارنة وحدود الأدلة الواردة في المواد التجريبية"
+        "Revision notes 7: Brachial plexus: roots, trunks, divisions, cords and branches, with the variants your notes mention",
+        "ملاحظات مراجعة 7: الضفيرة العضدية: الجذور والجذوع والأقسام والحبال والفروع، مع الاختلافات المذكورة في ملاحظاتك"
       ],
       [
-        "Synthetic appendix 8 — Comparison of the handout and recording, with separate notes for agreements and unresolved differences",
-        "ملحق تجريبي 8 — مقارنة الملزمة والتسجيل مع ملاحظات منفصلة لنقاط الاتفاق والاختلافات التي لم تحسمها المصادر"
+        "Revision notes 8: Upper limb nerve injuries side by side: Erb's palsy, Klumpke's palsy and the radial nerve in the spiral groove",
+        "ملاحظات مراجعة 8: إصابات أعصاب الطرف العلوي جنبًا إلى جنب: شلل إرب وشلل كلومبكه والعصب الكعبري في الميزاب الحلزوني"
       ],
       [
-        "Synthetic appendix 9 — Checking source references before preparing a revision outline for the next synthetic study session",
-        "ملحق تجريبي 9 — فحص مراجع المصادر قبل إعداد مخطط مراجعة لجلسة المذاكرة التجريبية التالية"
+        "Revision notes 9: Checking page references before writing a revision outline for the axilla and the arm",
+        "ملاحظات مراجعة 9: مراجعة أرقام الصفحات والتوقيتات قبل كتابة مخطط مراجعة شامل للإبط والذراع"
       ],
       [
-        "Synthetic appendix 10 — Organizing identification and comparison notes while keeping unsupported conclusions out of the summary",
-        "ملحق تجريبي 10 — تنظيم ملاحظات تحديد الأسماء والمقارنة مع استبعاد الاستنتاجات غير المدعومة من الملخص"
+        "Revision notes 10: Muscles of the shoulder and arm grouped by nerve supply, keeping unsupported conclusions out",
+        "ملاحظات مراجعة 10: عضلات الكتف والذراع مرتبة حسب التغذية العصبية، مع استبعاد الاستنتاجات غير المدعومة"
       ],
       [
-        "Synthetic appendix 11 — Revision of diagram labels across several regions and a final check of missing page or time references",
-        "ملحق تجريبي 11 — مراجعة أسماء الرسوم في مناطق متعددة والتحقق النهائي من مراجع الصفحات أو التوقيتات غير المتاحة"
+        "Revision notes 11: Practical revision of the boundaries and contents of the axilla, with timestamps from the recording",
+        "ملاحظات مراجعة 11: مراجعة عملية لحدود الإبط ومحتوياته من العضلات والأوعية، مع توقيتات من التسجيل"
       ],
       [
-        "Synthetic appendix 12 — A second pass through the same sample material to distinguish evidence from suggested revision prompts",
-        "ملحق تجريبي 12 — قراءة ثانية للمواد التجريبية نفسها للتمييز بين الأدلة والأسئلة المقترحة للمراجعة"
+        "Revision notes 12: A second pass through Lecture 6 to separate evidence from suggested revision questions",
+        "ملاحظات مراجعة 12: قراءة ثانية متأنية للمحاضرة 6 للفصل بين الأدلة وأسئلة المراجعة المقترحة"
       ],
       [
-        "Synthetic appendix 13 — Review of labelled regional diagrams, their comparison order and the limits of the supplied evidence",
-        "ملحق تجريبي 13 — مراجعة الرسوم الموضعية المسماة وترتيب المقارنة وحدود الأدلة الواردة في المواد التجريبية"
+        "Revision notes 13: Brachial plexus: roots, trunks, divisions, cords and branches, with the variants your notes mention",
+        "ملاحظات مراجعة 13: الضفيرة العضدية: الجذور والجذوع والأقسام والحبال والفروع، مع الاختلافات المذكورة في ملاحظاتك"
       ],
       [
-        "Synthetic appendix 14 — Comparison of the handout and recording, with separate notes for agreements and unresolved differences",
-        "ملحق تجريبي 14 — مقارنة الملزمة والتسجيل مع ملاحظات منفصلة لنقاط الاتفاق والاختلافات التي لم تحسمها المصادر"
+        "Revision notes 14: Upper limb nerve injuries side by side: Erb's palsy, Klumpke's palsy and the radial nerve in the spiral groove",
+        "ملاحظات مراجعة 14: إصابات أعصاب الطرف العلوي جنبًا إلى جنب: شلل إرب وشلل كلومبكه والعصب الكعبري في الميزاب الحلزوني"
       ],
       [
-        "Synthetic appendix 15 — Checking source references before preparing a revision outline for the next synthetic study session",
-        "ملحق تجريبي 15 — فحص مراجع المصادر قبل إعداد مخطط مراجعة لجلسة المذاكرة التجريبية التالية"
+        "Revision notes 15: Checking page references before writing a revision outline for the axilla and the arm",
+        "ملاحظات مراجعة 15: مراجعة أرقام الصفحات والتوقيتات قبل كتابة مخطط مراجعة شامل للإبط والذراع"
       ],
       [
-        "Synthetic appendix 16 — Organizing identification and comparison notes while keeping unsupported conclusions out of the summary",
-        "ملحق تجريبي 16 — تنظيم ملاحظات تحديد الأسماء والمقارنة مع استبعاد الاستنتاجات غير المدعومة من الملخص"
+        "Revision notes 16: Muscles of the shoulder and arm grouped by nerve supply, keeping unsupported conclusions out",
+        "ملاحظات مراجعة 16: عضلات الكتف والذراع مرتبة حسب التغذية العصبية، مع استبعاد الاستنتاجات غير المدعومة"
       ],
       [
-        "Synthetic appendix 17 — Revision of diagram labels across several regions and a final check of missing page or time references",
-        "ملحق تجريبي 17 — مراجعة أسماء الرسوم في مناطق متعددة والتحقق النهائي من مراجع الصفحات أو التوقيتات غير المتاحة"
+        "Revision notes 17: Practical revision of the boundaries and contents of the axilla, with timestamps from the recording",
+        "ملاحظات مراجعة 17: مراجعة عملية لحدود الإبط ومحتوياته من العضلات والأوعية، مع توقيتات من التسجيل"
       ],
       [
-        "Synthetic appendix 18 — A second pass through the same sample material to distinguish evidence from suggested revision prompts",
-        "ملحق تجريبي 18 — قراءة ثانية للمواد التجريبية نفسها للتمييز بين الأدلة والأسئلة المقترحة للمراجعة"
+        "Revision notes 18: A second pass through Lecture 6 to separate evidence from suggested revision questions",
+        "ملاحظات مراجعة 18: قراءة ثانية متأنية للمحاضرة 6 للفصل بين الأدلة وأسئلة المراجعة المقترحة"
       ],
       [
-        "Synthetic appendix 19 — Review of labelled regional diagrams, their comparison order and the limits of the supplied evidence",
-        "ملحق تجريبي 19 — مراجعة الرسوم الموضعية المسماة وترتيب المقارنة وحدود الأدلة الواردة في المواد التجريبية"
+        "Revision notes 19: Brachial plexus: roots, trunks, divisions, cords and branches, with the variants your notes mention",
+        "ملاحظات مراجعة 19: الضفيرة العضدية: الجذور والجذوع والأقسام والحبال والفروع، مع الاختلافات المذكورة في ملاحظاتك"
       ],
       [
-        "Synthetic appendix 20 — Comparison of the handout and recording, with separate notes for agreements and unresolved differences",
-        "ملحق تجريبي 20 — مقارنة الملزمة والتسجيل مع ملاحظات منفصلة لنقاط الاتفاق والاختلافات التي لم تحسمها المصادر"
+        "Revision notes 20: Upper limb nerve injuries side by side: Erb's palsy, Klumpke's palsy and the radial nerve in the spiral groove",
+        "ملاحظات مراجعة 20: إصابات أعصاب الطرف العلوي جنبًا إلى جنب: شلل إرب وشلل كلومبكه والعصب الكعبري في الميزاب الحلزوني"
       ],
       [
-        "Synthetic appendix 21 — Checking source references before preparing a revision outline for the next synthetic study session",
-        "ملحق تجريبي 21 — فحص مراجع المصادر قبل إعداد مخطط مراجعة لجلسة المذاكرة التجريبية التالية"
+        "Revision notes 21: Checking page references before writing a revision outline for the axilla and the arm",
+        "ملاحظات مراجعة 21: مراجعة أرقام الصفحات والتوقيتات قبل كتابة مخطط مراجعة شامل للإبط والذراع"
       ],
       [
-        "Synthetic appendix 22 — Organizing identification and comparison notes while keeping unsupported conclusions out of the summary",
-        "ملحق تجريبي 22 — تنظيم ملاحظات تحديد الأسماء والمقارنة مع استبعاد الاستنتاجات غير المدعومة من الملخص"
+        "Revision notes 22: Muscles of the shoulder and arm grouped by nerve supply, keeping unsupported conclusions out",
+        "ملاحظات مراجعة 22: عضلات الكتف والذراع مرتبة حسب التغذية العصبية، مع استبعاد الاستنتاجات غير المدعومة"
       ]
     ],
     "note": "Adds twelve fixed sessions once per document, retaining prior work. Twenty-four invented source records share the existing evidence identities and readiness examples. No real capacity, retrieval or provider-quality claim."
@@ -11798,7 +11795,7 @@
     "combinations": 144,
     "singleFlashcard": true,
     "quizPreviewOnly": true,
-    "note": "Fixed invented examples for every exposed setting. Comparison examines supplied instructions and evidence limits, not undisclosed actual diagram facts. No model generation, retrieval or quality claim."
+    "note": "Fixed invented examples for every exposed setting. The roots topic compares two supplied statements and their evidence limits. No model generation, retrieval or quality claim."
   },
   "unitScopes": [
     {

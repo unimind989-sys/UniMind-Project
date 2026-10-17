@@ -14,7 +14,7 @@ const say = (locale: Locale, en: string, ar: string) =>
 
 /** Sample-only copy that must never render on a real route. */
 const sampleContent =
-  /Sample materials|Synthetic sequence handout|Synthetic comparison recording|fixed examples|Fixed examples|sample questions|مواد تجريبية|ملزمة الترتيب التجريبية|تسجيل المقارنة التجريبي|أمثلة ثابتة|أسئلة تجريبية/u;
+  /Sample materials|Lecture 6 handout|Practical 3 recording|fixed examples|Fixed examples|sample questions|مواد تجريبية|ملزمة المحاضرة 6|تسجيل العملي 3|أمثلة ثابتة|أسئلة تجريبية/u;
 
 async function expectNoSampleContent(page: Page) {
   await expect(page.getByText(sampleContent)).toHaveCount(0);
@@ -198,7 +198,7 @@ export async function expectStudentSettingsScreen(
     .getByRole("tab", { name: say(locale, "Privacy", "الخصوصية") })
     .click();
   const shared = page.getByRole("radio", {
-    name: say(locale, "Founder-visible by default", "ظاهر للمؤسسين افتراضيًا"),
+    name: say(locale, "Visible to UniMind’s founders", "ظاهرة لمؤسسي UniMind"),
   });
   await expect(shared).toBeVisible();
   if (mode === "real") await expect(shared).toBeDisabled();

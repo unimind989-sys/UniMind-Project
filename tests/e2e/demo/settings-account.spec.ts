@@ -707,7 +707,7 @@ inLocales(["ar"], (locale) => {
         t("Faculty of Medicine", "كلية الطب البشري"),
       );
       await navigate(page, `${unit}/chat`, locale);
-      const draft = "Compare the two sources — synthetic unsent draft.";
+      const draft = "Roots of the plexus — synthetic unsent draft.";
       const message = page.getByRole("textbox", {
         name: t("Message", "السؤال"),
         exact: true,
@@ -869,7 +869,7 @@ inLocales(["en"], (locale) => {
         page.getByText(
           pick(
             locale,
-            "Faculty of Medicine · Second year · Term 1",
+            "Faculty of Medicine, Second year, Term 1",
             "كلية الطب البشري · السنة الثانية · الترم الأول",
           ),
           { exact: true },

@@ -31,24 +31,24 @@ export function getSources(
       ? text(studyDensitySourceTitles[index]!, locale)
       : index === 0
         ? locale === "ar"
-          ? "ملزمة الترتيب التجريبية"
-          : "Synthetic sequence handout"
+          ? "ملزمة المحاضرة 6"
+          : "Lecture 6 handout"
         : index === 1
           ? locale === "ar"
-            ? "تسجيل المقارنة التجريبي"
-            : "Synthetic comparison recording"
-          : (locale === "ar" ? "ملحق تجريبي " : "Synthetic appendix ") +
+            ? "تسجيل العملي 3"
+            : "Practical 3 recording"
+          : (locale === "ar" ? "ملاحظات مراجعة " : "Revision notes ") +
             new Intl.NumberFormat(locale).format(index - 1),
     format: index === 1 ? "AUDIO" : "PDF",
     locator:
       index === 0
         ? locale === "ar"
-          ? "صفحة تجريبية ٣"
-          : "Sample page 3"
+          ? "صفحة ١٤"
+          : "Page 14"
         : index === 1
           ? locale === "ar"
-            ? "توقيت تجريبي ٠٢:١٠"
-            : "Sample timestamp 02:10"
+            ? "التوقيت ١٨:٤٢"
+            : "Timestamp 18:42"
           : locale === "ar"
             ? "لا يوجد مرجع موثّق لصفحة أو توقيت"
             : "No verified page or timestamp reference",

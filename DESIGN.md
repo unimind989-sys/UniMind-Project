@@ -77,7 +77,7 @@ Normal and placeholder text ≥4.5:1; large text (≥24px, or ≥19px bold) ≥3
 
 ## Theme and academic persistence
 
-The named student profile → Appearance (Account for other roles) offers **System / Light / Dark**, default System. System follows OS changes; explicit Light/Dark overrides them. Set root theme, `color-scheme` and `theme-color` consistently. Current profiles have no theme field: use a validated, versioned local key and tolerate storage denial. Apply a minimal pre-paint bootstrap with a safe System fallback and scoped hydration handling. Do not add a settings table for appearance.
+The named student profile → Appearance (Account for other roles) offers **System / Light / Dark**, default System. System follows OS changes; explicit Light/Dark overrides them. Set root theme, `color-scheme` and `theme-color` consistently; `theme-color` is the Night plane (`#0c1823` light, `#050b12` dark) so mobile browser chrome continues the top bar. Current profiles have no theme field: use a validated, versioned local key and tolerate storage denial. Apply a minimal pre-paint bootstrap with a safe System fallback and scoped hydration handling. Do not add a settings table for appearance.
 
 Academic context must survive future account sessions. Reuse the existing profile with the smallest validated catalog-preference extension, because no current field persists it. Stored preference is a hint; caller-scoped catalog and availability remain authority. Never create membership or release from a saved selection. The [persistence plan](docs/reviews/wp03-frontend-overhaul.md#persistence-and-backend-budget) owns proposed changes and denial proof. Demo account data still resets per document; neither sample nor demo proves real persistence.
 
@@ -117,7 +117,7 @@ Reading measure about 60–70ch. Night bars and bands run full width. Chat's con
 ## Surfaces and shell
 
 - **Night planes** orient: top bar, subject band, Shelf and admin bands, phone header, professor note card and current subject cover. Controls on Night sit on `--night-2` or carry a `--night-control` ring.
-- **Cobalt planes** hold the one next action (the Shelf's resume card) and the student's own question bubbles, with large text only. A button on a Cobalt plane is Night-filled.
+- **Cobalt planes** hold the one next action (the Shelf's resume card) and the student's own question bubbles, with large text only. A button on a Cobalt plane is Night-filled. Where a blue plane carries small text (the resume page's note, the bubble's sample label), light theme fills it with `--action` and dark with `--cobalt` and `--on-cobalt` text, so every pair stays AA.
 - **Paper and surface** carry everything else: paper is the canvas; surface holds the answer, covers, panels and composer; surface-2 holds quotes and hover; tint marks citations, locations, the current bottom-bar item and proposed states.
 - **Desktop (768px and wider):** a 64px Night top bar with the logo, the role's labelled destinations (current on `--night-2` at 700 weight) and, at the inline end, the language control and one identity utility (student avatar opening the named profile; admin name and role).
 - **Inside a curriculum unit:** a Night subject band under the top bar carries the large unit title, the session switcher (a `--night-2` pill naming the current chat session and opening a menu) and the segmented control for Materials, Chat, Studio and Quiz. This one layer carries the current subject; do not stack a breadcrumb, title and tab row above content.

@@ -1,15 +1,24 @@
+/* The open attempt's progress: a white strip that stays above the questions. */
 .quizProgress {
   position: sticky;
   inset-block-start: 0;
   z-index: 2;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 24px;
-  padding: 12px;
+  align-items: center;
+  gap: 4px 24px;
+  max-width: 48rem;
+  min-height: 48px;
+  padding: 10px 18px;
   margin-block-end: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-control);
   background: var(--surface);
-  border-block-end: 1px solid var(--border);
+  /* Paper above the strip, so scrolled questions never show through the gap. */
+  box-shadow: 0 -12px 0 var(--paper);
+  color: var(--ink);
   font-size: 0.875rem;
+  font-weight: 650;
   font-variant-numeric: tabular-nums;
 }
 .quizProgress p {
@@ -17,4 +26,5 @@
 }
 .quizProgress .lowTime {
   color: var(--danger);
+  font-weight: 750;
 }

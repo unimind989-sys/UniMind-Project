@@ -168,10 +168,10 @@
   min-width: 0;
   min-height: 48px;
   color: var(--text-primary);
-  background: var(--surface-strong);
-  border: 1px solid var(--line);
+  background: var(--surface);
+  border: 1.5px solid var(--control-border);
   border-radius: var(--radius-control);
-  padding: 0.75rem;
+  padding: 0.75rem 0.875rem;
   caret-color: var(--accent-text);
 }
 .field :is(select, input, textarea),
@@ -209,12 +209,16 @@
   justify-content: center;
   gap: 0.5rem;
   min-height: 44px;
-  padding: 0.65rem 1rem;
+  padding: 0.6rem 1.1rem;
   background: var(--surface-strong);
   color: var(--text-primary);
-  border: 1px solid var(--line);
+  border: 1.5px solid var(--line);
   border-radius: var(--radius-control);
   font: inherit;
+  font-weight: 650;
+  max-width: 100%;
+  text-align: center;
+  overflow-wrap: anywhere;
   cursor: pointer;
   text-decoration: none;
   touch-action: manipulation;
@@ -230,7 +234,7 @@
   background: var(--accent);
   color: var(--on-action);
   border-color: transparent;
-  font-weight: 700;
+  font-weight: 750;
 }
 
 .quiet {
@@ -251,7 +255,7 @@
   color: var(--secondary);
   background: var(--annotation);
   padding: 12px 16px;
-  border-radius: 8px;
+  border-radius: var(--radius-control);
   overflow-wrap: anywhere;
 }
 .success {
@@ -276,9 +280,12 @@
 .pill {
   display: inline-block;
   border-radius: var(--radius-pill);
-  padding: 0.35rem 0.75rem;
-  color: var(--ready);
-  background: var(--ready-surface);
+  padding: 4px 12px;
+  color: var(--success);
+  background: var(--success-tint);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.5;
 }
 .sourceContext {
   /* Heading and purpose on one row; the return action and its note on the next. */
@@ -291,6 +298,10 @@
 }
 .sourceContext > h2 {
   margin: 0;
+  font-size: 1.625rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: var(--type-headline-tracking);
 }
 .sourceContext > :not(h2, p, a) {
   grid-column: 1 / -1;
@@ -369,35 +380,154 @@
 .skip:focus {
   top: 1rem;
 }
+/* One quiz question: a white card with the counter above a large prompt. */
 .question {
-  border: 0;
-  padding: 1.5rem 0;
-  border-block-end: 1px solid var(--line);
-  margin: 0 0 1.5rem;
+  min-width: 0;
+  max-width: 48rem;
+  margin: 0 0 16px;
+  padding: 22px 24px 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: var(--surface);
 }
 .question legend {
+  /* Floated so the card's padding sits above it like any other content. */
+  float: left;
+  width: 100%;
+  margin-block-end: 16px;
   padding: 0;
-  font-weight: 650;
-  font-size: 1.125rem;
-  max-width: 65ch;
+  /* The counter and prompt are separate lines; the joining " · " is not drawn. */
+  color: transparent;
+  font-size: 0;
+  line-height: 0;
+  overflow-wrap: anywhere;
+}
+.question legend > span {
+  display: block;
+}
+.question legend > span:first-child {
+  margin-block-end: 6px;
+  color: var(--secondary);
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+.question legend > span:last-child {
+  max-width: 60ch;
+  color: var(--ink);
+  font-size: 1.25rem;
+  font-weight: 750;
+  line-height: 1.35;
+  letter-spacing: -0.012em;
+  text-wrap: pretty;
+}
+.question legend + * {
+  clear: both;
 }
 .question .check {
-  margin-block: 0.5rem;
-  padding: 0.875rem 1rem;
-  border: 1px solid var(--control-border);
-  border-radius: 10px;
+  gap: 14px;
+  min-height: 56px;
+  margin-block: 0 8px;
+  padding: 12px 18px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-control);
   background: var(--surface);
-  max-width: 48rem;
+  color: var(--ink);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
   transition:
     background-color var(--motion-control) ease,
-    border-color var(--motion-control) ease;
+    border-color var(--motion-control) ease,
+    box-shadow var(--motion-control) ease;
 }
-.question .check:has(input:checked) {
-  background: var(--accent-soft);
-  border-color: var(--accent);
+.question .check input {
+  accent-color: var(--action);
 }
 .question .check:hover {
-  border-color: var(--accent);
+  border-color: var(--control);
+}
+.question .check:has(input:checked) {
+  background: var(--tint);
+  border-color: var(--action);
+  box-shadow: inset 0 0 0 1px var(--action);
+  font-weight: 700;
+}
+.question .check:has(input:focus-visible) {
+  outline: 2px solid var(--cobalt);
+  outline-offset: 2px;
+}
+.question:disabled .check {
+  cursor: default;
+}
+.question:disabled .check:hover:not(:has(input:checked)) {
+  border-color: var(--line);
+}
+/* The correction under a read-only question. */
+.question > div {
+  margin-block-start: 16px;
+  padding: 16px 18px;
+  border-radius: var(--radius-control);
+  background: var(--surface-2);
+}
+.question > div p {
+  margin: 0 0 6px;
+  max-width: 65ch;
+  color: var(--ink);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+.question > div p:last-child {
+  margin: 10px 0 0;
+  color: var(--secondary);
+}
+@media (max-width: 767px) {
+  .question {
+    padding: 18px 16px 18px;
+  }
+  .question .check {
+    gap: 12px;
+    padding: 10px 14px;
+  }
+  .question > div {
+    padding: 14px;
+  }
+}
+.verdict strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  padding: 0 12px 0 8px;
+  border-radius: var(--radius-pill);
+  font-size: 0.875rem;
+  font-weight: 750;
+}
+.verdict strong::before {
+  content: "";
+  flex: none;
+  width: 16px;
+  height: 16px;
+  background: currentColor;
+  -webkit-mask: var(--verdict-icon) center / contain no-repeat;
+  mask: var(--verdict-icon) center / contain no-repeat;
+}
+.verdictCorrect strong {
+  --verdict-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E");
+  background: var(--success-tint);
+  color: var(--success);
+}
+.verdictIncorrect strong {
+  --verdict-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6.5 6.5l11 11M17.5 6.5l-11 11'/%3E%3C/svg%3E");
+  background: var(--danger-tint);
+  color: var(--danger);
+}
+.verdictUnanswered strong {
+  --verdict-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 12h12'/%3E%3C/svg%3E");
+  background: var(--surface);
+  color: var(--secondary);
+  box-shadow: inset 0 0 0 1px var(--line);
 }
 .answer {
   border-block-start: 1px solid var(--line);
@@ -475,76 +605,100 @@
   padding-block: 0.5rem;
   cursor: pointer;
 }
+/* Materials: a quiet heading, then one white row per material. */
 .materialsHeading {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 8px 24px;
-  margin-block-end: 12px;
+  margin-block: 8px 12px;
 }
 .materialsHeading h2 {
   margin: 0;
+  font-size: 1.625rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: var(--type-headline-tracking);
 }
 .materialsHeading p {
-  margin: 8px 0 0;
-  font-size: 0.8125rem;
+  margin: 6px 0 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.45;
   color: var(--secondary);
 }
 .materialsCaption {
-  margin-block: 0 16px;
+  max-width: 68ch;
+  margin-block: 0 20px;
   font-size: 0.875rem;
-  line-height: 1.6;
+  line-height: 1.5;
   color: var(--secondary);
 }
 .materialLibrary {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 0 20px;
+  display: grid;
+  gap: 10px;
+  max-width: 64rem;
 }
 .sourceRow {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: start;
   gap: 8px 24px;
-  padding-block: 16px;
-  border-block-end: 1px solid var(--border);
-}
-.sourceRow:last-child {
-  border-block-end: 0;
+  padding: 16px 22px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: var(--surface);
 }
 .sourceIdentity {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 20px;
   min-width: 0;
 }
 .sourceTitle {
   display: flex;
+  flex-basis: 100%;
   flex-wrap: wrap;
-  align-items: baseline;
-  gap: 4px 12px;
+  align-items: center;
+  gap: 4px 10px;
+  min-width: 0;
+  margin-block-end: 4px;
 }
 .sourceFormat {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 9px;
+  border-radius: var(--radius-pill);
+  background: var(--tint);
   color: var(--ink);
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: 0.75rem;
+  font-weight: 750;
   line-height: 1.5;
+  letter-spacing: 0.02em;
 }
 .sourceRow h3 {
+  min-width: 0;
   margin: 0;
-  font-size: 1rem;
-  line-height: 1.5;
+  color: var(--ink);
+  font-size: 1.0625rem;
+  font-weight: 750;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
   overflow-wrap: anywhere;
 }
 .sourceRow p {
-  margin: 4px 0 0;
+  margin: 0;
   color: var(--secondary);
   font-size: 0.875rem;
-  line-height: 1.6;
+  line-height: 1.45;
   overflow-wrap: anywhere;
 }
-.sourceIdentity p {
-  margin-block-start: 2px;
-  line-height: 1.5;
+.sourceIdentity > p:first-of-type {
+  color: var(--ink);
+  font-weight: 650;
 }
 .sourceRow > .pill {
   justify-self: end;
@@ -552,33 +706,77 @@
 }
 .sourceRow details {
   grid-column: 1 / -1;
+  min-width: 0;
+  margin-block-start: 2px;
 }
 .sourceRow summary {
-  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   max-width: 100%;
   min-height: 44px;
-  padding: 8px 12px;
-  border: 1px solid var(--control-border);
-  border-radius: 8px;
+  padding: 6px 16px 6px 18px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-pill);
   background: var(--surface);
   color: var(--ink);
   font-size: 0.875rem;
-  font-weight: 600;
-  list-style-position: inside;
+  font-weight: 700;
+  line-height: 1.35;
+  list-style: none;
   cursor: pointer;
+  overflow-wrap: anywhere;
+  transition:
+    background-color var(--motion-control) ease,
+    border-color var(--motion-control) ease;
+}
+.sourceRow summary::-webkit-details-marker {
+  display: none;
+}
+/* A small chevron that turns when the excerpt is open. */
+.sourceRow summary::after {
+  content: "";
+  flex: none;
+  width: 7px;
+  height: 7px;
+  margin-block-start: -4px;
+  border-right: 2px solid var(--secondary);
+  border-bottom: 2px solid var(--secondary);
+  transform: rotate(45deg);
+  transition: transform var(--motion-control) ease;
+}
+.sourceRow details[open] > summary::after {
+  margin-block-start: 3px;
+  transform: rotate(225deg);
 }
 .sourceRow summary:hover {
-  background: var(--hover);
+  border-color: var(--control);
+  background: var(--surface-2);
 }
-.sourceRow details p {
+.sourceRow details[open] > summary {
+  margin-block-end: 12px;
+}
+.sourceRow details > p:first-of-type {
   max-width: 68ch;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: var(--surface-2);
+  color: var(--ink);
   font-size: 1rem;
-  line-height: 1.8;
+  line-height: 1.7;
+}
+.sourceRow details > p + p {
+  margin-block-start: 8px;
+  font-size: 0.8125rem;
 }
 @media (max-width: 767px) {
+  .materialsHeading {
+    margin-block-start: 0;
+  }
   .sourceRow {
     grid-template-columns: minmax(0, 1fr);
-    gap: 4px;
+    gap: 8px;
+    padding: 14px 16px;
   }
   .sourceRow > .pill {
     justify-self: start;
@@ -593,69 +791,165 @@
 
 .unitChoices {
   display: grid;
-  gap: 4px;
+  gap: 2px;
 }
 .unitChoices a {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   min-height: 44px;
   padding: 8px 12px;
+  border-color: transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ink);
+  font-weight: 600;
+  text-align: start;
   text-decoration: none;
-  border-radius: 4px;
-  color: var(--secondary);
 }
-.unitChoices a:hover,
+.unitChoices a:hover {
+  background: var(--surface-2);
+  color: var(--ink);
+}
 .unitChoices a[aria-current] {
-  background: var(--annotation);
-  color: var(--accent-ink);
+  background: var(--tint);
+  color: var(--action);
+  font-weight: 750;
 }
 
+/* Quiz setup: one left-aligned column of labelled choices on a white card. */
+.studyBody .panel > h2:first-child {
+  margin-block-start: 0;
+}
+.studyBody .panel:has(> .quizConfiguration) {
+  max-width: calc(32rem + 64px);
+  padding: 28px 32px 32px;
+}
+.studyBody .panel:has(> .quizConfiguration) > h2 {
+  margin-block-end: 8px;
+  font-size: 1.625rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: var(--type-headline-tracking);
+}
+.studyBody .panel:has(> .quizConfiguration) > p {
+  max-width: 60ch;
+  margin-block: 0;
+  color: var(--secondary);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
 .quizConfiguration {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   align-items: start;
-  gap: 20px;
+  gap: 24px;
   width: min(100%, 32rem);
-  margin-block: 24px;
-  margin-inline: auto;
+  margin-block: 28px 0;
+}
+.quizConfiguration > fieldset > legend,
+.quizConfiguration label.field {
+  color: var(--ink);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1.4;
 }
 .quizConfiguration > fieldset > legend {
-  font-size: 1rem;
-  color: var(--ink);
+  margin-block-end: 10px;
+}
+.quizConfiguration label.field {
+  gap: 10px;
 }
 .quizConfiguration > :not(label):not(fieldset) {
   grid-column: 1 / -1;
 }
 .quizConfiguration input[type="number"] {
   width: 100%;
-  max-width: 12rem;
-  min-height: 44px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 8px 12px;
+  max-width: 10rem;
+  min-height: 48px;
+  padding: 0 14px;
   color: var(--ink);
-  background: var(--surface);
-  font: inherit;
+  font-size: 1rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+.quizConfiguration input[type="number"]::-webkit-inner-spin-button,
+.quizConfiguration input[type="number"]::-webkit-outer-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+.quizConfiguration input[type="number"]:hover:not(:disabled) {
+  border-color: var(--secondary);
+}
+.quizConfiguration input[type="number"][aria-invalid="true"] {
+  border-color: var(--danger);
 }
 .questionCount {
   min-width: 0;
 }
 .fieldHint {
-  margin: 4px 0 0;
+  margin: 6px 0 0;
   color: var(--secondary);
   font-size: 0.875rem;
-  font-weight: 400;
-  line-height: 1.6;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.fieldHint[role="alert"] {
+  color: var(--danger);
+  font-weight: 650;
 }
 .quizStart {
   display: flex;
-  width: min(100%, 32rem);
-  margin-inline: auto;
-  /* Stack actions so Start stays centered on the configuration path. */
-  flex-direction: column;
-  justify-content: center;
+  flex-wrap: wrap;
   align-items: center;
+  justify-content: flex-start;
   gap: 12px;
-  padding-block: 20px;
-  border-block-start: 1px solid var(--border);
+  width: min(100%, 32rem);
+  margin-block-start: 28px;
+  padding-block-start: 24px;
+  border-block-start: 1px solid var(--line);
+}
+.quizStart .primary {
+  min-height: 48px;
+  padding-inline: 24px;
+}
+.studyBody .panel:has(> .quizConfiguration) > .status {
+  margin-block: 16px 0;
+}
+@media (max-width: 767px) {
+  .studyBody .panel:has(> .quizConfiguration) {
+    padding: 20px;
+  }
+  .studyBody .panel:has(> .quizConfiguration) > h2 {
+    font-size: 1.3125rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sourceRow summary,
+  .sourceRow summary::after {
+    transition: none;
+  }
+}
+
+/* Evidence, report and quiz attempt views inside a unit share one column. */
+.studyBody .panel,
+.studyBody > .status {
+  max-width: 48rem;
+}
+.studyBody .panel > h2 {
+  margin-block-end: 8px;
+  font-size: 1.375rem;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+.studyBody .panel .row > div > p + p {
+  max-width: 68ch;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--surface-2);
+  color: var(--ink);
+  line-height: 1.6;
 }

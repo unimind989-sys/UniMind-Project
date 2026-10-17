@@ -1481,19 +1481,19 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 **Dependencies:** WP03-T17 delivered. Ahmed's 17 October 2026 request: every flow (landing, student, Batch Leader, admin) works but looks bland and unpolished; overhaul it with the same fingerprint, and he authorized editing `DESIGN.md` and related design files. His decisions the same day: the name, Open Folio logo, slogan and blue family stay fixed while fonts, surfaces, shell and the landing illustration may change; choose the direction from two static mockups before building; replace test-like fixture names with realistic invented content; rebuild the student flow first.
 
-- [~] Diagnose the current frontend from rendered captures of every role and record the findings in the [task record](../../planning/tasks/wp03-t18-premium-direction.md).
+- [x] Diagnose the current frontend from rendered captures of every role and record the findings in the [task record](../../planning/tasks/wp03-t18-premium-direction.md).
 - [x] Build two clickable static mockup directions for the landing hero, Study Shelf, Chat with evidence (desktop, phone and one Arabic phone screen) and the admin decision queue, with realistic invented content and both themes.
 - [x] Record Ahmed's choice of direction, or the mix he asks for. Product: Direction B; landing: variant L1 "The page answers" on its own (17 October 2026).
 - [x] Rewrite `DESIGN.md` (and `docs/agents/frontend.md` where needed) for the chosen direction; keep behaviour, safety, accessibility, RTL and theme rules, and retire the constraints that force the neutral look.
-- [ ] Deliver through one PR with required CI. No product code changes in this task.
+- [x] Deliver through one PR with required CI. No product code changes in this task. Delivered in [#81](https://github.com/unimind989-sys/UniMind-Project/pull/81), squash-merged as `81c624b` with all 15 checks green.
 
 **Pass:** an approved direction with its mockups under `planning/design/premium-overhaul/`, a rewritten `DESIGN.md` that the rebuild tasks can implement without new founder questions, and required CI green.
 
 #### WP03-T19 — Rebuild the student flow in the approved direction
 
-**Dependencies:** WP03-T18 delivered.
+**Dependencies:** WP03-T18 delivered. Ahmed delegated approval of the rendered candidates for WP03-T19 to T21 to the overseeing Claude Code session on 17 October 2026 ([task record](../../planning/tasks/wp03-t19-student-cobalt.md)).
 
-- [ ] Shared tokens, shell and component kit; onboarding, Study Shelf, Subjects, unit, Materials, Chat, Studio, Quiz, evidence and Settings in the new direction, phone first, EN/AR and both themes, with realistic invented fixtures.
+- [~] Shared tokens, shell and component kit; onboarding, Study Shelf, Subjects, unit, Materials, Chat, Studio, Quiz, evidence and Settings in the new direction, phone first, EN/AR and both themes, with realistic invented fixtures.
 - [ ] Keep every real-route guard and the shared real/synthetic screens from WP03-T17; Ahmed approves the rendered candidate (`Approved commit:`); deliver through one PR with required CI.
 
 #### WP03-T20 — Rebuild the landing and access pages in the approved direction

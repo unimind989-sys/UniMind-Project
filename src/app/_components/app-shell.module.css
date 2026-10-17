@@ -1,20 +1,23 @@
+/* Direction B shell: one Night top bar on desktop; on phones the same
+   navigation becomes the three-target bottom bar (admin: a labelled menu). */
 .shell {
-  display: grid;
-  grid-template-columns: 192px minmax(0, 1fr);
+  display: flex;
+  flex-direction: column;
   min-height: 100svh;
   background: var(--canvas);
 }
-.rail {
-  padding: 24px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  background: var(--spine);
-  color: var(--spine-ink);
+.topbar {
   position: sticky;
   inset-block-start: 0;
-  height: 100svh;
-  overflow-y: auto;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 8px 24px;
+  min-height: 64px;
+  padding: 10px var(--shell-inset);
+  background: var(--night);
+  color: var(--on-night);
+  border-block-end: 1px solid var(--night-line);
 }
 .brand {
   display: inline-flex;
@@ -22,19 +25,19 @@
   align-items: center;
   justify-content: center;
   min-height: 44px;
-  padding: 7px;
+  padding: 4px 0;
   flex: none;
-  width: 160px;
+  width: 148px;
 }
 .brand img {
   display: block;
-  width: 144px;
+  width: 148px;
   height: auto;
   transform: none;
 }
 .brand[data-variant="compact"],
 .brand[data-variant="small"] {
-  width: 48px;
+  width: 44px;
   padding: 6px;
 }
 .brand[data-variant="compact"] img {
@@ -60,99 +63,101 @@
 .brand[data-brand-tone="light"] img[data-brand-theme="dark"] {
   display: none;
 }
+.railBrand {
+  flex: none;
+}
 .compactBrand {
   display: none;
+  flex: none;
 }
 .globalNav {
   display: grid;
   gap: 4px;
 }
-.rail .globalNav {
+.topbar .globalNav {
   display: flex;
-  flex-direction: column;
   flex: 1;
-}
-.rail .globalNav a[data-account] {
-  margin-block-start: auto;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
 }
 .globalNav a {
   display: flex;
   position: relative;
   align-items: center;
-  gap: 12px;
-  min-height: 48px;
-  padding: 12px;
-  border-radius: 5px;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: var(--radius-control);
   text-decoration: none;
-  color: var(--spine-secondary);
-  font-size: 0.875rem;
+  color: var(--on-night-2);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  /* Navigation changes palette at once (DESIGN.md): no colour transition. */
+}
+.topbar .globalNav a svg {
+  display: none;
+}
+.topbar .globalNav a[data-account] {
+  margin-inline-start: auto;
+  padding-inline: 6px 14px;
+}
+.topbar .globalNav a[data-account] svg {
+  display: block;
 }
 .globalNav a[aria-current] {
-  color: var(--spine-ink);
-  background: var(--spine-active);
-  font-weight: 650;
-}
-.rail .globalNav a[aria-current]::after {
-  content: "";
-  position: absolute;
-  inset-inline-end: -16px;
-  inset-block-start: calc(50% - 6px);
-  width: 0;
-  height: 0;
-  border-block: 6px solid transparent;
-  border-inline-end: 6px solid var(--canvas);
+  color: var(--on-night);
+  background: var(--night-2);
+  font-weight: 750;
 }
 .globalNav a:hover {
-  background: var(--spine-active);
-  color: var(--spine-ink);
-}
-.identity {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  padding: 16px 12px 0;
-  border-block-start: 1px solid #415064;
-  font-size: 0.8125rem;
-  color: var(--spine-ink);
-}
-.stage {
-  min-width: 0;
+  background: var(--night-2);
+  color: var(--on-night);
 }
 .utility {
   display: flex;
-  flex-wrap: wrap;
+  flex: none;
   align-items: center;
-  gap: 16px;
-  min-height: 56px;
-  padding: 6px 24px;
-  border-block-end: 1px solid var(--border);
-  background: var(--canvas);
+  gap: 12px;
 }
-.location {
-  flex: 1;
-  font-size: 0.8125rem;
-  font-weight: 600;
+.identity {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  min-height: 44px;
+  font-size: 0.875rem;
+  font-weight: 650;
+  color: var(--on-night);
+}
+.identity svg {
+  width: 20px;
+  height: 20px;
+}
+.stage {
   min-width: 0;
-  overflow-wrap: anywhere;
-}
-.mobileBrand {
-  display: none;
+  display: contents;
 }
 .simulation {
   margin: 0;
-  padding: 8px 32px;
+  padding: 8px var(--shell-inset);
   font-size: 0.8125rem;
-  color: var(--muted);
-  border-block-end: 1px solid var(--border);
+  color: var(--secondary);
+  background: var(--surface-2);
+  border-block-end: 1px solid var(--line);
 }
 .content {
+  flex: 1;
   width: 100%;
   margin-inline: 0;
-  padding: 24px 24px 32px;
+  padding: 40px var(--shell-inset) 56px;
   min-width: 0;
+}
+.content :where(h1) {
+  overflow-wrap: break-word;
 }
 .content > h1 {
   font-size: var(--type-display-size);
+  font-weight: var(--type-display-weight);
   line-height: var(--type-display-leading);
   letter-spacing: var(--type-display-tracking);
   margin-block: 0 24px;
@@ -163,6 +168,7 @@
   inset-block-start: -100px;
   z-index: 100;
   padding: 12px 16px;
+  border-radius: var(--radius-control);
   background: var(--surface);
   color: var(--accent-ink);
 }
@@ -173,14 +179,16 @@
   display: flex;
   align-items: center;
   min-height: 44px;
-  padding: 12px;
-  margin-block-start: auto;
-  color: var(--spine-secondary);
-  font-size: 0.875rem;
+  padding: 0 12px;
+  border-radius: var(--radius-control);
+  color: var(--on-night-2);
+  font-size: 0.9375rem;
+  font-weight: 600;
   text-decoration: none;
 }
 .adminAccount:hover {
-  color: var(--spine-ink);
+  background: var(--night-2);
+  color: var(--on-night);
 }
 .adminMenuRow {
   display: none;
@@ -189,52 +197,61 @@
   height: 100dvh;
   min-height: 0;
 }
-.shell[data-layout="workspace"] .stage {
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-}
-.shell[data-layout="workspace"] .utility,
-.shell[data-layout="workspace"] .simulation {
-  flex: none;
-}
 .shell[data-layout="workspace"] .content {
   flex: 1;
   min-height: 0;
   display: flex;
   flex-direction: column;
-  padding-block-end: 24px;
+  padding: 0 var(--shell-inset) 24px;
 }
-@media (max-width: 767px) {
-  :global(body):has(.shell[data-layout="workspace"]) {
-    min-width: 0;
-  }
-  .shell[data-layout="workspace"] .location {
+/* The admin queue and resources need all five labelled destinations or the menu. */
+@media (max-width: 1199px) {
+  .shell[data-role="admin"] .topbar .globalNav {
     display: none;
   }
-  .shell[data-layout="workspace"][data-workspace-flow="page"] {
-    height: auto;
-    min-height: 100dvh;
-    padding-block-end: env(safe-area-inset-bottom);
+  .shell[data-role="admin"] .topbar {
+    justify-content: space-between;
   }
-  .shell[data-layout="workspace"][data-workspace-flow="page"] .globalNav {
-    position: static;
-    order: 2;
+  .shell[data-role="admin"] .adminMenuRow {
+    display: flex;
+    gap: 16px;
+    align-items: start;
+    padding: 0 var(--shell-inset) 8px;
+    background: var(--night);
+    color: var(--on-night);
   }
-  .shell[data-layout="workspace"][data-workspace-flow="page"] .stage {
-    order: 1;
-  }
-  .shell[data-layout="workspace"][data-workspace-flow="page"] .content {
-    flex: none;
+  .shell[data-role="admin"] .adminMenuRow > a {
+    display: none;
   }
 }
 @media (min-width: 768px) and (max-width: 1050px) {
   .shell {
-    grid-template-columns: 96px minmax(0, 1fr);
+    --shell-inset: 24px;
   }
-  .rail {
-    padding: 16px 8px;
-    align-items: center;
+  .railBrand {
+    display: none;
+  }
+  .compactBrand {
+    display: block;
+  }
+  .topbar {
+    gap: 8px 12px;
+  }
+}
+@media (max-width: 767px) {
+  .shell {
+    --shell-inset: 16px;
+    display: block;
+    padding-block-end: calc(76px + env(safe-area-inset-bottom));
+  }
+  :global(body):has(.shell[data-layout="workspace"]) {
+    min-width: 0;
+  }
+  .topbar {
+    position: relative;
+    min-height: 52px;
+    padding-block: 4px;
+    gap: 8px;
   }
   .railBrand,
   .identity,
@@ -243,158 +260,131 @@
   }
   .compactBrand {
     display: block;
+    margin-inline-end: auto;
   }
-  .rail .globalNav a {
-    width: 80px;
-    min-height: 64px;
-    padding: 8px 4px;
-    flex-direction: column;
-    gap: 4px;
-    justify-content: center;
-    text-align: center;
-    font-size: 0.75rem;
-    overflow-wrap: anywhere;
-  }
-  .rail .globalNav a span {
-    min-width: 0;
-  }
-  .rail .globalNav a[aria-current]::after {
-    inset-inline-end: -8px;
-  }
-  .content {
-    padding-inline: 24px;
-  }
-}
-@media (max-width: 767px) {
-  .shell {
-    display: block;
-    padding-block-end: calc(64px + env(safe-area-inset-bottom));
-  }
-  .rail {
-    height: auto;
-    position: static;
-    padding: 0;
-    display: contents;
-  }
-  .railBrand,
-  .compactBrand,
-  .identity,
-  .adminAccount {
-    display: none;
-  }
-  .rail .globalNav {
-    display: grid;
+  .topbar .globalNav {
     position: fixed;
     inset-block-end: 0;
     inset-inline: 0;
     z-index: 30;
+    display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0;
-    padding: 4px 8px calc(4px + env(safe-area-inset-bottom));
-    border-block-start: 1px solid var(--border);
+    padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+    border-block-start: 1px solid var(--line);
     background: var(--surface);
   }
-  .rail .globalNav a[data-account] {
-    margin-block-start: 0;
-  }
-  .rail .globalNav a {
-    min-height: 56px;
-    padding: 6px 4px;
+  .topbar .globalNav a,
+  .topbar .globalNav a[data-account] {
+    margin: 0;
+    min-height: 60px;
+    padding: 4px;
     flex-direction: column;
+    justify-content: center;
     gap: 3px;
-    border-radius: 5px;
+    border-radius: var(--radius-control);
     color: var(--secondary);
     text-align: center;
-    font-size: 0.75rem;
+    font-size: var(--type-mobile-nav-size);
     overflow-wrap: anywhere;
   }
-  .rail .globalNav a[aria-current] {
-    background: var(--annotation);
+  .topbar .globalNav a svg {
+    display: block;
+    box-sizing: content-box;
+    width: 22px;
+    height: 22px;
+    padding: 3px 16px;
+    border-radius: 999px;
+  }
+  .topbar .globalNav a[aria-current] {
+    background: var(--surface);
     color: var(--accent-ink);
+    font-weight: 800;
   }
-  .rail .globalNav a[aria-current]::after {
-    display: none;
+  .topbar .globalNav a[aria-current] svg {
+    background: var(--tint);
   }
-  .rail .globalNav a:hover {
+  .topbar .globalNav a:hover {
     background: var(--hover);
     color: var(--ink);
   }
-  .utility {
-    min-height: 56px;
-    gap: 10px;
-    padding: 6px 12px;
-    background: var(--spine);
-    color: var(--spine-ink);
-  }
-  .mobileBrand {
-    display: block;
-  }
-  .location {
-    font-size: 0.8125rem;
-  }
   .content {
-    padding: 20px 16px 32px;
+    padding: 24px 16px 32px;
   }
   .content > h1 {
     font-size: var(--type-display-mobile-size);
-  }
-  .simulation {
-    padding: 8px 16px;
   }
   .shell[data-layout="workspace"] {
     display: flex;
     flex-direction: column;
   }
   .shell[data-layout="workspace"] .stage {
+    display: flex;
+    flex-direction: column;
     flex: 1;
     min-height: 0;
   }
   .shell[data-layout="workspace"] .content {
-    padding: 16px 16px 12px;
+    flex: 1;
+    padding: 0 16px 12px;
+  }
+  .shell[data-layout="workspace"][data-workspace-flow="page"] {
+    height: auto;
+    min-height: 100dvh;
+  }
+  .shell[data-layout="workspace"][data-workspace-flow="page"] .topbar {
+    flex-wrap: wrap;
+  }
+  .shell[data-layout="workspace"][data-workspace-flow="page"]
+    .topbar
+    .globalNav {
+    position: static;
+    order: 3;
+    flex-basis: 100%;
+    border-radius: var(--radius-control);
+    border: 0;
+  }
+  .shell[data-layout="workspace"][data-workspace-flow="page"] .content {
+    flex: none;
   }
   .shell[data-role="admin"] {
     padding-block-end: env(safe-area-inset-bottom);
   }
-  .shell[data-role="admin"] .rail {
-    display: none;
-  }
-  .adminMenuRow {
+  .shell[data-role="admin"] .adminMenuRow > a {
     display: flex;
-    gap: 16px;
-    align-items: start;
-    padding: 0 16px 8px;
-    background: var(--surface);
-    border-block-end: 1px solid var(--border);
   }
-  .adminMenu {
-    flex: 1;
-    min-width: 0;
-  }
-  .adminMenu summary {
-    min-height: 44px;
-    padding: 10px 0;
-    cursor: pointer;
-    color: var(--ink);
-  }
-  .adminMenuRow > a {
-    min-height: 44px;
-    padding-block: 10px;
-    color: var(--accent-ink);
-  }
-  .adminMenu .globalNav {
-    padding: 4px 0;
-  }
-  .adminMenu .globalNav a {
-    color: var(--secondary);
-  }
-  .adminMenu .globalNav a[aria-current] {
-    background: var(--annotation);
-    color: var(--accent-ink);
-  }
-  .adminMenu .globalNav a:hover {
-    background: var(--hover);
-    color: var(--ink);
-  }
+}
+.adminMenu {
+  flex: 1;
+  min-width: 0;
+}
+.adminMenu summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: var(--radius-control);
+  background: var(--night-2);
+  cursor: pointer;
+  color: var(--on-night);
+  font-weight: 700;
+}
+.adminMenuRow > a {
+  align-items: center;
+  min-height: 44px;
+  padding-block: 10px;
+  color: var(--on-night-blue);
+  font-weight: 650;
+}
+.adminMenu .globalNav {
+  padding: 8px 0;
+}
+.adminMenu .globalNav a {
+  color: var(--on-night-2);
+}
+.adminMenu .globalNav a[aria-current] {
+  background: var(--night-2);
+  color: var(--on-night);
 }
 @media (max-height: 600px) {
   .shell[data-layout="workspace"] {
@@ -409,40 +399,35 @@
 .profileAvatar {
   display: grid;
   place-items: center;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   flex: none;
   border-radius: 50%;
-  background: var(--annotation);
-  color: var(--accent-ink);
-  font-size: 0.875rem;
+  background: var(--cobalt);
+  color: #fff;
+  font-size: 0.9375rem;
+  font-weight: 800;
 }
 .profileMarker {
   display: flex;
-  flex-direction: column;
   align-items: center;
   gap: 3px;
   flex: none;
 }
 .profileDestination {
-  font-size: 0.6875rem;
-  overflow-wrap: anywhere;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 .profileName {
   min-width: 0;
+  max-width: 14rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 0.875rem;
-}
-@media (min-width: 768px) and (max-width: 1050px) {
-  .profileName {
-    max-width: 100%;
-    font-size: 0.75rem;
-    white-space: normal;
-    text-overflow: clip;
-    overflow-wrap: anywhere;
-  }
 }
 @media (max-width: 767px) {
   .globalNav a:has(.profileAvatar) {
@@ -450,26 +435,12 @@
     gap: 2px;
   }
   .profileAvatar {
-    width: 24px;
-    height: 24px;
-    font-size: 0.75rem;
-  }
-  .profileMarker {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 4px;
-    min-width: 0;
-    max-width: 100%;
-  }
-  .profileDestination {
-    display: inline;
-    min-width: 0;
-    font-size: 0.6875rem;
-    overflow-wrap: anywhere;
+    width: 28px;
+    height: 28px;
+    font-size: 0.8125rem;
   }
   .profileName {
     max-width: 100%;
-    font-size: 0.75rem;
+    font-size: var(--type-mobile-nav-size);
   }
 }

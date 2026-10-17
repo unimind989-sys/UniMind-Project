@@ -83,8 +83,8 @@ export function Evidence({
                 `${count} مصادر معتمدة في ${unitName}.`,
               )
             : t(
-                "Sample materials · Excerpts and page references below are illustrative.",
-                "مواد تجريبية · النصوص ومواضع الصفحات أدناه للتوضيح.",
+                "These are sample materials. The excerpts and page references below are illustrative.",
+                "هذه مواد تجريبية. النصوص ومواضع الصفحات أدناه للتوضيح.",
               )}
         </p>
       )}
@@ -122,12 +122,12 @@ export function Evidence({
                     {t("Fixture excerpt", "نص المثال")}:{" "}
                     {source.format === "AUDIO"
                       ? t(
-                          "Compare first, then identify the labels.",
-                          "قارن أولًا ثم حدد الأسماء.",
+                          "Count the roots first. In some people the plexus is prefixed and takes a branch from C4, so check before you name the trunks.",
+                          "عُدّ الجذور أولًا. في بعض الناس تكون الضفيرة متقدمة وتأخذ فرعًا من C4، فتأكد قبل أن تسمي الجذوع.",
                         )
                       : t(
-                          "Identify the labels, then compare the diagrams.",
-                          "حدد الأسماء ثم قارن الرسوم.",
+                          "Injury to the upper trunk (C5, C6) produces Erb–Duchenne paralysis, commonly from excessive separation of the head and shoulder. The plexus is formed by the ventral rami of C5 to T1.",
+                          "إصابة الجذع العلوي (C5 وC6) تسبب شلل إرب-دوشين، غالبًا من المباعدة الشديدة بين الرأس والكتف. تتكون الضفيرة من الفروع الأمامية للأعصاب من C5 إلى T1.",
                         )}
                   </p>
                 </Row>

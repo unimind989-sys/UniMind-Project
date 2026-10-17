@@ -53,7 +53,15 @@ export function QuizQuestion({
         ))}
         {readOnly ? (
           <div>
-            <p>
+            <p
+              className={`${styles.verdict} ${
+                selected! < 0
+                  ? styles.verdictUnanswered
+                  : selected === question.correct
+                    ? styles.verdictCorrect
+                    : styles.verdictIncorrect
+              }`}
+            >
               <strong>
                 {selected! < 0
                   ? t("Unanswered", "دون إجابة")

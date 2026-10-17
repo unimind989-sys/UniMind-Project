@@ -113,7 +113,7 @@ inLocales(["ar"], (locale) => {
       await openSessionTools(page, locale);
       const first = page.getByRole("button", {
         name: new RegExp(
-          t("Study sequence.*Session 1", "ترتيب الدراسة.*جلسة [١1]"),
+          t("Upper trunk injury.*Session 1", "إصابة الجذع العلوي.*جلسة [١1]"),
         ),
       });
       await expect(first).toBeVisible();
@@ -132,10 +132,7 @@ inLocales(["ar"], (locale) => {
       await openSessionTools(page, locale);
       const second = page.getByRole("button", {
         name: new RegExp(
-          t(
-            "Handout and recording comparison.*Session 2",
-            "مقارنة الملزمة والتسجيل.*جلسة [٢2]",
-          ),
+          t("Roots of the plexus.*Session 2", "جذور الضفيرة.*جلسة [٢2]"),
         ),
       });
       await expect(second).toHaveAttribute("aria-pressed", "true");
@@ -147,10 +144,9 @@ inLocales(["ar"], (locale) => {
       await send(page, "partial", locale);
       await navigate(page, "/learn", locale);
       await expect(
-        page.getByText(
-          t("Handout and recording comparison", "مقارنة الملزمة والتسجيل"),
-          { exact: true },
-        ),
+        page.getByText(t("Roots of the plexus", "جذور الضفيرة"), {
+          exact: true,
+        }),
       ).toBeVisible();
       await expect(
         page.getByText(
@@ -195,7 +191,7 @@ inLocales(["ar"], (locale) => {
         await navigate(page, "/learn", locale);
         await expect(page.getByText(t(en, ar), { exact: true })).toBeVisible();
         await expect(
-          page.getByText(t("Diagram comparison", "مقارنة الرسوم"), {
+          page.getByText(t("Roots of the plexus", "جذور الضفيرة"), {
             exact: true,
           }),
         ).toBeVisible();
@@ -1820,10 +1816,10 @@ inLocales(["en"], (locale) => {
         } else expect(box.height).toBeGreaterThan(20);
         await expect(page.locator("article")).toHaveCount(8);
         await expect(
-          page.getByText(t("Sample page 3", "صفحة تجريبية ٣"), { exact: true }),
+          page.getByText(t("Page 14", "صفحة ١٤"), { exact: true }),
         ).toBeVisible();
         await expect(
-          page.getByText(t("Sample timestamp 02:10", "توقيت تجريبي ٠٢:١٠"), {
+          page.getByText(t("Timestamp 18:42", "التوقيت ١٨:٤٢"), {
             exact: true,
           }),
         ).toBeVisible();
