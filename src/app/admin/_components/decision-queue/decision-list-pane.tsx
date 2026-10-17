@@ -1,54 +1,78 @@
-import type { AdminActionCandidate } from "@/lib/admin/admin-actions.application";
-import { adminAlreadyInState } from "@/lib/admin/admin-presentation.application";
+import { useContext } from "react";
+import { createPortal } from "react-dom";
+
+import { adminTargetKind } from "@/lib/admin/admin-presentation.application";
 import type { Locale } from "@/lib/i18n/locale";
+import { StatePill } from "@/app/_components/state-pill";
 
 import styles from "../../admin.module.css";
+import { AdminBandSlot } from "../admin-workspace";
 import {
   candidateLabel,
   candidateState,
+  candidateTone,
   type AdminCopy,
 } from "./candidate-presentation";
 import type { DecisionQueue } from "./use-decision-queue";
 
 const queueFilters = [
-  ["all", "All", "الكل"],
-  ["available", "Available", "متاح"],
-  ["blocked", "Blocked", "محجوب"],
-  ["pending", "Pending", "معلق"],
-  ["completed", "Completed", "مكتمل"],
+  "all",
+  "available",
+  "pending",
+  "blocked",
+  "completed",
 ] as const;
 
-/** Searchable, filterable decision list with a native chooser for mobile. */
+/**
+ * Count tabs (in the Night band when the workspace provides one) and the
+ * searchable decision list. Every count is the length of the list it selects.
+ */
 export function DecisionListPane({
-  candidates,
   locale,
   copy,
   queue,
 }: Readonly<{
-  candidates: readonly AdminActionCandidate[];
   locale: Locale;
   copy: AdminCopy;
   queue: DecisionQueue;
 }>) {
   const { filtered, matching, selected, refreshing, group, selectCandidate } =
     queue;
+  const slot = useContext(AdminBandSlot);
+  const number = new Intl.NumberFormat(locale);
+  const counts = (
+    <div
+      className={styles.countTabs}
+      role="group"
+      aria-label={copy.filtersLabel}
+    >
+      {queueFilters.map((id) => (
+        <button
+          key={id}
+          type="button"
+          aria-pressed={queue.filter === id}
+          onClick={() => queue.setFilter(id)}
+        >
+          <span className={styles.countLabel}>{copy.filters[id]}</span>{" "}
+          <span className={styles.countNumber}>
+            {number.format(
+              id === "all"
+                ? matching.length
+                : matching.filter((candidate) => group(candidate) === id)
+                    .length,
+            )}
+          </span>
+        </button>
+      ))}
+    </div>
+  );
 
   return (
     <section
       className={styles.queuePane}
-      aria-labelledby="decision-list-heading"
+      aria-label={locale === "ar" ? "قائمة القرارات" : "Decisions"}
     >
-      <h2 id="decision-list-heading">
-        {copy.decisionsHeading}{" "}
-        <span className={styles.queueCountCompact}>
-          (
-          {new Intl.NumberFormat(locale).format(
-            candidates.filter((candidate) => !adminAlreadyInState(candidate))
-              .length,
-          )}
-          )
-        </span>
-      </h2>
+      {slot === undefined ? counts : slot ? createPortal(counts, slot) : null}
       <label className={styles.queueSearch}>
         <span>{locale === "ar" ? "البحث عن قرار" : "Find a decision"}</span>
         <input
@@ -57,31 +81,8 @@ export function DecisionListPane({
           onChange={(event) => queue.setSearch(event.target.value)}
         />
       </label>
-      <div
-        className={styles.queueFilters}
-        aria-label={locale === "ar" ? "تصفية القرارات" : "Filter decisions"}
-      >
-        {queueFilters.map(([id, en, ar]) => (
-          <button
-            key={id}
-            type="button"
-            aria-pressed={queue.filter === id}
-            onClick={() => queue.setFilter(id)}
-          >
-            {locale === "ar" ? ar : en}{" "}
-            <span>
-              {new Intl.NumberFormat(locale).format(
-                id === "all"
-                  ? matching.length
-                  : matching.filter((candidate) => group(candidate) === id)
-                      .length,
-              )}
-            </span>
-          </button>
-        ))}
-      </div>
       {filtered.length === 0 ? (
-        <p role="status">
+        <p role="status" className={styles.queueEmpty}>
           {locale === "ar"
             ? "لا توجد قرارات تطابق البحث."
             : "No decisions match this search."}
@@ -105,9 +106,8 @@ export function DecisionListPane({
           </option>
           {filtered.map((candidate) => (
             <option key={candidate.candidateId} value={candidate.candidateId}>
-              {copy.actions[candidate.action]} ·{" "}
-              {candidateLabel(candidate, locale)} ·{" "}
-              {candidateState(candidate, locale)}
+              {copy.verbs[candidate.action]} {candidateLabel(candidate, locale)}{" "}
+              ({candidateState(candidate, locale)})
             </option>
           ))}
         </select>
@@ -123,22 +123,21 @@ export function DecisionListPane({
               aria-pressed={candidate.candidateId === selected?.candidateId}
               onClick={() => selectCandidate(candidate.candidateId)}
             >
-              <span className={styles.decisionAction}>
-                {copy.actions[candidate.action]}
-              </span>
-              <span className={styles.decisionTarget}>
-                {candidateLabel(candidate, locale)}
-              </span>
-              <span
-                className={styles.listStatus}
-                data-tone={
-                  candidate.failedPredicates.length > 0 &&
-                  !adminAlreadyInState(candidate)
-                    ? "blocked"
-                    : "ready"
-                }
-              >
-                {candidateState(candidate, locale)}
+              <span className={styles.decisionVerb}>
+                {copy.verbs[candidate.action]}
+              </span>{" "}
+              <span className={styles.decisionMain}>
+                <span className={styles.decisionTarget} dir="auto">
+                  {candidateLabel(candidate, locale)}
+                </span>{" "}
+                <span className={styles.decisionScope}>
+                  {copy.targetKinds[adminTargetKind(candidate.action)]}
+                </span>
+              </span>{" "}
+              <span className={styles.decisionSide}>
+                <StatePill tone={candidateTone(candidate)}>
+                  {candidateState(candidate, locale)}
+                </StatePill>
               </span>
             </button>
           </li>

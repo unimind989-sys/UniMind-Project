@@ -1,535 +1,715 @@
+/* Batch Leader intake and history (Direction B "Cobalt"): a Night band with
+   the campaign, its deadline and request progress, then requests, the intake
+   queue and recorded submissions as working lists on surfaces. */
 .workspace {
-  max-width: 78rem;
-  margin-inline: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 28px;
   min-width: 0;
 }
-.back,
+.workspace > * {
+  width: 100%;
+  max-width: 78rem;
+  min-width: 0;
+  margin-inline: auto;
+}
+
+/* ---------- Night band ---------- */
+.workspace > .band {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px 48px;
+  align-items: end;
+  width: auto;
+  max-width: none;
+  margin-block: -40px 4px;
+  margin-inline: calc(-1 * var(--shell-inset));
+  padding-block: 36px 40px;
+  padding-inline: max(
+    var(--shell-inset),
+    calc((100% - 78rem) / 2 + var(--shell-inset))
+  );
+  background: var(--night);
+  color: var(--on-night);
+}
+.bandText {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  min-width: 0;
+}
+.band h1 {
+  margin: 0;
+  font-size: var(--type-display-size);
+  font-weight: 800;
+  line-height: var(--type-display-leading);
+  letter-spacing: var(--type-display-tracking);
+  overflow-wrap: anywhere;
+}
+.bandText > p {
+  margin: 0;
+  max-width: 40em;
+  color: var(--on-night-2);
+  font-size: 1rem;
+}
+.back {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  color: var(--on-night-blue);
+  font-weight: 700;
+  text-decoration: none;
+}
+.back:hover {
+  text-decoration: underline;
+}
+.back svg {
+  width: 20px;
+  height: 20px;
+}
+.bandFacts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  align-items: start;
+  gap: 12px;
+  min-width: 0;
+}
+.band :focus-visible {
+  outline: 2px solid var(--on-night);
+  outline-offset: 2px;
+}
+.band [data-tone="neutral"] {
+  box-shadow: inset 0 0 0 1px var(--night-control);
+  color: var(--on-night);
+}
+@media (min-width: 1024px) {
+  .requestWorkspace > .band {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 40rem);
+  }
+}
+
+/* Deadline and progress on Night. */
+.deadline,
+.band .progress {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  min-width: 0;
+  padding: 18px 20px;
+  border-radius: 14px;
+  background: var(--night-2);
+}
+.deadline h2 {
+  margin: 0;
+  color: var(--on-night-2);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+.deadline > :is(span, [data-tone]) {
+  justify-self: start;
+}
+.deadlineValue {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  margin: 0;
+}
+.deadlineValue strong {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+.deadlineValue span {
+  color: var(--on-night-2);
+  font-size: 0.875rem;
+}
+.deadlineDetails {
+  font-size: 0.875rem;
+  color: var(--secondary);
+}
+.band .deadlineDetails {
+  color: var(--on-night-2);
+}
+.deadlineDetails > summary,
+.fileDetails > summary,
+.recordDisclosure > summary {
+  list-style: none;
+  cursor: pointer;
+}
+.deadlineDetails > summary::-webkit-details-marker,
+.fileDetails > summary::-webkit-details-marker,
+.recordDisclosure > summary::-webkit-details-marker {
+  display: none;
+}
+.deadlineDetails > summary,
+.fileDetails > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  color: var(--accent-ink);
+  font-weight: 700;
+}
+.band .deadlineDetails > summary {
+  color: var(--on-night-blue);
+}
+/* One small chevron that turns when open (no default disclosure triangle). */
+.deadlineDetails > summary::after,
+.fileDetails > summary::after,
+.recordDisclosure > summary::after {
+  content: "";
+  flex: none;
+  width: 7px;
+  height: 7px;
+  margin-block-start: -4px;
+  border-inline-end: 2px solid currentColor;
+  border-block-end: 2px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform var(--motion-control) ease;
+}
+.deadlineDetails[open] > summary::after,
+.fileDetails[open] > summary::after,
+.recordDisclosure[open] > summary::after {
+  margin-block-start: 3px;
+  transform: rotate(225deg);
+}
+.deadlineBody {
+  display: grid;
+  gap: 4px;
+  padding-block-end: 4px;
+}
+.deadlineBody p {
+  margin: 0;
+}
+.progress {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+.progress p {
+  margin: 0;
+  font-weight: 700;
+}
+.progress progress {
+  width: 100%;
+  height: 8px;
+  border: 0;
+  border-radius: 999px;
+  overflow: hidden;
+  appearance: none;
+  background: var(--tint);
+  color: var(--action);
+}
+.progress progress::-webkit-progress-bar {
+  border-radius: 999px;
+  background: var(--tint);
+}
+.progress progress::-webkit-progress-value {
+  border-radius: 999px;
+  background: var(--action);
+}
+.progress progress::-moz-progress-bar {
+  border-radius: 999px;
+  background: var(--action);
+}
+.band .progress p {
+  color: var(--on-night);
+}
+.band .progress progress,
+.band .progress progress::-webkit-progress-bar {
+  background: var(--night-line);
+}
+.band .progress progress::-webkit-progress-value {
+  background: var(--cobalt);
+}
+.band .progress progress::-moz-progress-bar {
+  background: var(--cobalt);
+}
+
+/* ---------- Notices ---------- */
+.windowNotice {
+  margin: 0;
+  padding: 12px 16px;
+  border-radius: var(--radius-control);
+  background: var(--tint);
+  color: var(--ink);
+}
+.receivedNotice {
+  margin: 0;
+  padding: 12px 16px;
+  border-radius: var(--radius-control);
+  background: var(--success-tint);
+  color: var(--success);
+  font-weight: 650;
+}
+.receivedNotice[data-empty] {
+  display: none;
+}
+.helper {
+  margin: 0;
+  color: var(--secondary);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* ---------- Section heads and buttons ---------- */
+.sectionHead,
+.requestHeading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 24px;
+  margin-block-end: 14px;
+}
+.sectionHead {
+  align-items: baseline;
+}
+.sectionHead h2,
+.requestHeading h2,
+.intake h2 {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  margin: 0;
+  font-size: var(--type-headline-size);
+  font-weight: 800;
+  letter-spacing: var(--type-headline-tracking);
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+.count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 2rem;
+  min-height: 2rem;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: var(--night);
+  color: var(--on-night);
+  font-size: 0.9375rem;
+  font-weight: 800;
+  letter-spacing: 0;
+}
 .open {
   display: inline-flex;
-  min-height: 2.75rem;
+  flex-shrink: 0;
   align-items: center;
-  color: var(--accent-ink);
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 18px;
+  border-radius: var(--radius-control);
+  background: var(--action);
+  color: var(--on-action);
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  transition: background-color var(--motion-control) ease;
 }
-.header {
-  margin-block: 0.5rem 1rem;
+.open:hover {
+  background: var(--action-strong);
 }
-.header h1 {
-  margin: 0.25rem 0 0.75rem;
-  font-size: 1.875rem;
-  letter-spacing: -0.035em;
+
+/* ---------- Requests ---------- */
+.requestList,
+.historyList,
+.campaignList,
+.queue {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.requestList,
+.historyList {
+  padding-inline: 20px;
+  border-radius: 14px;
+  background: var(--surface);
+}
+.requestList > li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px 24px;
+  padding-block: 18px;
+}
+.requestList > li + li,
+.historyList > li + li {
+  border-block-start: 1px solid var(--line);
+}
+.requestMain {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+.requestMain h3 {
+  margin: 0;
+  font-size: 1.0625rem;
+  font-weight: 800;
   line-height: 1.3;
   overflow-wrap: anywhere;
 }
-.header p {
-  margin: 0.5rem 0;
-  color: var(--secondary);
-}
-.dates {
+.facts {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem 1.5rem;
-  color: var(--muted);
-  font-size: 0.8125rem;
-}
-.requests {
-  border-block: 1px solid var(--border);
-  margin-block-end: 1.75rem;
-}
-.requests summary,
-.fileDetails summary {
-  min-height: 2.75rem;
-  cursor: pointer;
-  padding-block: 0.625rem;
-}
-.requests ul {
-  list-style: none;
-  padding: 0;
-  margin: 0.25rem 0;
-}
-.requests li {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 0.5rem;
-  padding-block: 0.5rem;
-}
-.requests li > span:last-child,
-.requests p,
-.helper {
-  color: var(--muted);
+  gap: 4px 20px;
+  margin: 0;
   font-size: 0.875rem;
 }
-.intake h2,
-.history h2 {
-  font-size: 1.5rem;
-  margin-block: 0 0.5rem;
+.facts > div {
+  display: flex;
+  gap: 6px;
+}
+.facts dt {
+  color: var(--secondary);
+}
+.facts dt::after {
+  content: ":";
+}
+.facts dd {
+  margin: 0;
+  font-weight: 650;
+}
+.requestSide {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: end;
+  gap: 10px 16px;
+  min-width: 0;
+}
+.allSent {
+  margin: 0;
+  padding: 18px 20px;
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--secondary);
+}
+
+/* ---------- Intake ---------- */
+.intake {
+  display: grid;
+  gap: 14px;
+  padding: 24px 28px 28px;
+  border-radius: 14px;
+  background: var(--surface);
+}
+.intake[hidden] {
+  display: none;
+}
+.intakeFor,
+.correctionNote {
+  margin: 0;
+  color: var(--ink);
+}
+.correctionNote {
+  display: grid;
+  gap: 6px;
+  padding: 14px 16px;
+  border-radius: var(--radius-control);
+  background: var(--tint);
+}
+.correctionNote p {
+  margin: 0;
 }
 .drop {
-  position: relative;
-  border: 1px solid var(--control-border);
-  border-radius: 10px;
-  padding: 24px 20px;
-  background: var(--surface);
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  padding: 28px 20px;
+  border: 1.5px dashed var(--control);
+  border-radius: 14px;
+  background: var(--surface-2);
   text-align: center;
   transition:
-    background-color 180ms ease,
-    border-color 180ms ease;
+    background-color var(--motion-control) ease,
+    border-color var(--motion-control) ease;
+}
+.drop[data-drag] {
+  border-color: var(--action);
+  background: var(--tint);
+}
+.drop:focus-within {
+  outline: 2px solid var(--cobalt);
+  outline-offset: 2px;
+}
+.drop p {
+  margin: 0;
+  font-weight: 600;
 }
 .uploadMark {
   display: grid;
   place-items: center;
-  width: 56px;
-  height: 56px;
-  margin: 0 auto 20px;
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  background: var(--tint);
   color: var(--accent-ink);
-  background: var(--accent-soft);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  transition: transform 180ms ease;
 }
 .uploadMark svg {
-  width: 26px;
-  height: 26px;
-}
-.drop[data-drag] .uploadMark {
-  transform: translateY(-4px);
-}
-.drop[data-drag] {
-  border-color: var(--accent);
-  background: var(--accent-soft);
-}
-.drop p {
-  margin: 0 0 0.875rem;
-}
-.drop:focus-within {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
+  width: 24px;
+  height: 24px;
 }
 .reference {
   display: flex;
-  align-items: center;
   flex-wrap: wrap;
-  gap: 0.5rem 1rem;
-  margin-block: 0.5rem;
-  font-size: 0.875rem;
+  align-items: center;
+  gap: 4px 16px;
+  font-size: 0.9375rem;
   color: var(--secondary);
 }
-.queue,
-.historyList,
-.campaignList {
-  list-style: none;
-  margin: 1rem 0;
-  padding: 0;
+.queueEmpty {
+  margin: 0;
+  color: var(--secondary);
+  font-size: 0.9375rem;
+}
+.queue {
+  display: grid;
+  gap: 12px;
 }
 .file {
+  display: grid;
+  gap: 8px;
   min-width: 0;
-  padding: 1.5rem;
-  margin-block: 1rem;
-  border: 1px solid var(--border);
-  border-radius: 12px;
+  padding: 18px 20px;
+  border-radius: 14px;
   background: var(--surface);
+  box-shadow: inset 0 0 0 1px var(--line);
 }
 .fileHeading {
   display: flex;
   flex-wrap: wrap;
+  align-items: baseline;
   justify-content: space-between;
-  gap: 0.5rem;
+  gap: 4px 16px;
 }
 .fileHeading strong {
-  overflow-wrap: anywhere;
   min-width: 0;
+  font-size: 1rem;
+  font-weight: 800;
+  overflow-wrap: anywhere;
 }
 .fileHeading > span {
-  font-size: 0.8125rem;
-  color: var(--muted);
+  color: var(--secondary);
+  font-size: 0.875rem;
+}
+.fileOrigin {
+  margin: 0;
+  color: var(--secondary);
+  font-size: 0.875rem;
 }
 .destination {
-  font-size: 0.875rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  margin: 0;
+  font-weight: 650;
+}
+.tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: var(--tint);
+  color: var(--accent-ink);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+.recordId {
   color: var(--secondary);
-  margin: 0.5rem 0 0;
 }
 .field {
   display: grid;
-  gap: 0.375rem;
-  margin-block: 0.75rem;
-  font-size: 0.875rem;
+  gap: 6px;
+  min-width: 0;
+  margin-block: 4px;
+  font-size: 0.9375rem;
+  font-weight: 700;
 }
 .field input,
 .field select,
 .field textarea {
   width: 100%;
   min-width: 0;
-  min-height: 2.75rem;
-  padding: 0.625rem 0.75rem;
+  min-height: 48px;
+  padding: 10px 14px;
+  border: 1.5px solid var(--control);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  color: var(--ink);
   font: inherit;
   font-size: 1rem;
-  background: var(--surface);
-  border: 1px solid var(--control-border);
-  border-radius: var(--radius-control);
-  color: var(--ink);
+  font-weight: 500;
 }
 .field textarea {
   resize: vertical;
 }
+.field textarea::placeholder {
+  color: var(--secondary);
+  opacity: 1;
+}
 .field > span {
-  color: var(--muted);
+  color: var(--secondary);
   font-size: 0.8125rem;
+  font-weight: 500;
 }
-.field input:disabled,
-.field select:disabled,
-.field textarea:disabled {
-  color: var(--muted);
-  background: var(--subtle);
-}
-.fileDetails {
-  font-size: 0.875rem;
+.field :is(input, select, textarea):disabled {
+  background: var(--surface-2);
   color: var(--secondary);
 }
+.field :is(input, select, textarea):focus-visible {
+  outline: 2px solid var(--cobalt);
+  outline-offset: 1px;
+  border-color: transparent;
+}
+.fileDetails {
+  display: grid;
+  gap: 4px;
+  font-size: 0.9375rem;
+}
 .fileResult {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--ink);
   font-size: 0.875rem;
-  margin-block: 0.5rem;
+  font-weight: 700;
+}
+.fileResult:empty {
+  display: none;
+}
+.file[data-state="READY"] .fileResult {
+  background: var(--tint);
+  color: var(--accent-ink);
 }
 .file[data-state="INVALID"] .fileResult,
 .file[data-state="ERROR"] .fileResult {
+  background: var(--danger-tint);
   color: var(--danger);
 }
 .file[data-state="RECEIVED"] .fileResult {
+  background: var(--success-tint);
   color: var(--success);
-  font-weight: 600;
 }
 .file progress {
   width: 100%;
-  height: 0.5rem;
-  accent-color: var(--accent);
+  height: 8px;
+  accent-color: var(--action);
 }
 .actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.625rem;
+  align-items: center;
+  gap: 10px;
 }
 .context {
-  padding-block: 0.5rem;
+  display: grid;
+  gap: 8px;
+  padding-block-start: 8px;
+  border-block-start: 1px solid var(--line);
 }
 .rights {
   display: flex;
   align-items: flex-start;
-  gap: 0.75rem;
-  min-height: 2.75rem;
-  padding-block: 0.75rem;
-  margin-block: 0.75rem;
-  font-size: 0.875rem;
+  gap: 12px;
+  min-height: 44px;
+  padding-block: 10px;
+  font-weight: 600;
 }
 .rights input {
-  width: 1.25rem;
-  height: 1.25rem;
-  margin: 0.125rem 0 0;
   flex-shrink: 0;
-  accent-color: var(--accent);
-}
-.history {
-  margin-block-start: 2.5rem;
-}
-.historyList li {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
-  padding-block: 1rem;
-  gap: 1rem;
-  border-block-start: 1px solid var(--border);
-  overflow-wrap: anywhere;
-}
-.historyList p {
-  margin: 0.375rem 0;
-  font-size: 0.875rem;
-  color: var(--secondary);
-}
-.status {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  display: inline-flex;
-  padding: 5px 10px;
-  border-radius: 6px;
-  background: var(--subtle);
-  border: 1px solid var(--border);
-}
-.status[data-status="REJECTED"],
-.status[data-status="NEEDS_INFORMATION"] {
-  color: var(--danger);
-}
-.status[data-status="COMPLETED"],
-.status[data-status="ACCEPTED"] {
-  color: var(--success);
-}
-.campaignList li {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  align-items: center;
-  padding: 1.75rem;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--surface);
-}
-.campaignList li + li {
-  margin-block-start: 1rem;
-}
-.campaignList h3 {
-  font-size: 1.25rem;
-  margin: 0;
-  overflow-wrap: anywhere;
-}
-.campaignList h3 a {
-  color: var(--ink);
-  text-decoration: none;
-}
-.campaignList h3 a:hover {
-  text-decoration: underline;
-}
-.campaignList p {
-  margin: 0.5rem 0;
-  color: var(--secondary);
-  font-size: 0.875rem;
-}
-.open {
-  flex-shrink: 0;
-  min-height: 44px;
-  padding: 10px 16px;
-  border-radius: 8px;
-  background: var(--accent);
-  color: var(--on-accent);
-  text-decoration: none;
-  transition: background-color 180ms ease;
-}
-.open:hover {
-  background: var(--accent-hover);
-}
-:global([lang="ar"]) .header h1 {
-  letter-spacing: 0;
-  line-height: 1.6;
-}
-.empty {
-  padding: 1.25rem;
-  background: var(--subtle);
-  border-radius: var(--radius-control);
-}
-@media (prefers-reduced-motion: reduce) {
-  .drop,
-  .uploadMark,
-  .open {
-    transition: none;
-  }
-}
-@media (max-width: 600px) {
-  .header {
-    margin-block-end: 1rem;
-  }
-  .requests {
-    margin-block-end: 0.75rem;
-  }
-  .header h1 {
-    font-size: 1.875rem;
-  }
-  .uploadMark {
-    display: none;
-  }
-  .historyList li {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0.5rem;
-  }
-  .campaignList li {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-  .drop,
-  .file {
-    padding: 1rem;
-  }
+  width: 20px;
+  height: 20px;
+  margin: 2px 0 0;
+  accent-color: var(--action);
 }
 
-.workspace {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 280px;
-  gap: 20px 28px;
-}
-.workspace > .back,
-.workspace > .header {
-  grid-column: 1 / -1;
-}
-.workspace > .assignment {
-  grid-column: 2;
-  grid-row: 3;
-}
-.workspace > .intake {
-  grid-column: 1;
-  grid-row: 3;
+/* ---------- Recorded submissions ---------- */
+.historyList > li {
   min-width: 0;
+  padding-block: 16px;
+  overflow-wrap: anywhere;
 }
-.workspace > .history {
-  grid-column: 1 / -1;
+.compactRecords > li {
+  padding-block: 0;
 }
-.workspace.campaignOverview {
-  grid-template-columns: minmax(0, 1fr);
-}
-.assignment {
-  padding: 20px 16px;
-  background: var(--annotation);
-  font-size: 0.8125rem;
-  align-self: start;
-}
-.assignment > h2 {
-  margin: 0 0 8px;
-  font-size: 0.875rem;
-  font-weight: 600;
-}
-.assignment > strong {
-  display: block;
-  font-size: 1.5rem;
-  line-height: 1.5;
-  color: var(--ink);
-}
-.assignment > p {
-  color: var(--secondary);
-}
-.deadlineDetails {
-  font-size: 0.8125rem;
-  color: var(--secondary);
-}
-.deadlineDetails summary {
-  min-height: 44px;
-  padding-block: 12px;
-  cursor: pointer;
-}
-.assignment .requests {
-  margin-block: 16px 0;
-}
-.assignment .requests li {
-  border-block-end: 1px solid var(--border);
-}
-.assignment .requests li > span:first-child {
-  color: var(--ink);
-}
-.uploadMark {
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  margin-block-end: 12px;
-}
-.receiptStages {
-  padding: 16px;
-  border-radius: 8px;
-  background: var(--success-surface);
-  color: var(--success);
-}
-.receiptStages > p {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  margin-block: 8px;
-}
-.receiptStages .helper {
-  color: var(--secondary);
-}
-
-.workspace.requestWorkspace {
-  grid-template-columns: minmax(0, 1fr);
-  gap: 20px;
-}
-.requestWorkspace > .assignment,
-.requestWorkspace > .intake,
-.requestWorkspace > .history,
-.requestWorkspace > .workRequests {
-  grid-column: 1 / -1;
-  grid-row: auto;
-  min-width: 0;
-}
-.requestWorkspace > .assignment {
-  padding: 8px 0 16px;
-  background: transparent;
-  border-block-end: 1px solid var(--border);
-}
-.requestWorkspace .assignment > strong {
-  font-size: 1.125rem;
-}
-.requestHeading,
 .recordHeading,
 .recordSummary {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px 24px;
-}
-.requestHeading {
-  flex-wrap: wrap;
-  margin-block-end: 12px;
-}
-.workRequests h2 {
-  font-size: 1.25rem;
-  margin: 0;
-}
-.requestList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.requestList > li {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px 24px;
-  padding-block: 16px;
-  border-block-start: 1px solid var(--border);
-}
-.requestList h3 {
-  font-size: 1rem;
-  margin: 0 0 6px;
-}
-.requestList p {
-  margin: 6px 0 0;
-  max-width: 70ch;
-}
-.requestList button,
-.requestList .open {
-  flex-shrink: 0;
-}
-.compactRecords > li {
-  display: block;
-  padding-block: 0;
-}
-.recordDisclosure > summary {
-  display: list-item;
-  min-height: 44px;
-  padding-block: 14px;
-  cursor: pointer;
-}
-.recordDisclosure > summary::marker {
-  color: var(--accent-ink);
+  gap: 8px 20px;
+  min-width: 0;
 }
 .recordSummary {
-  display: inline-flex;
-  vertical-align: middle;
-  width: calc(100% - 1rem);
+  flex: 1;
+  flex-wrap: wrap;
+}
+.recordDisclosure > summary {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 64px;
+  padding-block: 12px;
+  color: var(--secondary);
+}
+.recordDisclosure > summary:hover .recordName strong {
+  color: var(--accent-ink);
+}
+.recordDisclosure > summary:focus-visible {
+  outline: 2px solid var(--cobalt);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+.recordName {
+  display: grid;
+  min-width: 0;
+}
+.recordName strong {
+  color: var(--ink);
+  font-size: 1rem;
+  font-weight: 800;
 }
 .recordSource {
-  display: block;
   color: var(--secondary);
   font-size: 0.875rem;
-  font-weight: 400;
   overflow-wrap: anywhere;
 }
 .recordBody {
+  display: grid;
+  gap: 8px;
   min-width: 0;
-  padding-block-end: 12px;
+  padding-block: 12px 18px;
+}
+.recordHeading + .recordBody {
+  padding-block-end: 0;
 }
 .recordBody p {
-  margin: 8px 0;
   max-width: 70ch;
+}
+.recordCampaign {
+  margin: 0;
+  font-weight: 700;
 }
 .receiptDetails {
   display: grid;
   grid-template-columns: minmax(7rem, 11rem) minmax(0, 1fr);
-  gap: 8px 20px;
+  gap: 6px 20px;
+  margin: 4px 0;
+  padding: 14px 16px;
+  border-radius: var(--radius-control);
+  background: var(--surface-2);
   font-size: 0.875rem;
 }
 .receiptDetails dt {
@@ -543,106 +723,138 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px 24px;
+  gap: 8px 20px;
 }
 .recordLink {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
   color: var(--accent-ink);
+  font-weight: 700;
 }
-.campaignList .personalDeadline {
+
+/* ---------- Leader home ---------- */
+.campaignList {
+  display: grid;
+  gap: 16px;
+}
+.campaignList > li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 16px 32px;
+  padding: 24px 28px;
+  border-radius: 14px;
+  background: var(--surface);
+}
+.campaignMain {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+.campaignMain h3 {
+  margin: 0;
+  font-size: 1.3125rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+.campaignMain h3 a {
   color: var(--ink);
-  font-size: 1rem;
-  font-weight: 600;
-  margin-block-start: 12px;
+  text-decoration: none;
 }
-@media (max-width: 767px) {
-  .requestList > li {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .requestHeading > button {
-    width: 100%;
-  }
-  .recordSummary {
-    align-items: flex-start;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .receiptDetails {
-    display: block;
-  }
-  .receiptDetails dt {
-    margin-block-start: 12px;
+.campaignMain h3 a:hover {
+  color: var(--accent-ink);
+  text-decoration: underline;
+}
+.campaignCohort,
+.campaignStatus {
+  margin: 0;
+  color: var(--secondary);
+  font-size: 0.9375rem;
+}
+.campaignDeadline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+}
+.personalDeadline {
+  margin: 0;
+  color: var(--ink);
+}
+.campaignMain .progress {
+  max-width: 28rem;
+}
+.campaignMain .progress p {
+  font-size: 0.9375rem;
+}
+.empty {
+  display: grid;
+  gap: 6px;
+  padding: 20px 24px;
+  border-radius: 14px;
+  background: var(--surface);
+}
+.empty p {
+  margin: 0;
+}
+
+/* ---------- Focus, motion and narrow layouts ---------- */
+.workspace :is(a, button, summary, input, select, textarea):focus-visible {
+  outline: 2px solid var(--cobalt);
+  outline-offset: 2px;
+}
+.workspace .band :is(a, button, summary):focus-visible {
+  outline-color: var(--on-night);
+}
+@media (prefers-reduced-motion: reduce) {
+  .drop,
+  .open,
+  .deadlineDetails > summary::after,
+  .fileDetails > summary::after,
+  .recordDisclosure > summary::after {
+    transition: none;
   }
 }
 @media (max-width: 767px) {
   .workspace {
-    grid-template-columns: 1fr;
-    gap: 6px;
+    gap: 20px;
   }
-  .workspace > .assignment,
-  .workspace > .intake {
-    grid-column: 1;
-    grid-row: auto;
+  .workspace > .band {
+    margin-block-start: -24px;
+    padding-block: 20px 28px;
   }
-  .assignment {
+  .band h1 {
+    font-size: var(--type-display-mobile-size);
+  }
+  .requestList > li,
+  .campaignList > li {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .requestSide {
+    justify-content: start;
+  }
+  .requestHeading > button {
+    width: 100%;
+  }
+  .requestList,
+  .historyList {
+    padding-inline: 16px;
+  }
+  .intake,
+  .campaignList > li {
+    padding: 20px 16px;
+  }
+  .file {
     padding: 16px;
   }
-  .assignment > strong {
-    font-size: 1.25rem;
+  .receiptDetails {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
   }
-  .assignment .requests ul {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 4px 12px;
-  }
-  .assignment .requests li > span:last-child {
-    display: block;
-    overflow-wrap: anywhere;
-    flex-basis: 100%;
-  }
-  .assignment .requests p {
-    margin-block: 8px;
-  }
-  .header h1 {
-    font-size: 1.625rem;
-    margin-block-end: 8px;
-  }
-  .header {
-    margin: 0;
-  }
-  .header p {
-    font-size: 0.8125rem;
-    margin-block: 6px;
-  }
-  .assignment {
-    padding: 12px;
-  }
-  .assignment > h2 {
-    margin-block-end: 4px;
-  }
-  .assignment .requests {
-    margin-block-start: 4px;
-  }
-  .requests li {
-    font-size: 0.8125rem;
-    padding-block: 4px;
-  }
-  .intake h2 {
-    font-size: 1.25rem;
-  }
-  .intake > p {
-    font-size: 0.8125rem;
-    margin-block: 8px;
-  }
-  .drop {
-    padding: 8px 12px;
-  }
-  .drop p {
-    font-size: 0.875rem;
-    line-height: 1.5;
-    margin-block-end: 8px;
+  .receiptDetails dd + dt {
+    margin-block-start: 8px;
   }
 }

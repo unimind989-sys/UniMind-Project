@@ -114,7 +114,7 @@ const hostedCopy: Readonly<Record<string, readonly [string, string]>> = {
     "Cohort configuration reviewed.",
     "تمت مراجعة إعدادات المجموعة.",
   ],
-  "Fixed name: Synthetic Anatomy source call. Handout, recording and diagram requests; fixed expiry, rights declaration and naming guidance.":
+  "Fixed name: Anatomy lecture and practical sources. Handout, recording and diagram requests; fixed expiry, rights declaration and naming guidance.":
     ["Handout, recording and diagram requests.", "طلبات ملزمة وتسجيل ورسم."],
   "Simulated campaign draft created in this tab.": [
     "Campaign draft created.",

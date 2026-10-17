@@ -81,7 +81,6 @@ export function AdminDecisionQueue({
           data-detail-open={decisions.detailOpen}
         >
           <DecisionListPane
-            candidates={candidates}
             locale={locale}
             copy={copy}
             queue={decisions}

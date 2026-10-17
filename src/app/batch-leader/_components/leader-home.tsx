@@ -2,6 +2,7 @@
 import { ProductNavigationLink as Link } from "@/app/_components/product-navigation";
 import type { Route } from "next";
 import { AppShell } from "@/app/_components/app-shell";
+import { StatePill, type StateTone } from "@/app/_components/state-pill";
 import type {
   CollectionCampaign,
   CollectionSubmissionStatus,
@@ -13,12 +14,18 @@ import {
   collectionDeadline,
   collectionInspectionHref,
   collectionRequestAction,
+  collectionRequestProgress,
   collectionWindow,
   projectCollectionRecords,
   type CollectionAcknowledgement,
 } from "@/lib/collection/collection-presentation.application";
 import type { Locale } from "@/lib/i18n/locale";
 import { useCollectionClock } from "./use-collection-clock";
+import {
+  CollectionDateDetails,
+  CollectionTimeLeft,
+} from "./collection/collection-deadline";
+import { CollectionProgress } from "./collection/collection-progress";
 import styles from "../collection.module.css";
 
 export function CollectionHistory({
@@ -46,6 +53,14 @@ export function CollectionHistory({
     ACCEPTED: text.accepted,
     REJECTED: text.rejected,
     COMPLETED: text.completed,
+  };
+  const tones: Record<CollectionSubmissionStatus, StateTone> = {
+    RECEIVED: "neutral",
+    PROCESSING: "wait",
+    NEEDS_INFORMATION: "bad",
+    ACCEPTED: "ok",
+    REJECTED: "bad",
+    COMPLETED: "ok",
   };
   const descriptions: Record<CollectionSubmissionStatus, string> = {
     RECEIVED: text.stateDescriptions[0],
@@ -85,13 +100,15 @@ export function CollectionHistory({
       aria-label={heading}
       id="latest-submissions"
     >
-      <h2>{heading}</h2>
-      <p className={styles.helper}>
-        {t(
-          "Latest submission per request in this view. Earlier versions are not listed here.",
-          "آخر إرسال لكل طلب في هذا العرض. لا تظهر الإصدارات السابقة هنا.",
-        )}
-      </p>
+      <div className={styles.sectionHead}>
+        <h2>{heading}</h2>
+        <p className={styles.helper}>
+          {t(
+            "Latest submission per request in this view. Earlier versions are not listed here.",
+            "آخر إرسال لكل طلب في هذا العرض. لا تظهر الإصدارات السابقة هنا.",
+          )}
+        </p>
+      </div>
       {projected.some((p) => p.unresolved.length) ? (
         <p role="status" className={styles.helper}>
           {t(
@@ -107,11 +124,14 @@ export function CollectionHistory({
           {rows.map(({ campaign, item, submission, detail }) => {
             const body = (
               <div className={styles.recordBody}>
-                {campaigns.length > 1 ? <p>{campaign.name}</p> : null}
+                {campaigns.length > 1 ? (
+                  <p className={styles.recordCampaign}>{campaign.name}</p>
+                ) : null}
                 {submission.createdAt ? (
                   <p className={styles.helper}>
-                    {formatCollectionDate(locale, submission.createdAt)} ·{" "}
-                    {t("Cairo time", "بتوقيت القاهرة")}
+                    {t("Submitted", "أُرسل")}{" "}
+                    {formatCollectionDate(locale, submission.createdAt)}
+                    {t(", Cairo time", "، بتوقيت القاهرة")}
                   </p>
                 ) : (
                   <p className={styles.helper}>
@@ -210,15 +230,18 @@ export function CollectionHistory({
             );
             const summary = (
               <>
-                <span>
+                <span className={styles.recordName}>
                   <strong>{item.title}</strong>
                   <span className={styles.recordSource}>
-                    {submission.sourceName}
+                    <bdi>{submission.sourceName}</bdi>
                   </span>
                 </span>
-                <span className={styles.status} data-status={submission.status}>
+                <StatePill
+                  tone={tones[submission.status]}
+                  data-status={submission.status}
+                >
                   {labels[submission.status]}
-                </span>
+                </StatePill>
               </>
             );
             return (
@@ -279,22 +302,25 @@ export function LeaderHome({
     ? t("Latest submissions", "آخر الإرسالات")
     : t("Source intake", "استلام المصادر");
   const now = useCollectionClock(referenceTime);
+  const number = new Intl.NumberFormat(locale === "ar" ? "ar-EG" : "en");
   return (
     <AppShell locale={locale} role="leader" title={title} synthetic={synthetic}>
       <div className={`${styles.workspace} ${styles.campaignOverview}`}>
-        <header className={styles.header}>
-          <h1>{title}</h1>
-          <p>
-            {history
-              ? t(
-                  "Follow the latest recorded status and open its request.",
-                  "تابع آخر حالة مسجلة وافتح طلبها.",
-                )
-              : t(
-                  "Start with the requests that need your action.",
-                  "ابدأ بالطلبات التي تحتاج إلى إجراء منك.",
-                )}
-          </p>
+        <header className={styles.band}>
+          <div className={styles.bandText}>
+            <h1>{title}</h1>
+            <p>
+              {history
+                ? t(
+                    "Follow the latest recorded status and open its request.",
+                    "تابع آخر حالة مسجلة وافتح طلبها.",
+                  )
+                : t(
+                    "Start with the requests that need your action.",
+                    "ابدأ بالطلبات التي تحتاج إلى إجراء منك.",
+                  )}
+            </p>
+          </div>
         </header>
         {history ? (
           <CollectionHistory
@@ -304,8 +330,13 @@ export function LeaderHome({
             {...(referenceTime ? { referenceTime } : {})}
           />
         ) : (
-          <section aria-label={t("Assigned campaigns", "الحملات المسندة")}>
-            <h2>{t("Assigned campaigns", "الحملات المسندة")}</h2>
+          <section
+            className={styles.campaigns}
+            aria-label={t("Assigned campaigns", "الحملات المسندة")}
+          >
+            <div className={styles.sectionHead}>
+              <h2>{t("Assigned campaigns", "الحملات المسندة")}</h2>
+            </div>
             {campaigns.length ? (
               <ul className={styles.campaignList}>
                 {campaigns.map((campaign) => {
@@ -313,10 +344,11 @@ export function LeaderHome({
                     window = collectionWindow(campaign, now),
                     outstanding = campaign.requestedItems.filter((item) =>
                       collectionRequestAction(campaign, item),
-                    ).length;
+                    ).length,
+                    progress = collectionRequestProgress(campaign);
                   return (
                     <li key={campaign.id}>
-                      <div>
+                      <div className={styles.campaignMain}>
                         <h3>
                           <Link
                             href={
@@ -326,44 +358,41 @@ export function LeaderHome({
                             {campaign.name}
                           </Link>
                         </h3>
-                        <p>{campaign.cohortName}</p>
-                        <p className={styles.personalDeadline}>
-                          {t("Your deadline", "موعدك النهائي")}:{" "}
-                          {cutoff
-                            ? formatCollectionDate(locale, cutoff)
-                            : t("Unavailable", "غير متاح")}{" "}
-                          · {t("Cairo time", "بتوقيت القاهرة")}
+                        <p className={styles.campaignCohort}>
+                          {campaign.cohortName}
                         </p>
-                        <p>
+                        <div className={styles.campaignDeadline}>
+                          <p className={styles.personalDeadline}>
+                            {t("Your deadline", "موعدك النهائي")}:{" "}
+                            <strong>
+                              {cutoff
+                                ? formatCollectionDate(locale, cutoff)
+                                : t("Unavailable", "غير متاح")}
+                            </strong>
+                            {t(", Cairo time", "، بتوقيت القاهرة")}
+                          </p>
+                          {window === "ACTIVE" ? (
+                            <CollectionTimeLeft
+                              deadline={cutoff}
+                              now={now}
+                              locale={locale}
+                            />
+                          ) : null}
+                        </div>
+                        <p className={styles.campaignStatus}>
                           {window === "ACTIVE"
-                            ? `${new Intl.NumberFormat(locale === "ar" ? "ar-EG" : "en").format(outstanding)} ${t("requests need your action", "طلبات تحتاج إلى إجراء منك")}`
+                            ? `${number.format(outstanding)} ${t("requests need your action", "طلبات تحتاج إلى إجراء منك")}`
                             : collectionWindowMessage(window, locale)}
                         </p>
-                        <details className={styles.deadlineDetails}>
-                          <summary>
-                            {t(
-                              "Assignment and campaign dates",
-                              "مواعيد التكليف والحملة",
-                            )}
-                          </summary>
-                          <p>
-                            {t("Assignment expires", "ينتهي التكليف")}:{" "}
-                            {formatCollectionDate(
-                              locale,
-                              campaign.assignmentExpiresAt,
-                            )}
-                          </p>
-                          <p>
-                            {t("Campaign closes", "تُغلق الحملة")}:{" "}
-                            {formatCollectionDate(locale, campaign.closesAt)}
-                          </p>
-                          <p>
-                            {t(
-                              "The earlier date is your upload cutoff. All dates use Cairo time.",
-                              "الموعد الأسبق هو آخر وقت متاح لك للرفع. كل المواعيد بتوقيت القاهرة.",
-                            )}
-                          </p>
-                        </details>
+                        <CollectionProgress
+                          sent={progress.sent}
+                          total={progress.total}
+                          locale={locale}
+                        />
+                        <CollectionDateDetails
+                          campaign={campaign}
+                          locale={locale}
+                        />
                       </div>
                       <Link
                         className={styles.open}

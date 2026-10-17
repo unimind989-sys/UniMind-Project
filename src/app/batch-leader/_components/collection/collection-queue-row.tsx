@@ -53,7 +53,8 @@ export function CollectionQueueRow({
         </strong>
         {row.inspection ? (
           <span>
-            {row.inspection.declaredFormat} ·{" "}
+            {row.inspection.declaredFormat}
+            {t(", ", "، ")}
             {new Intl.NumberFormat(locale === "ar" ? "ar-EG" : "en", {
               maximumFractionDigits: 1,
             }).format(row.file.size / 1024)}{" "}
@@ -61,7 +62,7 @@ export function CollectionQueueRow({
           </span>
         ) : null}
       </div>
-      <p className={styles.helper}>
+      <p className={styles.fileOrigin}>
         {row.origin === "APPROVED_REFERENCE"
           ? t("Origin: Approved reference", "المصدر: مرجع معتمد")
           : t("Origin: Your device", "المصدر: جهازك")}
@@ -70,18 +71,23 @@ export function CollectionQueueRow({
         <>
           {item ? (
             <p className={styles.destination}>
-              {t("For", "لـ")}: {item.title}
-              {predecessor
-                ? ` · ${t("Replacement candidate", "نسخة بديلة")}`
-                : ""}
+              <span>
+                {t("For", "لـ")}: {item.title}
+              </span>
+              {predecessor ? (
+                <span className={styles.tag}>
+                  {t("Replacement candidate", "نسخة بديلة")}
+                </span>
+              ) : null}
             </p>
           ) : null}
           {predecessor ? (
             <p className={styles.helper}>
               {t("Earlier submission", "الإرسال السابق")}:{" "}
-              <bdi>
-                {predecessor.id} · {predecessor.sourceName}
-              </bdi>
+              <bdi>{predecessor.sourceName}</bdi>{" "}
+              <span className={styles.recordId}>
+                (<bdi>{predecessor.id}</bdi>)
+              </span>
             </p>
           ) : null}
           {!item ? (

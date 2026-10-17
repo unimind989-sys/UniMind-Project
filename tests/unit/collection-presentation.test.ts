@@ -8,6 +8,7 @@ import {
   collectionDeadline,
   collectionWindow,
   collectionRequestAction,
+  collectionRequestProgress,
   collectionInspectionHref,
   resolveCollectionInspection,
   resolveCollectionUploadSelection,
@@ -286,5 +287,32 @@ describe("collection request presentation", () => {
       expect(p.details.size).toBe(0);
       expect(p.unresolved.length).toBe(receipts.length);
     }
+  });
+  it("derives request progress from requests the leader may upload to", () => {
+    expect(collectionRequestProgress(campaign)).toEqual({ total: 1, sent: 0 });
+    expect(collectionRequestProgress(recorded)).toEqual({ total: 1, sent: 1 });
+    const correction = {
+      ...recorded,
+      requestedItems: [
+        {
+          ...recorded.requestedItems[0]!,
+          latestSubmission: {
+            ...record,
+            status: "NEEDS_INFORMATION" as const,
+            correction: {
+              action: "FIX_INFORMATION" as const,
+              reasonEn: "Describe the handout.",
+              reasonAr: "صف الملزمة.",
+            },
+          },
+        },
+        { ...item, id: "archive", required: false, uploadAllowed: false },
+      ],
+    };
+    // A requested correction still needs the leader; read-only rows never count.
+    expect(collectionRequestProgress(correction)).toEqual({
+      total: 1,
+      sent: 0,
+    });
   });
 });

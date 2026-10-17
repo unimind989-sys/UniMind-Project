@@ -21,14 +21,61 @@ export const additionalCampaignIds = [
 ] as const;
 const types = ["DOCUMENT", "AUDIO", "IMAGE"] as const;
 const names = [
-  ["Synthetic Anatomy source call", "حملة مصادر التشريح التجريبية"],
+  ["Anatomy lecture and practical sources", "مصادر محاضرات وعمليات التشريح"],
   [
-    "Synthetic Biochemistry source call — comparison handouts, recordings and diagrams for the first revision cycle",
-    "حملة مصادر الكيمياء الحيوية التجريبية — ملازم المقارنة والتسجيلات والرسوم لدورة المراجعة الأولى",
+    "Biochemistry revision sources: comparison handouts, lecture recordings and pathway diagrams for the first revision cycle",
+    "مصادر مراجعة الكيمياء الحيوية: ملازم المقارنة وتسجيلات المحاضرات ورسوم المسارات لدورة المراجعة الأولى",
   ],
   [
-    "Synthetic Physiology source call — labelled diagrams and supporting explanations for a separate revision cycle",
-    "حملة مصادر وظائف الأعضاء التجريبية — الرسوم المسماة والشروح الداعمة لدورة مراجعة مستقلة",
+    "Physiology practical sources: labelled diagrams and supporting explanations for the second revision cycle",
+    "مصادر عملي وظائف الأعضاء: الرسوم المسماة والشروح الداعمة لدورة المراجعة الثانية",
+  ],
+] as const;
+/**
+ * The title every new synthetic file starts with. The synthetic finalize
+ * service accepts this supplied title only, as it always has.
+ */
+export const syntheticSourceTitle = "Upper limb lecture material";
+/** Requested items per campaign (handout, recording, diagram), EN and AR. */
+const requestTitles = [
+  [
+    ["Lecture 7 handout", "ملزمة المحاضرة 7"],
+    ["Practical 4 recording", "تسجيل العملي 4"],
+    ["Brachial plexus diagram", "رسم الضفيرة العضدية"],
+  ],
+  [
+    ["Biochemistry lecture 3 handout", "ملزمة محاضرة الكيمياء الحيوية 3"],
+    ["Biochemistry lecture 3 recording", "تسجيل محاضرة الكيمياء الحيوية 3"],
+    ["Glycolysis pathway diagram", "رسم مسار تحلل الجلوكوز"],
+  ],
+  [
+    ["Physiology lecture 5 handout", "ملزمة محاضرة وظائف الأعضاء 5"],
+    ["Physiology practical 2 recording", "تسجيل عملي وظائف الأعضاء 2"],
+    ["Cardiac cycle diagram", "رسم الدورة القلبية"],
+  ],
+] as const;
+/** Earlier submissions already recorded in the Anatomy campaign. */
+const historyItems = [
+  ["Lecture 5 handout", "ملزمة المحاضرة 5", "Lecture 5, pectoral region"],
+  [
+    "Practical 2 worksheet",
+    "ورقة عمل العملي 2",
+    "Practical 2, shoulder and scapula",
+  ],
+  [
+    "Lecture 4 handout",
+    "ملزمة المحاضرة 4",
+    "Lecture 4, bones of the upper limb",
+  ],
+  [
+    "Term 1 revision summary",
+    "ملخص مراجعة الترم الأول",
+    "Revision summary, shared by a student",
+  ],
+  [
+    "Lecture 3 handout",
+    "ملزمة المحاضرة 3",
+    "Lecture 3, introduction to the upper limb",
   ],
 ] as const;
 type State = {
@@ -87,9 +134,7 @@ export function makeSyntheticCampaign(
             id: sharedFormatItemId,
             unitId: "sample-unit-3",
             title:
-              locale === "ar"
-                ? "رسم تدريبي للتشريح"
-                : "Anatomy practice diagram",
+              locale === "ar" ? "رسم حدود الإبط" : "Axilla boundaries diagram",
             unitTitleEn: "Anatomy",
             unitTitleAr: "التشريح",
             expectedType: "IMAGE" as const,
@@ -100,8 +145,7 @@ export function makeSyntheticCampaign(
             latestSubmission: practiceLatest
               ? {
                   id: String(practiceLatest.id),
-                  sourceName:
-                    practiceLatest.sourceName ?? "Synthetic study source",
+                  sourceName: practiceLatest.sourceName ?? syntheticSourceTitle,
                   status: practiceLatest.status as "RECEIVED",
                   createdAt: syntheticDemoTime.now,
                 }
@@ -127,8 +171,8 @@ export function makeSyntheticCampaign(
     name: names[index]![locale === "ar" ? 1 : 0],
     cohortName:
       locale === "ar"
-        ? "الطب البشري · السنة الأولى · الفصل الأول"
-        : "Human Medicine · Year 1 · Term 1",
+        ? "طب الزقازيق، السنة الأولى، الترم الأول"
+        : "Zagazig Medicine, Year 1, Term 1",
     opensAt: syntheticDemoTime.campaignOpensAt,
     closesAt: syntheticDemoTime.campaignClosesAt,
     assignmentExpiresAt: syntheticDemoTime.assignmentExpiresAt,
@@ -150,12 +194,7 @@ export function makeSyntheticCampaign(
         return {
           id: itemId,
           unitId: index === 0 ? `sample-unit-${itemIndex + 1}` : `${id}-unit`,
-          title:
-            locale === "ar"
-              ? index === 0
-                ? ["ملزمة التشريح", "تسجيل تشريح", "رسم تشريح"][itemIndex]!
-                : `${["ملزمة", "تسجيل", "رسم"][itemIndex]} ${unit[1]}`
-              : `${unit[0]} ${["handout", "recording", "diagram"][itemIndex]}`,
+          title: requestTitles[index]![itemIndex]![locale === "ar" ? 1 : 0],
           unitTitleEn: unit[0],
           unitTitleAr: unit[1],
           expectedType: type,
@@ -164,7 +203,7 @@ export function makeSyntheticCampaign(
           latestSubmission: latest
             ? {
                 id: String(latest.id),
-                sourceName: latest.sourceName ?? "Synthetic study source",
+                sourceName: latest.sourceName ?? syntheticSourceTitle,
                 status: latest.status as "RECEIVED",
                 createdAt: syntheticDemoTime.now,
                 ...(latest.correction ? { correction: latest.correction } : {}),
@@ -177,10 +216,7 @@ export function makeSyntheticCampaign(
         ? statuses.map((status, itemIndex) => ({
             id: `sample-history-${itemIndex}`,
             unitId: "sample-unit-1",
-            title:
-              locale === "ar"
-                ? `مثال متابعة ${itemIndex + 1}`
-                : `Tracking example ${itemIndex + 1}`,
+            title: historyItems[itemIndex]![locale === "ar" ? 1 : 0],
             unitTitleEn: "Anatomy",
             unitTitleAr: "التشريح",
             expectedType: "DOCUMENT" as const,
@@ -189,7 +225,7 @@ export function makeSyntheticCampaign(
             status: "RECEIVED" as const,
             latestSubmission: {
               id: `history-${itemIndex}`,
-              sourceName: "Synthetic historical source",
+              sourceName: historyItems[itemIndex]![2],
               status,
               createdAt: syntheticDemoTime.historicalSubmittedAt,
             },
@@ -278,7 +314,7 @@ export function prepareSyntheticCollectionCorrections(
             requestedItemId: "sample-item-1",
             format: "DOCUMENT",
             status: "NEEDS_INFORMATION",
-            sourceName: "Earlier synthetic handout",
+            sourceName: "Lecture 7 handout, first upload",
             correction: {
               action: "FIX_INFORMATION",
               reasonEn:
@@ -292,7 +328,7 @@ export function prepareSyntheticCollectionCorrections(
             requestedItemId: "sample-item-2",
             format: "AUDIO",
             status: "REJECTED",
-            sourceName: "Earlier synthetic recording",
+            sourceName: "Practical 4 recording, first upload",
             correction: {
               action: "REPLACE_FILE",
               reasonEn:
@@ -309,7 +345,7 @@ export function prepareSyntheticCollectionCorrections(
               requestedItemId: "sample-item-1",
               format: "DOCUMENT",
               status: "RECEIVED",
-              sourceName: "Recorded synthetic handout",
+              sourceName: "Lecture 7 handout",
             },
           ]
         : [];
@@ -419,7 +455,7 @@ export function finalizeSyntheticCollectionSubmission(
     !permitted(state, campaignId) ||
     data.get("campaignId") !== campaignId ||
     !item ||
-    data.get("sourceName") !== "Synthetic study source" ||
+    data.get("sourceName") !== syntheticSourceTitle ||
     typeof description !== "string" ||
     description.trim().length < 10 ||
     description.trim().length > 1000 ||

@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { createContext, useState, type ReactNode } from "react";
 import { ProductNavigationLink as Link } from "@/app/_components/product-navigation";
 import type { Route } from "next";
 import { useSearchParams } from "next/navigation";
@@ -14,6 +14,14 @@ const groups = {
   academics: ["catalog", "cohorts"],
   operations: ["jobs", "quality", "usage", "incidents"],
 } as const;
+
+/**
+ * The Night band's slot for controls owned by the page below it (the decision
+ * queue's count tabs). `undefined` outside a workspace; `null` until mounted.
+ */
+export const AdminBandSlot = createContext<HTMLElement | null | undefined>(
+  undefined,
+);
 
 export function AdminWorkspace({
   locale,
@@ -31,6 +39,7 @@ export function AdminWorkspace({
   roleLabel?: string | undefined;
 }) {
   const query = useSearchParams();
+  const [slot, setSlot] = useState<HTMLDivElement | null>(null);
   const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
   const users = resource === "cohorts" && query.get("view") === "users";
   const copy = getAdminCopy(locale);
@@ -58,46 +67,36 @@ export function AdminWorkspace({
       synthetic={synthetic}
       roleLabel={roleLabel}
     >
-      <header className={styles.pageHeading}>
-        <div className={styles.headingRow}>
-          <h1>{title}</h1>
-          {actions}
-        </div>
-        <p>
-          {users
-            ? t(
-                "Review cohort context and campaign assignments.",
-                "راجع سياق المجموعة وتكليفات الحملات.",
-              )
-            : resource
-              ? t(
-                  "Review this resource, then open the relevant decision when a change is needed.",
-                  "راجع هذا المورد، ثم افتح القرار المناسب عند الحاجة إلى تغيير.",
-                )
-              : t(
-                  "Review pending decisions and their consequences before recording a change.",
-                  "راجع القرارات المعلقة ونتائجها قبل تسجيل أي تغيير.",
-                )}
-        </p>
-      </header>
-      {group?.length ? (
-        <nav
-          className={styles.resourceNav}
-          aria-label={t("Section resources", "موارد القسم")}
+      <AdminBandSlot.Provider value={slot}>
+        <header
+          className={styles.band}
+          data-view={resource ? "resource" : "queue"}
         >
-          {group.map((key) => (
-            <Link
-              key={key}
-              prefetch={false}
-              href={`/admin/${key}?lang=${locale}` as Route}
-              aria-current={key === resource ? "page" : undefined}
-            >
-              {resources[key]}
-            </Link>
-          ))}
-        </nav>
-      ) : null}
-      <div className={styles.console}>{children}</div>
+          <div className={styles.bandTitle}>
+            <h1>{title}</h1>
+            {group?.length ? (
+              <nav
+                className={styles.resourceNav}
+                aria-label={t("Section resources", "موارد القسم")}
+              >
+                {group.map((key) => (
+                  <Link
+                    key={key}
+                    prefetch={false}
+                    href={`/admin/${key}?lang=${locale}` as Route}
+                    aria-current={key === resource ? "page" : undefined}
+                  >
+                    {resources[key]}
+                  </Link>
+                ))}
+              </nav>
+            ) : null}
+          </div>
+          <div ref={setSlot} className={styles.bandSlot} />
+          {actions ? <div className={styles.bandActions}>{actions}</div> : null}
+        </header>
+        <div className={styles.console}>{children}</div>
+      </AdminBandSlot.Provider>
     </AppShell>
   );
 }
