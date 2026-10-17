@@ -2,8 +2,10 @@
 import { useProductText } from "@/app/_components/product-copy";
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import type { Route } from "next";
 import { useSearchParams } from "next/navigation";
-import { useProductServices } from "@/app/_components/product-services";
+import { useOptionalProductServices } from "@/app/_components/product-services";
+import { useProductRouter } from "@/app/_components/product-navigation";
 import { Button, Notice, ProductLink } from "@/app/_components/product-ui";
 import { FrontendIcon } from "@/app/_components/frontend-system";
 import {
@@ -17,25 +19,35 @@ import {
 import { ChoiceGroup } from "@/app/_components/choice-group";
 import { ProductDialog } from "@/app/_components/product-dialog";
 import type { ProductStudyProps } from "./study/study-props";
+import { ChatExchange } from "./study/chat-exchange";
+import { useLiveStudy } from "./study/live-study";
 import { conversationTitle } from "@/lib/study/recent-work.application";
-import productStyles from "@/app/_components/product.module.css";
 import styles from "./product-chat.module.css";
 
-const kindNames: Record<ResponseKind, readonly [string, string]> = {
-  supported: ["Supported", "مدعوم"],
-  partial: ["Partial support", "دعم جزئي"],
-  unavailable: ["Unavailable information", "معلومة غير متاحة"],
-  conflict: ["Source conflict", "تعارض المصادر"],
-  hint: ["Professor hint", "تلميح محاضر"],
-  educational: ["Educational case", "حالة تعليمية"],
-  patient: ["Real-patient boundary", "حدود المريض الحقيقي"],
+/** A chat session as the conversation view shows it, in either mode. */
+type ChatSessionView = {
+  id: string;
+  number: number;
+  title: string;
+  answers: readonly SampleAnswer[];
 };
 
+/**
+ * Chat for one unit. Synthetic sessions and fixed sample replies live in the
+ * tab store. Real routes list the student's own sessions and start new ones
+ * through the authorized Server Action; answering is not available yet, so
+ * the composer is disabled there.
+ */
 export function ProductChat({ scope, locale, base }: ProductStudyProps) {
-  const { state, update } = useProductServices();
+  const liveChat = useLiveStudy()?.chat;
+  const services = useOptionalProductServices();
+  const state = services?.state;
+  const update = services?.update;
+  const answering = !liveChat && state !== undefined;
+  const router = useProductRouter();
   const requestedSession = useSearchParams().get("session");
   useEffect(() => {
-    if (!requestedSession) return;
+    if (!requestedSession || !update) return;
     const id = Number(requestedSession);
     update((current) =>
       current.sessions.some(
@@ -57,7 +69,7 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
   } | null>(null);
   const [evidenceDialog, setEvidenceDialog] = useState(false);
   const [showHint, setShowHint] = useState(() => {
-    if (state.evidenceHintSeen) return false;
+    if (state?.evidenceHintSeen) return false;
     try {
       return (
         window.localStorage.getItem("unimind.citation-onboarding.v1") !== "seen"
@@ -99,7 +111,7 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
     };
   }, []);
   useEffect(() => {
-    update((current) =>
+    update?.((current) =>
       current.evidenceHintSeen
         ? current
         : { ...current, evidenceHintSeen: true },
@@ -114,22 +126,44 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
   const input = useRef<HTMLTextAreaElement>(null);
   const end = useRef<HTMLDivElement>(null);
   const t = useProductText(locale);
-  const sessions = state.sessions.filter(
-    (session) => session.scope === scope.unitId,
-  );
-  const selected = sessions.find(
-    (session) => session.id === state.activeSessions[scope.unitId],
-  );
+  const sessions: readonly ChatSessionView[] = liveChat
+    ? liveChat.sessions.map((session, index, all) => ({
+        id: session.id,
+        number: all.length - index,
+        title: new Intl.DateTimeFormat(locale === "ar" ? "ar-EG" : "en-GB", {
+          dateStyle: "medium",
+          timeStyle: "short",
+        }).format(new Date(session.createdAt)),
+        answers: [],
+      }))
+    : (state?.sessions ?? [])
+        .filter((session) => session.scope === scope.unitId)
+        .map((session) => ({
+          id: String(session.id),
+          number: session.id,
+          title: conversationTitle(session, locale),
+          answers: session.answers,
+        }));
+  const selectedId = liveChat
+    ? liveChat.selectedSessionId
+    : String(state?.activeSessions[scope.unitId] ?? "");
+  const selected = sessions.find((session) => session.id === selectedId);
   const evidence =
-    selectedEvidence?.sessionId === selected?.id ? selectedEvidence : null;
-  const key = `${scope.unitId}:${selected?.id ?? "new"}`;
-  const savedDraft = state.chatDrafts[key] ?? { message: "", language: locale };
+    selectedEvidence?.sessionId === selected?.number ? selectedEvidence : null;
+  const key = `${scope.unitId}:${selected?.number ?? "new"}`;
+  const [liveDraft, setLiveDraft] = useState<{
+    message: string;
+    language: "en" | "ar" | "mixed";
+  }>({ message: "", language: locale });
+  const savedDraft = state
+    ? (state.chatDrafts[key] ?? { message: "", language: locale })
+    : liveDraft;
   const draft = {
     ...savedDraft,
-    language: state.studyLanguage ?? savedDraft.language,
+    language: state?.studyLanguage ?? savedDraft.language,
   };
   useEffect(() => {
-    update((current) =>
+    update?.((current) =>
       current.chatDrafts[key]
         ? current
         : {
@@ -142,15 +176,18 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
     );
   }, [key, locale, update]);
   const setDraft = (patch: Partial<typeof draft>) =>
-    update((current) => ({
-      ...current,
-      chatDrafts: { ...current.chatDrafts, [key]: { ...draft, ...patch } },
-    }));
+    update
+      ? update((current) => ({
+          ...current,
+          chatDrafts: { ...current.chatDrafts, [key]: { ...draft, ...patch } },
+        }))
+      : setLiveDraft({ ...draft, ...patch });
   const handoutAvailable =
-    scope.unitId !== defaultScope.unitId || state.availability.sourceActive;
+    scope.unitId !== defaultScope.unitId ||
+    state?.availability.sourceActive === true;
 
   useEffect(() => {
-    if (!sending) return;
+    if (!sending || !update) return;
     const timer = setTimeout(() => {
       update((current) => ({
         ...current,
@@ -234,7 +271,28 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
       )}
     </p>
   );
+  function select(session: ChatSessionView) {
+    if (history.current) history.current.open = false;
+    setSending(null);
+    setNotice("");
+    setEvidence(null);
+    setEvidenceDialog(false);
+    if (liveChat) {
+      router.push(
+        `${base}/chat?lang=${locale}&session=${encodeURIComponent(session.id)}` as Route,
+      );
+      return;
+    }
+    update?.((current) => ({
+      ...current,
+      activeSessions: {
+        ...current.activeSessions,
+        [scope.unitId]: session.number,
+      },
+    }));
+  }
   function start() {
+    if (!state || !update) return 0;
     if (history.current) history.current.open = false;
     setEvidence(null);
     setEvidenceDialog(false);
@@ -258,14 +316,14 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
     return id;
   }
   function send() {
-    if (sending || !draft.message.trim()) return;
+    if (!state || !update || sending || !draft.message.trim()) return;
     const promptKind = (Object.entries(promptExamples).find(([, prompts]) =>
       prompts.some(
         (prompt) => prompt.toLowerCase() === draft.message.trim().toLowerCase(),
       ),
     )?.[0] ?? "unmatched") as ResponseKind | "unmatched";
     const kind = promptKind === "unmatched" ? "unavailable" : promptKind;
-    const id = selected?.id ?? start();
+    const id = selected?.number ?? start();
     // Only fixture classification is retained as an exchange. Typed text is a
     // document-local draft; it never enters logs, storage, fetch or an answer.
     update((current) => {
@@ -309,10 +367,31 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
                 {t("Sessions", "الجلسات")}
               </summary>
               <div>
-                <Button onClick={start} disabled={sending !== null}>
-                  <FrontendIcon name="plus" />
-                  {t("New session", "جلسة جديدة")}
-                </Button>
+                {liveChat ? (
+                  // A real form, so the Server Action re-authorizes the scope
+                  // and its redirect or not-found applies as a navigation.
+                  <form
+                    action={liveChat.startAction}
+                    className={styles.sessionForm}
+                  >
+                    <input
+                      type="hidden"
+                      name="cohortId"
+                      value={scope.cohortId}
+                    />
+                    <input type="hidden" name="unitId" value={scope.unitId} />
+                    <input type="hidden" name="locale" value={locale} />
+                    <Button type="submit">
+                      <FrontendIcon name="plus" />
+                      {t("New session", "جلسة جديدة")}
+                    </Button>
+                  </form>
+                ) : (
+                  <Button onClick={start} disabled={sending !== null}>
+                    <FrontendIcon name="plus" />
+                    {t("New session", "جلسة جديدة")}
+                  </Button>
+                )}
                 <ProductLink href="/settings?section=privacy" locale={locale}>
                   <FrontendIcon name="settings" />
                   {t("Privacy settings", "إعدادات الخصوصية")}
@@ -332,25 +411,14 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
                           <button
                             type="button"
                             aria-pressed={selected?.id === session.id}
-                            onClick={() => {
-                              if (history.current) history.current.open = false;
-                              update((current) => ({
-                                ...current,
-                                activeSessions: {
-                                  ...current.activeSessions,
-                                  [scope.unitId]: session.id,
-                                },
-                              }));
-                              setSending(null);
-                              setNotice("");
-                              setEvidence(null);
-                              setEvidenceDialog(false);
-                            }}
+                            onClick={() => select(session)}
                           >
-                            <bdi>{conversationTitle(session, locale)}</bdi>
+                            <bdi>{session.title}</bdi>
                             <span>
                               {t("Session", "جلسة")}{" "}
-                              {new Intl.NumberFormat(locale).format(session.id)}
+                              {new Intl.NumberFormat(locale).format(
+                                session.number,
+                              )}
                             </span>
                             <span>
                               {t("Replies", "الإجابات")} ·{" "}
@@ -364,10 +432,15 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
                     </ul>
                   ) : (
                     <p>
-                      {t(
-                        "Your first message starts a session here.",
-                        "أول رسالة تبدأ جلسة هنا.",
-                      )}
+                      {answering
+                        ? t(
+                            "Your first message starts a session here.",
+                            "أول رسالة تبدأ جلسة هنا.",
+                          )
+                        : t(
+                            "Start a session to keep your study here.",
+                            "ابدأ جلسة للاحتفاظ بمذاكرتك هنا.",
+                          )}
                     </p>
                   )}
                 </details>
@@ -413,7 +486,7 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
               <ChoiceGroup
                 label={t("Study language", "لغة المذاكرة")}
                 value={draft.language}
-                disabled={sending !== null}
+                disabled={sending !== null || !answering}
                 options={[
                   ["en", t("English", "الإنجليزية")],
                   ["ar", t("Arabic", "العربية")],
@@ -423,7 +496,7 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
                   ],
                 ]}
                 onChange={(value) =>
-                  update((current) => ({
+                  update?.((current) => ({
                     ...current,
                     studyLanguage: value as "en" | "ar" | "mixed",
                   }))
@@ -470,6 +543,7 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
                     <button
                       key={kind}
                       type="button"
+                      disabled={!answering}
                       onClick={() => {
                         setDraft({
                           message: text(promptExamples[kind], locale),
@@ -487,180 +561,30 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
                 )}
               </div>
               <p className={styles.caption}>
-                {t(
-                  "Try a supplied sample question. Replies are fixed examples.",
-                  "جرب سؤالًا من الأمثلة المرفقة. الإجابات أمثلة ثابتة.",
-                )}
+                {answering
+                  ? t(
+                      "Try a supplied sample question. Replies are fixed examples.",
+                      "جرب سؤالًا من الأمثلة المرفقة. الإجابات أمثلة ثابتة.",
+                    )
+                  : t(
+                      "Chat answers are not available yet. Answers will use only approved materials when Chat launches.",
+                      "إجابات المحادثة غير متاحة بعد. ستعتمد الإجابات على المصادر المعتمدة فقط عند إطلاق المحادثة.",
+                    )}
               </p>
             </div>
           ) : null}
           {selected?.answers.map((answer, index) => (
-            <article
-              className={styles.exchange}
+            <ChatExchange
               key={index}
-              id={`exchange-${index + 1}`}
-            >
-              <div
-                className={styles.questionBubble}
-                dir={answer.language === "en" ? "ltr" : "rtl"}
-                lang={answer.language === "en" ? "en" : "ar"}
-              >
-                <p>
-                  {answer.promptKind === "unmatched"
-                    ? t(
-                        "Question outside the supplied sample pack",
-                        "سؤال خارج الأمثلة المرفقة",
-                      )
-                    : text(
-                        promptExamples[answer.promptKind ?? answer.kind],
-                        answer.language === "en" ? "en" : "ar",
-                      )}
-                </p>
-                <small>{t("Sample question", "سؤال تجريبي")}</small>
-              </div>
-              <div className={styles.reply}>
-                <div className={styles.replyHeading}>
-                  <strong translate="no">UniMind</strong>
-                  <span>{text(kindNames[answer.kind], locale)}</span>
-                </div>
-                <p
-                  lang={answer.language === "en" ? "en" : "ar"}
-                  dir={answer.language === "en" ? "ltr" : "rtl"}
-                >
-                  {text(
-                    answerExamples[answer.kind],
-                    answer.language === "en" ? "en" : "ar",
-                  )}
-                  {answer.language === "mixed" ? (
-                    <>
-                      {" "}
-                      <bdi lang="en">Synthetic source · study sequence</bdi>
-                    </>
-                  ) : null}
-                </p>
-                {answer.kind === "unavailable" ? (
-                  <div>
-                    <p>
-                      {handoutAvailable
-                        ? answer.promptKind &&
-                          !["unavailable", "unmatched"].includes(
-                            answer.promptKind,
-                          )
-                          ? t(
-                              "The handout is currently available. This saved reply is unchanged; inspect materials or send a covered question for a new answer.",
-                              "الملزمة متاحة حاليًا. هذه الإجابة المحفوظة كما هي؛ افحص المصادر أو أرسل سؤالًا تغطيه للحصول على إجابة جديدة.",
-                            )
-                          : t(
-                              "The current sources do not support an answer to this question. You can inspect available materials or try a question they cover.",
-                              "المصادر الحالية لا تدعم إجابة لهذا السؤال. يمكنك فحص المصادر المتاحة أو تجربة سؤال تغطيه.",
-                            )
-                        : t(
-                            "The handout is currently inactive, so new answers cannot use it. The recording remains available; you can inspect materials or ask about its emphasis.",
-                            "الملزمة غير نشطة حاليًا، فلا تستخدمها الإجابات الجديدة. التسجيل ما زال متاحًا؛ يمكنك فحص المصادر أو السؤال عن النقطة التي يؤكدها.",
-                          )}
-                    </p>
-                    <details className={styles.secondaryOptions}>
-                      <summary>
-                        {t(
-                          "Questions covered by these materials",
-                          "أسئلة تغطيها هذه المصادر",
-                        )}
-                      </summary>
-                      <ul>
-                        {handoutAvailable ? (
-                          <li>
-                            <bdi>{text(promptExamples.supported, locale)}</bdi>
-                          </li>
-                        ) : null}
-                        <li>
-                          <bdi>{text(promptExamples.hint, locale)}</bdi>
-                        </li>
-                      </ul>
-                      <p>
-                        {t(
-                          "You can copy a question into Message. Your current draft stays unchanged.",
-                          "يمكنك نسخ سؤال إلى خانة السؤال. مسودتك الحالية تبقى كما هي.",
-                        )}
-                      </p>
-                    </details>
-                    <ProductLink href={base} locale={locale}>
-                      {t(
-                        "View available materials",
-                        "عرض مصادر المذاكرة المتاحة",
-                      )}
-                    </ProductLink>
-                  </div>
-                ) : null}
-                {answer.kind === "conflict" ? (
-                  <details className={styles.secondaryOptions}>
-                    <summary>
-                      {t(
-                        "Question to ask about this conflict",
-                        "سؤال للاستفسار عن هذا التعارض",
-                      )}
-                    </summary>
-                    <p>
-                      {t(
-                        "Inspect both excerpts, then copy this question if you want to ask for clarification. Nothing is sent from here.",
-                        "افحص النصين، ثم انسخ هذا السؤال إن أردت طلب توضيح. لا يُرسل شيء من هنا.",
-                      )}
-                    </p>
-                    <div className={productStyles.field}>
-                      <label
-                        htmlFor={`conflict-clarification-${selected.id}-${index + 1}`}
-                      >
-                        {t("Clarification question", "سؤال التوضيح")}
-                      </label>
-                      <textarea
-                        id={`conflict-clarification-${selected.id}-${index + 1}`}
-                        readOnly
-                        rows={4}
-                        lang={locale}
-                        dir={locale === "ar" ? "rtl" : "ltr"}
-                        value={t(
-                          `The handout places identification before comparison, but the recording places comparison first. Which sequence should I follow for this ${scope.unitLabelSingularEn.toLowerCase()}, and is there an approved source resolving the difference?`,
-                          `الملزمة تضع التحديد قبل المقارنة، لكن التسجيل يضع المقارنة أولًا. أي ترتيب أتبع في ${scope.unitLabelSingularAr}، وهل يوجد مصدر معتمد يحسم الاختلاف؟`,
-                        )}
-                      />
-                    </div>
-                  </details>
-                ) : null}
-                <div className={styles.replyActions}>
-                  {!["unavailable", "patient"].includes(answer.kind) ? (
-                    <button
-                      type="button"
-                      className={styles.citation}
-                      onClick={() => inspect(answer, index + 1, selected.id)}
-                    >
-                      <FrontendIcon name="sources" />
-                      {answer.kind === "hint"
-                        ? t("Recording · 02:10", "التسجيل · ٠٢:١٠")
-                        : answer.kind === "conflict"
-                          ? t("Two source excerpts", "نصان من مصدرين")
-                          : t("Handout · p. 3", "الملزمة · ص ٣")}
-                    </button>
-                  ) : null}
-                  <ProductLink
-                    href={`${base}/evidence?exchange=${index + 1}&session=${selected.id}`}
-                    locale={locale}
-                  >
-                    <FrontendIcon name="sources" />
-                    {t("Inspect evidence", "فحص الأدلة")}
-                  </ProductLink>
-                  <ProductLink
-                    href={`${base}/report?exchange=${index + 1}&session=${selected.id}`}
-                    locale={locale}
-                  >
-                    {t("Report example", "الإبلاغ عن المثال")}
-                  </ProductLink>
-                  <span>
-                    {answer.sharing === "private"
-                      ? t("Private", "خاص")
-                      : t("Shared", "مشارك")}
-                  </span>
-                </div>
-              </div>
-            </article>
+              answer={answer}
+              exchange={index + 1}
+              sessionNumber={selected.number}
+              scope={scope}
+              locale={locale}
+              base={base}
+              handoutAvailable={handoutAvailable}
+              onInspect={() => inspect(answer, index + 1, selected.number)}
+            />
           ))}
           {sending ? (
             <div className={styles.streaming} role="status">
@@ -707,6 +631,7 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
             value={draft.message}
             onChange={(event) => setDraft({ message: event.target.value })}
             readOnly={sending !== null}
+            disabled={!answering}
             onKeyDown={(event) => {
               if (
                 event.key === "Enter" &&
@@ -740,7 +665,7 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
                 key="send"
                 primary
                 type="submit"
-                disabled={!draft.message.trim()}
+                disabled={!answering || !draft.message.trim()}
               >
                 <FrontendIcon name="send" />
                 {t("Send", "إرسال")}
@@ -748,17 +673,31 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
             )}
           </div>
           <p className={styles.composerMeta}>
-            <strong>
-              {state.sharing === "private"
-                ? t("Private for future exchanges", "المحادثات القادمة خاصة")
-                : t("Founder-visible by default", "ظاهر للمؤسسين افتراضيًا")}
-            </strong>
-            <span>
-              {t(
-                "Enter to send; Shift+Enter for a new line",
-                "Enter للإرسال؛ Shift+Enter لسطر جديد",
-              )}
-            </span>
+            {answering ? (
+              <>
+                <strong>
+                  {state?.sharing === "private"
+                    ? t(
+                        "Private for future exchanges",
+                        "المحادثات القادمة خاصة",
+                      )
+                    : t(
+                        "Founder-visible by default",
+                        "ظاهر للمؤسسين افتراضيًا",
+                      )}
+                </strong>
+                <span>
+                  {t(
+                    "Enter to send; Shift+Enter for a new line",
+                    "Enter للإرسال؛ Shift+Enter لسطر جديد",
+                  )}
+                </span>
+              </>
+            ) : (
+              <strong>
+                {t("Answers are not available yet", "الإجابات غير متاحة بعد")}
+              </strong>
+            )}
           </p>
         </form>
         {notice ? <Notice>{notice}</Notice> : null}

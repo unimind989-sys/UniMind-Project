@@ -1,7 +1,7 @@
 "use client";
 import { useSearchParams } from "next/navigation";
 import { useProductText } from "@/app/_components/product-copy";
-import { useProductServices } from "@/app/_components/product-services";
+import { useOptionalProductServices } from "@/app/_components/product-services";
 import { Notice, ProductLink, Row } from "@/app/_components/product-ui";
 import styles from "@/app/_components/product.module.css";
 import {
@@ -16,11 +16,14 @@ import { MaterialLibrary } from "./material-library";
 import { SourceReturnContext } from "./source-return-context";
 import type { ProductStudyProps } from "./study-props";
 import { getSources, kindNames, selectedExchange } from "./study-sources";
+import { useLiveStudy } from "./live-study";
 
 /**
  * The material library, or the supporting passages of one Chat reply, with
  * the way back to the tool that opened it. `embedded` renders the library
- * inside the unit overview without its own heading or return action.
+ * inside the unit overview without its own heading or return action. Real
+ * routes show the approved material count until an authorized material list
+ * exists, and no evidence until Chat answers exist.
  */
 export function Evidence({
   scope,
@@ -30,24 +33,31 @@ export function Evidence({
   embedded = false,
   quizTime,
 }: ProductStudyProps & { embedded?: boolean; quizTime?: number }) {
-  const { state } = useProductServices();
+  const live = useLiveStudy();
+  const state = useOptionalProductServices()?.state;
   const query = useSearchParams();
   const t = useProductText(locale);
-  const quizSource = embedded
-    ? null
-    : resolveQuizSourceSelection(query, state.attempts[scope.unitId], quizTime);
+  const quizSource =
+    embedded || !state
+      ? null
+      : resolveQuizSourceSelection(
+          query,
+          state.attempts[scope.unitId],
+          quizTime,
+        );
   const selection =
     embedded || quizSource ? null : resolveChatExchangeSelection(query);
-  const { session, exchange, answer } = selectedExchange(
-    state.sessions,
-    scope.unitId,
-    selection,
+  const { session, exchange, answer } = state
+    ? selectedExchange(state.sessions, scope.unitId, selection)
+    : { session: undefined, exchange: undefined, answer: undefined };
+  const sources = state
+    ? getSources(scope, locale, state.studyDensityUnitId === scope.unitId)
+    : [];
+  const unitName = t(
+    scope.unitLabelSingularEn.toLowerCase(),
+    scope.unitLabelSingularAr,
   );
-  const sources = getSources(
-    scope,
-    locale,
-    state.studyDensityUnitId === scope.unitId,
-  );
+  const count = new Intl.NumberFormat(locale).format(scope.sourceCount);
   const supporting =
     answer?.kind === "conflict"
       ? sources.slice(0, 2)
@@ -67,19 +77,29 @@ export function Evidence({
         />
       ) : (
         <p className={styles.materialsCaption}>
-          {t(
-            "Sample materials · Excerpts and page references below are illustrative.",
-            "مواد تجريبية · النصوص ومواضع الصفحات أدناه للتوضيح.",
-          )}
+          {live
+            ? t(
+                `${count} approved materials in this ${unitName}.`,
+                `${count} مصادر معتمدة في ${unitName}.`,
+              )
+            : t(
+                "Sample materials · Excerpts and page references below are illustrative.",
+                "مواد تجريبية · النصوص ومواضع الصفحات أدناه للتوضيح.",
+              )}
         </p>
       )}
       {screen === "evidence" ? (
         !answer ? (
           <Notice>
-            {t(
-              "No sample answer selected. Send a fixed prompt in Chat, then inspect its evidence.",
-              "لم تختر إجابة تجريبية. أرسل سؤالًا ثابتًا في المحادثة ثم افحص أدلته.",
-            )}
+            {live
+              ? t(
+                  "Evidence opens from a Chat answer. Chat answers are not available yet.",
+                  "تُفتح الأدلة من إجابة في المحادثة. إجابات المحادثة غير متاحة بعد.",
+                )
+              : t(
+                  "No sample answer selected. Send a fixed prompt in Chat, then inspect its evidence.",
+                  "لم تختر إجابة تجريبية. أرسل سؤالًا ثابتًا في المحادثة ثم افحص أدلته.",
+                )}
           </Notice>
         ) : (
           <section className={styles.panel}>
@@ -115,6 +135,18 @@ export function Evidence({
             )}
           </section>
         )
+      ) : live ? (
+        <Notice>
+          {embedded
+            ? t(
+                "The material list is not available yet.",
+                "قائمة المصادر غير متاحة بعد.",
+              )
+            : t(
+                `The material list is not available yet. ${count} approved materials are ready in this ${unitName}.`,
+                `قائمة المصادر غير متاحة بعد. ${count} مصادر معتمدة جاهزة في ${unitName}.`,
+              )}
+        </Notice>
       ) : (
         <MaterialLibrary scope={scope} locale={locale} sources={sources} />
       )}

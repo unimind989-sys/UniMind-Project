@@ -1,7 +1,7 @@
 "use client";
 import type { Route } from "next";
 import { useProductRouter } from "@/app/_components/product-navigation";
-import { useProductServices } from "@/app/_components/product-services";
+import { useOptionalProductServices } from "@/app/_components/product-services";
 import {
   defaultScope,
   type Locale,
@@ -17,12 +17,15 @@ import {
   type QuizConfiguration,
 } from "@/lib/quiz/quiz-fixture.application";
 import type { WorkspaceScope } from "@/lib/workspace/workspace.application";
+import { useLiveStudy } from "./live-study";
 
 export type QuizSession = ReturnType<typeof useQuizSession>;
 
 /**
  * The unit's quiz in tab memory: the setup draft, the latest attempt and its
- * questions, and the actions that start, answer and submit it.
+ * questions, and the actions that start, answer and submit it. Real routes
+ * have no quiz backend yet: the setup is `unavailable` and every action is
+ * inert.
  */
 export function useQuizSession(
   scope: WorkspaceScope,
@@ -30,11 +33,19 @@ export function useQuizSession(
   base: string,
   onQuizStart: (time: number) => void,
 ) {
-  const { state, update } = useProductServices();
+  const live = useLiveStudy();
+  const services = useOptionalProductServices();
+  const unavailable = live !== null || !services;
+  const state = services?.state;
+  const update =
+    services?.update ??
+    (() => {
+      /* No quiz state on a real route. */
+    });
   const router = useProductRouter();
-  const attempt = state.attempts[scope.unitId];
+  const attempt = state?.attempts[scope.unitId];
   const configuration =
-    state.quizDrafts[scope.unitId] ?? defaultQuizConfiguration;
+    state?.quizDrafts[scope.unitId] ?? defaultQuizConfiguration;
   const configurationErrors = quizConfigurationErrors(configuration);
   function setConfiguration(
     change: (value: QuizConfiguration) => QuizConfiguration,
@@ -50,7 +61,9 @@ export function useQuizSession(
     }));
   }
   const handoutAvailable =
-    scope.unitId !== defaultScope.unitId || state.availability.sourceActive;
+    !unavailable &&
+    (scope.unitId !== defaultScope.unitId ||
+      state?.availability.sourceActive === true);
   const questions = fixtureQuizQuestions(
     attempt?.configuration ?? defaultQuizConfiguration,
     locale,
@@ -116,6 +129,7 @@ export function useQuizSession(
     });
   }
   return {
+    unavailable,
     attempt,
     configuration,
     configurationErrors,

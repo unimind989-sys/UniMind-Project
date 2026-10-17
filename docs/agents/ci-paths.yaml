@@ -73,5 +73,6 @@ jobs:
       - '^supabase/'
       - '^src/types/database\.generated\.ts$'
       - '^tests/e2e-database/'
+      - '^tests/e2e/support/shared-screens\.ts$'
       - '^playwright\.database\.config\.ts$'
     needs: [application]

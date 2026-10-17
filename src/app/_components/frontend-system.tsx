@@ -3,13 +3,63 @@
 import { ProductNavigationLink as Link } from "@/app/_components/product-navigation";
 import type { Route } from "next";
 import { usePathname } from "next/navigation";
-import type { ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import type { Locale } from "@/lib/demo/synthetic-fixtures.application";
 import styles from "./frontend-system.module.css";
 import { AppShell } from "./app-shell";
 import { FrontendIcon } from "./frontend-controls";
 export { FrontendIcon, LanguageSwitch } from "./frontend-controls";
 export type { FrontendIconName } from "./frontend-controls";
+
+const focusable =
+  'a[href],button:not(:disabled),input:not(:disabled),select:not(:disabled),textarea:not(:disabled),summary,[tabindex]:not([tabindex="-1"])';
+
+/**
+ * Keyboard access to the study body's scroll area. Content with focusable
+ * elements scrolls with them; a scrolling body without any (for example a
+ * real-mode notice at 200% text) becomes a labelled focusable region.
+ */
+function useKeyboardScroll(label: string) {
+  const body = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const element = body.current;
+    if (!element) return;
+    // Set directly in the observer callback so the region exists in the same
+    // frame the overflow appears; React does not own these attributes.
+    const measure = () => {
+      const needed =
+        element.scrollHeight > element.clientHeight + 1 &&
+        element.querySelector(focusable) === null;
+      if (needed) {
+        element.tabIndex = 0;
+        element.setAttribute("role", "region");
+        element.setAttribute("aria-label", label);
+      } else {
+        element.removeAttribute("tabindex");
+        element.removeAttribute("role");
+        element.removeAttribute("aria-label");
+      }
+    };
+    const resize = new ResizeObserver(measure);
+    const observeChildren = () => {
+      resize.disconnect();
+      resize.observe(element);
+      for (const child of element.children) resize.observe(child);
+    };
+    const mutation = new MutationObserver(() => {
+      observeChildren();
+      measure();
+    });
+    observeChildren();
+    mutation.observe(element, { childList: true, subtree: true });
+    measure();
+    return () => {
+      resize.disconnect();
+      mutation.disconnect();
+    };
+  }, [label]);
+  return body;
+}
 
 type ShellProps = {
   locale: Locale;
@@ -46,6 +96,7 @@ export function FrontendShell({
 }: ShellProps) {
   const pathname = usePathname();
   const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
+  const body = useKeyboardScroll(t("Study content", "محتوى المذاكرة"));
   const destinations = [
     ["", t("Materials", "مصادر المذاكرة")],
     ["/chat", t("Chat", "المحادثة")],
@@ -160,6 +211,7 @@ export function FrontendShell({
         </p>
       ) : null}
       <div
+        ref={body}
         className={styles.workspaceBody}
         data-study-tool={
           pathname.includes("/chat")

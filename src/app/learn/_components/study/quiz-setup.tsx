@@ -26,6 +26,7 @@ export function QuizSetup({
 }) {
   const t = useProductText(locale);
   const {
+    unavailable,
     attempt,
     configuration,
     configurationErrors,
@@ -36,16 +37,26 @@ export function QuizSetup({
   return (
     <section className={styles.panel}>
       <h2>{t("Set up your quiz", "إعداد الاختبار")}</h2>
-      <p>
-        {t(
-          "Choose from six sample questions per difficulty. Scores are illustrative and stay in this tab.",
-          "اختر من ستة أسئلة تجريبية لكل مستوى. النتيجة توضيحية وتبقى في هذا التبويب.",
-        )}
-      </p>
+      {unavailable ? (
+        <Notice>
+          {t(
+            "Quiz is not available yet. Questions will come from approved materials when it launches.",
+            "الاختبار غير متاح بعد. ستأتي الأسئلة من المصادر المعتمدة عند إطلاقه.",
+          )}
+        </Notice>
+      ) : (
+        <p>
+          {t(
+            "Choose from six sample questions per difficulty. Scores are illustrative and stay in this tab.",
+            "اختر من ستة أسئلة تجريبية لكل مستوى. النتيجة توضيحية وتبقى في هذا التبويب.",
+          )}
+        </p>
+      )}
       <div className={styles.quizConfiguration}>
         <ChoiceGroup
           label={t("Timing", "التوقيت")}
           value={configuration.mode}
+          disabled={unavailable}
           options={[
             ["untimed", t("Untimed", "دون توقيت")],
             ["timed", t("Timed", "مؤقت")],
@@ -63,6 +74,7 @@ export function QuizSetup({
               {t("Duration (minutes)", "المدة (بالدقائق)")}
               <input
                 type="number"
+                disabled={unavailable}
                 min={1}
                 max={240}
                 step={1}
@@ -104,6 +116,7 @@ export function QuizSetup({
             {t("Number of questions", "عدد الأسئلة")}
             <input
               type="number"
+              disabled={unavailable}
               min={1}
               max={6}
               step={1}
@@ -123,10 +136,12 @@ export function QuizSetup({
             />
           </label>
           <p id="quiz-question-count-help" className={styles.fieldHint}>
-            {t(
-              "1–6 questions per sample attempt.",
-              "من ١ إلى ٦ أسئلة في المحاولة التجريبية.",
-            )}
+            {unavailable
+              ? t("1–6 questions per attempt.", "من ١ إلى ٦ أسئلة في المحاولة.")
+              : t(
+                  "1–6 questions per sample attempt.",
+                  "من ١ إلى ٦ أسئلة في المحاولة التجريبية.",
+                )}
           </p>
           {configurationErrors.questionCount ? (
             <p
@@ -144,6 +159,7 @@ export function QuizSetup({
         <ChoiceGroup
           label={t("Difficulty", "الصعوبة")}
           value={configuration.difficulty}
+          disabled={unavailable}
           options={[
             ["easy", t("Easy", "سهل")],
             ["medium", t("Medium", "متوسط")],
@@ -168,6 +184,7 @@ export function QuizSetup({
             : t("Start quiz", "بدء الاختبار")}
         </Button>
         <Button
+          disabled={unavailable}
           onClick={() =>
             setConfiguration(() => ({ ...defaultQuizConfiguration }))
           }
@@ -187,7 +204,7 @@ export function QuizSetup({
           </ProductLink>
         ) : null}
       </div>
-      {!handoutAvailable ? (
+      {!handoutAvailable && !unavailable ? (
         <Notice error>
           {t(
             "This quiz fixture needs the inactive handout. New attempts are unavailable until its source is active.",

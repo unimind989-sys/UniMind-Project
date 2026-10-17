@@ -13,7 +13,6 @@ import type {
 import { getCatalogCopy } from "@/lib/i18n/catalog-copy";
 import type { Locale } from "@/lib/i18n/locale";
 import type { RecentStudyDetails } from "@/lib/study/recent-work.application";
-import type { UnitPresentation } from "@/lib/demo/synthetic-catalog.application";
 import styles from "../study-shelf.module.css";
 
 export function StudyShelf({
@@ -31,12 +30,9 @@ export function StudyShelf({
   state: CatalogAccessState | "ERROR";
   basePath: string;
   synthetic?: boolean;
-  completeNavigation?: boolean;
-  showLogout?: boolean;
   lastStudyPath?: string | null;
   lastStudyDetails?: RecentStudyDetails | null;
   profileName?: string | null;
-  unitPresentationById?: Readonly<Record<string, UnitPresentation>>;
 }) {
   const hosted = useHostedSynthetic();
   const parameters = useSearchParams();

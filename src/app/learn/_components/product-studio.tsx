@@ -2,7 +2,7 @@
 import { useProductText } from "@/app/_components/product-copy";
 import { useEffect, useRef, useState } from "react";
 import { ProductSourceDialog } from "./product-source-dialog";
-import { useProductServices } from "@/app/_components/product-services";
+import { useOptionalProductServices } from "@/app/_components/product-services";
 import {
   Button,
   Notice,
@@ -16,6 +16,7 @@ import {
 } from "@/lib/demo/synthetic-fixtures.application";
 import { FrontendIcon } from "@/app/_components/frontend-system";
 import type { ProductStudyProps } from "./study/study-props";
+import { useLiveStudy } from "./study/live-study";
 import styles from "@/app/_components/product.module.css";
 import studyStyles from "./product-studio.module.css";
 import {
@@ -123,10 +124,18 @@ function FixtureText({
     </>
   );
 }
+/**
+ * Studio: shape and generate one study aid per unit. Real routes have no
+ * Studio backend yet, so they show the same controls disabled.
+ */
 export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
-  const { state, update } = useProductServices();
+  const live = useLiveStudy();
+  const services = useOptionalProductServices();
+  const state = services?.state;
+  const update = services?.update;
+  const unavailable = live !== null || !services;
   const [showPassages, setShowPassages] = useState(false);
-  const draft = state.studioDrafts[scope.unitId] ?? {
+  const draft = state?.studioDrafts[scope.unitId] ?? {
     type: "summary",
     language: locale,
     topic: "sequence",
@@ -136,7 +145,7 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
   const { type, language, topic, depth, size } = draft;
   const purpose = formatPurposes.find((item) => item.type === type);
   useEffect(() => {
-    update((current) =>
+    update?.((current) =>
       current.studioDrafts[scope.unitId]
         ? current
         : {
@@ -155,7 +164,7 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
     );
   }, [locale, scope.unitId, update]);
   const setOption = (key: keyof typeof draft, value: string) =>
-    update((current) => ({
+    update?.((current) => ({
       ...current,
       studioDrafts: {
         ...current.studioDrafts,
@@ -177,7 +186,7 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
     if (!request) return;
     const timer = setTimeout(() => {
       completed.current = true;
-      update((current) => ({
+      update?.((current) => ({
         ...current,
         artifacts: { ...current.artifacts, [scope.unitId]: request },
       }));
@@ -187,7 +196,7 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
     return () => clearTimeout(timer);
   }, [request, scope.unitId, update]);
   const t = useProductText(locale);
-  const artifact = state.artifacts[scope.unitId];
+  const artifact = state?.artifacts[scope.unitId];
   const example = artifact ? buildStudioFixture(artifact) : null;
   useEffect(() => {
     if (artifact && completed.current) {
@@ -196,7 +205,10 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
     }
   }, [artifact]);
   const handoutAvailable =
-    scope.unitId !== defaultScope.unitId || state.availability.sourceActive;
+    !unavailable &&
+    (scope.unitId !== defaultScope.unitId ||
+      state?.availability.sourceActive === true);
+  const controlsDisabled = request !== null || unavailable;
   return (
     <div className={studyStyles.studio}>
       <div className={studyStyles.studioLayout}>
@@ -227,7 +239,14 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
             }
           }}
         >
-          {!handoutAvailable ? (
+          {unavailable ? (
+            <Notice>
+              {t(
+                "Studio is not available yet. Study aids will be generated from approved materials when it launches.",
+                "الاستوديو غير متاح بعد. ستُنشأ أدوات المذاكرة من المصادر المعتمدة عند إطلاقه.",
+              )}
+            </Notice>
+          ) : !handoutAvailable ? (
             <Notice error>
               {t(
                 `The handout needed by this artifact fixture is inactive. Other ${scope.unitLabelSingularEn.toLowerCase()} sources remain available; choose another ${scope.unitLabelSingularEn.toLowerCase()} or reactivate the source through governed review.`,
@@ -245,7 +264,7 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
               name="artifact-type"
               value={type}
               onChange={(event) => setOption("type", event.target.value)}
-              disabled={request !== null}
+              disabled={controlsDisabled}
               aria-describedby={purpose ? "artifact-purpose" : undefined}
             >
               {[
@@ -305,6 +324,7 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
                   label={t("Study focus", "محور المذاكرة")}
                   value={topic}
                   onChange={(value) => setOption("topic", value)}
+                  disabled={unavailable}
                   options={[
                     ["sequence", t("Study sequence", "ترتيب الدراسة")],
                     ["comparison", t("Diagram comparison", "مقارنة الرسوم")],
@@ -315,6 +335,7 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
                   label={t("Output language", "لغة المخرج")}
                   value={language}
                   onChange={(value) => setOption("language", value)}
+                  disabled={unavailable}
                   options={[
                     ["en", t("English", "الإنجليزية")],
                     ["ar", t("Arabic", "العربية")],
@@ -330,6 +351,7 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
                     label={t("Depth", "التفصيل")}
                     value={depth}
                     onChange={(value) => setOption("depth", value)}
+                    disabled={unavailable}
                     options={[
                       ["concise", t("Concise", "موجز")],
                       ["detailed", t("Detailed", "مفصل")],
@@ -340,6 +362,7 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
                     label={t("Size", "الحجم")}
                     value={size}
                     onChange={(value) => setOption("size", value)}
+                    disabled={unavailable}
                     options={[
                       ["short", t("Short sample", "مثال قصير")],
                       ["extended", t("Extended sample", "مثال موسع")],
@@ -366,12 +389,14 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
               >
                 {t("Generate", "إنشاء")}
               </Button>
-              <p className={studyStyles.caption}>
-                {t(
-                  "Fixed examples for these settings · no model generation · cleared on reload",
-                  "أمثلة ثابتة لهذه الإعدادات · دون توليد بنموذج · تمسح عند إعادة التحميل",
-                )}
-              </p>
+              {unavailable ? null : (
+                <p className={studyStyles.caption}>
+                  {t(
+                    "Fixed examples for these settings · no model generation · cleared on reload",
+                    "أمثلة ثابتة لهذه الإعدادات · دون توليد بنموذج · تمسح عند إعادة التحميل",
+                  )}
+                </p>
+              )}
             </>
           )}
         </form>

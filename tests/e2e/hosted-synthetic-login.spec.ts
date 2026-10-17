@@ -349,10 +349,10 @@ for (const locale of ["en"] as const) {
         /Synthetic demo|Simulated services|Demo clock|وضع تجريبي|محاكاة الخدمات/u,
       ),
     ).toHaveCount(0);
+    // Reload discards synthetic memory; the real sources route then requires
+    // a real sign-in (WP03-T17 added it; before, this path was a 404).
     await page.reload();
-    await expect(
-      page.getByRole("heading", { name: "Page not found", exact: true }),
-    ).toBeVisible();
+    await expect(page).toHaveURL(/\/login\?/u);
     await expect(page.getByRole("article")).toHaveCount(0);
     expect(forbidden).toEqual([]);
     expect(errors).toEqual([]);
