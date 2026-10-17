@@ -28,11 +28,11 @@ test("landing preview explains the study loop with local, keyboard-accessible co
 
   await page.getByRole("button", { name: "View supporting material" }).click();
   await expect(
-    page.getByText("Lecture notes · sample excerpt", { exact: true }),
+    page.getByText("Lecture 6 handout, page 14", { exact: true }),
   ).toBeVisible();
   await page.getByRole("button", { name: "View supporting material" }).click();
   await expect(
-    page.getByText("Lecture notes · sample excerpt", { exact: true }),
+    page.getByText("Lecture 6 handout, page 14", { exact: true }),
   ).toHaveCount(0);
 
   await page
@@ -50,11 +50,11 @@ test("landing preview explains the study loop with local, keyboard-accessible co
     page.getByRole("tab", { name: "Quiz", exact: true }),
   ).toBeFocused();
   await page
-    .getByRole("radio", { name: "Where is this structure located?" })
+    .getByRole("radio", { name: "Claw hand with wasted small muscles" })
     .check();
   await expect(page.getByRole("status")).toContainText("Try again.");
   await page
-    .getByRole("radio", { name: "How does this structure function?" })
+    .getByRole("radio", { name: "Arm adducted and medially rotated" })
     .check();
   await expect(page.getByRole("status")).toContainText("Correct.");
   await page.getByRole("tab", { name: "Quiz", exact: true }).press("Home");
@@ -70,45 +70,45 @@ test("landing preview explains the study loop with local, keyboard-accessible co
   expect(externalRequests).toEqual([]);
 });
 
-test("folio moves without input, ignores the pointer and pauses when offscreen or hidden", async ({
+test("evidence moment plays once on view, replays, ignores the pointer and pauses when offscreen or hidden", async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
-  await page.goto("/?lang=en");
-  const atlas = page.locator("[data-motion]");
-  await expect(atlas).toHaveAttribute("data-motion", "running");
-  const stage = atlas.locator("[aria-hidden='true'] > div").nth(1);
-  const initialTransform = await stage.evaluate(
-    (element) => getComputedStyle(element).transform,
-  );
-  await expect
-    .poll(async () =>
-      stage.evaluate((element) => getComputedStyle(element).transform),
-    )
-    .not.toBe(initialTransform);
-
-  // Freeze time to distinguish autonomous animation from pointer-driven perspective.
-  // pause() stays pending until the next frame; wait so the hold time is fixed.
-  await atlas.evaluate(async (element) => {
-    const animations = element.getAnimations({ subtree: true });
-    for (const animation of animations) animation.pause();
-    await Promise.all(animations.map((animation) => animation.ready));
+  // Opened below the hero, the moment waits until it is first seen.
+  await page.goto("/?lang=en#how-it-works");
+  const moment = page.locator("[data-moment]");
+  await expect(moment).toHaveAttribute("data-moment", "waiting");
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await expect(moment).toHaveAttribute("data-moment", "playing");
+  await expect(moment).toHaveAttribute("data-paused", "false");
+  await moment.hover({ position: { x: 30, y: 30 } });
+  await moment.hover({ position: { x: 180, y: 180 } });
+  // It plays once, then settles on the final composition without looping.
+  await expect(moment).toHaveAttribute("data-moment", "done", {
+    timeout: 10_000,
   });
-  const pausedTransform = await stage.evaluate(
-    (element) => getComputedStyle(element).transform,
-  );
-  await atlas.hover({ position: { x: 30, y: 30 } });
-  await atlas.hover({ position: { x: 180, y: 180 } });
   expect(
-    await stage.evaluate((element) => getComputedStyle(element).transform),
-  ).toBe(pausedTransform);
+    await moment.evaluate(
+      (element) => element.getAnimations({ subtree: true }).length,
+    ),
+  ).toBe(0);
 
+  await page.getByRole("button", { name: "Replay", exact: true }).click();
+  await expect(moment).toHaveAttribute("data-moment", "playing");
   await page
     .getByRole("heading", { name: "How it works", exact: true })
     .scrollIntoViewIfNeeded();
-  await expect(atlas).toHaveAttribute("data-motion", "paused");
+  await expect(moment).toHaveAttribute("data-paused", "true");
+  // Nothing moves while the stage is offscreen.
+  expect(
+    await moment.evaluate((element) =>
+      element
+        .getAnimations({ subtree: true })
+        .some((animation) => animation.playState === "running"),
+    ),
+  ).toBe(false);
   await page.evaluate(() => window.scrollTo(0, 0));
-  await expect(atlas).toHaveAttribute("data-motion", "running");
+  await expect(moment).toHaveAttribute("data-paused", "false");
   // Simulate the document lifecycle signal, independently of browser focus automation.
   await page.evaluate(() => {
     Object.defineProperty(document, "hidden", {
@@ -117,16 +117,24 @@ test("folio moves without input, ignores the pointer and pauses when offscreen o
     });
     document.dispatchEvent(new Event("visibilitychange"));
   });
-  await expect(atlas).toHaveAttribute("data-motion", "paused");
+  await expect(moment).toHaveAttribute("data-paused", "true");
   await page.evaluate(() => {
     Reflect.deleteProperty(document, "hidden");
     document.dispatchEvent(new Event("visibilitychange"));
   });
-  await expect(atlas).toHaveAttribute("data-motion", "running");
+  await expect(moment).toHaveAttribute("data-paused", "false");
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await expect(atlas).toHaveAttribute("data-motion", "paused");
+  await expect(moment).toHaveAttribute("data-moment", "still");
+  await expect(
+    page.getByRole("button", { name: "Replay", exact: true }),
+  ).toBeHidden();
+  await expect(
+    page.getByText("Sample answer from invented lecture notes", {
+      exact: true,
+    }),
+  ).toBeVisible();
   expect(
-    await atlas.evaluate(
+    await moment.evaluate(
       (element) => element.getAnimations({ subtree: true }).length,
     ),
   ).toBe(0);

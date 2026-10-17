@@ -1,0 +1,383 @@
+/* L1 evidence stage on the Night hero (DESIGN.md "Public landing"). The
+   handout is depicted course material: it keeps a white page and the book
+   face in both themes. Brand Cobalt carries large text only; small white
+   numerals sit on the AA-safe action blue. */
+.moment {
+  container: moment / inline-size;
+  --moment-cobalt: #3977f7;
+  --moment-mark: #2a62e0;
+  --moment-float: 0 30px 60px -24px rgb(0 0 0 / 0.65);
+  --moment-highlight: rgb(57 119 247 / 0.3);
+  display: grid;
+  gap: 16px;
+  align-content: start;
+  min-width: 0;
+}
+.composition {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+/* Narrow stage: question, answer, then the cited excerpt. */
+.handout,
+.note {
+  display: none;
+}
+.conversation {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+.conversation p {
+  margin: 0;
+}
+.question {
+  justify-self: end;
+  max-width: min(100%, 21.25rem);
+  padding: 14px 18px;
+  border-radius: 20px;
+  border-end-end-radius: 6px;
+  background: var(--moment-cobalt);
+  color: #fff;
+  font-size: 1.1875rem;
+  font-weight: 700;
+  line-height: 1.55;
+  box-shadow: var(--moment-float);
+}
+.answer {
+  display: grid;
+  gap: 12px;
+  padding: 18px 20px;
+  border-radius: 18px;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--moment-float);
+}
+.answer .answerFrom {
+  justify-self: start;
+  font:
+    700 0.8125rem/1.3 var(--font-unimind-latin),
+    sans-serif;
+  font-size-adjust: none;
+  color: var(--secondary);
+}
+.answerText {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+.answerText bdi {
+  font-family: var(--font-unimind-latin), sans-serif;
+}
+.locations {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.locations li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  padding-inline: 6px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--tint);
+  font-size: 0.84375rem;
+  font-weight: 700;
+}
+.locations b,
+.excerptSource b,
+.marker {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  min-width: 1.375rem;
+  height: 1.375rem;
+  border-radius: 50%;
+  background: var(--moment-mark);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+.note {
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 4px 14px;
+  align-items: center;
+  padding: 16px 18px;
+  border-radius: 18px;
+  background: var(--night-2);
+  color: var(--on-night);
+  box-shadow:
+    var(--moment-float),
+    inset 0 0 0 1px var(--night-line);
+}
+.noteGlyph {
+  grid-row: span 2;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--moment-cobalt);
+  color: #fff;
+}
+.conversation .noteFrom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 10px;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+.noteFrom span {
+  color: var(--on-night-blue);
+  font-size: 0.8125rem;
+}
+.conversation .noteText {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: #d4e0ee;
+}
+.excerpt {
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: #fff;
+  color: #26323f;
+  box-shadow: var(--moment-float);
+}
+.excerpt p {
+  margin: 0;
+}
+.excerpt .excerptSource {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-block-end: 6px;
+  font:
+    700 0.8125rem/1.35 var(--font-unimind-latin),
+    sans-serif;
+  color: #4b5b6e;
+}
+.excerptText {
+  font:
+    400 0.9375rem/1.6 var(--font-handout),
+    Georgia,
+    serif;
+}
+.excerpt,
+.handout {
+  font-size-adjust: none;
+}
+.highlight {
+  background-image: linear-gradient(
+    var(--moment-highlight),
+    var(--moment-highlight)
+  );
+  background-repeat: no-repeat;
+  background-size: 100% 60%;
+  background-position: 0 92%;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 14px;
+}
+.foot p {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--on-night-2);
+}
+.replay {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: none;
+  color: var(--on-night-2);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  box-shadow: inset 0 0 0 1px var(--night-control);
+}
+.replay:hover {
+  background: var(--night-2);
+  color: var(--on-night);
+}
+
+/* Wide stage: the full handout page with the conversation overlapping its
+   lower inline-start corner. Enlarged text keeps the narrow composition. */
+@container moment (min-width: 35rem) {
+  .composition {
+    grid-template-columns: minmax(0, 1fr) min(456px, 84%);
+    grid-template-rows: 322px auto;
+    gap: 0;
+  }
+  .handout {
+    display: block;
+    position: relative;
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: start;
+    height: 620px;
+    padding: 44px 46px;
+    border-radius: 6px;
+    background: #fff;
+    color: #26323f;
+    font:
+      400 15.5px/1.62 var(--font-handout),
+      Georgia,
+      serif;
+    box-shadow:
+      0 2px 2px rgb(12 24 35 / 0.06),
+      0 44px 80px -40px rgb(0 0 0 / 0.6);
+    overflow: hidden;
+    transform: rotate(1.4deg);
+  }
+  :global([dir="rtl"]) .handout {
+    transform: rotate(-1.4deg);
+  }
+  .handout p {
+    margin: 14px 0 0;
+  }
+  .conversation {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    z-index: 1;
+    justify-self: start;
+    align-self: start;
+    width: min(372px, 70%);
+    gap: 12px;
+  }
+  .note {
+    display: grid;
+  }
+  .excerpt {
+    display: none;
+  }
+  .foot {
+    justify-content: flex-end;
+  }
+}
+.handoutMeta {
+  display: flex;
+  justify-content: space-between;
+  font:
+    600 12px/1.4 var(--font-unimind-latin),
+    sans-serif;
+  color: #6a7787;
+}
+.handout .handoutTitle {
+  margin-top: 18px;
+  font:
+    600 30px/1.15 var(--font-handout),
+    Georgia,
+    serif;
+  color: #0c1823;
+  letter-spacing: -0.01em;
+}
+.cited {
+  position: relative;
+}
+.marker {
+  position: absolute;
+  inset-inline-start: -34px;
+  inset-block-start: 1px;
+  width: 24px;
+  height: 24px;
+  font-family: var(--font-unimind-latin), sans-serif;
+  font-size: 12px;
+}
+.figure {
+  display: block;
+  width: 100%;
+  height: 96px;
+  margin-top: 16px;
+  padding: 8px 0;
+  border-radius: 4px;
+  background: #f2f5f9;
+}
+.pageNumber {
+  position: absolute;
+  inset-block-end: 26px;
+  inset-inline-end: 46px;
+  font:
+    500 13px var(--font-handout),
+    Georgia,
+    serif;
+  color: #6a7787;
+}
+
+/* The one moment: plays once on first view, Replay restarts it, reduced
+   motion shows the final composition. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+@keyframes sweep {
+  from {
+    background-size: 0% 60%;
+  }
+}
+@keyframes reveal {
+  from {
+    clip-path: inset(0 0 0 100%);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .moment[data-moment="waiting"] [data-step] {
+    opacity: 0;
+  }
+  .moment[data-moment="waiting"] .highlight {
+    background-size: 0% 60%;
+  }
+  .moment[data-moment="waiting"] .answerText {
+    clip-path: inset(0 0 0 100%);
+  }
+  .moment[data-moment="playing"] [data-step="question"] {
+    animation: rise 420ms var(--ease-settle) 300ms both;
+  }
+  .moment[data-moment="playing"] [data-step="answer"] {
+    animation: rise 420ms var(--ease-settle) 1100ms both;
+  }
+  .moment[data-moment="playing"] .answerText {
+    animation: reveal 900ms linear 1300ms both;
+  }
+  .moment[data-moment="playing"]
+    :is([data-step="marker"], [data-step="excerpt"]) {
+    animation: rise 420ms var(--ease-settle) 2300ms both;
+  }
+  .moment[data-moment="playing"] .highlight {
+    animation: sweep 800ms var(--ease-settle) 2700ms both;
+  }
+  .moment[data-moment="playing"] [data-step="note"] {
+    animation: rise 420ms var(--ease-settle) 3500ms both;
+  }
+  /* Outranks the playing rules, whose shorthand resets the play state. */
+  .moment[data-moment="playing"][data-paused="true"] * {
+    animation-play-state: paused;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .replay {
+    display: none;
+  }
+}
+@media (forced-colors: active) {
+  .question,
+  .answer,
+  .note,
+  .excerpt,
+  .handout {
+    border: 1px solid CanvasText;
+  }
+}

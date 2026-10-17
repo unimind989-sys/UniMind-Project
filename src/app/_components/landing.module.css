@@ -1,45 +1,40 @@
+/* Public landing, variant L1 "The page answers" (DESIGN.md "Public landing").
+   A Night stage in both themes, then paper sections in the Cobalt kit. */
 .page {
-  --landing-blue: #2458b8;
-  --landing-blue-soft: #e8effb;
-  --landing-blue-ink: #214f9f;
-  --landing-paper: #fff;
-  --landing-paper-ink: #202124;
-  --landing-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --landing-cobalt: #3977f7;
+  --landing-inset: max(1rem, min(4vw, 3.5rem));
+  --landing-gutter: max(
+    var(--landing-inset),
+    calc((100% - 1440px) / 2 + 3.5rem)
+  );
   overflow: clip;
-  background: var(--canvas);
+  background: var(--paper);
   color: var(--ink);
 }
-.page ::selection {
-  background: var(--accent);
-  color: var(--on-accent);
-}
 .page :where(a, button, input):focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 5px;
-}
-.page :where(a) {
-  text-underline-offset: 5px;
-}
-.page :where(button) {
-  font: inherit;
-  cursor: pointer;
+  outline: 2px solid var(--cobalt);
+  outline-offset: 3px;
 }
 .page :where(a, button, label) {
   touch-action: manipulation;
-  -webkit-tap-highlight-color: var(--accent-soft);
+  -webkit-tap-highlight-color: transparent;
 }
-.page :where(h1, h2, h3, p, figure) {
+.page :where(h1, h2, h3, p, figure, blockquote, ol, ul) {
   margin: 0;
 }
+.page :where(h1, h2, h3) {
+  overflow-wrap: anywhere;
+}
 .page :where(h2) {
-  font-size: clamp(2rem, 3.3vw, 3.25rem);
-  line-height: 1.17;
-  letter-spacing: -0.035em;
-  font-weight: 600;
+  font-size: clamp(2rem, 1.2rem + 2.6vw, 3.25rem);
+  font-weight: var(--type-display-weight);
+  line-height: 1.08;
+  letter-spacing: var(--type-display-tracking);
   text-wrap: balance;
 }
-.page :where(h2) > span {
-  color: var(--secondary);
+.page[dir="rtl"] :where(h2, h3) {
+  letter-spacing: 0;
+  line-height: 1.35;
 }
 .skip {
   position: absolute;
@@ -47,6 +42,7 @@
   inset-block-start: 8px;
   inset-inline-start: 16px;
   padding: 12px 20px;
+  border-radius: var(--radius-control);
   background: var(--surface);
   color: var(--ink);
   transform: translateY(-150%);
@@ -54,466 +50,315 @@
 .skip:focus {
   transform: none;
 }
+
+/* Masthead: the shell's Night bar, on the hero stage. */
 .header {
-  max-width: 1440px;
-  padding: 24px 56px;
-  margin: auto;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-}
-.header > a {
-  margin-inline-start: -7px;
+  gap: 8px 28px;
+  padding: 20px var(--landing-gutter) 8px;
+  background: var(--night);
+  color: var(--on-night);
 }
 .header nav {
   display: flex;
   align-items: center;
 }
 .header nav a {
-  min-height: 44px;
   display: inline-flex;
   align-items: center;
+  min-height: 44px;
+  font-size: 0.9375rem;
+  font-weight: 600;
   text-decoration: none;
-  font-size: 0.875rem;
 }
 .sectionNav {
-  gap: 36px;
+  gap: 28px;
+  margin-inline-start: auto;
 }
-.sectionNav a {
-  color: var(--secondary);
-  transition: color 150ms;
+.sectionNav a,
+.language {
+  color: var(--on-night-2);
 }
-.sectionNav a:hover {
-  color: var(--accent-ink);
+.sectionNav a:hover,
+.language:hover {
+  color: var(--on-night);
 }
 .accountNav {
-  gap: 28px;
+  gap: 20px;
 }
 .language {
-  color: var(--secondary);
   min-width: 44px;
   justify-content: center;
 }
-.signIn {
-  border: 1px solid var(--control-border);
-  padding: 8px 16px;
-  gap: 20px;
-  border-radius: 8px;
-  color: var(--ink);
-  transition: background 150ms;
+.header .signIn {
+  padding: 0 18px;
+  border-radius: var(--radius-control);
+  color: var(--on-night);
+  font-weight: 700;
+  box-shadow: inset 0 0 0 1.5px var(--night-control);
 }
 .signIn:hover {
-  background: var(--hover);
+  background: var(--night-2);
 }
+
+/* Hero: copy column and the evidence stage. */
 .hero {
-  max-width: 1440px;
-  margin: auto;
-  padding: 44px 56px 64px;
   display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
-  gap: 40px;
-  align-items: center;
-  min-height: 654px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 48px;
+  padding: 24px var(--landing-gutter) 72px;
+  background: var(--night);
+  color: var(--on-night);
 }
 .heroCopy {
-  position: relative;
-  z-index: 2;
+  min-width: 0;
 }
-.hero h1 {
+/* The English slogan keeps its tracking on the Arabic page too. */
+.page .hero h1 {
   font:
-    600 clamp(3rem, 6.35vw, 6rem)/1.08 var(--font-unimind-latin),
+    800 clamp(2.625rem, 0.15rem + 13.4vw, 5.875rem) / 0.94
+      var(--font-unimind-latin),
     sans-serif;
-  letter-spacing: -0.04em;
-  text-align: start;
+  font-size-adjust: none;
+  letter-spacing: -0.048em;
+  color: #fff;
+}
+.page[dir="rtl"] .hero h1 {
+  text-align: right;
 }
 .hero h1 span {
   display: block;
   overflow-wrap: anywhere;
-  text-wrap: balance;
 }
-.hero h1 .secondLine {
-  color: var(--accent-ink);
+.lede {
+  max-width: 26em;
+  margin-block-start: 28px;
+  font-size: clamp(1.03125rem, 0.95rem + 0.3vw, 1.1875rem);
+  line-height: 1.6;
+  color: var(--on-night-2);
 }
-.heroDescription {
-  color: var(--secondary);
-  font-size: 1.0625rem;
-  max-width: 42ch;
-  line-height: 1.75;
-  margin-block: 28px 32px;
-  text-wrap: pretty;
-}
-.heroActions {
+.actions {
   display: flex;
-  align-items: center;
   flex-wrap: wrap;
-  gap: 24px;
+  align-items: center;
+  gap: 10px 14px;
+  margin-block-start: 30px;
 }
-.primary {
+.start {
   display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 30px;
-  background: var(--accent);
-  color: var(--on-accent);
+  justify-content: center;
+  min-height: 62px;
+  max-width: 100%;
+  padding: 10px 30px;
+  border-radius: 16px;
+  background: var(--landing-cobalt);
+  color: #fff;
+  font-size: 1.1875rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-align: center;
   text-decoration: none;
-  padding: 15px 22px;
-  min-height: 54px;
-  border-radius: 8px;
-  font-size: 0.875rem;
+}
+.start:hover {
+  background: #2f6cec;
+}
+.quiet {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 10px;
+  color: var(--on-night);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--night-control);
+  text-underline-offset: 6px;
+}
+.quiet:hover {
+  text-decoration-color: currentColor;
+}
+.proof {
+  display: grid;
+  gap: 12px;
+  margin-block-start: 40px;
+  padding: 0;
+  list-style: none;
+  color: #d4e0ee;
+  font-size: 0.9375rem;
   font-weight: 600;
-  transition: background 150ms;
 }
-.primary:hover {
-  background: var(--accent-hover);
+.proof li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
-.primary svg,
-.signIn svg,
-.textLink svg,
-.footer > a svg {
-  transition: transform 240ms var(--landing-ease);
+.tick {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--landing-cobalt);
+  color: #fff;
 }
-.primary:hover svg,
-.signIn:hover svg,
-.textLink:hover svg {
-  transform: translateX(4px);
+@media (min-width: 1180px) {
+  /* Laptops keep the full handout composition (a 560px stage). */
+  .hero {
+    grid-template-columns: minmax(0, 620px) minmax(560px, 1fr);
+    gap: 40px;
+    padding-block: 34px 64px;
+  }
+  .page .hero h1 {
+    font-size: clamp(3.375rem, 6.1vw + 0.25rem, 5.875rem);
+  }
+  .heroCopy {
+    padding-block-start: 40px;
+  }
 }
-.page[dir="rtl"] :where(.primary, .signIn, .textLink, .footer > a) svg {
-  rotate: 180deg;
+
+/* Paper sections share one heading rhythm. */
+.sectionHead {
+  display: grid;
+  gap: 16px;
+  max-width: 44rem;
+}
+.sectionHead p,
+.closingAction p {
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--secondary);
 }
 .textLink {
   display: inline-flex;
-  min-height: 44px;
   align-items: center;
-  gap: 12px;
-  color: var(--ink);
-  font-size: 0.875rem;
-  font-weight: 600;
-  text-decoration: none;
+  min-height: 44px;
+  color: var(--action);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 5px;
 }
 .textLink:hover {
-  color: var(--accent-ink);
+  color: var(--action-strong);
 }
-.heroNote {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: var(--muted);
-  font-size: 0.75rem;
-  margin-block-start: 48px;
+
+/* Closing: a Night page with the folio's curved top edge. */
+.closing {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 28px 64px;
+  align-items: end;
+  margin: 0 var(--landing-gutter) 72px;
+  padding: 72px clamp(24px, 5vw, 64px) 56px;
+  border-radius: 0 0 var(--radius-cover) var(--radius-cover);
+  background: var(--night);
+  color: var(--on-night);
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0 9C35 3.4 70 .6 94 0Q100 0 100 6V100H0Z'/%3E%3C/svg%3E");
+  mask-size: 100% 100%;
 }
-.noteLine {
-  width: 28px;
-  height: 1px;
-  background: var(--control-border);
-  flex: none;
+.page[dir="rtl"] .closing {
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M100 9C65 3.4 30 .6 6 0Q0 0 0 6V100H100Z'/%3E%3C/svg%3E");
 }
-.principleStrip {
-  max-width: 1328px;
-  margin-inline: auto;
-  border-block: 1px solid var(--border);
-  padding: 26px 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-}
-.principleStrip p {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  font-size: 0.9375rem;
-  color: var(--secondary);
-}
-.principleStrip strong {
-  color: var(--ink);
-  font-weight: 600;
-}
-.principleStrip > span {
-  font-size: 0.8125rem;
-  color: var(--muted);
-}
-.page[dir="rtl"] .principleStrip svg {
-  rotate: 180deg;
-}
-.cta {
-  background: var(--landing-blue);
+.closing h2 {
+  font-size: clamp(2.5rem, 1.2rem + 4.2vw, 4.75rem);
+  line-height: 0.98;
   color: #fff;
-  padding: 80px 24px 88px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
 }
-.ctaMark {
-  margin-bottom: 24px;
+.page[dir="rtl"] .closing h2 {
+  line-height: 1.3;
 }
-.ctaMark svg {
-  stroke-width: 0.9px;
+.closingAction {
+  display: grid;
+  gap: 4px;
 }
-.cta h2 {
-  font-size: clamp(2.75rem, 5.4vw, 5rem);
-  line-height: 1.12;
-  font-weight: 600;
+.closing .closingAction p {
+  max-width: 30em;
+  color: var(--on-night-2);
 }
-.cta > p {
-  color: #e0eaff;
-  margin-block: 24px 30px;
-  font-size: 0.9375rem;
+.closing .actions {
+  margin-block-start: 22px;
 }
-.cta .primary {
-  background: #fff;
-  color: var(--landing-blue-ink);
+@media (min-width: 960px) {
+  .closing {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  }
 }
-.cta .primary:hover {
-  background: #e8effb;
-}
-.cta .primary:focus-visible {
-  outline-color: #fff;
-}
+
 .footer {
-  max-width: 1440px;
-  padding: 32px 56px;
-  margin: auto;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 56px;
+  gap: 12px 32px;
+  padding: 28px var(--landing-gutter) 40px;
+  border-block-start: 1px solid var(--line);
 }
 .footer p {
-  color: var(--muted);
-  font-size: 0.75rem;
-  max-width: 55ch;
-  margin-inline: auto;
+  max-width: 44em;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--secondary);
 }
-.footer > a:last-child {
-  color: var(--ink);
-  min-height: 44px;
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  text-decoration: none;
-  font-size: 0.8125rem;
-  flex: none;
-}
-:global([data-theme="dark"]) .page {
-  --landing-blue-soft: #233550;
-}
-.page[dir="rtl"] :where(h2, h3) {
-  letter-spacing: 0;
-  line-height: 1.5;
-}
-.page[dir="rtl"] .hero h1 {
-  letter-spacing: -0.04em;
-}
-@media (max-width: 1400px) {
-  .principleStrip {
-    margin-inline: 56px;
-  }
-  .hero {
-    gap: 24px;
-  }
-  .hero h1 {
-    font-size: clamp(3rem, 6.15vw, 5.5rem);
-  }
-}
-@media (max-width: 1100px) {
-  .header,
-  .hero,
-  .footer {
-    padding-inline: 32px;
-  }
-  .principleStrip {
-    margin-inline: 32px;
-  }
-  .header .sectionNav {
-    gap: 24px;
-  }
-  .accountNav {
-    gap: 20px;
-  }
-  .hero {
-    min-height: 570px;
-    padding-top: 28px;
-  }
-  .heroDescription {
-    font-size: 0.9375rem;
-  }
-  .heroActions {
-    gap: 10px 20px;
-  }
-}
-@media (max-width: 850px) {
+
+@media (max-width: 719px) {
   .header .sectionNav {
     display: none;
   }
-  .hero {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 24px;
-    padding-top: 48px;
-  }
-  .hero h1 {
-    font-size: clamp(3rem, 9.5vw, 5.5rem);
-  }
-  .heroDescription {
-    max-width: 52ch;
-  }
-  .heroNote {
-    margin-top: 30px;
-  }
-  .footer {
-    gap: 24px;
-  }
-}
-@media (max-width: 600px) {
-  .header {
-    padding: 16px;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-  .header > a {
-    width: 144px;
-  }
-  .header > a img {
-    width: 130px;
-  }
   .accountNav {
-    gap: 12px;
+    gap: 8px;
     margin-inline-start: auto;
   }
-  .header nav a {
-    font-size: 0.75rem;
+  .header {
+    padding-block-start: 12px;
+    gap: 8px 12px;
   }
-  .signIn {
-    padding: 8px 10px;
-    gap: 8px;
+  .header > a:first-child {
+    width: 120px;
   }
-  .signIn svg {
-    display: none;
+  .header > a:first-child img {
+    width: 120px;
   }
-  .hero {
-    padding: 36px 20px 32px;
-    gap: 16px;
-  }
-  .hero h1 {
-    font-size: clamp(2.875rem, 10.5vw, 3.9375rem);
-  }
-  .heroDescription {
-    font-size: 0.9375rem;
-    margin-block: 22px 26px;
-    max-width: 40ch;
-    line-height: 1.75;
-  }
-  .heroActions {
-    gap: 12px 18px;
-  }
-  .primary {
-    padding: 14px 18px;
-    min-height: 50px;
-    gap: 24px;
-    font-size: 0.8125rem;
-  }
-  .heroActions .textLink {
-    font-size: 0.8125rem;
-    gap: 8px;
-  }
-  .heroNote {
-    font-size: 0.6875rem;
-    margin-top: 24px;
-  }
-  .principleStrip {
-    margin-inline: 20px;
-    padding-block: 20px;
-    align-items: start;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .principleStrip p {
-    font-size: 0.8125rem;
-    gap: 10px;
-  }
-  .principleStrip > span {
-    font-size: 0.75rem;
-  }
-  .cta {
-    padding: 56px 20px 64px;
-  }
-  .cta h2 {
-    font-size: clamp(2.25rem, 9vw, 3.375rem);
-  }
-  .ctaMark {
-    margin-bottom: 20px;
-  }
-  .ctaMark svg {
-    width: 64px;
-    height: 64px;
-  }
-  .cta > p {
+  .header .signIn {
+    padding: 0 14px;
     font-size: 0.875rem;
-    max-width: 30ch;
-    margin-inline: auto;
   }
-  .footer {
-    padding: 28px 20px;
-    flex-wrap: wrap;
-    gap: 18px;
+  .hero {
+    gap: 32px;
+    padding-block: 16px 48px;
   }
-  .footer > a:first-child {
-    width: 160px;
-    margin-inline-start: -7px;
+  .lede {
+    margin-block-start: 20px;
   }
-  .footer > a:first-child img {
-    width: 146px;
+  .actions {
+    margin-block-start: 24px;
   }
-  .footer p {
-    order: 3;
+  .heroCopy .start {
     width: 100%;
-    font-size: 0.6875rem;
+    min-height: 58px;
   }
-  .footer > a:last-child {
-    margin-inline-start: auto;
-    font-size: 0.75rem;
+  .heroCopy .quiet {
+    display: none;
   }
-}
-@media (max-width: 360px) {
-  .header {
-    padding-inline: 12px;
+  .proof {
+    margin-block-start: 28px;
+    font-size: 0.875rem;
   }
-  .header > a {
-    width: 136px;
-    padding-inline: 6px;
-  }
-  .header > a img {
-    width: 124px;
-  }
-  .accountNav {
-    gap: 8px;
-  }
-  .hero h1 {
-    font-size: 2.875rem;
-  }
-  .heroActions {
-    gap: 8px;
-  }
-  .heroActions .textLink {
-    font-size: 0.75rem;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .page *,
-  .page *::before,
-  .page *::after {
-    animation: none !important;
-    transition: none !important;
-    scroll-behavior: auto !important;
-  }
-  .primary:hover svg,
-  .signIn:hover svg,
-  .textLink:hover svg {
-    transform: none;
+  .closing {
+    margin-inline: 12px;
+    margin-block-end: 48px;
+    padding-block: 56px 36px;
   }
 }
 @media (forced-colors: active) {
-  .primary,
-  .signIn {
+  .start,
+  .header .signIn {
     border: 1px solid ButtonText;
+  }
+  .closing {
+    mask-image: none;
+    border: 1px solid CanvasText;
   }
 }

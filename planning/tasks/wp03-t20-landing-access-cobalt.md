@@ -36,9 +36,9 @@
 
 ## Steps
 
-- [ ] L1 hero: Night stage, slogan, lede, actions, proof lines, handout, bubble, answer card, professor note, the 3.5 s moment with Replay and reduced motion.
-- [ ] Lower sections recomposed in Cobalt with the content pack.
-- [ ] Access pages: Night brand plane and white form surface.
+- [x] L1 hero: Night stage, slogan, lede, actions, proof lines, handout, bubble, answer card, professor note, the 3.5 s moment with Replay and reduced motion.
+- [x] Lower sections recomposed in Cobalt with the content pack.
+- [x] Access pages: Night brand plane and white form surface.
 - [ ] Tests updated where they pinned old presentation; local verification.
 - [ ] Independent review, PR, required CI, overseer approval, merge, production proof.
 

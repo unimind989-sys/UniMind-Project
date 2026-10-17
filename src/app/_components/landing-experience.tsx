@@ -1,168 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useRef, useState, type KeyboardEvent } from "react";
 import type { Locale } from "@/lib/i18n/locale";
-import { LandingIcon } from "./landing-icons";
-import atlas from "./landing-atlas.module.css";
-import panel from "./landing-workspace-panel.module.css";
 import workspace from "./landing-workspace.module.css";
-
-export function StudyAtlas({ locale }: { locale: Locale }) {
-  const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
-  const scene = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const element = scene.current;
-    if (!element) return;
-    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let visible = false;
-    const syncMotion = () => {
-      element.dataset.motion =
-        visible && !document.hidden && !preference.matches
-          ? "running"
-          : "paused";
-    };
-    const observer = new IntersectionObserver(([entry]) => {
-      visible = entry?.isIntersecting ?? false;
-      syncMotion();
-    });
-    observer.observe(element);
-    preference.addEventListener("change", syncMotion);
-    document.addEventListener("visibilitychange", syncMotion);
-    return () => {
-      observer.disconnect();
-      preference.removeEventListener("change", syncMotion);
-      document.removeEventListener("visibilitychange", syncMotion);
-    };
-  }, []);
-
-  return (
-    <div className={atlas.atlas} ref={scene} data-motion="paused">
-      <div className={atlas.atlasVisual} aria-hidden="true" dir="ltr">
-        <div className={atlas.atlasOrbit}>
-          <span />
-          <span />
-          <span />
-        </div>
-        <div className={atlas.folioStage}>
-          <div className={atlas.folioBase} />
-          <div className={atlas.folioEdge} />
-          <div className={atlas.folioLeafLeft}>
-            <span className={atlas.paperIcon}>
-              <LandingIcon name="book" />
-            </span>
-            <strong>{t("Course topics", "موضوعات المقرر")}</strong>
-            <div className={atlas.folioMap}>
-              <svg viewBox="0 0 150 135" fill="none">
-                <path
-                  d="M75 24v35m0 0H28v37m47-37h47v37M75 59v53"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                />
-                <rect
-                  x="46"
-                  y="6"
-                  width="58"
-                  height="28"
-                  rx="5"
-                  fill="currentColor"
-                />
-                <rect
-                  x="8"
-                  y="93"
-                  width="40"
-                  height="24"
-                  rx="4"
-                  fill="currentColor"
-                  opacity=".25"
-                />
-                <rect
-                  x="102"
-                  y="93"
-                  width="40"
-                  height="24"
-                  rx="4"
-                  fill="currentColor"
-                  opacity=".25"
-                />
-                <rect
-                  x="55"
-                  y="108"
-                  width="40"
-                  height="24"
-                  rx="4"
-                  fill="currentColor"
-                  opacity=".45"
-                />
-              </svg>
-            </div>
-            <span className={atlas.paperFoot}>
-              {t("Topic outline", "مخطط الموضوعات")}
-            </span>
-          </div>
-          <div className={atlas.folioLeafRight}>
-            <span className={atlas.paperIcon}>
-              <LandingIcon name="source" />
-            </span>
-            <strong>{t("Study notes", "ملاحظات المذاكرة")}</strong>
-            <div className={atlas.paperLines}>
-              <i />
-              <i />
-              <i />
-              <i />
-            </div>
-            <div className={atlas.paperHighlight}>
-              <LandingIcon name="check" />
-              {t("Backed by material", "مدعوم بمادتك")}
-            </div>
-            <div className={atlas.paperLines}>
-              <i />
-              <i />
-              <i />
-            </div>
-            <span className={atlas.paperFoot}>
-              {t("Source passage", "مقتطف من المصدر")}
-            </span>
-          </div>
-          <div className={atlas.floatingSource}>
-            <LandingIcon name="source" />
-            <strong>{t("Lecture notes", "ملاحظات المحاضرة")}</strong>
-            <div className={atlas.paperLines}>
-              <i />
-              <i />
-              <i />
-            </div>
-            <span>PDF</span>
-          </div>
-          <div className={atlas.floatingInsight}>
-            <LandingIcon name="chat" />
-            <strong>{t("Professor insight", "ملاحظات الأستاذ")}</strong>
-            <div className={atlas.waveform}>
-              {[12, 22, 16, 34, 46, 25, 38, 20, 42, 30, 15, 25].map(
-                (height, i) => (
-                  <i key={i} style={{ height }} />
-                ),
-              )}
-            </div>
-          </div>
-          <div className={atlas.floatingCitation}>
-            <LandingIcon name="check" />
-            <span>{t("Supporting material", "المادة الداعمة")}</span>
-          </div>
-        </div>
-        <span className={atlas.atlasLabelMaterial}>
-          {t("Your materials", "موادك")}
-        </span>
-        <span className={atlas.atlasLabelUnderstanding}>
-          {t("Your study tools", "أدوات مذاكرتك")}
-        </span>
-      </div>
-    </div>
-  );
-}
 
 const views = ["chat", "studio", "quiz"] as const;
 type View = (typeof views)[number];
 
+/** A local sample of the study workspace: nothing is generated or saved. */
 export function WorkspacePreview({ locale }: { locale: Locale }) {
   const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
   const [view, setView] = useState<View>("chat");
@@ -192,9 +37,21 @@ export function WorkspacePreview({ locale }: { locale: Locale }) {
     tabs.current[target]?.focus();
   }
   return (
-    <div className={workspace.previewWrap}>
-      <div className={workspace.previewNavigation}>
+    <div className={workspace.window}>
+      <div className={workspace.band}>
+        <div className={workspace.subject}>
+          <p className={workspace.subjectTitle}>
+            {t("Anatomy", "علم التشريح")}
+          </p>
+          <p className={workspace.subjectMeta}>
+            {t(
+              "Year 1, Term 1. Sample subject",
+              "السنة الأولى، الفصل الأول. مادة تجريبية",
+            )}
+          </p>
+        </div>
         <div
+          className={workspace.tabs}
           role="tablist"
           aria-label={t("Explore the study tools", "اكتشف أدوات المذاكرة")}
         >
@@ -213,243 +70,196 @@ export function WorkspacePreview({ locale }: { locale: Locale }) {
               onClick={() => setView(item)}
               onKeyDown={(event) => navigateTabs(event, index)}
             >
-              <LandingIcon name={item} />
               {labels[item]}
             </button>
           ))}
         </div>
-        <p className={workspace.previewDisclaimer}>
-          {t(
-            "Try the tools with sample material",
-            "جرّب الأدوات بمواد تجريبية",
-          )}
-        </p>
       </div>
-      <div className={workspace.workspaceWindow}>
-        <div className={workspace.windowHeader}>
-          <span>
-            <LandingIcon name="book" />
-            {t("Anatomy & physiology", "التشريح ووظائف الأعضاء")}
-          </span>
-          <span className={workspace.sampleLabel}>{t("Sample", "نموذج")}</span>
-        </div>
-        <div className={workspace.windowBody}>
-          <aside
-            className={workspace.previewMaterials}
-            aria-label={t("Sample materials", "المواد التجريبية")}
-          >
-            <h3>{t("Materials", "المواد")}</h3>
-            <p>{t("Sources for this subject", "مصادر هذه المادة")}</p>
-            <ul>
-              {[
-                [
-                  "PDF",
-                  t("Lecture notes", "ملاحظات المحاضرة"),
-                  t("Anatomy and physiology", "التشريح ووظائف الأعضاء"),
-                ],
-                [
-                  "PDF",
-                  t("Course reading", "قراءة المقرر"),
-                  t("Structure and function", "التركيب والوظيفة"),
-                ],
-                [
-                  "AUDIO",
-                  t("Professor insight", "ملاحظات الأستاذ"),
-                  t("Class discussion", "مناقشة المحاضرة"),
-                ],
-              ].map(([format, title, description]) => (
-                <li key={title}>
-                  <span className={workspace.materialFormat}>{format}</span>
-                  <div>
-                    <strong>{title}</strong>
-                    <span>{description}</span>
-                  </div>
-                  <LandingIcon name="check" />
-                </li>
-              ))}
-            </ul>
-            <div className={workspace.materialFooter}>
-              <LandingIcon name="source" />
-              <span>
-                {t(
-                  "Your questions and study aids use the same approved material.",
-                  "أسئلتك وأدوات مذاكرتك تستخدم نفس المواد المعتمدة.",
-                )}
-              </span>
-            </div>
-          </aside>
-          <div
-            className={workspace.previewPanel}
-            id="preview-panel"
-            role="tabpanel"
-            aria-labelledby={"preview-tab-" + view}
-            tabIndex={0}
-          >
-            <div className={panel.panelContent} key={view}>
-              {view === "chat" && (
-                <>
-                  <p className={panel.previewQuestion}>
-                    {t(
-                      "How is anatomy different from physiology?",
-                      "ما الفرق بين التشريح ووظائف الأعضاء؟",
-                    )}
-                  </p>
-                  <div className={panel.answerIdentity}>
-                    <LandingIcon name="book" />
+      <div className={workspace.body}>
+        <aside
+          className={workspace.materials}
+          aria-label={t("Sample materials", "المواد التجريبية")}
+        >
+          <h3>{t("Materials", "المواد")}</h3>
+          <ul>
+            {[
+              ["Lecture 6 handout", t("PDF, 22 pages", "ملف PDF، 22 صفحة")],
+              [
+                "Practical 3 recording",
+                t("Recording, 46 minutes", "تسجيل، 46 دقيقة"),
+              ],
+              [
+                "Dr. Hala Mansour",
+                t("Voice note, exam emphasis", "ملاحظة صوتية، تركيز امتحاني"),
+              ],
+            ].map(([title, description]) => (
+              <li key={title}>
+                <strong lang="en" dir="ltr">
+                  {title}
+                </strong>
+                <span>{description}</span>
+              </li>
+            ))}
+          </ul>
+          <p>
+            {t(
+              "Chat, Studio and Quiz all use these three sources.",
+              "الدردشة والاستوديو والاختبار تستخدم هذه المصادر الثلاثة.",
+            )}
+          </p>
+        </aside>
+        <div
+          className={workspace.panel}
+          id="preview-panel"
+          role="tabpanel"
+          aria-labelledby={"preview-tab-" + view}
+          tabIndex={0}
+        >
+          <div className={workspace.panelContent} key={view}>
+            {view === "chat" && (
+              <>
+                <p className={workspace.question}>
+                  {t(
+                    "What happens if the upper trunk of the brachial plexus is injured?",
+                    "إيه اللي بيحصل لو الجذع العلوي للضفيرة العضدية اتصاب؟",
+                  )}
+                </p>
+                <div className={workspace.reply}>
+                  <p className={workspace.replyFrom}>
                     <strong>UniMind</strong>
                     <span>{t("Sample answer", "إجابة تجريبية")}</span>
-                  </div>
-                  <h3>{t("Structure and function", "التركيب والوظيفة")}</h3>
+                  </p>
                   <p>
                     {t(
-                      "Anatomy describes the structures of the body. Physiology explains how those structures function. The lecture notes use this distinction to introduce both subjects.",
-                      "يصف التشريح تراكيب الجسم، وتشرح وظائف الأعضاء كيف تعمل هذه التراكيب. تستخدم ملاحظات المحاضرة هذا الفرق للتعريف بالمجالين.",
+                      "An upper trunk injury damages the C5 and C6 roots: Erb’s palsy. The arm hangs adducted and medially rotated, with the forearm pronated, the “waiter’s tip” position.",
+                      "إصابة الجذع العلوي تؤثر على الجذرين C5 وC6، وتُعرف بشلل إرب. يتدلى الذراع مقرّبًا ومدوّرًا للداخل والساعد مكبوب، وهو وضع «بقشيش النادل».",
                     )}
                   </p>
                   <button
-                    className={panel.citationButton}
+                    className={workspace.sourceButton}
                     type="button"
                     aria-expanded={sourceOpen}
                     aria-controls="sample-evidence"
                     onClick={() => setSourceOpen(!sourceOpen)}
                   >
-                    <LandingIcon name="source" />
+                    <b aria-hidden="true">1</b>
                     {t("View supporting material", "عرض المادة الداعمة")}
-                    <LandingIcon name="arrow" />
                   </button>
                   {sourceOpen && (
-                    <div className={panel.sourceExcerpt} id="sample-evidence">
-                      <strong>
-                        {t(
-                          "Lecture notes · sample excerpt",
-                          "ملاحظات المحاضرة · مقتطف تجريبي",
-                        )}
+                    <div className={workspace.excerpt} id="sample-evidence">
+                      <strong lang="en" dir="ltr">
+                        Lecture 6 handout, page 14
                       </strong>
-                      <p>
-                        {t(
-                          "“Anatomy describes body structures. Physiology explains how those structures function.”",
-                          "«يصف التشريح تراكيب الجسم، وتشرح وظائف الأعضاء كيف تعمل هذه التراكيب.»",
-                        )}
+                      <p lang="en" dir="ltr">
+                        <mark>
+                          Injury to the upper trunk (C5, C6) produces
+                          Erb–Duchenne paralysis
+                        </mark>
+                        , commonly from excessive separation of the head and
+                        shoulder.
                       </p>
                     </div>
                   )}
-                  <p className={panel.previewHint}>
+                </div>
+              </>
+            )}
+            {view === "studio" && (
+              <>
+                <h3>
+                  {t("Flashcards from Lecture 6", "بطاقات من المحاضرة 6")}
+                </h3>
+                <p>
+                  {t(
+                    "Make summaries, flashcards and practice questions from your subject’s sources. Try one card.",
+                    "أعد ملخصات وبطاقات مذاكرة وأسئلة تدريب من مصادر مادتك. جرّب بطاقة واحدة.",
+                  )}
+                </p>
+                <button
+                  type="button"
+                  className={workspace.flashcard}
+                  aria-pressed={flipped}
+                  onClick={() => setFlipped(!flipped)}
+                >
+                  <span className={workspace.flashcardLabel}>
+                    {flipped
+                      ? t("Sample answer", "إجابة تجريبية")
+                      : t("Sample flashcard", "بطاقة تجريبية")}
+                  </span>
+                  <strong>
+                    {flipped
+                      ? t(
+                          "C5 and C6. An upper trunk injury gives Erb’s palsy.",
+                          "C5 وC6. إصابة الجذع العلوي تسبب شلل إرب.",
+                        )
+                      : t(
+                          "Which roots form the upper trunk?",
+                          "ما الجذور التي تكوّن الجذع العلوي؟",
+                        )}
+                  </strong>
+                  <span className={workspace.flashcardAction}>
+                    {flipped
+                      ? t("Show question", "عرض السؤال")
+                      : t("Reveal answer", "عرض الإجابة")}
+                  </span>
+                </button>
+              </>
+            )}
+            {view === "quiz" && (
+              <>
+                <h3>{t("Check what you remember", "اختبر ما تتذكره")}</h3>
+                <fieldset className={workspace.quiz}>
+                  <legend>
                     {t(
-                      "This is a fixed sample answer using invented lecture notes.",
-                      "هذه إجابة تجريبية ثابتة تستخدم ملاحظات محاضرة غير حقيقية.",
+                      "Which position follows an upper trunk injury?",
+                      "أي وضع يتبع إصابة الجذع العلوي؟",
                     )}
-                  </p>
-                </>
-              )}
-              {view === "studio" && (
-                <>
-                  <div className={panel.answerIdentity}>
-                    <LandingIcon name="studio" />
-                    <strong>{t("Studio", "الاستوديو")}</strong>
-                  </div>
-                  <h3>
-                    {t("Review with flashcards", "راجع ببطاقات المذاكرة")}
-                  </h3>
-                  <p>
-                    {t(
-                      "Make summaries, study guides and practice questions from your subject’s sources. Try a sample flashcard below.",
-                      "أعد ملخصات وأدلة مذاكرة وأسئلة تدريب من مصادر مادتك. جرّب بطاقة المذاكرة أدناه.",
-                    )}
-                  </p>
-                  <button
-                    type="button"
-                    className={panel.flashcard}
-                    aria-pressed={flipped}
-                    onClick={() => setFlipped(!flipped)}
-                  >
-                    <span className={panel.flashcardLabel}>
-                      {flipped
-                        ? t("Sample answer", "إجابة تجريبية")
-                        : t("Sample flashcard", "بطاقة تجريبية")}
-                    </span>
-                    <strong>
-                      {flipped
-                        ? t(
-                            "Physiology studies how body structures function.",
-                            "تدرس وظائف الأعضاء كيف تعمل تراكيب الجسم.",
-                          )
-                        : t(
-                            "What does physiology study?",
-                            "ماذا تدرس وظائف الأعضاء؟",
-                          )}
-                    </strong>
-                    <span className={panel.flashcardAction}>
-                      {flipped
-                        ? t("Show question", "عرض السؤال")
-                        : t("Reveal answer", "عرض الإجابة")}
-                      <LandingIcon name="arrow" />
-                    </span>
-                  </button>
-                </>
-              )}
-              {view === "quiz" && (
-                <>
-                  <div className={panel.answerIdentity}>
-                    <LandingIcon name="quiz" />
-                    <strong>{t("Quiz", "الاختبار")}</strong>
-                  </div>
-                  <h3>{t("Check what you remember", "اختبر ما تتذكره")}</h3>
-                  <fieldset className={panel.sampleQuiz}>
-                    <legend>
-                      {t(
-                        "Which question is about physiology?",
-                        "أي سؤال يتعلق بوظائف الأعضاء؟",
-                      )}
-                    </legend>
-                    {[
-                      t(
-                        "How does this structure function?",
-                        "كيف يعمل هذا التركيب؟",
-                      ),
-                      t(
-                        "Where is this structure located?",
-                        "أين يوجد هذا التركيب؟",
-                      ),
-                    ].map((option, index) => (
-                      <label key={option} data-selected={answer === index}>
-                        <input
-                          type="radio"
-                          name="landing-quiz"
-                          checked={answer === index}
-                          onChange={() => setAnswer(index)}
-                        />
-                        <span>{option}</span>
-                      </label>
-                    ))}
-                  </fieldset>
-                  <p className={panel.quizFeedback} role="status">
-                    {answer === null
-                      ? t("Try the sample question.", "جرب السؤال التجريبي.")
-                      : answer === 0
-                        ? t(
-                            "Correct. Physiology explains function; anatomy describes structure.",
-                            "صحيح. تشرح وظائف الأعضاء الوظيفة، ويصف التشريح التركيب.",
-                          )
-                        : t(
-                            "Try again. Location is part of anatomy; physiology explains function.",
-                            "حاول مجددًا. الموقع جزء من التشريح، وتشرح وظائف الأعضاء الوظيفة.",
-                          )}
-                  </p>
-                </>
-              )}
-            </div>
+                  </legend>
+                  {[
+                    t(
+                      "Arm adducted and medially rotated",
+                      "ذراع مقرّب ومدوّر للداخل",
+                    ),
+                    t(
+                      "Claw hand with wasted small muscles",
+                      "يد مخلبية مع ضمور العضلات الصغيرة",
+                    ),
+                  ].map((option, index) => (
+                    <label key={option} data-selected={answer === index}>
+                      <input
+                        type="radio"
+                        name="landing-quiz"
+                        checked={answer === index}
+                        onChange={() => setAnswer(index)}
+                      />
+                      <span>{option}</span>
+                    </label>
+                  ))}
+                </fieldset>
+                <p className={workspace.feedback} role="status">
+                  {answer === null
+                    ? t("Try the sample question.", "جرّب السؤال التجريبي.")
+                    : answer === 0
+                      ? t(
+                          "Correct. That’s the waiter’s tip position of Erb’s palsy.",
+                          "صحيح. هذا وضع «بقشيش النادل» في شلل إرب.",
+                        )
+                      : t(
+                          "Try again. A claw hand follows a lower trunk injury (Klumpke’s palsy).",
+                          "حاول مجددًا. اليد المخلبية تتبع إصابة الجذع السفلي (شلل كلومبكه).",
+                        )}
+                </p>
+              </>
+            )}
           </div>
         </div>
       </div>
-      <div className={workspace.previewFootnote}>
-        <span>{t("Sample workspace", "مساحة تجريبية")}</span>
-        <p>
-          {t(
-            "Sample materials. Access and available tools depend on your subject. This preview does not generate or save content.",
-            "مواد تجريبية. الوصول والأدوات المتاحة يعتمدان على مادتك. هذه المعاينة لا تولد محتوى ولا تحفظه.",
-          )}
-        </p>
-      </div>
+      <p className={workspace.footnote}>
+        <strong>{t("Sample workspace", "مساحة تجريبية")}</strong>{" "}
+        {t(
+          "Invented material. Access and tools depend on your subject. This preview does not generate or save anything.",
+          "مواد مُتخيَّلة. الوصول والأدوات تعتمد على مادتك. هذه المعاينة لا تولّد شيئًا ولا تحفظه.",
+        )}
+      </p>
     </div>
   );
 }
