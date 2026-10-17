@@ -1498,9 +1498,9 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 #### WP03-T20 — Rebuild the landing and access pages in the approved direction
 
-**Dependencies:** WP03-T19 delivered.
+**Dependencies:** WP03-T19 delivered. Approval of the rendered candidate is delegated to the overseeing Claude Code session ([task record](../../planning/tasks/wp03-t20-landing-access-cobalt.md)).
 
-- [ ] Landing, sign-in, registration, consent and recovery pages in the new direction; Ahmed approves the rendered candidate; deliver through one PR with required CI.
+- [~] Landing, sign-in, registration, consent and recovery pages in the new direction; Ahmed approves the rendered candidate; deliver through one PR with required CI.
 
 #### WP03-T21 — Rebuild the Batch Leader and admin flows in the approved direction
 
