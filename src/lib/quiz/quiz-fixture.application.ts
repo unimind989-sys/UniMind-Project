@@ -17,23 +17,23 @@ type Question = {
   explanation: Words;
   supportingPassages: readonly StudyPassageId[];
 };
-const labels: Words = ["Identify labels", "تحديد الأسماء"];
-const compare: Words = ["Compare diagrams", "مقارنة الرسوم"];
+const labels: Words = ["C5 and C6", "C5 وC6"];
+const compare: Words = ["C8 and T1", "C8 وT1"];
 const handout: Words = [
-  "The sample handout identifies labels before comparing diagrams (page 3).",
-  "تضع الملزمة التجريبية تحديد الأسماء قبل مقارنة الرسوم (صفحة ٣).",
+  "The Lecture 6 handout names C5 and C6 for an upper trunk injury and lists C5 to T1 for the plexus (page 14).",
+  "تذكر ملزمة المحاضرة 6 الجذرين C5 وC6 لإصابة الجذع العلوي، وتذكر C5 إلى T1 للضفيرة (صفحة ١٤).",
 ];
 const recording: Words = [
-  "The sample recording compares first, then identifies labels (02:10).",
-  "يضع التسجيل التجريبي المقارنة أولًا ثم تحديد الأسماء (٠٢:١٠).",
+  "The Practical 3 recording says some plexuses also take a branch from C4 (18:42).",
+  "يقول تسجيل العملي 3 إن بعض الضفائر تأخذ فرعًا من C4 أيضًا (١٨:٤٢).",
 ];
 const missing: Words = [
-  "Neither passage supplies a study duration.",
-  "لا يحدد أي من النصين مدة للمذاكرة.",
+  "Neither passage gives a recovery time.",
+  "لا يذكر أي من النصين مدة للتعافي.",
 ];
 const conflict: Words = [
-  "The passages give different orders; neither supplies a rule for choosing between them.",
-  "يقدم النصان ترتيبين مختلفين ولا يحددان قاعدة للاختيار بينهما.",
+  "The passages list different roots; neither gives a rule for choosing between them.",
+  "يذكر النصان جذورًا مختلفة ولا يحددان قاعدة للاختيار بينهما.",
 ];
 function q(
   prompt: Words,
@@ -47,23 +47,32 @@ function q(
 const bank: Record<QuizDifficulty, readonly Question[]> = {
   easy: [
     q(
-      ["What comes first in the handout?", "ما الخطوة الأولى في الملزمة؟"],
+      [
+        "Which roots does the handout give for an upper trunk injury?",
+        "ما الجذور التي تذكرها الملزمة لإصابة الجذع العلوي؟",
+      ],
       [labels, compare],
       0,
       handout,
       ["handout"],
     ),
     q(
-      ["What comes first in the recording?", "ما الخطوة الأولى في التسجيل؟"],
-      [labels, compare],
+      [
+        "Which extra root does the recording mention?",
+        "ما الجذر الإضافي الذي يذكره التسجيل؟",
+      ],
+      [
+        ["T2", "T2"],
+        ["C4", "C4"],
+      ],
       1,
       recording,
       ["recording"],
     ),
     q(
       [
-        "Does either passage give a study duration?",
-        "هل يحدد أي نص مدة للمذاكرة؟",
+        "Does either passage give a recovery time?",
+        "هل يذكر أي نص مدة للتعافي؟",
       ],
       [
         ["Yes", "نعم"],
@@ -79,8 +88,8 @@ const bank: Record<QuizDifficulty, readonly Question[]> = {
         "في أي صفحة يوجد نص الملزمة؟",
       ],
       [
-        ["Page 3", "صفحة ٣"],
-        ["Page 10", "صفحة ١٠"],
+        ["Page 14", "صفحة ١٤"],
+        ["Page 30", "صفحة ٣٠"],
       ],
       0,
       handout,
@@ -89,15 +98,15 @@ const bank: Record<QuizDifficulty, readonly Question[]> = {
     q(
       ["Where is the recording passage?", "أين يوجد نص التسجيل؟"],
       [
-        ["02:10", "٠٢:١٠"],
-        ["20:00", "٢٠:٠٠"],
+        ["18:42", "١٨:٤٢"],
+        ["42:18", "٤٢:١٨"],
       ],
       0,
       recording,
       ["recording"],
     ),
     q(
-      ["Do the passages give the same order?", "هل يقدم النصان نفس الترتيب؟"],
+      ["Do the passages list the same roots?", "هل يذكر النصان الجذور نفسها؟"],
       [
         ["Yes", "نعم"],
         ["No", "لا"],
@@ -110,8 +119,8 @@ const bank: Record<QuizDifficulty, readonly Question[]> = {
   medium: [
     q(
       [
-        "Which step is first in the sample handout?",
-        "ما الخطوة الأولى في الملزمة التجريبية؟",
+        "Which roots does the handout name for Erb's palsy?",
+        "ما الجذور التي تذكرها الملزمة لشلل إرب؟",
       ],
       [labels, compare],
       0,
@@ -120,22 +129,22 @@ const bank: Record<QuizDifficulty, readonly Question[]> = {
     ),
     q(
       [
-        "What timing do the sample sources specify?",
-        "ما التوقيت المحدد في المصادر التجريبية؟",
+        "What recovery time do your sources give?",
+        "ما مدة التعافي التي تذكرها مصادرك؟",
       ],
       [
-        ["An exact duration", "مدة دقيقة"],
-        ["No duration is supplied", "لا توجد مدة محددة"],
+        ["An exact number of weeks", "عدد محدد من الأسابيع"],
+        ["No recovery time is given", "لا توجد مدة للتعافي"],
       ],
       1,
       missing,
       ["handout", "recording"],
     ),
     q(
-      ["Which sequence matches the recording?", "أي ترتيب يطابق التسجيل؟"],
+      ["Which statement matches the recording?", "أي عبارة تطابق التسجيل؟"],
       [
-        ["Compare, then identify", "قارن ثم حدد"],
-        ["Identify, then compare", "حدد ثم قارن"],
+        ["Some plexuses also take C4", "بعض الضفائر تأخذ C4 أيضًا"],
+        ["The plexus never includes C4", "الضفيرة لا تشمل C4 أبدًا"],
       ],
       0,
       recording,
@@ -144,28 +153,25 @@ const bank: Record<QuizDifficulty, readonly Question[]> = {
     q(
       ["What do the passages disagree about?", "في ماذا يختلف النصان؟"],
       [
-        ["The order of the steps", "ترتيب الخطوات"],
-        ["A fixed duration", "مدة ثابتة"],
+        ["Which roots form the plexus", "الجذور التي تكوّن الضفيرة"],
+        ["How long recovery takes", "مدة التعافي"],
       ],
       0,
       conflict,
       ["handout", "recording"],
     ),
     q(
-      ["What does 02:10 locate?", "ما الذي يحدده ٠٢:١٠؟"],
+      ["What does 18:42 locate?", "ما الذي يحدده ١٨:٤٢؟"],
       [
         ["The recording passage", "نص التسجيل"],
-        ["The length of the study session", "مدة جلسة المذاكرة"],
+        ["How long the injury lasts", "مدة الإصابة"],
       ],
       0,
       recording,
       ["recording"],
     ),
     q(
-      [
-        "Which source supports identification first?",
-        "أي مصدر يدعم التحديد أولًا؟",
-      ],
+      ["Which source lists only C5 to T1?", "أي مصدر يذكر C5 إلى T1 فقط؟"],
       [
         ["The recording", "التسجيل"],
         ["The handout", "الملزمة"],
@@ -183,12 +189,12 @@ const bank: Record<QuizDifficulty, readonly Question[]> = {
       ],
       [
         [
-          "Describe both orders and their disagreement",
-          "اشرح الترتيبين واختلافهما",
+          "Describe both root lists and their disagreement",
+          "اشرح قائمتي الجذور واختلافهما",
         ],
         [
-          "Choose one order without mentioning the other",
-          "اختر ترتيبًا دون ذكر الآخر",
+          "Choose one list without mentioning the other",
+          "اختر قائمة دون ذكر الأخرى",
         ],
       ],
       0,
@@ -197,15 +203,12 @@ const bank: Record<QuizDifficulty, readonly Question[]> = {
     ),
     q(
       [
-        "How should an answer handle a request for an exact study duration?",
-        "كيف تتعامل الإجابة مع طلب مدة دقيقة للمذاكرة؟",
+        "How should an answer handle a request for an exact recovery time?",
+        "كيف تتعامل الإجابة مع طلب مدة دقيقة للتعافي؟",
       ],
       [
-        ["Treat 02:10 as the recommended duration", "اعتبر ٠٢:١٠ مدة موصى بها"],
-        [
-          "Say that the passages do not specify it",
-          "اذكر أن النصين لا يحددانها",
-        ],
+        ["Treat 18:42 as the recovery time", "اعتبر ١٨:٤٢ مدة التعافي"],
+        ["Say that the passages do not give it", "اذكر أن النصين لا يذكرانها"],
       ],
       1,
       missing,
@@ -217,10 +220,7 @@ const bank: Record<QuizDifficulty, readonly Question[]> = {
         "هل تثبت الملزمة اتفاق المصدرين؟",
       ],
       [
-        [
-          "No; the recording gives a different order",
-          "لا؛ يقدم التسجيل ترتيبًا مختلفًا",
-        ],
+        ["No; the recording adds a C4 branch", "لا؛ يضيف التسجيل فرعًا من C4"],
         ["Yes; one passage is sufficient", "نعم؛ نص واحد يكفي"],
       ],
       0,
@@ -233,10 +233,10 @@ const bank: Record<QuizDifficulty, readonly Question[]> = {
         "أي ادعاء لا يدعمه توقيت التسجيل؟",
       ],
       [
-        ["The passage begins at 02:10", "يبدأ النص عند ٠٢:١٠"],
+        ["The passage begins at 18:42", "يبدأ النص عند ١٨:٤٢"],
         [
-          "Studying should take two minutes and ten seconds",
-          "يجب أن تستغرق المذاكرة دقيقتين وعشر ثوانٍ",
+          "Recovery takes 18 weeks and 42 days",
+          "يستغرق التعافي ١٨ أسبوعًا و٤٢ يومًا",
         ],
       ],
       1,
@@ -250,7 +250,7 @@ const bank: Record<QuizDifficulty, readonly Question[]> = {
       ],
       [
         [
-          "Yes; audio always overrides a handout",
+          "Yes; a recording always overrides a handout",
           "نعم؛ التسجيل يتفوق دائمًا على الملزمة",
         ],
         [
@@ -268,8 +268,8 @@ const bank: Record<QuizDifficulty, readonly Question[]> = {
         "أي ملخص يتبع الملزمة وحدها؟",
       ],
       [
-        ["Compare before identifying", "قارن قبل التحديد"],
-        ["Identify before comparing", "حدد قبل المقارنة"],
+        ["C4 to T1", "من C4 إلى T1"],
+        ["C5 to T1", "من C5 إلى T1"],
       ],
       1,
       handout,

@@ -162,10 +162,10 @@ export function ChatExchange({
             >
               <FrontendIcon name="sources" />
               {answer.kind === "hint"
-                ? t("Recording · 02:10", "التسجيل · ٠٢:١٠")
+                ? t("Practical 3, 18:42", "العملي 3، ١٨:٤٢")
                 : answer.kind === "conflict"
                   ? t("Two source excerpts", "نصان من مصدرين")
-                  : t("Handout · p. 3", "الملزمة · ص ٣")}
+                  : t("Lecture 6, p. 14", "المحاضرة 6، ص ١٤")}
             </button>
           ) : null}
           <ProductLink

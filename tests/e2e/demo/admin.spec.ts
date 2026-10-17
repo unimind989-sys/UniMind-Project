@@ -59,7 +59,7 @@ inLocales(["en"], (locale) => {
       await send(page, "supported", locale);
       await page
         .getByRole("button", {
-          name: t("Handout · p. 3", "الملزمة · ص ٣"),
+          name: t("Lecture 6, p. 14", "المحاضرة 6، ص ١٤"),
           exact: true,
         })
         .click();
@@ -867,7 +867,7 @@ inLocales(["en"], (locale) => {
       ).toHaveValue(originalDraft);
       await expect(
         page.getByRole("button", {
-          name: t("Handout · p. 3", "الملزمة · ص ٣"),
+          name: t("Lecture 6, p. 14", "المحاضرة 6، ص ١٤"),
           exact: true,
         }),
       ).toBeVisible();

@@ -238,7 +238,7 @@ inLocales(["ar"], (locale) => {
       await page
         .locator("#exchange-2")
         .getByRole("button", {
-          name: t("Recording · 02:10", "التسجيل · ٠٢:١٠"),
+          name: t("Practical 3, 18:42", "العملي 3، ١٨:٤٢"),
           exact: true,
         })
         .click();
@@ -514,7 +514,7 @@ inLocales(["en"], (locale) => {
         await studyOptions.press("Escape");
         await page
           .getByRole("button", {
-            name: t("Handout · p. 3", "الملزمة · ص ٣"),
+            name: t("Lecture 6, p. 14", "المحاضرة 6، ص ١٤"),
             exact: true,
           })
           .last()
@@ -527,7 +527,7 @@ inLocales(["en"], (locale) => {
         await expect(
           page
             .getByRole("button", {
-              name: t("Handout · p. 3", "الملزمة · ص ٣"),
+              name: t("Lecture 6, p. 14", "المحاضرة 6، ص ١٤"),
               exact: true,
             })
             .last(),
@@ -1278,7 +1278,7 @@ inLocales(["ar"], (locale) => {
       }
       await send(page, "supported", locale);
       const citation = page.getByRole("button", {
-        name: pick(locale, "Handout · p. 3", "الملزمة · ص ٣"),
+        name: pick(locale, "Lecture 6, p. 14", "المحاضرة 6، ص ١٤"),
         exact: true,
       });
       await citation.click();
@@ -1324,7 +1324,7 @@ inLocales(["ar"], (locale) => {
         .click();
       await expect(
         page.getByRole("button", {
-          name: pick(locale, "Handout · p. 3", "الملزمة · ص ٣"),
+          name: pick(locale, "Lecture 6, p. 14", "المحاضرة 6، ص ١٤"),
         }),
       ).toHaveCount(0);
       await expect(input).toHaveValue("");
@@ -1402,7 +1402,7 @@ inLocales(["en"], (locale) => {
       await languages().locator('input[value="mixed"]').check();
       await send(page, "supported", locale);
       const citation = page.getByRole("button", {
-        name: pick(locale, "Handout · p. 3", "الملزمة · ص ٣"),
+        name: pick(locale, "Lecture 6, p. 14", "المحاضرة 6، ص ١٤"),
         exact: true,
       });
       await citation.click();

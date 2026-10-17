@@ -1573,7 +1573,7 @@ inLocales(["ar"], (locale) => {
       await expect(quizTab).toHaveAttribute("aria-current", "page");
       await page
         .getByRole("radio", {
-          name: pick(locale, "Identify labels", "تحديد الأسماء"),
+          name: pick(locale, "C5 and C6", "C5 وC6"),
           exact: true,
         })
         .check();
@@ -1704,7 +1704,7 @@ inLocales(["ar"], (locale) => {
       ).toBeDisabled();
       await page
         .getByRole("radio", {
-          name: pick(locale, "Identify labels", "تحديد الأسماء"),
+          name: pick(locale, "C5 and C6", "C5 وC6"),
           exact: true,
         })
         .check();
