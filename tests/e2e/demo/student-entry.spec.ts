@@ -1483,9 +1483,10 @@ inLocales(["en"], (locale) => {
       expect(inactive.cursor).toBe("not-allowed");
       await radio.press("Space");
       await expect(next).toBeEnabled();
-      expect(
-        await next.evaluate((e) => getComputedStyle(e).backgroundColor),
-      ).not.toBe(disabledBackground);
+      // The enabled background arrives through a CSS transition.
+      await expect
+        .poll(() => next.evaluate((e) => getComputedStyle(e).backgroundColor))
+        .not.toBe(disabledBackground);
       await next.press("Enter");
       await expect(
         page.getByRole("heading", {

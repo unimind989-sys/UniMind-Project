@@ -570,6 +570,9 @@ test("student: real workspace overview, chat sessions, placeholders and canonica
   );
   await expect(page).toHaveURL(/\/learn\?/u);
   await expect(page).not.toHaveURL(/forged/u);
+  // The catalog canonicalises on the client; let that navigation settle so
+  // the next page.goto is not aborted by it.
+  await page.waitForLoadState("networkidle");
 
   const base = `/learn/${cohort}/${unit}`;
   await page.goto(`${base}?lang=en`);
