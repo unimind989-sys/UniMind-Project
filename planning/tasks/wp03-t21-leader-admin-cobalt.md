@@ -14,7 +14,7 @@
 
 **Branch:** claude/wp03-t21-leader-admin-cobalt
 
-**Updated (UTC):** 2026-10-17T22:00Z
+**Updated (UTC):** 2026-10-18T00:30Z
 
 ## Contract
 
@@ -40,9 +40,10 @@
 - [x] Admin resource pages as working lists on surfaces; explanations become a secondary disclosure; short verb links replace the long one-line action.
 - [x] Batch Leader: Night band with campaign, deadline with time left and derived request progress; request rows; intake panel and per-file queue; recorded submissions with state pills and styled disclosures.
 - [x] Fixtures: believable invented campaign, request, source and admin target names; demo pack and walkthrough regenerated.
-- [ ] Tests updated where they pinned old presentation; checks and demo e2e green.
-- [ ] Rendered review and at most two polish rounds.
-- [ ] Review, PR, required CI.
+- [x] Tests updated where they pinned old presentation; checks and demo e2e green.
+- [x] Rendered review and two polish rounds (200% reflow of correction links, band hyphenation; review nits).
+- [x] Independent review; findings resolved.
+- [ ] PR, required CI, overseer approval (merge is the overseer's).
 
 ## Decisions
 
@@ -53,16 +54,16 @@
 
 ## Current state
 
-**Changed:** see Steps; commits on the branch.
+**Changed:** see Steps; commits `91043f0` to the PR head. Tests changed only where they pinned presentation: row selection by short verb, "Review and record", resource verb links (Campaigns proves no decision link), count tabs proved equal to their rows, new invented titles. No governance, denial, accessibility, RTL or behaviour assertion removed.
 
-**Proof:** typecheck, lint, test:unit 921/921 (new unit tests for time left and request progress); demo e2e run in progress.
+**Proof:** `format:check`, `lint`, `typecheck`, `typecheck:fresh`, `check:boundaries`, `check:sql`, `scan:secrets`, `lint:agents`, `test:unit` 921/921; full demo e2e 192/192 (`5d464a8`, 22 min, 3 workers), then admin, admin and leader layout matrices 41/41 after the review fixes (`ce16e47`); real e2e 39/39 (port 3130). `database-ci` runs in CI. Rendered review at 1440, 1100, 820, 390 and 320px (200% text), light and dark, EN and AR; 200% reflow probe clean on leader and admin pages.
 
-**Review:** not started.
+**Review:** independent review by the `independent-reviewer` sub-agent of `4849cf0..284f900`: approve with nits; all five minor findings resolved in `ce16e47` (demo pack title, edition display, band source order, phone tabs while detail is open, progress label read once). Governance, intake, counts and tests confirmed unchanged or stronger.
 
 **Approved commit:** PENDING (overseer review under Ahmed's 17 Oct delegation)
 
-**Remaining:** e2e results, rendered review, independent review, PR and CI.
+**Remaining:** required CI on the PR, overseer review and approval, merge (overseer), production proof and closure.
 
 ## Next action
 
-Finish the demo e2e run, fix failures, then run the rendered review.
+Overseer reviews the rendered candidate on the PR, records `Approved commit:`, and merges once required CI is green.
