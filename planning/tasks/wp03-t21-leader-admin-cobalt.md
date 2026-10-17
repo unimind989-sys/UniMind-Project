@@ -62,8 +62,10 @@
 
 **Approved commit:** PENDING (overseer review under Ahmed's 17 Oct delegation)
 
-**Remaining:** required CI on the PR, overseer review and approval, merge (overseer), production proof and closure.
+**PR:** [#84](https://github.com/unimind989-sys/UniMind-Project/pull/84), open and mergeable, not merged. Required CI: all 15 checks green on candidate head `e67ce9e` (run 39061821643; e2e-demo shard 3 failed once on a dev-server `ECONNRESET` during sign-in and passed on rerun). This record-only commit re-runs CI on the new head.
+
+**Remaining:** overseer review and approval, merge (overseer), production proof and closure. Delivery stopped at a green PR as instructed.
 
 ## Next action
 
-Overseer reviews the rendered candidate on the PR, records `Approved commit:`, and merges once required CI is green.
+Overseer reviews the rendered candidate on #84, records `Approved commit:`, and merges once required CI on the exact head is green.
