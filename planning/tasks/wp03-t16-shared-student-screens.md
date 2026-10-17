@@ -35,12 +35,12 @@
 ## Steps
 
 - [x] Inventory (see Decisions) and founder direction.
-- [ ] Adapter seam: a client study-workspace context. The synthetic runtime provides the document-local store; real routes provide authorized scope, units, chat sessions, the start-chat Server Action and per-tool availability.
-- [ ] Study tools read only the seam: Materials/sources, Chat, Studio, Quiz setup, evidence, report, unit switch. Real mode: count and freshness for Materials, real sessions and New chat, every unanswerable or backend-less control disabled with one honest notice.
-- [ ] Real workspace routes render `FrontendShell` + `ProductStudy`; add guarded `sources`, `evidence`, `report` routes; delete `workspace-pages.tsx` and unused workspace CSS.
-- [ ] Shared student Settings view used by `/settings` and the synthetic Settings screen; privacy controls disabled in real mode.
-- [ ] Study Shelf: remove remaining mode-specific presentation except data and sample disclosures.
-- [ ] Shared screen assertions (`tests/e2e/support/shared-screens.ts`) used by demo specs and `tests/e2e-database`.
+- [x] Seam: `LiveStudyProvider` (real routes: authorized chat sessions and the start-chat Server Action) beside the synthetic tab store; shared tools treat a live subtree as real and never read fixtures there.
+- [x] Study tools on the seam: Materials/sources, Chat, Studio, Quiz setup, evidence, report, unit switch. Real: count and freshness, real sessions and New session (a real form, so the Server Action re-authorizes), every backend-less control disabled with one notice.
+- [x] Real routes render `StudyFrame` + `ProductStudy` through `RealStudyPage`; guarded `sources`, `evidence`, `report` routes; `workspace-pages.tsx`, unused workspace CSS and copy removed.
+- [x] `AccountSettings` shared by `/settings` and the synthetic Settings screen; real privacy controls disabled.
+- [x] Study Shelf: dead mode props removed; remaining differences are sample disclosures and real tool availability.
+- [x] Shared screen assertions (`tests/e2e/support/shared-screens.ts`) used by `tests/e2e/demo/shared-screens.spec.ts` and `tests/e2e-database/product-shell.spec.ts`; `database-ci` now also runs when that helper changes.
 - [ ] Rendered inspection (EN/AR, light/dark, desktop/mobile); present to Ahmed; independent review; PR.
 
 ## Decisions

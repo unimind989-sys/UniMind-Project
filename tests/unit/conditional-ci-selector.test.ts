@@ -89,8 +89,9 @@ describe("conditional CI selector", () => {
 
   it("runs the real-mode browser contracts for frontend and e2e-database changes", () => {
     for (const changedPath of [
-      "src/app/learn/_components/workspace-pages.tsx",
+      "src/app/learn/_components/study-frame.tsx",
       "tests/e2e-database/product-shell.spec.ts",
+      "tests/e2e/support/shared-screens.ts",
     ])
       expect(
         selectCiJobs({

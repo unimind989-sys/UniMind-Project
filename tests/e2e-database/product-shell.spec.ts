@@ -9,6 +9,15 @@ import {
   type Request as BrowserRequest,
 } from "@playwright/test";
 import { assertGitHubHostedLinuxRunner } from "../../scripts/lib/ephemeral-supabase";
+import {
+  expectChatScreen,
+  expectMaterialsScreen,
+  expectQuizSetupScreen,
+  expectStudentSettingsScreen,
+  expectStudioScreen,
+  expectStudyFrame,
+  openChatSessions,
+} from "../e2e/support/shared-screens";
 
 assertGitHubHostedLinuxRunner(process.env);
 const cohort = "20000000-0000-4000-8000-000000000006";
@@ -403,8 +412,10 @@ test.afterEach(async ({ page }) => {
 test("anonymous: protected routes and upload mutation remain unavailable", async ({
   page,
 }) => {
-  await page.goto(workspace);
-  await expect(page).toHaveURL(/\/login\?/u);
+  for (const tool of ["chat", "sources", "evidence", "report"]) {
+    await page.goto(`/learn/${cohort}/${unit}/${tool}?lang=en`);
+    await expect(page).toHaveURL(/\/login\?/u);
+  }
   await page.goto(`/batch-leader/campaigns/${campaign}?lang=en`);
   await expect(
     page.getByRole("heading", { name: "Synthetic collection campaign" }),
@@ -426,7 +437,7 @@ for (const role of roles) {
     await page.goto(workspace);
     if (role === "student") {
       await expect(
-        page.getByRole("button", { name: "Start a scoped session" }),
+        page.getByRole("heading", { level: 2, name: "Chat" }),
       ).toBeVisible();
     } else {
       await expect(
@@ -480,7 +491,8 @@ for (const transition of ["lock", "deactivate", "revoke"] as const) {
   }) => {
     await login(page, "student");
     await page.goto(workspace);
-    await page.getByRole("button", { name: "Start a scoped session" }).click();
+    await openChatSessions(page, "en");
+    await page.getByRole("button", { name: "New session" }).click();
     await expect(page).toHaveURL(/session=[0-9a-f-]+/u);
     const caller = users.get("student")!.id;
     const count = sql(
@@ -511,7 +523,8 @@ for (const transition of ["lock", "deactivate", "revoke"] as const) {
         `update public.cohort_memberships set status = 'REVOKED' where user_id = '${caller}';`,
       );
     // Submit the already rendered form with the same still-valid Auth session.
-    await page.getByRole("button", { name: "Start a scoped session" }).click();
+    await openChatSessions(page, "en");
+    await page.getByRole("button", { name: "New session" }).click();
     await expect(
       page.getByRole("heading", { name: "Workspace unavailable" }),
     ).toBeVisible();
@@ -558,12 +571,12 @@ test("revoked leader loses campaign access in the same browser", async ({
   expect(await upload.json()).toEqual({ error: "UPLOAD_REJECTED" });
 });
 
-// Real-mode-only screens. These contracts were previously exercised through the
-// retired fixture routes; the synthetic runtime renders different study UI.
-test("student: real workspace overview, chat sessions, placeholders and canonical catalog", async ({
+// WP03-T16: the real half of the shared student-screen assertions. The
+// synthetic half runs the same checks in tests/e2e/demo/shared-screens.spec.ts.
+test("student: shared study, settings and catalog screens against the real backend", async ({
   page,
 }) => {
-  test.setTimeout(90_000);
+  test.setTimeout(120_000);
   await login(page, "student");
   await page.goto(
     `/learn?lang=en&level=forged-level&cohort=forged-cohort&unit=forged-unit`,
@@ -576,47 +589,60 @@ test("student: real workspace overview, chat sessions, placeholders and canonica
 
   const base = `/learn/${cohort}/${unit}`;
   await page.goto(`${base}?lang=en`);
+  await expectStudyFrame(page, "en", "Synthetic Unit A");
+  await expectMaterialsScreen(page, "en", "real");
   await expect(
-    page.getByRole("heading", { name: "Synthetic Unit A", level: 1 }),
+    page.getByText(/\d+ approved materials in this /u),
   ).toBeVisible();
-  await expect(page.getByText(/\d+ approved sources/u)).toBeVisible();
-  await expect(page.getByText("Planned capability")).toHaveCount(5);
   await expectAccessibleWorkspacePage(page, "en", "overview");
   await page.getByRole("link", { name: "Skip to content" }).focus();
   await page.keyboard.press("Enter");
   await expect(page.getByRole("main")).toBeFocused();
-  await page.getByRole("link", { name: "View status" }).first().click();
+
+  await page
+    .getByRole("navigation", { name: "Workspace navigation" })
+    .getByRole("link", { name: "Chat", exact: true })
+    .click();
   await expect(page).toHaveURL(new RegExp(`${base}/chat\\?lang=en`, "u"));
-  await expect(
-    page.getByText("Messaging is not available in WP03-T04.").first(),
-  ).toBeVisible();
+  await expectChatScreen(page, "en", "real");
   await expectAccessibleWorkspacePage(page, "en", "chat");
 
-  await page.getByRole("button", { name: "Start a scoped session" }).click();
+  await openChatSessions(page, "en");
+  await page.getByRole("button", { name: "New session" }).click();
   await expect(page).toHaveURL(/session=[0-9a-f-]+/u);
   const firstSession = new URL(page.url()).searchParams.get("session");
   expect(firstSession).not.toBeNull();
   await page.reload();
+  await openChatSessions(page, "en");
   await expect(
-    page.getByText(firstSession?.slice(0, 8) ?? "missing"),
+    page.getByRole("button", { name: /Session 1(?!\d)/u, pressed: true }),
   ).toBeVisible();
-  await page.getByRole("button", { name: "Start a scoped session" }).click();
+  await page.getByRole("button", { name: "New session" }).click();
   await page.waitForURL(
     (url) => url.searchParams.get("session") !== firstSession,
   );
-  await page
-    .getByRole("main")
-    .locator(`a[href$="session=${firstSession}"]`)
-    .click();
+  await openChatSessions(page, "en");
+  await page.getByRole("button", { name: /Session 1(?!\d)/u }).click();
   await expect(page).toHaveURL(new RegExp(`session=${firstSession}`, "u"));
 
-  for (const [tool, heading] of [
-    ["studio", "Studio is planned"],
-    ["quiz", "Quiz is planned"],
-  ] as const) {
-    await page.goto(`${base}/${tool}?lang=en`);
-    await expect(page.getByRole("heading", { name: heading })).toBeVisible();
-  }
+  await page.goto(`${base}/studio?lang=en`);
+  await expectStudioScreen(page, "en", "real");
+  await page.goto(`${base}/quiz?lang=en`);
+  await expectQuizSetupScreen(page, "en", "real");
+  await page.goto(`${base}/sources?lang=en`);
+  await expect(
+    page.getByText(/The material list is not available yet\. \d+ approved/u),
+  ).toBeVisible();
+  await page.goto(`${base}/evidence?lang=en`);
+  await expect(
+    page.getByText("Chat answers are not available yet.", { exact: false }),
+  ).toBeVisible();
+  await page.goto(`${base}/report?lang=en`);
+  await expect(
+    page.getByText("Chat answers are not available yet.", { exact: false }),
+  ).toBeVisible();
+  await page.goto("/settings?lang=en");
+  await expectStudentSettingsScreen(page, "en", "real");
 
   await page.goto(
     `/learn/${cohort}/20000000-0000-4000-8000-000000000099/chat?lang=en`,
@@ -632,24 +658,23 @@ test("student: real workspace overview, chat sessions, placeholders and canonica
   await page.goto(`${base}?lang=ar`);
   await expect(page.locator("html")).toHaveAttribute("lang", "ar");
   await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
-  await expect(
-    page.getByRole("heading", { name: "وحدة تجريبية أ", level: 1 }),
-  ).toBeVisible();
+  await expectStudyFrame(page, "ar", "وحدة تجريبية أ");
+  await expectMaterialsScreen(page, "ar", "real");
   const geometry = await page.evaluate(() => ({
     documentWidth: document.documentElement.scrollWidth,
     viewportWidth: window.innerWidth,
-    controls: Array.from(document.querySelectorAll("a,button,textarea"))
-      .filter((element) => (element as HTMLElement).offsetParent !== null)
-      .map((element) => element.getBoundingClientRect().height),
   }));
   expect(geometry.documentWidth).toBeLessThanOrEqual(geometry.viewportWidth);
-  expect(Math.min(...geometry.controls)).toBeGreaterThanOrEqual(44);
   await expectAccessibleWorkspacePage(page, "ar", "overview");
   await page.goto(`${base}/chat?lang=ar`);
-  await expect(
-    page.getByRole("heading", { name: "جلسات محادثة محددة النطاق" }),
-  ).toBeVisible();
+  await expectChatScreen(page, "ar", "real");
   await expectAccessibleWorkspacePage(page, "ar", "chat");
+  await page.goto(`${base}/studio?lang=ar`);
+  await expectStudioScreen(page, "ar", "real");
+  await page.goto(`${base}/quiz?lang=ar`);
+  await expectQuizSetupScreen(page, "ar", "real");
+  await page.goto("/settings?lang=ar");
+  await expectStudentSettingsScreen(page, "ar", "real");
 });
 
 test("leader: real intake validates files in the browser, records a receipt and closes forged campaigns", async ({
