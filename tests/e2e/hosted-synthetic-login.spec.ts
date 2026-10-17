@@ -53,7 +53,7 @@ for (const [role, locale] of [
       ).toHaveCount(0);
       await page
         .getByRole("button", {
-          name: new RegExp(pick(locale, "^Hide unit", "^إخفاء الوحدة"), "u"),
+          name: new RegExp(pick(locale, "^Hide ", "^إخفاء "), "u"),
         })
         .click();
       await page
@@ -69,7 +69,7 @@ for (const [role, locale] of [
         );
       await page
         .getByRole("button", {
-          name: pick(locale, "Review exact change", "مراجعة التغيير المحدد"),
+          name: pick(locale, "Review and record", "مراجعة وتسجيل"),
           exact: true,
         })
         .click();
@@ -96,10 +96,7 @@ for (const [role, locale] of [
       await page.setViewportSize({ width: 1440, height: 900 });
       await page
         .getByRole("button", {
-          name: new RegExp(
-            pick(locale, "Place raw-data hold", "وضع حجز على البيانات الخام"),
-            "u",
-          ),
+          name: new RegExp(pick(locale, "^Place hold ", "^وضع حجز "), "u"),
         })
         .click();
       await page
@@ -119,7 +116,7 @@ for (const [role, locale] of [
       await page.locator('input[name="reviewAttested"]').check();
       await page
         .getByRole("button", {
-          name: pick(locale, "Review exact change", "مراجعة التغيير المحدد"),
+          name: pick(locale, "Review and record", "مراجعة وتسجيل"),
           exact: true,
         })
         .click();

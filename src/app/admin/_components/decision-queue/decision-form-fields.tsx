@@ -53,7 +53,12 @@ export function DecisionFormFields({
         value={review.idempotencyKey}
       />
       <label className={styles.field}>
-        <span>{copy.reason}</span>
+        <span className={styles.fieldLabel}>
+          {copy.reason}
+          {secondConfirmation || ownerReviewPending ? null : (
+            <span className={styles.requiredTag}>{copy.required}</span>
+          )}
+        </span>
         {secondConfirmation || ownerReviewPending ? (
           <textarea
             name="reason"
@@ -85,7 +90,7 @@ export function DecisionFormFields({
       {candidate.action === "PLACE_RAW_HOLD" && (
         <>
           <label className={styles.field}>
-            <span>{copy.holdExpiry}</span>
+            <span className={styles.fieldLabel}>{copy.holdExpiry}</span>
             <input
               type="datetime-local"
               name="holdExpiresAtLocal"

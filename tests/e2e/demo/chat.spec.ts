@@ -153,7 +153,7 @@ inLocales(["ar"], (locale) => {
       await signIn(page, "admin", locale);
       await page
         .getByRole("button", {
-          name: new RegExp(`^${copy.actions.DEACTIVATE_SOURCE}`),
+          name: new RegExp(`^${copy.verbs.DEACTIVATE_SOURCE} `),
         })
         .click();
       await page
@@ -255,7 +255,7 @@ inLocales(["ar"], (locale) => {
         .click();
       await page
         .getByRole("button", {
-          name: new RegExp(`^${copy.actions.ACTIVATE_SOURCE}`),
+          name: new RegExp(`^${copy.verbs.ACTIVATE_SOURCE} `),
         })
         .click();
       await page
@@ -297,7 +297,7 @@ inLocales(["ar"], (locale) => {
         .click();
       await page
         .getByRole("button", {
-          name: new RegExp(`^${copy.actions.ACTIVATE_SOURCE}`),
+          name: new RegExp(`^${copy.verbs.ACTIVATE_SOURCE} `),
         })
         .click();
       await page

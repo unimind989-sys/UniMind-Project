@@ -8,6 +8,7 @@ import {
   makeSyntheticCampaign,
   prepareSyntheticCollectionCorrections,
   registerSyntheticCollectionReceipt,
+  syntheticSourceTitle,
 } from "../../src/lib/demo/synthetic-campaigns.application";
 import type { ReviewSubmission } from "../../src/lib/demo/synthetic-fixtures.application";
 
@@ -49,7 +50,7 @@ function prepared(campaignId = demoCampaignId) {
     requestedItemId: target(campaignId),
     clientIdempotencyKey: key,
     uploadId: receipt.uploadId,
-    sourceName: "Synthetic study source",
+    sourceName: syntheticSourceTitle,
     sourceDescription: "Synthetic description with ordinary safe metadata.",
     declaredRights: "DECLARED",
   }))

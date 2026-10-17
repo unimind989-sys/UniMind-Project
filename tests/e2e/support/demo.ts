@@ -189,7 +189,7 @@ export async function b05Select(page: Page, index: number, locale: Locale) {
       .locator("#decision-list")
       .getByRole("button", {
         name: new RegExp(
-          "^" + getAdminCopy(locale).actions[b05Actions[index]!],
+          "^" + getAdminCopy(locale).verbs[b05Actions[index]!] + " ",
         ),
       })
       .click();
@@ -287,9 +287,13 @@ const governedLabels: Readonly<Record<string, string>> = {
 
 /** Reviews and records one governed admin example (English labels). */
 export async function changeAdmin(page: Page, id: string, second = false) {
-  const definition = actionFixtures.find((action) => action.id === id)!;
+  const index = actionFixtures.findIndex((action) => action.id === id);
+  const definition = actionFixtures[index]!;
+  // Queue rows lead with the short verb; confirmations keep the full label.
   await page
-    .getByRole("button", { name: new RegExp(`^${governedLabels[id]}`) })
+    .getByRole("button", {
+      name: new RegExp(`^${getAdminCopy("en").verbs[b05Actions[index]!]} `),
+    })
     .click();
   if (!second)
     await page
@@ -304,7 +308,7 @@ export async function changeAdmin(page: Page, id: string, second = false) {
     await page.locator('input[name="reviewAttested"]').check();
   }
   await page
-    .getByRole("button", { name: "Review exact change", exact: true })
+    .getByRole("button", { name: "Review and record", exact: true })
     .click();
   await page
     .getByRole("button", {

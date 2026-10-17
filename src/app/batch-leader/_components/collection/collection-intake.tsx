@@ -53,7 +53,7 @@ export function CollectionIntake({
           : t("Upload files", "رفع الملفات")}
       </h2>
       {selectedRequestId ? (
-        <p className={styles.helper}>
+        <p className={styles.intakeFor}>
           {t("For", "لـ")}:{" "}
           <strong>
             {
@@ -65,7 +65,7 @@ export function CollectionIntake({
         </p>
       ) : null}
       {correction ? (
-        <div role="status" className={styles.helper}>
+        <div role="status" className={styles.correctionNote}>
           <p>
             {correction.action === "FIX_INFORMATION"
               ? t("Fix information", "تصحيح المعلومات")
@@ -92,12 +92,10 @@ export function CollectionIntake({
         {t(
           "Only synthetic files are accepted at this stage.",
           "في هذه المرحلة، تقبل الملفات التجريبية فقط.",
-        )}
-      </p>
-      <p className={styles.helper}>
+        )}{" "}
         {t(
-          "PDF · WAV · PNG · Up to 10 MB per file",
-          "PDF · WAV · PNG · حتى ١٠ ميجابايت للملف",
+          "PDF, WAV or PNG, up to 10 MB each.",
+          "PDF أو WAV أو PNG، حتى ١٠ ميجابايت للملف.",
         )}
       </p>
       <div
@@ -115,7 +113,7 @@ export function CollectionIntake({
         }}
       >
         <div className={styles.uploadMark} aria-hidden="true">
-          <FrontendIcon name="send" />
+          <FrontendIcon name="upload" />
         </div>
         <p>
           {t(
@@ -146,7 +144,9 @@ export function CollectionIntake({
       </div>
       {reference ? (
         <div className={styles.reference}>
-          <span>{reference.name}</span>
+          <span>
+            <bdi>{reference.name}</bdi>
+          </span>
           <Button
             variant="quiet"
             disabled={queue.running || windowState !== "ACTIVE"}
@@ -182,7 +182,7 @@ export function CollectionIntake({
             ))}
         </ul>
       ) : (
-        <p className={styles.helper}>
+        <p className={styles.queueEmpty}>
           {t(
             "Your queue is empty. Choose one or more files to get started.",
             "قائمة الرفع فارغة. اختر ملفًا أو أكثر للبدء.",
