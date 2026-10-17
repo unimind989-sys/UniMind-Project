@@ -484,7 +484,7 @@ jobs:
 
     expect(
       auditCiWorkflow(
-        workflow.replace("shard: [1, 2, 3, 4]", "shard: [1, 2, 4]"),
+        workflow.replace("shard: [1, 2, 3, 4, 5]", "shard: [1, 2, 4, 5]"),
       ),
     ).toContain("E2E_SHARDING_UNSAFE:e2e_demo");
     expect(

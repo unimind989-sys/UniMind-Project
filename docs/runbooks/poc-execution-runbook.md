@@ -1455,15 +1455,25 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 **Pass:** the same product behaviour in real, hosted-synthetic and local demo modes; required CI green with a much shorter wall time; fewer tests with no lost forbidden-path, RLS, accessibility or RTL protection; no source file over the limit.
 
+#### WP03-T16 — Balance demo CI shards
+
+**Dependencies:** WP03-T15 (parallel CI with sharded demo browser tests). On WP03-T15's final run, one demo shard took about 14 minutes while the others took about 5, so that shard set the CI wall time.
+
+- [x] Find the cause of the slow demo shard from per-test durations of the last WP03-T15 run.
+- [x] Spread the heaviest demo tests so `--fully-parallel` sharding gives each shard a similar share, and set the shard count, without dropping or weakening a test (`--list` stays at 190).
+- [x] Deliver through one PR with required CI, an independent review of the workflow change, and squash merge; record per-shard and total wall time. These closure markers become authoritative only when that PR merges.
+
+**Pass:** demo shards on the PR's CI finish within about 2 minutes of each other; CI wall time drops from about 14.6 to about 7 minutes; the same 190 demo tests run.
+
 #### WP03-T17 — Render the same student screens in real and synthetic modes
 
-**Dependencies:** WP03-T15 delivered (two composition roots). Ahmed's 17 October 2026 decision: the synthetic flow must be identical to the real product so design review and testing use one UI. He chose the founder-reviewed synthetic screens as the canonical UI, real tools without a backend shown in the same layout but disabled, Materials limited to count and freshness until an authorized source-list function exists, and scope covering the study workspace, Study Shelf and student Settings. [~] Claude Code, `claude/wp03-t17-shared-study-screens`.
+**Dependencies:** WP03-T15 delivered (two composition roots). Ahmed's 17 October 2026 decision: the synthetic flow must be identical to the real product so design review and testing use one UI. He chose the founder-reviewed synthetic screens as the canonical UI, real tools without a backend shown in the same layout but disabled, Materials limited to count and freshness until an authorized source-list function exists, and scope covering the study workspace, Study Shelf and student Settings.
 
-- [ ] Inventory the real and synthetic student screens and record which already share leaf components.
-- [ ] Feed the shared study workspace (Materials, Chat, Studio, Quiz, sources, evidence, report), Study Shelf and student Settings through one adapter seam: real routes pass authorized server data and Server Actions; the synthetic runtime passes `src/lib/demo` state. Tools without a real backend render their normal layout disabled with an honest notice and never fixture data in real mode.
-- [ ] Keep every real-route auth guard, RLS and hosted-mode isolation; real modules never import `src/lib/demo`; only the root layout and the loopback document route mount the synthetic runtime.
-- [ ] Assert each shared screen with one set of browser checks in synthetic mode (`tests/e2e/demo/**`) and against the real backend (`tests/e2e-database/**`); keep the layout matrix (accessibility, RTL, 200% text) green.
-- [ ] Independent review of the auth and data changes; Ahmed approves the rendered candidate (`Approved commit:`); deliver through one PR with required CI.
+- [x] Inventory the real and synthetic student screens and record which already share leaf components.
+- [x] Feed the shared study workspace (Materials, Chat, Studio, Quiz, sources, evidence, report), Study Shelf and student Settings through one adapter seam: real routes pass authorized server data and Server Actions; the synthetic runtime passes `src/lib/demo` state. Tools without a real backend render their normal layout disabled with an honest notice and never fixture data in real mode.
+- [x] Keep every real-route auth guard, RLS and hosted-mode isolation; real modules never import `src/lib/demo`; only the root layout and the loopback document route mount the synthetic runtime.
+- [x] Assert each shared screen with one set of browser checks in synthetic mode (`tests/e2e/demo/**`) and against the real backend (`tests/e2e-database/**`); keep the layout matrix (accessibility, RTL, 200% text) green.
+- [x] Independent review of the auth and data changes; Ahmed approves the rendered candidate (`Approved commit:`); deliver through one PR ([#80](https://github.com/unimind989-sys/UniMind-Project/pull/80)) with required CI. These closure markers become authoritative only when that PR merges.
 
 **Pass:** each student screen renders the same components in real and synthetic modes, and only data and availability differ; required CI green; review findings resolved; founder approval recorded.
 

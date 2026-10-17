@@ -20,8 +20,10 @@ import { expect, test, type Page } from "./test";
 // reflow at desktop, phone and 320px widths and at 320px with 200% text, the
 // state's own geometry (`check`), and axe at desktop (plus at 320px where the
 // phone markup differs). Journeys in the other demo specs prove behaviour in a
-// single locale; the `demo/layout-matrix-*.spec.ts` files own themes, widths
-// and axe.
+// single locale; the `demo/*.layout-matrix.spec.ts` files own themes, widths
+// and axe. Those files are grouped by role and named so each sorts beside
+// different journey specs: Playwright shards by test count in file order, and
+// keeping the heavy matrix files apart keeps CI shards balanced.
 
 export type StateContext = {
   page: Page;

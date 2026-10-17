@@ -2,7 +2,7 @@
 
 **Task ID:** WP03-T17
 
-**Status:** [~]
+**Status:** [x] (authoritative when PR #80 merges)
 
 **Outcome:** Real student routes render the founder-reviewed synthetic screen components (study workspace, Study Shelf, student Settings). Real routes feed them authorized server data; the synthetic runtime feeds them `src/lib/demo` state. Only data and availability differ.
 
@@ -41,7 +41,7 @@
 - [x] `AccountSettings` shared by `/settings` and the synthetic Settings screen; real privacy controls disabled.
 - [x] Study Shelf: dead mode props removed; remaining differences are sample disclosures and real tool availability.
 - [x] Shared screen assertions (`tests/e2e/support/shared-screens.ts`) used by `tests/e2e/demo/chat-shared-screens.spec.ts` and `tests/e2e-database/product-shell.spec.ts`; `database-ci` now also runs when that helper changes.
-- [ ] Rendered inspection (EN/AR, light/dark, desktop/mobile); present to Ahmed; independent review; PR.
+- [x] Rendered inspection; independent review; PR #80; Ahmed approved a7bb89b. Database CI then found axe `scrollable-region-focusable` on real Materials at 200% text; fixed non-visually in `FrontendShell` (approval kept).
 
 ## Decisions
 
@@ -62,8 +62,8 @@
 
 **Approved commit:** a7bb89b — Ahmed, 2026-10-17 (reviewed synthetic and real screens on PR #80)
 
-**Remaining:** required CI on PR #80 (draft); Ahmed's rendered review; sync with main after PR #78 (runbook WP03 section); mark ready, merge, close.
+**Remaining:** NONE once PR #80 merges with required CI green.
 
 ## Next action
 
-Ahmed reviews the candidate: synthetic at the local demo (`corepack pnpm demo`, student@example.invalid) or hosted synthetic login on the PR Preview, and real mode on the PR #80 Vercel Preview with a Preview student account. Record `Approved commit:` with his answer.
+Squash-merge PR #80 after required CI passes on the final head, then delete the branch and worktree.
