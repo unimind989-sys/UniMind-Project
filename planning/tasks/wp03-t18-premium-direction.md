@@ -65,16 +65,16 @@
 
 ## Current state
 
-**Changed:** runbook entries WP03-T18 to T21; this record; `planning/design/premium-overhaul/` with the brief, review harness, Direction A (Margin) and Direction B (Cobalt, built by a sub-agent from the brief).
+**Changed:** runbook entries WP03-T18 to T21; this record; `planning/design/premium-overhaul/` with the brief, review harness, Direction A (Margin), Direction B (Cobalt, built by a sub-agent from the brief) and `landing.html` (L1 The page answers, L2 Ask it yourself, L3 Folio spread). `DESIGN.md` rewritten for Direction B (drafted by a sub-agent, reviewed line by line against the old contract; landing section pending); `docs/agents/frontend.md`, the `frontend-design` skill note and the approval history point to Cobalt.
 
-**Proof:** diagnosis captures in the session scratchpad (regenerate from `pnpm demo`). Every mockup screen captured at 1440px and 390px in light and dark from `serve.mjs` and inspected in two rounds; `pnpm lint:agents` passed.
+**Proof:** diagnosis captures in the session scratchpad (regenerate from `pnpm demo`). Every mockup and landing screen captured at 1440px and 390px in light and dark from `serve.mjs` and inspected in two rounds; L1's animation ends with every element visible; `pnpm lint:agents` and Prettier on `DESIGN.md` passed.
 
 **Review:** self-review.
 
-**Approved commit:** PENDING (direction choice).
+**Approved commit:** PENDING (landing variant choice; product direction chosen 17 October 2026).
 
-**Remaining:** Ahmed's choice, contract rewrite, `pnpm check`, PR.
+**Remaining:** Ahmed's landing choice, the landing section of `DESIGN.md`, `pnpm check`, PR.
 
 ## Next action
 
-Record Ahmed's choice of A, B or a mix, then rewrite `DESIGN.md` for it.
+Record Ahmed's landing variant choice, write the landing section of `DESIGN.md`, then `pnpm check` and open the PR.

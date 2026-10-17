@@ -4,7 +4,7 @@ Apply this page to every task that changes rendered UI. Root `DESIGN.md` is the 
 
 ## Authority
 
-- `DESIGN.md` holds the current design system (Open Folio). Approval history is in `evidence/wp03-product-shell/design-approval-history.md` and `planning/design/frontend-overhaul/`.
+- `DESIGN.md` holds the current design system: Direction B "Cobalt", approved in WP03-T18 (mockup `planning/design/premium-overhaul/direction-b.html`; the landing direction is still pending there). Approval history is in `evidence/wp03-product-shell/design-approval-history.md` and `planning/design/frontend-overhaul/`.
 - Preserve existing visual decisions. A missing token or brand rule is an open question for the founder, not permission to invent one.
 - Most UniMind work refines the approved direction. A new visual direction or redesign needs a founder decision first.
 
