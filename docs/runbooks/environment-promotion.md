@@ -22,6 +22,7 @@ Stop if any precondition is unknown. Never point one environment at another envi
 - `unimind-beta` has no Git integration. Deploy an exact reviewed commit through the pinned CLI as a Vercel preview deployment, never as production during WP01-T09.
 - Enable Vercel Authentication with Standard Protection on `unimind-beta`. Hobby Standard Protection covers preview/deployment URLs but not a production domain, so WP01-T09 creates no Beta production deployment or production domain.
 - Do not add a protection-bypass secret unless a later automated test explicitly requires it and the secret has an approved storage and rotation path.
+- `vercel curl`, used to check a protected deployment before promotion, can create or reuse the project's Protection Bypass for Automation secret without showing it. Never run it with `--debug`: debug output prints that secret. Treat a printed secret as exposed and have a founder revoke it in the project's Deployment Protection settings. To check without any bypass, promote first and run the public smoke checks with the rollback target ready.
 
 ## Preview candidate
 
