@@ -37,8 +37,8 @@
 ## Steps
 
 - [x] Capture every role at 1440px and 390px (light, dark) from the local synthetic demo and diagnose.
-- [ ] Plan two directions (tokens, type, layout) and review them against generic defaults.
-- [ ] Build both as clickable static mockups: landing hero, Study Shelf, Chat with evidence (desktop, phone, Arabic phone), admin decision queue.
+- [x] Plan two directions (tokens, type, layout) and review them against generic defaults.
+- [x] Build both as clickable static mockups: landing hero, Study Shelf, Chat with evidence (desktop, phone, Arabic phone), admin decision queue.
 - [ ] Present; record Ahmed's choice.
 - [ ] Rewrite `DESIGN.md` for the chosen direction; `pnpm check`; PR with required CI.
 
@@ -64,16 +64,16 @@
 
 ## Current state
 
-**Changed:** runbook entries WP03-T18 to T21; this record.
+**Changed:** runbook entries WP03-T18 to T21; this record; `planning/design/premium-overhaul/` with the brief, review harness, Direction A (Margin) and Direction B (Cobalt, built by a sub-agent from the brief).
 
-**Proof:** captures in the session scratchpad (not committed; regenerated from `pnpm demo`).
+**Proof:** diagnosis captures in the session scratchpad (regenerate from `pnpm demo`). Every mockup screen captured at 1440px and 390px in light and dark from `serve.mjs` and inspected in two rounds; `pnpm lint:agents` passed.
 
 **Review:** self-review.
 
 **Approved commit:** PENDING (direction choice).
 
-**Remaining:** mockups, choice, contract rewrite, PR.
+**Remaining:** Ahmed's choice, contract rewrite, `pnpm check`, PR.
 
 ## Next action
 
-Plan and build the two mockup directions under `planning/design/premium-overhaul/`.
+Record Ahmed's choice of A, B or a mix, then rewrite `DESIGN.md` for it.

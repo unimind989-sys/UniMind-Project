@@ -1482,7 +1482,7 @@ External component catalogs and MCPs are optional implementation aids, never des
 **Dependencies:** WP03-T17 delivered. Ahmed's 17 October 2026 request: every flow (landing, student, Batch Leader, admin) works but looks bland and unpolished; overhaul it with the same fingerprint, and he authorized editing `DESIGN.md` and related design files. His decisions the same day: the name, Open Folio logo, slogan and blue family stay fixed while fonts, surfaces, shell and the landing illustration may change; choose the direction from two static mockups before building; replace test-like fixture names with realistic invented content; rebuild the student flow first.
 
 - [~] Diagnose the current frontend from rendered captures of every role and record the findings in the [task record](../../planning/tasks/wp03-t18-premium-direction.md).
-- [ ] Build two clickable static mockup directions for the landing hero, Study Shelf, Chat with evidence (desktop, phone and one Arabic phone screen) and the admin decision queue, with realistic invented content and both themes.
+- [x] Build two clickable static mockup directions for the landing hero, Study Shelf, Chat with evidence (desktop, phone and one Arabic phone screen) and the admin decision queue, with realistic invented content and both themes.
 - [ ] Record Ahmed's choice of direction, or the mix he asks for.
 - [ ] Rewrite `DESIGN.md` (and `docs/agents/frontend.md` where needed) for the chosen direction; keep behaviour, safety, accessibility, RTL and theme rules, and retire the constraints that force the neutral look.
 - [ ] Deliver through one PR with required CI. No product code changes in this task.
