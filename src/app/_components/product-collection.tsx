@@ -27,6 +27,7 @@ import {
   registerSyntheticCollectionReceipt,
   finalizeSyntheticCollectionSubmission,
   prepareSyntheticCollectionCorrections,
+  syntheticSourceDescription,
   syntheticSourceTitle,
 } from "@/lib/demo/synthetic-campaigns.application";
 
@@ -203,8 +204,7 @@ export function ProductCollection({
       initialClientKey="sample-initial"
       initialMetadata={{
         title: syntheticSourceTitle,
-        description:
-          "Dr. Hala Mansour's upper limb lectures, shared by the Anatomy department.",
+        description: syntheticSourceDescription,
       }}
       reference={{
         name:

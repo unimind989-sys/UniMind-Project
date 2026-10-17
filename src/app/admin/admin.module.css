@@ -62,6 +62,18 @@
   outline: 2px solid var(--on-night);
   outline-offset: 2px;
 }
+/* The queue stacks title, count tabs and actions in source order until all
+   three fit on one row. */
+.band[data-view="queue"] {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "title"
+    "slot"
+    "actions";
+}
+.band[data-view="queue"] .bandActions {
+  justify-self: end;
+}
 @media (min-width: 1280px) {
   .band[data-view="queue"] {
     grid-template-columns: minmax(0, 1fr) auto auto;
@@ -1006,7 +1018,8 @@
   .queueLayout[data-detail-open="false"] .selectedDetail {
     display: none;
   }
-  .queueLayout[data-detail-open="true"] .queuePane {
+  .queueLayout[data-detail-open="true"] .queuePane,
+  .band:has(~ .console [data-detail-open="true"]) .bandSlot {
     display: none;
   }
   .detailBack {

@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import type { Locale } from "@/lib/i18n/locale";
 import { collectionText } from "./collection-text";
 import styles from "../../collection.module.css";
@@ -14,6 +15,7 @@ export function CollectionProgress({
   locale,
 }: Readonly<{ sent: number; total: number; locale: Locale }>) {
   const t = collectionText(locale);
+  const labelId = useId();
   if (total === 0) return null;
   const number = new Intl.NumberFormat(locale === "ar" ? "ar-EG" : "en");
   const label = t(
@@ -22,8 +24,8 @@ export function CollectionProgress({
   );
   return (
     <div className={styles.progress}>
-      <p>{label}</p>
-      <progress max={total} value={sent} aria-label={label} />
+      <p id={labelId}>{label}</p>
+      <progress max={total} value={sent} aria-labelledby={labelId} />
     </div>
   );
 }

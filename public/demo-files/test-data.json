@@ -22,8 +22,8 @@
     "remainingPlatform": "The accepted candidate IDs record a historical review. WP03-T09/T10 delivery is complete for the runbook's recorded candidates. Current frontend-refinements audit repairs remain uncommitted local work under WP03-T13, with final acceptance and delivery proof pending. All study/upload/governance results here are fixed local examples."
   },
   "credentials": "accounts.csv",
-  "sourceTitle": "Synthetic study source",
-  "sourceDescription": "Invented source for the UniMind synthetic product flow.",
+  "sourceTitle": "Upper limb lecture material",
+  "sourceDescription": "Dr. Hala Mansour's upper limb lectures, shared by the Anatomy department.",
   "adminReasonEn": "Synthetic readiness review.",
   "adminReasonAr": "مراجعة جاهزية تجريبية.",
   "verificationLink": "/auth/callback?code=sample-verification&type=signup",

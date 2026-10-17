@@ -741,7 +741,9 @@ inLocales(["ar"], (locale) => {
       ).toHaveCount(0);
       await expect(page.getByRole("main").getByRole("textbox")).toHaveCount(0);
       await expect(page.getByRole("main").getByRole("combobox")).toHaveCount(0);
-      await expect(page.getByRole("main")).toContainText("synthetic-2026-2027");
+      await expect(page.getByRole("main")).toContainText(
+        t("Sample edition 2026–2027", "إصدار تجريبي ٢٠٢٦–٢٠٢٧"),
+      );
       await review.press("Enter");
       await review.press("Enter");
       await expect(page.getByRole("status")).toHaveCount(1);

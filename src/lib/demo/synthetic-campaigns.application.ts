@@ -36,6 +36,9 @@ const names = [
  * service accepts this supplied title only, as it always has.
  */
 export const syntheticSourceTitle = "Upper limb lecture material";
+/** The description every new synthetic file starts with. */
+export const syntheticSourceDescription =
+  "Dr. Hala Mansour's upper limb lectures, shared by the Anatomy department.";
 /** Requested items per campaign (handout, recording, diagram), EN and AR. */
 const requestTitles = [
   [

@@ -66,6 +66,11 @@ export function ProductResource({ screen, locale }: Props) {
   const unitTitle =
     locale === "ar" ? defaultScope.unitTitleAr : defaultScope.unitTitleEn;
   const cohortLabel = syntheticCohortLabel[locale === "ar" ? 1 : 0];
+  // The same display name the student Materials view gives this edition.
+  const edition =
+    defaultScope.curriculumEdition === "synthetic-2026-2027"
+      ? t("Sample edition 2026–2027", "إصدار تجريبي ٢٠٢٦–٢٠٢٧")
+      : defaultScope.curriculumEdition;
   const preview = (event: MouseEvent<HTMLAnchorElement>) => {
     if (
       event.defaultPrevented ||
@@ -171,7 +176,7 @@ export function ProductResource({ screen, locale }: Props) {
                   <div>
                     <dt>{t("Curriculum edition", "إصدار المنهج")}</dt>
                     <dd>
-                      <bdi>{defaultScope.curriculumEdition}</bdi>
+                      <bdi>{edition}</bdi>
                     </dd>
                   </div>
                 </dl>
@@ -326,7 +331,7 @@ export function ProductResource({ screen, locale }: Props) {
               fields: [
                 [
                   t("Curriculum edition", "إصدار المنهج"),
-                  <bdi key="edition">{defaultScope.curriculumEdition}</bdi>,
+                  <bdi key="edition">{edition}</bdi>,
                 ],
                 unitField,
               ],
