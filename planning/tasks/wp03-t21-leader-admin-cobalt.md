@@ -14,7 +14,7 @@
 
 **Branch:** claude/wp03-t21-leader-admin-cobalt
 
-**Updated (UTC):** 2026-10-17T21:00Z
+**Updated (UTC):** 2026-10-17T22:00Z
 
 ## Contract
 
@@ -22,11 +22,11 @@
 
 **Inputs:** `DESIGN.md` (Cobalt: admin decision queue, CountTabs, StatePair, StatePill, ListRow, ConfirmAction, Batch Leader intake rules); `planning/design/premium-overhaul/direction-b.html` screen "Admin queue"; the WP03-T19 shell, tokens and kit.
 
-**Files:** `src/app/admin/**`, `src/app/_components/product-admin.tsx`, `product-operations.tsx`, `product-collection.tsx`, `src/app/batch-leader/**`, synthetic fixtures `src/lib/demo/synthetic-{campaigns,admin-context}.application.ts`, `public/demo-files/`, affected tests.
+**Files:** `src/app/admin/**`, `src/app/_components/product-{admin,operations,campaigns,resource-list,collection}.tsx`, new shared `state-pill.tsx`, `src/app/batch-leader/**`, synthetic fixtures `src/lib/demo/synthetic-{campaigns,admin-context}.application.ts`, presentation helpers in `src/lib/collection/collection-presentation.application.ts` and `src/lib/i18n/{admin-copy,collection-format}.ts`, walkthrough `docs/reviews/wp03-synthetic-frontend-review.md`, `public/demo-files/`, affected tests.
 
 **Protected paths:** none changed. Admin Server Actions, guards, readiness predicates, distinct-principal confirmation, upload intake validation, storage, RLS and auth stay byte-identical; presentation only.
 
-**Verify:** `corepack pnpm` parts of `check` (format:check, lint, typecheck, typecheck:fresh, check:boundaries, check:sql, scan:secrets, lint:agents, test:unit); demo e2e for admin and leader specs and their layout matrices (default demo config, port 3102); real e2e (`UNIMIND_E2E_PORT=3130`); required CI including `database-ci`; rendered review at 1440, 1100, 820, 390, 320px and 200% text, light/dark, EN/AR.
+**Verify:** `corepack pnpm` parts of `check` (format:check, lint, typecheck, typecheck:fresh, check:boundaries, check:sql, scan:secrets, lint:agents, test:unit); demo e2e for admin and leader specs, their layout matrices and RTL (default demo config, port 3102); required CI including real e2e and `database-ci`; rendered review at 1440, 1100, 820, 390, 320px and 200% text, light/dark, EN/AR.
 
 **Pass:** queue counts are real and match the lists; resource pages are working lists; leader band, request rows, per-file queue and History pills render in Cobalt; tests changed only where they pinned old presentation; required CI green; overseer approval recorded.
 
@@ -36,30 +36,33 @@
 
 ## Steps
 
-- [ ] Admin: Night band with real CountTabs; verb-first queue rows with state pills; detail with StatePair, consequence, readiness checks, required reason and "Review and record" with audit note.
-- [ ] Admin resource pages as working lists on surfaces; explanations become secondary disclosures; short action links with structured metadata.
-- [ ] Batch Leader: Night band with campaign, deadline and time left, derivable request progress; request rows with Upload; per-file intake queue; History rows with state pills; styled disclosures.
-- [ ] Fixtures: believable invented campaign, request, source and admin target names; demo pack regenerated.
+- [x] Admin: Night band with real count tabs; verb-first queue rows with state pills; detail with state pair, consequence, readiness checks, required reason and "Review and record" with audit note.
+- [x] Admin resource pages as working lists on surfaces; explanations become a secondary disclosure; short verb links replace the long one-line action.
+- [x] Batch Leader: Night band with campaign, deadline with time left and derived request progress; request rows; intake panel and per-file queue; recorded submissions with state pills and styled disclosures.
+- [x] Fixtures: believable invented campaign, request, source and admin target names; demo pack and walkthrough regenerated.
 - [ ] Tests updated where they pinned old presentation; checks and demo e2e green.
 - [ ] Rendered review and at most two polish rounds.
-- [ ] Independent review, PR, required CI.
+- [ ] Review, PR, required CI.
 
 ## Decisions
 
 - 2026-10-17, Ahmed: delegated approval of the WP03-T18 to T21 rendered candidates to the overseeing Claude Code session while he is away.
+- Count tabs are All, Needs you, Waiting, Blocked and Done (the existing presentation groups); each count is the number of rows the tab selects, so the old "Decisions needing action (9)" heading next to "All 12" is gone. "All" stays the default so every decision is reachable without a filter.
+- Queue rows lead with a short verb (copy `verbs`); the confirmation keeps the full action label. Waiting time is omitted: candidates carry no timestamp, and DESIGN.md says to omit unavailable values.
+- Request progress counts requests the leader may upload to whose latest submission needs nothing more (`collectionRequestProgress`); time left uses the existing presentation clock.
 
 ## Current state
 
-**Changed:** NOT STARTED
+**Changed:** see Steps; commits on the branch.
 
-**Proof:** none yet.
+**Proof:** typecheck, lint, test:unit 921/921 (new unit tests for time left and request progress); demo e2e run in progress.
 
 **Review:** not started.
 
 **Approved commit:** PENDING (overseer review under Ahmed's 17 Oct delegation)
 
-**Remaining:** everything.
+**Remaining:** e2e results, rendered review, independent review, PR and CI.
 
 ## Next action
 
-Build the admin decision queue in Cobalt.
+Finish the demo e2e run, fix failures, then run the rendered review.

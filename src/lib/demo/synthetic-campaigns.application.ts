@@ -345,7 +345,7 @@ export function prepareSyntheticCollectionCorrections(
               requestedItemId: "sample-item-1",
               format: "DOCUMENT",
               status: "RECEIVED",
-              sourceName: "Lecture 7 handout",
+              sourceName: "Lecture 7 handout, faculty copy",
             },
           ]
         : [];

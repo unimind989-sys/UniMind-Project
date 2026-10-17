@@ -299,6 +299,7 @@
 .open {
   display: inline-flex;
   flex-shrink: 0;
+  max-width: 100%;
   align-items: center;
   justify-content: center;
   min-height: 44px;
@@ -521,9 +522,6 @@
   color: var(--accent-ink);
   font-size: 0.8125rem;
   font-weight: 700;
-}
-.recordId {
-  color: var(--secondary);
 }
 .field {
   display: grid;

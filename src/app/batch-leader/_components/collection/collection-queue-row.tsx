@@ -84,10 +84,9 @@ export function CollectionQueueRow({
           {predecessor ? (
             <p className={styles.helper}>
               {t("Earlier submission", "الإرسال السابق")}:{" "}
-              <bdi>{predecessor.sourceName}</bdi>{" "}
-              <span className={styles.recordId}>
-                (<bdi>{predecessor.id}</bdi>)
-              </span>
+              <bdi>
+                {predecessor.sourceName} ({predecessor.id})
+              </bdi>
             </p>
           ) : null}
           {!item ? (

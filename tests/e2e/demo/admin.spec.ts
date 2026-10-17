@@ -27,9 +27,7 @@ inLocales(["en"], (locale) => {
       const t = bilingual(locale);
       await signIn(page, "admin", locale, "/admin/sources");
       const action = page.getByRole("link", {
-        name: new RegExp(
-          "^" + t("Open governed decisions", "فتح القرارات المنضبطة"),
-        ),
+        name: new RegExp("^" + t("Quarantine", "عزل") + " "),
       });
       await expect(action).toHaveAttribute(
         "href",
@@ -41,7 +39,7 @@ inLocales(["en"], (locale) => {
         "QUARANTINE_SOURCE",
       );
       await expect(page.locator("#decision-detail-heading")).toContainText(
-        t("Synthetic Anatomy recording", "تسجيل التشريح التجريبي"),
+        t("Practical 4 recording", "تسجيل العملي 4"),
       );
       await page
         .getByRole("link", {
@@ -218,24 +216,24 @@ inLocales(["en"], (locale) => {
       const finish = isolation(page);
       const t = bilingual(locale);
       await signIn(page, "second-admin", locale);
-      for (const resource of [
-        "sources",
-        "catalog",
-        "cohorts",
-        "jobs",
-        "quality",
-        "usage",
-        "incidents",
-      ]) {
+      const copy = getAdminCopy(locale);
+      // Each resource row's short verb opens its governed decision.
+      for (const [resource, id, action] of [
+        ["sources", "quarantine", "QUARANTINE_SOURCE"],
+        ["catalog", "publish", "PUBLISH_UNIT"],
+        ["cohorts", "lock", "LOCK_COHORT"],
+        ["jobs", "retry", "RETRY_SOURCE"],
+        ["quality", "hide", "HIDE_UNIT"],
+        ["usage", "disable", "DISABLE_FLAG"],
+        ["incidents", "hide", "HIDE_UNIT"],
+      ] as const) {
         await adminNavigate(page, `/admin/${resource}`, locale);
         const link = page.getByRole("link", {
-          name: new RegExp(
-            "^" + t("Open governed decisions", "فتح القرارات المنضبطة"),
-          ),
+          name: new RegExp(`^${copy.verbs[action]} `),
         });
         await expect(link).toHaveAttribute(
           "href",
-          new RegExp(`decision=sample-.*origin=${resource}`),
+          new RegExp(`decision=sample-${id}&.*origin=${resource}`),
         );
         await expect(
           page.getByRole("link", {
@@ -247,11 +245,7 @@ inLocales(["en"], (locale) => {
       await adminNavigate(page, "/admin/sources", locale);
       await adminNavigate(page, "/admin/campaigns", locale);
       await expect(
-        page.getByRole("link", {
-          name: new RegExp(
-            "^" + t("Open governed decisions", "فتح القرارات المنضبطة"),
-          ),
-        }),
+        page.getByRole("main").locator('a[href*="decision="]'),
       ).toHaveCount(0);
       await page
         .getByRole("link", {
@@ -319,30 +313,22 @@ inLocales(["ar"], (locale) => {
           index === 8 || index === 9
             ? pick(
                 locale,
-                "Synthetic handout raw object",
-                "العنصر الخام لملزمة تجريبية",
+                "Lecture 6 handout, original upload",
+                "ملزمة المحاضرة 6، الملف الأصلي",
               )
             : index >= 10
-              ? pick(
-                  locale,
-                  "Synthetic study artifact control",
-                  "التحكم بأداة مذاكرة تجريبية",
-                )
+              ? pick(locale, "Structured summaries", "الملخصات المنظمة")
               : index === 6 || index === 7
-                ? pick(
-                    locale,
-                    "Synthetic Anatomy recording",
-                    "تسجيل التشريح التجريبي",
-                  )
+                ? pick(locale, "Practical 4 recording", "تسجيل العملي 4")
                 : index === 4 || index === 5
-                  ? pick(
-                      locale,
-                      "Synthetic Anatomy handout",
-                      "ملزمة التشريح التجريبية",
-                    )
+                  ? pick(locale, "Lecture 6 handout", "ملزمة المحاضرة 6")
                   : index === 2 || index === 3
-                    ? pick(locale, "cohort", "مجموعة")
-                    : pick(locale, "Anatomy unit", "وحدة التشريح"),
+                    ? pick(
+                        locale,
+                        "Zagazig Medicine, Year 1, Term 1",
+                        "طب الزقازيق، السنة الأولى، الترم الأول",
+                      )
+                    : pick(locale, "Anatomy", "علم التشريح"),
         );
         await panel
           .locator("details summary")
@@ -398,20 +384,34 @@ inLocales(["ar"], (locale) => {
           page.getByRole("button", { name: copy.reviewAction, exact: true }),
         ).toBeDisabled();
       }
-      await page
-        .getByRole("button", {
-          name: new RegExp(pick(locale, "^Completed", "^مكتمل")),
-        })
-        .click();
-      await expect(page.locator("#decision-list li")).toHaveCount(5);
-      await expect(
-        page.getByRole("heading", { name: new RegExp(copy.decisionsHeading) }),
-      ).toContainText(formatNumber(locale, 7));
-      await page
-        .getByRole("button", {
-          name: new RegExp(pick(locale, "^All ", "^الكل ")),
-        })
-        .click();
+      // Every count tab names exactly the number of rows it selects.
+      const tabs = page.getByRole("group", {
+        name: copy.filtersLabel,
+        exact: true,
+      });
+      for (const id of [
+        "completed",
+        "available",
+        "pending",
+        "blocked",
+        "all",
+      ] as const) {
+        const tab = tabs.getByRole("button", {
+          name: new RegExp(`^${copy.filters[id]} `),
+        });
+        await tab.click();
+        await expect(tab).toHaveAttribute("aria-pressed", "true");
+        if (id === "completed")
+          await expect(page.locator("#decision-list li")).toHaveCount(5);
+        if (id === "all")
+          await expect(page.locator("#decision-list li")).toHaveCount(12);
+        await expect(tab).toHaveAccessibleName(
+          `${copy.filters[id]} ${formatNumber(
+            locale,
+            await page.locator("#decision-list li").count(),
+          )}`,
+        );
+      }
       await b05Select(page, 10, locale);
       await expect(panel).toContainText(
         copy.predicates["budget.approval_required"],
@@ -588,7 +588,7 @@ inLocales(["ar"], (locale) => {
         await page
           .locator("#decision-list")
           .getByRole("button", {
-            name: new RegExp("^" + copy.actions[b05Actions[index]!]),
+            name: new RegExp("^" + copy.verbs[b05Actions[index]!] + " "),
           })
           .press("Enter");
         await expect(page.locator("#decision-detail-heading")).toBeFocused();
@@ -1030,8 +1030,8 @@ inLocales(["en"], (locale) => {
           .getByRole("button", {
             name: new RegExp(
               kind === "reason"
-                ? t("^Remove raw-data hold", "^إزالة حجز البيانات الخام")
-                : t("^Place raw-data hold", "^وضع حجز على البيانات الخام"),
+                ? t("^Remove hold ", "^إزالة حجز ")
+                : t("^Place hold ", "^وضع حجز "),
             ),
           })
           .click();
@@ -1043,7 +1043,7 @@ inLocales(["en"], (locale) => {
           t("Reason for this change", "سبب هذا التغيير"),
         );
         const review = page.getByRole("button", {
-          name: t("Review exact change", "مراجعة التغيير المحدد"),
+          name: t("Review and record", "مراجعة وتسجيل"),
           exact: true,
         });
         await reasonInput.fill("   a    ");
@@ -1083,7 +1083,7 @@ inLocales(["en"], (locale) => {
         );
         await page
           .getByRole("button", {
-            name: t("Review exact change", "مراجعة التغيير المحدد"),
+            name: t("Review and record", "مراجعة وتسجيل"),
             exact: true,
           })
           .click();
@@ -1143,8 +1143,8 @@ inLocales(["en"], (locale) => {
           .getByRole("button", {
             name: new RegExp(
               kind === "reason"
-                ? t("^Remove raw-data hold", "^إزالة حجز البيانات الخام")
-                : t("^Place raw-data hold", "^وضع حجز على البيانات الخام"),
+                ? t("^Remove hold ", "^إزالة حجز ")
+                : t("^Place hold ", "^وضع حجز "),
             ),
           })
           .click();
@@ -1202,9 +1202,7 @@ inLocales(["ar"], (locale) => {
       await signIn(page, "admin", locale, "/admin?fixture=error");
       await page
         .getByRole("button", {
-          name: new RegExp(
-            t("^Place raw-data hold", "^وضع حجز على البيانات الخام"),
-          ),
+          name: new RegExp(t("^Place hold ", "^وضع حجز ")),
         })
         .click();
       const reason = page.getByLabel(
@@ -1220,7 +1218,7 @@ inLocales(["ar"], (locale) => {
       await attestation.check();
       await page
         .getByRole("button", {
-          name: t("Review exact change", "مراجعة التغيير المحدد"),
+          name: t("Review and record", "مراجعة وتسجيل"),
           exact: true,
         })
         .click();
@@ -1245,7 +1243,7 @@ inLocales(["ar"], (locale) => {
       await expect(correlation).toHaveValue(/^[a-f0-9-]{36}$/u);
       await expect(
         page.getByRole("button", {
-          name: t("Review exact change", "مراجعة التغيير المحدد"),
+          name: t("Review and record", "مراجعة وتسجيل"),
           exact: true,
         }),
       ).toBeDisabled();
@@ -1265,9 +1263,7 @@ test(
       "holdExpiresAt",
     ] as const) {
       await signIn(page, "admin");
-      await page
-        .getByRole("button", { name: /^Place raw-data hold /u })
-        .click();
+      await page.getByRole("button", { name: /^Place hold /u }).click();
       await page
         .getByLabel("Reason for this change")
         .fill("Synthetic preservation review.");
@@ -1276,7 +1272,7 @@ test(
         .fill("2027-01-18T16:00");
       await page.locator('input[name="reviewAttested"]').check();
       await page
-        .getByRole("button", { name: "Review exact change", exact: true })
+        .getByRole("button", { name: "Review and record", exact: true })
         .click();
       if (field === "malformedExpiry") {
         await page
@@ -1317,12 +1313,10 @@ test(
       await page
         .getByRole("button", { name: "Reload current decisions", exact: true })
         .click();
-      await page
-        .getByRole("button", { name: /^Place raw-data hold /u })
-        .click();
+      await page.getByRole("button", { name: /^Place hold /u }).click();
       await page.locator('input[name="reviewAttested"]').check();
       await page
-        .getByRole("button", { name: "Review exact change", exact: true })
+        .getByRole("button", { name: "Review and record", exact: true })
         .click();
       await page
         .getByRole("button", {
@@ -1348,15 +1342,13 @@ test(
           exact: true,
         })
         .click();
-      await page
-        .getByRole("button", { name: /^Place raw-data hold /u })
-        .click();
+      await page.getByRole("button", { name: /^Place hold /u }).click();
       await expect(
         page.locator('input[name="reviewAttested"]'),
       ).not.toBeChecked();
       await page.locator('input[name="reviewAttested"]').check();
       await page
-        .getByRole("button", { name: "Review exact change", exact: true })
+        .getByRole("button", { name: "Review and record", exact: true })
         .click();
       // Alter only the submitted payload, as an untrusted client could. The
       // read-only UI is not the authority for matching the captured proposal.
@@ -1407,12 +1399,12 @@ test(
   async ({ page }) => {
     const finish = isolation(page);
     await signIn(page, "admin");
-    await page.getByRole("button", { name: /Hide unit/u }).click();
+    await page.getByRole("button", { name: /^Hide /u }).click();
     await page
       .getByLabel("Reason for this change")
       .fill("Synthetic readiness review.");
     await page
-      .getByRole("button", { name: "Review exact change", exact: true })
+      .getByRole("button", { name: "Review and record", exact: true })
       .click();
     await page
       .getByRole("button", {
@@ -1423,12 +1415,12 @@ test(
     await expect(
       page.getByText("The governed change was recorded."),
     ).toBeVisible();
-    await page.getByRole("button", { name: /Publish unit/u }).click();
+    await page.getByRole("button", { name: /^Publish /u }).click();
     await page
       .getByLabel("Reason for this change")
       .fill("Synthetic readiness review.");
     await page
-      .getByRole("button", { name: "Review exact change", exact: true })
+      .getByRole("button", { name: "Review and record", exact: true })
       .click();
     await page
       .getByRole("button", {
@@ -1454,9 +1446,9 @@ test(
         exact: true,
       })
       .click();
-    await page.getByRole("button", { name: /Publish unit/u }).click();
+    await page.getByRole("button", { name: /^Publish /u }).click();
     await page
-      .getByRole("button", { name: "Review exact change", exact: true })
+      .getByRole("button", { name: "Review and record", exact: true })
       .click();
     await page
       .getByRole("button", {
@@ -1467,11 +1459,9 @@ test(
     await expect(
       page.getByText("The governed change was recorded."),
     ).toBeVisible();
-    await page
-      .getByRole("button", { name: /Enable approved mock artifact/u })
-      .click();
+    await page.getByRole("button", { name: /^Enable /u }).click();
     await expect(
-      page.getByRole("button", { name: "Review exact change", exact: true }),
+      page.getByRole("button", { name: "Review and record", exact: true }),
     ).toBeDisabled();
     finish();
   },
@@ -1510,7 +1500,7 @@ inLocales(["ar"], (locale) => {
       await adminNavigate(page, "/admin", locale);
       await page
         .getByRole("button", {
-          name: new RegExp(pick(locale, "^Hide unit", "^إخفاء الوحدة")),
+          name: new RegExp(pick(locale, "^Hide ", "^إخفاء ")),
         })
         .click();
       await page
@@ -1520,7 +1510,7 @@ inLocales(["ar"], (locale) => {
         );
       await page
         .getByRole("button", {
-          name: pick(locale, "Review exact change", "مراجعة التغيير المحدد"),
+          name: pick(locale, "Review and record", "مراجعة وتسجيل"),
           exact: true,
         })
         .click();
@@ -1538,7 +1528,7 @@ inLocales(["ar"], (locale) => {
         .click();
       await expect(
         page.getByRole("button", {
-          name: pick(locale, "Review exact change", "مراجعة التغيير المحدد"),
+          name: pick(locale, "Review and record", "مراجعة وتسجيل"),
           exact: true,
         }),
       ).toBeFocused();
@@ -1635,7 +1625,7 @@ test(
     await page
       .getByRole("button", { name: "Reload current decisions", exact: true })
       .click();
-    await page.getByRole("button", { name: /Publish unit/u }).click();
+    await page.getByRole("button", { name: /^Publish /u }).click();
     await expect(
       page
         .getByRole("status")
@@ -1652,11 +1642,9 @@ test(
         "governed change",
       );
     }
-    await page
-      .getByRole("button", { name: /Enable approved mock artifact/u })
-      .click();
+    await page.getByRole("button", { name: /^Enable /u }).click();
     await expect(
-      page.getByRole("button", { name: "Review exact change", exact: true }),
+      page.getByRole("button", { name: "Review and record", exact: true }),
     ).toBeDisabled();
     finish();
   },
@@ -1670,10 +1658,10 @@ test(
     for (const fixture of ["stale", "blocked", "error"]) {
       await signIn(page, "admin", "en", `/admin?fixture=${fixture}`);
       if (fixture === "blocked") {
-        await page.getByRole("button", { name: /Hide unit/u }).click();
+        await page.getByRole("button", { name: /^Hide /u }).click();
         await expect(
           page.getByRole("button", {
-            name: "Review exact change",
+            name: "Review and record",
             exact: true,
           }),
         ).toBeDisabled();
@@ -1700,14 +1688,14 @@ for (const role of ["admin", "second-admin"]) {
       await page
         .getByLabel("Find a decision", { exact: true })
         .fill("Hide unit");
-      const target = page.getByRole("button", { name: /^Hide unit/u });
+      const target = page.getByRole("button", { name: /^Hide /u });
       await expect(target).toHaveCount(1);
       await target.click();
       await page
         .getByLabel("Reason for this change")
         .fill("Synthetic presentation review; no submission.");
       const review = page.getByRole("button", {
-        name: "Review exact change",
+        name: "Review and record",
         exact: true,
       });
       await review.click();
