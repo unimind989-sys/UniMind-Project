@@ -614,15 +614,26 @@ test("student: shared study, settings and catalog screens against the real backe
   expect(firstSession).not.toBeNull();
   await page.reload();
   await openChatSessions(page, "en");
-  await expect(
-    page.getByRole("button", { name: /Session 1(?!\d)/u, pressed: true }),
-  ).toBeVisible();
+  // Earlier tests may already have sessions for this student, so read the
+  // selected session's number instead of assuming "Session 1".
+  const selected = page
+    .getByRole("button", { pressed: true })
+    .filter({ hasText: /Session \d+/u });
+  await expect(selected).toHaveCount(1);
+  const firstNumber = /Session (\d+)/u.exec(
+    (await selected.textContent()) ?? "",
+  )?.[1];
+  expect(firstNumber).toBeDefined();
   await page.getByRole("button", { name: "New session" }).click();
   await page.waitForURL(
     (url) => url.searchParams.get("session") !== firstSession,
   );
   await openChatSessions(page, "en");
-  await page.getByRole("button", { name: /Session 1(?!\d)/u }).click();
+  await page
+    .getByRole("button", {
+      name: new RegExp(`Session ${firstNumber}(?!\\d)`, "u"),
+    })
+    .click();
   await expect(page).toHaveURL(new RegExp(`session=${firstSession}`, "u"));
 
   await page.goto(`${base}/studio?lang=en`);
