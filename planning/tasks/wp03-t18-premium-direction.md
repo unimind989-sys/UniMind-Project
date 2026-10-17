@@ -4,7 +4,7 @@
 
 **Task ID:** WP03-T18
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** Ahmed picks one of two premium directions from static mockups, and `DESIGN.md` is rewritten so the rebuild tasks (WP03-T19 to T21) can implement it.
 
@@ -41,7 +41,7 @@
 - [x] Build both as clickable static mockups: landing hero, Study Shelf, Chat with evidence (desktop, phone, Arabic phone), admin decision queue.
 - [x] Present; record Ahmed's choice.
 - [x] Rewrite `DESIGN.md` for the chosen direction.
-- [ ] `pnpm check`; PR with required CI; merge and close.
+- [x] `pnpm check`; PR with required CI; merge and close.
 
 ## Decisions
 
@@ -69,14 +69,14 @@
 
 **Changed:** runbook entries WP03-T18 to T21; this record; `planning/design/premium-overhaul/` with the brief, review harness, Direction A (Margin), Direction B (Cobalt, built by a sub-agent from the brief) and `landing.html` (L1 chosen; L2 and L3 kept as the record). `DESIGN.md` rewritten for Direction B with the L1 landing (drafted by a sub-agent, reviewed line by line against the old contract); `docs/agents/frontend.md`, the `frontend-design` skill note and the approval history point to Cobalt.
 
-**Proof:** diagnosis captures in the session scratchpad (regenerate from `pnpm demo`). Every mockup and landing screen captured at 1440px and 390px in light and dark from `serve.mjs` and inspected in two rounds; L1's animation ends with every element visible; `pnpm lint:agents` and Prettier on `DESIGN.md` passed. `pnpm check` and CI pending.
+**Proof:** every mockup and landing screen captured at 1440px and 390px in light and dark and inspected; local `format:check`, `lint`, `typecheck`, `check:boundaries`, `check:sql`, `scan:secrets`, `lint:agents`, `test:unit` passed; e2e not rerun locally because no runtime input changed. PR [#81](https://github.com/unimind989-sys/UniMind-Project/pull/81): one flaky demo shard (quiz clock) passed on rerun; all 15 checks green; squash-merged as `81c624b`. No Supabase or Vercel runtime change to prove.
 
 **Review:** self-review.
 
 **Approved commit:** NOT REQUIRED: no rendered product change in this task. Ahmed's direction and landing choices are recorded under Decisions; WP03-T19 to T21 need their own `Approved commit:`.
 
-**Remaining:** `pnpm check`, PR with required CI, merge and closure.
+**Remaining:** NONE. Branch and worktree removed.
 
 ## Next action
 
-Run `pnpm check`, open the PR, pass required CI, squash-merge and close WP03-T18; WP03-T19 (student rebuild) is next.
+None for this task. WP03-T19 (student rebuild) is in progress on `claude/wp03-t19-student-cobalt`.
