@@ -27,8 +27,8 @@ const names = [
     "مصادر مراجعة الكيمياء الحيوية: ملازم المقارنة وتسجيلات المحاضرات ورسوم المسارات لدورة المراجعة الأولى",
   ],
   [
-    "Physiology practical sources: labelled diagrams and supporting explanations for the second revision cycle",
-    "مصادر عملي وظائف الأعضاء: الرسوم المسماة والشروح الداعمة لدورة المراجعة الثانية",
+    "Physiology practical sources: labelled diagrams and supporting explanations of the heart and breathing for the second revision cycle",
+    "مصادر عملي وظائف الأعضاء: الرسوم المسماة والشروح الداعمة للقلب والتنفس لدورة المراجعة الثانية",
   ],
 ] as const;
 /**

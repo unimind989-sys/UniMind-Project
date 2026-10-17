@@ -10,6 +10,7 @@ import {
   syntheticCampaignId,
   syntheticCampaignsManifest,
   prepareSyntheticCollectionCorrections,
+  syntheticSourceTitle,
 } from "../../src/lib/demo/synthetic-campaigns.application";
 import type { ReviewSubmission } from "../../src/lib/demo/synthetic-fixtures.application";
 
@@ -41,7 +42,7 @@ function prepared(campaignId = demoCampaignId) {
     requestedItemId: target(campaignId),
     clientIdempotencyKey: key,
     uploadId: receipt.uploadId,
-    sourceName: "Synthetic study source",
+    sourceName: syntheticSourceTitle,
     sourceDescription: "Synthetic description with ordinary safe metadata.",
     declaredRights: "DECLARED",
   }))
@@ -159,7 +160,7 @@ describe("document-local multi-campaign collection", () => {
       assignedSyntheticCampaigns(current, "ar")[0]!
         .requestedItems.slice(0, 3)
         .map((row) => row.title),
-    ).toEqual(["ملزمة التشريح", "تسجيل تشريح", "رسم تشريح"]);
+    ).toEqual(["ملزمة المحاضرة 7", "تسجيل العملي 4", "رسم الضفيرة العضدية"]);
     expect(
       assignedSyntheticCampaigns(current, "ar")[2]!.name.length,
     ).toBeGreaterThan(80);

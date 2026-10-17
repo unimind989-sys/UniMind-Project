@@ -11750,14 +11750,17 @@
     "campaignCount": 3,
     "requestsPerCampaign": 3,
     "names": [
-      ["Synthetic Anatomy source call", "حملة مصادر التشريح التجريبية"],
       [
-        "Synthetic Biochemistry source call — comparison handouts, recordings and diagrams for the first revision cycle",
-        "حملة مصادر الكيمياء الحيوية التجريبية — ملازم المقارنة والتسجيلات والرسوم لدورة المراجعة الأولى"
+        "Anatomy lecture and practical sources",
+        "مصادر محاضرات وعمليات التشريح"
       ],
       [
-        "Synthetic Physiology source call — labelled diagrams and supporting explanations for a separate revision cycle",
-        "حملة مصادر وظائف الأعضاء التجريبية — الرسوم المسماة والشروح الداعمة لدورة مراجعة مستقلة"
+        "Biochemistry revision sources: comparison handouts, lecture recordings and pathway diagrams for the first revision cycle",
+        "مصادر مراجعة الكيمياء الحيوية: ملازم المقارنة وتسجيلات المحاضرات ورسوم المسارات لدورة المراجعة الأولى"
+      ],
+      [
+        "Physiology practical sources: labelled diagrams and supporting explanations of the heart and breathing for the second revision cycle",
+        "مصادر عملي وظائف الأعضاء: الرسوم المسماة والشروح الداعمة للقلب والتنفس لدورة المراجعة الثانية"
       ]
     ],
     "note": "Fixed invented assignments; separate document-local queues, requests and receipts. No real assignment, processing or storage claim."

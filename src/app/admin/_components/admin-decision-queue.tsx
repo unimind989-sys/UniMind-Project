@@ -80,11 +80,7 @@ export function AdminDecisionQueue({
           className={styles.queueLayout}
           data-detail-open={decisions.detailOpen}
         >
-          <DecisionListPane
-            locale={locale}
-            copy={copy}
-            queue={decisions}
-          />
+          <DecisionListPane locale={locale} copy={copy} queue={decisions} />
           <div className={styles.selectedDetail} ref={detail} tabIndex={-1}>
             {selected ? (
               <>
