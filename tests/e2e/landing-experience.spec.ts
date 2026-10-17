@@ -87,18 +87,18 @@ test("evidence moment plays once on view, replays, ignores the pointer and pause
   await expect(moment).toHaveAttribute("data-moment", "done", {
     timeout: 10_000,
   });
-  const stepTransforms = () =>
+  const transforms = () =>
     moment.evaluate((element) =>
       Array.from(
-        element.querySelectorAll("[data-step]"),
+        element.querySelectorAll("*"),
         (step) => getComputedStyle(step).transform,
       ),
     );
-  const settled = await stepTransforms();
+  const settled = await transforms();
   await moment.hover({ position: { x: 30, y: 30 } });
   await moment.hover({ position: { x: 180, y: 180 } });
-  // The pointer moves nothing and starts nothing.
-  expect(await stepTransforms()).toEqual(settled);
+  // The pointer moves nothing (the tilted handout included) and starts nothing.
+  expect(await transforms()).toEqual(settled);
   expect(
     await moment.evaluate(
       (element) => element.getAnimations({ subtree: true }).length,

@@ -14,7 +14,7 @@
 
 **Branch:** claude/wp03-t20-landing-access-cobalt
 
-**Updated (UTC):** 2026-10-17T21:50Z
+**Updated (UTC):** 2026-10-17T18:30Z
 
 ## Contract
 
@@ -39,7 +39,7 @@
 - [x] L1 hero: Night stage, slogan, lede, actions, proof lines, handout, bubble, answer card, professor note, the 3.5 s moment with Replay and reduced motion.
 - [x] Lower sections recomposed in Cobalt with the content pack.
 - [x] Access pages: Night brand plane and white form surface.
-- [ ] Tests updated where they pinned old presentation; local verification.
+- [x] Tests updated where they pinned old presentation; local verification.
 - [ ] Independent review, PR, required CI, overseer approval, merge, production proof.
 
 ## Decisions
@@ -63,15 +63,16 @@
 - The landing test caught a real pause bug, now fixed: the playing shorthand had outranked the pause rule.
 - The full demo suite and `database-ci` run in CI on [#83](https://github.com/unimind989-sys/UniMind-Project/pull/83).
 
-**Review:** independent review by the `independent-reviewer` agent of `4849cf0..4821e40`: CHANGES REQUIRED. There were no auth, consent, hosted-synthetic or data-safety findings.
-- One should-fix: the access language links were 40px, below the 44px touch minimum.
-- Five nits: hidden moment content without scripts, a weak "waits" and pointer test, Arabic tracking on two elements, and the stale record.
-- All six were fixed in the next commit.
+**Review:** independent review by the `independent-reviewer` agent. Of `4849cf0..4821e40`: CHANGES REQUIRED, with no auth, consent, hosted-synthetic or data-safety finding.
+- One should-fix: the 40px language links.
+- Five nits: moment content hidden without scripts, a weak "waits" and pointer test, Arabic tracking, and the stale record.
 
-**Approved commit:** PENDING (overseer review under Ahmed's 17 Oct delegation).
+All six were fixed in `d300d28`. Re-review of `4821e40..d300d28`: PASS WITH NITS. Its remaining nits (pointer check limited to steps, record tick and timestamp) were closed in the following commit.
 
-**Remaining:** review result, required CI, approval, merge, production proof, closure.
+**Approved commit:** `d300d28`, approved by the overseeing Claude Code session under Ahmed's 17 October 2026 delegation (not a founder review). The approval followed the rendered review of `4821e40` and a check of the `d300d28` changes: 44px language links, the stage without scripts, dark Night edges and Arabic tracking. Later record- or test-only commits keep this approval.
+
+**Remaining:** required CI on the final head, merge, production proof, closure.
 
 ## Next action
 
-Record the independent review, let required CI pass on #83, record approval, merge, then deploy production.
+Let required CI pass on #83, merge, then deploy production and close WP03-T20.
