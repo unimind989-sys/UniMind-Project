@@ -9,8 +9,12 @@
   max-width: 640px;
 }
 .section h2 {
-  font-size: 1.25rem;
-  margin: 0 0 12px;
+  margin: 0 0 8px;
+  color: var(--ink);
+  font-size: 1.375rem;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
 }
 .section p {
   color: var(--secondary);
@@ -20,18 +24,10 @@
   display: inline-block;
   max-width: 100%;
 }
-.onboarding {
-  max-width: 640px;
-}
-.onboarding h1 {
-  font-size: 1.5rem;
-  line-height: 1.5;
-  margin: 0 0 12px;
-}
 .fields {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  gap: 16px 20px;
   border: 0;
   padding: 0;
   margin-block: 24px;
@@ -41,45 +37,62 @@
   display: grid;
   gap: 8px;
   min-width: 0;
+  color: var(--secondary);
   font-size: 0.875rem;
+  font-weight: 650;
 }
 .fields select {
   min-height: 48px;
   width: 100%;
   background: var(--surface);
   color: var(--ink);
-  border: 1px solid var(--control-border);
-  border-radius: 8px;
+  border: 1.5px solid var(--control);
+  border-radius: var(--radius-control);
   padding: 8px 12px;
-  transition: border-color 180ms ease;
+  font-weight: 600;
+  transition: border-color var(--motion-control) ease;
+}
+.fields select:hover:not(:disabled) {
+  border-color: var(--secondary);
 }
 .primary,
 .secondary {
-  min-height: 44px;
-  padding: 12px 16px;
-  border-radius: 8px;
-  font-weight: 600;
-  border: 1px solid var(--control-border);
-  transition: background-color 180ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 10px 22px;
+  border-radius: var(--radius-control);
+  font-weight: 700;
+  line-height: 1.3;
+  border: 1.5px solid var(--control);
+  transition:
+    background-color var(--motion-control) ease,
+    border-color var(--motion-control) ease;
 }
 @media (prefers-reduced-motion: reduce) {
   .fields select,
   .primary,
-  .secondary {
+  .secondary,
+  .choice,
+  .sectionNav button {
     transition: none;
   }
 }
 .primary {
-  background: var(--accent);
-  color: var(--on-accent);
+  background: var(--action);
+  color: var(--on-action);
   border-color: transparent;
 }
 .primary:hover:not(:disabled) {
-  background: var(--accent-hover);
+  background: var(--action-strong);
 }
 .secondary {
   color: var(--ink);
   background: var(--surface);
+}
+.secondary:hover:not(:disabled) {
+  background: var(--surface-2);
 }
 .srOnly {
   position: absolute;
@@ -99,16 +112,39 @@
   min-width: 0;
 }
 
+/* First-run setup: one focused question at a time. */
+.onboarding {
+  max-width: 600px;
+  padding-block-start: 8px;
+  /* The section keeps its rule for structure; the setup needs no closing line. */
+  border-block-end-color: transparent;
+}
+.onboarding h1 {
+  margin: 0 0 12px;
+  color: var(--ink);
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: var(--type-display-tracking);
+  text-wrap: balance;
+}
+.onboarding > p {
+  margin-block: 0;
+  font-size: 1rem;
+  line-height: 1.55;
+}
 .setup {
-  max-width: 640px;
-  margin-block: 32px 12px;
+  max-width: 600px;
+  margin-block: 32px 0;
 }
 .setupProgress {
-  margin-block-end: 32px;
+  margin-block-end: 28px;
 }
 .setupProgress p {
-  font-size: 0.8125rem;
-  margin: 0 0 12px;
+  margin: 0 0 10px;
+  color: var(--secondary);
+  font-size: 0.875rem;
+  font-weight: 700;
 }
 .progressTrack {
   display: flex;
@@ -118,21 +154,25 @@
 }
 .progressTrack span {
   flex: 1;
-  height: 3px;
-  background: var(--border);
-}
-.progressTrack span[data-complete="true"] {
-  background: var(--accent);
-}
-.progressTrack span[data-current="true"] {
-  background: var(--accent);
   height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--line);
+}
+.progressTrack span[data-complete="true"],
+.progressTrack span[data-current="true"] {
+  background: var(--action);
 }
 .setup h2 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin: 0 0 20px;
-  line-height: 1.5;
+  margin: 0 0 16px;
+  color: var(--ink);
+  font-size: 1.625rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: var(--type-headline-tracking);
+}
+/* The step heading takes focus only by script when the step changes. */
+.setup h2[tabindex="-1"]:focus {
+  outline: none;
 }
 .progressLabel {
   display: flex;
@@ -145,12 +185,16 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: var(--accent-ink);
-  font-weight: 600;
+  min-height: 28px;
+  padding-inline: 8px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--success-tint);
+  color: var(--success);
+  font-weight: 750;
 }
 .reviewCompletion > svg {
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   flex: none;
 }
 .choices {
@@ -158,40 +202,46 @@
   padding: 0;
   margin: 0;
   display: grid;
-  gap: 12px;
+  gap: 8px;
 }
 .choice {
   display: flex;
-  gap: 16px;
+  gap: 14px;
   align-items: center;
-  min-height: 68px;
-  padding: 16px 20px;
-  background: var(--surface);
-  border: 1px solid var(--control-border);
-  border-radius: 8px;
-  cursor: pointer;
-}
-.choices[data-step="termId"] .choice {
   min-height: 56px;
-  padding-block: 12px;
-}
-.choice:has(input:checked) {
-  background: var(--accent-soft);
-  border-color: var(--accent);
-  color: var(--accent-ink);
+  padding: 12px 18px;
+  background: var(--surface);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-card);
+  color: var(--ink);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  cursor: pointer;
+  transition:
+    background-color var(--motion-control) ease,
+    border-color var(--motion-control) ease,
+    box-shadow var(--motion-control) ease;
 }
 .choice:hover {
-  border-color: var(--accent);
+  border-color: var(--control);
+}
+.choice:has(input:checked) {
+  background: var(--tint);
+  border-color: var(--action);
+  box-shadow: inset 0 0 0 1px var(--action);
+  font-weight: 750;
 }
 .choice:has(input:focus-visible) {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
+  outline: 2px solid var(--cobalt);
+  outline-offset: 2px;
 }
 .choice input {
   flex: none;
   width: 20px;
   height: 20px;
-  accent-color: var(--accent);
+  margin: 0;
+  accent-color: var(--action);
 }
 .choice span {
   min-width: 0;
@@ -202,29 +252,35 @@
 }
 .setupActions {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  gap: 16px;
-  margin-block-start: 28px;
+  gap: 12px;
+  margin-block-start: 24px;
 }
 .setupActions .primary {
   margin-inline-start: auto;
+  min-width: 9rem;
 }
 .setupActions .primary:disabled {
-  background: var(--surface);
+  background: var(--surface-2);
   color: var(--secondary);
-  border-color: var(--control-border);
+  border-color: var(--line);
   opacity: 1;
   cursor: not-allowed;
 }
 .privacyDetails {
   display: grid;
-  gap: 16px;
   max-width: 65ch;
   margin: 20px 0 0;
 }
+.privacyDetails > div {
+  padding-block: 14px;
+  border-block-start: 1px solid var(--line);
+}
 .privacyDetails dt {
   margin-block-end: 4px;
-  font-weight: 600;
+  color: var(--ink);
+  font-weight: 700;
 }
 .privacyDetails dd {
   margin: 0;
@@ -232,20 +288,26 @@
 }
 .setupReview {
   margin: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: var(--surface);
 }
 .setupReview > div {
   display: grid;
   grid-template-columns: minmax(0, max-content) auto;
   justify-content: start;
-  column-gap: 24px;
-  row-gap: 4px;
-  padding-block: 12px;
-  border-block-end: 1px solid var(--border);
+  column-gap: 20px;
+  row-gap: 2px;
+  padding: 10px 18px;
+}
+.setupReview > div + div {
+  border-block-start: 1px solid var(--line);
 }
 .setupReview dt {
   grid-column: 1;
   color: var(--secondary);
   font-size: 0.8125rem;
+  font-weight: 600;
 }
 .setupReview dd {
   display: contents;
@@ -255,6 +317,8 @@
 .setupReview bdi {
   grid-column: 1;
   min-width: 0;
+  color: var(--ink);
+  font-weight: 700;
 }
 .setupReview button {
   grid-column: 2;
@@ -262,38 +326,69 @@
   align-self: center;
   min-height: 44px;
   padding: 8px 12px;
-  background: transparent;
   border: 0;
-  color: var(--accent-ink);
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--action);
   font-size: 0.875rem;
+  font-weight: 700;
+}
+.setupReview button:hover:not(:disabled) {
+  background: var(--tint);
 }
 @media (max-width: 767px) {
   .onboarding {
     padding-block-start: 0;
   }
+  .onboarding h1 {
+    font-size: 2rem;
+  }
+  .setup {
+    margin-block-start: 24px;
+  }
+  .setup h2 {
+    font-size: 1.3125rem;
+  }
   .setupReview > div {
     column-gap: 16px;
+    padding-inline: 14px;
   }
 }
 
+/* Settings: a profile header, a section menu and white content panels. */
 .accountSummary {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 12px 24px;
-  max-width: 640px;
-  margin-block-end: 24px;
+  gap: 8px 24px;
+  /* As wide as the section menu plus the widest panel beside it. */
+  max-width: calc(220px + 24px + 46rem);
+  margin-block-end: 20px;
+  padding-block: 14px;
+  padding-inline: 20px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: var(--surface);
 }
 .accountSummary p {
   display: grid;
-  gap: 4px;
+  gap: 2px;
   min-width: 0;
   margin: 0;
   overflow-wrap: anywhere;
 }
+.accountSummary bdi {
+  color: var(--ink);
+  font-size: 1.125rem;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
 .accountSummary small {
   color: var(--secondary);
+  font-size: 0.875rem;
+  font-weight: 600;
 }
 .returnAction {
   margin-block-end: 24px;
@@ -307,16 +402,21 @@
 }
 .layout {
   display: grid;
-  grid-template-columns: 176px minmax(0, 1fr);
+  grid-template-columns: 220px minmax(0, 1fr);
   gap: 24px;
   align-items: start;
   width: 100%;
+  container-type: inline-size;
 }
 .sectionNav {
   display: grid;
-  gap: 4px;
+  gap: 2px;
   position: sticky;
   inset-block-start: 24px;
+  padding: 6px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: var(--surface);
 }
 .sectionNav button {
   width: 100%;
@@ -326,16 +426,28 @@
   padding: 8px 12px;
   text-decoration: none;
   font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 650;
+  line-height: 1.3;
   text-align: start;
-  border: 1px solid var(--control-border);
+  border: 1px solid transparent;
   background: var(--surface);
   cursor: pointer;
-  color: var(--ink);
-  border-radius: 4px;
+  color: var(--secondary);
+  border-radius: 10px;
+  overflow-wrap: anywhere;
+  transition:
+    background-color var(--motion-control) ease,
+    color var(--motion-control) ease;
 }
 .sectionNav button:hover {
-  background: var(--annotation);
-  color: var(--accent-ink);
+  background: var(--surface-2);
+  color: var(--ink);
+}
+.sectionNav button[aria-selected="true"] {
+  background: var(--tint);
+  color: var(--action);
+  font-weight: 750;
 }
 .settingsBody {
   min-width: 0;
@@ -343,32 +455,55 @@
 .settingsBody > section {
   scroll-margin-block-start: 24px;
 }
+.settingsBody .section {
+  max-width: 46rem;
+  margin-block-end: 16px;
+  padding: 24px 28px 28px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+}
+.settingsBody .compactSection {
+  max-width: 640px;
+}
+.settingsBody .section > p:first-of-type {
+  margin-block: 0 4px;
+}
+.settingsBody .fields {
+  margin-block: 20px;
+}
 @media (max-width: 767px) {
+  .accountSummary {
+    padding-block: 12px;
+    padding-inline: 16px 8px;
+  }
   .layout {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 16px;
   }
   .sectionNav {
-    display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
+    gap: 4px;
     position: static;
-    border-block-end: 1px solid var(--border);
-    padding-block-end: 12px;
+    padding: 4px;
   }
   .sectionNav button {
-    padding: 8px;
+    padding: 8px 10px;
     font-size: 0.875rem;
     /* A label that wraps on narrow phones still keeps the two rows compact. */
     line-height: 1.25;
-    overflow-wrap: anywhere;
+  }
+  .settingsBody .section {
+    padding: 20px 18px 22px;
   }
 }
-.sectionNav button[aria-selected="true"] {
-  background: var(--annotation);
-  border-color: var(--accent-ink);
-  color: var(--accent-ink);
-  font-weight: 600;
+/* Enlarged text on a phone: one section per row, so labels wrap by word.
+   rem follows the root text size (272px at default size, narrower than any
+   supported layout; 544px at 200%). */
+@container (max-width: 17rem) {
+  .sectionNav {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 .settingsBody > [hidden] {
   display: none;

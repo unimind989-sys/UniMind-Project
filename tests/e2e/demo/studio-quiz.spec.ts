@@ -1443,7 +1443,9 @@ inLocales(["en"], (locale) => {
         "lang",
         locale,
       );
-      await expect(output).toContainText(t("Upper trunk injury", "إصابة الجذع العلوي"));
+      await expect(output).toContainText(
+        t("Upper trunk injury", "إصابة الجذع العلوي"),
+      );
       await expect(
         page.getByLabel(t("Output language", "لغة المخرج"), { exact: true }),
       ).toHaveValue("mixed");
@@ -1461,11 +1463,7 @@ inLocales(["ar"], (locale) => {
       await page.setViewportSize({ width: 390, height: 844 });
       await signIn(page, "student", locale, unit);
       const source = page.getByRole("heading", {
-        name: pick(
-          locale,
-          "Lecture 6 handout",
-          "ملزمة المحاضرة 6",
-        ),
+        name: pick(locale, "Lecture 6 handout", "ملزمة المحاضرة 6"),
         exact: true,
       });
       await expect(source).toBeVisible();
@@ -1501,13 +1499,13 @@ inLocales(["ar"], (locale) => {
       });
       const question = pick(
         locale,
-        "What sequence does the sample handout use?",
-        "ما ترتيب الملزمة التجريبية؟",
+        "Which roots does an upper trunk injury damage?",
+        "ما الجذور التي تتأثر عند إصابة الجذع العلوي؟",
       );
       const answer = pick(
         locale,
-        "Identify labels, then compare diagrams.",
-        "إصابة الجذع العلوي (C5 وC6) تسبب شلل إرب-دوشين، غالبًا من المباعدة الشديدة بين الرأس والكتف. تتكون الضفيرة من الفروع الأمامية للأعصاب من C5 إلى T1.",
+        "C5 and C6: Erb's palsy.",
+        "الجذران C5 وC6: شلل إرب.",
       );
       await expect(
         card.getByRole("paragraph").filter({ hasText: question }),
@@ -1579,7 +1577,11 @@ inLocales(["ar"], (locale) => {
         .check();
       await page
         .getByRole("radio", {
-          name: pick(locale, "No duration is supplied", "لا توجد مدة محددة"),
+          name: pick(
+            locale,
+            "No recovery time is given",
+            "لا توجد مدة للتعافي",
+          ),
           exact: true,
         })
         .check();
@@ -1710,7 +1712,11 @@ inLocales(["ar"], (locale) => {
         .check();
       await page
         .getByRole("radio", {
-          name: pick(locale, "No duration is supplied", "لا توجد مدة محددة"),
+          name: pick(
+            locale,
+            "No recovery time is given",
+            "لا توجد مدة للتعافي",
+          ),
           exact: true,
         })
         .check();

@@ -141,7 +141,7 @@ const hostedCopy: Readonly<Record<string, readonly [string, string]>> = {
     "غير نشط · مستبعد من الطلبات الجديدة",
   ],
   "Processed sample excerpt": ["Processed excerpt", "نص معالج"],
-  "Missing: no timing is supplied. Conflict: the recording reverses the sequence. This fixed example does not resolve that disagreement.":
+  "Missing: no recovery time is given. Conflict: the recording adds a C4 branch. This fixed example does not resolve that disagreement.":
     [
       "Missing: no timing is supplied. Conflict: the recording reverses the sequence.",
       "الناقص: لا يوجد توقيت. التعارض: التسجيل يعكس الترتيب.",

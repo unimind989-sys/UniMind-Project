@@ -154,6 +154,9 @@
   padding: 40px var(--shell-inset) 56px;
   min-width: 0;
 }
+.content :where(h1) {
+  overflow-wrap: break-word;
+}
 .content > h1 {
   font-size: var(--type-display-size);
   font-weight: var(--type-display-weight);
@@ -334,7 +337,9 @@
   .shell[data-layout="workspace"][data-workspace-flow="page"] .topbar {
     flex-wrap: wrap;
   }
-  .shell[data-layout="workspace"][data-workspace-flow="page"] .topbar .globalNav {
+  .shell[data-layout="workspace"][data-workspace-flow="page"]
+    .topbar
+    .globalNav {
     position: static;
     order: 3;
     flex-basis: 100%;

@@ -414,9 +414,7 @@ inLocales(["en"], (locale) => {
         });
         await expect(dialog).toBeVisible();
         await expect(dialog.locator("blockquote")).toHaveCount(2);
-        await expect(dialog).toContainText(
-          t("Page 14", "صفحة ١٤"),
-        );
+        await expect(dialog).toContainText(t("Page 14", "صفحة ١٤"));
         await expect(dialog).toContainText(
           t("Timestamp 18:42", "التوقيت ١٨:٤٢"),
         );
@@ -540,10 +538,7 @@ inLocales(["ar"], (locale) => {
               name:
                 source === 0
                   ? t("Lecture 6 handout", "ملزمة المحاضرة 6")
-                  : t(
-                      "Practical 3 recording",
-                      "تسجيل العملي 3",
-                    ),
+                  : t("Practical 3 recording", "تسجيل العملي 3"),
               exact: true,
             });
             await expect(heading).toHaveCount(
@@ -1201,9 +1196,7 @@ inLocales(["ar"], (locale) => {
       await historical.click();
       await expect(page).toHaveURL(/exchange=2&session=1/u);
       await expect(
-        page
-          .getByText(t("Page 14", "صفحة ١٤"), { exact: false })
-          .first(),
+        page.getByText(t("Page 14", "صفحة ١٤"), { exact: false }).first(),
       ).toBeVisible();
       await page
         .getByRole("link", {

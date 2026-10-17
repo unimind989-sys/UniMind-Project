@@ -153,8 +153,8 @@ export function AccountSettings({
                     [
                       "shared",
                       t(
-                        "Founder-visible by default",
-                        "ظاهر للمؤسسين افتراضيًا",
+                        "Visible to UniMind’s founders",
+                        "ظاهرة لمؤسسي UniMind",
                       ),
                     ],
                     ["private", t("Private / no sharing", "خاص / عدم مشاركة")],

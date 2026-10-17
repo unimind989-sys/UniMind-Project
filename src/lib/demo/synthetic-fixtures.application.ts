@@ -216,10 +216,7 @@ export const promptExamples: Record<ResponseKind, Localized> = {
     "Which spinal roots form the brachial plexus?",
     "إيه الجذور اللي بتكوّن الضفيرة العضدية؟",
   ],
-  hint: [
-    "What did the practical session stress?",
-    "العملي ركّز على إيه؟",
-  ],
+  hint: ["What did the practical session stress?", "العملي ركّز على إيه؟"],
   educational: [
     "In a teaching case, a newborn's arm hangs limp after a difficult delivery. Which trunk is injured?",
     "في حالة تعليمية، ذراع مولود مرتخية بعد ولادة متعسرة. أي جذع اتصاب؟",

@@ -35,8 +35,8 @@
   --mark: #d6e3fd;
   --seg-on: #ecf3f9;
   --seg-on-ink: #0c1823;
-  --float: 0 22px 44px -20px rgb(12 24 35 / 0.42),
-    0 3px 10px -2px rgb(12 24 35 / 0.1);
+  --float:
+    0 22px 44px -20px rgb(12 24 35 / 0.42), 0 3px 10px -2px rgb(12 24 35 / 0.1);
   --float-up: 0 -14px 34px -14px rgb(12 24 35 / 0.36);
   /* Earlier names map onto the Cobalt roles. */
   --canvas: var(--paper);

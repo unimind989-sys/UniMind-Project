@@ -132,10 +132,7 @@ inLocales(["ar"], (locale) => {
       await openSessionTools(page, locale);
       const second = page.getByRole("button", {
         name: new RegExp(
-          t(
-            "Roots of the plexus.*Session 2",
-            "جذور الضفيرة.*جلسة [٢2]",
-          ),
+          t("Roots of the plexus.*Session 2", "جذور الضفيرة.*جلسة [٢2]"),
         ),
       });
       await expect(second).toHaveAttribute("aria-pressed", "true");
@@ -147,10 +144,9 @@ inLocales(["ar"], (locale) => {
       await send(page, "partial", locale);
       await navigate(page, "/learn", locale);
       await expect(
-        page.getByText(
-          t("Roots of the plexus", "جذور الضفيرة"),
-          { exact: true },
-        ),
+        page.getByText(t("Roots of the plexus", "جذور الضفيرة"), {
+          exact: true,
+        }),
       ).toBeVisible();
       await expect(
         page.getByText(

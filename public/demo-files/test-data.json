@@ -46,10 +46,7 @@
       "Which spinal roots form the brachial plexus?",
       "إيه الجذور اللي بتكوّن الضفيرة العضدية؟"
     ],
-    "hint": [
-      "What did the practical session stress?",
-      "العملي ركّز على إيه؟"
-    ],
+    "hint": ["What did the practical session stress?", "العملي ركّز على إيه؟"],
     "educational": [
       "In a teaching case, a newborn's arm hangs limp after a difficult delivery. Which trunk is injured?",
       "في حالة تعليمية، ذراع مولود مرتخية بعد ولادة متعسرة. أي جذع اتصاب؟"
@@ -11649,14 +11646,8 @@
     "unitPath": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy",
     "preparedPath": "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy/chat?fixture=dense",
     "sourceTitles": [
-      [
-        "Lecture 6 handout",
-        "ملزمة المحاضرة 6"
-      ],
-      [
-        "Practical 3 recording",
-        "تسجيل العملي 3"
-      ],
+      ["Lecture 6 handout", "ملزمة المحاضرة 6"],
+      ["Practical 3 recording", "تسجيل العملي 3"],
       [
         "Revision notes 1: Brachial plexus: roots, trunks, divisions, cords and branches, with the variants your notes mention",
         "ملاحظات مراجعة 1: الضفيرة العضدية: الجذور والجذوع والأقسام والحبال والفروع، مع الاختلافات المذكورة في ملاحظاتك"
@@ -11759,10 +11750,7 @@
     "campaignCount": 3,
     "requestsPerCampaign": 3,
     "names": [
-      [
-        "Synthetic Anatomy source call",
-        "حملة مصادر التشريح التجريبية"
-      ],
+      ["Synthetic Anatomy source call", "حملة مصادر التشريح التجريبية"],
       [
         "Synthetic Biochemistry source call — comparison handouts, recordings and diagrams for the first revision cycle",
         "حملة مصادر الكيمياء الحيوية التجريبية — ملازم المقارنة والتسجيلات والرسوم لدورة المراجعة الأولى"
@@ -11790,64 +11778,20 @@
   },
   "note": "All dates, source rows, clocks and statuses are illustrative fixtures, not approved production limits or execution results.",
   "studioArtifacts": [
-    [
-      "summary",
-      "Structured summary",
-      "ملخص منظم"
-    ],
-    [
-      "guide",
-      "Study guide",
-      "دليل مذاكرة"
-    ],
-    [
-      "practice",
-      "Practice questions",
-      "أسئلة تدريب"
-    ],
-    [
-      "flashcards",
-      "Flashcards",
-      "بطاقات مراجعة"
-    ],
-    [
-      "revision",
-      "Revision pack",
-      "حزمة مراجعة"
-    ],
-    [
-      "quiz",
-      "MCQ quiz",
-      "اختبار اختيار من متعدد"
-    ]
+    ["summary", "Structured summary", "ملخص منظم"],
+    ["guide", "Study guide", "دليل مذاكرة"],
+    ["practice", "Practice questions", "أسئلة تدريب"],
+    ["flashcards", "Flashcards", "بطاقات مراجعة"],
+    ["revision", "Revision pack", "حزمة مراجعة"],
+    ["quiz", "MCQ quiz", "اختبار اختيار من متعدد"]
   ],
   "studioExamples": {
     "version": "studio-examples-1",
-    "types": [
-      "summary",
-      "guide",
-      "practice",
-      "flashcards",
-      "revision",
-      "quiz"
-    ],
-    "topics": [
-      "sequence",
-      "comparison"
-    ],
-    "depths": [
-      "concise",
-      "detailed"
-    ],
-    "sizes": [
-      "short",
-      "extended"
-    ],
-    "languages": [
-      "en",
-      "ar",
-      "mixed"
-    ],
+    "types": ["summary", "guide", "practice", "flashcards", "revision", "quiz"],
+    "topics": ["sequence", "comparison"],
+    "depths": ["concise", "detailed"],
+    "sizes": ["short", "extended"],
+    "languages": ["en", "ar", "mixed"],
     "combinations": 144,
     "singleFlashcard": true,
     "quizPreviewOnly": true,
@@ -11893,120 +11837,84 @@
   "governedActions": [
     {
       "id": "publish",
-      "label": [
-        "Publish unit",
-        "نشر الوحدة"
-      ],
+      "label": ["Publish unit", "نشر الوحدة"],
       "before": "DRAFT",
       "after": "PUBLISHED",
       "protected": true
     },
     {
       "id": "hide",
-      "label": [
-        "Hide unit",
-        "إخفاء الوحدة"
-      ],
+      "label": ["Hide unit", "إخفاء الوحدة"],
       "before": "PUBLISHED",
       "after": "WITHDRAWN",
       "protected": false
     },
     {
       "id": "unlock",
-      "label": [
-        "Unlock cohort",
-        "فتح المجموعة"
-      ],
+      "label": ["Unlock cohort", "فتح المجموعة"],
       "before": "LOCKED",
       "after": "UNLOCKED",
       "protected": true
     },
     {
       "id": "lock",
-      "label": [
-        "Lock cohort",
-        "قفل المجموعة"
-      ],
+      "label": ["Lock cohort", "قفل المجموعة"],
       "before": "UNLOCKED",
       "after": "LOCKED",
       "protected": false
     },
     {
       "id": "activate",
-      "label": [
-        "Activate source",
-        "تفعيل المصدر"
-      ],
+      "label": ["Activate source", "تفعيل المصدر"],
       "before": "INACTIVE",
       "after": "ACTIVE",
       "protected": true
     },
     {
       "id": "deactivate",
-      "label": [
-        "Deactivate source",
-        "تعطيل المصدر"
-      ],
+      "label": ["Deactivate source", "تعطيل المصدر"],
       "before": "ACTIVE",
       "after": "DEACTIVATED",
       "protected": false
     },
     {
       "id": "quarantine",
-      "label": [
-        "Quarantine source",
-        "عزل المصدر"
-      ],
+      "label": ["Quarantine source", "عزل المصدر"],
       "before": "FAILED",
       "after": "QUARANTINED",
       "protected": false
     },
     {
       "id": "retry",
-      "label": [
-        "Retry source",
-        "إعادة محاولة المصدر"
-      ],
+      "label": ["Retry source", "إعادة محاولة المصدر"],
       "before": "FAILED",
       "after": "PENDING_OWNER_REVIEW",
       "protected": false
     },
     {
       "id": "hold",
-      "label": [
-        "Place raw-data hold",
-        "تعليق حذف البيانات الخام"
-      ],
+      "label": ["Place raw-data hold", "تعليق حذف البيانات الخام"],
       "before": "STORED",
       "after": "HELD",
       "protected": true
     },
     {
       "id": "remove-hold",
-      "label": [
-        "Remove raw-data hold",
-        "رفع تعليق الحذف"
-      ],
+      "label": ["Remove raw-data hold", "رفع تعليق الحذف"],
       "before": "HELD",
       "after": "STORED",
       "protected": true
     },
     {
       "id": "enable",
-      "label": [
-        "Enable provider or artifact",
-        "تفعيل مزود أو مخرج"
-      ],
+      "label": ["Enable provider or artifact", "تفعيل مزود أو مخرج"],
       "before": "DISABLED",
       "after": "ENABLED",
       "protected": true
     },
     {
       "id": "disable",
-      "label": [
-        "Disable provider or artifact",
-        "تعطيل مزود أو مخرج"
-      ],
+      "label": ["Disable provider or artifact", "تعطيل مزود أو مخرج"],
       "before": "ENABLED",
       "after": "DISABLED",
       "protected": false
@@ -12015,14 +11923,8 @@
   "quiz": {
     "illustrative": true,
     "timedSeconds": 60,
-    "correctAnswers": [
-      "Identify labels",
-      "No duration is supplied"
-    ],
-    "wrongAnswers": [
-      "Compare diagrams",
-      "An exact duration"
-    ]
+    "correctAnswers": ["Identify labels", "No duration is supplied"],
+    "wrongAnswers": ["Compare diagrams", "An exact duration"]
   },
   "uploadFiles": [
     "synthetic-handout.pdf",

@@ -75,8 +75,8 @@ export function SourceReturnContext({
       ) : null}
       <p>
         {t(
-          "Sample materials · Excerpts and page references below are illustrative.",
-          "مواد تجريبية · النصوص ومواضع الصفحات أدناه للتوضيح.",
+          "These are sample materials. The excerpts and page references below are illustrative.",
+          "هذه مواد تجريبية. النصوص ومواضع الصفحات أدناه للتوضيح.",
         )}
       </p>
     </div>

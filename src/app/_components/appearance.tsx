@@ -23,7 +23,7 @@ function apply(preference: ThemePreference) {
     .querySelector('meta[name="theme-color"]')
     ?.setAttribute(
       "content",
-      root.dataset.theme === "dark" ? "#1b1c1f" : "#f6f7f8",
+      root.dataset.theme === "dark" ? "#050b12" : "#0c1823",
     );
 }
 function subscribe(listener: () => void) {

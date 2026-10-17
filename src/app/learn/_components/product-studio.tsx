@@ -35,8 +35,8 @@ const formatPurposes = [
       "اجمع الأفكار الأساسية في نظرة واحدة.",
     ],
     example: [
-      "The two source instructions and where they differ.",
-      "تعليمات المصدرين ومواضع الاختلاف بينهما.",
+      "The roots of the upper trunk and how the two sources differ.",
+      "جذور الجذع العلوي ومواضع اختلاف المصدرين.",
     ],
   },
   {
@@ -47,8 +47,8 @@ const formatPurposes = [
       "ذاكر الموضوع خطوة بخطوة.",
     ],
     example: [
-      "Read the handout, compare the recording, then note the conflict.",
-      "اقرأ الملزمة، وقارن التسجيل، ثم دوّن التعارض.",
+      "Name the roots, explain the cause, then describe the arm position.",
+      "سمِّ الجذور، واشرح السبب، ثم صِف وضع الذراع.",
     ],
   },
   {
@@ -59,8 +59,8 @@ const formatPurposes = [
       "اشرح الفكرة بنفسك، ثم أظهر الإجابة المدعومة بالمصدر.",
     ],
     example: [
-      "What order does each source give?",
-      "ما الترتيب الذي يقدمه كل مصدر؟",
+      "Which roots does each source list?",
+      "ما الجذور التي يذكرها كل مصدر؟",
     ],
   },
   {
@@ -71,8 +71,8 @@ const formatPurposes = [
       "أجب عن أسئلة الاختيار من متعدد وراجع تصحيح إجاباتك.",
     ],
     example: [
-      "Choose which step the handout puts first.",
-      "اختر الخطوة التي تبدأ بها الملزمة.",
+      "Choose the roots the handout gives for Erb's palsy.",
+      "اختر الجذور التي تذكرها الملزمة لشلل إرب.",
     ],
   },
   {
@@ -83,8 +83,8 @@ const formatPurposes = [
       "استرجع الإجابة قبل قلب البطاقة.",
     ],
     example: [
-      "What sequence does the handout use?",
-      "ما ترتيب الخطوات في الملزمة؟",
+      "Which roots does an upper trunk injury damage?",
+      "ما الجذور التي تتأثر عند إصابة الجذع العلوي؟",
     ],
   },
   {
@@ -95,8 +95,8 @@ const formatPurposes = [
       "اجمع قائمة بالنقاط الأساسية وأسئلة للمراجعة النهائية.",
     ],
     example: [
-      "Check both source orders, then revisit the missing timing.",
-      "راجع ترتيب المصدرين، ثم راجع سؤال المدة غير المتاحة.",
+      "Check both root lists, then revisit the missing recovery time.",
+      "راجع قائمتي الجذور، ثم راجع مدة التعافي غير المذكورة.",
     ],
   },
 ] as const;
@@ -326,8 +326,8 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
                   onChange={(value) => setOption("topic", value)}
                   disabled={unavailable}
                   options={[
-                    ["sequence", t("Study sequence", "ترتيب الدراسة")],
-                    ["comparison", t("Diagram comparison", "مقارنة الرسوم")],
+                    ["sequence", t("Upper trunk injury", "إصابة الجذع العلوي")],
+                    ["comparison", t("Roots of the plexus", "جذور الضفيرة")],
                   ]}
                 />
                 <Select
@@ -452,8 +452,8 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
               <p>
                 {t("Selected study focus", "محور المذاكرة المختار")}:{" "}
                 {artifact.topic === "comparison"
-                  ? t("Diagram comparison", "مقارنة الرسوم")
-                  : t("Study sequence", "ترتيب الدراسة")}{" "}
+                  ? t("Roots of the plexus", "جذور الضفيرة")
+                  : t("Upper trunk injury", "إصابة الجذع العلوي")}{" "}
                 ·{" "}
                 {artifact.depth === "detailed"
                   ? t("Detailed", "مفصل")
@@ -616,14 +616,14 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
               )}
               <p>
                 {t(
-                  "Missing: no timing is supplied. Conflict: the recording reverses the sequence. This fixed example does not resolve that disagreement.",
-                  "الناقص: لا يوجد توقيت. التعارض: التسجيل يعكس الترتيب. المثال الثابت لا يحسم هذا الخلاف.",
+                  "Missing: no recovery time is given. Conflict: the recording adds a C4 branch. This fixed example does not resolve that disagreement.",
+                  "الناقص: لا توجد مدة للتعافي. التعارض: يضيف التسجيل فرعًا من C4. المثال الثابت لا يحسم هذا الخلاف.",
                 )}
               </p>
               <p>
                 {t(
-                  "Evidence: Synthetic sequence handout · PDF · sample page 3; Synthetic comparison recording · AUDIO · sample timestamp 02:10.",
-                  "الأدلة: ملزمة الترتيب التجريبية · PDF · صفحة تجريبية ٣؛ تسجيل المقارنة التجريبي · AUDIO · توقيت تجريبي ٠٢:١٠.",
+                  "Evidence: Lecture 6 handout, page 14; Practical 3 recording, 18:42.",
+                  "الأدلة: ملزمة المحاضرة 6، صفحة ١٤؛ تسجيل العملي 3، ١٨:٤٢.",
                 )}
               </p>
               <div className={styles.actions}>

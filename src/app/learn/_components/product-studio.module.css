@@ -11,29 +11,50 @@
   margin-inline: auto;
   min-width: 0;
 }
+/* A 264px configuration column beside the result, read as a document. */
 .studioLayout {
   display: grid;
   grid-template-columns: 264px minmax(0, 1fr);
   gap: 24px;
   align-items: start;
+  padding-block-start: 4px;
 }
 .studioControls {
   min-width: 0;
   display: grid;
-  gap: 8px;
+  gap: 12px;
   padding: 20px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
   background: var(--surface);
 }
-.configuration label {
-  font-size: 0.875rem;
-  line-height: 1.5;
+.studioControls > h2 {
+  margin: 0 0 2px;
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
 }
-.configuration select {
+.studioControls > .caption {
+  margin: 0;
+}
+.configuration {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+.studioControls label {
+  color: var(--secondary);
   font-size: 0.875rem;
-  line-height: 1.5;
+  font-weight: 650;
+  line-height: 1.4;
+}
+.studioControls select {
+  min-height: 44px;
   padding: 8px 12px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.4;
 }
 .artifactTypes {
   display: grid;
@@ -84,33 +105,66 @@
   opacity: 0;
 }
 .artifactTypes label:has(input:focus-visible) {
-  outline: 3px solid var(--accent);
-  outline-offset: 3px;
+  outline: 2px solid var(--cobalt);
+  outline-offset: 2px;
 }
 .artifactTypes:disabled label {
   cursor: wait;
   opacity: 0.6;
 }
-.configuration {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
+/*
+ * Generate stays reachable when the controls are taller than the viewport.
+ * It docks on its own solid band, and every control above it keeps clear of
+ * that band when focus scrolls it into view, so the dock never hides text
+ * that is being read or focused.
+ */
+.studioControls > button[type="submit"] {
+  position: sticky;
+  /* The band below reaches the scroll edge, so nothing shows under it. */
+  inset-block-end: 10px;
+  z-index: 1;
+  min-height: 48px;
+  margin-block: 6px;
+  box-shadow: 0 0 0 12px var(--surface);
+  container-type: scroll-state;
 }
-.configuration label {
-  font-size: var(--type-body-compact-size);
-  color: var(--text-secondary);
+/* While docked, a hairline marks where the band starts. */
+@container scroll-state(stuck: block-end) {
+  .studioControls > button[type="submit"]::before {
+    content: "";
+    position: absolute;
+    inset-inline: -12px;
+    inset-block-start: -13px;
+    block-size: 1px;
+    background: var(--line);
+  }
 }
-.configuration select {
-  font-size: 0.875rem;
+.studioControls :is(select, summary, a, input, textarea) {
+  scroll-margin-block-end: 96px;
+}
+.secondaryOptions {
+  border-block-start: 1px solid var(--line);
+}
+.secondaryOptions summary {
   min-height: 44px;
+  padding-block: 12px;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--ink);
+  cursor: pointer;
 }
+.secondaryOptions > div {
+  margin-block: 8px;
+}
+
+/* The result: a white reading surface with its own clear hierarchy. */
 .artifactArea {
   min-width: 0;
   min-height: 26rem;
-  border: 1px solid var(--border);
-  border-radius: 10px;
+  padding: 24px 40px 28px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
   background: var(--surface);
-  padding: 24px;
 }
 .artifactHeader {
   display: flex;
@@ -119,67 +173,145 @@
   align-items: center;
   justify-content: space-between;
   padding-block-end: 16px;
-  border-block-end: 1px solid var(--border);
+  margin-block-end: 28px;
+  border-block-end: 1px solid var(--line);
 }
 .artifactHeader h2 {
   margin: 0;
-  font-size: 1rem;
+  color: var(--secondary);
+  font-size: 0.9375rem;
+  font-weight: 700;
   line-height: 1.5;
+  letter-spacing: 0;
 }
 .artifactHeader > span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 12px;
+  border-radius: var(--radius-pill);
+  background: var(--tint);
+  color: var(--ink);
   font-size: 0.8125rem;
-  color: var(--secondary);
-}
-.artifactFooter {
-  margin-block-start: 24px;
-  padding-block-start: 12px;
-  border-block-start: 1px solid var(--border);
-}
-.artifactEmpty {
-  padding-block: 56px;
-  max-width: 35rem;
-  margin-inline: auto;
-}
-.artifactEmpty > svg {
-  color: var(--accent-ink);
-  width: 22px;
-  height: 22px;
-}
-.artifactEmpty h3 {
-  font-size: 1rem;
-  line-height: 1.5;
-  font-weight: 600;
-  margin-block: 1rem 0.5rem;
-}
-.artifactEmpty p {
-  color: var(--text-muted);
-  max-width: 60ch;
-}
-.artifactOutput h2 {
-  margin-block: 0 0.75rem;
-  line-height: 1.5;
-  font-size: var(--type-artifact-title-size);
-}
-.artifactOutput > p {
-  color: var(--text-secondary);
-}
-.artifactOutput > div[lang] {
-  padding-block: 1rem;
-  border-block: 1px solid var(--line);
-  margin-block: 1.5rem;
-  line-height: 1.75;
-}
-.artifactOutput > div[lang] p {
-  color: var(--text-primary);
-}
-.artifactOutput li {
-  margin-block: 0.5rem;
+  font-weight: 700;
 }
 .artifactLoading {
-  padding: 1rem;
-  border-radius: var(--radius-control);
-  background: var(--surface);
-  margin-block-end: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-block-end: 20px;
+}
+.artifactLoading > p {
+  flex: 1 1 16rem;
+  margin: 0;
+}
+.artifactEmpty {
+  display: grid;
+  justify-items: start;
+  max-width: 35rem;
+  margin-inline: auto;
+  padding-block: 48px 56px;
+}
+.artifactEmpty > svg {
+  box-sizing: content-box;
+  width: 22px;
+  height: 22px;
+  padding: 13px;
+  border-radius: var(--radius-pill);
+  background: var(--tint);
+  color: var(--action);
+}
+.artifactEmpty h3 {
+  margin-block: 20px 8px;
+  color: var(--ink);
+  font-size: 1.125rem;
+  font-weight: 750;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+.artifactEmpty p {
+  max-width: 60ch;
+  margin: 0;
+  color: var(--secondary);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+.artifactOutput {
+  max-width: 72ch;
+  animation: result-settle var(--motion-result) var(--ease-settle);
+}
+.artifactOutput h2 {
+  margin-block: 0 10px;
+  color: var(--ink);
+  font-size: 1.875rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: var(--type-headline-tracking);
+  text-wrap: balance;
+}
+/* The heading takes focus only by script after a result arrives. */
+.artifactOutput > h2[tabindex="-1"]:focus {
+  outline: none;
+}
+.artifactOutput > p {
+  max-width: 68ch;
+  margin-block: 0 12px;
+  color: var(--secondary);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.artifactOutput > div[lang] {
+  max-width: 68ch;
+  margin-block: 24px 28px;
+  color: var(--ink);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+.artifactOutput > div[lang] p {
+  margin-block: 0 14px;
+  color: var(--ink);
+}
+.artifactOutput > div[lang] :is(ol, ul) {
+  margin-block: 8px 16px;
+  padding-inline-start: 1.5rem;
+}
+.artifactOutput li {
+  margin-block: 0 12px;
+  padding-inline-start: 4px;
+}
+.artifactOutput li::marker {
+  color: var(--secondary);
+  font-weight: 750;
+}
+.artifactOutput li p {
+  margin-block: 6px 0;
+  color: var(--secondary);
+  font-size: 0.9375rem;
+}
+.artifactOutput li details {
+  margin-block-start: 6px;
+}
+.artifactOutput li summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--action);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+/* Missing and conflicting evidence reads as a note, then the sources line. */
+.artifactOutput > div[lang] + p {
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: var(--surface-2);
+  color: var(--ink);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+.artifactOutput > div[lang] + p + p {
+  font-size: 0.8125rem;
 }
 .flashcard {
   perspective: 1000px;
@@ -199,18 +331,20 @@
   display: grid;
   place-items: center;
   text-align: center;
-  min-height: 200px;
+  min-height: 220px;
   margin: 0;
   padding: 32px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
   backface-visibility: hidden;
-  background: var(--accent-soft);
+  background: var(--tint);
+  color: var(--ink);
   font-size: 1.25rem;
-  line-height: 1.7;
+  font-weight: 650;
+  line-height: 1.6;
 }
 .flashcardBack {
-  background: var(--subtle);
+  background: var(--surface-2);
   transform: rotateY(180deg);
 }
 .studio :is(button, a, select) {
@@ -219,36 +353,10 @@
   white-space: normal;
   overflow-wrap: anywhere;
 }
-.studioControls > h2 {
-  margin: 0 0 4px;
-  font-size: 1.125rem;
-}
-/* Generate stays reachable when the controls are taller than the viewport. */
-.studioControls > button[type="submit"] {
-  position: sticky;
-  inset-block-end: 12px;
-  z-index: 1;
-  box-shadow: 0 0 0 8px var(--surface);
-}
-.secondaryOptions {
-  border-block-start: 1px solid var(--border);
-}
-.secondaryOptions summary {
-  min-height: 44px;
-  padding-block: 12px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--ink);
-  cursor: pointer;
-}
-.secondaryOptions > div {
-  margin-block: 8px;
-}
-.artifactOutput {
-  animation: result-settle var(--motion-result) var(--ease-settle);
-}
-.artifactOutput > div[lang] {
-  max-width: 68ch;
+.artifactFooter {
+  margin-block-start: 28px;
+  padding-block-start: 16px;
+  border-block-start: 1px solid var(--line);
 }
 @keyframes result-settle {
   from {
@@ -258,20 +366,40 @@
     transform: none;
   }
 }
+@media (max-width: 1100px) {
+  .artifactArea {
+    padding-inline: 28px;
+  }
+}
 @media (max-width: 767px) {
   .studioLayout {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 16px;
+    padding-block-start: 0;
   }
   .studioControls {
     padding: 16px;
-    gap: 10px;
   }
   .artifactArea {
-    padding: 20px;
     min-height: 18rem;
+    padding: 18px 18px 20px;
+  }
+  .artifactHeader {
+    margin-block-end: 20px;
+  }
+  .artifactOutput h2 {
+    font-size: 1.5rem;
+  }
+  .artifactOutput > div[lang] {
+    font-size: 1rem;
+    line-height: 1.55;
   }
   .artifactEmpty {
-    padding-block: 24px;
+    padding-block: 16px 24px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .artifactTypes label {
+    transition: none;
   }
 }

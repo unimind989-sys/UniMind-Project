@@ -953,10 +953,9 @@ inLocales(["en"], (locale) => {
       await expect(page.locator("article")).toHaveCount(7);
       await page.locator(`a[href*="${unit}/evidence?"]`).first().click();
       await expect(
-        page.getByText(
-          pick(locale, "Lecture 6 handout", "ملزمة المحاضرة 6"),
-          { exact: true },
-        ),
+        page.getByText(pick(locale, "Lecture 6 handout", "ملزمة المحاضرة 6"), {
+          exact: true,
+        }),
       ).toBeVisible();
       await navigate(page, unit + "/chat", locale);
       await page.locator(`a[href*="${unit}/report?"]`).first().click();

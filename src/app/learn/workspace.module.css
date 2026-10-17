@@ -18,6 +18,9 @@
   margin: 0;
   color: var(--text-primary);
   font-size: var(--type-headline-size);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: var(--type-headline-tracking);
 }
 .routeState p,
 .standaloneState p {
@@ -27,18 +30,23 @@
 }
 .routeState button,
 .standaloneState a {
-  min-height: 2.75rem;
+  min-height: 48px;
   display: inline-grid;
   place-items: center;
   border: 0;
-  border-radius: 0.65rem;
-  padding-inline: 1rem;
-  background: var(--accent);
-  color: var(--on-accent);
+  border-radius: var(--radius-control);
+  padding-inline: 22px;
+  background: var(--action);
+  color: var(--on-action);
   font: inherit;
   font-weight: 700;
   text-decoration: none;
   cursor: pointer;
+  transition: background-color var(--motion-control) ease;
+}
+.routeState button:hover,
+.standaloneState a:hover {
+  background: var(--action-strong);
 }
 .loadingMark {
   width: 2rem;
@@ -60,7 +68,8 @@
 .standaloneState h1 {
   color: var(--ink);
   font-size: 2.125rem;
-  line-height: 1.35;
+  line-height: 1.15;
+  letter-spacing: var(--type-display-tracking);
   margin: 16px 0 0;
 }
 .standaloneState a:has(img) {

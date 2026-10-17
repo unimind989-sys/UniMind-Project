@@ -53,14 +53,11 @@ export function studyMaterialReading(
           "القراءة للمذاكرة الجديدة غير متاحة ما دام هذا المصدر غير نشط.",
         )
       : passage?.id === "handout"
-        ? t(
-            "Processed passage available · excerpt only",
-            "نص معالج متاح · مقتطف فقط",
-          )
+        ? t("Excerpt from the processed passage", "مقتطف من النص المعالج")
         : passage?.id === "recording"
           ? t(
-              "Processed transcript available · excerpt only",
-              "تفريغ معالج متاح · مقتطف فقط",
+              "Excerpt from the processed transcript",
+              "مقتطف من التفريغ المعالج",
             )
           : t("No reading passage supplied", "لا يوجد نص متاح للقراءة"),
     action:

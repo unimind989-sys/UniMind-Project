@@ -16,14 +16,16 @@ export function Overview(props: ProductStudyProps) {
         <div>
           <h2>{t("Materials", "مصادر المذاكرة")}</h2>
           <p>
+            {t("Updated", "آخر تحديث")}{" "}
             {new Intl.DateTimeFormat(
               props.locale === "ar" ? "ar-EG" : "en-GB",
               {
                 dateStyle: "medium",
                 timeZone: "UTC",
               },
-            ).format(new Date(props.scope.materialUpdatedAt))}{" "}
-            · <bdi>{edition}</bdi>
+            ).format(new Date(props.scope.materialUpdatedAt))}
+            {t(", ", "، ")}
+            <bdi>{edition}</bdi>
           </p>
         </div>
       </header>

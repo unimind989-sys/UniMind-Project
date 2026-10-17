@@ -471,7 +471,7 @@ const studioStates: readonly ScreenState[] = [
     },
   },
   {
-    name: "quiz setup keeps one centered path with equivalent labels and count help",
+    name: "quiz setup keeps one aligned path with equivalent labels and count help",
     enter: (page, locale) => navigate(page, `${unit}/quiz`, locale),
     widths: [1440, 820, 390, 320],
     height: 1000,
@@ -533,9 +533,18 @@ const studioStates: readonly ScreenState[] = [
               layout.fields[index - 1]!.bottom + 19,
             );
         }
+        // Start shares the fields' inline start edge (Direction B left-aligns forms).
         const action = await boxOf(start);
+        const field = layout.fields[0]!;
+        const rtl = await page.evaluate(
+          () => document.documentElement.dir === "rtl",
+        );
         expect(
-          Math.abs(action.x + action.width / 2 - layout.center),
+          Math.abs(
+            rtl
+              ? action.x + action.width - (field.x + field.width)
+              : action.x - field.x,
+          ),
         ).toBeLessThan(2);
       }
       await page
