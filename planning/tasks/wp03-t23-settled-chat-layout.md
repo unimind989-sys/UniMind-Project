@@ -12,7 +12,7 @@
 
 **Branch:** claude/wp03-t23-settled-chat-layout
 
-**Updated (UTC):** 2026-10-17T22:40:00Z
+**Updated (UTC):** 2026-10-17T23:25:00Z
 
 ## Contract
 
@@ -36,7 +36,8 @@
 
 - [x] Diagnose from the CI trace and a local reproduction.
 - [x] Resize through the shared `resize` helper, which waits two animation frames for the shell's re-measure.
-- [ ] Repeated local runs, `pnpm check`, PR, required CI, merge, close.
+- [x] Repeated local runs and `pnpm check`.
+- [ ] PR, required CI, merge, close.
 
 ## Decisions
 
@@ -47,14 +48,14 @@
 
 **Changed:** the journey's resize loop calls `resize(page, width, height)` from `tests/e2e/support/layout.ts` in place of a bare `page.setViewportSize`; a comment names the race.
 
-**Proof:** Cause: the shell (`app-shell.tsx`) picks `data-workspace-flow` (`pane` or `page`) in a `requestAnimationFrame` after a resize. The test measured about 10 ms after `setViewportSize` and its `toHaveAttribute(/pane|page/)` accepts the stale value. In the CI trace the DOM snapshot right after the failing measurement still has `data-workspace-flow="pane"` at 320x720; the failure screenshot, taken later, shows the settled `page` flow. Locally at 320x720 the reading region is 133 px with the flow forced to `pane` (CI's exact value) and 214 px in the settled `page` flow; 390x844 settles on `pane` with 329 px. Reproduction: an init script that delays every animation-frame callback by 150 ms makes the original journey fail 3/3 with `Received: 133` at line 484; the fixed journey passes 3/3 at 150 ms and 3/3 at 400 ms. With the same 150 ms delay the whole of `chat.spec.ts` passes (12 tests), so no other journey in that file has this race.
+**Proof:** Cause: the shell (`app-shell.tsx`) picks `data-workspace-flow` (`pane` or `page`) in a `requestAnimationFrame` after a resize. The test measured about 10 ms after `setViewportSize` and its `toHaveAttribute(/pane|page/)` accepts the stale value. In the CI trace the DOM snapshot right after the failing measurement still has `data-workspace-flow="pane"` at 320x720; the failure screenshot, taken later, shows the settled `page` flow. Locally at 320x720 the reading region is 133 px with the flow forced to `pane` (CI's exact value) and 214 px in the settled `page` flow; 390x844 settles on `pane` with 329 px. Reproduction: an init script that delays every animation-frame callback by 150 ms makes the original journey fail 3/3 with `Received: 133` at line 484; the fixed journey passes 3/3 at 150 ms and 3/3 at 400 ms. With the same 150 ms delay the whole of `chat.spec.ts` passes (12 tests), so no other journey in that file has this race. After merging main (`848104f`, WP03-T22): the journey `--repeat-each=10` → 10 passed; `--repeat-each=20` on 4 workers → 20 passed; `--list` → 192 tests, same as main; `pnpm check` steps (format, lint, typecheck, boundaries, SQL, secrets, agents, 929 unit tests) green.
 
 **Review:** self-review.
 
 **Approved commit:** NOT REQUIRED: test-only; no product change.
 
-**Remaining:** repeated local runs, `pnpm check`, PR and required CI, merge, closure.
+**Remaining:** PR, required CI, merge, closure.
 
 ## Next action
 
-Run the journey with `--repeat-each=10`, then `pnpm check`, then open the PR.
+Open the PR, wait for required CI on its head, squash-merge, then close the runbook task and this record.
