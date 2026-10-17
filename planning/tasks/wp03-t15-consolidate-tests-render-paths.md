@@ -2,7 +2,7 @@
 
 **Task ID:** WP03-T15
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** Fewer, sharper tests; CI in parallel jobs; synthetic logic under `src/lib/demo`; `/preview` and the separate loopback render path removed in favour of one synthetic client runtime; no source file over the line limit; repository hygiene done. Product-visible behaviour unchanged except the accessibility and navigation fixes listed under Decisions.
 
@@ -64,7 +64,7 @@
 
 **Approved commit:** NOT REQUIRED: no intended change at normal sizes; accessibility fixes only at 320px + 200% text.
 
-**Remaining:** PR CI, merge, cleanup.
+**Remaining:** NONE once the PR merges; these closure markers become authoritative only then.
 
 ## Next action
 
