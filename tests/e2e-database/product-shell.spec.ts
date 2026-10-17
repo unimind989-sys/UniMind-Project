@@ -644,15 +644,17 @@ test("student: shared study, settings and catalog screens against the real backe
   await page.goto("/settings?lang=en");
   await expectStudentSettingsScreen(page, "en", "real");
 
-  await page.goto(
-    `/learn/${cohort}/20000000-0000-4000-8000-000000000099/chat?lang=en`,
-  );
-  await expect(
-    page.getByRole("heading", { name: "Workspace unavailable" }),
-  ).toBeVisible();
-  await expect(page.getByText("Synthetic Unit A", { exact: true })).toHaveCount(
-    0,
-  );
+  for (const tool of ["", "/chat", "/sources", "/evidence", "/report"]) {
+    await page.goto(
+      `/learn/${cohort}/20000000-0000-4000-8000-000000000099${tool}?lang=en`,
+    );
+    await expect(
+      page.getByRole("heading", { name: "Workspace unavailable" }),
+    ).toBeVisible();
+    await expect(
+      page.getByText("Synthetic Unit A", { exact: true }),
+    ).toHaveCount(0);
+  }
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(`${base}?lang=ar`);

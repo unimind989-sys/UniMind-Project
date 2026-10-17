@@ -54,16 +54,16 @@
 
 ## Current state
 
-**Changed:** runbook task registered; this record.
+**Changed:** see Steps (commits on the branch).
 
-**Proof:** NOT RUN yet.
+**Proof:** tsc, eslint, module boundaries, prettier, `verify:ci-workflow` PASS; `test:node` 948 passed, 2 skipped. Demo suite (3 workers): 187 passed, 3 failed with dev-server `ECONNRESET` on `/login`; rerun 8/8 PASS. Main e2e 38/39: the hosted density test expected a 404 on `/learn/.../sources` after reload; real `/sources` now exists and redirects to login, so the test asserts that (hosted spec 9/9 PASS). `tests/e2e-database` runs only in CI (no local Docker).
 
-**Review:** none yet.
+**Review:** independent review (`independent-reviewer` sub-agent) of `a6dfbae..4a9543c`: no high findings. Medium "real workspace loses lang/dir" not reproduced: `FrontendShell` renders `AppShell`, which sets both in `useLayoutEffect`; database CI asserts it. Two low test gaps fixed (forbidden unit on every tool route; real screens assert no sample copy).
 
 **Approved commit:** PENDING
 
-**Remaining:** every step after the inventory.
+**Remaining:** main e2e and node layers; draft PR (its Vercel Preview is the only place to see real mode before merge); database CI; independent review; Ahmed's rendered review; merge; close.
 
 ## Next action
 
-Build the adapter seam and move the Materials and Chat tools onto it.
+Open the draft PR, dispatch database feedback CI, and present the synthetic (local demo) and real (PR Preview) screens to Ahmed.

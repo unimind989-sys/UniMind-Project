@@ -12,6 +12,14 @@ type Locale = "en" | "ar";
 const say = (locale: Locale, en: string, ar: string) =>
   locale === "ar" ? ar : en;
 
+/** Sample-only copy that must never render on a real route. */
+const sampleContent =
+  /Sample materials|Synthetic sequence handout|Synthetic comparison recording|fixed examples|Fixed examples|sample questions|مواد تجريبية|ملزمة الترتيب التجريبية|تسجيل المقارنة التجريبي|أمثلة ثابتة|أسئلة تجريبية/u;
+
+async function expectNoSampleContent(page: Page) {
+  await expect(page.getByText(sampleContent)).toHaveCount(0);
+}
+
 /** Subject header, unit details and the four study tools. */
 export async function expectStudyFrame(
   page: Page,
@@ -54,8 +62,10 @@ export async function expectMaterialsScreen(
       "قائمة المصادر غير متاحة بعد.",
     ),
   );
-  if (mode === "real") await expect(listUnavailable).toBeVisible();
-  else await expect(listUnavailable).toHaveCount(0);
+  if (mode === "real") {
+    await expect(listUnavailable).toBeVisible();
+    await expectNoSampleContent(page);
+  } else await expect(listUnavailable).toHaveCount(0);
 }
 
 /** Chat: sessions menu, study options and the composer. */
@@ -88,6 +98,7 @@ export async function expectChatScreen(
   if (mode === "real") {
     await expect(message).toBeDisabled();
     await expect(unavailable).toBeVisible();
+    await expectNoSampleContent(page);
   } else {
     await expect(message).toBeEnabled();
     await expect(unavailable).toHaveCount(0);
@@ -124,6 +135,7 @@ export async function expectStudioScreen(
     await expect(type).toBeDisabled();
     await expect(generate).toBeDisabled();
     await expect(unavailable).toBeVisible();
+    await expectNoSampleContent(page);
   } else {
     await expect(type).toBeEnabled();
     await expect(unavailable).toHaveCount(0);
@@ -155,6 +167,7 @@ export async function expectQuizSetupScreen(
     await expect(start).toBeDisabled();
     await expect(count).toBeDisabled();
     await expect(unavailable).toBeVisible();
+    await expectNoSampleContent(page);
   } else {
     await expect(start).toBeEnabled();
     await expect(count).toBeEnabled();
