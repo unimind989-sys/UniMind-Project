@@ -1506,16 +1506,7 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 **Dependencies:** WP03-T19 delivered.
 
-- [x] Leader intake and history, admin decision queue and resource pages as working tools in the new direction; keep every governed-action guard; Ahmed approves the rendered candidate; deliver through one PR with required CI ([task record](../../planning/tasks/wp03-t21-leader-admin-cobalt.md)).
-
-#### WP03-T23 — Measure the compact Chat layout only after the shell settles
-
-**Dependencies:** WP03-T15 (the compact-context journey in `tests/e2e/demo/chat.spec.ts`). CI run 39071765080 (PR #85) failed that journey once at 320x720 with 133 px of reading space against the 160 px floor, while the same test passed on earlier runs and on main ([task record](../../planning/tasks/wp03-t23-settled-chat-layout.md)).
-
-- [~] Find the cause from the failure artifacts and a local reproduction, and make the measurement wait for the settled layout without weakening the 160 px floor, the single scroll owner or the no-overflow check; stop and report instead if the product layout itself is wrong.
-- [ ] Show the fixed test stable over repeated local runs; deliver through one PR with required CI and the same demo test count.
-
-**Pass:** the journey reads geometry only after the shell's flow decision; repeated local runs and required CI green; no assertion weakened and no product change. Approved at `c197682` by the overseeing session under Ahmed's delegation; delivered in [#84](https://github.com/unimind989-sys/UniMind-Project/pull/84), squash-merged as `d64c9e7` with all 15 checks green, and promoted to production ([evidence](../../evidence/wp03-product-shell/2026-10-17_wp03-t21-leader-admin-cobalt_production_d64c9e7.md)).
+- [x] Leader intake and history, admin decision queue and resource pages as working tools in the new direction; keep every governed-action guard; Ahmed approves the rendered candidate; deliver through one PR with required CI ([task record](../../planning/tasks/wp03-t21-leader-admin-cobalt.md)). Approved at `c197682` by the overseeing session under Ahmed's delegation; delivered in [#84](https://github.com/unimind989-sys/UniMind-Project/pull/84), squash-merged as `d64c9e7` with all 15 checks green, and promoted to production ([evidence](../../evidence/wp03-product-shell/2026-10-17_wp03-t21-leader-admin-cobalt_production_d64c9e7.md)).
 
 #### WP03-T22 — Keep the loopback demo rewrite internal
 
@@ -1525,6 +1516,15 @@ External component catalogs and MCPs are optional implementation aids, never des
 - [x] Independent review of the exact diff; deliver through one PR with required CI; two full demo e2e runs with no `Failed to proxy` line in the dev-server log. Reviewed by the `independent-reviewer` sub-agent (one blocker fixed, then no findings); delivered in [#85](https://github.com/unimind989-sys/UniMind-Project/pull/85), with demo runs 39065977093 and 39067911066 at 192 passed each and zero `Failed to proxy`. These closure markers become authoritative only when that PR merges.
 
 **Pass:** each demo request runs the proxy once and renders in the same server; no `Failed to proxy` lines across two full CI demo runs; the demo gate and real-mode behaviour unchanged.
+
+#### WP03-T23 — Measure the compact Chat layout only after the shell settles
+
+**Dependencies:** WP03-T15 (the compact-context journey in `tests/e2e/demo/chat.spec.ts`). CI run 39071765080 (PR #85) failed that journey once at 320x720 with 133 px of reading space against the 160 px floor, while the same test passed on earlier runs and on main ([task record](../../planning/tasks/wp03-t23-settled-chat-layout.md)).
+
+- [~] Find the cause from the failure artifacts and a local reproduction, and make the measurement wait for the settled layout without weakening the 160 px floor, the single scroll owner or the no-overflow check; stop and report instead if the product layout itself is wrong.
+- [ ] Show the fixed test stable over repeated local runs; deliver through one PR with required CI and the same demo test count.
+
+**Pass:** the journey reads geometry only after the shell's flow decision; repeated local runs and required CI green; no assertion weakened and no product change.
 
 ### 6.1 Routes
 
