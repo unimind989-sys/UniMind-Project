@@ -14,7 +14,7 @@
 
 **Branch:** claude/wp03-t21-leader-admin-cobalt
 
-**Updated (UTC):** 2026-10-18T00:30Z
+**Updated (UTC):** 2026-10-17T20:15Z
 
 ## Contract
 
@@ -60,12 +60,12 @@
 
 **Review:** independent review by the `independent-reviewer` sub-agent of `4849cf0..284f900`: approve with nits; all five minor findings resolved in `ce16e47` (demo pack title, edition display, band source order, phone tabs while detail is open, progress label read once). Governance, intake, counts and tests confirmed unchanged or stronger.
 
-**Approved commit:** PENDING (overseer review under Ahmed's 17 Oct delegation)
+**Approved commit:** `c197682`, approved by the overseeing Claude Code session under Ahmed's 17 October 2026 delegation (not a founder review). The rendered review covered the Batch Leader home and campaign intake (desktop and phone), the admin decision queue and sources (desktop and phone), and an open decision detail in dark Arabic. Later merge-from-main and record-only commits keep this approval.
 
 **PR:** [#84](https://github.com/unimind989-sys/UniMind-Project/pull/84), open and mergeable, not merged. Required CI: all 15 checks green on candidate head `e67ce9e` (run 39061821643; e2e-demo shard 3 failed once on a dev-server `ECONNRESET` during sign-in and passed on rerun). This record-only commit re-runs CI on the new head.
 
-**Remaining:** overseer review and approval, merge (overseer), production proof and closure. Delivery stopped at a green PR as instructed.
+**Remaining:** merge, production proof and closure (overseer).
 
 ## Next action
 
-Overseer reviews the rendered candidate on #84, records `Approved commit:`, and merges once required CI on the exact head is green.
+Merge #84 once required CI on the exact head is green, then deploy production and close WP03-T21.
