@@ -12,10 +12,16 @@ const layers = [
 type VitestLayer = (typeof layers)[number];
 
 const requestedLayer = process.argv[2];
-if (!layers.includes(requestedLayer as VitestLayer)) {
-  throw new Error(`Expected one test layer: ${layers.join(", ")}.`);
+if (
+  requestedLayer !== "all" &&
+  !layers.includes(requestedLayer as VitestLayer)
+) {
+  throw new Error(`Expected one test layer or all: ${layers.join(", ")}.`);
 }
-const layer = requestedLayer as VitestLayer;
+// "all" runs every layer in one Vitest process; layers with
+// fileParallelism: false still run their files one at a time.
+const layer = requestedLayer as VitestLayer | "all";
+const projects = layer === "all" ? layers : [layer];
 const filters = process.argv.slice(3).filter((argument) => argument !== "--");
 const reportDirectory = path.resolve("test-results/vitest");
 mkdirSync(reportDirectory, { recursive: true });
@@ -26,8 +32,7 @@ const result = spawnSync(
   [
     vitestBinary,
     "run",
-    "--project",
-    layer,
+    ...projects.flatMap((project) => ["--project", project]),
     ...filters,
     "--reporter=default",
     "--reporter=json",

@@ -1,22 +1,19 @@
 "use client";
-import { useProductRouter } from "@/app/_components/product-navigation";
-import { useSyntheticNavigation } from "@/app/_components/product-navigation";
+import { useHostedSynthetic } from "@/app/_components/product-navigation";
 import { ProductNavigationLink as Link } from "@/app/_components/product-navigation";
 import type { Route } from "next";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { FrontendIcon } from "@/app/_components/frontend-controls";
 import { AppShell } from "@/app/_components/app-shell";
-import {
-  buildCatalogHref,
-  type CatalogJourney,
-  type CatalogAccessState,
-  type CatalogSelectionKey,
+import type {
+  CatalogJourney,
+  CatalogAccessState,
 } from "@/lib/catalog/catalog-journey.application";
 import { getCatalogCopy } from "@/lib/i18n/catalog-copy";
 import type { Locale } from "@/lib/i18n/locale";
 import type { RecentStudyDetails } from "@/lib/study/recent-work.application";
-import type { UnitPresentation } from "../synthetic-catalog";
+import type { UnitPresentation } from "@/lib/demo/synthetic-catalog.application";
 import styles from "../study-shelf.module.css";
 
 export function StudyShelf({
@@ -41,18 +38,12 @@ export function StudyShelf({
   profileName?: string | null;
   unitPresentationById?: Readonly<Record<string, UnitPresentation>>;
 }) {
-  const router = useProductRouter();
-  const hosted = useSyntheticNavigation()?.active === true;
+  const hosted = useHostedSynthetic();
   const parameters = useSearchParams();
   const subjects = parameters.get("view") === "subjects";
   const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
   const copy = getCatalogCopy(locale);
   const [search, setSearch] = useState("");
-  const [pending, setPending] = useState(false);
-  const results = useRef<HTMLHeadingElement>(null);
-  const navigating = useRef(false);
-  const preview = basePath.startsWith("/preview");
-  const showCatalog = subjects || preview;
   const browseQuery = new URLSearchParams(journey.canonicalQuery);
   browseQuery.set("lang", locale);
   browseQuery.set("view", "subjects");
@@ -99,22 +90,13 @@ export function StudyShelf({
       : t("Chat", "المحادثة");
   const heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
-    if (!preview) {
-      window.scrollTo({ top: 0 });
-      heading.current?.focus({ preventScroll: true });
-    }
-  }, [preview]);
+    window.scrollTo({ top: 0 });
+    heading.current?.focus({ preventScroll: true });
+  }, []);
   useEffect(() => {
     document.documentElement.lang = locale;
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
   }, [locale]);
-  useEffect(() => {
-    if (navigating.current) {
-      navigating.current = false;
-      setPending(false);
-      results.current?.focus();
-    }
-  }, [journey.canonicalQuery]);
   const units = useMemo(
     () =>
       journey.units.filter((unit) =>
@@ -124,13 +106,6 @@ export function StudyShelf({
       ),
     [journey.units, locale, search],
   );
-  const navigate = (key: CatalogSelectionKey, value: string) => {
-    setPending(true);
-    navigating.current = true;
-    router.push(
-      `${buildCatalogHref(basePath, locale, journey.selection, key, value)}${subjects ? "&view=subjects" : ""}` as Route,
-    );
-  };
   const label =
     locale === "ar"
       ? journey.selectedProgram?.unitLabelPluralAr
@@ -164,12 +139,11 @@ export function StudyShelf({
   return (
     <AppShell
       locale={locale}
-      preview={preview}
       synthetic={synthetic}
       profileName={profileName}
       title={subjects ? t("Subjects", "المواد") : t("Study", "المذاكرة")}
     >
-      <div className={styles.content} aria-busy={pending}>
+      <div className={styles.content} aria-busy={false}>
         <header className={styles.pageHeader}>
           <h1 ref={heading} tabIndex={-1}>
             {subjects
@@ -186,7 +160,7 @@ export function StudyShelf({
                 "موادك ومصادرك في مكان واحد.",
               )}
           </p>
-          {!preview && !subjects ? (
+          {!subjects ? (
             <Link
               className={styles.contextLink}
               href={`/settings?lang=${locale}&section=academic` as Route}
@@ -195,71 +169,6 @@ export function StudyShelf({
             </Link>
           ) : null}
         </header>
-        {preview && state === "READY" ? (
-          <fieldset className={styles.path} disabled={pending}>
-            <legend>{copy.pathHeading}</legend>
-            {(
-              [
-                ["stage", "stageId", copy.stage, journey.options.stages],
-                [
-                  "institution",
-                  "institutionId",
-                  journey.selectedStage?.code === "UNIVERSITY"
-                    ? copy.university
-                    : copy.educationSystem,
-                  journey.options.institutions,
-                ],
-                [
-                  "program",
-                  "programId",
-                  journey.selectedStage?.code === "UNIVERSITY"
-                    ? copy.faculty
-                    : copy.track,
-                  journey.options.programs,
-                ],
-                [
-                  "level",
-                  "levelId",
-                  journey.selectedStage?.code === "UNIVERSITY"
-                    ? copy.academicYear
-                    : copy.schoolYear,
-                  journey.options.levels,
-                ],
-                [
-                  "term",
-                  "termId",
-                  journey.selectedStage?.code === "UNIVERSITY"
-                    ? copy.semester
-                    : copy.term,
-                  journey.options.terms,
-                ],
-                ["cohort", "cohortId", copy.cohort, journey.options.cohorts],
-              ] as const
-            )
-              .filter(
-                ([key, , , options]) => key !== "cohort" || options.length > 1,
-              )
-              .map(([key, selectionKey, title, options]) => (
-                <label key={key}>
-                  <span>{title}</span>
-                  <select
-                    aria-label={title}
-                    name={key}
-                    value={journey.selection[selectionKey] ?? ""}
-                    disabled={options.length === 0}
-                    onChange={(event) => navigate(key, event.target.value)}
-                  >
-                    <option value="">{copy.choose}</option>
-                    {options.map((option) => (
-                      <option key={option.id} value={option.id}>
-                        {locale === "ar" ? option.nameAr : option.nameEn}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              ))}
-          </fieldset>
-        ) : null}
         {state !== "READY" ? (
           <section
             className={styles.emptyState}
@@ -279,7 +188,7 @@ export function StudyShelf({
               <section className={styles.emptyState} role="status">
                 <h2>{copy.choosePathTitle}</h2>
                 <p>{copy.choosePathBody}</p>
-                {!preview && !subjects ? (
+                {!subjects ? (
                   <Link href={`/settings?lang=${locale}` as Route}>
                     {t("Choose academic settings", "اختيار الإعدادات الدراسية")}
                   </Link>
@@ -287,7 +196,7 @@ export function StudyShelf({
               </section>
             ) : (
               <>
-                {!showCatalog ? (
+                {!subjects ? (
                   <>
                     <section className={styles.resume}>
                       <div>
@@ -366,13 +275,11 @@ export function StudyShelf({
                     ) : null}
                   </>
                 ) : null}
-                {showCatalog ? (
+                {subjects ? (
                   <div className={styles.indexLayout}>
                     <div>
                       <div className={styles.shelfHeading}>
-                        <h2 ref={results} tabIndex={-1}>
-                          {collectionLabel}
-                        </h2>
+                        <h2 tabIndex={-1}>{collectionLabel}</h2>
                         <label className={styles.search}>
                           <span>
                             {t(
@@ -479,7 +386,7 @@ export function StudyShelf({
           </>
         )}
         <p className={styles.srOnly} role="status">
-          {pending ? copy.navigationPending : copy.resultsUpdated}
+          {copy.resultsUpdated}
         </p>
       </div>
     </AppShell>

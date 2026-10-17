@@ -17,9 +17,9 @@ import {
 } from "@/lib/auth/auth-actions.application";
 import { useProductServices } from "./product-services";
 import { ProductLink, Notice } from "./product-ui";
-import type { Locale } from "./synthetic-fixtures";
-import { syntheticCampaignId } from "./synthetic-campaigns";
-import { useSyntheticNavigation } from "./product-navigation";
+import type { Locale } from "@/lib/demo/synthetic-fixtures.application";
+import { syntheticCampaignId } from "@/lib/demo/synthetic-campaigns.application";
+import { useHostedSynthetic } from "./product-navigation";
 import {
   syntheticAccounts as accounts,
   syntheticPassword,
@@ -48,7 +48,7 @@ export function ProductAuth({
   next?: string | undefined;
 }) {
   const { state, update } = useProductServices();
-  const hosted = useSyntheticNavigation();
+  const hosted = useHostedSynthetic();
   const router = useProductRouter();
   const query = useSearchParams();
   const notice: AuthNotice | undefined =
@@ -279,13 +279,13 @@ export function ProductAuth({
           notice={notice}
           actionOverride={action}
           initialEmail={
-            hosted?.active
+            hosted
               ? undefined
               : email && accounts[email]
                 ? email
                 : "student@example.invalid"
           }
-          initialPassword={hosted?.active ? undefined : syntheticPassword}
+          initialPassword={hosted ? undefined : syntheticPassword}
         />
       )}
     </AuthShell>

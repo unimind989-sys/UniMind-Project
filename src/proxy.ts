@@ -67,11 +67,10 @@ export async function proxy(request: NextRequest) {
         { status: 403 },
       );
     const path = request.nextUrl.pathname;
-    const url = request.nextUrl.clone();
-    if (["/preview", "/preview/review", "/wp03-review.html"].includes(path)) {
-      url.pathname = "/login";
-      return NextResponse.redirect(url);
-    }
+    // Build from request.url, not nextUrl: nextUrl reports 127.0.0.1 as
+    // localhost, so its origin never matches the incoming one and Next would
+    // proxy the rewrite over HTTP instead of handling it internally.
+    const url = new URL(request.url);
     if (isProductDemoPath(path))
       url.pathname = `/synthetic-runtime/${path === "/" ? "home" : path.slice(1)}`;
     if (
@@ -98,12 +97,15 @@ export async function proxy(request: NextRequest) {
     response.headers.set("X-Robots-Tag", "noindex, nofollow");
     return response;
   }
-  // Public fixtures have no identity. Never refresh a signed-in reviewer's
-  // session, emit cookies, or contact Auth while rendering the simulation.
   const path = request.nextUrl.pathname;
-  // Hosted simulation lives only in the current browser document. Its local
-  // review route is never a public production entry or authorization shortcut.
-  if (path === "/synthetic-runtime" || path.startsWith("/synthetic-runtime/")) {
+  // Hosted simulation lives only in the current browser document. The loopback
+  // demo's document route and the retired fixture routes (/preview,
+  // /api/preview) are never a public entry or an authorization shortcut; they
+  // answer 404 before any session refresh, cookie or Auth call.
+  if (
+    /^\/(?:synthetic-runtime|preview|api\/preview)(?:\/|$)/u.test(path) ||
+    path === "/wp03-review.html"
+  ) {
     return new NextResponse("Not found.", {
       status: 404,
       headers: {
@@ -123,16 +125,6 @@ export async function proxy(request: NextRequest) {
     /\.(?:svg|png|jpg|jpeg|gif|webp)$/u.test(path)
   )
     return NextResponse.next();
-  if (
-    path === "/preview" ||
-    path.startsWith("/preview/") ||
-    path === "/wp03-review.html"
-  ) {
-    const response = NextResponse.next();
-    response.headers.set("Cache-Control", "private, no-store");
-    response.headers.set("X-Robots-Tag", "noindex, nofollow");
-    return response;
-  }
   return refreshSupabaseSession(request);
 }
 

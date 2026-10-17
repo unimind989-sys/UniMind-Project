@@ -1,9 +1,13 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
+import { enterHosted } from "./support/hosted";
 
 const cohort = "zagazig-university-human-medicine-year-1-term-1-cohort";
 const unit = "zagazig-university-human-medicine-y1-t1-anatomy";
 const campaign = "11111111-1111-4111-8111-111111111111";
+// The real login page, then the four product surfaces as rendered for an
+// invented account after hosted synthetic entry (no Supabase in this suite;
+// real-mode pages are covered by tests/e2e-database).
 const surfaces = [
   {
     name: "auth",
@@ -11,19 +15,23 @@ const surfaces = [
   },
   {
     name: "catalog",
-    path: "/preview/learn",
+    role: "student",
+    path: "/learn",
   },
   {
     name: "workspace",
-    path: `/preview/learn/${cohort}/${unit}`,
+    role: "student",
+    path: `/learn/${cohort}/${unit}`,
   },
   {
     name: "submission",
-    path: `/preview/batch-leader/campaigns/${campaign}`,
+    role: "leader",
+    path: "/batch-leader/campaigns/sample-campaign",
   },
   {
     name: "admin",
-    path: "/preview/admin",
+    role: "admin",
+    path: "/admin",
   },
 ] as const;
 
@@ -155,7 +163,19 @@ for (const surface of surfaces) {
       page.on("pageerror", (error) => errors.push(error.name));
       await page.setViewportSize({ width: 1440, height: 900 });
       await page.emulateMedia({ reducedMotion: "reduce" });
-      await page.goto(`${surface.path}?lang=${locale}`);
+      const finishHosted =
+        "role" in surface
+          ? await enterHosted(
+              page,
+              surface.role,
+              locale,
+              `${surface.path}?lang=${locale}`,
+            )
+          : (await page.goto(`${surface.path}?lang=${locale}`), () => {});
+      if ("role" in surface)
+        await expect(page).toHaveURL(
+          new RegExp(`${surface.path}\\?lang=${locale}`, "u"),
+        );
       await expect(page.getByRole("main")).toBeVisible();
       await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
       await expect(page.locator("html")).toHaveAttribute("lang", locale);
@@ -242,6 +262,7 @@ for (const surface of surfaces) {
       );
       expect(animations, "no endless motion under reduced-motion").toBe(0);
       const network = await finishPrivacy();
+      finishHosted();
       expect(errors).toEqual([]);
       await testInfo.attach("contract-summary", {
         body: JSON.stringify({
@@ -292,55 +313,4 @@ test("protected direct URLs and upload API reject anonymous and forged role inpu
   expect(await response.json()).toEqual({ error: "UPLOAD_REJECTED" });
   expect(response.headers()["cache-control"]).toContain("no-store");
   await finishPrivacy();
-});
-
-test("RSC navigation, action responses and upload receipts remain safe", async ({
-  page,
-}) => {
-  const finishPrivacy = observePrivacy(page);
-  await page.goto(`/preview/learn/${cohort}/${unit}?lang=en`);
-  await finishPrivacy();
-  await page.getByRole("link", { name: "View status" }).first().click();
-  await expect(page).toHaveURL(/\/chat\?lang=en/u, { timeout: 20_000 });
-  await page.getByRole("button", { name: "Start a scoped session" }).click();
-  await expect(page).toHaveURL(/session=/u);
-  await finishPrivacy();
-  await page.goto("/preview/admin?lang=en&state=containment");
-  await expect(page.getByLabel("Reason for this change")).toHaveCount(0);
-  await page
-    .getByRole("button", { name: /^Hide unit Synthetic Anatomy/u })
-    .click();
-  await page
-    .getByLabel("Reason for this change")
-    .fill("Synthetic privacy contract check.");
-  await page.getByRole("button", { name: "Review exact change" }).click();
-  await page.getByRole("button", { name: "Submit this action" }).click();
-  await expect(
-    page.getByText("The governed change was recorded."),
-  ).toBeVisible();
-  await finishPrivacy();
-  await page.goto(`/preview/batch-leader/campaigns/${campaign}?lang=en`);
-  await page.getByRole("button", { name: "Upload files", exact: true }).click();
-  await page.locator('input[type="file"]').setInputFiles({
-    name: "synthetic.pdf",
-    mimeType: "application/pdf",
-    buffer: Buffer.from("%PDF-1.7\nSynthetic only"),
-  });
-  await expect(page.getByLabel("Source title")).toBeVisible();
-  await page
-    .getByLabel("Source title")
-    .fill("Synthetic privacy contract handout");
-  await page
-    .getByLabel("Professor or source description")
-    .fill("Generated test fixture only.");
-  await page.getByLabel(/I have permission/u).check();
-  await assertAccessible(page);
-  await page.getByRole("button", { name: "Submit files", exact: true }).click();
-  await expect(
-    page.locator('[data-record-request] [data-status="RECEIVED"]'),
-  ).toBeVisible({
-    timeout: 20_000,
-  });
-  const counts = await finishPrivacy();
-  expect(counts.reactPayloads).toBeGreaterThan(0);
 });

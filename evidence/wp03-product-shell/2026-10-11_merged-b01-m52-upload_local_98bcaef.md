@@ -23,7 +23,7 @@ Only that exact-description check is replaced with a string and trimmed-length c
 
 ## Evidence and disposition
 
-[Source binding](2026-10-11-merged-b01-m52-upload-source-binding.json) records source/test input hashes, the four-file incremental change, retained result/evidence hashes and 3,215 unchanged pre-existing files. The [baseline and complete result folder](<E:/Unimind audits/flow audit/Merged/repairs/B01-M52-upload>) retains failing and passing runs, DOM observations, routing output and before copies.
+Source binding (hash manifest removed in WP03-T15; see git history) records source/test input hashes, the four-file incremental change, retained result/evidence hashes and 3,215 unchanged pre-existing files. The [baseline and complete result folder](<E:/Unimind audits/flow audit/Merged/repairs/B01-M52-upload>) retains failing and passing runs, DOM observations, routing output and before copies.
 
 [Before](<E:/Unimind audits/flow audit/Merged/repairs/B01-M52-upload/before.jpg>): edited description and unconfirmed finalization. [After](<E:/Unimind audits/flow audit/Merged/repairs/B01-M52-upload/after.jpg>): the same retained receipt completes successfully. The review capture shows the campaign and completed receipt below.
 

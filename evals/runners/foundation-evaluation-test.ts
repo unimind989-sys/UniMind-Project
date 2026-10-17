@@ -1,28 +1,10 @@
-import { readFile } from "node:fs/promises";
-
 import { describe, expect, it } from "vitest";
 
 import { runFoundationEvaluation } from "./foundation-evaluation";
 
+// The versioned dataset itself is run by scripts/run-foundation-evaluation.ts
+// as part of `pnpm test:eval`; these tests prove the runner's failure paths.
 describe("foundation evaluation runner", () => {
-  it("consumes versioned JSONL through the public availability seam", async () => {
-    const source = await readFile(
-      "evals/datasets/foundation/foundation-availability-v1.jsonl",
-      "utf8",
-    );
-    const report = runFoundationEvaluation(source);
-
-    expect(report).toMatchObject({
-      schemaVersion: 1,
-      datasetId: "foundation-availability-v1",
-      totalCases: 3,
-      passedCases: 3,
-      failedCases: 0,
-      status: "PASS",
-    });
-    expect(report.datasetSha256).toMatch(/^[a-f0-9]{64}$/);
-  });
-
   it("names the JSONL line when schema validation fails", () => {
     expect(() => runFoundationEvaluation('{"schema_version":1}\n')).toThrow(
       "Evaluation dataset line 1 is invalid",

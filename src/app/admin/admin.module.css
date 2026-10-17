@@ -395,6 +395,7 @@
 .panel p {
   color: var(--secondary);
   margin-block: 12px;
+  overflow-wrap: anywhere;
 }
 .panel > button {
   margin-block-start: 12px;

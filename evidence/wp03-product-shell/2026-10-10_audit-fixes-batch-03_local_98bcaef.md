@@ -40,7 +40,7 @@ Normal live recheck confirms all five results, original English/Arabic fonts, re
 
 ## Artifacts and handoff
 
-- [Source binding](2026-10-10-audit-fixes-batch-03-source-binding.json) binds the current candidate, incremental baseline, final report and live ledger by SHA-256.
+- Source binding (hash manifest removed in WP03-T15; see git history) binds the current candidate, incremental baseline, final report and live ledger by SHA-256.
 - [Before/after tracker](<E:/Unimind audits/fix-batches.md>) retains scoped acceptance and claim mapping.
 - Live ledger: `E:/Unimind audits/analysis/fix-batch-03-live-ui.json`.
 - Final E2E report: `E:/Unimind audits/analysis/fix-batch-03-final-e2e.json`; initial and interrupted reports remain beside it.

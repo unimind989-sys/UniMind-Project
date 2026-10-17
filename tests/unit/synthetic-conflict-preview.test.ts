@@ -3,7 +3,7 @@ import {
   canReviewConflictPreview,
   reviewConflictPreview,
   type ConflictPreviewState,
-} from "../../src/app/_components/synthetic-conflict-preview";
+} from "../../src/lib/demo/synthetic-conflict-preview.application";
 
 function fixture(
   role: ConflictPreviewState["role"] = "admin",

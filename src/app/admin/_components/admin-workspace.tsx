@@ -20,7 +20,6 @@ export function AdminWorkspace({
   resource,
   children,
   synthetic = false,
-  preview = false,
   actions,
   roleLabel,
 }: {
@@ -28,7 +27,6 @@ export function AdminWorkspace({
   resource?: string | undefined;
   children: ReactNode;
   synthetic?: boolean;
-  preview?: boolean;
   actions?: ReactNode;
   roleLabel?: string | undefined;
 }) {
@@ -58,7 +56,6 @@ export function AdminWorkspace({
       role="admin"
       title={section}
       synthetic={synthetic}
-      preview={preview}
       roleLabel={roleLabel}
     >
       <header className={styles.pageHeading}>

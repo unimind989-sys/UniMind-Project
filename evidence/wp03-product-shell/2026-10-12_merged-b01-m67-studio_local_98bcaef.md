@@ -35,7 +35,7 @@ The original comparison/practice rejecting test failed with one question instead
 
 ![Extended bilingual comparison practice](<E:/Unimind audits/flow audit/Merged/repairs/B01-M67-studio/studio_final_en.png>)
 
-[Arabic explanation view](<E:/Unimind audits/flow audit/Merged/repairs/B01-M67-studio/studio_ar_mixed_practice.png>) and [the repair folder](<E:/Unimind audits/flow audit/Merged/repairs/B01-M67-studio>) retain screenshots, DOM, rejecting/corrected results, before copies and pack parity. The [source binding](2026-10-12-merged-b01-m67-studio-source-binding.json) binds current source/test inputs, independent review, prior evidence and frozen audit/approval. The final English Studio example and loopback demo 3101 remain available.
+[Arabic explanation view](<E:/Unimind audits/flow audit/Merged/repairs/B01-M67-studio/studio_ar_mixed_practice.png>) and [the repair folder](<E:/Unimind audits/flow audit/Merged/repairs/B01-M67-studio>) retain screenshots, DOM, rejecting/corrected results, before copies and pack parity. The source binding (hash manifest removed in WP03-T15; see git history) binds current source/test inputs, independent review, prior evidence and frozen audit/approval. The final English Studio example and loopback demo 3101 remain available.
 
 This slice is OBJECTIVE_PRESERVING against DESIGN.md's six formats, native controls, intrinsic wrapping, scoped drafts/artifacts and truthful fixed examples. The conservative whole-checkout policy v10 envelope remains R3/protected, one read-only worker used/maximum one, no nested worker. Whole preflight remains INCOMPLETE for human-design-acceptance; full CI, delivery and production proof are held.
 

@@ -4,11 +4,11 @@ import type { ReactNode } from "react";
 
 import "./globals.css";
 import { resolveDemoRuntime } from "@/lib/demo/demo-runtime.application";
-import { SyntheticProductProvider } from "./_components/product-services";
 import { ThemeRuntime } from "./_components/appearance";
 import { themeBootstrap } from "@/lib/theme/theme.application";
 import { getServerEnvironment } from "@/lib/config/env.server";
-import { HostedSyntheticRuntime } from "./_components/hosted-synthetic-runtime";
+import { HostedSyntheticRuntime } from "./_synthetic/hosted-synthetic-runtime";
+import { LoopbackSyntheticRuntime } from "./_synthetic/loopback-synthetic-runtime";
 
 export function generateMetadata(): Metadata {
   const environment = getServerEnvironment();
@@ -70,7 +70,9 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: directionContract }}
         />
         {resolveDemoRuntime(process.env) === "ENABLED" ? (
-          <SyntheticProductProvider>{children}</SyntheticProductProvider>
+          // The loopback demo renders every product URL in the synthetic
+          // client runtime; its route segment only selects the HTTP status.
+          <LoopbackSyntheticRuntime />
         ) : (
           <HostedSyntheticRuntime>{children}</HostedSyntheticRuntime>
         )}

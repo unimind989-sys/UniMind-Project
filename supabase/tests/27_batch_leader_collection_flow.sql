@@ -1,7 +1,7 @@
 -- Matrix test IDs exercised below:
 -- WP03-T05-ANON-DENY, WP03-T05-SERVER-ONLY, WP03-T05-FUNCTION-GRANTS.
 begin;
-select plan(25);
+select plan(43);
 set local unimind.actor_id = '10000000-0000-0000-0000-000000000001';
 set local unimind.audit_reason = 'WP03-T05 synthetic revocation proof';
 set local unimind.correlation_id = '90000000-0000-0000-0000-000000000005';
@@ -327,6 +327,364 @@ select throws_ok(
   '42501',
   'collection scope unavailable',
   'a second actor cannot finalize the first actor upload receipt'
+);
+
+-- WP03-T15: the collection seams must reject an expired assignment and any
+-- campaign that is not OPEN. The same registrar and finalizer calls succeed
+-- once the gate is restored, so each denial is attributable to that gate.
+insert into collection_test_state (label, value)
+select 'gate-upload', upload_id
+from public.register_synthetic_collection_upload(
+  '10000000-0000-0000-0000-000000000002',
+  '30000000-0000-0000-0000-000000000001',
+  '99000000-0000-4000-8000-000000000005',
+  '20000000-0000-0000-0000-000000000007',
+  'wp03-t15-gate-key-one',
+  'synthetic-gate-one.pdf',
+  'PDF',
+  'mock-object-storage-provider',
+  'synthetic/wp03-t15/gate-one',
+  'sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+  'application/pdf',
+  2048
+);
+
+select isnt(
+  (select value from collection_test_state where label = 'gate-upload'),
+  null::uuid,
+  'the gate fixture registers an upload while the assignment and campaign are open'
+);
+
+reset role;
+update public.batch_leader_assignments
+set created_at = transaction_timestamp() - interval '2 days',
+    expires_at = transaction_timestamp() - interval '1 day'
+where id = '31000000-0000-0000-0000-000000000001';
+
+reset role;
+set local role authenticated;
+set local request.jwt.claim.role = 'authenticated';
+set local request.jwt.claim.sub = '10000000-0000-0000-0000-000000000002';
+
+select is(
+  (
+    select count(*)
+    from public.current_batch_leader_campaign(
+      '30000000-0000-0000-0000-000000000001'
+    )
+  ),
+  0::bigint,
+  'the read seam hides the campaign when the ACTIVE assignment has expired'
+);
+
+reset role;
+set local role service_role;
+set local request.jwt.claim.role = 'service_role';
+
+select throws_ok(
+  $$select * from public.register_synthetic_collection_upload(
+    '10000000-0000-0000-0000-000000000002',
+    '30000000-0000-0000-0000-000000000001',
+    '99000000-0000-4000-8000-000000000005',
+    '20000000-0000-0000-0000-000000000007',
+    'wp03-t15-gate-key-two',
+    'synthetic-gate-two.pdf',
+    'PDF',
+    'mock-object-storage-provider',
+    'synthetic/wp03-t15/gate-two',
+    'sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
+    'application/pdf',
+    4096
+  )$$,
+  '42501',
+  'collection scope unavailable',
+  'the server registrar rejects an upload when the ACTIVE assignment has expired'
+);
+select throws_ok(
+  $$select * from public.finalize_synthetic_source_submission(
+    '10000000-0000-0000-0000-000000000002',
+    '30000000-0000-0000-0000-000000000001',
+    '99000000-0000-4000-8000-000000000005',
+    (select value from collection_test_state where label = 'gate-upload'),
+    'wp03-t15-gate-key-one',
+    'Synthetic gate handout',
+    'Synthetic fixture for campaign and expiry gates.',
+    'DECLARED'
+  )$$,
+  '42501',
+  'collection scope unavailable',
+  'finalization rejects a registered upload when the ACTIVE assignment has expired'
+);
+
+reset role;
+update public.batch_leader_assignments
+set expires_at = transaction_timestamp() + interval '7 days'
+where id = '31000000-0000-0000-0000-000000000001';
+
+reset role;
+update public.collection_campaigns
+set status = 'CLOSED'
+where id = '30000000-0000-0000-0000-000000000001';
+
+reset role;
+set local role authenticated;
+set local request.jwt.claim.role = 'authenticated';
+set local request.jwt.claim.sub = '10000000-0000-0000-0000-000000000002';
+
+select is(
+  (
+    select count(*)
+    from public.current_batch_leader_campaign(
+      '30000000-0000-0000-0000-000000000001'
+    )
+  ),
+  0::bigint,
+  'the read seam hides the campaign when the campaign is CLOSED rather than OPEN'
+);
+
+reset role;
+set local role service_role;
+set local request.jwt.claim.role = 'service_role';
+
+select throws_ok(
+  $$select * from public.register_synthetic_collection_upload(
+    '10000000-0000-0000-0000-000000000002',
+    '30000000-0000-0000-0000-000000000001',
+    '99000000-0000-4000-8000-000000000005',
+    '20000000-0000-0000-0000-000000000007',
+    'wp03-t15-gate-key-two',
+    'synthetic-gate-two.pdf',
+    'PDF',
+    'mock-object-storage-provider',
+    'synthetic/wp03-t15/gate-two',
+    'sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
+    'application/pdf',
+    4096
+  )$$,
+  '42501',
+  'collection scope unavailable',
+  'the server registrar rejects an upload when the campaign is CLOSED rather than OPEN'
+);
+select throws_ok(
+  $$select * from public.finalize_synthetic_source_submission(
+    '10000000-0000-0000-0000-000000000002',
+    '30000000-0000-0000-0000-000000000001',
+    '99000000-0000-4000-8000-000000000005',
+    (select value from collection_test_state where label = 'gate-upload'),
+    'wp03-t15-gate-key-one',
+    'Synthetic gate handout',
+    'Synthetic fixture for campaign and expiry gates.',
+    'DECLARED'
+  )$$,
+  '42501',
+  'collection scope unavailable',
+  'finalization rejects a registered upload when the campaign is CLOSED rather than OPEN'
+);
+
+reset role;
+update public.collection_campaigns
+set status = 'DRAFT'
+where id = '30000000-0000-0000-0000-000000000001';
+
+reset role;
+set local role authenticated;
+set local request.jwt.claim.role = 'authenticated';
+set local request.jwt.claim.sub = '10000000-0000-0000-0000-000000000002';
+
+select is(
+  (
+    select count(*)
+    from public.current_batch_leader_campaign(
+      '30000000-0000-0000-0000-000000000001'
+    )
+  ),
+  0::bigint,
+  'the read seam hides the campaign when the campaign is DRAFT rather than OPEN'
+);
+
+reset role;
+set local role service_role;
+set local request.jwt.claim.role = 'service_role';
+
+select throws_ok(
+  $$select * from public.register_synthetic_collection_upload(
+    '10000000-0000-0000-0000-000000000002',
+    '30000000-0000-0000-0000-000000000001',
+    '99000000-0000-4000-8000-000000000005',
+    '20000000-0000-0000-0000-000000000007',
+    'wp03-t15-gate-key-two',
+    'synthetic-gate-two.pdf',
+    'PDF',
+    'mock-object-storage-provider',
+    'synthetic/wp03-t15/gate-two',
+    'sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
+    'application/pdf',
+    4096
+  )$$,
+  '42501',
+  'collection scope unavailable',
+  'the server registrar rejects an upload when the campaign is DRAFT rather than OPEN'
+);
+select throws_ok(
+  $$select * from public.finalize_synthetic_source_submission(
+    '10000000-0000-0000-0000-000000000002',
+    '30000000-0000-0000-0000-000000000001',
+    '99000000-0000-4000-8000-000000000005',
+    (select value from collection_test_state where label = 'gate-upload'),
+    'wp03-t15-gate-key-one',
+    'Synthetic gate handout',
+    'Synthetic fixture for campaign and expiry gates.',
+    'DECLARED'
+  )$$,
+  '42501',
+  'collection scope unavailable',
+  'finalization rejects a registered upload when the campaign is DRAFT rather than OPEN'
+);
+
+reset role;
+update public.collection_campaigns
+set status = 'CANCELLED'
+where id = '30000000-0000-0000-0000-000000000001';
+
+reset role;
+set local role authenticated;
+set local request.jwt.claim.role = 'authenticated';
+set local request.jwt.claim.sub = '10000000-0000-0000-0000-000000000002';
+
+select is(
+  (
+    select count(*)
+    from public.current_batch_leader_campaign(
+      '30000000-0000-0000-0000-000000000001'
+    )
+  ),
+  0::bigint,
+  'the read seam hides the campaign when the campaign is CANCELLED rather than OPEN'
+);
+
+reset role;
+set local role service_role;
+set local request.jwt.claim.role = 'service_role';
+
+select throws_ok(
+  $$select * from public.register_synthetic_collection_upload(
+    '10000000-0000-0000-0000-000000000002',
+    '30000000-0000-0000-0000-000000000001',
+    '99000000-0000-4000-8000-000000000005',
+    '20000000-0000-0000-0000-000000000007',
+    'wp03-t15-gate-key-two',
+    'synthetic-gate-two.pdf',
+    'PDF',
+    'mock-object-storage-provider',
+    'synthetic/wp03-t15/gate-two',
+    'sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
+    'application/pdf',
+    4096
+  )$$,
+  '42501',
+  'collection scope unavailable',
+  'the server registrar rejects an upload when the campaign is CANCELLED rather than OPEN'
+);
+select throws_ok(
+  $$select * from public.finalize_synthetic_source_submission(
+    '10000000-0000-0000-0000-000000000002',
+    '30000000-0000-0000-0000-000000000001',
+    '99000000-0000-4000-8000-000000000005',
+    (select value from collection_test_state where label = 'gate-upload'),
+    'wp03-t15-gate-key-one',
+    'Synthetic gate handout',
+    'Synthetic fixture for campaign and expiry gates.',
+    'DECLARED'
+  )$$,
+  '42501',
+  'collection scope unavailable',
+  'finalization rejects a registered upload when the campaign is CANCELLED rather than OPEN'
+);
+
+reset role;
+select is(
+  (
+    select count(*)
+    from unimind_private.collection_uploads
+    where uploaded_by = '10000000-0000-0000-0000-000000000002'
+      and client_idempotency_key like 'wp03-t15-gate-key-%'
+  ),
+  1::bigint,
+  'expired-assignment and non-OPEN campaign calls write no upload evidence'
+);
+select is(
+  (
+    select count(*)
+    from public.source_submissions
+    where submitted_by = '10000000-0000-0000-0000-000000000002'
+      and client_idempotency_key like 'wp03-t15-gate-key-%'
+  ),
+  0::bigint,
+  'expired-assignment and non-OPEN campaign calls write no submission'
+);
+
+update public.collection_campaigns
+set status = 'OPEN'
+where id = '30000000-0000-0000-0000-000000000001';
+
+reset role;
+set local role authenticated;
+set local request.jwt.claim.role = 'authenticated';
+set local request.jwt.claim.sub = '10000000-0000-0000-0000-000000000002';
+
+select is(
+  (
+    select count(*)
+    from public.current_batch_leader_campaign(
+      '30000000-0000-0000-0000-000000000001'
+    )
+    where requested_item_id = '99000000-0000-4000-8000-000000000005'
+  ),
+  1::bigint,
+  'restoring the assignment expiry and OPEN state restores campaign visibility'
+);
+
+reset role;
+set local role service_role;
+set local request.jwt.claim.role = 'service_role';
+
+select isnt(
+  (
+    select upload_id
+    from public.register_synthetic_collection_upload(
+      '10000000-0000-0000-0000-000000000002',
+      '30000000-0000-0000-0000-000000000001',
+      '99000000-0000-4000-8000-000000000005',
+      '20000000-0000-0000-0000-000000000007',
+      'wp03-t15-gate-key-two',
+      'synthetic-gate-two.pdf',
+      'PDF',
+      'mock-object-storage-provider',
+      'synthetic/wp03-t15/gate-two',
+      'sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
+      'application/pdf',
+      4096
+    )
+  ),
+  null::uuid,
+  'the previously rejected upload registers once the gates are open again'
+);
+select is(
+  (
+    select replayed
+    from public.finalize_synthetic_source_submission(
+      '10000000-0000-0000-0000-000000000002',
+      '30000000-0000-0000-0000-000000000001',
+      '99000000-0000-4000-8000-000000000005',
+      (select value from collection_test_state where label = 'gate-upload'),
+      'wp03-t15-gate-key-one',
+      'Synthetic gate handout',
+      'Synthetic fixture for campaign and expiry gates.',
+      'DECLARED'
+    )
+  ),
+  false,
+  'the previously rejected finalization succeeds once the gates are open again'
 );
 
 reset role;

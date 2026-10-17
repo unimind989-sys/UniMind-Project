@@ -16,7 +16,7 @@
       "Admin console"
     ],
     "entry": "/?lang=en",
-    "instructions": "walkthrough.md",
+    "instructions": "README.md",
     "chat": "First Send starts a session. Enter sends; Shift+Enter adds a line. Interface language preserves the draft and study-output language.",
     "studio": "Choose an artifact using the radio group. Generate prepares a fixed example; Cancel preparation interrupts it. Only MCQ offers Open quiz.",
     "remainingPlatform": "The accepted candidate IDs record a historical review. WP03-T09/T10 delivery is complete for the runbook's recorded candidates. Current frontend-refinements audit repairs remain uncommitted local work under WP03-T13, with final acceptance and delivery proof pending. All study/upload/governance results here are fixed local examples."

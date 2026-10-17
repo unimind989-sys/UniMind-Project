@@ -1,6 +1,4 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { resolveLocale } from "../../src/lib/i18n/locale";
-import { validatedInternalReturnPath } from "../../src/lib/auth/auth-actions.application";
 
 const mocks = vi.hoisted(() => ({
   access: vi.fn(),
@@ -18,10 +16,6 @@ vi.mock("@/lib/account/account.supabase.server", () => ({
 }));
 vi.mock("@/lib/auth/supabase-auth.server", () => ({
   getAuthApplication: () => ({ login: mocks.login }),
-}));
-vi.mock("@/lib/i18n/locale", () => ({ resolveLocale }));
-vi.mock("@/lib/auth/auth-actions.application", () => ({
-  validatedInternalReturnPath,
 }));
 vi.mock("../../src/app/(auth)/_components/auth-form", () => ({
   AuthForm: () => null,

@@ -32,7 +32,7 @@ All data and services are local synthetic/mock with invalid service targets and 
 
 ![Crowded study history with readable full-width session titles](<E:/Unimind audits/flow audit/Merged/repairs/B01-M53-study-density/density-result-en.jpg>)
 
-[Long Arabic source names](<E:/Unimind audits/flow audit/Merged/repairs/B01-M53-study-density/dense-sources-ar-long.jpg>), [session 12 evidence](<E:/Unimind audits/flow audit/Merged/repairs/B01-M53-study-density/dense-session12-evidence-en.jpg>) and [the repair folder](<E:/Unimind audits/flow audit/Merged/repairs/B01-M53-study-density>) retain screenshots, DOM, before copies, rejected/passing reports and package parity. The [source binding](2026-10-12-merged-b01-m53-study-density-source-binding.json) binds final inputs, review provenance, preserved files and artifact checks.
+[Long Arabic source names](<E:/Unimind audits/flow audit/Merged/repairs/B01-M53-study-density/dense-sources-ar-long.jpg>), [session 12 evidence](<E:/Unimind audits/flow audit/Merged/repairs/B01-M53-study-density/dense-session12-evidence-en.jpg>) and [the repair folder](<E:/Unimind audits/flow audit/Merged/repairs/B01-M53-study-density>) retain screenshots, DOM, before copies, rejected/passing reports and package parity. The source binding (hash manifest removed in WP03-T15; see git history) binds final inputs, review provenance, preserved files and artifact checks.
 
 Policy v10 conservatively retains whole-checkout R3/protected scope, one worker and no nested worker. Whole material acceptance, broad CI and external delivery remain held. Rollback restores only this slice's changed paths from before copies and removes its new helper, unit test and two evidence files, preserving earlier repairs.
 

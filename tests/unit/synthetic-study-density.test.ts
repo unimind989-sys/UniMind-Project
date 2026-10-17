@@ -6,8 +6,8 @@ import {
   studyDensitySourceTitles,
   studyFixtureSourceCount,
   studyDensityManifest,
-} from "../../src/app/_components/synthetic-study-density";
-import type { ReviewSession } from "../../src/app/_components/synthetic-fixtures";
+} from "../../src/lib/demo/synthetic-study-density.application";
+import type { ReviewSession } from "../../src/lib/demo/synthetic-fixtures.application";
 
 const state = () => ({
   studyDensityUnitId: null as string | null,

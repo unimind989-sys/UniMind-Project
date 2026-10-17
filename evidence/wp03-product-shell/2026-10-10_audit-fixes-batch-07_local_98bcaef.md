@@ -32,7 +32,7 @@ Normal port 3000 before/after measurements confirm all five changes, desktop/tab
 
 ## Artifacts and handoff
 
-- [Source binding](2026-10-10-audit-fixes-batch-07-source-binding.json): 33 candidate source/test files, five incremental source/test changes, 28 unchanged prior hashes, original font sources, browser report, live ledger and four presentation images. Aggregate a8b56922aeee4f72149eba164b3253ca52acbebefe628756537bebb5e1cc527d.
+- Source binding (hash manifest removed in WP03-T15; see git history): 33 candidate source/test files, five incremental source/test changes, 28 unchanged prior hashes, original font sources, browser report, live ledger and four presentation images. Aggregate a8b56922aeee4f72149eba164b3253ca52acbebefe628756537bebb5e1cc527d.
 - [Before/after tracker](<E:/Unimind audits/fix-batches.md>).
 - [Normal live ledger](<E:/Unimind audits/analysis/fix-batch-07-live-ui.json>).
 - [Browser report](<E:/Unimind audits/analysis/fix-batch-07-initial-e2e.json>).

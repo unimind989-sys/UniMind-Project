@@ -35,7 +35,7 @@ Normal port 3000 before/after observations cover twelve responsive states plus t
 
 ## Artifacts and handoff
 
-- [Source binding](2026-10-10-audit-fixes-batch-05-source-binding.json) binds 33 candidate source/test files, eight incremental source/test changes, the original fonts, reports and final normal-UI ledger. 25 prior candidate hashes remain identical. Aggregate: 92785e1431073ee34c96189e0da93dd58a6deb473082a86464de452bdeea6565.
+- Source binding (hash manifest removed in WP03-T15; see git history) binds 33 candidate source/test files, eight incremental source/test changes, the original fonts, reports and final normal-UI ledger. 25 prior candidate hashes remain identical. Aggregate: 92785e1431073ee34c96189e0da93dd58a6deb473082a86464de452bdeea6565.
 - [Before/after tracker](<E:/Unimind audits/fix-batches.md>).
 - [Normal live ledger](<E:/Unimind audits/analysis/fix-batch-05-live-ui.json>).
 - Reports: fix-batch-05-initial-e2e.json, fix-batch-05-repair-e2e.json and fix-batch-05-final-e2e.json in E:/Unimind audits/analysis.

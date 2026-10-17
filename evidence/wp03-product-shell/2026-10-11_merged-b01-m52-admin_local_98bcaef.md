@@ -25,7 +25,7 @@ M48's synthetic pending-expiry case is a necessary adjacent repair: completing a
 
 ## Evidence and remaining work
 
-[Source binding](2026-10-11-merged-b01-m52-admin-source-binding.json) identifies the final source/test inputs, changed paths, baseline preservation and retained artifact hashes. The [complete evidence folder](<E:/Unimind audits/flow audit/Merged/repairs/B01-M52-admin>) keeps before copies, red/failing/passing reports, DOM observations, native screenshots and routing results.
+Source binding (hash manifest removed in WP03-T15; see git history) identifies the final source/test inputs, changed paths, baseline preservation and retained artifact hashes. The [complete evidence folder](<E:/Unimind audits/flow audit/Merged/repairs/B01-M52-admin>) keeps before copies, red/failing/passing reports, DOM observations, native screenshots and routing results.
 
 [Reason before](<E:/Unimind audits/flow audit/Merged/repairs/B01-M52-admin/reason-before.jpg>) and [reason after](<E:/Unimind audits/flow audit/Merged/repairs/B01-M52-admin/reason-after.jpg>) show the same ordinary reason moving from rejection to pending independent approval. [Date before](<E:/Unimind audits/flow audit/Merged/repairs/B01-M52-admin/expiry-before.jpg>) and [date after](<E:/Unimind audits/flow audit/Merged/repairs/B01-M52-admin/expiry-after.jpg>) show the alternative date accepted and retained.
 

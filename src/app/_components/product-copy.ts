@@ -1,7 +1,7 @@
 "use client";
 
-import { useSyntheticNavigation } from "./product-navigation";
-import type { Locale } from "./synthetic-fixtures";
+import { useHostedSynthetic } from "./product-navigation";
+import type { Locale } from "@/lib/demo/synthetic-fixtures.application";
 
 // Local review keeps its setup guidance. Hosted fixture services use ordinary
 // product wording; fixture material titles/content remain the selected data.
@@ -164,7 +164,6 @@ export function productText(
 }
 
 export function useProductText(locale: Locale) {
-  const hosted = useSyntheticNavigation();
-  return (en: string, ar: string) =>
-    productText(en, ar, locale, Boolean(hosted?.active));
+  const hosted = useHostedSynthetic();
+  return (en: string, ar: string) => productText(en, ar, locale, hosted);
 }

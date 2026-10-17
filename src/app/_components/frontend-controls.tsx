@@ -4,7 +4,7 @@ import { useProductRouter } from "@/app/_components/product-navigation";
 import type { Route } from "next";
 import { usePathname, useSearchParams } from "next/navigation";
 import type { ReactNode } from "react";
-import type { Locale } from "./synthetic-fixtures";
+import type { Locale } from "@/lib/demo/synthetic-fixtures.application";
 import styles from "./frontend-system.module.css";
 
 export type FrontendIconName =

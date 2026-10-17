@@ -33,11 +33,4 @@ describe("bilingual admin copy", () => {
       expect(arabic.states[state]).not.toBe(english.states[state]);
     }
   });
-
-  it("localizes the first founder shown on a pending confirmation", () => {
-    expect(getAdminCopy("en").founderAhmed).toBe("Ahmed");
-    expect(getAdminCopy("ar").founderAhmed).toBe("أحمد");
-    expect(getAdminCopy("en").founderZiad).toBe("Ziad");
-    expect(getAdminCopy("ar").founderZiad).toBe("زياد");
-  });
 });

@@ -11,16 +11,12 @@ import type { WorkspaceScope } from "@/lib/workspace/workspace.application";
 export function WorkspaceFrame({
   scope,
   children,
-  preview = false,
-  completeNavigation = false,
   available = true,
   units = [],
   profileName,
 }: {
   scope: WorkspaceScope;
   children: ReactNode;
-  preview?: boolean;
-  completeNavigation?: boolean;
   available?: boolean;
   units?: readonly CatalogUnitNode[];
   profileName?: string | null | undefined;
@@ -32,7 +28,7 @@ export function WorkspaceFrame({
     document.documentElement.lang = locale;
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
   }, [locale]);
-  const base = `${preview ? "/preview/learn" : "/learn"}/${scope.cohortId}/${scope.unitId}`;
+  const base = `/learn/${scope.cohortId}/${scope.unitId}`;
   return (
     <FrontendShell
       locale={locale}
@@ -51,8 +47,7 @@ export function WorkspaceFrame({
       ].join(" · ")}
       base={base}
       available={available}
-      synthetic={preview || completeNavigation}
-      preview={preview}
+      synthetic={false}
       scopeControl={
         units.length > 1 ? (
           <nav
@@ -72,7 +67,7 @@ export function WorkspaceFrame({
                 <Link
                   key={unit.id}
                   href={
-                    `${preview ? "/preview" : ""}/learn/${scope.cohortId}/${unit.id}${suffix}?lang=${locale}` as Route
+                    `/learn/${scope.cohortId}/${unit.id}${suffix}?lang=${locale}` as Route
                   }
                   prefetch={false}
                   aria-current={unit.id === scope.unitId ? "page" : undefined}

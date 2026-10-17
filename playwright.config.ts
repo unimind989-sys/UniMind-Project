@@ -8,7 +8,8 @@ const baseURL = `http://127.0.0.1:${String(port)}`;
 
 export default defineConfig({
   testDir: "./tests/e2e",
-  testIgnore: "native-product-demo.spec.ts",
+  // The synthetic product demo runs under playwright.demo.config.ts.
+  testIgnore: "demo/**",
   timeout: 15_000,
   expect: { timeout: 5_000 },
   fullyParallel: false,
@@ -34,7 +35,7 @@ export default defineConfig({
   ],
   webServer: {
     command: "corepack pnpm exec tsx scripts/run-playwright-server.ts",
-    url: `${baseURL}/preview/learn?lang=en`,
+    url: `${baseURL}/login?lang=en`,
     reuseExistingServer: false,
     timeout: 120_000,
     env: {

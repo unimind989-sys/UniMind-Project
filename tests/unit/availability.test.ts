@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 
 import {
-  availabilityReasonCodes,
   deriveAvailability,
   type AvailabilityFacts,
 } from "../../src/lib/availability/derive-availability.domain";
@@ -42,7 +41,40 @@ describe("deriveAvailability", () => {
     });
   });
 
-  it("keeps the reason-code set stable and explicit", () => {
-    expect(availabilityReasonCodes).toHaveLength(6);
+  it("reports simultaneous catalog locks together", () => {
+    expect(
+      deriveAvailability({
+        ...availableFacts,
+        cohortReleased: false,
+        unitPublished: false,
+        hasActiveReadySource: false,
+      }),
+    ).toEqual({
+      available: false,
+      reasons: ["cohort_locked", "unit_unpublished", "ready_source_missing"],
+    });
+  });
+
+  it("reports every reason in stable order when every predicate fails", () => {
+    expect(
+      deriveAvailability({
+        hasActiveMembership: false,
+        cohortReleased: false,
+        unitPublished: false,
+        hasActiveReadySource: false,
+        rightsValid: false,
+        curriculumEditionMatches: false,
+      }),
+    ).toEqual({
+      available: false,
+      reasons: [
+        "membership_missing",
+        "cohort_locked",
+        "unit_unpublished",
+        "ready_source_missing",
+        "rights_invalid",
+        "curriculum_edition_mismatch",
+      ],
+    });
   });
 });

@@ -6,14 +6,14 @@ import {
   adminPreviewContext,
   syntheticResourceDecision,
   syntheticDecisionHref,
-} from "./synthetic-admin-context";
+} from "@/lib/demo/synthetic-admin-context.application";
 import { getAdminCopy } from "@/lib/i18n/admin-copy";
 import { useSearchParams } from "next/navigation";
-import { useSyntheticNavigation } from "./product-navigation";
+import { useHostedSynthetic } from "./product-navigation";
 import {
   canReviewConflictPreview,
   reviewConflictPreview,
-} from "./synthetic-conflict-preview";
+} from "@/lib/demo/synthetic-conflict-preview.application";
 import { syntheticDemoTime } from "@/lib/demo/synthetic-clock.application";
 import { formatCollectionDate } from "@/lib/i18n/collection-format";
 import adminStyles from "@/app/admin/admin.module.css";
@@ -23,7 +23,7 @@ import {
   reviewBase,
   resourceNames,
   type Locale,
-} from "./synthetic-fixtures";
+} from "@/lib/demo/synthetic-fixtures.application";
 import { useProductServices } from "./product-services";
 import { Button, Notice, ProductLink, Row, Select } from "./product-ui";
 import styles from "./product.module.css";
@@ -149,7 +149,7 @@ export function ProductCampaigns({ screen, locale, scenario }: Props) {
 
 export function ProductResource({ screen, locale }: Props) {
   const { state, update } = useProductServices();
-  const hosted = useSyntheticNavigation();
+  const hosted = useHostedSynthetic();
   const query = useSearchParams();
   const [step, setStep] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
@@ -493,7 +493,7 @@ export function ProductResource({ screen, locale }: Props) {
               </p>
             )
           ) : resource === "usage" ? (
-            hosted?.active ? (
+            hosted ? (
               <p>
                 {t(
                   "A capacity-delay preview is unavailable in this session. No capacity measurement has been made.",

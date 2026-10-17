@@ -20,4 +20,4 @@ The 13-input independent source review is clean and does not substitute for exec
 
 The change preserves the approved Open Folio design and D02 scope. The conservative whole-candidate envelope remains policy10 R3/protected with one read-only worker and no nesting. Whole-frontend acceptance, exact-head delivery CI and external delivery are pending. Real durable/provider/production behavior is unverified. Remaining B08 work is M24 format purposes and one question at a time in MCQ practice, plus separately governed M18 reporting. The approval form does not resolve report/retention policy decisions.
 
-[Progress](../../docs/reviews/unimind-repair-progress.md) · [Source binding](2026-10-15-merged-b08-c-processed-passages-source-binding.json)
+[Progress](../../docs/reviews/unimind-repair-progress.md) · Source binding (hash manifest removed in WP03-T15; see git history)

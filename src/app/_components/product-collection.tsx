@@ -10,16 +10,16 @@ import {
   CollectionFlow,
   type CollectionUploadClient,
 } from "@/app/batch-leader/_components/collection-flow";
-import type { CollectionActionState } from "@/app/batch-leader/collection-actions";
+import type { CollectionActionState } from "@/lib/collection/collection-client-state.application";
 import { useProductServices } from "./product-services";
 import {
   isSyntheticFile,
   makeSyntheticFile,
   syntheticFiles,
-} from "./synthetic-files";
-import type { Locale } from "./synthetic-fixtures";
+} from "@/lib/demo/synthetic-files.application";
+import type { Locale } from "@/lib/demo/synthetic-fixtures.application";
 import { syntheticDemoTime } from "@/lib/demo/synthetic-clock.application";
-import { useSyntheticNavigation } from "./product-navigation";
+import { useHostedSynthetic } from "./product-navigation";
 
 import {
   demoCampaignId,
@@ -27,7 +27,7 @@ import {
   registerSyntheticCollectionReceipt,
   finalizeSyntheticCollectionSubmission,
   prepareSyntheticCollectionCorrections,
-} from "./synthetic-campaigns";
+} from "@/lib/demo/synthetic-campaigns.application";
 
 export function ProductCollection({
   locale,
@@ -39,18 +39,28 @@ export function ProductCollection({
   campaignId?: string;
 }) {
   const { state, update, collectionMemory } = useProductServices();
-  const hosted = useSyntheticNavigation();
+  const hosted = useHostedSynthetic();
   const query = useSearchParams();
   const router = useProductRouter();
   const generation = collectionMemory.generation;
-  const campaign = makeSyntheticCampaign(state, locale, campaignId)!;
+  // Loopback review fixture only (hosted entry strips `fixture`): a second
+  // diagram request, so one file needs a chosen destination.
+  const withFixture = <T extends object>(value: T) =>
+    !hosted && fixture === "shared-format"
+      ? { ...value, sharedFormatRequest: true }
+      : value;
+  const campaign = makeSyntheticCampaign(
+    withFixture(state),
+    locale,
+    campaignId,
+  )!;
   const latestState = useRef(state);
   useEffect(() => {
     latestState.current = state;
   }, [state]);
   useEffect(() => {
     if (
-      hosted?.active ||
+      hosted ||
       !prepareSyntheticCollectionCorrections(state, campaignId, fixture).length
     )
       return;
@@ -61,7 +71,7 @@ export function ProductCollection({
         ...prepareSyntheticCollectionCorrections(current, campaignId, fixture),
       ],
     }));
-  }, [state, campaignId, fixture, hosted?.active, update]);
+  }, [state, campaignId, fixture, hosted, update]);
   const requested = query.getAll("request");
   const previous = query.getAll("submission");
   const hasCorrection = query.has("request") || query.has("submission");
@@ -98,7 +108,7 @@ export function ProductCollection({
       throw new Error("Sample interrupted.");
     const spec = syntheticFiles[file.name as keyof typeof syntheticFiles];
     return registerSyntheticCollectionReceipt(
-      latestState.current,
+      withFixture(latestState.current),
       collectionMemory,
       campaignId,
       itemId,
@@ -120,7 +130,7 @@ export function ProductCollection({
         clientIdempotencyKey: String(data.get("clientIdempotencyKey")),
       };
     const { result, submission } = finalizeSyntheticCollectionSubmission(
-      latestState.current,
+      withFixture(latestState.current),
       collectionMemory,
       campaignId,
       data,
@@ -163,7 +173,7 @@ export function ProductCollection({
       draft={collectionMemory.draft(campaignId)}
       locale={locale}
       dateReference={
-        hosted?.active ? undefined : (
+        hosted ? undefined : (
           <>
             {locale === "ar" ? "ساعة العرض التجريبي" : "Demo clock"}:{" "}
             <bdi>{syntheticDemoTime.clockLabel}</bdi>

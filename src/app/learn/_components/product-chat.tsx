@@ -13,13 +13,13 @@ import {
   text,
   type ResponseKind,
   type SampleAnswer,
-} from "@/app/_components/synthetic-fixtures";
+} from "@/lib/demo/synthetic-fixtures.application";
 import { ChoiceGroup } from "@/app/_components/choice-group";
 import { ProductDialog } from "@/app/_components/product-dialog";
-import type { ProductStudyProps } from "./product-study";
+import type { ProductStudyProps } from "./study/study-props";
 import { conversationTitle } from "@/lib/study/recent-work.application";
-import styles from "./product-study.module.css";
 import productStyles from "@/app/_components/product.module.css";
+import styles from "./product-chat.module.css";
 
 const kindNames: Record<ResponseKind, readonly [string, string]> = {
   supported: ["Supported", "مدعوم"],

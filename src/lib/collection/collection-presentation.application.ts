@@ -93,14 +93,13 @@ export function collectionInspectionHref(
   itemId: string,
   submissionId: string,
   locale: string,
-  preview = false,
 ) {
   const query = new URLSearchParams({
     inspect: itemId,
     record: submissionId,
     lang: locale,
   });
-  return `${preview ? "/preview" : ""}/batch-leader/campaigns/${encodeURIComponent(campaignId)}?${query}#collection-record-${encodeURIComponent(itemId)}`;
+  return `/batch-leader/campaigns/${encodeURIComponent(campaignId)}?${query}#collection-record-${encodeURIComponent(itemId)}`;
 }
 
 export type CollectionAcknowledgement = Readonly<{

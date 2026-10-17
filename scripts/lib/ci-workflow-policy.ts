@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+
 import { parse } from "yaml";
 
 type UnknownRecord = Record<string, unknown>;
@@ -237,16 +239,6 @@ function hasGuardedSelector(job: UnknownRecord | undefined): boolean {
   );
 }
 
-function hasApplicationConcurrency(job: UnknownRecord | undefined): boolean {
-  const concurrency = job?.concurrency;
-  return (
-    isRecord(concurrency) &&
-    typeof concurrency.group === "string" &&
-    concurrency.group.includes("github.ref") &&
-    concurrency["cancel-in-progress"] === true
-  );
-}
-
 function hasDatabaseCiConcurrency(job: UnknownRecord | undefined): boolean {
   const concurrency = job?.concurrency;
   return (
@@ -288,17 +280,16 @@ const diagnosticCommands = [
   "test:integration:database",
   "exec playwright install --with-deps chromium",
   "test:e2e:database",
-  "test:security",
 ];
 const setupSuccessCondition =
   "${{ always() && steps.database_setup.outcome == 'success' }}";
 
-function databaseSteps(job: UnknownRecord): UnknownRecord[] {
+function jobSteps(job: UnknownRecord): UnknownRecord[] {
   return Array.isArray(job.steps) ? job.steps.filter(isRecord) : [];
 }
 
 function hasSafeDatabaseStages(job: UnknownRecord): boolean {
-  const steps = databaseSteps(job);
+  const steps = jobSteps(job);
   const setup = steps.find((step) => step.id === "database_setup");
   if (
     job["continue-on-error"] !== undefined ||
@@ -347,7 +338,272 @@ function hasSafeDatabaseStages(job: UnknownRecord): boolean {
   });
 }
 
-export function auditCiWorkflow(source: string): string[] {
+const applicationCondition =
+  "always() && (needs.ci_selector.result != 'success' || needs.ci_selector.outputs.application == 'RUN')";
+const shardArgument = "--shard=${{ matrix.shard }}/${{ strategy.job-total }}";
+
+type ApplicationJob = {
+  id: string;
+  timeoutMinutes: number;
+  chromium: boolean;
+  upload: boolean;
+  shardedCommand?: string;
+};
+
+// Every job here runs under the application selector condition and must
+// succeed before the required `application` gate passes.
+const applicationJobs: readonly ApplicationJob[] = [
+  { id: "static", timeoutMinutes: 20, chromium: false, upload: false },
+  { id: "node_tests", timeoutMinutes: 20, chromium: false, upload: true },
+  {
+    id: "e2e",
+    timeoutMinutes: 30,
+    chromium: true,
+    upload: true,
+    shardedCommand: `corepack pnpm test:e2e ${shardArgument}`,
+  },
+  {
+    id: "e2e_demo",
+    timeoutMinutes: 30,
+    chromium: true,
+    upload: true,
+    shardedCommand: `corepack pnpm test:e2e:demo --fully-parallel ${shardArgument}`,
+  },
+];
+const applicationGateTimeoutMinutes = 5;
+
+function gateVariable(jobId: string): string {
+  return `${jobId.toUpperCase()}_RESULT`;
+}
+
+function canonicalGateRun(): string {
+  return applicationJobs
+    .map(
+      ({ id }) =>
+        `test "$${gateVariable(id)}" = success || { echo "${id}: $${gateVariable(id)}"; exit 1; }`,
+    )
+    .join("\n");
+}
+
+// One package script per step, with no shell operators that could mask a
+// failure (`|| true`, `;`, pipes) or chain unreviewed commands.
+const safeApplicationRun =
+  /^corepack (enable|pnpm [a-z0-9:-]+(?: [^\s|&;`<>()]+)*)$/u;
+
+function hasStepAdvisoryFailure(job: UnknownRecord): boolean {
+  return (
+    job["continue-on-error"] !== undefined ||
+    jobSteps(job).some((step) => step["continue-on-error"] !== undefined)
+  );
+}
+
+function hasExactShardMatrix(job: UnknownRecord): boolean {
+  const strategy = job.strategy;
+  if (
+    !isRecord(strategy) ||
+    strategy["fail-fast"] !== false ||
+    Object.keys(strategy).length !== 2 ||
+    !isRecord(strategy.matrix) ||
+    Object.keys(strategy.matrix).length !== 1 ||
+    !Array.isArray(strategy.matrix.shard)
+  )
+    return false;
+  const shards = strategy.matrix.shard;
+  return (
+    shards.length > 0 && shards.every((shard, index) => shard === index + 1)
+  );
+}
+
+function auditApplicationJob(
+  spec: ApplicationJob,
+  job: UnknownRecord | undefined,
+): string[] {
+  const { id } = spec;
+  if (job === undefined) return [`APPLICATION_JOB_MISSING:${id}`];
+  const violations: string[] = [];
+  const steps = jobSteps(job);
+  if (job.needs !== "ci_selector" || job.if !== applicationCondition)
+    violations.push(`APPLICATION_TRIGGER_UNSAFE:${id}`);
+  if (!hasExactRunner(job))
+    violations.push(`APPLICATION_RUNNER_UNPINNED:${id}`);
+  const concurrency = job.concurrency;
+  if (
+    !isRecord(concurrency) ||
+    typeof concurrency.group !== "string" ||
+    !concurrency.group.includes("${{ github.ref }}") ||
+    (spec.shardedCommand !== undefined &&
+      !concurrency.group.includes("${{ matrix.shard }}")) ||
+    concurrency["cancel-in-progress"] !== true
+  )
+    violations.push(`APPLICATION_CONCURRENCY_MISSING:${id}`);
+  if (job["timeout-minutes"] !== spec.timeoutMinutes)
+    violations.push(`EXECUTION_TIMEOUT_UNSAFE:${id}`);
+  if (Object.hasOwn(job, "environment"))
+    violations.push(`APPLICATION_ENVIRONMENT_PRESENT:${id}`);
+  if (containsSecretExpression(job))
+    violations.push(`APPLICATION_SECRET_PRESENT:${id}`);
+  if (hasStepAdvisoryFailure(job))
+    violations.push(`APPLICATION_ADVISORY_FAILURE:${id}`);
+  if (!hasFrozenInstall(job)) violations.push("FROZEN_INSTALL_MISSING");
+  if (!hasCorepackActivationBeforeInstall(job))
+    violations.push("COREPACK_ENABLE_MISSING");
+  if (
+    steps.some(
+      (step) =>
+        step.if !== undefined &&
+        !(
+          typeof step.uses === "string" &&
+          step.uses.startsWith("actions/upload-artifact@")
+        ),
+    ) ||
+    steps.some((step) => step.shell !== undefined)
+  )
+    violations.push(`APPLICATION_STEP_CONDITIONAL:${id}`);
+  if (
+    runs(job).some(
+      (run) =>
+        !safeApplicationRun.test(run.trim()) &&
+        run.trim() !== spec.shardedCommand,
+    )
+  )
+    violations.push(`APPLICATION_COMMAND_UNSAFE:${id}`);
+  const chromium = hasCommand(
+    job,
+    "corepack pnpm exec playwright install --with-deps chromium",
+  );
+  if (spec.chromium && !chromium) violations.push("CHROMIUM_INSTALL_MISSING");
+  if (spec.upload && !hasAlwaysUpload(job))
+    violations.push(`APPLICATION_REPORT_UPLOAD_MISSING:${id}`);
+  if (spec.shardedCommand === undefined) {
+    if (job.strategy !== undefined)
+      violations.push(`APPLICATION_MATRIX_UNSAFE:${id}`);
+  } else if (
+    !hasExactShardMatrix(job) ||
+    runs(job).filter((run) => run.trim() === spec.shardedCommand).length !== 1
+  ) {
+    violations.push(`E2E_SHARDING_UNSAFE:${id}`);
+  }
+  return violations;
+}
+
+function auditApplicationGate(job: UnknownRecord | undefined): string[] {
+  if (job === undefined) return ["APPLICATION_GATE_UNSAFE"];
+  const violations: string[] = [];
+  const expectedNeeds = ["ci_selector", ...applicationJobs.map(({ id }) => id)];
+  if (job.if !== applicationCondition)
+    violations.push("APPLICATION_TRIGGER_UNSAFE:application");
+  if (!hasExactRunner(job))
+    violations.push("APPLICATION_RUNNER_UNPINNED:application");
+  if (job["timeout-minutes"] !== applicationGateTimeoutMinutes)
+    violations.push("EXECUTION_TIMEOUT_UNSAFE:application");
+  const steps = Array.isArray(job.steps) ? job.steps : [];
+  const gate = steps[0];
+  const expectedEnv = Object.fromEntries(
+    applicationJobs.map(({ id }) => [
+      gateVariable(id),
+      `\${{ needs.${id}.result }}`,
+    ]),
+  );
+  const gateLines =
+    isRecord(gate) && typeof gate.run === "string"
+      ? gate.run
+          .split(/\r?\n/u)
+          .map((line) => line.trim())
+          .filter(Boolean)
+          .join("\n")
+      : undefined;
+  if (
+    !Array.isArray(job.needs) ||
+    job.needs.length !== expectedNeeds.length ||
+    !expectedNeeds.every((need) => (job.needs as unknown[]).includes(need)) ||
+    job.strategy !== undefined ||
+    job["continue-on-error"] !== undefined ||
+    Object.hasOwn(job, "environment") ||
+    containsSecretExpression(job) ||
+    steps.length !== 1 ||
+    !isRecord(gate) ||
+    Object.keys(gate).some((key) => !["name", "env", "run"].includes(key)) ||
+    !isRecord(gate.env) ||
+    Object.keys(gate.env).length !== Object.keys(expectedEnv).length ||
+    Object.entries(expectedEnv).some(
+      ([name, value]) => (gate.env as UnknownRecord)[name] !== value,
+    ) ||
+    gateLines !== canonicalGateRun()
+  )
+    violations.push("APPLICATION_GATE_UNSAFE");
+  return violations;
+}
+
+function verifyCiComponents(packageJson: string): string[] | undefined {
+  let manifest: unknown;
+  try {
+    manifest = JSON.parse(packageJson);
+  } catch {
+    return undefined;
+  }
+  if (!isRecord(manifest) || !isRecord(manifest.scripts)) return undefined;
+  const script = manifest.scripts["verify:ci"];
+  if (typeof script !== "string") return undefined;
+  const components = script.split("&&").map((part) => part.trim());
+  const scripts = components.map(
+    (component) => /^pnpm ([a-z0-9:-]+)$/u.exec(component)?.[1],
+  );
+  return scripts.every((name) => name !== undefined)
+    ? (scripts as string[])
+    : undefined;
+}
+
+// Every `verify:ci` component must run in some application job, so a check
+// cannot silently disappear from CI when the jobs are split.
+function auditVerifyCiCoverage(
+  packageJson: string,
+  jobRuns: readonly string[],
+): string[] {
+  const components = verifyCiComponents(packageJson);
+  if (components === undefined || components.length === 0)
+    return ["VERIFY_CI_UNPARSEABLE"];
+  const commands = jobRuns.map((run) => run.trim());
+  // Only the reviewed shard flags may follow a component; any other argument
+  // (for example --grep) could silently narrow the check.
+  const shard = "--shard=${{ matrix.shard }}/${{ strategy.job-total }}";
+  const allowedSuffixes = ["", ` ${shard}`, ` --fully-parallel ${shard}`];
+  return components
+    .filter(
+      (component) =>
+        !commands.some((command) =>
+          allowedSuffixes.some(
+            (suffix) => command === `corepack pnpm ${component}${suffix}`,
+          ),
+        ),
+    )
+    .map((component) => `VERIFY_CI_COMPONENT_MISSING:${component}`);
+}
+
+function hasNonPersistentCheckouts(workflow: UnknownRecord): boolean {
+  const jobs = isRecord(workflow.jobs) ? Object.values(workflow.jobs) : [];
+  return jobs.every((job) =>
+    jobSteps(isRecord(job) ? job : {})
+      .filter(
+        (step) =>
+          typeof step.uses === "string" &&
+          step.uses.startsWith("actions/checkout@"),
+      )
+      .every(
+        (step) =>
+          isRecord(step.with) && step.with["persist-credentials"] === false,
+      ),
+  );
+}
+
+export type CiWorkflowAuditOptions = {
+  /** package.json source; defaults to the repository manifest. */
+  packageJson?: string;
+};
+
+export function auditCiWorkflow(
+  source: string,
+  options: CiWorkflowAuditOptions = {},
+): string[] {
   let workflow: unknown;
   try {
     workflow = parse(source);
@@ -391,39 +647,27 @@ export function auditCiWorkflow(source: string): string[] {
   if (!hasDependencyAudit(dependencyAudit)) {
     violations.push("DEPENDENCY_AUDIT_MISSING");
   }
-  if (!hasApplicationConcurrency(application)) {
-    violations.push("APPLICATION_CONCURRENCY_MISSING");
+  if (!hasNonPersistentCheckouts(workflow)) {
+    violations.push("CHECKOUT_CREDENTIALS_PERSISTED");
   }
-  if (
-    application?.if !==
-      "always() && (needs.ci_selector.result != 'success' || needs.ci_selector.outputs.application == 'RUN')" ||
-    application.needs !== "ci_selector"
-  ) {
-    violations.push("APPLICATION_TRIGGER_UNSAFE");
+  const applicationRuns: string[] = [];
+  for (const spec of applicationJobs) {
+    const candidate = jobs[spec.id];
+    const job = isRecord(candidate) ? candidate : undefined;
+    violations.push(...auditApplicationJob(spec, job));
+    applicationRuns.push(...runs(job));
   }
-  if (
-    !runs(application).some((run) => run.trim() === "corepack pnpm verify:ci")
-  ) {
-    violations.push("APPLICATION_GATE_MISSING");
-  }
-  if (
-    !hasCommand(
-      application,
-      "corepack pnpm exec playwright install --with-deps chromium",
-    )
-  ) {
-    violations.push("CHROMIUM_INSTALL_MISSING");
-  }
-  if (!hasAlwaysUpload(application)) {
-    violations.push("APPLICATION_REPORT_UPLOAD_MISSING");
-  }
-  if (!hasExactRunner(application)) {
-    violations.push("APPLICATION_RUNNER_UNPINNED");
-  }
+  violations.push(...auditApplicationGate(application));
+  violations.push(
+    ...auditVerifyCiCoverage(
+      options.packageJson ?? readFileSync("package.json", "utf8"),
+      applicationRuns,
+    ),
+  );
 
   if (databaseCi === undefined) {
     violations.push("DATABASE_CI_JOB_MISSING");
-    return violations;
+    return [...new Set(violations)];
   }
   if (
     databaseCi.if !==
@@ -438,11 +682,8 @@ export function auditCiWorkflow(source: string): string[] {
   if (!hasDatabaseCiConcurrency(databaseCi)) {
     violations.push("DATABASE_CI_CONCURRENCY_MISSING");
   }
-  if (
-    application?.["timeout-minutes"] !== 120 ||
-    databaseCi["timeout-minutes"] !== 30
-  ) {
-    violations.push("EXECUTION_TIMEOUT_UNSAFE");
+  if (databaseCi["timeout-minutes"] !== 30) {
+    violations.push("EXECUTION_TIMEOUT_UNSAFE:database-ci");
   }
   if (Object.hasOwn(databaseCi, "environment")) {
     violations.push("DATABASE_CI_ENVIRONMENT_PRESENT");
@@ -450,13 +691,10 @@ export function auditCiWorkflow(source: string): string[] {
   if (containsSecretExpression(databaseCi)) {
     violations.push("DATABASE_CI_SECRET_PRESENT");
   }
-  if (!hasFrozenInstall(application) || !hasFrozenInstall(databaseCi)) {
+  if (!hasFrozenInstall(databaseCi)) {
     violations.push("FROZEN_INSTALL_MISSING");
   }
-  if (
-    !hasCorepackActivationBeforeInstall(application) ||
-    !hasCorepackActivationBeforeInstall(databaseCi)
-  ) {
+  if (!hasCorepackActivationBeforeInstall(databaseCi)) {
     violations.push("COREPACK_ENABLE_MISSING");
   }
 
@@ -469,7 +707,6 @@ export function auditCiWorkflow(source: string): string[] {
     "db:ci:types",
     "db:types:check",
     "test:integration:database",
-    "test:security",
   ]) {
     if (!hasCommand(databaseCi, command)) {
       violations.push(`DATABASE_CI_COMMAND_MISSING:${command}`);
@@ -487,5 +724,5 @@ export function auditCiWorkflow(source: string): string[] {
     violations.push("DATABASE_CI_REPORT_UPLOAD_MISSING");
   }
 
-  return violations;
+  return [...new Set(violations)];
 }

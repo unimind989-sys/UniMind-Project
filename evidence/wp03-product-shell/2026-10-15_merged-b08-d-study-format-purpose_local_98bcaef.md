@@ -22,4 +22,4 @@ Independent review binds the final application, hosted tests and guide/package b
 
 The approved Open Folio/D04 correction is objective preserving; whole-candidate policy remains R3/protected with one read-only worker and no nesting. Physical-device, screen-reader, other-engine, durable/provider and production proof remain absent. Founder acceptance of the whole frontend, exact-head delivery CI and external delivery remain pending. Next independent approved work is B09 Batch Leader requests and deadlines; M18 remains separately governed.
 
-[Progress](../../docs/reviews/unimind-repair-progress.md) · [Source binding](2026-10-15-merged-b08-d-study-format-purpose-source-binding.json)
+[Progress](../../docs/reviews/unimind-repair-progress.md) · Source binding (hash manifest removed in WP03-T15; see git history)

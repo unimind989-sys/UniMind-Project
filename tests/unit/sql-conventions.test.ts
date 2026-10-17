@@ -1,12 +1,10 @@
-import { readFile, readdir } from "node:fs/promises";
-import path from "node:path";
-
 import { describe, expect, it } from "vitest";
 
 import {
   auditMigrationSet,
   type SqlMigration,
 } from "../../scripts/lib/sql-conventions";
+import { readMigrations } from "../helpers/repository-files";
 
 function migration(source: string, file = "20260831000000_safe_fixture.sql") {
   return { file, source } satisfies SqlMigration;
@@ -22,18 +20,7 @@ create table unimind_private.job_attempts (
 
 describe("SQL migration conventions", () => {
   it("accepts the repository migration set", async () => {
-    const directory = "supabase/migrations";
-    const files = (await readdir(directory))
-      .filter((file) => file.endsWith(".sql"))
-      .sort();
-    const migrations = await Promise.all(
-      files.map(async (file) => ({
-        file,
-        source: await readFile(path.join(directory, file), "utf8"),
-      })),
-    );
-
-    expect(auditMigrationSet(migrations)).toEqual([]);
+    expect(auditMigrationSet(await readMigrations())).toEqual([]);
   });
 
   it("requires pinned-CLI filename shape and schema-qualified tables", () => {

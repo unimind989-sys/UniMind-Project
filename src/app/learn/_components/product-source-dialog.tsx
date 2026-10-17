@@ -4,14 +4,14 @@ import { ProductDialog } from "@/app/_components/product-dialog";
 import { ProductLink } from "@/app/_components/product-ui";
 import { useProductText } from "@/app/_components/product-copy";
 import { useProductServices } from "@/app/_components/product-services";
-import { defaultScope } from "@/app/_components/synthetic-fixtures";
+import { defaultScope } from "@/lib/demo/synthetic-fixtures.application";
 import {
   studyPassage,
   type StudyPassageId,
 } from "@/lib/study/study-passages.application";
 import type { Locale } from "@/lib/i18n/locale";
 import type { WorkspaceScope } from "@/lib/workspace/workspace.application";
-import styles from "./product-study.module.css";
+import styles from "./product-chat.module.css";
 
 export function ProductSourceDialog({
   open,

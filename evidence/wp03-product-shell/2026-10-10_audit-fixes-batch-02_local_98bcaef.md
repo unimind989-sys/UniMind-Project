@@ -41,7 +41,7 @@ The normal live development UI on port 3000 supplies the before/after proof thro
 
 ## Binding and handoff
 
-[Source binding](2026-10-10-audit-fixes-batch-02-source-binding.json) records current candidate hashes, before/after batch hashes, unchanged font source and final report hashes. [Live ledger](<E:/Unimind audits/analysis/fix-batch-02-live-ui.json>) records the normal-server measurements. Reports live outside the repository; the initial nonpassing report is retained with its superseded disposition.
+Source binding (hash manifest removed in WP03-T15; see git history) records current candidate hashes, before/after batch hashes, unchanged font source and final report hashes. [Live ledger](<E:/Unimind audits/analysis/fix-batch-02-live-ui.json>) records the normal-server measurements. Reports live outside the repository; the initial nonpassing report is retained with its superseded disposition.
 
 The normal dev server remains running on port 3000, owned session 48990, with temporary process-local mock configuration, disabled paid providers and zero budget. No environment file was edited. The approved public student fixture and sample consent notices operate only in browser memory; this proof does not certify real authentication, backend saving or production behavior. Reload clears the fixture document.
 
