@@ -60,7 +60,7 @@
 
 **Review:** independent review (`independent-reviewer` sub-agent) of `a6dfbae..4a9543c`: no high findings. Medium "real workspace loses lang/dir" not reproduced: `FrontendShell` renders `AppShell`, which sets both in `useLayoutEffect`; database CI asserts it. Two low test gaps fixed (forbidden unit on every tool route; real screens assert no sample copy).
 
-**Approved commit:** PENDING
+**Approved commit:** a7bb89b — Ahmed, 2026-10-17 (reviewed synthetic and real screens on PR #80)
 
 **Remaining:** required CI on PR #80 (draft); Ahmed's rendered review; sync with main after PR #78 (runbook WP03 section); mark ready, merge, close.
 

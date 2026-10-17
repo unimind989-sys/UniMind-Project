@@ -94,6 +94,7 @@ export async function expectChatScreen(
   ).toBeDisabled();
   const unavailable = page.getByText(
     say(locale, "Answers are not available yet", "الإجابات غير متاحة بعد"),
+    { exact: true },
   );
   if (mode === "real") {
     await expect(message).toBeDisabled();
