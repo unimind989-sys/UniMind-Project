@@ -2,7 +2,7 @@ import { expect, type Page } from "@playwright/test";
 
 /**
  * Screen-level assertions shared by the synthetic demo suite and the real
- * database suite (WP03-T16). Both modes render the same student screens;
+ * database suite (WP03-T17). Both modes render the same student screens;
  * only data and availability differ, so each check takes the mode and
  * asserts the same structure plus the mode's availability.
  */

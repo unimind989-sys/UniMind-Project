@@ -571,8 +571,8 @@ test("revoked leader loses campaign access in the same browser", async ({
   expect(await upload.json()).toEqual({ error: "UPLOAD_REJECTED" });
 });
 
-// WP03-T16: the real half of the shared student-screen assertions. The
-// synthetic half runs the same checks in tests/e2e/demo/shared-screens.spec.ts.
+// WP03-T17: the real half of the shared student-screen assertions. The
+// synthetic half runs the same checks in tests/e2e/demo/chat-shared-screens.spec.ts.
 test("student: shared study, settings and catalog screens against the real backend", async ({
   page,
 }) => {

@@ -1,4 +1,4 @@
-// WP03-T16: the synthetic half of the shared student-screen assertions. The
+// WP03-T17: the synthetic half of the shared student-screen assertions. The
 // real half runs the same checks in tests/e2e-database/product-shell.spec.ts.
 import { reviewCatalogRows } from "../support/app-fixtures";
 import { inLocales } from "../support/copy";
@@ -21,7 +21,7 @@ const row = reviewCatalogRows.find(
 inLocales(["en", "ar"], (locale) => {
   test(
     `student screens match the shared real-mode structure (${locale})`,
-    { tag: ["@WP03-T16", `@${locale}`] },
+    { tag: ["@WP03-T17", `@${locale}`] },
     async ({ page }) => {
       test.setTimeout(120_000);
       const finish = isolation(page);

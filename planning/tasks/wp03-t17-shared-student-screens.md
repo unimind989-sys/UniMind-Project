@@ -1,16 +1,16 @@
-# Task record: WP03-T16 render the same student screens in real and synthetic modes
+# Task record: WP03-T17 render the same student screens in real and synthetic modes
 
-**Task ID:** WP03-T16
+**Task ID:** WP03-T17
 
 **Status:** [~]
 
 **Outcome:** Real student routes render the founder-reviewed synthetic screen components (study workspace, Study Shelf, student Settings). Real routes feed them authorized server data; the synthetic runtime feeds them `src/lib/demo` state. Only data and availability differ.
 
-**Acceptance:** [runbook WP03-T16](../../docs/runbooks/poc-execution-runbook.md#wp03-t16--render-the-same-student-screens-in-real-and-synthetic-modes)
+**Acceptance:** [runbook WP03-T17](../../docs/runbooks/poc-execution-runbook.md#wp03-t17--render-the-same-student-screens-in-real-and-synthetic-modes)
 
 **Owner:** Claude Code; selected speaker Ahmed
 
-**Branch:** claude/wp03-t16-shared-study-screens
+**Branch:** claude/wp03-t17-shared-study-screens
 
 **Updated (UTC):** 2026-10-17T15:00:00Z
 
@@ -40,7 +40,7 @@
 - [x] Real routes render `StudyFrame` + `ProductStudy` through `RealStudyPage`; guarded `sources`, `evidence`, `report` routes; `workspace-pages.tsx`, unused workspace CSS and copy removed.
 - [x] `AccountSettings` shared by `/settings` and the synthetic Settings screen; real privacy controls disabled.
 - [x] Study Shelf: dead mode props removed; remaining differences are sample disclosures and real tool availability.
-- [x] Shared screen assertions (`tests/e2e/support/shared-screens.ts`) used by `tests/e2e/demo/shared-screens.spec.ts` and `tests/e2e-database/product-shell.spec.ts`; `database-ci` now also runs when that helper changes.
+- [x] Shared screen assertions (`tests/e2e/support/shared-screens.ts`) used by `tests/e2e/demo/chat-shared-screens.spec.ts` and `tests/e2e-database/product-shell.spec.ts`; `database-ci` now also runs when that helper changes.
 - [ ] Rendered inspection (EN/AR, light/dark, desktop/mobile); present to Ahmed; independent review; PR.
 
 ## Decisions
