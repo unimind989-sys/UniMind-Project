@@ -175,7 +175,7 @@ inLocales(["en"], (locale) => {
       ).toBeDisabled();
       await openPreparedHistory(page, locale);
       await expect(
-        page.getByText("Synthetic study source", { exact: true }),
+        page.getByText("Upper limb lecture material", { exact: true }),
       ).toHaveCount(1);
       finish();
     },
@@ -429,7 +429,7 @@ inLocales(["ar"], (locale) => {
       ).toBe(4);
       await openPreparedHistory(page, locale);
       await expect(
-        page.getByText("Synthetic study source", { exact: true }),
+        page.getByText("Upper limb lecture material", { exact: true }),
       ).toHaveCount(3);
       await navigate(page, "/settings", locale);
       await page
@@ -534,7 +534,7 @@ inLocales(["en"], (locale) => {
             .press("Enter");
           await expect(page).toHaveURL(/#latest-submissions$/u);
           await expect(
-            page.getByText("Recorded synthetic handout", { exact: true }),
+            page.getByText("Lecture 7 handout, faculty copy", { exact: true }),
           ).toBeVisible();
         }
       }
@@ -592,7 +592,7 @@ inLocales(["ar"], (locale) => {
       // Each request's action stays visible at every width: layout matrix.
       await openPreparedHistory(page, locale);
       await expect(
-        page.getByText("Earlier synthetic handout", { exact: true }),
+        page.getByText("Lecture 7 handout, first upload", { exact: true }),
       ).toBeVisible();
       const fix = page.getByRole("link", {
         name: t("Fix information", "تصحيح المعلومات"),
@@ -728,7 +728,7 @@ inLocales(["ar"], (locale) => {
         }),
       ).toHaveCount(0);
       await expect(
-        page.getByText("Synthetic study source", { exact: true }),
+        page.getByText("Upper limb lecture material", { exact: true }),
       ).toHaveCount(2);
       await expect(page.getByRole("main")).not.toContainText(
         t("Contact your campaign administrator", "تواصل مع مسؤول الحملة"),
@@ -843,12 +843,15 @@ inLocales(["en"], (locale) => {
         exact: true,
       });
       await expect(
-        history.getByText("Synthetic study source", { exact: true }),
+        history.getByText("Upper limb lecture material", { exact: true }),
       ).toHaveCount(3);
       for (const title of seen)
         await expect(history.getByText(title, { exact: true })).toHaveCount(
           title ===
-            t("Synthetic Anatomy source call", "حملة مصادر التشريح التجريبية")
+            t(
+              "Anatomy lecture and practical sources",
+              "مصادر محاضرات وعمليات التشريح",
+            )
             ? 6
             : 1,
         );
@@ -931,7 +934,7 @@ inLocales(["ar"], (locale) => {
       ).toHaveCount(1);
       await openPreparedHistory(page, locale);
       await expect(
-        page.getByText("Synthetic study source", { exact: true }),
+        page.getByText("Upper limb lecture material", { exact: true }),
       ).toHaveCount(1);
       await openPreparedCampaign(page, b, locale);
       await expect(description).toHaveValue(
@@ -1026,7 +1029,7 @@ inLocales(["en"], (locale) => {
       ).toBeVisible();
       await openPreparedHistory(page, locale);
       await expect(
-        page.getByText("Synthetic study source", { exact: true }),
+        page.getByText("Upper limb lecture material", { exact: true }),
       ).toHaveCount(0);
       await navigate(page, "/settings", locale);
       await openPreparedCampaign(page, a, locale);
@@ -1070,7 +1073,7 @@ inLocales(["en"], (locale) => {
       ).toBe(0);
       await openPreparedHistory(page, locale);
       await expect(
-        page.getByText("Synthetic study source", { exact: true }),
+        page.getByText("Upper limb lecture material", { exact: true }),
       ).toHaveCount(1);
       await openPreparedCampaign(page, a, locale);
       await expect(
@@ -1194,10 +1197,7 @@ inLocales(["en"], (locale) => {
       ).toHaveCount(1);
       await expect(
         page.getByText(
-          t(
-            "Approved synthetic handout reference",
-            "مرجع الملزمة التجريبي المعتمد",
-          ),
+          t("Approved Lecture 7 handout", "ملزمة المحاضرة 7 المعتمدة"),
           { exact: true },
         ),
       ).toBeVisible();
@@ -1206,7 +1206,7 @@ inLocales(["en"], (locale) => {
       ).toHaveCount(2);
       await expect(queue.getByRole("textbox")).toHaveCount(2);
       for (const title of await queue.getByRole("textbox").all())
-        await expect(title).toHaveValue("Synthetic study source");
+        await expect(title).toHaveValue("Upper limb lecture material");
       await expect(
         queue.getByText(t("Ready to upload", "جاهز للرفع"), { exact: true }),
       ).toHaveCount(2);
@@ -1426,7 +1426,10 @@ inLocales(["ar"], (locale) => {
           }),
         ).toHaveCount(0);
         await expect(page.getByRole("main")).not.toContainText(
-          t("Synthetic Anatomy source call", "حملة مصادر التشريح التجريبية"),
+          t(
+            "Anatomy lecture and practical sources",
+            "مصادر محاضرات وعمليات التشريح",
+          ),
         );
         await page
           .getByRole("link", {
@@ -1587,9 +1590,12 @@ inLocales(["en"], (locale) => {
         ),
       });
       await expect(
-        history.getByText(pick(locale, "Anatomy handout", "ملزمة التشريح"), {
-          exact: true,
-        }),
+        history.getByText(
+          pick(locale, "Lecture 7 handout", "ملزمة المحاضرة 7"),
+          {
+            exact: true,
+          },
+        ),
       ).toBeVisible();
       await expect(
         history.getByText(pick(locale, "Received", "تم الاستلام"), {
@@ -1673,7 +1679,7 @@ test(
         page.getByRole("button", { name: "Submit files", exact: true }),
       ).toHaveCount(0);
       await expect(page.getByRole("main")).not.toContainText(
-        "Synthetic Anatomy source call",
+        "Anatomy lecture and practical sources",
       );
     }
     finish();
@@ -1775,7 +1781,7 @@ inLocales(["en"], (locale) => {
         .getByRole("listitem")
         .filter({ hasText: "synthetic-diagram.png" });
       await expect(handout).toContainText(
-        `${t("For", "لـ")}: ${t("Anatomy handout", "ملزمة التشريح")}`,
+        `${t("For", "لـ")}: ${t("Lecture 7 handout", "ملزمة المحاضرة 7")}`,
       );
       await expect(handout.getByRole("combobox")).toHaveCount(0);
       // The diagram matches two outstanding requests: nothing is guessed.
@@ -1783,12 +1789,12 @@ inLocales(["en"], (locale) => {
       await expect(destination).toHaveValue("");
       await expect(destination.locator("option")).toHaveText([
         t("Choose a requested material", "اختر المادة المطلوبة"),
-        t("Anatomy diagram", "رسم تشريح"),
-        t("Anatomy practice diagram", "رسم تدريبي للتشريح"),
+        t("Brachial plexus diagram", "رسم الضفيرة العضدية"),
+        t("Axilla boundaries diagram", "رسم حدود الإبط"),
       ]);
       await expect(diagram).not.toContainText(`${t("For", "لـ")}:`);
       await destination.selectOption({
-        label: t("Anatomy diagram", "رسم تشريح"),
+        label: t("Brachial plexus diagram", "رسم الضفيرة العضدية"),
       });
       await expect(
         diagram.getByRole("option", {
@@ -1796,17 +1802,17 @@ inLocales(["en"], (locale) => {
         }),
       ).toHaveCount(0);
       await expect(diagram).toContainText(
-        `${t("For", "لـ")}: ${t("Anatomy diagram", "رسم تشريح")}`,
+        `${t("For", "لـ")}: ${t("Brachial plexus diagram", "رسم الضفيرة العضدية")}`,
       );
       // Changing the chosen destination mints a fresh per-file request key.
       const beforeChange = await generatedIds(page);
       await diagram
         .getByLabel(t("Change requested material", "تغيير المادة المطلوبة"))
         .selectOption({
-          label: t("Anatomy practice diagram", "رسم تدريبي للتشريح"),
+          label: t("Axilla boundaries diagram", "رسم حدود الإبط"),
         });
       await expect(diagram).toContainText(
-        `${t("For", "لـ")}: ${t("Anatomy practice diagram", "رسم تدريبي للتشريح")}`,
+        `${t("For", "لـ")}: ${t("Axilla boundaries diagram", "رسم حدود الإبط")}`,
       );
       await expect(
         queue.getByText(t("Ready to upload", "جاهز للرفع"), { exact: true }),

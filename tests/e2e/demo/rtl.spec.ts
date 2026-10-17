@@ -408,13 +408,11 @@ inLocales(["en", "ar"], (locale) => {
       });
       const receipt = latest
         .getByRole("listitem")
-        .filter({ hasText: "Synthetic study source" });
+        .filter({ hasText: "Upper limb lecture material" });
       await expect(receipt).toHaveCount(1);
       await expect(receipt).toContainText(received, { timeout: 5_000 });
       await expect(
-        latest
-          .getByRole("listitem")
-          .filter({ hasText: "Synthetic historical source" }),
+        latest.locator('[data-record-request^="sample-history-"]'),
       ).toHaveCount(5);
       await page
         .getByRole("link", {
@@ -429,13 +427,10 @@ inLocales(["en", "ar"], (locale) => {
       await expect(
         history
           .getByRole("listitem")
-          .filter({ hasText: "Synthetic study source" }),
+          .filter({ hasText: "Upper limb lecture material" }),
       ).toContainText(received);
       await expect(
-        history
-          .getByRole("listitem")
-          .filter({ hasText: "Synthetic historical source" })
-          .first(),
+        history.locator('[data-record-request^="sample-history-"]').first(),
       ).toContainText(date("2026-09-20T10:00:00Z"));
       await expect(page.getByRole("note")).toContainText(
         "2026-10-01 12:00 UTC",

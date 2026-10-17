@@ -20,6 +20,7 @@ import {
 } from "@/lib/demo/synthetic-admin-context.application";
 import { resourceNames } from "@/lib/demo/synthetic-fixtures.application";
 import { defaultUnitPath } from "@/lib/demo/synthetic-fixtures.application";
+import adminStyles from "@/app/admin/admin.module.css";
 
 export function ProductAdmin({
   locale,
@@ -160,7 +161,7 @@ export function ProductAdmin({
         refreshOnSelect={false}
         onSelection={setSelectedId}
       />
-      <div>
+      <div className={adminStyles.contextLinks}>
         {origin && (
           <ProductLink href={adminResourceHref(origin, locale)} locale={locale}>
             {locale === "ar"

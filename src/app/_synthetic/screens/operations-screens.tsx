@@ -3,10 +3,8 @@
 import { useEffect } from "react";
 import { ProductAdmin } from "@/app/_components/product-admin";
 import { ProductCollection } from "@/app/_components/product-collection";
-import {
-  ProductCampaigns,
-  ProductResource,
-} from "@/app/_components/product-operations";
+import { ProductCampaigns } from "@/app/_components/product-campaigns";
+import { ProductResource } from "@/app/_components/product-operations";
 import { LeaderHome } from "@/app/batch-leader/_components/leader-home";
 import { syntheticDemoTime } from "@/lib/demo/synthetic-clock.application";
 import {

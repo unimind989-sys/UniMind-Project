@@ -25,8 +25,21 @@ export function candidateState(
       ? "محجوب بفحوص الجاهزية"
       : "Readiness blocked"
     : locale === "ar"
-      ? "بانتظار القرار"
-      : "Decision available";
+      ? "جاهز"
+      : "Ready";
+}
+
+/** Status tone of the pill beside `candidateState`; presentation only. */
+export function candidateTone(
+  candidate: AdminActionCandidate,
+): "ok" | "bad" | "wait" | "neutral" {
+  if (adminAlreadyInState(candidate)) return "neutral";
+  if (
+    candidate.commandState === "PENDING_SECOND_CONFIRMATION" ||
+    candidate.commandState === "PENDING_OWNER_REVIEW"
+  )
+    return "wait";
+  return candidate.failedPredicates.length > 0 ? "bad" : "ok";
 }
 
 export function candidateLabel(

@@ -1500,13 +1500,13 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 **Dependencies:** WP03-T19 delivered. Approval of the rendered candidate is delegated to the overseeing Claude Code session ([task record](../../planning/tasks/wp03-t20-landing-access-cobalt.md)).
 
-- [~] Landing, sign-in, registration, consent and recovery pages in the new direction; Ahmed approves the rendered candidate; deliver through one PR with required CI.
+- [x] Landing, sign-in, registration, consent and recovery pages in the new direction; Ahmed approves the rendered candidate; deliver through one PR with required CI. Approved at `d300d28` by the overseeing session under Ahmed's delegation, after independent review of the protected access routes. Delivered in [#83](https://github.com/unimind989-sys/UniMind-Project/pull/83), squash-merged as `b8f5647`, and promoted to production ([evidence](../../evidence/wp03-product-shell/2026-10-17_wp03-t20-landing-access-cobalt_production_b8f5647.md)).
 
 #### WP03-T21 — Rebuild the Batch Leader and admin flows in the approved direction
 
 **Dependencies:** WP03-T19 delivered.
 
-- [ ] Leader intake and history, admin decision queue and resource pages as working tools in the new direction; keep every governed-action guard; Ahmed approves the rendered candidate; deliver through one PR with required CI.
+- [~] Leader intake and history, admin decision queue and resource pages as working tools in the new direction; keep every governed-action guard; Ahmed approves the rendered candidate; deliver through one PR with required CI ([task record](../../planning/tasks/wp03-t21-leader-admin-cobalt.md)).
 
 ### 6.1 Routes
 

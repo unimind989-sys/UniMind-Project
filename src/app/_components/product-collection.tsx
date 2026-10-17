@@ -27,6 +27,8 @@ import {
   registerSyntheticCollectionReceipt,
   finalizeSyntheticCollectionSubmission,
   prepareSyntheticCollectionCorrections,
+  syntheticSourceDescription,
+  syntheticSourceTitle,
 } from "@/lib/demo/synthetic-campaigns.application";
 
 export function ProductCollection({
@@ -201,14 +203,14 @@ export function ProductCollection({
         : {})}
       initialClientKey="sample-initial"
       initialMetadata={{
-        title: "Synthetic study source",
-        description: "Invented source for the UniMind synthetic product flow.",
+        title: syntheticSourceTitle,
+        description: syntheticSourceDescription,
       }}
       reference={{
         name:
           locale === "ar"
-            ? "مرجع الملزمة التجريبي المعتمد"
-            : "Approved synthetic handout reference",
+            ? "ملزمة المحاضرة 7 المعتمدة"
+            : "Approved Lecture 7 handout",
         file: () => makeSyntheticFile("synthetic-handout.pdf"),
       }}
     />

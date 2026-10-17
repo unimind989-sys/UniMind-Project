@@ -152,6 +152,29 @@ const actionNames = [
   "ENABLE_FLAG",
   "DISABLE_FLAG",
 ] as const;
+/** The default cohort as admins name it (English, Arabic). */
+export const syntheticCohortLabel = [
+  "Zagazig Medicine, Year 1, Term 1",
+  "طب الزقازيق، السنة الأولى، الترم الأول",
+] as const;
+/** Invented, believable governed targets in the default Anatomy scope. */
+function targetLabel(id: string): readonly [string, string] {
+  if (["publish", "hide"].includes(id))
+    return [defaultScope.unitTitleEn, defaultScope.unitTitleAr];
+  if (["unlock", "lock"].includes(id)) return syntheticCohortLabel;
+  if (["activate", "deactivate"].includes(id))
+    return ["Lecture 6 handout", "ملزمة المحاضرة 6"];
+  if (["quarantine", "retry"].includes(id))
+    return ["Practical 4 recording", "تسجيل العملي 4"];
+  if (["hold", "remove-hold"].includes(id))
+    return [
+      "Lecture 6 handout, original upload",
+      "ملزمة المحاضرة 6، الملف الأصلي",
+    ];
+  return ["Structured summaries", "الملخصات المنظمة"];
+}
+/** The first founder's recorded reason when a fixture opens a pending decision. */
+const pendingReasonFixture = "Checked the processed sources and their rights.";
 export function syntheticAdminCandidates(
   state: ProductState,
   fixture = "",
@@ -203,8 +226,8 @@ export function syntheticAdminCandidates(
       candidateId: `sample-${action.id}`,
       action: actionNames[index]!,
       targetId: `a0000000-0000-4000-8000-${String(index + 1).padStart(12, "0")}`,
-      targetLabelEn: `${["publish", "hide"].includes(action.id) ? "Anatomy unit" : ["unlock", "lock"].includes(action.id) ? "Human Medicine cohort" : ["hold", "remove-hold"].includes(action.id) ? "Synthetic handout raw object" : ["enable", "disable"].includes(action.id) ? "Synthetic study artifact control" : ["quarantine", "retry"].includes(action.id) ? "Synthetic Anatomy recording · failed version" : "Synthetic Anatomy handout · accepted version"} · ${defaultScope.cohortName}`,
-      targetLabelAr: `${["publish", "hide"].includes(action.id) ? "وحدة التشريح" : ["unlock", "lock"].includes(action.id) ? "مجموعة الطب البشري" : ["hold", "remove-hold"].includes(action.id) ? "العنصر الخام لملزمة تجريبية" : ["enable", "disable"].includes(action.id) ? "التحكم بأداة مذاكرة تجريبية" : ["quarantine", "retry"].includes(action.id) ? "تسجيل التشريح التجريبي · إصدار فاشل" : "ملزمة التشريح التجريبية · إصدار مقبول"} · ${defaultScope.levelNameAr} · ${defaultScope.termNameAr}`,
+      targetLabelEn: targetLabel(action.id)[0],
+      targetLabelAr: targetLabel(action.id)[1],
       currentState:
         current === "PENDING" || action.id === "retry"
           ? action.before
@@ -232,7 +255,7 @@ export function syntheticAdminCandidates(
           : null,
       reason:
         current === "PENDING"
-          ? (state.pendingReasons[action.id] ?? "Synthetic readiness review.")
+          ? (state.pendingReasons[action.id] ?? pendingReasonFixture)
           : null,
       commandState:
         current === "PENDING"

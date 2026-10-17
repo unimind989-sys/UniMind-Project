@@ -90,8 +90,8 @@ describe("production upload API denial contract", () => {
     const repo = repository();
     vi.mocked(repo.loadCampaign).mockResolvedValue({
       id: campaignId,
-      name: "Synthetic Anatomy source call",
-      cohortName: "Synthetic cohort",
+      name: "Anatomy lecture and practical sources",
+      cohortName: "Zagazig Medicine, Year 1, Term 1",
       opensAt: "2026-09-01T00:00:00.000Z",
       closesAt: "2099-10-12T20:00:00.000Z",
       assignmentExpiresAt: "2099-10-10T20:00:00.000Z",

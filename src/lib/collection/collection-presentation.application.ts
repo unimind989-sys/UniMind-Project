@@ -39,6 +39,24 @@ export function collectionRequestAction(
     : null;
 }
 
+/**
+ * Request progress derived from existing state only: the requests this leader
+ * may upload to, and how many have a latest submission needing nothing more.
+ */
+export function collectionRequestProgress(campaign: CollectionCampaign) {
+  const requests = campaign.requestedItems.filter(
+    (item) => item.uploadAllowed !== false,
+  );
+  return {
+    total: requests.length,
+    sent: requests.filter(
+      (item) =>
+        item.latestSubmission !== null &&
+        collectionRequestAction(campaign, item) === null,
+    ).length,
+  };
+}
+
 type InspectionQuery = Pick<URLSearchParams, "has" | "getAll">;
 export function resolveCollectionInspection(
   campaign: CollectionCampaign,

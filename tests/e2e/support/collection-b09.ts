@@ -213,9 +213,9 @@ export async function b09ReceiptJourney(
   ).toHaveCount(3);
   // The approved synthetic service accepts this supplied title only.
   const titles = [
-    "Synthetic study source",
-    "Synthetic study source",
-    "Synthetic study source",
+    "Upper limb lecture material",
+    "Upper limb lecture material",
+    "Upper limb lecture material",
   ];
   for (const [index, row] of (
     await queue.getByRole("listitem").all()
@@ -397,7 +397,7 @@ export async function b09NamedUploadJourney(page: Page, locale: Locale) {
   ).toHaveCount(1);
   await expect(page).not.toHaveURL(/upload=/u);
   const first = queue.getByRole("listitem").first();
-  await expect(first).toContainText(t("Anatomy handout", "ملزمة التشريح"));
+  await expect(first).toContainText(t("Lecture 7 handout", "ملزمة المحاضرة 7"));
   await request("sample-item-2")
     .getByRole("button", { name: t("Upload file", "رفع ملف"), exact: true })
     .click();
@@ -407,9 +407,9 @@ export async function b09NamedUploadJourney(page: Page, locale: Locale) {
   await expect(
     queue.getByText(t("Ready to upload", "جاهز للرفع"), { exact: true }),
   ).toHaveCount(2);
-  await expect(first).toContainText(t("Anatomy handout", "ملزمة التشريح"));
+  await expect(first).toContainText(t("Lecture 7 handout", "ملزمة المحاضرة 7"));
   await expect(queue.getByRole("listitem").last()).toContainText(
-    t("Anatomy recording", "تسجيل تشريح"),
+    t("Practical 4 recording", "تسجيل العملي 4"),
   );
   await page
     .locator(`a[href='/batch-leader?view=history&lang=${locale}']`)
@@ -425,9 +425,9 @@ export async function b09NamedUploadJourney(page: Page, locale: Locale) {
     .getByRole("link", { name: t("Open requests", "فتح الطلبات"), exact: true })
     .click();
   await expect(queue.getByRole("listitem")).toHaveCount(2);
-  await expect(first).toContainText(t("Anatomy handout", "ملزمة التشريح"));
+  await expect(first).toContainText(t("Lecture 7 handout", "ملزمة المحاضرة 7"));
   await expect(queue.getByRole("listitem").last()).toContainText(
-    t("Anatomy recording", "تسجيل تشريح"),
+    t("Practical 4 recording", "تسجيل العملي 4"),
   );
   await page.getByLabel(t("I have permission", "لدي صلاحية")).check();
   await page
@@ -508,7 +508,9 @@ export async function b09NewerIntentJourney(page: Page, locale: Locale) {
   await expect(
     row.getByText(after("Ready to upload", "جاهز للرفع"), { exact: true }),
   ).toBeVisible();
-  await expect(row).toContainText(after("Anatomy handout", "ملزمة التشريح"));
+  await expect(row).toContainText(
+    after("Lecture 7 handout", "ملزمة المحاضرة 7"),
+  );
   await expect(page).toHaveURL(/upload=sample-item-2/u);
   await expect(page).toHaveURL(new RegExp(`lang=${changed}`, "u"));
   await expect(

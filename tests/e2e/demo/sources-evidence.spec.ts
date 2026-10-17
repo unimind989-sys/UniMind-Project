@@ -172,7 +172,7 @@ inLocales(["en"], (locale) => {
         .click();
       await page
         .getByRole("button", {
-          name: new RegExp(`^${copy.actions.DEACTIVATE_SOURCE}`, "u"),
+          name: new RegExp(`^${copy.verbs.DEACTIVATE_SOURCE} `, "u"),
         })
         .click();
       await page
@@ -1145,7 +1145,7 @@ inLocales(["ar"], (locale) => {
         .click();
       await page
         .getByRole("button", {
-          name: new RegExp(`^${copy.actions.DEACTIVATE_SOURCE}`, "u"),
+          name: new RegExp(`^${copy.verbs.DEACTIVATE_SOURCE} `, "u"),
         })
         .click();
       await page

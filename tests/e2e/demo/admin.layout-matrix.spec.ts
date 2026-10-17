@@ -75,9 +75,7 @@ const adminStates: readonly ScreenState[] = [
       await adminNavigate(page, "/admin", locale);
       await page
         .getByRole("button", {
-          name: new RegExp(
-            pick(locale, "^Place raw-data hold", "^وضع حجز على البيانات الخام"),
-          ),
+          name: new RegExp(pick(locale, "^Place hold ", "^وضع حجز ")),
         })
         .click();
       await page

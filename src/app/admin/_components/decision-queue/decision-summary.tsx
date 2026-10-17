@@ -1,6 +1,8 @@
 import type { Route } from "next";
 
+import { FrontendIcon } from "@/app/_components/frontend-controls";
 import { ProductNavigationLink } from "@/app/_components/product-navigation";
+import { StateIcon, StatePill } from "@/app/_components/state-pill";
 import type { AdminActionCandidate } from "@/lib/admin/admin-actions.application";
 import {
   adminDecisionHref,
@@ -12,13 +14,17 @@ import styles from "../../admin.module.css";
 import {
   candidateLabel,
   candidateState,
+  candidateTone,
   formatExpectedVersion,
   stateLabel,
   type AdminCopy,
 } from "./candidate-presentation";
 import type { DecisionReview } from "./use-decision-review";
 
-/** Read-only facts about the selected decision, shown above its form. */
+/**
+ * Read-only facts about the selected decision, shown above its form: verb and
+ * target, current → proposed state, consequence and readiness checks.
+ */
 export function DecisionSummary({
   candidate,
   locale,
@@ -31,86 +37,87 @@ export function DecisionSummary({
   review: DecisionReview;
 }>) {
   const predicateLabels = copy.predicates as Readonly<Record<string, string>>;
-  const { completed, blocked, secondConfirmation, missingExpiry } = review;
+  const { completed, secondConfirmation, missingExpiry } = review;
 
   return (
     <>
       <div className={styles.detailHeading}>
-        <div>
-          <h2 id="decision-detail-heading" dir="auto" tabIndex={-1}>
-            {candidateLabel(candidate, locale)}
-          </h2>
-          <p className={styles.actionName}>{copy.actions[candidate.action]}</p>
-          <p>{copy.targetKinds[adminTargetKind(candidate.action)]}</p>
+        <h2 id="decision-detail-heading" tabIndex={-1}>
+          <span className={styles.detailVerb}>
+            {copy.verbs[candidate.action]}
+          </span>{" "}
+          <bdi>{candidateLabel(candidate, locale)}</bdi>
+        </h2>
+        <div className={styles.detailMeta}>
+          <StatePill tone={candidateTone(candidate)}>
+            {candidateState(candidate, locale)}
+          </StatePill>
+          <span>{copy.actions[candidate.action]}</span>
+          <span>{copy.targetKinds[adminTargetKind(candidate.action)]}</span>
+          {candidate.protected ? (
+            <span className={styles.protectedNote}>
+              <FrontendIcon name="shield" />
+              {copy.protectedNote}
+            </span>
+          ) : null}
         </div>
-        <span
-          className={styles.statusCue}
-          data-tone={
-            completed
-              ? "ready"
-              : blocked
-                ? "blocked"
-                : secondConfirmation
-                  ? "pending"
-                  : "ready"
-          }
-        >
-          {candidateState(candidate, locale)}
-        </span>
       </div>
 
-      <dl className={styles.stateGrid}>
-        <div>
+      <div className={styles.statePair}>
+        <dl className={styles.stateCurrent}>
           <dt>{copy.currentState}</dt>
           <dd dir="auto">{stateLabel(candidate.currentState, locale)}</dd>
-        </div>
-        <div>
+        </dl>
+        <span className={styles.stateArrow} aria-hidden="true">
+          <FrontendIcon name="arrow" />
+        </span>
+        <dl className={styles.stateProposed}>
           <dt>{copy.proposedState}</dt>
           <dd dir="auto">{stateLabel(candidate.proposedState, locale)}</dd>
-        </div>
-        <div>
-          <dt>{copy.expectedVersion}</dt>
-          <dd>{formatExpectedVersion(candidate.expectedVersion, locale)}</dd>
-        </div>
-      </dl>
+        </dl>
+      </div>
+
+      <p className={styles.consequence}>
+        {copy.consequences[candidate.action]}
+      </p>
 
       <div className={styles.readiness}>
         <h3>{copy.readiness}</h3>
         {completed ? (
           <p>{copy.alreadyInStateBody}</p>
         ) : candidate.failedPredicates.length === 0 ? (
-          <p className={styles.readyState}>{copy.ready}</p>
+          <ul className={styles.checks}>
+            <li data-tone="ok">
+              <StateIcon tone="ok" />
+              {copy.ready}
+            </li>
+          </ul>
         ) : (
-          <ul>
+          <ul className={styles.checks}>
             {candidate.failedPredicates.map((predicate) => (
-              <li key={predicate}>{predicateLabels[predicate] ?? predicate}</li>
+              <li key={predicate} data-tone="bad">
+                <StateIcon tone="bad" />
+                {predicateLabels[predicate] ?? predicate}
+              </li>
             ))}
           </ul>
         )}
       </div>
 
-      <p>{copy.consequences[candidate.action]}</p>
-      <details className={styles.readiness}>
-        <summary>{copy.targetId}</summary>
-        <code dir="ltr">{candidate.targetId}</code>
-      </details>
-
       {secondConfirmation && (
-        <p className={styles.pendingNote} role="status">
-          {copy.pendingFounder}
-          {candidate.initiatorSlot
-            ? ` · ${copy.initiatedBy}: ${candidate.initiatorSlot === "AHMED" ? copy.founderAhmed : copy.founderZiad}`
-            : ""}
-        </p>
-      )}
-      {secondConfirmation && (
-        <p>
+        <div className={styles.pendingNote}>
+          <p role="status">
+            {copy.pendingFounder}
+            {candidate.initiatorSlot
+              ? `. ${copy.initiatedBy}: ${candidate.initiatorSlot === "AHMED" ? copy.founderAhmed : copy.founderZiad}`
+              : ""}
+          </p>
           <ProductNavigationLink
             href={adminDecisionHref(candidate, locale) as Route}
           >
             {copy.pendingLink}
           </ProductNavigationLink>
-        </p>
+        </div>
       )}
       {missingExpiry && (
         <p role="alert" className={styles.errorMessage}>
@@ -122,6 +129,22 @@ export function DecisionSummary({
           {copy.pendingReview}
         </p>
       )}
+
+      <details className={styles.targetDetails}>
+        <summary>{copy.targetId}</summary>
+        <dl>
+          <div>
+            <dt>{copy.targetId}</dt>
+            <dd>
+              <code dir="ltr">{candidate.targetId}</code>
+            </dd>
+          </div>
+          <div>
+            <dt>{copy.expectedVersion}</dt>
+            <dd>{formatExpectedVersion(candidate.expectedVersion, locale)}</dd>
+          </div>
+        </dl>
+      </details>
     </>
   );
 }

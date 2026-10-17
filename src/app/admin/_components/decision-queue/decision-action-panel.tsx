@@ -79,7 +79,7 @@ export function DecisionActionPanel({
           confirmButtonRef={confirmButton}
           feedbackRef={feedbackRef}
         />
-        <div className={styles.reviewActions}>
+        <div className={styles.recordActions}>
           <button
             ref={reviewButton}
             className={styles.primaryAction}
@@ -96,6 +96,7 @@ export function DecisionActionPanel({
           >
             {refreshing ? copy.checkingState : copy.reviewAction}
           </button>
+          <p className={styles.auditNote}>{copy.auditNote}</p>
         </div>
       </form>
     </section>

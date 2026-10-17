@@ -171,7 +171,7 @@ campaign closing time, shown in Cairo time. Expand **Assignment and campaign
 dates** to compare the two dates. The prepared demo keeps its fixed reference
 clock; real services still decide permission and expiry.
 
-Open **Synthetic Anatomy source call** using **Open requests**. The campaign puts
+Open **Anatomy lecture and practical sources** using **Open requests**. The campaign puts
 **Awaiting your action** first: the handout, recording and diagram initially need
 files. Recorded processing/review examples appear below. Received requests leave
 unfinished work; an actionable correction stays there with its specific reason.
@@ -191,8 +191,8 @@ supplied source title remain unchanged.
 
 | Input                           | Supplied value                                                        |
 | ------------------------------- | --------------------------------------------------------------------- |
-| Source title                    | `Synthetic study source` — use this exact title for the supplied demo |
-| Professor or source description | `Invented source for the UniMind synthetic product flow.`             |
+| Source title                    | `Upper limb lecture material` — use this exact title for the supplied demo |
+| Professor or source description | `Dr. Hala Mansour's upper limb lectures, shared by the Anatomy department.` |
 | Handout                         | `synthetic-handout.pdf`                                               |
 | Recording                       | `synthetic-recording.wav`                                             |
 | Diagram                         | `synthetic-diagram.png`                                               |
@@ -258,7 +258,7 @@ action. No email, real assignment or additional access is created.
 
 Sign out and sign in as `admin@example.invalid`. Navigation groups the existing routes under **Decision queue, Content, Academics, Access context, Operations**; Account is a utility destination. On phones open **Menu** to change sections. Review all eight resource destinations: Catalog, Cohorts, Campaigns, Sources, Jobs, Quality, Usage and capacity, Incidents. Configuration/draft controls expose fixed approved sample concepts only. Broad catalog editors, arbitrary invitation recipients, storage-reference policy, operational processing and report/retention policy are not implemented or decided.
 
-The synthetic campaign has a fixed cohort/unit, handout/recording/diagram requests and expiry. Creating its draft and reviewing its invitation only update memory; no email or assignment is created. Operations resources show fixed lifecycle/job/quality/capacity/incident summaries and recovery states. **Open governed decisions** leads to the same actual decision queue component used by the working application.
+The synthetic campaign has a fixed cohort/unit, handout/recording/diagram requests and expiry. Creating its draft and reviewing its invitation only update memory; no email or assignment is created. Resource pages list their fixed sources, jobs, reviews, capacity and incidents as rows with their current state; each row's short verb (for example **Quarantine** or **Lock**) leads to the same actual decision queue component used by the working application. **How this view works** keeps the fixed lifecycle summary.
 
 In Campaigns, check the existing invitation prerequisite, then use **Review invitation example**. The result confirms review; it does not send email or grant access. The hosted button says **Review invitation** and its result says **Invitation reviewed**. In Cohorts, **Review cohort configuration** reviews the displayed fixed cohort and curriculum edition; it does not save an editable draft or unlock the cohort.
 
@@ -266,7 +266,7 @@ In Quality, **Inspect student conflict example** opens one separate prepared con
 
 Access context shows existing cohort/assignment context and links, with no directory or membership editor. Select a named decision row on desktop or phone. Its detail moves into view and receives focus, including when selecting the same row again. On phones **Back to decisions** returns focus to the selected row.
 
-Use reason **`Synthetic readiness review.`**, or Arabic **`مراجعة جاهزية تجريبية.`**. Inspect readiness predicates and current/proposed state, press **Review exact change**, then the normal confirmation button.
+Use reason **`Synthetic readiness review.`**, or Arabic **`مراجعة جاهزية تجريبية.`**. Inspect readiness predicates and current/proposed state, press **Review and record**, then the normal confirmation button. The count tabs in the band (All, Needs you, Waiting, Blocked, Done) filter the list and each count matches its list.
 
 | Decision                      | Expected synthetic behavior                                                                                                                                                                     |
 | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

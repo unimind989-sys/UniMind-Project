@@ -2,7 +2,11 @@ import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { syntheticFiles } from "../src/lib/demo/synthetic-files.application";
 import { syntheticDemoTime } from "../src/lib/demo/synthetic-clock.application";
 import { studyDensityManifest } from "../src/lib/demo/synthetic-study-density.application";
-import { syntheticCampaignsManifest } from "../src/lib/demo/synthetic-campaigns.application";
+import {
+  syntheticCampaignsManifest,
+  syntheticSourceDescription,
+  syntheticSourceTitle,
+} from "../src/lib/demo/synthetic-campaigns.application";
 import { studioFixtureManifest } from "../src/lib/studio/studio-fixture.application";
 import {
   promptExamples,
@@ -67,9 +71,8 @@ writeFileSync(
           "The accepted candidate IDs record a historical review. WP03-T09/T10 delivery is complete for the runbook's recorded candidates. Current frontend-refinements audit repairs remain uncommitted local work under WP03-T13, with final acceptance and delivery proof pending. All study/upload/governance results here are fixed local examples.",
       },
       credentials: "accounts.csv",
-      sourceTitle: "Synthetic study source",
-      sourceDescription:
-        "Invented source for the UniMind synthetic product flow.",
+      sourceTitle: syntheticSourceTitle,
+      sourceDescription: syntheticSourceDescription,
       adminReasonEn: "Synthetic readiness review.",
       adminReasonAr: "مراجعة جاهزية تجريبية.",
       verificationLink: "/auth/callback?code=sample-verification&type=signup",

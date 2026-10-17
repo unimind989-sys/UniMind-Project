@@ -4,7 +4,7 @@
 
 **Task ID:** WP03-T20
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** The public landing opens on the approved L1 hero ("The page answers") and the sign-in, registration, verification, consent and recovery pages render in the Cobalt direction, with every behaviour unchanged.
 
@@ -14,7 +14,7 @@
 
 **Branch:** claude/wp03-t20-landing-access-cobalt
 
-**Updated (UTC):** 2026-10-17T18:30Z
+**Updated (UTC):** 2026-10-17T20:15Z
 
 ## Contract
 
@@ -40,7 +40,7 @@
 - [x] Lower sections recomposed in Cobalt with the content pack.
 - [x] Access pages: Night brand plane and white form surface.
 - [x] Tests updated where they pinned old presentation; local verification.
-- [ ] Independent review, PR, required CI, overseer approval, merge, production proof.
+- [x] Independent review, PR, required CI, overseer approval, merge, production proof.
 
 ## Decisions
 
@@ -61,7 +61,8 @@
 - Browser runs: demo `public`, `auth` and `rtl` 28/28; real `landing-experience` 7/7; real `foundation`, `auth-flows`, `hosted-synthetic-login` and `product-shell-contracts` all passing.
 - Rendered review at 1440, 1280, 1180, 820, 390 and 320px, light and dark, EN and AR, in two rounds.
 - The landing test caught a real pause bug, now fixed: the playing shorthand had outranked the pause rule.
-- The full demo suite and `database-ci` run in CI on [#83](https://github.com/unimind989-sys/UniMind-Project/pull/83).
+- [#83](https://github.com/unimind989-sys/UniMind-Project/pull/83) squash-merged as `b8f5647` with required CI green on `a10695d`. Two earlier runs each lost one demo test to the known dev-server proxy timeout, which is tracked separately.
+- Production artifact `dpl_E6CwEGXJq3rsdr7akwLyy9ZHZbk9` passed 12 pre-promotion checks and the release fingerprint check, then was promoted. It is verified on `unimind.space` and `project-xwrez.vercel.app` ([evidence](../../evidence/wp03-product-shell/2026-10-17_wp03-t20-landing-access-cobalt_production_b8f5647.md)). Rollback: `dpl_3DVUTtJUuTJTL5QDQzmVfW94vtZG`.
 
 **Review:** independent review by the `independent-reviewer` agent. Of `4849cf0..4821e40`: CHANGES REQUIRED, with no auth, consent, hosted-synthetic or data-safety finding.
 - One should-fix: the 40px language links.
@@ -71,8 +72,8 @@ All six were fixed in `d300d28`. Re-review of `4821e40..d300d28`: PASS WITH NITS
 
 **Approved commit:** `d300d28`, approved by the overseeing Claude Code session under Ahmed's 17 October 2026 delegation (not a founder review). The approval followed the rendered review of `4821e40` and a check of the `d300d28` changes: 44px language links, the stage without scripts, dark Night edges and Arabic tracking. Later record- or test-only commits keep this approval.
 
-**Remaining:** required CI on the final head, merge, production proof, closure.
+**Remaining:** none. Recommended founder action: rotate the Vercel deployment-protection bypass token (see the WP03-T19 evidence).
 
 ## Next action
 
-Let required CI pass on #83, merge, then deploy production and close WP03-T20.
+None; WP03-T20 is closed.

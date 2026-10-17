@@ -45,7 +45,7 @@ export function useDecisionQueue({
   const [filter, setFilter] = useState("all");
   const group = adminDecisionGroup;
   const matching = candidates.filter((candidate) =>
-    `${copy.actions[candidate.action]} ${candidateLabel(candidate, locale)}`
+    `${copy.verbs[candidate.action]} ${copy.actions[candidate.action]} ${candidateLabel(candidate, locale)}`
       .toLocaleLowerCase(locale)
       .includes(search.trim().toLocaleLowerCase(locale)),
   );
