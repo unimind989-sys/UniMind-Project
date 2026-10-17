@@ -1455,6 +1455,18 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 **Pass:** the same product behaviour in real, hosted-synthetic and local demo modes; required CI green with a much shorter wall time; fewer tests with no lost forbidden-path, RLS, accessibility or RTL protection; no source file over the limit.
 
+#### WP03-T16 — Render the same student screens in real and synthetic modes
+
+**Dependencies:** WP03-T15 delivered (two composition roots). Ahmed's 17 October 2026 decision: the synthetic flow must be identical to the real product so design review and testing use one UI. He chose the founder-reviewed synthetic screens as the canonical UI, real tools without a backend shown in the same layout but disabled, Materials limited to count and freshness until an authorized source-list function exists, and scope covering the study workspace, Study Shelf and student Settings. [~] Claude Code, `claude/wp03-t16-shared-study-screens`.
+
+- [ ] Inventory the real and synthetic student screens and record which already share leaf components.
+- [ ] Feed the shared study workspace (Materials, Chat, Studio, Quiz, sources, evidence, report), Study Shelf and student Settings through one adapter seam: real routes pass authorized server data and Server Actions; the synthetic runtime passes `src/lib/demo` state. Tools without a real backend render their normal layout disabled with an honest notice and never fixture data in real mode.
+- [ ] Keep every real-route auth guard, RLS and hosted-mode isolation; real modules never import `src/lib/demo`; only the root layout and the loopback document route mount the synthetic runtime.
+- [ ] Assert each shared screen with one set of browser checks in synthetic mode (`tests/e2e/demo/**`) and against the real backend (`tests/e2e-database/**`); keep the layout matrix (accessibility, RTL, 200% text) green.
+- [ ] Independent review of the auth and data changes; Ahmed approves the rendered candidate (`Approved commit:`); deliver through one PR with required CI.
+
+**Pass:** each student screen renders the same components in real and synthetic modes, and only data and availability differ; required CI green; review findings resolved; founder approval recorded.
+
 ### 6.1 Routes
 
 Implement at minimum:
