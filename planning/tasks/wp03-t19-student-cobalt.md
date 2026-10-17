@@ -4,7 +4,7 @@
 
 **Task ID:** WP03-T19
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** Every student screen (shell, onboarding, Study Shelf, Subjects, Materials, Chat, Studio, Quiz, evidence, report, Settings) renders in the approved Cobalt direction with believable invented fixtures, in real and synthetic modes alike.
 
@@ -14,7 +14,7 @@
 
 **Branch:** claude/wp03-t19-student-cobalt
 
-**Updated (UTC):** 2026-10-17T19:30Z
+**Updated (UTC):** 2026-10-17T17:29Z
 
 ## Contract
 
@@ -44,7 +44,7 @@
 - [x] Materials, Studio, Quiz, evidence/report, Settings and onboarding (helper sub-agent, same worktree, reviewed by the lead).
 - [x] Studio and Quiz fixture content in the new theme.
 - [x] Full demo e2e and layout matrices green locally (192/192).
-- [ ] Real e2e, PR, required CI, overseer approval, merge, production proof.
+- [x] Real e2e, PR, required CI, overseer approval, merge, production proof.
 
 ## Decisions
 
@@ -57,14 +57,14 @@
 
 **Changed:** see Steps; commits `eea7745` to `d530056`. Tests changed only where they pinned the old presentation (old rail landmark, old sample text, centred quiz Start, middle-dot academic line, always-visible Chat heading, bordered Sessions control, header-label alignment, visible profile caption, Shelf card padding).
 
-**Proof:** `format:check`, `lint`, `tsc`, `test:unit` 917/917; demo e2e 192/192 (`UNIMIND_DEMO_REUSE=1`, 21.6 min); rendered review at 1440, 820, 390 and 320px (200% text), light and dark, EN and AR. Real e2e and `database-ci` run in CI.
+**Proof:** `format:check`, `lint`, `tsc`, `test:unit` 917/917; demo e2e 192/192 (`UNIMIND_DEMO_REUSE=1`, 21.6 min); real e2e 39/39; rendered review at 1440, 820, 390 and 320px (200% text), light and dark, EN and AR. PR [#82](https://github.com/unimind989-sys/UniMind-Project/pull/82) squash-merged as `4849cf0` with 15/15 checks green. Production artifact `dpl_3DVUTtJUuTJTL5QDQzmVfW94vtZG` promoted and verified on `unimind.space` and `project-xwrez.vercel.app` ([evidence](../../evidence/wp03-product-shell/2026-10-17_wp03-t19-student-cobalt_production_4849cf0.md)); rollback `dpl_42tzJXb7utNR2te7gcJh7idZfnhU`.
 
 **Review:** self-review by the overseeing session, including the helper's screens; no protected path changed.
 
 **Approved commit:** `2166c3d`, approved by the overseeing Claude Code session under Ahmed's 17 October 2026 delegation after its rendered review (not a founder review). Later record-only commits keep this approval.
 
-**Remaining:** required CI on PR [#82](https://github.com/unimind989-sys/UniMind-Project/pull/82), merge, production proof, closure.
+**Remaining:** none. Recommended founder action: rotate the Vercel deployment-protection bypass token (see the evidence limits).
 
 ## Next action
 
-Let required CI pass on #82 (auto-merge on), then verify production and close WP03-T19.
+None; WP03-T19 is closed. WP03-T20 and WP03-T21 continue the overhaul.

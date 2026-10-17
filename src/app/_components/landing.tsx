@@ -1,15 +1,22 @@
 import Link from "next/link";
 import type { Route } from "next";
+import { Source_Serif_4 } from "next/font/google";
 import type { Locale } from "@/lib/i18n/locale";
 import { Brand } from "./brand";
-// Shared landing tokens and resets load before the section modules, keeping
-// the original single-sheet cascade order.
+// Shared landing tokens and resets load before the section modules.
 import styles from "./landing.module.css";
-import { StudyAtlas, WorkspacePreview } from "./landing-experience";
+import { WorkspacePreview } from "./landing-experience";
 import { LandingIcon } from "./landing-icons";
-import evidence from "./landing-evidence.module.css";
-import how from "./landing-how-it-works.module.css";
+import { AnswerMoment } from "./landing-moment";
+import sections from "./landing-sections.module.css";
 import workspace from "./landing-workspace.module.css";
+
+// The book face is only for the depicted printed handout (DESIGN.md).
+const handoutFace = Source_Serif_4({
+  subsets: ["latin"],
+  variable: "--font-handout",
+  display: "swap",
+});
 
 export function Landing({ locale }: { locale: Locale }) {
   const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
@@ -17,7 +24,7 @@ export function Landing({ locale }: { locale: Locale }) {
   const register = ("/register?lang=" + locale) as Route;
   return (
     <div
-      className={styles.page}
+      className={`${styles.page} ${handoutFace.variable}`}
       lang={locale}
       dir={locale === "ar" ? "rtl" : "ltr"}
     >
@@ -25,12 +32,12 @@ export function Landing({ locale }: { locale: Locale }) {
         {t("Skip to content", "انتقل إلى المحتوى")}
       </a>
       <header className={styles.header}>
-        <Brand href={"/?lang=" + locale} />
+        <Brand href={"/?lang=" + locale} tone="dark" />
         <nav
           className={styles.sectionNav}
           aria-label={t("Explore UniMind", "اكتشف UniMind")}
         >
-          <a href="#workspace">{t("The experience", "التجربة")}</a>
+          <a href="#workspace">{t("Try a sample", "جرّب نموذجًا")}</a>
           <a href="#how-it-works">{t("How it works", "كيف تعمل")}</a>
         </nav>
         <nav
@@ -46,7 +53,6 @@ export function Landing({ locale }: { locale: Locale }) {
           </Link>
           <Link className={styles.signIn} href={login}>
             {t("Sign in", "تسجيل الدخول")}
-            <LandingIcon name="arrow" />
           </Link>
         </nav>
       </header>
@@ -54,135 +60,125 @@ export function Landing({ locale }: { locale: Locale }) {
         <section className={styles.hero} aria-labelledby="landing-title">
           <div className={styles.heroCopy}>
             <h1 id="landing-title" lang="en" dir="ltr">
-              <span>Study deeper</span>{" "}
-              <span className={styles.secondLine}>Go further.</span>
+              <span>Study deeper</span> <span>Go further.</span>
             </h1>
-            <p className={styles.heroDescription}>
+            <p className={styles.lede}>
               {t(
-                "Ask questions about your course material and check the sources behind each answer. Use the same material to make study aids and practice with quizzes.",
-                "اسأل عن مواد مقررك وراجع المصادر التي تستند إليها كل إجابة. استخدم نفس المواد لإعداد أدوات مذاكرة والتدرب بالاختبارات.",
+                "Ask about your own lectures, in Arabic or English. UniMind answers only from your faculty’s material and shows you the page it came from.",
+                "اسأل عن محاضراتك أنت، بالعربي أو بالإنجليزي. يجيب UniMind من مواد كليتك المعتمدة فقط، ويريك الصفحة التي جاءت منها الإجابة.",
               )}
             </p>
-            <div className={styles.heroActions}>
-              <Link className={styles.primary} href={register}>
+            <div className={styles.actions}>
+              <Link className={styles.start} href={register}>
                 {t("Start studying", "ابدأ المذاكرة")}
-                <LandingIcon name="arrow" />
               </Link>
-              <a className={styles.textLink} href="#workspace">
-                {t("Try the workspace", "جرّب مساحة المذاكرة")}
-                <LandingIcon name="arrow" />
+              <a className={styles.quiet} href="#how-it-works">
+                {t("See how it works", "شاهد كيف تعمل")}
               </a>
             </div>
-            <p className={styles.heroNote}>
-              <span className={styles.noteLine} aria-hidden="true" />
-              {t(
-                "Answers use your subject’s approved material.",
-                "الإجابات تعتمد على المواد المعتمدة لمادتك.",
-              )}
-            </p>
+            <ul className={styles.proof}>
+              {[
+                t(
+                  "Answers only from your approved material",
+                  "إجابات من موادك المعتمدة فقط",
+                ),
+                t(
+                  "A page or timestamp behind every claim",
+                  "صفحة أو توقيت وراء كل معلومة",
+                ),
+                t(
+                  "Says so when your material doesn’t cover it",
+                  "يخبرك عندما لا تغطي موادك سؤالك",
+                ),
+              ].map((rule) => (
+                <li key={rule}>
+                  <span className={styles.tick}>
+                    <LandingIcon name="check" width="15" height="15" />
+                  </span>
+                  {rule}
+                </li>
+              ))}
+            </ul>
           </div>
-          <StudyAtlas locale={locale} />
+          <AnswerMoment locale={locale} />
         </section>
-        <div className={styles.principleStrip}>
-          <p>
-            {t("Course material", "مواد المقرر")}
-            <LandingIcon name="arrow" />
-            <strong>
-              {t("Answers you can check", "إجابات يمكنك مراجعتها")}
-            </strong>
-          </p>
-          <span>
-            {t(
-              "Chat and Studio use the same sources.",
-              "الدردشة والاستوديو يستخدمان نفس المصادر.",
-            )}
-          </span>
-        </div>
         <section
           className={workspace.experience}
           id="workspace"
           aria-labelledby="experience-title"
         >
-          <div className={workspace.sectionHeading}>
+          <div className={styles.sectionHead}>
             <h2 id="experience-title">
-              {t("Study with", "ذاكر من")}
-              <br />
-              <span>{t("your course material.", "مواد مقررك.")}</span>
+              {t("Try it on a real subject.", "جرّبه على مادة حقيقية.")}
             </h2>
             <p>
               {t(
-                "Read a sample answer, flip a flashcard or try a quiz below. In your workspace, each tool uses your subject’s approved material.",
-                "راجع الإجابة التجريبية أو اقلب بطاقة المذاكرة أو جرّب الاختبار أدناه. تعتمد أدوات مساحة المذاكرة على مواد مادتك المعتمدة.",
+                "This sample uses invented Anatomy material. Open the evidence, flip a flashcard or answer a quiz question.",
+                "يستخدم هذا النموذج مواد تشريح مُتخيَّلة. افتح الدليل أو اقلب بطاقة مذاكرة أو أجب عن سؤال اختبار.",
               )}
             </p>
           </div>
           <WorkspacePreview locale={locale} />
         </section>
-        <section
-          className={evidence.evidenceSection}
-          aria-labelledby="evidence-title"
-        >
-          <div className={evidence.evidenceDiagram} aria-hidden="true">
-            <div className={evidence.diagramSource}>
-              <LandingIcon name="source" />
-              <span>{t("Your material", "مادتك الدراسية")}</span>
-              <div className={evidence.diagramLines}>
-                <i />
-                <i />
-                <i />
-              </div>
-            </div>
-            <svg
-              className={evidence.evidenceConnector}
-              viewBox="0 0 340 180"
-              fill="none"
-            >
-              <path
-                d="M40 90H120C160 90 160 40 200 40H290M120 90c40 0 40 50 80 50h90"
-                stroke="currentColor"
-                strokeWidth="1.5"
-              />
-              <circle cx="120" cy="90" r="5" fill="currentColor" />
-              <circle cx="290" cy="40" r="5" fill="currentColor" />
-              <circle cx="290" cy="140" r="5" fill="currentColor" />
-            </svg>
-            <div className={evidence.diagramAnswer}>
-              <LandingIcon name="chat" />
-              <span>{t("An answer", "إجابة")}</span>
-              <div className={evidence.diagramCitation}>
-                <LandingIcon name="check" />
-                {t("Supporting evidence", "الأدلة الداعمة")}
-              </div>
-            </div>
-            <div className={evidence.diagramArtifact}>
-              <LandingIcon name="studio" />
-              <span>{t("A study aid", "أداة مذاكرة")}</span>
-            </div>
-          </div>
-          <div className={evidence.evidenceCopy}>
+        <section className={sections.evidence} aria-labelledby="evidence-title">
+          <div className={sections.evidenceCopy}>
             <h2 id="evidence-title">
-              {t("See what supports", "راجع ما تستند إليه")}
-              <br />
-              <span>{t("the answer.", "الإجابة.")}</span>
+              {t(
+                "Check every answer against your material.",
+                "راجع كل إجابة على موادك.",
+              )}
             </h2>
             <p>
               {t(
-                "Open an answer’s supporting material to read the passage it uses. If the approved sources do not cover your question, UniMind tells you.",
-                "افتح المادة الداعمة للإجابة لقراءة المقتطف الذي تعتمد عليه. إذا لم تغطِ المصادر المعتمدة سؤالك، يوضح لك UniMind ذلك.",
+                "Each claim carries a numbered source. Open it to read the passage, the page or the moment in the recording. When your approved material doesn’t cover a question, UniMind says so instead of guessing.",
+                "كل معلومة تحمل مصدرًا مرقّمًا. افتحه لتقرأ المقتطف أو الصفحة أو اللحظة في التسجيل. وعندما لا تغطي موادك المعتمدة سؤالًا، يخبرك UniMind بذلك بدلًا من التخمين.",
               )}
             </p>
             <a className={styles.textLink} href="#workspace">
               {t("Try the sample answer", "جرّب الإجابة التجريبية")}
-              <LandingIcon name="arrow" />
             </a>
           </div>
+          <figure className={sections.evidenceCards}>
+            <div className={sections.sourceCard}>
+              <div className={sections.sourceHead}>
+                <p>
+                  <strong lang="en" dir="ltr">
+                    Practical 3, Axilla and arm
+                  </strong>
+                  <span>{t("Recording", "تسجيل")}</span>
+                </p>
+                <span className={sections.locator}>18:42</span>
+              </div>
+              <blockquote lang="en" dir="ltr">
+                Look at the position: arm medially rotated, forearm pronated,
+                palm facing backwards. That’s the waiter’s tip.
+              </blockquote>
+            </div>
+            <div className={sections.gapCard}>
+              <p className={sections.gapQuestion}>
+                {t("How is Erb’s palsy treated?", "إزاي بيتعالج شلل إرب؟")}
+              </p>
+              <p className={sections.gapReply}>
+                {t(
+                  "Your approved Anatomy material doesn’t cover treatment, so UniMind won’t guess. It can explain the injury and its signs from Lecture 6.",
+                  "موادك المعتمدة في التشريح لا تغطي العلاج، لذلك لن يخمّن UniMind. يمكنه شرح الإصابة وعلاماتها من المحاضرة 6.",
+                )}
+              </p>
+            </div>
+            <figcaption>
+              {t(
+                "Sample evidence from invented material",
+                "أدلة تجريبية من مواد مُتخيَّلة",
+              )}
+            </figcaption>
+          </figure>
         </section>
         <section
-          className={how.how}
+          className={sections.how}
           id="how-it-works"
           aria-labelledby="how-title"
         >
-          <div className={how.howIntro}>
+          <div className={sections.howHead}>
             <h2 id="how-title">{t("How it works", "كيف تعمل")}</h2>
             <p>
               {t(
@@ -192,10 +188,9 @@ export function Landing({ locale }: { locale: Locale }) {
             </p>
             <Link className={styles.textLink} href={register}>
               {t("Create your account", "أنشئ حسابك")}
-              <LandingIcon name="arrow" />
             </Link>
           </div>
-          <ol className={how.steps}>
+          <ol className={sections.steps}>
             {[
               [
                 t("Choose your program", "اختر برنامجك الدراسي"),
@@ -220,38 +215,35 @@ export function Landing({ locale }: { locale: Locale }) {
               ],
             ].map(([title, description], index) => (
               <li key={title}>
-                <span className={how.stepNumber} aria-hidden="true">
-                  {new Intl.NumberFormat(locale, {
-                    minimumIntegerDigits: 2,
-                  }).format(index + 1)}
+                <span className={sections.stepNumber} aria-hidden="true">
+                  {new Intl.NumberFormat(locale).format(index + 1)}
                 </span>
-                <div>
-                  <h3>{title}</h3>
-                  <p>{description}</p>
-                </div>
+                <h3>{title}</h3>
+                <p>{description}</p>
               </li>
             ))}
           </ol>
         </section>
-        <section className={styles.cta} aria-labelledby="cta-title">
-          <div className={styles.ctaMark} aria-hidden="true">
-            <LandingIcon name="book" width="88" height="88" />
-          </div>
-          <h2 id="cta-title">
-            {t("Open your next", "افتح مادتك")}
-            <br />
-            {t("subject.", "القادمة.")}
+        <section className={styles.closing} aria-labelledby="closing-title">
+          <h2 id="closing-title">
+            {t("Open your next subject.", "افتح مادتك القادمة.")}
           </h2>
-          <p>
-            {t(
-              "Create an account to find the subjects available to you.",
-              "أنشئ حسابًا للوصول إلى المواد المتاحة لك.",
-            )}
-          </p>
-          <Link className={styles.primary} href={register}>
-            {t("Create your account", "أنشئ حسابك")}
-            <LandingIcon name="arrow" />
-          </Link>
+          <div className={styles.closingAction}>
+            <p>
+              {t(
+                "Create an account to find the subjects available to you.",
+                "أنشئ حسابًا للوصول إلى المواد المتاحة لك.",
+              )}
+            </p>
+            <div className={styles.actions}>
+              <Link className={styles.start} href={register}>
+                {t("Create your account", "أنشئ حسابك")}
+              </Link>
+              <Link className={styles.quiet} href={login}>
+                {t("Sign in", "تسجيل الدخول")}
+              </Link>
+            </div>
+          </div>
         </section>
       </main>
       <footer className={styles.footer}>
@@ -262,10 +254,6 @@ export function Landing({ locale }: { locale: Locale }) {
             "للتعلم من مواد مقررك. الدعم التعليمي لا يحل محل المشورة المتخصصة.",
           )}
         </p>
-        <Link href={login}>
-          {t("Sign in", "تسجيل الدخول")}
-          <LandingIcon name="arrow" />
-        </Link>
       </footer>
     </div>
   );
