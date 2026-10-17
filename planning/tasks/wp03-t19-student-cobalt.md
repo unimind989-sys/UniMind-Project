@@ -41,9 +41,10 @@
 - [x] Study Shelf (band, blue folio resume page, covers) and Subjects index.
 - [x] Chat: toolbar, inline citation help, blue question bubble, answer card, docked composer.
 - [x] Student fixtures: Lecture 6 handout, Practical 3 recording, brachial plexus answers; demo pack regenerated.
-- [~] Materials, Studio, Quiz, evidence/report, Settings and onboarding (helper sub-agent, same worktree).
-- [ ] Studio and Quiz fixture content in the new theme.
-- [ ] Full demo e2e and layout matrices green; `check`; PR; CI; overseer review; merge; production proof.
+- [x] Materials, Studio, Quiz, evidence/report, Settings and onboarding (helper sub-agent, same worktree, reviewed by the lead).
+- [x] Studio and Quiz fixture content in the new theme.
+- [x] Full demo e2e and layout matrices green locally (192/192).
+- [ ] Real e2e, PR, required CI, overseer approval, merge, production proof.
 
 ## Decisions
 
@@ -54,16 +55,16 @@
 
 ## Current state
 
-**Changed:** see Steps; commits `eea7745` onward.
+**Changed:** see Steps; commits `eea7745` to `d530056`. Tests changed only where they pinned the old presentation (old rail landmark, old sample text, centred quiz Start, middle-dot academic line, always-visible Chat heading, bordered Sessions control, header-label alignment, visible profile caption, Shelf card padding).
 
-**Proof:** `tsc --noEmit` clean; `test:unit` 917/917; chat specs 17/17 after expectation updates; rendered captures reviewed.
+**Proof:** `format:check`, `lint`, `tsc`, `test:unit` 917/917; demo e2e 192/192 (`UNIMIND_DEMO_REUSE=1`, 21.6 min); rendered review at 1440, 820, 390 and 320px (200% text), light and dark, EN and AR. Real e2e and `database-ci` run in CI.
 
-**Review:** self-review so far.
+**Review:** self-review by the overseeing session, including the helper's screens; no protected path changed.
 
 **Approved commit:** PENDING (overseer review under Ahmed's 17 Oct delegation).
 
-**Remaining:** helper screens, Studio/Quiz fixtures, full e2e, PR.
+**Remaining:** PR, required CI, approval record, merge, production proof.
 
 ## Next action
 
-Review the helper's screens, then run the full demo suite and fix expectations.
+Open the PR, pass required CI, record `Approved commit:`, merge and verify production.
