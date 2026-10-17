@@ -1508,6 +1508,15 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 - [ ] Leader intake and history, admin decision queue and resource pages as working tools in the new direction; keep every governed-action guard; Ahmed approves the rendered candidate; deliver through one PR with required CI.
 
+#### WP03-T22 — Keep the loopback demo rewrite internal
+
+**Dependencies:** WP03-T15 (loopback demo gate in `src/proxy.ts`). Since the WP03-T19 merge, about one demo e2e test per CI run fails when the dev server logs `Failed to proxy http://localhost:3102/synthetic-runtime/... socket hang up`: Next sends the demo rewrite back to itself over HTTP, and a render slower than the 30-second proxy timeout drops the connection ([task record](../../planning/tasks/wp03-t22-internal-demo-rewrite.md)).
+
+- [~] Find why the rewrite becomes external and make it internal without weakening the demo gate (mutation 403, path allow-list 404, `no-store` and `noindex` headers, production 404 for `/synthetic-runtime`); say whether WP03-T19 made renders slower.
+- [ ] Independent review of the exact diff; deliver through one PR with required CI; two full demo e2e runs with no `Failed to proxy` line in the dev-server log.
+
+**Pass:** each demo request runs the proxy once and renders in the same server; no `Failed to proxy` lines across two full CI demo runs; the demo gate and real-mode behaviour unchanged.
+
 ### 6.1 Routes
 
 Implement at minimum:
