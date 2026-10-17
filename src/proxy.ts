@@ -74,9 +74,12 @@ export async function proxy(request: NextRequest) {
     const url = new URL(request.url);
     if (isProductDemoPath(path))
       url.pathname = `/synthetic-runtime/${path === "/" ? "home" : path.slice(1)}`;
+    // skipProxyUrlNormalize shows raw /_next/data/<build>/<route>.json URLs
+    // here after the router has already mapped them to <route>. App Router
+    // never requests them, so they get the 404 instead of the real route.
     if (
       !isProductDemoPath(path) &&
-      !path.startsWith("/_next/") &&
+      (!path.startsWith("/_next/") || path.startsWith("/_next/data/")) &&
       !path.startsWith("/demo-files/") &&
       !/^\/images\/study-shelf\/[a-z-]+\.png$/u.test(path) &&
       !/^\/images\/product\/studio-(?:en|ar)-(?:light|dark)\.jpg$/u.test(
