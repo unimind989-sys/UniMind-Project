@@ -62,8 +62,8 @@
 
 **Approved commit:** PENDING
 
-**Remaining:** main e2e and node layers; draft PR (its Vercel Preview is the only place to see real mode before merge); database CI; independent review; Ahmed's rendered review; merge; close.
+**Remaining:** required CI on PR #80 (draft); Ahmed's rendered review; sync with main after PR #78 (runbook WP03 section); mark ready, merge, close.
 
 ## Next action
 
-Open the draft PR, dispatch database feedback CI, and present the synthetic (local demo) and real (PR Preview) screens to Ahmed.
+Ahmed reviews the candidate: synthetic at the local demo (`corepack pnpm demo`, student@example.invalid) or hosted synthetic login on the PR Preview, and real mode on the PR #80 Vercel Preview with a Preview student account. Record `Approved commit:` with his answer.
