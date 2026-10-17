@@ -8,8 +8,9 @@
   min-height: 28rem;
 }
 .conversation {
-  width: min(100%, 56rem);
-  margin-inline: auto;
+  /* The conversation uses the available width (WP03-T13 revision); reading
+     lines stay capped inside the answer. */
+  width: 100%;
   min-width: 0;
   min-height: 0;
   display: flex;
@@ -357,7 +358,7 @@
   font-weight: 750;
 }
 .reply > p {
-  max-width: 68ch;
+  max-width: 76ch;
   margin: 0;
   font-size: 1.0625rem;
   line-height: 1.7;
@@ -495,12 +496,12 @@
   margin: 0;
   padding-block: 2px 4px;
   color: var(--muted);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
 .composerMeta strong {
-  color: var(--secondary);
+  color: var(--ink);
   font-weight: 700;
 }
 .composerMeta > * {

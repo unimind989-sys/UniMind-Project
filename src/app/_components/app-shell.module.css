@@ -93,9 +93,7 @@
   color: var(--on-night-2);
   font-size: 0.9375rem;
   font-weight: 600;
-  transition:
-    background-color var(--motion-control),
-    color var(--motion-control);
+  /* Navigation changes palette at once (DESIGN.md): no colour transition. */
 }
 .topbar .globalNav a svg {
   display: none;
@@ -299,7 +297,7 @@
     border-radius: 999px;
   }
   .topbar .globalNav a[aria-current] {
-    background: transparent;
+    background: var(--surface);
     color: var(--accent-ink);
     font-weight: 800;
   }

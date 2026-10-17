@@ -177,9 +177,9 @@ const leaderStates: readonly ScreenState[] = [
         expect((await boxOf(destination)).height).toBeGreaterThanOrEqual(44);
       await expectLanguageControl(page, locale);
       if (width === 1440)
-        await expect(page.getByRole("complementary")).not.toContainText(
-          "Study deeper",
-        );
+        await expect(
+          page.locator("header[data-workspace-chrome]"),
+        ).not.toContainText("Study deeper");
     },
   },
   {

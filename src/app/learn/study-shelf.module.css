@@ -114,8 +114,20 @@
   overflow-wrap: anywhere;
   text-wrap: balance;
 }
+.resume h2.planeLabel {
+  font-size: 0.9375rem;
+  font-weight: 750;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
 .recentTitle {
-  display: block;
+  margin: 0;
+  font-size: var(--type-study-invitation-size);
+  font-weight: 750;
+  line-height: 1.16;
+  letter-spacing: var(--type-headline-tracking);
+  overflow-wrap: break-word;
+  text-wrap: balance;
 }
 .planeDetail,
 .planeNote {
@@ -451,7 +463,8 @@ a.unit:hover {
   :global([dir="rtl"]) .resume {
     padding: 34px 22px 28px;
   }
-  .resume h2 {
+  .resume h2,
+  .recentTitle {
     font-size: var(--type-study-invitation-mobile-size);
   }
   .open {
@@ -491,5 +504,17 @@ a.unit:hover {
   }
   .unitTitle {
     font-size: 1.0625rem;
+  }
+  /* The arrow carries Open on phones; the word stays for assistive tech. */
+  .unitAction span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .unitHeading {
+    gap: 4px 8px;
   }
 }

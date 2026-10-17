@@ -216,6 +216,9 @@
   border-radius: var(--radius-control);
   font: inherit;
   font-weight: 650;
+  max-width: 100%;
+  text-align: center;
+  overflow-wrap: anywhere;
   cursor: pointer;
   text-decoration: none;
   touch-action: manipulation;

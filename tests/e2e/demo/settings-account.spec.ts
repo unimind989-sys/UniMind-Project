@@ -869,7 +869,7 @@ inLocales(["en"], (locale) => {
         page.getByText(
           pick(
             locale,
-            "Faculty of Medicine · Second year · Term 1",
+            "Faculty of Medicine, Second year, Term 1",
             "كلية الطب البشري · السنة الثانية · الترم الأول",
           ),
           { exact: true },

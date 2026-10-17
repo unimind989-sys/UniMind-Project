@@ -185,37 +185,39 @@ export function StudyShelf({
           {ready && !subjects ? (
             <section className={styles.resume}>
               <div className={styles.planeText}>
-                <p className={styles.planeLabel}>
-                  {resumeName ? (
-                    <>
+                {resumeName ? (
+                  <>
+                    <h2 className={styles.planeLabel}>
                       <span className={styles.planePill}>
                         <bdi>{resumeName}</bdi>
                       </span>
+                      <span className={styles.srOnly}> · </span>
                       <span>{resumeTool}</span>
-                    </>
-                  ) : (
-                    <span className={styles.planePill}>
-                      {t("Start here", "ابدأ من هنا")}
-                    </span>
-                  )}
-                </p>
-                <h2>
-                  {resumeAddress && lastStudyDetails ? (
-                    <bdi className={styles.recentTitle}>
-                      {lastStudyDetails.title}
-                    </bdi>
-                  ) : resumeName ? (
-                    <>
-                      <bdi>{resumeName}</bdi> · {resumeTool}
-                    </>
-                  ) : startName ? (
-                    <>
-                      {t("Start in", "ابدأ في")} <bdi>{startName}</bdi>
-                    </>
-                  ) : (
-                    t("Start studying", "ابدأ المذاكرة")
-                  )}
-                </h2>
+                    </h2>
+                    {resumeAddress && lastStudyDetails ? (
+                      <p className={styles.recentTitle}>
+                        <bdi>{lastStudyDetails.title}</bdi>
+                      </p>
+                    ) : null}
+                  </>
+                ) : (
+                  <>
+                    <p className={styles.planeLabel}>
+                      <span className={styles.planePill}>
+                        {t("Start here", "ابدأ من هنا")}
+                      </span>
+                    </p>
+                    <h2>
+                      {startName ? (
+                        <>
+                          {t("Start in", "ابدأ في")} <bdi>{startName}</bdi>
+                        </>
+                      ) : (
+                        t("Start studying", "ابدأ المذاكرة")
+                      )}
+                    </h2>
+                  </>
+                )}
                 {resumeAddress && lastStudyDetails ? (
                   <p className={styles.planeDetail}>
                     {lastStudyDetails.detail}

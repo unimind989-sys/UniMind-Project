@@ -162,6 +162,10 @@
 .progressTrack span[data-current="true"] {
   background: var(--action);
 }
+/* The current step reads as the one in progress. */
+.progressTrack span[data-current="true"] {
+  height: 10px;
+}
 .setup h2 {
   margin: 0 0 16px;
   color: var(--ink);
