@@ -129,10 +129,15 @@ export function ProductAdmin({
           : "APPLIED",
     };
   }
+  // Loopback review states: `error-page` recovers on recheck, while
+  // `queue-unavailable` stays closed after every recheck.
+  const unavailable =
+    fixture === "queue-unavailable" ||
+    (fixture === "error-page" && queueVersion === 0);
   const queue =
     fixture === "forbidden"
       ? { status: "FORBIDDEN" as const }
-      : fixture === "error-page" && queueVersion === 0
+      : unavailable
         ? { status: "UNAVAILABLE" as const }
         : {
             status: "READY" as const,

@@ -65,9 +65,13 @@ jobs:
     required_surfaces: [frontend, runtime, auth, data, storage, delivery, tooling]
     path_patterns: []
     needs: []
+  # Real-mode UI is browser-tested only against the disposable database
+  # stack (tests/e2e-database), so frontend changes run this job too.
   - id: database-ci
-    required_surfaces: [auth, data, storage]
+    required_surfaces: [frontend, auth, data, storage]
     path_patterns:
       - '^supabase/'
       - '^src/types/database\.generated\.ts$'
+      - '^tests/e2e-database/'
+      - '^playwright\.database\.config\.ts$'
     needs: [application]

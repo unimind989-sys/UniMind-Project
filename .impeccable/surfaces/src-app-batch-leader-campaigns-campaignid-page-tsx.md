@@ -2,11 +2,7 @@
 version: 1
 slug: "src-app-batch-leader-campaigns-campaignid-page-tsx"
 primary_target: "src/app/batch-leader/campaigns/[campaignId]/page.tsx"
-related_targets:
-  [
-    "src/app/preview/batch-leader/campaigns/[campaignId]/page.tsx",
-    "src/app/batch-leader/_components/collection-flow.tsx",
-  ]
+related_targets: ["src/app/batch-leader/_components/collection-flow.tsx"]
 ---
 
 # Current Batch Leader overhaul brief

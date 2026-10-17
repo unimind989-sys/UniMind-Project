@@ -15,9 +15,9 @@ import {
   text,
 } from "@/lib/demo/synthetic-fixtures.application";
 import { FrontendIcon } from "@/app/_components/frontend-system";
-import type { ProductStudyProps } from "./product-study";
+import type { ProductStudyProps } from "./study/study-props";
 import styles from "@/app/_components/product.module.css";
-import studyStyles from "./product-study.module.css";
+import studyStyles from "./product-studio.module.css";
 import {
   buildStudioFixture,
   studioFixtureSegments,

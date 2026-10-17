@@ -87,6 +87,24 @@ describe("conditional CI selector", () => {
     });
   });
 
+  it("runs the real-mode browser contracts for frontend and e2e-database changes", () => {
+    for (const changedPath of [
+      "src/app/learn/_components/workspace-pages.tsx",
+      "tests/e2e-database/product-shell.spec.ts",
+    ])
+      expect(
+        selectCiJobs({
+          config,
+          event: "pull_request",
+          changedPaths: [changedPath],
+        }),
+      ).toMatchObject({
+        dependencyAudit: "WOULD_SKIP",
+        application: "RUN",
+        databaseCi: "RUN",
+      });
+  });
+
   it("runs the application job for agent skill changes", () => {
     expect(
       selectCiJobs({

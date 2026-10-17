@@ -275,6 +275,7 @@
 .campaignList h3 {
   font-size: 1.25rem;
   margin: 0;
+  overflow-wrap: anywhere;
 }
 .campaignList h3 a {
   color: var(--ink);

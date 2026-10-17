@@ -11,7 +11,7 @@ import {
 } from "@/lib/study/study-passages.application";
 import type { Locale } from "@/lib/i18n/locale";
 import type { WorkspaceScope } from "@/lib/workspace/workspace.application";
-import styles from "./product-study.module.css";
+import styles from "./product-chat.module.css";
 
 export function ProductSourceDialog({
   open,

@@ -6,10 +6,8 @@ import { AcademicSettings } from "@/app/_components/academic-settings";
 import { FrontendShell } from "@/app/_components/frontend-system";
 import styles from "@/app/_components/product.module.css";
 import { StudyShelf } from "@/app/learn/_components/study-shelf";
-import {
-  ProductStudy,
-  UnitSwitch,
-} from "@/app/learn/_components/product-study";
+import { ProductStudy } from "@/app/learn/_components/product-study";
+import { UnitSwitch } from "@/app/learn/_components/study/unit-switch";
 import { authorizedAcademicContext } from "@/lib/account/account.application";
 import {
   parseCatalogSelectionHints,
@@ -21,6 +19,7 @@ import {
   defaultScope,
   reviewCatalogRows,
   sampleScopeAvailable,
+  syntheticShelfState,
 } from "@/lib/demo/synthetic-fixtures.application";
 import {
   prepareStudyDensity,
@@ -65,8 +64,21 @@ export function CatalogScreen(page: ScreenProps) {
   if (accessPending(screen)) return <AccessPending screen={screen} />;
   const access = screenAccess(screen, page);
   let content;
+  const shelfState = syntheticShelfState(page.fixture);
   if (access.panel)
     content = <FixturePanel ctx={screen} access={access} page={page} />;
+  else if (shelfState)
+    // Loopback review of the shelf's own access states; no catalog rows.
+    content = (
+      <StudyShelf
+        initialLocale={locale}
+        journey={resolveCatalogJourney([], {})}
+        state={shelfState}
+        basePath="/learn"
+        synthetic
+        unitPresentationById={syntheticUnitPresentationById}
+      />
+    );
   else {
     const rows = reviewCatalogRows
       .filter((row) => sampleScopeAvailable(state, row.cohort.id, row.unit.id))

@@ -563,13 +563,17 @@ function auditVerifyCiCoverage(
   if (components === undefined || components.length === 0)
     return ["VERIFY_CI_UNPARSEABLE"];
   const commands = jobRuns.map((run) => run.trim());
+  // Only the reviewed shard flags may follow a component; any other argument
+  // (for example --grep) could silently narrow the check.
+  const shard = "--shard=${{ matrix.shard }}/${{ strategy.job-total }}";
+  const allowedSuffixes = ["", ` ${shard}`, ` --fully-parallel ${shard}`];
   return components
     .filter(
       (component) =>
-        !commands.some(
-          (command) =>
-            command === `corepack pnpm ${component}` ||
-            command.startsWith(`corepack pnpm ${component} `),
+        !commands.some((command) =>
+          allowedSuffixes.some(
+            (suffix) => command === `corepack pnpm ${component}${suffix}`,
+          ),
         ),
     )
     .map((component) => `VERIFY_CI_COMPONENT_MISSING:${component}`);

@@ -3,12 +3,119 @@ import {
   syntheticDemoTime,
   type Locale,
 } from "./app-fixtures";
+import { readFileSync } from "node:fs";
 import { expectAxe, expectReflow, themes, applyTheme } from "./layout";
 import { expect, type Page } from "./test";
 
 export const b09Campaign = "/batch-leader/campaigns/sample-campaign";
 const text = (locale: string) => (en: string, ar: string) =>
   locale === "ar" ? ar : en;
+
+type SuppliedFile =
+  "synthetic-handout.pdf" | "synthetic-recording.wav" | "synthetic-diagram.png";
+const suppliedTypes: Record<SuppliedFile, string> = {
+  "synthetic-handout.pdf": "application/pdf",
+  "synthetic-recording.wav": "audio/wav",
+  "synthetic-diagram.png": "image/png",
+};
+
+/** Drops supplied synthetic files onto the intake's drop zone. */
+export async function dropSuppliedFiles(
+  page: Page,
+  locale: string,
+  names: readonly SuppliedFile[],
+) {
+  const files = names.map((name) => ({
+    name,
+    type: suppliedTypes[name],
+    bytes: readFileSync(`public/demo-files/${name}`).toString("base64"),
+  }));
+  await page
+    .getByText(
+      text(locale)(
+        "Drop files here, or choose them from your device.",
+        "ضع الملفات هنا، أو اخترها من جهازك.",
+      ),
+      { exact: true },
+    )
+    .evaluate((element, supplied) => {
+      const transfer = new DataTransfer();
+      for (const file of supplied)
+        transfer.items.add(
+          new File(
+            [Uint8Array.from(atob(file.bytes), (c) => c.charCodeAt(0))],
+            file.name,
+            { type: file.type },
+          ),
+        );
+      for (const type of ["dragover", "drop"])
+        element.parentElement!.dispatchEvent(
+          new DragEvent(type, {
+            bubbles: true,
+            cancelable: true,
+            dataTransfer: transfer,
+          }),
+        );
+    }, files);
+}
+
+export type FinalizedRequest = {
+  item: string;
+  key: string;
+  uploadId: string;
+};
+
+/**
+ * Records each finalize request's item, per-file request key and upload ID
+ * (the synthetic upload ID embeds the key it was registered with), plus every
+ * UUID the page generates. Call before the first navigation.
+ */
+export async function recordFinalizedRequests(page: Page) {
+  await page.addInitScript(() => {
+    const finalized: unknown[] = [];
+    const generated: string[] = [];
+    Object.assign(window, {
+      unimindFinalized: finalized,
+      unimindGenerated: generated,
+    });
+    type Uuid = `${string}-${string}-${string}-${string}-${string}`;
+    const uuid = crypto.randomUUID.bind(crypto) as () => Uuid;
+    crypto.randomUUID = () => {
+      const value = uuid();
+      generated.push(value);
+      return value;
+    };
+    const original = FormData.prototype.set as (
+      this: FormData,
+      name: string,
+      value: string | Blob,
+    ) => void;
+    FormData.prototype.set = function (name, value) {
+      original.call(this, name, value);
+      if (name === "declaredRights")
+        finalized.push({
+          item: String(this.get("requestedItemId")),
+          key: String(this.get("clientIdempotencyKey")),
+          uploadId: String(this.get("uploadId")),
+        });
+    };
+  });
+}
+
+export async function finalizedRequests(page: Page) {
+  return page.evaluate(
+    () =>
+      (window as unknown as { unimindFinalized: FinalizedRequest[] })
+        .unimindFinalized,
+  );
+}
+
+export async function generatedIds(page: Page) {
+  return page.evaluate(
+    () =>
+      (window as unknown as { unimindGenerated: string[] }).unimindGenerated,
+  );
+}
 export async function openB09Upload(page: Page, locale: string) {
   await page
     .getByRole("button", {

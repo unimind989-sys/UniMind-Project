@@ -1,4 +1,4 @@
-import { artifactTypes } from "../support/app-fixtures";
+import { artifactTypes, getCatalogCopy } from "../support/app-fixtures";
 import { bilingual, formatNumber, inLocales, pick } from "../support/copy";
 import {
   b07ChooseName,
@@ -1849,6 +1849,77 @@ inLocales(["en"], (locale) => {
         })
         .press("Enter");
       await expect(page).toHaveURL(new RegExp(`/login\\?lang=${locale}$`));
+      finish();
+    },
+  );
+});
+
+// Restored from the retired fixture route's study-shelf spec (af8d1fb): the
+// shared Study Shelf's own access states, through loopback `shelf-*` fixtures.
+inLocales(["en"], (locale) => {
+  test(
+    `locked, no-membership, unpublished and error shelves expose no catalog`,
+    { tag: ["@B01", "@M10", `@${locale}`] },
+    async ({ page }) => {
+      const finish = isolation(page);
+      const t = bilingual(locale);
+      const copy = getCatalogCopy(locale);
+      await signIn(page, "student", locale, "/learn?fixture=shelf-locked");
+      const main = page.getByRole("main");
+      for (const [fixture, title, body, role] of [
+        [
+          "shelf-locked",
+          copy.cohortLockedTitle,
+          copy.cohortLockedBody,
+          "status",
+        ],
+        [
+          "shelf-no-membership",
+          copy.noMembershipTitle,
+          copy.noMembershipBody,
+          "status",
+        ],
+        [
+          "shelf-unpublished",
+          copy.unpublishedTitle,
+          copy.unpublishedBody,
+          "status",
+        ],
+        [
+          "shelf-no-ready-source",
+          copy.noReadySourceTitle,
+          copy.noReadySourceBody,
+          "status",
+        ],
+        ["shelf-error", copy.errorTitle, copy.errorBody, "alert"],
+      ] as const) {
+        await page.evaluate(
+          (url) => history.pushState(null, "", url),
+          `/learn?lang=${locale}&fixture=${fixture}`,
+        );
+        await expect(
+          page.getByRole("heading", {
+            level: 1,
+            name: t("Your Study Shelf", "رف المذاكرة"),
+            exact: true,
+          }),
+        ).toBeVisible();
+        const state = main.getByRole(role).filter({ hasText: title });
+        await expect(
+          state.getByRole("heading", { name: title, exact: true }),
+        ).toBeVisible();
+        await expect(state).toContainText(body);
+        // No unit, catalog choice or academic path leaks into a closed shelf.
+        await expect(main.getByRole("combobox")).toHaveCount(0);
+        await expect(main.locator('a[href*="/learn/"]')).toHaveCount(0);
+        await expect(main).not.toContainText(t("Anatomy", "التشريح"));
+      }
+      await main
+        .getByRole("alert")
+        .getByRole("link", { name: copy.retry, exact: true })
+        .click();
+      await expect(page).toHaveURL(new RegExp(`/learn\\?lang=${locale}$`));
+      await expect(main.getByRole("alert")).toHaveCount(0);
       finish();
     },
   );

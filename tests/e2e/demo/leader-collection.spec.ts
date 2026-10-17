@@ -3,8 +3,12 @@ import {
   b09Campaign,
   b09NamedUploadJourney,
   b09ReceiptJourney,
+  dropSuppliedFiles,
   ensureB09Intake,
+  finalizedRequests,
+  generatedIds,
   openB09Upload,
+  recordFinalizedRequests,
 } from "../support/collection-b09";
 import { bilingual, inLocales, pick } from "../support/copy";
 import {
@@ -88,6 +92,8 @@ inLocales(["en"], (locale) => {
         })
         .press("Enter");
       await expect(page).toHaveURL(/request=sample-item-1&submission=-201/u);
+      // The campaign request's `#collection-intake` link lands on the intake.
+      await expect(page.locator("#collection-intake")).toBeInViewport();
       await expect(
         page.getByLabel(
           t("Professor or source description", "وصف الأستاذ أو المصدر"),
@@ -597,6 +603,8 @@ inLocales(["ar"], (locale) => {
         `${campaign}?request=sample-item-1&submission=-201&lang=${locale}#collection-intake`,
       );
       await fix.press("Enter");
+      // A `#collection-intake` link from leader home lands on the intake.
+      await expect(page.locator("#collection-intake")).toBeInViewport();
       await expect(
         page.getByLabel(
           t("Professor or source description", "وصف الأستاذ أو المصدر"),
@@ -660,6 +668,7 @@ inLocales(["ar"], (locale) => {
         `${campaign}?request=sample-item-2&submission=-202&lang=${locale}#collection-intake`,
       );
       await replace.press("Enter");
+      await expect(page.locator("#collection-intake")).toBeInViewport();
       await expect(
         page.getByRole("button", {
           name: t("Choose files", "اختيار ملفات"),
@@ -1733,6 +1742,175 @@ inLocales(["en"], (locale) => {
           exact: true,
         }),
       ).toBeVisible();
+      finish();
+    },
+  );
+});
+
+// Restored from the retired fixture route's batch-leader-collection spec
+// (af8d1fb), reached through the loopback runtime and the shared intake.
+inLocales(["en"], (locale) => {
+  test(
+    `dropped files join the queue and a file matching two requests waits for its chosen destination`,
+    { tag: ["@B04", `@${locale}`] },
+    async ({ page }) => {
+      const finish = isolation(page);
+      const t = bilingual(locale);
+      await recordFinalizedRequests(page);
+      await signIn(page, "leader", locale, `${campaign}?fixture=shared-format`);
+      await ensureB09Intake(page, locale);
+      await dropSuppliedFiles(page, locale, [
+        "synthetic-handout.pdf",
+        "synthetic-diagram.png",
+      ]);
+      const queue = page.getByRole("list", {
+        name: t("Upload queue", "قائمة الرفع"),
+        exact: true,
+      });
+      await expect(queue.getByRole("listitem")).toHaveCount(2);
+      const handout = queue
+        .getByRole("listitem")
+        .filter({ hasText: "synthetic-handout.pdf" });
+      const diagram = queue
+        .getByRole("listitem")
+        .filter({ hasText: "synthetic-diagram.png" });
+      await expect(handout).toContainText(
+        `${t("For", "لـ")}: ${t("Anatomy handout", "ملزمة التشريح")}`,
+      );
+      await expect(handout.getByRole("combobox")).toHaveCount(0);
+      // The diagram matches two outstanding requests: nothing is guessed.
+      const destination = diagram.getByRole("combobox");
+      await expect(destination).toHaveValue("");
+      await expect(destination.locator("option")).toHaveText([
+        t("Choose a requested material", "اختر المادة المطلوبة"),
+        t("Anatomy diagram", "رسم تشريح"),
+        t("Anatomy practice diagram", "رسم تدريبي للتشريح"),
+      ]);
+      await expect(diagram).not.toContainText(`${t("For", "لـ")}:`);
+      await destination.selectOption({
+        label: t("Anatomy diagram", "رسم تشريح"),
+      });
+      await expect(
+        diagram.getByRole("option", {
+          name: t("Choose a requested material", "اختر المادة المطلوبة"),
+        }),
+      ).toHaveCount(0);
+      await expect(diagram).toContainText(
+        `${t("For", "لـ")}: ${t("Anatomy diagram", "رسم تشريح")}`,
+      );
+      // Changing the chosen destination mints a fresh per-file request key.
+      const beforeChange = await generatedIds(page);
+      await diagram
+        .getByLabel(t("Change requested material", "تغيير المادة المطلوبة"))
+        .selectOption({
+          label: t("Anatomy practice diagram", "رسم تدريبي للتشريح"),
+        });
+      await expect(diagram).toContainText(
+        `${t("For", "لـ")}: ${t("Anatomy practice diagram", "رسم تدريبي للتشريح")}`,
+      );
+      await expect(
+        queue.getByText(t("Ready to upload", "جاهز للرفع"), { exact: true }),
+      ).toHaveCount(2);
+      await page.getByLabel(t("I have permission", "لدي صلاحية")).check();
+      await page
+        .getByRole("button", {
+          name: t("Submit files", "إرسال الملفات"),
+          exact: true,
+        })
+        .click();
+      await expect(
+        page.locator('[data-record-request] [data-status="RECEIVED"]'),
+      ).toHaveCount(2);
+      const finalized = await finalizedRequests(page);
+      expect(finalized.map((request) => request.item).sort()).toEqual([
+        "sample-item-1",
+        "sample-item-4",
+      ]);
+      const practice = finalized.find(
+        (request) => request.item === "sample-item-4",
+      )!;
+      expect(beforeChange).not.toContain(practice.key);
+      expect(await generatedIds(page)).toContain(practice.key);
+      expect(practice.uploadId).toBe(
+        `sample-upload:sample-campaign:sample-item-4:${practice.key}`,
+      );
+      finish();
+    },
+  );
+});
+
+inLocales(["ar"], (locale) => {
+  test(
+    `a cancelled upload retries with its own request key while the next file keeps a distinct one`,
+    { tag: ["@B01", "@M69", `@${locale}`] },
+    async ({ page }) => {
+      const finish = isolation(page);
+      const t = bilingual(locale);
+      await recordFinalizedRequests(page);
+      await signIn(page, "leader", locale, campaign);
+      await page
+        .locator('input[type="file"]')
+        .setInputFiles([
+          "public/demo-files/synthetic-handout.pdf",
+          "public/demo-files/synthetic-recording.wav",
+        ]);
+      const queue = page.getByRole("list", {
+        name: t("Upload queue", "قائمة الرفع"),
+        exact: true,
+      });
+      await expect(
+        queue.getByText(t("Ready to upload", "جاهز للرفع"), { exact: true }),
+      ).toHaveCount(2);
+      // Every per-file key exists before the first upload starts.
+      const enqueued = await generatedIds(page);
+      await page.getByLabel(t("I have permission", "لدي صلاحية")).check();
+      const submit = page.getByRole("button", {
+        name: t("Submit files", "إرسال الملفات"),
+        exact: true,
+      });
+      await submit.click();
+      await page
+        .getByRole("button", {
+          name: t("Cancel upload", "إلغاء الرفع"),
+          exact: true,
+        })
+        .click();
+      const handout = queue
+        .getByRole("listitem")
+        .filter({ hasText: "synthetic-handout.pdf" });
+      const recording = queue
+        .getByRole("listitem")
+        .filter({ hasText: "synthetic-recording.wav" });
+      await expect(handout).toHaveAttribute("data-state", "ERROR");
+      await expect(
+        handout.getByRole("button", {
+          name: t("Retry upload", "إعادة محاولة الرفع"),
+          exact: true,
+        }),
+      ).toBeVisible();
+      await expect(recording).toHaveAttribute("data-state", "READY");
+      await expect(
+        page.locator('[data-record-request] [data-status="RECEIVED"]'),
+      ).toHaveCount(0);
+      expect(await finalizedRequests(page)).toEqual([]);
+      await submit.click();
+      await expect(
+        page.locator('[data-record-request] [data-status="RECEIVED"]'),
+      ).toHaveCount(2);
+      const finalized = await finalizedRequests(page);
+      expect(finalized.map((request) => request.item).sort()).toEqual([
+        "sample-item-1",
+        "sample-item-2",
+      ]);
+      expect(new Set(finalized.map((request) => request.key)).size).toBe(2);
+      for (const request of finalized) {
+        // Retry reuses the key minted when the file was queued, and the
+        // upload was registered under that same key.
+        expect(enqueued).toContain(request.key);
+        expect(request.uploadId).toBe(
+          `sample-upload:sample-campaign:${request.item}:${request.key}`,
+        );
+      }
       finish();
     },
   );

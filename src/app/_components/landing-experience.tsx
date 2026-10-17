@@ -3,7 +3,9 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import type { Locale } from "@/lib/i18n/locale";
 import { LandingIcon } from "./landing-icons";
-import styles from "./landing.module.css";
+import atlas from "./landing-atlas.module.css";
+import panel from "./landing-workspace-panel.module.css";
+import workspace from "./landing-workspace.module.css";
 
 export function StudyAtlas({ locale }: { locale: Locale }) {
   const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
@@ -34,22 +36,22 @@ export function StudyAtlas({ locale }: { locale: Locale }) {
   }, []);
 
   return (
-    <div className={styles.atlas} ref={scene} data-motion="paused">
-      <div className={styles.atlasVisual} aria-hidden="true" dir="ltr">
-        <div className={styles.atlasOrbit}>
+    <div className={atlas.atlas} ref={scene} data-motion="paused">
+      <div className={atlas.atlasVisual} aria-hidden="true" dir="ltr">
+        <div className={atlas.atlasOrbit}>
           <span />
           <span />
           <span />
         </div>
-        <div className={styles.folioStage}>
-          <div className={styles.folioBase} />
-          <div className={styles.folioEdge} />
-          <div className={styles.folioLeafLeft}>
-            <span className={styles.paperIcon}>
+        <div className={atlas.folioStage}>
+          <div className={atlas.folioBase} />
+          <div className={atlas.folioEdge} />
+          <div className={atlas.folioLeafLeft}>
+            <span className={atlas.paperIcon}>
               <LandingIcon name="book" />
             </span>
             <strong>{t("Course topics", "موضوعات المقرر")}</strong>
-            <div className={styles.folioMap}>
+            <div className={atlas.folioMap}>
               <svg viewBox="0 0 150 135" fill="none">
                 <path
                   d="M75 24v35m0 0H28v37m47-37h47v37M75 59v53"
@@ -93,48 +95,48 @@ export function StudyAtlas({ locale }: { locale: Locale }) {
                 />
               </svg>
             </div>
-            <span className={styles.paperFoot}>
+            <span className={atlas.paperFoot}>
               {t("Topic outline", "مخطط الموضوعات")}
             </span>
           </div>
-          <div className={styles.folioLeafRight}>
-            <span className={styles.paperIcon}>
+          <div className={atlas.folioLeafRight}>
+            <span className={atlas.paperIcon}>
               <LandingIcon name="source" />
             </span>
             <strong>{t("Study notes", "ملاحظات المذاكرة")}</strong>
-            <div className={styles.paperLines}>
+            <div className={atlas.paperLines}>
               <i />
               <i />
               <i />
               <i />
             </div>
-            <div className={styles.paperHighlight}>
+            <div className={atlas.paperHighlight}>
               <LandingIcon name="check" />
               {t("Backed by material", "مدعوم بمادتك")}
             </div>
-            <div className={styles.paperLines}>
+            <div className={atlas.paperLines}>
               <i />
               <i />
               <i />
             </div>
-            <span className={styles.paperFoot}>
+            <span className={atlas.paperFoot}>
               {t("Source passage", "مقتطف من المصدر")}
             </span>
           </div>
-          <div className={styles.floatingSource}>
+          <div className={atlas.floatingSource}>
             <LandingIcon name="source" />
             <strong>{t("Lecture notes", "ملاحظات المحاضرة")}</strong>
-            <div className={styles.paperLines}>
+            <div className={atlas.paperLines}>
               <i />
               <i />
               <i />
             </div>
             <span>PDF</span>
           </div>
-          <div className={styles.floatingInsight}>
+          <div className={atlas.floatingInsight}>
             <LandingIcon name="chat" />
             <strong>{t("Professor insight", "ملاحظات الأستاذ")}</strong>
-            <div className={styles.waveform}>
+            <div className={atlas.waveform}>
               {[12, 22, 16, 34, 46, 25, 38, 20, 42, 30, 15, 25].map(
                 (height, i) => (
                   <i key={i} style={{ height }} />
@@ -142,15 +144,15 @@ export function StudyAtlas({ locale }: { locale: Locale }) {
               )}
             </div>
           </div>
-          <div className={styles.floatingCitation}>
+          <div className={atlas.floatingCitation}>
             <LandingIcon name="check" />
             <span>{t("Supporting material", "المادة الداعمة")}</span>
           </div>
         </div>
-        <span className={styles.atlasLabelMaterial}>
+        <span className={atlas.atlasLabelMaterial}>
           {t("Your materials", "موادك")}
         </span>
-        <span className={styles.atlasLabelUnderstanding}>
+        <span className={atlas.atlasLabelUnderstanding}>
           {t("Your study tools", "أدوات مذاكرتك")}
         </span>
       </div>
@@ -190,8 +192,8 @@ export function WorkspacePreview({ locale }: { locale: Locale }) {
     tabs.current[target]?.focus();
   }
   return (
-    <div className={styles.previewWrap}>
-      <div className={styles.previewNavigation}>
+    <div className={workspace.previewWrap}>
+      <div className={workspace.previewNavigation}>
         <div
           role="tablist"
           aria-label={t("Explore the study tools", "اكتشف أدوات المذاكرة")}
@@ -216,24 +218,24 @@ export function WorkspacePreview({ locale }: { locale: Locale }) {
             </button>
           ))}
         </div>
-        <p className={styles.previewDisclaimer}>
+        <p className={workspace.previewDisclaimer}>
           {t(
             "Try the tools with sample material",
             "جرّب الأدوات بمواد تجريبية",
           )}
         </p>
       </div>
-      <div className={styles.workspaceWindow}>
-        <div className={styles.windowHeader}>
+      <div className={workspace.workspaceWindow}>
+        <div className={workspace.windowHeader}>
           <span>
             <LandingIcon name="book" />
             {t("Anatomy & physiology", "التشريح ووظائف الأعضاء")}
           </span>
-          <span className={styles.sampleLabel}>{t("Sample", "نموذج")}</span>
+          <span className={workspace.sampleLabel}>{t("Sample", "نموذج")}</span>
         </div>
-        <div className={styles.windowBody}>
+        <div className={workspace.windowBody}>
           <aside
-            className={styles.previewMaterials}
+            className={workspace.previewMaterials}
             aria-label={t("Sample materials", "المواد التجريبية")}
           >
             <h3>{t("Materials", "المواد")}</h3>
@@ -257,7 +259,7 @@ export function WorkspacePreview({ locale }: { locale: Locale }) {
                 ],
               ].map(([format, title, description]) => (
                 <li key={title}>
-                  <span className={styles.materialFormat}>{format}</span>
+                  <span className={workspace.materialFormat}>{format}</span>
                   <div>
                     <strong>{title}</strong>
                     <span>{description}</span>
@@ -266,7 +268,7 @@ export function WorkspacePreview({ locale }: { locale: Locale }) {
                 </li>
               ))}
             </ul>
-            <div className={styles.materialFooter}>
+            <div className={workspace.materialFooter}>
               <LandingIcon name="source" />
               <span>
                 {t(
@@ -277,22 +279,22 @@ export function WorkspacePreview({ locale }: { locale: Locale }) {
             </div>
           </aside>
           <div
-            className={styles.previewPanel}
+            className={workspace.previewPanel}
             id="preview-panel"
             role="tabpanel"
             aria-labelledby={"preview-tab-" + view}
             tabIndex={0}
           >
-            <div className={styles.panelContent} key={view}>
+            <div className={panel.panelContent} key={view}>
               {view === "chat" && (
                 <>
-                  <p className={styles.previewQuestion}>
+                  <p className={panel.previewQuestion}>
                     {t(
                       "How is anatomy different from physiology?",
                       "ما الفرق بين التشريح ووظائف الأعضاء؟",
                     )}
                   </p>
-                  <div className={styles.answerIdentity}>
+                  <div className={panel.answerIdentity}>
                     <LandingIcon name="book" />
                     <strong>UniMind</strong>
                     <span>{t("Sample answer", "إجابة تجريبية")}</span>
@@ -305,7 +307,7 @@ export function WorkspacePreview({ locale }: { locale: Locale }) {
                     )}
                   </p>
                   <button
-                    className={styles.citationButton}
+                    className={panel.citationButton}
                     type="button"
                     aria-expanded={sourceOpen}
                     aria-controls="sample-evidence"
@@ -316,7 +318,7 @@ export function WorkspacePreview({ locale }: { locale: Locale }) {
                     <LandingIcon name="arrow" />
                   </button>
                   {sourceOpen && (
-                    <div className={styles.sourceExcerpt} id="sample-evidence">
+                    <div className={panel.sourceExcerpt} id="sample-evidence">
                       <strong>
                         {t(
                           "Lecture notes · sample excerpt",
@@ -331,7 +333,7 @@ export function WorkspacePreview({ locale }: { locale: Locale }) {
                       </p>
                     </div>
                   )}
-                  <p className={styles.previewHint}>
+                  <p className={panel.previewHint}>
                     {t(
                       "This is a fixed sample answer using invented lecture notes.",
                       "هذه إجابة تجريبية ثابتة تستخدم ملاحظات محاضرة غير حقيقية.",
@@ -341,7 +343,7 @@ export function WorkspacePreview({ locale }: { locale: Locale }) {
               )}
               {view === "studio" && (
                 <>
-                  <div className={styles.answerIdentity}>
+                  <div className={panel.answerIdentity}>
                     <LandingIcon name="studio" />
                     <strong>{t("Studio", "الاستوديو")}</strong>
                   </div>
@@ -356,11 +358,11 @@ export function WorkspacePreview({ locale }: { locale: Locale }) {
                   </p>
                   <button
                     type="button"
-                    className={styles.flashcard}
+                    className={panel.flashcard}
                     aria-pressed={flipped}
                     onClick={() => setFlipped(!flipped)}
                   >
-                    <span className={styles.flashcardLabel}>
+                    <span className={panel.flashcardLabel}>
                       {flipped
                         ? t("Sample answer", "إجابة تجريبية")
                         : t("Sample flashcard", "بطاقة تجريبية")}
@@ -376,7 +378,7 @@ export function WorkspacePreview({ locale }: { locale: Locale }) {
                             "ماذا تدرس وظائف الأعضاء؟",
                           )}
                     </strong>
-                    <span className={styles.flashcardAction}>
+                    <span className={panel.flashcardAction}>
                       {flipped
                         ? t("Show question", "عرض السؤال")
                         : t("Reveal answer", "عرض الإجابة")}
@@ -387,12 +389,12 @@ export function WorkspacePreview({ locale }: { locale: Locale }) {
               )}
               {view === "quiz" && (
                 <>
-                  <div className={styles.answerIdentity}>
+                  <div className={panel.answerIdentity}>
                     <LandingIcon name="quiz" />
                     <strong>{t("Quiz", "الاختبار")}</strong>
                   </div>
                   <h3>{t("Check what you remember", "اختبر ما تتذكره")}</h3>
-                  <fieldset className={styles.sampleQuiz}>
+                  <fieldset className={panel.sampleQuiz}>
                     <legend>
                       {t(
                         "Which question is about physiology?",
@@ -420,7 +422,7 @@ export function WorkspacePreview({ locale }: { locale: Locale }) {
                       </label>
                     ))}
                   </fieldset>
-                  <p className={styles.quizFeedback} role="status">
+                  <p className={panel.quizFeedback} role="status">
                     {answer === null
                       ? t("Try the sample question.", "جرب السؤال التجريبي.")
                       : answer === 0
@@ -439,7 +441,7 @@ export function WorkspacePreview({ locale }: { locale: Locale }) {
           </div>
         </div>
       </div>
-      <div className={styles.previewFootnote}>
+      <div className={workspace.previewFootnote}>
         <span>{t("Sample workspace", "مساحة تجريبية")}</span>
         <p>
           {t(

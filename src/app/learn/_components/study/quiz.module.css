@@ -1,0 +1,20 @@
+.quizProgress {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  padding: 12px;
+  margin-block-end: 16px;
+  background: var(--surface);
+  border-block-end: 1px solid var(--border);
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+.quizProgress p {
+  margin: 0;
+}
+.quizProgress .lowTime {
+  color: var(--danger);
+}

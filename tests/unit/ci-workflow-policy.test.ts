@@ -220,6 +220,14 @@ jobs:
         ),
       ),
     ).toContain("VERIFY_CI_COMPONENT_MISSING:lint");
+    expect(
+      auditCiWorkflow(
+        workflow.replace(
+          "run: corepack pnpm lint\n",
+          "run: corepack pnpm lint --quiet\n",
+        ),
+      ),
+    ).toContain("VERIFY_CI_COMPONENT_MISSING:lint");
     const manifest = JSON.parse(await readFile("package.json", "utf8")) as {
       scripts: Record<string, string>;
     };

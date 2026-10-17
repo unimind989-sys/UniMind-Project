@@ -279,6 +279,23 @@ export function inspectModuleDependencies(
       );
     }
 
+    // Only the root layout mounts the synthetic runtime; any other importer
+    // would let a route reach it indirectly through a shared component.
+    if (
+      internalTarget?.startsWith("src/app/_synthetic/") &&
+      !normalizedSourcePath.startsWith("src/app/_synthetic/") &&
+      !isAllowedSyntheticEntry(normalizedSourcePath, internalTarget)
+    ) {
+      violations.push(
+        violation(
+          "route-imports-synthetic-runtime",
+          normalizedSourcePath,
+          specifier,
+          "Only the root layout and files inside src/app/_synthetic import the synthetic runtime.",
+        ),
+      );
+    }
+
     if (sourceLayer === "domain") {
       if (isFrameworkImport(specifier)) {
         violations.push(

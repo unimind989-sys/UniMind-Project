@@ -37,7 +37,14 @@ type State = {
   role: string | null;
   verified: boolean;
   consent: boolean;
+  /**
+   * Loopback `fixture=shared-format` only: the demo campaign also requests a
+   * second diagram, so one image matches two outstanding requests and the
+   * leader must choose its destination. Never part of persisted state.
+   */
+  sharedFormatRequest?: boolean;
 };
+export const sharedFormatItemId = "sample-item-4";
 export function syntheticCampaignId(pathname: string): string | null {
   const id = pathname.replace(/^\/batch-leader\/campaigns\//u, "");
   return pathname === `/batch-leader/campaigns/${id}` &&
@@ -57,12 +64,51 @@ export function syntheticCampaignsManifest() {
   };
 }
 export function makeSyntheticCampaign(
-  state: Pick<State, "submissions">,
+  state: Pick<State, "submissions" | "sharedFormatRequest">,
   locale: Locale,
   id = demoCampaignId,
 ): CollectionCampaign | null {
   const index = [demoCampaignId, ...additionalCampaignIds].indexOf(id);
   if (index < 0) return null;
+  const practiceLatest =
+    index === 0 && state.sharedFormatRequest
+      ? state.submissions
+          .filter(
+            (submission) =>
+              (submission.campaignId ?? demoCampaignId) === id &&
+              submission.requestedItemId === sharedFormatItemId,
+          )
+          .at(-1)
+      : undefined;
+  const practiceDiagram =
+    index === 0 && state.sharedFormatRequest
+      ? [
+          {
+            id: sharedFormatItemId,
+            unitId: "sample-unit-3",
+            title:
+              locale === "ar"
+                ? "رسم تدريبي للتشريح"
+                : "Anatomy practice diagram",
+            unitTitleEn: "Anatomy",
+            unitTitleAr: "التشريح",
+            expectedType: "IMAGE" as const,
+            required: true,
+            status: practiceLatest
+              ? ("RECEIVED" as const)
+              : ("REQUESTED" as const),
+            latestSubmission: practiceLatest
+              ? {
+                  id: String(practiceLatest.id),
+                  sourceName:
+                    practiceLatest.sourceName ?? "Synthetic study source",
+                  status: practiceLatest.status as "RECEIVED",
+                  createdAt: syntheticDemoTime.now,
+                }
+              : null,
+          },
+        ]
+      : [];
   const unitNames = [
     ["Anatomy", "التشريح"],
     ["Biochemistry", "الكيمياء الحيوية"],
@@ -126,6 +172,7 @@ export function makeSyntheticCampaign(
             : null,
         };
       }),
+      ...practiceDiagram,
       ...(index === 0
         ? statuses.map((status, itemIndex) => ({
             id: `sample-history-${itemIndex}`,

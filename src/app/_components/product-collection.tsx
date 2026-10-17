@@ -43,7 +43,17 @@ export function ProductCollection({
   const query = useSearchParams();
   const router = useProductRouter();
   const generation = collectionMemory.generation;
-  const campaign = makeSyntheticCampaign(state, locale, campaignId)!;
+  // Loopback review fixture only (hosted entry strips `fixture`): a second
+  // diagram request, so one file needs a chosen destination.
+  const withFixture = <T extends object>(value: T) =>
+    !hosted && fixture === "shared-format"
+      ? { ...value, sharedFormatRequest: true }
+      : value;
+  const campaign = makeSyntheticCampaign(
+    withFixture(state),
+    locale,
+    campaignId,
+  )!;
   const latestState = useRef(state);
   useEffect(() => {
     latestState.current = state;
@@ -98,7 +108,7 @@ export function ProductCollection({
       throw new Error("Sample interrupted.");
     const spec = syntheticFiles[file.name as keyof typeof syntheticFiles];
     return registerSyntheticCollectionReceipt(
-      latestState.current,
+      withFixture(latestState.current),
       collectionMemory,
       campaignId,
       itemId,
@@ -120,7 +130,7 @@ export function ProductCollection({
         clientIdempotencyKey: String(data.get("clientIdempotencyKey")),
       };
     const { result, submission } = finalizeSyntheticCollectionSubmission(
-      latestState.current,
+      withFixture(latestState.current),
       collectionMemory,
       campaignId,
       data,

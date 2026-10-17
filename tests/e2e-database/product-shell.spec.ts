@@ -1,5 +1,6 @@
 import { execFileSync } from "node:child_process";
 import { randomUUID } from "node:crypto";
+import AxeBuilder from "@axe-core/playwright";
 import { createClient } from "@supabase/supabase-js";
 import {
   expect,
@@ -103,6 +104,101 @@ async function login(page: Page, role: Role) {
         ? /\/batch-leader(?:\?|$)/u
         : /\/learn(?:\?|$)/u,
   );
+}
+
+async function expectNoAxeViolations(page: Page, label: string) {
+  const results = await new AxeBuilder({ page })
+    .exclude("nextjs-portal") // Development tooling is absent from the production surface.
+    .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
+    .analyze();
+  expect
+    .soft(
+      results.violations.map(({ id, nodes }) => ({
+        id,
+        targets: nodes.map((node) => node.target),
+      })),
+      `WCAG A/AA automated findings: ${label}`,
+    )
+    .toEqual([]);
+}
+
+async function expectReflow(page: Page, label: string) {
+  const geometry = await page.evaluate(() => ({
+    width: document.documentElement.scrollWidth,
+    viewport: window.innerWidth,
+  }));
+  expect
+    .soft(geometry.width, `document reflow: ${label}`)
+    .toBeLessThanOrEqual(geometry.viewport + 1);
+}
+
+/**
+ * The accessibility, focus, reflow and reduced-motion contract the retired
+ * /preview workspace checked, applied to the real page currently loaded. The
+ * viewport and text size are restored afterwards.
+ */
+async function expectAccessibleWorkspacePage(
+  page: Page,
+  locale: "en" | "ar",
+  name: string,
+) {
+  const label = `${name} ${locale}`;
+  const viewport = page.viewportSize() ?? { width: 1280, height: 720 };
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(page.locator("html")).toHaveAttribute("lang", locale);
+  await expect(page.locator("html")).toHaveAttribute(
+    "dir",
+    locale === "ar" ? "rtl" : "ltr",
+  );
+  await expect(page.getByRole("main")).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
+  await page.evaluate(() => document.fonts.ready);
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await expectNoAxeViolations(page, label);
+  await expectReflow(page, `${label} 1440px`);
+
+  await page.keyboard.press("Tab");
+  const focused = await page.evaluate(() => {
+    const element = document.activeElement;
+    if (!(element instanceof HTMLElement)) return null;
+    const style = getComputedStyle(element);
+    return {
+      tag: element.tagName,
+      outline: style.outlineStyle,
+      shadow: style.boxShadow,
+    };
+  });
+  expect(focused, `keyboard focus: ${label}`).not.toBeNull();
+  expect(focused?.tag).not.toBe("BODY");
+  expect(focused?.outline !== "none" || focused.shadow !== "none").toBe(true);
+
+  for (const width of [640, 390, 320]) {
+    await page.setViewportSize({ width, height: 900 });
+    await expectReflow(page, `${label} ${String(width)}px`);
+  }
+  // 200% text scaling tests text growth independently of viewport reflow.
+  const enlarged = await page.addStyleTag({
+    content: "html { font-size: 200% !important; }",
+  });
+  await expectReflow(page, `${label} 320px 200% text`);
+  await expectNoAxeViolations(page, `${label} 200% text`);
+  const animations = await page.evaluate(
+    () =>
+      document
+        .getAnimations()
+        .filter(
+          (animation) =>
+            animation.playState === "running" &&
+            animation.effect?.getComputedTiming().iterations === Infinity,
+        ).length,
+  );
+  expect(animations, `no endless motion under reduced motion: ${label}`).toBe(
+    0,
+  );
+  await enlarged.evaluate((element) =>
+    element.parentNode?.removeChild(element),
+  );
+  await page.setViewportSize(viewport);
 }
 
 test.beforeAll(async () => {
@@ -482,6 +578,7 @@ test("student: real workspace overview, chat sessions, placeholders and canonica
   ).toBeVisible();
   await expect(page.getByText(/\d+ approved sources/u)).toBeVisible();
   await expect(page.getByText("Planned capability")).toHaveCount(5);
+  await expectAccessibleWorkspacePage(page, "en", "overview");
   await page.getByRole("link", { name: "Skip to content" }).focus();
   await page.keyboard.press("Enter");
   await expect(page.getByRole("main")).toBeFocused();
@@ -490,6 +587,7 @@ test("student: real workspace overview, chat sessions, placeholders and canonica
   await expect(
     page.getByText("Messaging is not available in WP03-T04.").first(),
   ).toBeVisible();
+  await expectAccessibleWorkspacePage(page, "en", "chat");
 
   await page.getByRole("button", { name: "Start a scoped session" }).click();
   await expect(page).toHaveURL(/session=[0-9a-f-]+/u);
@@ -543,6 +641,12 @@ test("student: real workspace overview, chat sessions, placeholders and canonica
   }));
   expect(geometry.documentWidth).toBeLessThanOrEqual(geometry.viewportWidth);
   expect(Math.min(...geometry.controls)).toBeGreaterThanOrEqual(44);
+  await expectAccessibleWorkspacePage(page, "ar", "overview");
+  await page.goto(`${base}/chat?lang=ar`);
+  await expect(
+    page.getByRole("heading", { name: "جلسات محادثة محددة النطاق" }),
+  ).toBeVisible();
+  await expectAccessibleWorkspacePage(page, "ar", "chat");
 });
 
 test("leader: real intake validates files in the browser, records a receipt and closes forged campaigns", async ({

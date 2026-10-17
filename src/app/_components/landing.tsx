@@ -2,9 +2,14 @@ import Link from "next/link";
 import type { Route } from "next";
 import type { Locale } from "@/lib/i18n/locale";
 import { Brand } from "./brand";
+// Shared landing tokens and resets load before the section modules, keeping
+// the original single-sheet cascade order.
+import styles from "./landing.module.css";
 import { StudyAtlas, WorkspacePreview } from "./landing-experience";
 import { LandingIcon } from "./landing-icons";
-import styles from "./landing.module.css";
+import evidence from "./landing-evidence.module.css";
+import how from "./landing-how-it-works.module.css";
+import workspace from "./landing-workspace.module.css";
 
 export function Landing({ locale }: { locale: Locale }) {
   const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
@@ -94,11 +99,11 @@ export function Landing({ locale }: { locale: Locale }) {
           </span>
         </div>
         <section
-          className={styles.experience}
+          className={workspace.experience}
           id="workspace"
           aria-labelledby="experience-title"
         >
-          <div className={styles.sectionHeading}>
+          <div className={workspace.sectionHeading}>
             <h2 id="experience-title">
               {t("Study with", "ذاكر من")}
               <br />
@@ -114,21 +119,21 @@ export function Landing({ locale }: { locale: Locale }) {
           <WorkspacePreview locale={locale} />
         </section>
         <section
-          className={styles.evidenceSection}
+          className={evidence.evidenceSection}
           aria-labelledby="evidence-title"
         >
-          <div className={styles.evidenceDiagram} aria-hidden="true">
-            <div className={styles.diagramSource}>
+          <div className={evidence.evidenceDiagram} aria-hidden="true">
+            <div className={evidence.diagramSource}>
               <LandingIcon name="source" />
               <span>{t("Your material", "مادتك الدراسية")}</span>
-              <div className={styles.diagramLines}>
+              <div className={evidence.diagramLines}>
                 <i />
                 <i />
                 <i />
               </div>
             </div>
             <svg
-              className={styles.evidenceConnector}
+              className={evidence.evidenceConnector}
               viewBox="0 0 340 180"
               fill="none"
             >
@@ -141,20 +146,20 @@ export function Landing({ locale }: { locale: Locale }) {
               <circle cx="290" cy="40" r="5" fill="currentColor" />
               <circle cx="290" cy="140" r="5" fill="currentColor" />
             </svg>
-            <div className={styles.diagramAnswer}>
+            <div className={evidence.diagramAnswer}>
               <LandingIcon name="chat" />
               <span>{t("An answer", "إجابة")}</span>
-              <div className={styles.diagramCitation}>
+              <div className={evidence.diagramCitation}>
                 <LandingIcon name="check" />
                 {t("Supporting evidence", "الأدلة الداعمة")}
               </div>
             </div>
-            <div className={styles.diagramArtifact}>
+            <div className={evidence.diagramArtifact}>
               <LandingIcon name="studio" />
               <span>{t("A study aid", "أداة مذاكرة")}</span>
             </div>
           </div>
-          <div className={styles.evidenceCopy}>
+          <div className={evidence.evidenceCopy}>
             <h2 id="evidence-title">
               {t("See what supports", "راجع ما تستند إليه")}
               <br />
@@ -173,11 +178,11 @@ export function Landing({ locale }: { locale: Locale }) {
           </div>
         </section>
         <section
-          className={styles.how}
+          className={how.how}
           id="how-it-works"
           aria-labelledby="how-title"
         >
-          <div className={styles.howIntro}>
+          <div className={how.howIntro}>
             <h2 id="how-title">{t("How it works", "كيف تعمل")}</h2>
             <p>
               {t(
@@ -190,7 +195,7 @@ export function Landing({ locale }: { locale: Locale }) {
               <LandingIcon name="arrow" />
             </Link>
           </div>
-          <ol className={styles.steps}>
+          <ol className={how.steps}>
             {[
               [
                 t("Choose your program", "اختر برنامجك الدراسي"),
@@ -215,7 +220,7 @@ export function Landing({ locale }: { locale: Locale }) {
               ],
             ].map(([title, description], index) => (
               <li key={title}>
-                <span className={styles.stepNumber} aria-hidden="true">
+                <span className={how.stepNumber} aria-hidden="true">
                   {new Intl.NumberFormat(locale, {
                     minimumIntegerDigits: 2,
                   }).format(index + 1)}

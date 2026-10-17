@@ -135,6 +135,10 @@ describe("module boundary checker", () => {
         "src/app/layout.tsx",
         'import SyntheticRuntime from "./_synthetic/synthetic-runtime";',
       ],
+      [
+        "src/app/_components/app-shell.tsx",
+        '"use client"; import { HostedSyntheticRuntime } from "@/app/_synthetic/hosted-synthetic-runtime";',
+      ],
     ] as const)
       expect(codes(sourcePath, sourceText)).toContain(
         "route-imports-synthetic-runtime",

@@ -566,6 +566,9 @@ inLocales(["ar"], (locale) => {
       await expect(
         page.getByRole("heading", { name: copy.unavailableTitle, exact: true }),
       ).toBeVisible();
+      // An unavailable queue shows no decisions and nothing to act on.
+      await expect(page.locator("#decision-list")).toHaveCount(0);
+      await expect(page.getByLabel(copy.reason)).toHaveCount(0);
       await page
         .getByRole("button", { name: copy.recheckQueue, exact: true })
         .click();
@@ -1796,6 +1799,84 @@ inLocales(["ar"], (locale) => {
         "readonly",
         "",
       );
+      finish();
+    },
+  );
+});
+
+// Restored from the retired fixture route's admin-decision-queue spec
+// (af8d1fb), reached through the loopback runtime and the shared queue.
+inLocales(["en", "ar"], (locale) => {
+  test(
+    `a persistently unavailable queue stays closed after recheck [${locale}]`,
+    { tag: ["@B05-A", `@${locale}`] },
+    async ({ page }) => {
+      // `isolation` also proves the recheck submits nothing (GET/HEAD only).
+      const finish = isolation(page);
+      const copy = getAdminCopy(locale);
+      await signIn(page, "admin", locale, "/admin?fixture=queue-unavailable");
+      const heading = page.getByRole("heading", {
+        name: copy.unavailableTitle,
+        exact: true,
+      });
+      const recheck = page.getByRole("button", {
+        name: copy.recheckQueue,
+        exact: true,
+      });
+      await expect(heading).toBeVisible();
+      for (let attempt = 0; attempt < 2; attempt++) {
+        await recheck.click();
+        await expect(heading).toBeVisible();
+        await expect(recheck).toBeEnabled();
+        await expect(page.locator("#decision-list")).toHaveCount(0);
+        await expect(page.getByRole("main").getByRole("list")).toHaveCount(0);
+        await expect(page.getByLabel(copy.reason)).toHaveCount(0);
+        await expect(
+          page.getByText(copy.recheckDone, { exact: true }),
+        ).toHaveCount(0);
+      }
+      finish();
+    },
+  );
+
+  test(
+    `blocked readiness reasons are visible text and decision outcomes take focus [${locale}]`,
+    { tag: ["@B05-A", `@${locale}`] },
+    async ({ page }) => {
+      const finish = isolation(page);
+      const copy = getAdminCopy(locale);
+      await signIn(page, "admin", locale, "/admin?fixture=blocked");
+      await b05Select(page, 1, locale);
+      for (const predicate of [
+        "source.active_ready",
+        "source.rights_current",
+      ] as const)
+        await expect(
+          page.getByText(copy.predicates[predicate], { exact: true }),
+        ).toBeVisible();
+      await expect(
+        page.getByRole("button", { name: copy.reviewAction, exact: true }),
+      ).toBeDisabled();
+      for (const [fixture, message] of [
+        ["ready", copy.actionSuccess],
+        ["error", copy.errors.UNAVAILABLE],
+        ["stale", copy.errors.STALE_VERSION],
+      ] as const) {
+        await signIn(page, "admin", locale, `/admin?fixture=${fixture}`);
+        await b05Select(page, 1, locale);
+        await page
+          .getByLabel(copy.reason)
+          .fill("Contain this exact synthetic object during review.");
+        await page
+          .getByRole("button", { name: copy.reviewAction, exact: true })
+          .click();
+        await page
+          .getByRole("button", { name: b05Confirm(locale, 1), exact: true })
+          .click();
+        const feedback = page.getByText(message, { exact: true });
+        await expect(feedback).toBeVisible();
+        await expect(feedback).toBeFocused();
+      }
       finish();
     },
   );

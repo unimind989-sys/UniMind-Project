@@ -480,18 +480,25 @@ test("normal Auth and direct protected routes cannot acquire synthetic access", 
   }
   await page.goto("/admin?synthetic=true&role=admin&lang=en");
   await expect(page).toHaveURL(/\/login\?/u);
-  // The loopback demo route and the retired fixture routes stay closed.
+  // The loopback demo route and the retired fixture routes stay closed: 404
+  // before any session refresh, so no response sets a cookie.
   for (const path of [
     "/synthetic-runtime/admin",
+    "/wp03-review.html",
     "/preview/learn",
     "/preview/admin?state=containment",
-  ])
-    expect((await page.request.get(path)).status()).toBe(404);
+    "/api/preview/x",
+  ]) {
+    const response = await page.request.get(path, { maxRedirects: 0 });
+    expect(response.status(), path).toBe(404);
+    expect(response.headers()["set-cookie"], path).toBeUndefined();
+  }
   const upload = await page.request.post(
     "/api/preview/batch-leader/campaigns/11111111-1111-4111-8111-111111111111/uploads",
-    { multipart: { requestedItemId: "forged" } },
+    { multipart: { requestedItemId: "forged" }, maxRedirects: 0 },
   );
   expect(upload.status()).toBe(404);
+  expect(upload.headers()["set-cookie"]).toBeUndefined();
 });
 
 // The shared Study Shelf chrome at phone width (formerly checked on the

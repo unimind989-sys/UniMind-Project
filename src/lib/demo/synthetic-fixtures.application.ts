@@ -1,6 +1,9 @@
 import { syntheticCatalogRows } from "./synthetic-catalog.application";
 import { loadSyntheticWorkspaceScope } from "./synthetic-workspace.application";
-import type { AuthorizedCatalogRow } from "@/lib/catalog/catalog-journey.application";
+import type {
+  AuthorizedCatalogRow,
+  CatalogAccessState,
+} from "@/lib/catalog/catalog-journey.application";
 
 export type Locale = "en" | "ar";
 export type Localized = readonly [string, string];
@@ -374,3 +377,23 @@ export const commonScenarios = [
   ["stale", "Stale", "قديم"],
   ["forbidden", "Access unavailable", "الوصول غير متاح"],
 ] as const;
+
+type ShelfFixtureState = Exclude<CatalogAccessState, "READY"> | "ERROR";
+
+/**
+ * Loopback-only Study Shelf access states (`/learn?fixture=shelf-*`). They
+ * render the shared shelf's own safe states with no catalog rows; hosted
+ * entry strips `fixture`, so they are never reachable there.
+ */
+const shelfFixtures: Readonly<Record<string, ShelfFixtureState>> = {
+  "shelf-no-membership": "NO_MEMBERSHIP",
+  "shelf-locked": "COHORT_LOCKED",
+  "shelf-no-catalog": "NO_CATALOG",
+  "shelf-unpublished": "UNIT_UNPUBLISHED",
+  "shelf-no-ready-source": "READY_SOURCE_MISSING",
+  "shelf-error": "ERROR",
+};
+
+export function syntheticShelfState(fixture: string): ShelfFixtureState | null {
+  return Object.hasOwn(shelfFixtures, fixture) ? shelfFixtures[fixture]! : null;
+}

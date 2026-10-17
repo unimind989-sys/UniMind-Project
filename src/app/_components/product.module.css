@@ -127,6 +127,9 @@
   margin-block: 1.5rem;
   min-width: 0;
 }
+.panel h2 {
+  overflow-wrap: anywhere;
+}
 .row {
   display: flex;
   flex-wrap: wrap;
@@ -284,6 +287,7 @@
   align-items: center;
   gap: 8px 16px;
   margin-block-end: 16px;
+  container-type: inline-size;
 }
 .sourceContext > h2 {
   margin: 0;
@@ -319,6 +323,17 @@
   margin: 0;
   color: var(--secondary);
   font-size: 0.875rem;
+}
+/* Enlarged text on a phone: a long return action would take the whole auto
+   column and leave its note a zero-width track, so stack them instead. rem
+   follows the root text size (240px at default size, narrower than any
+   supported layout; 480px at 200%). */
+@container (max-width: 15rem) {
+  .sourceContext > a,
+  .sourceContext > p:not(h2 + p),
+  .sourceContext > p:last-child {
+    grid-column: 1 / -1;
+  }
 }
 .sources {
   padding-inline-start: 1.5rem;

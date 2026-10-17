@@ -41,7 +41,21 @@ export function navigateInDocument(href: string, replace = false) {
   )
     return;
   window.history[replace ? "replaceState" : "pushState"](null, "", path);
-  window.scrollTo(0, 0);
+  if (!address.hash) {
+    window.scrollTo(0, 0);
+    return;
+  }
+  // Like Next's router, land on the fragment target once the next screen has
+  // rendered; fall back to the top when it never appears.
+  const id = decodeURIComponent(address.hash.slice(1));
+  let frames = 0;
+  const reveal = () => {
+    const target = document.getElementById(id);
+    if (target) target.scrollIntoView();
+    else if (++frames < 30) window.requestAnimationFrame(reveal);
+    else window.scrollTo(0, 0);
+  };
+  window.requestAnimationFrame(reveal);
 }
 
 export function useProductRouter() {

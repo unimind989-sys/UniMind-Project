@@ -67,7 +67,10 @@ export async function proxy(request: NextRequest) {
         { status: 403 },
       );
     const path = request.nextUrl.pathname;
-    const url = request.nextUrl.clone();
+    // Build from request.url, not nextUrl: nextUrl reports 127.0.0.1 as
+    // localhost, so its origin never matches the incoming one and Next would
+    // proxy the rewrite over HTTP instead of handling it internally.
+    const url = new URL(request.url);
     if (isProductDemoPath(path))
       url.pathname = `/synthetic-runtime/${path === "/" ? "home" : path.slice(1)}`;
     if (

@@ -15,26 +15,6 @@
 .phoneSources {
   display: none !important;
 }
-.quizProgress {
-  position: sticky;
-  inset-block-start: 0;
-  z-index: 2;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 24px;
-  padding: 12px;
-  margin-block-end: 16px;
-  background: var(--surface);
-  border-block-end: 1px solid var(--border);
-  font-size: 0.875rem;
-  font-variant-numeric: tabular-nums;
-}
-.quizProgress p {
-  margin: 0;
-}
-.quizProgress .lowTime {
-  color: var(--danger);
-}
 @media (max-width: 767px) {
   .chatLayout {
     flex: 1;
@@ -427,214 +407,7 @@
   max-width: 65ch;
   margin-block: -0.25rem 1.5rem;
 }
-.studio {
-  width: 100%;
-  margin-inline: auto;
-  min-width: 0;
-}
-.studioLayout {
-  display: grid;
-  grid-template-columns: 264px minmax(0, 1fr);
-  gap: 24px;
-  align-items: start;
-}
-.studioControls {
-  min-width: 0;
-  display: grid;
-  gap: 8px;
-  padding: 20px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--surface);
-}
-.configuration label {
-  font-size: 0.875rem;
-  line-height: 1.5;
-}
-.configuration select {
-  font-size: 0.875rem;
-  line-height: 1.5;
-  padding: 8px 12px;
-}
-.artifactTypes {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.5rem;
-  padding: 0;
-  margin: 0;
-  border: 0;
-  min-width: 0;
-}
-.artifactTypes legend {
-  padding: 0 0 0.75rem;
-  color: var(--text-secondary);
-  font-weight: 600;
-}
-.artifactTypes label {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  min-height: 64px;
-  padding: 0.75rem;
-  border: 1px solid var(--control-border);
-  border-radius: var(--radius-control);
-  color: var(--text-secondary);
-  background: var(--surface);
-  cursor: pointer;
-  font-size: var(--type-body-compact-size);
-  overflow-wrap: anywhere;
-  transition:
-    background-color 180ms ease,
-    color 180ms ease,
-    border-color 180ms ease;
-}
-.artifactTypes label[data-selected="true"] {
-  background: var(--accent-soft);
-  border-color: var(--accent);
-  color: var(--accent-ink);
-}
-.artifactTypes label:hover {
-  color: var(--text-primary);
-  background: var(--surface-active);
-}
-.artifactTypes input {
-  position: absolute;
-  inline-size: 1px;
-  block-size: 1px;
-  opacity: 0;
-}
-.artifactTypes label:has(input:focus-visible) {
-  outline: 3px solid var(--accent);
-  outline-offset: 3px;
-}
-.artifactTypes:disabled label {
-  cursor: wait;
-  opacity: 0.6;
-}
-.configuration {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
-}
-.configuration label {
-  font-size: var(--type-body-compact-size);
-  color: var(--text-secondary);
-}
-.configuration select {
-  font-size: 0.875rem;
-  min-height: 44px;
-}
-.artifactArea {
-  min-width: 0;
-  min-height: 26rem;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--surface);
-  padding: 24px;
-}
-.artifactHeader {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 16px;
-  align-items: center;
-  justify-content: space-between;
-  padding-block-end: 16px;
-  border-block-end: 1px solid var(--border);
-}
-.artifactHeader h2 {
-  margin: 0;
-  font-size: 1rem;
-  line-height: 1.5;
-}
-.artifactHeader > span {
-  font-size: 0.8125rem;
-  color: var(--secondary);
-}
-.artifactFooter {
-  margin-block-start: 24px;
-  padding-block-start: 12px;
-  border-block-start: 1px solid var(--border);
-}
-.artifactEmpty {
-  padding-block: 56px;
-  max-width: 35rem;
-  margin-inline: auto;
-}
-.artifactEmpty > svg {
-  color: var(--accent-ink);
-  width: 22px;
-  height: 22px;
-}
-.artifactEmpty h3 {
-  font-size: 1rem;
-  line-height: 1.5;
-  font-weight: 600;
-  margin-block: 1rem 0.5rem;
-}
-.artifactEmpty p {
-  color: var(--text-muted);
-  max-width: 60ch;
-}
-.artifactOutput h2 {
-  margin-block: 0 0.75rem;
-  line-height: 1.5;
-  font-size: var(--type-artifact-title-size);
-}
-.artifactOutput > p {
-  color: var(--text-secondary);
-}
-.artifactOutput > div[lang] {
-  padding-block: 1rem;
-  border-block: 1px solid var(--line);
-  margin-block: 1.5rem;
-  line-height: 1.75;
-}
-.artifactOutput > div[lang] p {
-  color: var(--text-primary);
-}
-.artifactOutput li {
-  margin-block: 0.5rem;
-}
-.artifactLoading {
-  padding: 1rem;
-  border-radius: var(--radius-control);
-  background: var(--surface);
-  margin-block-end: 1rem;
-}
-.flashcard {
-  perspective: 1000px;
-  margin-block: 0 1.25rem;
-}
-.flashcardInner {
-  display: grid;
-  transform-style: preserve-3d;
-  transition: transform 240ms ease;
-}
-.flashcard[data-flipped="true"] .flashcardInner {
-  transform: rotateY(180deg);
-}
-.flashcardFront,
-.flashcardBack {
-  grid-area: 1 / 1;
-  display: grid;
-  place-items: center;
-  text-align: center;
-  min-height: 200px;
-  margin: 0;
-  padding: 32px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  backface-visibility: hidden;
-  background: var(--accent-soft);
-  font-size: 1.25rem;
-  line-height: 1.7;
-}
-.flashcardBack {
-  background: var(--subtle);
-  transform: rotateY(180deg);
-}
-:is(.chatLayout, .studio) :is(button, a, select) {
+.chatLayout :is(button, a, select) {
   max-width: 100%;
   min-width: 0;
   white-space: normal;
@@ -739,17 +512,6 @@
 .citation:hover {
   background: var(--accent-soft);
 }
-.studioControls > h2 {
-  margin: 0 0 4px;
-  font-size: 1.125rem;
-}
-/* Generate stays reachable when the controls are taller than the viewport. */
-.studioControls > button[type="submit"] {
-  position: sticky;
-  inset-block-end: 12px;
-  z-index: 1;
-  box-shadow: 0 0 0 8px var(--surface);
-}
 .secondaryOptions {
   border-block-start: 1px solid var(--border);
 }
@@ -764,12 +526,6 @@
 .secondaryOptions > div {
   margin-block: 8px;
 }
-.artifactOutput {
-  animation: result-settle var(--motion-result) var(--ease-settle);
-}
-.artifactOutput > div[lang] {
-  max-width: 68ch;
-}
 .streaming {
   background: var(--annotation);
   border-radius: 4px;
@@ -778,14 +534,6 @@
 @keyframes evidence-reveal {
   from {
     transform: translateY(10px);
-  }
-  to {
-    transform: none;
-  }
-}
-@keyframes result-settle {
-  from {
-    transform: translateY(7px);
   }
   to {
     transform: none;
@@ -874,21 +622,6 @@
   }
   .questionBubble {
     max-width: 95%;
-  }
-  .studioLayout {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-  .studioControls {
-    padding: 16px;
-    gap: 10px;
-  }
-  .artifactArea {
-    padding: 20px;
-    min-height: 18rem;
-  }
-  .artifactEmpty {
-    padding-block: 24px;
   }
 }
 @media (max-height: 600px) {
