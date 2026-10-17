@@ -48,6 +48,7 @@
 - 2026-10-17, Ahmed: mockups first, two directions, then the contract, then flow-by-flow rebuilds.
 - 2026-10-17, Ahmed: fixtures become realistic invented content; "sample" labels stay only where safety needs them.
 - 2026-10-17, Ahmed: the student flow is rebuilt first (WP03-T19), then landing (T20), then leader and admin (T21).
+- 2026-10-17, Ahmed, after reviewing both mockups: "B: Cobalt is better in everything except the landing page. A: Margin landing page is better but honestly not the best either." Direction B governs the product (shell, shelf, Chat, phone, admin). The landing gets new variants in B's system that build on A's real-page evidence idea; its section of `DESIGN.md` waits for that choice.
 
 ## Diagnosis (captures of `0ba30cc`, synthetic demo)
 

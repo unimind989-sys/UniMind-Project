@@ -1483,7 +1483,7 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 - [~] Diagnose the current frontend from rendered captures of every role and record the findings in the [task record](../../planning/tasks/wp03-t18-premium-direction.md).
 - [x] Build two clickable static mockup directions for the landing hero, Study Shelf, Chat with evidence (desktop, phone and one Arabic phone screen) and the admin decision queue, with realistic invented content and both themes.
-- [ ] Record Ahmed's choice of direction, or the mix he asks for.
+- [~] Record Ahmed's choice of direction, or the mix he asks for. Product: Direction B (17 October 2026); landing: new variants pending.
 - [ ] Rewrite `DESIGN.md` (and `docs/agents/frontend.md` where needed) for the chosen direction; keep behaviour, safety, accessibility, RTL and theme rules, and retire the constraints that force the neutral look.
 - [ ] Deliver through one PR with required CI. No product code changes in this task.
 
