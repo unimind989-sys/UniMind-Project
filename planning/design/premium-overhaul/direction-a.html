@@ -1,0 +1,2125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Direction A: Margin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&family=Noto+Naskh+Arabic:wght@400..700&family=Noto+Sans+Arabic:wght@400..800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="board.css" />
+    <style>
+      /* ---------------------------------------------------------- tokens */
+      .a {
+        --night: #0c1823;
+        --night-2: #15283c;
+        --night-line: #22374d;
+        --night-ink: #ecf3f9;
+        --night-muted: #a3b6ca;
+        --desk: #ecf3f9;
+        --sheet: #ffffff;
+        --margin: #e4edf8;
+        --margin-line: #cfdcec;
+        --ink: #0c1823;
+        --graphite: #46566b;
+        --faint: #607086;
+        --rule: #d8e2ee;
+        --control: #8a99ab;
+        --cobalt: #3977f7;
+        --cobalt-ink: #1d4fd1;
+        --cobalt-soft: #dfe8fe;
+        --on-cobalt: #ffffff;
+        --hl: rgb(57 119 247 / 0.2);
+        --ok: #17734a;
+        --ok-soft: #e1f2e9;
+        --warn: #8f4f00;
+        --warn-soft: #fbeedb;
+        --shadow-sheet: 0 1px 1px rgb(12 24 35 / 0.04),
+          0 22px 44px -28px rgb(12 24 35 / 0.34);
+        --shadow-float: 0 18px 40px -18px rgb(12 24 35 / 0.45);
+        font-family: "Manrope", system-ui, sans-serif;
+        font-size: 15px;
+        line-height: 1.5;
+        color: var(--ink);
+        background: var(--desk);
+        -webkit-font-smoothing: antialiased;
+      }
+      html[data-theme="dark"] .a {
+        --night: #060c13;
+        --night-2: #122133;
+        --night-line: #1b2c3f;
+        --desk: #0b131c;
+        --sheet: #121d2a;
+        --margin: #172538;
+        --margin-line: #24364c;
+        --ink: #e8eff7;
+        --graphite: #a8b7c9;
+        --faint: #8d9db1;
+        --rule: #213246;
+        --control: #6f8197;
+        --cobalt: #6d9cff;
+        --cobalt-ink: #a3c1ff;
+        --cobalt-soft: #1c2f52;
+        --on-cobalt: #0c1823;
+        --hl: rgb(109 156 255 / 0.26);
+        --ok: #8fd6ae;
+        --ok-soft: #173326;
+        --warn: #f2bd77;
+        --warn-soft: #3a2a14;
+        --shadow-sheet: 0 1px 0 rgb(255 255 255 / 0.03),
+          0 24px 48px -26px rgb(0 0 0 / 0.75);
+        --shadow-float: 0 18px 40px -16px rgb(0 0 0 / 0.8);
+      }
+      .a[lang="ar"],
+      .a [lang="ar"] {
+        font-family: "Noto Sans Arabic", "Manrope", sans-serif;
+        letter-spacing: 0;
+      }
+      .a *,
+      .a *::before,
+      .a *::after {
+        box-sizing: border-box;
+      }
+      .a :is(h1, h2, h3, h4, p, ul, ol, figure, blockquote) {
+        margin: 0;
+      }
+      .a :is(ul, ol) {
+        list-style: none;
+        padding: 0;
+      }
+      .a a {
+        color: inherit;
+        text-decoration: none;
+      }
+      .a button {
+        font: inherit;
+        color: inherit;
+        background: none;
+        border: 0;
+        padding: 0;
+        cursor: pointer;
+      }
+      .a :focus-visible {
+        outline: 2px solid var(--cobalt);
+        outline-offset: 2px;
+      }
+      .a .ico {
+        width: 20px;
+        height: 20px;
+        flex: none;
+      }
+      .a .serif {
+        font-family: "Source Serif 4", Georgia, serif;
+      }
+      .a[lang="ar"] .serif,
+      .a .serif[lang="ar"] {
+        font-family: "Noto Naskh Arabic", serif;
+      }
+      .a bdi {
+        unicode-bidi: isolate;
+      }
+
+      /* ---------------------------------------------------------- shared kit */
+      .a .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 44px;
+        padding: 0 18px;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 15px;
+        white-space: nowrap;
+      }
+      .a .btn-primary {
+        background: var(--cobalt-ink);
+        color: var(--on-cobalt);
+      }
+      .a .btn-secondary {
+        background: var(--sheet);
+        box-shadow: inset 0 0 0 1.5px var(--control);
+      }
+      .a .btn-quiet {
+        color: var(--cobalt-ink);
+        padding: 0 6px;
+        min-height: 36px;
+      }
+      .a .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 36px;
+        padding: 0 14px;
+        border-radius: 999px;
+        background: var(--sheet);
+        box-shadow: inset 0 0 0 1px var(--margin-line);
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--ink);
+        white-space: nowrap;
+      }
+      .a .cite {
+        display: inline-grid;
+        place-items: center;
+        min-width: 19px;
+        height: 19px;
+        padding: 0 5px;
+        border-radius: 999px;
+        background: var(--cobalt-ink);
+        color: var(--on-cobalt);
+        font: 800 11px/1 "Manrope", sans-serif;
+        vertical-align: 0.42em;
+        margin-inline-start: 2px;
+      }
+      .a mark {
+        color: inherit;
+        background: linear-gradient(to top, var(--hl) 0 64%, transparent 64%);
+        padding: 0 1px;
+        -webkit-box-decoration-break: clone;
+        box-decoration-break: clone;
+      }
+      .a .folio {
+        width: 22px;
+        height: 22px;
+        flex: none;
+      }
+      .a .avatar {
+        display: inline-grid;
+        place-items: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--cobalt);
+        color: #fff;
+        font-weight: 800;
+        font-size: 15px;
+        flex: none;
+      }
+      .a .muted {
+        color: var(--graphite);
+      }
+      .a .faint {
+        color: var(--faint);
+      }
+
+      /* ---------------------------------------------------------- app shell */
+      .a .app {
+        display: grid;
+        grid-template-columns: 264px minmax(0, 1fr);
+        min-height: 100%;
+      }
+      .a .rail {
+        background: var(--night);
+        color: var(--night-ink);
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+        padding: 26px 16px 20px;
+        min-height: 900px;
+      }
+      .a .rail .logo {
+        width: 138px;
+        height: 38px;
+        margin-inline-start: 10px;
+        color: #ecf3f9;
+      }
+      .a .nav {
+        display: grid;
+        gap: 2px;
+      }
+      .a .nav a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-height: 44px;
+        padding: 0 12px;
+        border-radius: 10px;
+        color: var(--night-muted);
+        font-weight: 600;
+        font-size: 15px;
+      }
+      .a .nav a .count {
+        margin-inline-start: auto;
+        font-size: 13px;
+        color: var(--night-muted);
+        font-variant-numeric: tabular-nums;
+      }
+      .a .nav a[aria-current] {
+        color: var(--night-ink);
+        background: var(--night-2);
+        box-shadow: inset 3px 0 0 var(--cobalt);
+      }
+      .a[dir="rtl"] .nav a[aria-current] {
+        box-shadow: inset -3px 0 0 var(--cobalt);
+      }
+      .a .rail-subject {
+        border-top: 1px solid var(--night-line);
+        padding-top: 22px;
+        display: grid;
+        gap: 10px;
+      }
+      .a .rail-subject h2 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0 12px;
+        font-size: 20px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+      .a .rail-subject h2 small {
+        display: block;
+        font: 500 13px/1.3 "Noto Naskh Arabic", serif;
+        color: var(--night-muted);
+        letter-spacing: 0;
+      }
+      .a .rail-label {
+        padding: 0 12px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--night-muted);
+      }
+      .a .sessions {
+        display: grid;
+        gap: 2px;
+      }
+      .a .sessions a {
+        display: grid;
+        gap: 1px;
+        padding: 9px 12px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--night-muted);
+      }
+      .a .sessions a small {
+        font-weight: 500;
+        font-size: 12.5px;
+        color: #7f93a8;
+      }
+      .a .sessions a[aria-current] {
+        background: var(--night-2);
+        color: var(--night-ink);
+      }
+      .a .rail-new {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 40px;
+        padding: 0 12px;
+        border-radius: 10px;
+        color: #c4d6ff;
+        font-weight: 700;
+        font-size: 14px;
+      }
+      .a .rail-foot {
+        margin-top: auto;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 10px 0;
+        border-top: 1px solid var(--night-line);
+      }
+      .a .rail-foot strong {
+        display: block;
+        font-size: 14px;
+      }
+      .a .rail-foot small {
+        display: block;
+        font-size: 12.5px;
+        color: var(--night-muted);
+      }
+      .a .rail-foot .lang {
+        margin-inline-start: auto;
+        min-height: 36px;
+        padding: 0 10px;
+        border-radius: 8px;
+        font: 600 14px "Noto Sans Arabic", sans-serif;
+        color: var(--night-muted);
+        box-shadow: inset 0 0 0 1px var(--night-line);
+      }
+      .a .desk {
+        min-width: 0;
+        padding: 28px 32px 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+      }
+      .a .sheet {
+        background: var(--sheet);
+        border-radius: 16px;
+        box-shadow: var(--shadow-sheet);
+      }
+
+      /* ---------------------------------------------------------- landing */
+      .a.landing {
+        height: 100%;
+        display: grid;
+        grid-template-rows: auto 1fr;
+        overflow: hidden;
+      }
+      .a .top {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        padding: 26px 56px;
+      }
+      .a .top .logo {
+        width: 150px;
+        height: 41px;
+        color: var(--ink);
+      }
+      .a .top nav {
+        display: flex;
+        gap: 28px;
+        margin-inline-start: auto;
+        font-weight: 600;
+        color: var(--graphite);
+      }
+      .a .top nav [lang="ar"] {
+        font-weight: 600;
+      }
+      .a .hero {
+        display: grid;
+        grid-template-columns: 640px minmax(0, 1fr);
+        gap: 40px;
+        padding: 40px 56px 0;
+        align-items: start;
+      }
+      .a .hero h1 {
+        font-size: 98px;
+        line-height: 0.98;
+        font-weight: 800;
+        letter-spacing: -0.05em;
+        margin-top: 34px;
+      }
+      .a .hero h1 span {
+        display: block;
+      }
+      .a .hero-lede {
+        margin-top: 36px;
+        max-width: 30em;
+        font-size: 20px;
+        line-height: 1.55;
+        color: var(--graphite);
+      }
+      .a .hero-cta {
+        margin-top: 36px;
+        display: flex;
+        gap: 14px;
+        align-items: center;
+      }
+      .a .hero-cta .btn {
+        min-height: 52px;
+        padding: 0 24px;
+        font-size: 16px;
+      }
+      .a .hero-note {
+        margin-top: 44px;
+        display: flex;
+        gap: 22px;
+        color: var(--graphite);
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .a .hero-note span {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .a .hero-note .ico {
+        width: 18px;
+        height: 18px;
+        color: var(--cobalt-ink);
+      }
+      .a .stage {
+        position: relative;
+        height: 720px;
+      }
+      .a .page {
+        position: absolute;
+        top: 18px;
+        left: 0;
+        width: 440px;
+        height: 640px;
+        padding: 46px 48px;
+        background: #fff;
+        color: #1b2633;
+        border-radius: 6px;
+        transform: rotate(-2.2deg);
+        box-shadow: 0 2px 2px rgb(12 24 35 / 0.06),
+          0 40px 70px -40px rgb(12 24 35 / 0.55),
+          18px 22px 0 -6px rgb(12 24 35 / 0.05);
+      }
+      html[data-theme="dark"] .a .page {
+        box-shadow: 0 50px 80px -40px rgb(0 0 0 / 0.95),
+          18px 22px 0 -6px rgb(255 255 255 / 0.04);
+      }
+      .a .page::before {
+        content: "";
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 100%;
+        border-radius: 6px;
+        background: linear-gradient(
+          90deg,
+          rgb(12 24 35 / 0.06),
+          transparent 7%
+        );
+        pointer-events: none;
+      }
+      .a .page-meta {
+        display: flex;
+        justify-content: space-between;
+        font: 600 12px "Manrope", sans-serif;
+        color: #6a7787;
+      }
+      .a .page h3 {
+        margin-top: 20px;
+        font: 600 30px/1.15 "Source Serif 4", serif;
+        letter-spacing: -0.01em;
+        color: #0c1823;
+      }
+      .a .page p {
+        margin-top: 16px;
+        font: 400 15.5px/1.62 "Source Serif 4", serif;
+        color: #26323f;
+        hyphens: auto;
+      }
+      .a .page mark {
+        background: linear-gradient(
+          to top,
+          rgb(57 119 247 / 0.24) 0 64%,
+          transparent 64%
+        );
+      }
+      .a .page .fig {
+        margin-top: 18px;
+        height: 104px;
+        border-radius: 4px;
+        background: #f2f5f9;
+        display: grid;
+        place-items: center;
+      }
+      .a .page-num {
+        position: absolute;
+        bottom: 28px;
+        right: 48px;
+        font: 500 13px "Source Serif 4", serif;
+        color: #6a7787;
+      }
+      .a .anno {
+        position: absolute;
+        background: var(--sheet);
+        border-radius: 14px;
+        box-shadow: var(--shadow-float);
+        padding: 16px 18px;
+      }
+      .a .anno-q {
+        top: 84px;
+        right: 0;
+        width: 270px;
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        font-weight: 600;
+        font-size: 15px;
+        line-height: 1.45;
+      }
+      .a .anno-a {
+        top: 372px;
+        right: -8px;
+        width: 300px;
+        display: grid;
+        gap: 12px;
+      }
+      .a .anno-a .from {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .a .anno-a .from svg {
+        width: 22px;
+        height: 22px;
+        color: var(--ink);
+      }
+      .a .anno-a p {
+        font: 400 16px/1.55 "Source Serif 4", serif;
+      }
+      .a .anno-a .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .a .anno-a .chip {
+        min-height: 30px;
+        font-size: 12.5px;
+        padding: 0 10px;
+        background: var(--margin);
+        box-shadow: none;
+      }
+      .a .anno-p {
+        top: 596px;
+        right: 28px;
+        width: 280px;
+        background: var(--night);
+        color: var(--night-ink);
+        display: grid;
+        gap: 8px;
+      }
+      html[data-theme="dark"] .a .anno-p {
+        background: #1a2c42;
+      }
+      .a .anno-p strong {
+        font-size: 13px;
+      }
+      .a .anno-p p {
+        font: italic 400 15px/1.5 "Source Serif 4", serif;
+        color: #d6e2f0;
+      }
+      .a .thread {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        overflow: visible;
+      }
+
+      /* ---------------------------------------------------------- shelf */
+      .a .page-head h1 {
+        font-size: 40px;
+        line-height: 1.1;
+        font-weight: 800;
+        letter-spacing: -0.035em;
+      }
+      .a .page-head p {
+        margin-top: 8px;
+        font-size: 16px;
+        color: var(--graphite);
+        display: flex;
+        gap: 14px;
+        align-items: center;
+      }
+      .a .page-head .btn-quiet {
+        min-height: 28px;
+        font-size: 14px;
+      }
+      .a .resume {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 360px;
+        overflow: hidden;
+      }
+      .a .resume-main {
+        padding: 30px 36px 32px;
+        display: grid;
+        gap: 14px;
+        align-content: start;
+      }
+      .a .resume-where {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .a .resume-where span {
+        font-weight: 500;
+        color: var(--graphite);
+      }
+      .a .resume-q {
+        font: 500 31px/1.28 "Source Serif 4", serif;
+        letter-spacing: -0.01em;
+        max-width: 24em;
+      }
+      .a .resume-meta {
+        font-size: 14px;
+        color: var(--graphite);
+      }
+      .a .resume-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 8px;
+      }
+      .a .resume-margin {
+        background: var(--margin);
+        padding: 26px 26px;
+        display: grid;
+        gap: 10px;
+        align-content: start;
+      }
+      .a .resume-margin h3 {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--graphite);
+        margin-bottom: 4px;
+      }
+      .a .mini {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        background: var(--sheet);
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .a .mini small {
+        display: block;
+        font-weight: 500;
+        font-size: 12.5px;
+        color: var(--graphite);
+      }
+      .a .mini .cite {
+        vertical-align: 0;
+        margin: 0;
+        min-width: 22px;
+        height: 22px;
+      }
+      .a .mini-prof {
+        background: var(--night);
+        color: var(--night-ink);
+      }
+      html[data-theme="dark"] .a .mini-prof {
+        background: #1a2c42;
+      }
+      .a .mini-prof small {
+        color: var(--night-muted);
+      }
+      .a .mini-prof .ico {
+        color: #8fb3ff;
+      }
+      .a .section-head {
+        display: flex;
+        align-items: baseline;
+        gap: 16px;
+      }
+      .a .section-head h2 {
+        font-size: 22px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+      .a .section-head .btn-quiet {
+        margin-inline-start: auto;
+        font-size: 14px;
+      }
+      .a .shelf {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 18px;
+        align-items: end;
+        padding: 0 10px;
+      }
+      .a .shelf::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -14px;
+        height: 14px;
+        border-radius: 4px;
+        background: var(--night);
+        box-shadow: 0 10px 18px -10px rgb(12 24 35 / 0.6);
+      }
+      html[data-theme="dark"] .a .shelf::after {
+        background: #24364c;
+      }
+      .a .book {
+        position: relative;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        gap: 10px;
+        padding: 20px 20px 22px;
+        border-radius: 12px 12px 3px 3px;
+        background: var(--sheet);
+        box-shadow: var(--shadow-sheet);
+        overflow: hidden;
+      }
+      .a .book::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto;
+        height: 5px;
+        background: var(--rule);
+      }
+      .a .book[aria-current]::before {
+        background: var(--cobalt);
+      }
+      .a .book .ar {
+        font: 500 16px/1.4 "Noto Naskh Arabic", serif;
+        color: var(--graphite);
+        text-align: end;
+      }
+      .a .book h3 {
+        font-size: 25px;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        line-height: 1.1;
+        align-self: start;
+      }
+      .a .book dl {
+        margin: 0;
+        display: grid;
+        gap: 2px;
+        font-size: 14px;
+      }
+      .a .book dt {
+        font-weight: 700;
+      }
+      .a .book dd {
+        margin: 0;
+        color: var(--graphite);
+        font-size: 13px;
+      }
+      .a .book .open-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        width: fit-content;
+        padding: 3px 9px;
+        border-radius: 999px;
+        background: var(--cobalt-soft);
+        color: var(--cobalt-ink);
+        font-size: 12.5px;
+        font-weight: 700;
+      }
+
+      /* ---------------------------------------------------------- chat */
+      .a .chat-sheet {
+        flex: 1;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 340px;
+        grid-template-rows: auto minmax(0, 1fr) auto;
+        overflow: hidden;
+        min-height: 0;
+      }
+      .a .chat-head {
+        grid-column: 1 / -1;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 18px 28px 18px 48px;
+        border-bottom: 1px solid var(--rule);
+      }
+      .a .chat-head h1 {
+        font-size: 19px;
+        font-weight: 800;
+        letter-spacing: -0.015em;
+      }
+      .a .chat-head .faint {
+        font-size: 14px;
+      }
+      .a .chat-head .tools {
+        margin-inline-start: auto;
+        display: flex;
+        gap: 8px;
+      }
+      .a .chat-head .chip {
+        box-shadow: inset 0 0 0 1px var(--margin-line);
+      }
+      .a .reading {
+        grid-column: 1;
+        grid-row: 2;
+        padding: 34px 48px 18px;
+        overflow: hidden;
+        display: grid;
+        gap: 18px;
+        align-content: start;
+      }
+      .a .q {
+        font-size: 24px;
+        line-height: 1.3;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        max-width: 26em;
+      }
+      .a .q-meta {
+        margin-top: -10px;
+        font-size: 13px;
+        color: var(--faint);
+      }
+      .a .answer {
+        max-width: 38em;
+        display: grid;
+        gap: 14px;
+        font-size: 19px;
+        line-height: 1.66;
+      }
+      .a .evidence {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--ok);
+      }
+      .a .evidence .muted {
+        font-weight: 500;
+      }
+      .a .evidence .btn-quiet {
+        margin-inline-start: auto;
+        font-size: 13.5px;
+        color: var(--graphite);
+      }
+      .a .followups {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .a .margin-col {
+        grid-column: 2;
+        grid-row: 2 / 4;
+        background: var(--margin);
+        padding: 24px 22px;
+        display: grid;
+        gap: 14px;
+        align-content: start;
+        overflow: hidden;
+      }
+      .a .margin-col h2 {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--graphite);
+      }
+      .a .note {
+        background: var(--sheet);
+        border-radius: 12px;
+        padding: 14px 16px 12px;
+        display: grid;
+        gap: 9px;
+      }
+      .a .note-head {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+      }
+      .a .note-head .cite {
+        vertical-align: 0;
+        margin: 2px 0 0;
+        min-width: 22px;
+        height: 22px;
+        font-size: 12px;
+      }
+      .a .note-head strong {
+        display: block;
+        font-size: 14px;
+      }
+      .a .note-head small {
+        display: block;
+        font-size: 12.5px;
+        color: var(--graphite);
+      }
+      .a .note blockquote {
+        font: 400 15px/1.52 "Source Serif 4", serif;
+        padding-inline-start: 12px;
+        border-inline-start: 2px solid var(--cobalt);
+      }
+      .a .note-action {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-height: 30px;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--cobalt-ink);
+      }
+      .a .note-action .ico {
+        width: 16px;
+        height: 16px;
+      }
+      .a .note-prof {
+        background: var(--night);
+        color: var(--night-ink);
+      }
+      html[data-theme="dark"] .a .note-prof {
+        background: #1a2c42;
+      }
+      .a .note-prof small {
+        color: var(--night-muted) !important;
+      }
+      .a .note-prof blockquote {
+        font-style: italic;
+        border-color: #8fb3ff;
+        color: #dbe6f3;
+      }
+      .a .note-prof .note-action {
+        color: #b9cfff;
+      }
+      .a .tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: #2a4466;
+        color: #dbe7ff;
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .a .wave {
+        height: 22px;
+        flex: 1;
+      }
+      .a .composer-wrap {
+        grid-column: 1;
+        grid-row: 3;
+        padding: 10px 48px 18px;
+      }
+      .a .composer {
+        display: flex;
+        align-items: flex-end;
+        gap: 10px;
+        padding: 10px 10px 10px 18px;
+        border-radius: 16px;
+        background: var(--sheet);
+        box-shadow: inset 0 0 0 1.5px var(--control),
+          0 10px 24px -18px rgb(12 24 35 / 0.5);
+      }
+      .a .composer .field {
+        flex: 1;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        font-size: 16px;
+        color: var(--faint);
+      }
+      .a .composer .lang-pill {
+        min-height: 36px;
+        padding: 0 12px;
+        border-radius: 999px;
+        background: var(--margin);
+        font-size: 13px;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 4px;
+      }
+      .a .send {
+        display: grid;
+        place-items: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: var(--cobalt-ink);
+        color: var(--on-cobalt);
+      }
+      .a .composer-foot {
+        display: flex;
+        gap: 16px;
+        padding: 8px 4px 0;
+        font-size: 12.5px;
+        color: var(--faint);
+      }
+      .a .composer-foot a {
+        color: var(--cobalt-ink);
+        font-weight: 600;
+      }
+
+      /* ---------------------------------------------------------- admin */
+      .a .tabs {
+        display: flex;
+        gap: 6px;
+        border-bottom: 1px solid var(--rule);
+      }
+      .a .tabs a {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 46px;
+        padding: 0 14px;
+        font-weight: 600;
+        color: var(--graphite);
+        box-shadow: inset 0 -3px 0 transparent;
+      }
+      .a .tabs a b {
+        display: inline-grid;
+        place-items: center;
+        min-width: 24px;
+        height: 24px;
+        padding: 0 7px;
+        border-radius: 999px;
+        background: var(--margin);
+        color: var(--ink);
+        font-size: 13px;
+      }
+      .a .tabs a[aria-current] {
+        color: var(--ink);
+        box-shadow: inset 0 -3px 0 var(--cobalt-ink);
+      }
+      .a .tabs a[aria-current] b {
+        background: var(--cobalt-ink);
+        color: var(--on-cobalt);
+      }
+      .a .queue {
+        flex: 1;
+        display: grid;
+        grid-template-columns: 520px minmax(0, 1fr);
+        overflow: hidden;
+        min-height: 0;
+      }
+      .a .q-list {
+        border-inline-end: 1px solid var(--rule);
+        padding: 14px 12px;
+        display: grid;
+        gap: 4px;
+        align-content: start;
+        overflow: hidden;
+      }
+      .a .q-group {
+        padding: 12px 14px 6px;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--graphite);
+      }
+      .a .q-row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 4px 14px;
+        padding: 12px 14px;
+        border-radius: 12px;
+      }
+      .a .q-row[aria-current] {
+        background: var(--margin);
+        box-shadow: inset 3px 0 0 var(--cobalt-ink);
+      }
+      .a .q-row strong {
+        font-size: 15.5px;
+        font-weight: 700;
+      }
+      .a .q-row strong span {
+        font-weight: 800;
+        color: var(--cobalt-ink);
+      }
+      .a .q-row small {
+        grid-column: 1;
+        font-size: 13px;
+        color: var(--graphite);
+      }
+      .a .q-row .when {
+        grid-column: 2;
+        grid-row: 1;
+        font-size: 12.5px;
+        color: var(--faint);
+        text-align: end;
+      }
+      .a .state {
+        grid-column: 2;
+        grid-row: 2;
+        justify-self: end;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 2px 9px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+        background: var(--ok-soft);
+        color: var(--ok);
+      }
+      .a .state.wait {
+        background: var(--warn-soft);
+        color: var(--warn);
+      }
+      .a .state.blocked {
+        background: #fde7e5;
+        color: #a3231c;
+      }
+      html[data-theme="dark"] .a .state.blocked {
+        background: #3d1f1d;
+        color: #ffb3aa;
+      }
+      .a .detail {
+        padding: 30px 36px;
+        display: grid;
+        gap: 22px;
+        align-content: start;
+        overflow: hidden;
+      }
+      .a .detail h2 {
+        font-size: 30px;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        line-height: 1.15;
+      }
+      .a .detail .scope {
+        margin-top: 6px;
+        color: var(--graphite);
+        font-size: 15px;
+      }
+      .a .diff {
+        display: grid;
+        grid-template-columns: 1fr 40px 1fr;
+        align-items: stretch;
+      }
+      .a .diff > div {
+        padding: 16px 18px;
+        border-radius: 12px;
+        background: var(--margin);
+      }
+      .a .diff > div.next {
+        background: var(--cobalt-soft);
+        box-shadow: inset 0 0 0 1.5px var(--cobalt);
+      }
+      .a .diff small {
+        display: block;
+        font-size: 12.5px;
+        font-weight: 700;
+        color: var(--graphite);
+        margin-bottom: 4px;
+      }
+      .a .diff .next small {
+        color: var(--cobalt-ink);
+      }
+      .a .diff strong {
+        font-size: 16px;
+      }
+      .a .diff p {
+        margin-top: 2px;
+        font-size: 14px;
+        color: var(--graphite);
+      }
+      .a .diff .arrow {
+        display: grid;
+        place-items: center;
+        background: none;
+        padding: 0;
+        color: var(--faint);
+      }
+      .a .checks {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px 24px;
+      }
+      .a .checks li {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        font-size: 14.5px;
+        font-weight: 600;
+      }
+      .a .checks .ico {
+        color: var(--ok);
+      }
+      .a .consequence {
+        font: 400 17px/1.6 "Source Serif 4", serif;
+        max-width: 36em;
+      }
+      .a .field-label {
+        display: block;
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+      .a .textarea {
+        min-height: 84px;
+        border-radius: 12px;
+        padding: 12px 14px;
+        background: var(--sheet);
+        box-shadow: inset 0 0 0 1.5px var(--control);
+        color: var(--faint);
+        font-size: 15px;
+      }
+      .a .detail-actions {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      .a .detail-actions small {
+        margin-inline-start: auto;
+        font-size: 13px;
+        color: var(--faint);
+      }
+
+      /* ---------------------------------------------------------- phone */
+      .a.phone {
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+        background: var(--desk);
+      }
+      .a .status {
+        height: 44px;
+        flex: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 28px;
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .a .status.dark {
+        background: var(--night);
+        color: #fff;
+      }
+      .a .p-head {
+        background: var(--night);
+        color: var(--night-ink);
+        padding: 4px 8px 0;
+        flex: none;
+      }
+      .a .p-bar {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        min-height: 48px;
+      }
+      .a .p-bar .icon-btn {
+        width: 44px;
+        height: 44px;
+        display: grid;
+        place-items: center;
+        border-radius: 10px;
+        color: var(--night-ink);
+      }
+      .a .p-bar h1 {
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: -0.015em;
+      }
+      .a .p-bar .icon-btn:last-child {
+        margin-inline-start: auto;
+      }
+      .a .p-tabs {
+        display: flex;
+        gap: 2px;
+        padding: 0 8px;
+      }
+      .a .p-tabs a {
+        flex: 1;
+        text-align: center;
+        min-height: 44px;
+        display: grid;
+        place-items: center;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--night-muted);
+        box-shadow: inset 0 -3px 0 transparent;
+      }
+      .a .p-tabs a[aria-current] {
+        color: #fff;
+        box-shadow: inset 0 -3px 0 var(--cobalt);
+      }
+      .a .p-sheet {
+        flex: 1;
+        background: var(--sheet);
+        padding: 18px 20px 12px;
+        display: grid;
+        gap: 14px;
+        align-content: start;
+      }
+      .a .p-session {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: var(--faint);
+        font-weight: 600;
+      }
+      .a .p-session .lang-pill {
+        margin-inline-start: auto;
+        min-height: 30px;
+        padding: 0 10px;
+        border-radius: 999px;
+        background: var(--margin);
+        color: var(--ink);
+        font-size: 12.5px;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .a .p-q {
+        font-size: 20px;
+        line-height: 1.32;
+        font-weight: 700;
+        letter-spacing: -0.015em;
+      }
+      .a[lang="ar"] .p-q {
+        font-size: 19px;
+        line-height: 1.6;
+        letter-spacing: 0;
+      }
+      .a .p-answer {
+        display: grid;
+        gap: 12px;
+        font-size: 17px;
+        line-height: 1.64;
+      }
+      .a[lang="ar"] .p-answer {
+        font-size: 18.5px;
+        line-height: 1.95;
+      }
+      .a .p-sources {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .a .p-sources .chip {
+        background: var(--margin);
+        box-shadow: none;
+        min-height: 40px;
+      }
+      .a .p-sources .chip .cite {
+        vertical-align: 0;
+        margin: 0;
+      }
+      .a .p-sources .chip.prof {
+        background: var(--night);
+        color: var(--night-ink);
+      }
+      .a .p-compose {
+        flex: none;
+        padding: 10px 14px 12px;
+        background: var(--sheet);
+        border-top: 1px solid var(--rule);
+      }
+      .a .p-compose .composer {
+        padding: 6px 6px 6px 16px;
+        border-radius: 14px;
+      }
+      .a[dir="rtl"] .p-compose .composer {
+        padding: 6px 16px 6px 6px;
+      }
+      .a .p-compose .field {
+        font-size: 15.5px;
+      }
+      .a .p-nav {
+        flex: none;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        background: var(--sheet);
+        border-top: 1px solid var(--rule);
+        padding: 4px 8px 18px;
+      }
+      .a .p-nav a {
+        display: grid;
+        justify-items: center;
+        gap: 2px;
+        min-height: 54px;
+        align-content: center;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--faint);
+        border-radius: 12px;
+      }
+      .a .p-nav a[aria-current] {
+        color: var(--cobalt-ink);
+      }
+      .a .p-nav .avatar {
+        width: 24px;
+        height: 24px;
+        font-size: 12px;
+      }
+      .a .p-scrim {
+        position: absolute;
+        inset: 0;
+        background: rgb(6 12 19 / 0.45);
+      }
+      .a .p-drawer {
+        position: absolute;
+        inset: auto 0 0;
+        background: var(--sheet);
+        border-radius: 22px 22px 0 0;
+        padding: 10px 20px 26px;
+        display: grid;
+        gap: 14px;
+        box-shadow: 0 -20px 40px -20px rgb(0 0 0 / 0.5);
+      }
+      .a .p-drawer .grab {
+        justify-self: center;
+        width: 40px;
+        height: 5px;
+        border-radius: 3px;
+        background: var(--rule);
+      }
+      .a .p-drawer h2 {
+        font-size: 17px;
+        font-weight: 800;
+      }
+      .a .p-drawer .note:not(.note-prof) {
+        background: var(--margin);
+      }
+      .a .p-drawer .note blockquote {
+        font-size: 17px;
+        line-height: 1.85;
+      }
+      .a .p-shelf-head {
+        padding: 6px 20px 18px;
+        display: grid;
+        gap: 6px;
+      }
+      .a .p-shelf-head .logo-s {
+        width: 30px;
+        height: 30px;
+        color: var(--ink);
+        margin-bottom: 10px;
+      }
+      .a .p-shelf-head h1 {
+        font-size: 30px;
+        font-weight: 800;
+        letter-spacing: -0.035em;
+        line-height: 1.1;
+      }
+      .a .p-shelf-head p {
+        color: var(--graphite);
+        font-size: 14.5px;
+      }
+      .a .p-resume {
+        margin: 0 14px;
+        padding: 20px 20px 18px;
+        display: grid;
+        gap: 12px;
+      }
+      .a .p-resume .resume-q {
+        font-size: 22px;
+        line-height: 1.32;
+      }
+      .a .p-resume .btn {
+        width: 100%;
+        min-height: 48px;
+      }
+      .a .p-resume .cited {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .a .p-resume .cited .chip {
+        min-height: 30px;
+        background: var(--margin);
+        box-shadow: none;
+        font-size: 12.5px;
+        padding: 0 10px;
+      }
+      .a .p-list {
+        margin: 26px 14px 18px;
+        display: grid;
+        gap: 10px;
+      }
+      .a .p-list .section-head {
+        padding: 0 6px 4px;
+      }
+      .a .p-list .section-head h2 {
+        font-size: 20px;
+      }
+      .a .p-book {
+        display: grid;
+        grid-template-columns: 6px 1fr auto;
+        gap: 14px;
+        align-items: center;
+        padding: 14px 16px 14px 0;
+        border-radius: 14px;
+        background: var(--sheet);
+        box-shadow: var(--shadow-sheet);
+        overflow: hidden;
+      }
+      .a .p-book::before {
+        content: "";
+        align-self: stretch;
+        margin: -14px 0;
+        background: var(--rule);
+      }
+      .a .p-book[aria-current]::before {
+        background: var(--cobalt);
+      }
+      .a .p-book strong {
+        display: block;
+        font-size: 17px;
+        font-weight: 800;
+        letter-spacing: -0.015em;
+      }
+      .a .p-book small {
+        display: block;
+        font-size: 13px;
+        color: var(--graphite);
+      }
+      .a .p-book .ar {
+        font: 500 14px/1.4 "Noto Naskh Arabic", serif;
+        color: var(--graphite);
+      }
+    </style>
+  </head>
+  <body>
+    <svg hidden>
+      <symbol id="logo-h" viewBox="0 0 944 256"><path fill="currentColor" d="M40 48C70 49 96 59 112 78V208C92 190 64 182 40 182Q32 182 32 174V56Q32 48 40 48Z"/><path fill="#3977f7" d="M216 48C186 49 160 59 144 78V208C164 190 192 182 216 182Q224 182 224 174V56Q224 48 216 48Z"/><path fill="currentColor" d="M350.64 187.37Q337.17 187.37 326.9 181.87Q316.63 176.37 310.85 166.39Q305.06 156.4 305.06 142.93V71.36L323.07 71.24V142.26Q323.07 149.09 325.38 154.38Q327.69 159.66 331.61 163.28Q335.53 166.91 340.48 168.77Q345.43 170.62 350.64 170.62Q355.98 170.62 360.92 168.74Q365.87 166.85 369.76 163.23Q373.65 159.6 375.93 154.32Q378.21 149.04 378.21 142.26V71.24H396.23V142.93Q396.23 156.38 390.44 166.37Q384.65 176.35 374.38 181.86Q364.11 187.37 350.64 187.37Z"/><path fill="currentColor" d="M477 185V143.49Q477 139 476.3 133.93Q475.6 128.85 473.45 124.32Q471.3 119.79 467.19 116.94Q463.08 114.1 456.27 114.1Q452.24 114.1 448.49 115.43Q444.75 116.76 441.83 119.82Q438.91 122.87 437.18 128.02Q435.45 133.18 435.45 140.88L424.67 136.53Q424.67 125.3 428.95 116.42Q433.24 107.54 441.41 102.43Q449.59 97.31 461.36 97.31Q470.51 97.31 476.6 100.31Q482.69 103.31 486.38 108.08Q490.08 112.85 491.93 118.33Q493.79 123.81 494.4 128.9Q495.02 133.99 495.02 137.48V185ZM417.44 185V99.68H433.32V125.24H435.45V185Z"/><path fill="currentColor" d="M516.38 86.21V69.46H534.16V86.21ZM516.38 185V99.68H534.16V185Z"/><path fill="currentColor" d="M557.07 185V71.24H573.11L613.4 154.31L653.57 71.24H669.68V184.96H652.98V109.59L617.15 185H609.61L573.78 109.59V185Z"/><path fill="currentColor" d="M692.63 86.21V69.46H710.41V86.21ZM692.63 185V99.68H710.41V185Z"/><path fill="currentColor" d="M792.77 185V143.49Q792.77 139 792.07 133.93Q791.36 128.85 789.21 124.32Q787.06 119.79 782.95 116.94Q778.84 114.1 772.03 114.1Q768 114.1 764.26 115.43Q760.51 116.76 757.59 119.82Q754.67 122.87 752.94 128.02Q751.21 133.18 751.21 140.88L740.43 136.53Q740.43 125.3 744.71 116.42Q749 107.54 757.18 102.43Q765.35 97.31 777.12 97.31Q786.27 97.31 792.36 100.31Q798.45 103.31 802.15 108.08Q805.84 112.85 807.7 118.33Q809.55 123.81 810.17 128.9Q810.78 133.99 810.78 137.48V185ZM733.2 185V99.68H749.08V125.24H751.21V185Z"/><path fill="currentColor" d="M864.62 187.37Q852.77 187.37 844.07 181.44Q835.37 175.5 830.6 165.3Q825.83 155.1 825.83 142.3Q825.83 129.38 830.64 119.22Q835.45 109.06 844.26 103.19Q853.08 97.31 865.13 97.31Q877.24 97.31 885.5 103.21Q893.77 109.1 898.01 119.28Q902.26 129.46 902.26 142.3Q902.26 155.08 897.99 165.28Q893.73 175.48 885.35 181.43Q876.98 187.37 864.62 187.37ZM867.22 171.37Q875.12 171.37 880.04 167.68Q884.96 163.99 887.23 157.42Q889.5 150.85 889.5 142.3Q889.5 133.71 887.22 127.16Q884.94 120.61 880.14 116.96Q875.34 113.31 867.82 113.31Q859.88 113.31 854.74 117.2Q849.61 121.09 847.14 127.67Q844.67 134.24 844.67 142.3Q844.67 150.44 847.12 157.03Q849.57 163.63 854.55 167.5Q859.54 171.37 867.22 171.37ZM889.5 185V124.37H887.37V71.24H905.26V185Z"/></symbol>
+      <symbol id="logo-s" viewBox="0 0 256 256">
+        <path fill="currentColor" d="M40 48C70 49 96 59 112 78V208C92 190 64 182 40 182Q32 182 32 174V56Q32 48 40 48Z" />
+        <path fill="#3977f7" d="M216 48C186 49 160 59 144 78V208C164 190 192 182 216 182Q224 182 224 174V56Q224 48 216 48Z" />
+      </symbol>
+      <symbol id="mark" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M3.5 4.5c3 .1 5.5 1 7 2.8V20c-1.8-1.6-4.4-2.3-7-2.3-.6 0-1-.4-1-1V5.4c0-.5.4-.9 1-.9Z" opacity=".9" />
+        <path style="fill: var(--cobalt)" d="M20.5 4.5c-3 .1-5.5 1-7 2.8V20c1.8-1.6 4.4-2.3 7-2.3.6 0 1-.4 1-1V5.4c0-.5-.4-.9-1-.9Z" />
+      </symbol>
+      <symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H11v15H5.5A1.5 1.5 0 0 1 4 17.5v-12Z" /><path d="M20 5.5c0-.8-.7-1.5-1.5-1.5H13v15h5.5c.8 0 1.5-.7 1.5-1.5v-12Z" /></symbol>
+      <symbol id="i-shelf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4v14M9 4v14M14 5.5l3.5 12.2M3 20h18" /></symbol>
+      <symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-7l-4.5 3.5V16H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" /></symbol>
+      <symbol id="i-studio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m12 4 8 4-8 4-8-4 8-4Z" /><path d="m4 12 8 4 8-4M4 16l8 4 8-4" /></symbol>
+      <symbol id="i-quiz" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 7 1.8 1.8L9.5 5.5M4.5 15l1.8 1.8 3.2-3.3M13 7.5h6.5M13 15.5h6.5" /></symbol>
+      <symbol id="i-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3.5h7l4 4V20a.5.5 0 0 1-.5.5h-10A.5.5 0 0 1 7 20V3.5Z" /><path d="M14 3.5V8h4M9.5 12.5h5M9.5 16h5" /></symbol>
+      <symbol id="i-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5.5v13l10-6.5-10-6.5Z" /></symbol>
+      <symbol id="i-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6" /></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17l9-10" /></symbol>
+      <symbol id="i-check-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5" /><path d="m8.5 12.3 2.4 2.3 4.6-5" /></symbol>
+      <symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5" /><path d="M3.5 12h17M12 3.5c2.3 2.4 3.4 5.3 3.4 8.5s-1.1 6.1-3.4 8.5c-2.3-2.4-3.4-5.3-3.4-8.5S9.7 5.9 12 3.5Z" /></symbol>
+      <symbol id="i-chev-l" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m14.5 6-6 6 6 6" /></symbol>
+      <symbol id="i-chev-r" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9.5 6 6 6-6 6" /></symbol>
+      <symbol id="i-chev-d" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9.5 6 6 6-6" /></symbol>
+      <symbol id="i-more" viewBox="0 0 24 24" fill="currentColor"><circle cx="5.5" cy="12" r="1.7" /><circle cx="12" cy="12" r="1.7" /><circle cx="18.5" cy="12" r="1.7" /></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M12 5v14M5 12h14" /></symbol>
+      <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="11" cy="11" r="6.5" /><path d="m16 16 4 4" /></symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 19 6v5.5c0 4.2-2.9 7.6-7 9-4.1-1.4-7-4.8-7-9V6l7-2.5Z" /><path d="m9 12 2.2 2.2L15.5 10" /></symbol>
+      <symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="6" rx="1.5" /><rect x="4" y="14" width="16" height="6" rx="1.5" /></symbol>
+      <symbol id="i-cap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-4.5L21 9l-9 4.5L3 9Z" /><path d="M7 11v4.5c1.4 1.3 3 2 5 2s3.6-.7 5-2V11" /></symbol>
+      <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="3.5" /><path d="M5 19.5c1.3-3 3.9-4.5 7-4.5s5.7 1.5 7 4.5" /></symbol>
+      <symbol id="i-gauge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16a8 8 0 1 1 16 0" /><path d="m12 16 3.5-5" /></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></symbol>
+    </svg>
+
+    <header class="board-bar">
+      <strong>Direction A: Margin</strong>
+      <nav data-screens aria-label="Screens"></nav>
+      <span class="board-spacer"></span>
+      <button type="button" data-theme-choice value="light">Light</button>
+      <button type="button" data-theme-choice value="dark">Dark</button>
+      <a href="./">Both directions</a>
+    </header>
+
+    <main class="board-stage">
+      <!-- ============================================================ LANDING -->
+      <section class="screen" data-screen="landing" data-label="Landing">
+        <p class="board-caption">
+          The hero shows the product's actual promise: a real handout page, a
+          student's question in its margin and an answer that names the page
+          and recording it came from. No isometric cards or orbit rings.
+        </p>
+        <div class="frame-desktop a landing">
+          <header class="top">
+            <svg class="logo" role="img" aria-label="UniMind"><use href="#logo-h" /></svg>
+            <nav>
+              <a href="#">How it works</a>
+              <a href="#">For batch leaders</a>
+              <a href="#" lang="ar">العربية</a>
+            </nav>
+            <a class="btn btn-secondary" href="#">Sign in</a>
+          </header>
+          <div class="hero">
+            <div>
+              <h1><span>Study deeper</span><span>Go further.</span></h1>
+              <p class="hero-lede">
+                Ask questions about your own course material. Every answer
+                points to the page, recording or professor's note it came from,
+                so you can check it before the exam does.
+              </p>
+              <div class="hero-cta">
+                <a class="btn btn-primary" href="#">Start studying</a>
+                <a class="btn btn-quiet" href="#">See a sample answer</a>
+              </div>
+              <div class="hero-note">
+                <span><svg class="ico"><use href="#i-file" /></svg>Your faculty's handouts</span>
+                <span><svg class="ico"><use href="#i-play" /></svg>Practical recordings</span>
+                <span><svg class="ico"><use href="#i-cap" /></svg>Professors' exam notes</span>
+              </div>
+            </div>
+            <div class="stage">
+              <article class="page">
+                <div class="page-meta"><span>Anatomy, Lecture 6</span><span>Year 1, Term 1</span></div>
+                <h3>The brachial plexus</h3>
+                <p>
+                  The plexus is formed by the ventral rami of C5 to T1. The roots
+                  unite to form the upper, middle and lower trunks at the root of
+                  the neck.
+                </p>
+                <p>
+                  <mark>Injury to the upper trunk (C5, C6) produces Erb–Duchenne
+                  paralysis, commonly from excessive separation of the head and
+                  shoulder</mark>, as in a fall on the shoulder or during a
+                  difficult delivery.
+                </p>
+                <div class="fig">
+                  <svg width="300" height="80" viewBox="0 0 300 80" fill="none" stroke="#9aa9bb" stroke-width="1.6" stroke-linecap="round">
+                    <path d="M10 14h60M10 30h60M10 46h60M10 62h60M70 14c30 0 30 8 60 8M70 30c30 0 30-8 60-8M70 46c30 0 40 6 60 6M70 62c30 0 30-10 60-10M130 22c40 0 40 18 80 18M130 52c40 0 40-12 80-12M210 40h80" />
+                    <circle cx="70" cy="14" r="3" fill="#3977f7" stroke="none" /><circle cx="70" cy="30" r="3" fill="#3977f7" stroke="none" />
+                  </svg>
+                </div>
+                <p>
+                  The lower trunk (C8, T1) is injured by excessive abduction of
+                  the arm, producing Klumpke's paralysis.
+                </p>
+                <span class="page-num">14</span>
+              </article>
+                            <div class="anno anno-q">
+                <span class="avatar">S</span>
+                What happens if the upper trunk of the brachial plexus is injured?
+              </div>
+              <div class="anno anno-a">
+                <span class="from"><svg viewBox="0 0 256 256" aria-hidden="true"><use href="#logo-s" /></svg>UniMind</span>
+                <p>
+                  Erb's palsy: C5 and C6 lose their supply, so the arm hangs in
+                  the waiter's tip position.
+                </p>
+                <div class="chips">
+                  <span class="chip"><span class="cite">1</span>Handout, page 14</span>
+                  <span class="chip"><span class="cite">2</span>Practical 3, 18:42</span>
+                </div>
+              </div>
+              <div class="anno anno-p">
+                <span style="display: flex; align-items: center; gap: 8px">
+                  <strong>Dr. Hala Mansour</strong><span class="tag">Exam emphasis</span>
+                </span>
+                <p>"Erb's palsy comes almost every year. Know the muscles and the position."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ SHELF -->
+      <section class="screen" data-screen="shelf" data-label="Study Shelf">
+        <p class="board-caption">
+          The navigation is the left page of the folio. The shelf leads with the
+          exact question you stopped on, set like material, and its cited
+          sources in the margin. Subjects stand as books; only real data (count
+          and freshness) is shown.
+        </p>
+        <div class="frame-desktop a">
+          <div class="app">
+            <aside class="rail">
+              <svg class="logo" role="img" aria-label="UniMind"><use href="#logo-h" /></svg>
+              <nav class="nav" aria-label="Main">
+                <a href="#" aria-current="page"><svg class="ico"><use href="#i-shelf" /></svg>Study</a>
+                <a href="#"><svg class="ico"><use href="#i-search" /></svg>Subjects</a>
+              </nav>
+              <div class="rail-foot">
+                <span class="avatar">S</span>
+                <span><strong>Samir Hassan</strong><small>Medicine, Year 1</small></span>
+                <button class="lang" lang="ar">عربي</button>
+              </div>
+            </aside>
+            <div class="desk">
+              <header class="page-head">
+                <h1>Samir's shelf</h1>
+                <p>
+                  Year 1 Medicine, Zagazig University. Term 1.
+                  <a class="btn btn-quiet" href="#">Change</a>
+                </p>
+              </header>
+              <article class="sheet resume">
+                <div class="resume-main">
+                  <p class="resume-where">
+                    <svg class="folio"><use href="#mark" /></svg>Anatomy
+                    <span>Brachial plexus injuries</span>
+                  </p>
+                  <p class="resume-q serif">
+                    What happens if the upper trunk of the brachial plexus is
+                    injured?
+                  </p>
+                  <p class="resume-meta">Last asked Tuesday, 9:40 pm</p>
+                  <div class="resume-actions">
+                    <a class="btn btn-primary" href="#">Resume chat</a>
+                    <a class="btn btn-secondary" href="#">Open Anatomy</a>
+                  </div>
+                </div>
+                <aside class="resume-margin">
+                  <h3>That answer cited</h3>
+                  <div class="mini"><span class="cite">1</span><span>Lecture 6 handout<small>Page 14</small></span></div>
+                  <div class="mini"><span class="cite">2</span><span>Practical 3 recording<small>18:42</small></span></div>
+                  <div class="mini mini-prof"><svg class="ico"><use href="#i-play" /></svg><span>Dr. Hala Mansour<small>Exam emphasis, 3:15</small></span></div>
+                </aside>
+              </article>
+              <div class="section-head" style="margin-top: 6px">
+                <h2>Term 1</h2>
+                <a class="btn btn-quiet" href="#">Browse all subjects</a>
+              </div>
+              <div class="shelf">
+                <a class="book" href="#" aria-current="true" style="height: 236px">
+                  <span class="ar" lang="ar">علم التشريح</span>
+                  <h3>Anatomy</h3>
+                  <dl><dt>14 materials</dt><dd>Updated 2 days ago</dd></dl>
+                </a>
+                <a class="book" href="#" style="height: 220px">
+                  <span class="ar" lang="ar">وظائف الأعضاء</span>
+                  <h3>Physiology</h3>
+                  <dl><dt>9 materials</dt><dd>Updated today</dd></dl>
+                </a>
+                <a class="book" href="#" style="height: 244px">
+                  <span class="ar" lang="ar">الكيمياء الحيوية</span>
+                  <h3>Biochemistry</h3>
+                  <dl><dt>11 materials</dt><dd>Updated last week</dd></dl>
+                </a>
+                <a class="book" href="#" style="height: 212px">
+                  <span class="ar" lang="ar">علم الأمراض</span>
+                  <h3>Pathology</h3>
+                  <dl><dt>6 materials</dt><dd>Updated 3 days ago</dd></dl>
+                </a>
+                <a class="book" href="#" style="height: 228px">
+                  <span class="ar" lang="ar">علم الأدوية</span>
+                  <h3>Pharmacology</h3>
+                  <dl><dt>4 materials</dt><dd>Updated yesterday</dd></dl>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ SHELF PHONE -->
+      <section class="screen" data-screen="shelf-phone" data-label="Shelf (phone)">
+        <p class="board-caption">
+          Phone: the resume sheet comes first with one full-width action, then
+          the term's subjects as a list with a spine colour for the open one.
+        </p>
+        <div class="phone-row">
+          <div class="frame-phone">
+            <div class="a phone">
+              <div class="status"><span>9:41</span><span>5G</span></div>
+              <header class="p-shelf-head">
+                <svg class="logo-s" role="img" aria-label="UniMind"><use href="#logo-s" /></svg>
+                <h1>Samir's shelf</h1>
+                <p>Year 1 Medicine, Zagazig University. Term 1.</p>
+              </header>
+              <article class="sheet p-resume">
+                <p class="resume-where"><svg class="folio"><use href="#mark" /></svg>Anatomy<span>Brachial plexus injuries</span></p>
+                <p class="resume-q serif">What happens if the upper trunk of the brachial plexus is injured?</p>
+                <div class="cited">
+                  <span class="chip"><span class="cite" style="vertical-align: 0">1</span>Page 14</span>
+                  <span class="chip"><span class="cite" style="vertical-align: 0">2</span>18:42</span>
+                  <span class="chip">Dr. Hala, 3:15</span>
+                </div>
+                <p class="resume-meta">Last asked Tuesday, 9:40 pm</p>
+                <a class="btn btn-primary" href="#">Resume chat</a>
+              </article>
+              <div class="p-list">
+                <div class="section-head"><h2>Term 1</h2><a class="btn btn-quiet" href="#">All subjects</a></div>
+                <a class="p-book" href="#" aria-current="true"><span><strong>Anatomy</strong><small>14 materials, updated 2 days ago</small></span><span class="ar" lang="ar">علم التشريح</span></a>
+                <a class="p-book" href="#"><span><strong>Physiology</strong><small>9 materials, updated today</small></span><span class="ar" lang="ar">وظائف الأعضاء</span></a>
+                <a class="p-book" href="#"><span><strong>Biochemistry</strong><small>11 materials, updated last week</small></span><span class="ar" lang="ar">الكيمياء الحيوية</span></a>
+                <a class="p-book" href="#"><span><strong>Pathology</strong><small>6 materials, updated 3 days ago</small></span><span class="ar" lang="ar">علم الأمراض</span></a>
+              </div>
+              <nav class="p-nav" style="position: sticky; bottom: 0; margin-top: auto">
+                <a href="#" aria-current="page"><svg class="ico"><use href="#i-shelf" /></svg>Study</a>
+                <a href="#"><svg class="ico"><use href="#i-search" /></svg>Subjects</a>
+                <a href="#"><span class="avatar">S</span>Samir</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ CHAT -->
+      <section class="screen" data-screen="chat" data-label="Chat">
+        <p class="board-caption">
+          The answer is the largest thing on screen, set like the material. Each
+          supported sentence is highlighted and numbered; the margin holds the
+          exact excerpt, page or timestamp, and the professor's exam note. The
+          subject's pages and chats live in the left page, so there is no top
+          bar, breadcrumb or tab row.
+        </p>
+        <div class="frame-desktop a">
+          <div class="app">
+            <aside class="rail">
+              <svg class="logo" role="img" aria-label="UniMind"><use href="#logo-h" /></svg>
+              <nav class="nav" aria-label="Main">
+                <a href="#"><svg class="ico"><use href="#i-shelf" /></svg>Study</a>
+                <a href="#"><svg class="ico"><use href="#i-search" /></svg>Subjects</a>
+              </nav>
+              <div class="rail-subject">
+                <h2><svg class="folio" style="color: #ecf3f9"><use href="#mark" /></svg><span>Anatomy<small lang="ar">علم التشريح</small></span></h2>
+                <nav class="nav" aria-label="Anatomy">
+                  <a href="#"><svg class="ico"><use href="#i-book" /></svg>Materials<span class="count">14</span></a>
+                  <a href="#" aria-current="page"><svg class="ico"><use href="#i-chat" /></svg>Chat</a>
+                  <a href="#"><svg class="ico"><use href="#i-studio" /></svg>Studio</a>
+                  <a href="#"><svg class="ico"><use href="#i-quiz" /></svg>Quiz</a>
+                </nav>
+              </div>
+              <div class="sessions">
+                <p class="rail-label" style="margin-bottom: 6px">Chats in Anatomy</p>
+                <a href="#" aria-current="page">Brachial plexus injuries<small>Tuesday</small></a>
+                <a href="#">Rotator cuff muscles<small>Monday</small></a>
+                <a href="#">Boundaries of the axilla<small>9 October</small></a>
+                <a class="rail-new" href="#"><svg class="ico"><use href="#i-plus" /></svg>New chat</a>
+              </div>
+              <div class="rail-foot">
+                <span class="avatar">S</span>
+                <span><strong>Samir Hassan</strong><small>Medicine, Year 1</small></span>
+                <button class="lang" lang="ar">عربي</button>
+              </div>
+            </aside>
+            <div class="desk" style="padding-bottom: 24px">
+              <article class="sheet chat-sheet">
+                <header class="chat-head">
+                  <h1>Brachial plexus injuries</h1>
+                  <span class="faint">Started Tuesday</span>
+                  <div class="tools">
+                    <button class="chip"><svg class="ico" style="width: 18px"><use href="#i-book" /></svg>Uses 14 materials</button>
+                  </div>
+                </header>
+                <div class="reading">
+                  <h2 class="q">What happens if the upper trunk of the brachial plexus is injured?</h2>
+                  <p class="q-meta">Tuesday, 9:40 pm</p>
+                  <div class="answer serif">
+                    <p>
+                      An upper trunk injury damages the C5 and C6 roots: Erb's
+                      palsy. <mark>It usually follows a fall on the shoulder or a
+                      difficult delivery that pulls the head away from the
+                      shoulder.</mark><span class="cite">1</span>
+                    </p>
+                    <p>
+                      The muscles supplied by C5 and C6 weaken: deltoid,
+                      supraspinatus, infraspinatus, biceps and brachialis.<span class="cite">1</span>
+                      <mark>The arm hangs adducted and medially rotated, with the
+                      forearm extended and pronated, the "waiter's tip"
+                      position.</mark><span class="cite">2</span>
+                    </p>
+                    <p>Sensation is lost over the lateral arm and forearm.<span class="cite">1</span></p>
+                  </div>
+                  <p class="evidence">
+                    <svg class="ico"><use href="#i-check-circle" /></svg>Supported by 3 materials
+                    <span class="muted">Nothing in your sources disagrees.</span>
+                    <button class="btn btn-quiet">Report a problem</button>
+                  </p>
+                  <div class="followups">
+                    <button class="chip">Compare with Klumpke's palsy</button>
+                    <button class="chip">Make flashcards from this answer</button>
+                    <button class="chip">Quiz me on the upper trunk</button>
+                  </div>
+                </div>
+                <aside class="margin-col">
+                  <h2>Sources for this answer</h2>
+                  <div class="note">
+                    <div class="note-head"><span class="cite">1</span><span><strong>Lecture 6 handout</strong><small>Brachial plexus, PDF page 14</small></span></div>
+                    <blockquote>Injury to the upper trunk (C5, C6) produces Erb–Duchenne paralysis, commonly from excessive separation of the head and shoulder.</blockquote>
+                    <a class="note-action" href="#"><svg class="ico"><use href="#i-file" /></svg>Open page 14</a>
+                  </div>
+                  <div class="note">
+                    <div class="note-head"><span class="cite">2</span><span><strong>Practical 3 recording</strong><small>Axilla and arm, 18:42</small></span></div>
+                    <blockquote>Look at the position: arm medially rotated, forearm pronated, palm facing backwards. That's the waiter's tip.</blockquote>
+                    <a class="note-action" href="#"><svg class="ico"><use href="#i-play" /></svg>Play from 18:42</a>
+                  </div>
+                  <div class="note note-prof">
+                    <div class="note-head" style="align-items: center">
+                      <span><strong>Dr. Hala Mansour</strong><small>Voice note, 3:15</small></span>
+                      <span class="tag" style="margin-inline-start: auto">Exam emphasis</span>
+                    </div>
+                    <blockquote>Erb's palsy comes almost every year. Know the muscles and the position.</blockquote>
+                    <a class="note-action" href="#"><svg class="ico"><use href="#i-play" /></svg>Listen</a>
+                  </div>
+                </aside>
+                <div class="composer-wrap">
+                  <div class="composer">
+                    <span class="field">Ask about Anatomy</span>
+                    <span class="lang-pill"><svg class="ico" style="width: 16px"><use href="#i-globe" /></svg>English</span>
+                    <button class="send" aria-label="Send"><svg class="ico"><use href="#i-send" /></svg></button>
+                  </div>
+                  <p class="composer-foot">
+                    <span>The UniMind team can review chats to improve answers. <a href="#">Change this in Privacy</a></span>
+                  </p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ CHAT PHONE -->
+      <section class="screen" data-screen="chat-phone" data-label="Chat (phone EN/AR)">
+        <p class="board-caption">
+          Phone, English and Arabic. The subject's pages sit in the Night header;
+          the answer keeps its book face. In Arabic the answer is set in Naskh,
+          the face of printed Arabic textbooks, and tapping a source number
+          opens its excerpt in a sheet.
+        </p>
+        <div class="phone-row">
+          <div class="frame-phone">
+            <div class="a phone" lang="en">
+              <div class="status dark"><span>9:41</span><span>5G</span></div>
+              <header class="p-head">
+                <div class="p-bar">
+                  <button class="icon-btn" aria-label="Back to shelf"><svg class="ico"><use href="#i-chev-l" /></svg></button>
+                  <h1>Anatomy</h1>
+                  <button class="icon-btn" aria-label="Chats"><svg class="ico"><use href="#i-more" /></svg></button>
+                </div>
+                <nav class="p-tabs" aria-label="Anatomy">
+                  <a href="#">Materials</a><a href="#" aria-current="page">Chat</a><a href="#">Studio</a><a href="#">Quiz</a>
+                </nav>
+              </header>
+              <div class="p-sheet">
+                <p class="p-session">Brachial plexus injuries<span class="lang-pill"><svg class="ico" style="width: 14px; height: 14px"><use href="#i-globe" /></svg>EN</span></p>
+                <h2 class="p-q">What happens if the upper trunk of the brachial plexus is injured?</h2>
+                <div class="p-answer serif">
+                  <p>An upper trunk injury damages the C5 and C6 roots: Erb's palsy. <mark>It usually follows a fall on the shoulder or a difficult delivery.</mark><span class="cite">1</span></p>
+                  <p>The deltoid, supraspinatus, infraspinatus, biceps and brachialis weaken.<span class="cite">1</span> <mark>The arm hangs adducted and medially rotated, the "waiter's tip".</mark><span class="cite">2</span></p>
+                </div>
+                <p class="evidence" style="font-size: 13.5px"><svg class="ico" style="width: 18px"><use href="#i-check-circle" /></svg>Supported by 3 materials</p>
+                <div class="p-sources">
+                  <span class="chip"><span class="cite">1</span>Handout, p. 14</span>
+                  <span class="chip"><span class="cite">2</span>Practical, 18:42</span>
+                  <span class="chip prof"><svg class="ico" style="width: 16px"><use href="#i-play" /></svg>Dr. Hala</span>
+                </div>
+              </div>
+              <div class="p-compose">
+                <div class="composer">
+                  <span class="field">Ask about Anatomy</span>
+                  <button class="send" aria-label="Send"><svg class="ico"><use href="#i-send" /></svg></button>
+                </div>
+              </div>
+              <nav class="p-nav">
+                <a href="#" aria-current="page"><svg class="ico"><use href="#i-shelf" /></svg>Study</a>
+                <a href="#"><svg class="ico"><use href="#i-search" /></svg>Subjects</a>
+                <a href="#"><span class="avatar">S</span>Samir</a>
+              </nav>
+            </div>
+          </div>
+
+          <div class="frame-phone">
+            <div class="a phone" lang="ar" dir="rtl" style="position: relative">
+              <div class="status dark"><span>9:41</span><span>5G</span></div>
+              <header class="p-head">
+                <div class="p-bar">
+                  <button class="icon-btn" aria-label="رجوع"><svg class="ico"><use href="#i-chev-r" /></svg></button>
+                  <h1>علم التشريح</h1>
+                  <button class="icon-btn" aria-label="المحادثات"><svg class="ico"><use href="#i-more" /></svg></button>
+                </div>
+                <nav class="p-tabs" aria-label="علم التشريح">
+                  <a href="#">المصادر</a><a href="#" aria-current="page">المحادثة</a><a href="#">الاستوديو</a><a href="#">الاختبار</a>
+                </nav>
+              </header>
+              <div class="p-sheet">
+                <p class="p-session">إصابات الضفيرة العضدية<span class="lang-pill"><svg class="ico" style="width: 14px; height: 14px"><use href="#i-globe" /></svg>عربي</span></p>
+                <h2 class="p-q">إيه اللي بيحصل لو الجذع العلوي للضفيرة العضدية اتصاب؟</h2>
+                <div class="p-answer serif">
+                  <p>إصابة الجذع العلوي تؤثر على الجذرين <bdi>C5</bdi> و<bdi>C6</bdi>، وتُعرف بشلل إرب. <mark>تحدث غالبًا بعد سقوط على الكتف أو ولادة متعسرة تُبعد الرأس عن الكتف.</mark><span class="cite">١</span></p>
+                  <p>تضعف العضلات التي يغذيها الجذران.<span class="cite">١</span> <mark>لذلك يتدلى الذراع مقرّبًا ومدوّرًا للداخل، وهو وضع «بقشيش النادل».</mark><span class="cite">٢</span></p>
+                </div>
+              </div>
+              <div class="p-scrim"></div>
+              <div class="p-drawer">
+                <span class="grab"></span>
+                <h2>المصدر ١</h2>
+                <div class="note">
+                  <div class="note-head"><span class="cite">١</span><span><strong>محاضرة 6: الضفيرة العضدية</strong><small>ملف PDF، صفحة 14</small></span></div>
+                  <blockquote class="serif" lang="en" dir="ltr" style="font-family: 'Source Serif 4', serif; font-size: 15.5px; line-height: 1.55">Injury to the upper trunk (C5, C6) produces Erb–Duchenne paralysis, commonly from excessive separation of the head and shoulder.</blockquote>
+                  <a class="note-action" href="#"><svg class="ico"><use href="#i-file" /></svg>افتح صفحة 14</a>
+                </div>
+                <div class="note note-prof">
+                  <div class="note-head" style="align-items: center"><span><strong>د. هالة منصور</strong><small>ملاحظة صوتية، 3:15</small></span><span class="tag" style="margin-inline-start: auto">تركيز امتحاني</span></div>
+                  <a class="note-action" href="#"><svg class="ico"><use href="#i-play" /></svg>استمع</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ ADMIN -->
+      <section class="screen" data-screen="admin" data-label="Admin queue">
+        <p class="board-caption">
+          The admin queue is a working ledger: grouped by kind, the verb leads
+          each row, and the selected decision shows the exact state change,
+          readiness checks and consequence before anything is recorded.
+        </p>
+        <div class="frame-desktop a">
+          <div class="app">
+            <aside class="rail">
+              <svg class="logo" role="img" aria-label="UniMind"><use href="#logo-h" /></svg>
+              <nav class="nav" aria-label="Admin">
+                <a href="#" aria-current="page"><svg class="ico"><use href="#i-shield" /></svg>Decision queue<span class="count">6</span></a>
+                <a href="#"><svg class="ico"><use href="#i-file" /></svg>Content</a>
+                <a href="#"><svg class="ico"><use href="#i-cap" /></svg>Academics</a>
+                <a href="#"><svg class="ico"><use href="#i-user" /></svg>Access context</a>
+                <a href="#"><svg class="ico"><use href="#i-gauge" /></svg>Operations</a>
+              </nav>
+              <div class="rail-foot">
+                <span class="avatar" style="background: #ecf3f9; color: #0c1823">A</span>
+                <span><strong>Ahmed</strong><small>Admin</small></span>
+                <button class="lang" lang="ar">عربي</button>
+              </div>
+            </aside>
+            <div class="desk">
+              <header class="page-head">
+                <h1>Decision queue</h1>
+                <p>Changes that need an admin. Each one shows its consequence before you record it.</p>
+              </header>
+              <article class="sheet" style="flex: 1; display: flex; flex-direction: column; min-height: 0; overflow: hidden">
+                <nav class="tabs" style="padding: 0 18px">
+                  <a href="#" aria-current="page">Needs you <b>6</b></a>
+                  <a href="#">Waiting for second admin <b>1</b></a>
+                  <a href="#">Blocked <b>1</b></a>
+                  <a href="#">Done this week <b>3</b></a>
+                </nav>
+                <div class="queue">
+                  <div class="q-list">
+                    <p class="q-group">Publishing</p>
+                    <a class="q-row" href="#" aria-current="true">
+                      <strong><span>Publish</span> Physiology</strong>
+                      <small>Zagazig Medicine, Year 1 Term 1</small>
+                      <span class="when">2 days</span><span class="state"><svg class="ico" style="width: 14px; height: 14px"><use href="#i-check" /></svg>Ready</span>
+                    </a>
+                    <p class="q-group">Sources</p>
+                    <a class="q-row" href="#">
+                      <strong><span>Quarantine</span> Practical 4 recording</strong>
+                      <small>Audio unreadable after 31:20</small>
+                      <span class="when">5 hours</span><span class="state">Ready</span>
+                    </a>
+                    <a class="q-row" href="#">
+                      <strong><span>Retry</span> Biochemistry lecture 3</strong>
+                      <small>Processing failed twice</small>
+                      <span class="when">1 day</span><span class="state">Ready</span>
+                    </a>
+                    <a class="q-row" href="#">
+                      <strong><span>Deactivate</span> Anatomy handout v1</strong>
+                      <small>Replaced by version 2</small>
+                      <span class="when">3 days</span><span class="state">Ready</span>
+                    </a>
+                    <p class="q-group">Access and data</p>
+                    <a class="q-row" href="#">
+                      <strong><span>Unlock</span> Zagazig Medicine Y1 T1</strong>
+                      <small>Needs a second admin: Ziad</small>
+                      <span class="when">1 day</span><span class="state wait">Second admin</span>
+                    </a>
+                    <a class="q-row" href="#">
+                      <strong><span>Hold</span> Pathology practical slides</strong>
+                      <small>Raw data kept for rights review</small>
+                      <span class="when">4 days</span><span class="state">Ready</span>
+                    </a>
+                  </div>
+                  <section class="detail">
+                    <div>
+                      <h2>Publish Physiology</h2>
+                      <p class="scope">Zagazig University, Faculty of Medicine. Year 1, Term 1, edition 2026–2027.</p>
+                    </div>
+                    <div class="diff">
+                      <div><small>Now</small><strong>Hidden from students</strong><p>Admins and the Batch Leader can see it.</p></div>
+                      <div class="arrow"><svg class="ico"><use href="#i-arrow" /></svg></div>
+                      <div class="next"><small>After you record</small><strong>Open to the cohort</strong><p>Students can use Chat, Studio and Quiz.</p></div>
+                    </div>
+                    <ul class="checks">
+                      <li><svg class="ico"><use href="#i-check-circle" /></svg>9 active sources ready</li>
+                      <li><svg class="ico"><use href="#i-check-circle" /></svg>Rights confirmed for every source</li>
+                      <li><svg class="ico"><use href="#i-check-circle" /></svg>Cohort is unlocked</li>
+                      <li><svg class="ico"><use href="#i-check-circle" /></svg>Edition matches 2026–2027</li>
+                    </ul>
+                    <p class="consequence">Students in this cohort see Physiology on their shelf as soon as you record this. You can hide it again later; their chats stay.</p>
+                    <div>
+                      <span class="field-label">Reason</span>
+                      <div class="textarea">Why publish now? Your reason goes in the audit log.</div>
+                    </div>
+                    <div class="detail-actions">
+                      <a class="btn btn-primary" href="#">Review and record</a>
+                      <a class="btn btn-quiet" href="#">Skip for now</a>
+                      <small>Recorded with your name and the time.</small>
+                    </div>
+                  </section>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="board.js"></script>
+  </body>
+</html>

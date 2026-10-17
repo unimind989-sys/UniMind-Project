@@ -75,6 +75,6 @@ Keep the tone conversational: plain verbs, sentence case, no filler, with tone m
 This section is a UniMind addition. Everything above it is the unmodified upstream text from `anthropics/skills` (see `LICENSE.txt`).
 
 - Root `DESIGN.md` is the brief and always wins over the defaults above.
-- Open Folio is UniMind's approved visual direction. Most UniMind work refines it rather than inventing a new one. Propose a new direction only when the task explicitly asks for one, and keep it a proposal until a founder approves it.
+- Cobalt (Direction B, approved in WP03-T18; mockups in `planning/design/premium-overhaul/`) is UniMind's approved visual direction. Most UniMind work refines it rather than inventing a new one. Propose a new direction only when the task explicitly asks for one, and keep it a proposal until a founder approves it.
 - Style with CSS Modules and the existing design tokens. Do not introduce Tailwind.
 - Use `impeccable` for critique, audit, and polish of the result.

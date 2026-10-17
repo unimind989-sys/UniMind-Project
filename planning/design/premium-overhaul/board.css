@@ -1,0 +1,97 @@
+/* Review harness for the WP03-T18 direction mockups. Not product UI. */
+html.board,
+html.board body {
+  margin: 0;
+  background: #d9dee5;
+}
+html.board[data-theme="dark"],
+html.board[data-theme="dark"] body {
+  background: #05090e;
+}
+.board-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  padding: 10px 20px;
+  background: #0c1823;
+  color: #ecf3f9;
+  font: 500 13px/1.4 system-ui, sans-serif;
+}
+.board-bar strong {
+  font-weight: 700;
+  margin-inline-end: 8px;
+}
+.board-bar nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.board-bar button,
+.board-bar a {
+  appearance: none;
+  border: 1px solid #2c3f54;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.board-bar button[aria-pressed="true"] {
+  background: #3977f7;
+  border-color: #3977f7;
+  color: #fff;
+}
+.board-bar .board-spacer {
+  flex: 1;
+}
+.board-stage {
+  display: grid;
+  justify-items: center;
+  gap: 32px;
+  padding: 24px 16px 64px;
+}
+.board-caption {
+  font: 500 13px/1.5 system-ui, sans-serif;
+  color: #46566b;
+  max-width: 1440px;
+  width: 100%;
+}
+html.board[data-theme="dark"] .board-caption {
+  color: #9fb0c3;
+}
+.screen {
+  display: none;
+}
+.screen.is-shown {
+  display: block;
+}
+.frame-desktop {
+  width: 1440px;
+  height: 900px;
+  overflow: auto;
+  border-radius: 10px;
+  box-shadow: 0 30px 60px -30px rgb(0 0 0 / 0.45);
+  position: relative;
+}
+.frame-phone {
+  width: 390px;
+  height: 844px;
+  overflow: auto;
+  border-radius: 44px;
+  outline: 10px solid #0c1823;
+  box-shadow: 0 30px 60px -30px rgb(0 0 0 / 0.55);
+  position: relative;
+  scrollbar-width: none;
+}
+.phone-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 48px;
+}

@@ -2,6 +2,10 @@
 
 This file was moved from [`DESIGN.md`](../../DESIGN.md) on 2026-10-16 so that `DESIGN.md` holds only the current design system. The text below is verbatim; only relative link paths were rebased for this directory. It is a historical record: it does not set current task status (the runbook checkbox does) and it does not replace the current rules in `DESIGN.md`. Accepted refinements recorded here remain binding where they refine a current `DESIGN.md` rule until a later accepted change supersedes them.
 
+## Direction B "Cobalt", 17 October 2026
+
+Ahmed said every flow felt bland and asked for an overhaul with the same fingerprint (name, Open Folio logo, slogan, blue family). After comparing two static mockups in [`planning/design/premium-overhaul/`](../../planning/design/premium-overhaul/README.md) he wrote: "B: Cobalt is better in everything except the landing page. A: Margin landing page is better but honestly not the best either." Direction B governs every product screen from WP03-T18; for the landing he then chose variant L1 "The page answers" on its own ("L1 only") from the [landing variants](../../planning/design/premium-overhaul/landing.html). The [task record](../../planning/tasks/wp03-t18-premium-direction.md) holds the diagnosis and decisions. The Open Folio entries below are history.
+
 ## Approval header (formerly the top of DESIGN.md)
 
 **Current approval: Open Folio refinement, 5 October 2026.** Ahmed's explicit “I approve” authorizes the [refined direction](../../docs/reviews/uiux-2026-10-04/refinement/refined-direction.md), [visual/motion system](../../docs/reviews/uiux-2026-10-04/refinement/design-system.md) and [roadmap](../../docs/reviews/uiux-2026-10-04/refinement/roadmap-and-acceptance.md). The exact approved interactive reference SHA-256 is `f9a7d9a4f4bf75fd9e51eb4660249efce4253a11811647a2e577c35321543ef4`; see [approval](../../planning/design/open-folio/approval.md). This contract now governs implementation. The following receipts preserve earlier accepted work; they do not prove this candidate.
