@@ -1459,9 +1459,9 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 **Dependencies:** WP03-T15 (parallel CI with sharded demo browser tests). On WP03-T15's final run, one demo shard took about 14 minutes while the others took about 5, so that shard set the CI wall time.
 
-- [~] Find the cause of the slow demo shard from per-test durations of the last WP03-T15 run.
-- [ ] Spread the heaviest demo tests so `--fully-parallel` sharding gives each shard a similar share, and set the shard count, without dropping or weakening a test (`--list` stays at 190).
-- [ ] Deliver through one PR with required CI, an independent review of the workflow change, and squash merge; record per-shard and total wall time.
+- [x] Find the cause of the slow demo shard from per-test durations of the last WP03-T15 run.
+- [x] Spread the heaviest demo tests so `--fully-parallel` sharding gives each shard a similar share, and set the shard count, without dropping or weakening a test (`--list` stays at 190).
+- [x] Deliver through one PR with required CI, an independent review of the workflow change, and squash merge; record per-shard and total wall time. These closure markers become authoritative only when that PR merges.
 
 **Pass:** demo shards on the PR's CI finish within about 2 minutes of each other; CI wall time drops from about 14.6 to about 7 minutes; the same 190 demo tests run.
 
