@@ -2,6 +2,12 @@
 
 This log records evidence-based changes to repo-scoped skills; add new entries at the top. It is not a record of ordinary task corrections. Older entries describe skills and documents that have since been removed; they are kept as history.
 
+## 2026-10-17 — frontend-design names the Cobalt direction
+
+- **Evidence:** Ahmed replaced the Open Folio visual direction with Direction B "Cobalt" in WP03-T18. The skill's UniMind note still told agents to refine Open Folio.
+- **Change:** the UniMind adaptation and its eval row now name Cobalt and point to `planning/design/premium-overhaul/`. Upstream text unchanged.
+- **Validation:** `pnpm skills:sync`, `pnpm lint:agents`.
+
 ## 2026-10-16 — Shared skills for Codex and Claude Code (23 → 16)
 
 - **Evidence:** UniMind now runs two coding agents. Claude Code reads only `.claude/skills`, so the Codex-only library was invisible to it, and many skills carried Codex-only mechanics plus workflow concepts being retired in WP00-T18 (execution policy and router, worker budgets, model work blocks, proof preflight, side browser, second-account approval).
