@@ -20,11 +20,13 @@ import {
   expectTaskHeading,
   expectSignOutTarget,
 } from "../support/layout-matrix";
+import { routeSweepTests } from "../support/route-sweep";
 import { navigate } from "../support/session";
 import { expect, test } from "../support/test";
 
 // Layout matrix for student first-run setup, the Shelf, subjects, materials,
-// Settings and persistent study states (harness in `support/layout-matrix.ts`).
+// Settings, persistent study states and every student route (harness in
+// `support/layout-matrix.ts` and `support/route-sweep.ts`).
 
 // ------------------------------------------------------- first-run and Shelf
 const setupStates: readonly ScreenState[] = [
@@ -610,5 +612,8 @@ const groups: readonly ScreenGroup[] = [
   },
 ];
 
-for (const { title, details, body } of matrixTests(groups))
+for (const { title, details, body } of [
+  ...matrixTests(groups),
+  ...routeSweepTests("student"),
+])
   test(title, details, body);
