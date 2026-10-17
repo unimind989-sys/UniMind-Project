@@ -34,8 +34,13 @@ export async function signIn(
   next?: string,
 ) {
   const copy = getAuthCopy(locale);
-  await page.goto(
+  const response = await page.goto(
     `/login?lang=${locale}&email=${role}@example.invalid${next ? `&next=${encodeURIComponent(next)}` : ""}`,
+  );
+  // A relative rewrite stays inside the dev server. An absolute one means Next
+  // proxies the render to itself over HTTP, which drops connections (WP03-T22).
+  expect(response?.headers()["x-middleware-rewrite"]).toMatch(
+    /^\/synthetic-runtime\/login\?/u,
   );
   await expect(page.getByLabel(copy.email)).toHaveValue(
     `${role}@example.invalid`,
