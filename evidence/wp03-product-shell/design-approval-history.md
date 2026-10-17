@@ -4,7 +4,7 @@ This file was moved from [`DESIGN.md`](../../DESIGN.md) on 2026-10-16 so that `D
 
 ## Direction B "Cobalt", 17 October 2026
 
-Ahmed said every flow felt bland and asked for an overhaul with the same fingerprint (name, Open Folio logo, slogan, blue family). After comparing two static mockups in [`planning/design/premium-overhaul/`](../../planning/design/premium-overhaul/README.md) he wrote: "B: Cobalt is better in everything except the landing page. A: Margin landing page is better but honestly not the best either." Direction B governs every product screen from WP03-T18; the landing direction stays open until he picks one of the [landing variants](../../planning/design/premium-overhaul/landing.html). The [task record](../../planning/tasks/wp03-t18-premium-direction.md) holds the diagnosis and decisions. The Open Folio entries below are history.
+Ahmed said every flow felt bland and asked for an overhaul with the same fingerprint (name, Open Folio logo, slogan, blue family). After comparing two static mockups in [`planning/design/premium-overhaul/`](../../planning/design/premium-overhaul/README.md) he wrote: "B: Cobalt is better in everything except the landing page. A: Margin landing page is better but honestly not the best either." Direction B governs every product screen from WP03-T18; for the landing he then chose variant L1 "The page answers" on its own ("L1 only") from the [landing variants](../../planning/design/premium-overhaul/landing.html). The [task record](../../planning/tasks/wp03-t18-premium-direction.md) holds the diagnosis and decisions. The Open Folio entries below are history.
 
 ## Approval header (formerly the top of DESIGN.md)
 

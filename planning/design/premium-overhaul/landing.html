@@ -463,10 +463,15 @@
         overflow: visible;
         pointer-events: none;
       }
-      .l1 .replay {
+      .l1 .stage-foot {
         position: absolute;
         right: 0;
-        bottom: 34px;
+        bottom: 4px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .l1 .replay {
         display: inline-flex;
         align-items: center;
         gap: 8px;
@@ -973,7 +978,7 @@
                     <p>«شلل إرب بييجي في الامتحان كل سنة تقريبًا.»</p>
                   </div>
                 </div>
-                <button class="replay" type="button" data-replay><svg class="ico" style="width: 16px"><use href="#i-replay" /></svg>Replay</button>
+                <div class="stage-foot"><span class="sample-note">Sample answer from invented lecture notes</span><button class="replay" type="button" data-replay><svg class="ico" style="width: 16px"><use href="#i-replay" /></svg>Replay</button></div>
               </div>
             </div>
           </div>
@@ -1006,6 +1011,7 @@
                   <div class="meta"><b>1</b>Lecture 6 handout, page 14</div>
                   <span class="sweep">Injury to the upper trunk (C5, C6) produces Erb–Duchenne paralysis</span>, commonly from excessive separation of the head and shoulder.
                 </div>
+                <p class="sample-note" style="margin-top: 4px">Sample answer from invented lecture notes</p>
               </div>
             </div>
           </div>

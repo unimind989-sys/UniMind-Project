@@ -39,8 +39,9 @@
 - [x] Capture every role at 1440px and 390px (light, dark) from the local synthetic demo and diagnose.
 - [x] Plan two directions (tokens, type, layout) and review them against generic defaults.
 - [x] Build both as clickable static mockups: landing hero, Study Shelf, Chat with evidence (desktop, phone, Arabic phone), admin decision queue.
-- [ ] Present; record Ahmed's choice.
-- [ ] Rewrite `DESIGN.md` for the chosen direction; `pnpm check`; PR with required CI.
+- [x] Present; record Ahmed's choice.
+- [x] Rewrite `DESIGN.md` for the chosen direction.
+- [ ] `pnpm check`; PR with required CI; merge and close.
 
 ## Decisions
 
@@ -48,7 +49,8 @@
 - 2026-10-17, Ahmed: mockups first, two directions, then the contract, then flow-by-flow rebuilds.
 - 2026-10-17, Ahmed: fixtures become realistic invented content; "sample" labels stay only where safety needs them.
 - 2026-10-17, Ahmed: the student flow is rebuilt first (WP03-T19), then landing (T20), then leader and admin (T21).
-- 2026-10-17, Ahmed, after reviewing both mockups: "B: Cobalt is better in everything except the landing page. A: Margin landing page is better but honestly not the best either." Direction B governs the product (shell, shelf, Chat, phone, admin). The landing gets new variants in B's system that build on A's real-page evidence idea; its section of `DESIGN.md` waits for that choice.
+- 2026-10-17, Ahmed, after reviewing both mockups: "B: Cobalt is better in everything except the landing page. A: Margin landing page is better but honestly not the best either." Direction B governs the product (shell, shelf, Chat, phone, admin). The landing gets new variants in B's system that build on A's real-page evidence idea.
+- 2026-10-17, Ahmed: "L1 only". The landing hero is variant L1 "The page answers", without L2's question bar below; the sections under the hero keep their jobs and are composed in WP03-T20. Claude added a visible "Sample answer from invented lecture notes" label to L1 because the existing landing rule requires sample content to be labelled, and decided that the folio curve mirrors with the layout in RTL (only the logo never mirrors).
 
 ## Diagnosis (captures of `0ba30cc`, synthetic demo)
 
@@ -65,16 +67,16 @@
 
 ## Current state
 
-**Changed:** runbook entries WP03-T18 to T21; this record; `planning/design/premium-overhaul/` with the brief, review harness, Direction A (Margin), Direction B (Cobalt, built by a sub-agent from the brief) and `landing.html` (L1 The page answers, L2 Ask it yourself, L3 Folio spread). `DESIGN.md` rewritten for Direction B (drafted by a sub-agent, reviewed line by line against the old contract; landing section pending); `docs/agents/frontend.md`, the `frontend-design` skill note and the approval history point to Cobalt.
+**Changed:** runbook entries WP03-T18 to T21; this record; `planning/design/premium-overhaul/` with the brief, review harness, Direction A (Margin), Direction B (Cobalt, built by a sub-agent from the brief) and `landing.html` (L1 chosen; L2 and L3 kept as the record). `DESIGN.md` rewritten for Direction B with the L1 landing (drafted by a sub-agent, reviewed line by line against the old contract); `docs/agents/frontend.md`, the `frontend-design` skill note and the approval history point to Cobalt.
 
-**Proof:** diagnosis captures in the session scratchpad (regenerate from `pnpm demo`). Every mockup and landing screen captured at 1440px and 390px in light and dark from `serve.mjs` and inspected in two rounds; L1's animation ends with every element visible; `pnpm lint:agents` and Prettier on `DESIGN.md` passed.
+**Proof:** diagnosis captures in the session scratchpad (regenerate from `pnpm demo`). Every mockup and landing screen captured at 1440px and 390px in light and dark from `serve.mjs` and inspected in two rounds; L1's animation ends with every element visible; `pnpm lint:agents` and Prettier on `DESIGN.md` passed. `pnpm check` and CI pending.
 
 **Review:** self-review.
 
-**Approved commit:** PENDING (landing variant choice; product direction chosen 17 October 2026).
+**Approved commit:** NOT REQUIRED: no rendered product change in this task. Ahmed's direction and landing choices are recorded under Decisions; WP03-T19 to T21 need their own `Approved commit:`.
 
-**Remaining:** Ahmed's landing choice, the landing section of `DESIGN.md`, `pnpm check`, PR.
+**Remaining:** `pnpm check`, PR with required CI, merge and closure.
 
 ## Next action
 
-Record Ahmed's landing variant choice, write the landing section of `DESIGN.md`, then `pnpm check` and open the PR.
+Run `pnpm check`, open the PR, pass required CI, squash-merge and close WP03-T18; WP03-T19 (student rebuild) is next.

@@ -1,6 +1,8 @@
 # Premium overhaul: two directions (WP03-T18)
 
-Static mockups for Ahmed's direction choice. Not product code. The [task record](../../tasks/wp03-t18-premium-direction.md) holds the diagnosis, decisions and status.
+Static mockups for Ahmed's direction choice. Not product code.
+
+**Choice (17 October 2026):** Direction B "Cobalt" for every product screen, and landing variant L1 "The page answers" on its own (`landing.html`). Direction A, Direction B's landing and variants L2 and L3 are kept as the record of what was compared. `DESIGN.md` is the contract. The [task record](../../tasks/wp03-t18-premium-direction.md) holds the diagnosis, decisions and status.
 
 Run `node planning/design/premium-overhaul/serve.mjs` and open <http://127.0.0.1:3104/>. Each direction file shows one screen at a time with a Light/Dark switch; `?screen=chat&theme=dark` deep-links.
 

@@ -2,7 +2,7 @@
 
 This is the canonical first-party visual and interaction contract. Product/security authority remains in the [master plan](docs/plans/poc-master-plan.md); acceptance and delivery remain in the [runbook](docs/runbooks/poc-execution-runbook.md). Surface briefs describe particular jobs and refer here for system rules.
 
-**Current approved baseline:** Direction B "Cobalt" (WP03-T18, approved by Ahmed on 17 October 2026) for every product screen. Its [static mockup](planning/design/premium-overhaul/direction-b.html) is the visual source, its [brief](planning/design/premium-overhaul/README.md) holds the reasoning and content pack, and the [task record](planning/tasks/wp03-t18-premium-direction.md) holds the diagnosis and choice. The public landing direction is still pending (see Public landing).
+**Current approved baseline:** Direction B "Cobalt" (WP03-T18, approved by Ahmed on 17 October 2026) for every product screen. Its [static mockup](planning/design/premium-overhaul/direction-b.html) is the visual source, its [brief](planning/design/premium-overhaul/README.md) holds the reasoning and content pack, and the [task record](planning/tasks/wp03-t18-premium-direction.md) holds the diagnosis and choice. The public landing follows variant L1 (see Public landing).
 
 **History:** the earlier Open Folio refinement ([refined direction](docs/reviews/uiux-2026-10-04/refinement/refined-direction.md), [visual/motion system](docs/reviews/uiux-2026-10-04/refinement/design-system.md), [roadmap](docs/reviews/uiux-2026-10-04/refinement/roadmap-and-acceptance.md) and its [approval](planning/design/open-folio/approval.md)) and earlier contracts no longer govern visuals; existing behavior and safety remain binding as restated here. Product code keeps the Open Folio tokens until the rebuilds land: WP03-T19 (student), WP03-T20 (landing and access) and WP03-T21 (Batch Leader and admin). New work targets this file.
 
@@ -87,24 +87,24 @@ Academic context persists in nullable `profiles.academic_context`, with own-call
 
 Use self-hosted **Manrope** for Latin text (it is also the logo's lettering face) and **Noto Sans Arabic** for Arabic; no other faces. Interface locale and output language stay independent. Arabic has neutral tracking; Latin technical text is isolated with `bdi` or explicit direction. Use `Intl` dates/numbers.
 
-| Role                      | Size / weight / leading / tracking                                              |
-| ------------------------- | ------------------------------------------------------------------------------- |
-| Landing display           | Set by the landing choice; the B mockup slogan was 136px / 800 / 0.88 / −0.04em |
-| Page title (Shelf, queue) | 44–56px desktop, 40px phone / 800 / 1.0–1.05 / −0.04em                          |
-| Subject band title        | 52px desktop / 800 / 1.0 / −0.04em; phone header 26px / 800 / 1.1 / −0.035em    |
-| Current subject cover     | 52px desktop, 34px phone / 800 / 1.0 / −0.04em                                  |
-| Resume question           | 34px desktop, 22px phone / 700 / 1.14–1.2 / −0.03em                             |
-| Admin detail title        | 38px / 800 / 1.08 / −0.04em                                                     |
-| Section title             | 26px desktop, 21px phone / 800 / −0.03em; panel heading 18px / 800              |
-| Subject cover title       | 23px desktop, 19px phone / 800 / 1.1 / −0.03em                                  |
-| Question bubble           | 20px desktop, 19px phone / 700 / 1.3–1.35                                       |
-| Row title                 | 16–17px / 700–800 / 1.3                                                         |
-| Answer reading            | 17px desktop, 16px phone / 500 / 1.6 desktop, 1.5 phone                         |
-| Body and controls         | 15px (16px large buttons) / 500 body, 600–700 controls / 1.5                    |
-| Metadata                  | 13–14px / 500–600 / 1.4–1.5                                                     |
-| Mobile navigation labels  | 13px / 600, 800 when current / inside 56px targets                              |
+| Role                      | Size / weight / leading / tracking                                           |
+| ------------------------- | ---------------------------------------------------------------------------- |
+| Landing display           | 94px desktop, 54px phone / 800 / 0.94 / −0.048em (landing slogan only)       |
+| Page title (Shelf, queue) | 44–56px desktop, 40px phone / 800 / 1.0–1.05 / −0.04em                       |
+| Subject band title        | 52px desktop / 800 / 1.0 / −0.04em; phone header 26px / 800 / 1.1 / −0.035em |
+| Current subject cover     | 52px desktop, 34px phone / 800 / 1.0 / −0.04em                               |
+| Resume question           | 34px desktop, 22px phone / 700 / 1.14–1.2 / −0.03em                          |
+| Admin detail title        | 38px / 800 / 1.08 / −0.04em                                                  |
+| Section title             | 26px desktop, 21px phone / 800 / −0.03em; panel heading 18px / 800           |
+| Subject cover title       | 23px desktop, 19px phone / 800 / 1.1 / −0.03em                               |
+| Question bubble           | 20px desktop, 19px phone / 700 / 1.3–1.35                                    |
+| Row title                 | 16–17px / 700–800 / 1.3                                                      |
+| Answer reading            | 17px desktop, 16px phone / 500 / 1.6 desktop, 1.5 phone                      |
+| Body and controls         | 15px (16px large buttons) / 500 body, 600–700 controls / 1.5                 |
+| Metadata                  | 13–14px / 500–600 / 1.4–1.5                                                  |
+| Mobile navigation labels  | 13px / 600, 800 when current / inside 56px targets                           |
 
-Arabic display uses Noto Sans Arabic 700/800. Arabic reading leading 1.7–1.8 and heading leading 1.5–1.55 use locale tokens, not scattered overrides. English tracking never below −0.04em, the display setting.
+Arabic display uses Noto Sans Arabic 700/800. Arabic reading leading 1.7–1.8 and heading leading 1.5–1.55 use locale tokens, not scattered overrides. English tracking never below −0.04em, except the landing slogan at −0.048em.
 
 Spacing steps: **4, 8, 12, 16, 24, 32, 48px**. Desktop page insets are at least 48px. Radius follows hierarchy: subject covers 24px (20px on phones); panels, dialogs, the answer card, professor note, list rows and admin detail 14px; buttons, fields, icon buttons and the segmented track 12px (segments 9px); quotes 10px; chips, pills, the composer, avatars and bottom-bar indicators fully round. Phone sheets round their top corners at 22px. Question bubbles use 24px (22px on phones) with a 6px corner at the bottom inline end.
 
@@ -191,9 +191,15 @@ Admin Decision queue leads with decisions; Content groups Sources/Campaigns; Aca
 
 ## Public landing
 
-The landing direction is pending its choice in WP03-T18. Ahmed preferred Direction A's idea of a real annotated handout page as the evidence over B's landing, without settling on either; new variants in this system are being prepared. Until the choice is recorded here, no landing visual is approved, and the earlier landing visuals (dimensional folio, blue demonstration surround, passive drift, 96px hero cap) no longer govern. The current landing stays as built until WP03-T20 rebuilds it.
+Ahmed chose landing variant **L1 "The page answers"** on 17 October 2026, on its own, without the sample question bar of L2 below it. Its [mockup](planning/design/premium-overhaul/landing.html) (screens L1 and L1 phone) is the visual source. The earlier landing visuals (dimensional folio, blue demonstration surround, passive drift, 96px hero cap) no longer govern. The current landing stays as built until WP03-T20 rebuilds it; the sections below the hero keep their jobs and get their compositions approved there.
 
-These landing rules stay binding whatever is chosen:
+- **Stage:** a full-bleed Night hero in both themes (`--night`, deeper in dark). The top bar sits on it with the dark logo variant, the text links, the Arabic switch and a ringed Sign in.
+- **Copy column (620px):** the exact slogan in white at the landing display size; one plain lede in `--on-night-2` naming the promise (ask about your own lectures in Arabic or English; answers only from your faculty's material, with the page they came from); a Cobalt Start studying button with white 19px 800 text (large text, so Cobalt is allowed); a quiet second link; three proof lines with Cobalt ticks, each a real product rule (approved material only, a page or timestamp behind every claim, says so when the material does not cover it).
+- **Evidence stage:** a fixed white handout page (book face, slight tilt, real invented lecture content and page number) with Night-tinted depth. Overlapping its lower inline-start corner: the student's question as a Cobalt bubble in Egyptian Arabic, UniMind's answer card with numbered location pills, and the professor's exam-emphasis note as a Night card. The cited sentence on the handout carries the highlighter (`--cobalt` at 30% under the lower 60% of the line) and a numbered marker in the page margin that matches the answer's first pill. A visible label reads "Sample answer from invented lecture notes", next to a Replay control.
+- **The one moment:** on first view the stage plays once: question (from 300ms), answer (1100ms, its text revealed in reading direction), page marker (2300ms), highlighter sweep (2700ms over 800ms), professor note (3500ms). Each element rises at most 10px over 420ms with the shared easing. Replay restarts it. Reduced motion shows the final composition with no movement. It never loops, tracks the pointer or blocks scrolling.
+- **Phone:** the slogan at the phone display size, the lede, a full-width Start studying button, then the same moment stacked: question, answer, and a handout excerpt card with the highlighted sentence, its page and the sample label.
+
+These landing rules stay binding:
 
 - The landing leads with the exact two-line slogan and uses this file's tokens, type and components. A larger display scale is allowed there; landing materials do not redefine product tokens or alter the supplied logo artwork. A depicted printed handout may use a book face (the variants use Source Serif 4) because it shows course material, not interface.
 - Any sample interaction (today Chat, Studio and Quiz) runs locally without generation, saving, private data or provider requests. The preview labels its sample content and limitations beside the working controls.
