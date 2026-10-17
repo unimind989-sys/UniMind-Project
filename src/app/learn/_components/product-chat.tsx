@@ -235,23 +235,23 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
         <section className={styles.excerpt} key={format}>
           <h3>
             {format === "AUDIO"
-              ? t("Synthetic comparison recording", "تسجيل المقارنة التجريبي")
-              : t("Synthetic sequence handout", "ملزمة الترتيب التجريبية")}
+              ? t("Practical 3 recording", "تسجيل العملي 3")
+              : t("Lecture 6 handout", "ملزمة المحاضرة 6")}
           </h3>
           <p>
             {format === "AUDIO"
-              ? t("Sample timestamp 02:10", "توقيت تجريبي ٠٢:١٠")
-              : t("Sample page 3", "صفحة تجريبية ٣")}
+              ? t("Timestamp 18:42", "التوقيت ١٨:٤٢")
+              : t("Page 14", "صفحة ١٤")}
           </p>
           <blockquote>
             {format === "AUDIO"
               ? t(
-                  "Compare first, then identify the labels.",
-                  "قارن أولًا ثم حدد الأسماء.",
+                  "Count the roots first. In some people the plexus is prefixed and takes a branch from C4, so check before you name the trunks.",
+                  "عُدّ الجذور أولًا. في بعض الناس تكون الضفيرة متقدمة وتأخذ فرعًا من C4، فتأكد قبل أن تسمي الجذوع.",
                 )
               : t(
-                  "Identify the labels, then compare the diagrams.",
-                  "حدد الأسماء ثم قارن الرسوم.",
+                  "Injury to the upper trunk (C5, C6) produces Erb–Duchenne paralysis, commonly from excessive separation of the head and shoulder. The plexus is formed by the ventral rami of C5 to T1.",
+                  "إصابة الجذع العلوي (C5 وC6) تسبب شلل إرب-دوشين، غالبًا من المباعدة الشديدة بين الرأس والكتف. تتكون الضفيرة من الفروع الأمامية للأعصاب من C5 إلى T1.",
                 )}
           </blockquote>
         </section>
@@ -552,10 +552,10 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
                       }}
                     >
                       {kind === "supported"
-                        ? t("Explain the study sequence", "اشرح ترتيب المذاكرة")
+                        ? t("Upper trunk injury", "إصابة الجذع العلوي")
                         : kind === "conflict"
-                          ? t("Compare the two sources", "قارن المصدرين")
-                          : t("Find what’s missing", "ما المعلومات الناقصة؟")}
+                          ? t("Roots of the plexus", "جذور الضفيرة")
+                          : t("What isn’t covered", "ما الذي لا تغطيه المواد؟")}
                     </button>
                   ),
                 )}
@@ -682,8 +682,8 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
                         "المحادثات القادمة خاصة",
                       )
                     : t(
-                        "Founder-visible by default",
-                        "ظاهر للمؤسسين افتراضيًا",
+                        "Visible to UniMind’s founders",
+                        "ظاهرة لمؤسسي UniMind",
                       )}
                 </strong>
                 <span>

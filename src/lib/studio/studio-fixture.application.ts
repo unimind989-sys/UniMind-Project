@@ -114,8 +114,8 @@ const sequence = {
         "سؤال: ما الخطوة الأولى في الملزمة التجريبية؟",
       ],
       answer: [
-        "Identification comes first in the sample handout (sample page 3).",
-        "التحديد أولًا في الملزمة التجريبية (صفحة تجريبية ٣).",
+        "Identification comes first in the sample handout (page 14).",
+        "التحديد أولًا في الملزمة التجريبية (صفحة ١٤).",
       ],
       explanation: [
         "The answer identifies one source's instruction. It does not claim that the recording agrees.",
@@ -412,7 +412,7 @@ export function buildStudioFixture(
       options.topic === "sequence"
         ? [
             "Identify labels, then compare diagrams.",
-            "حدد الأسماء ثم قارن الرسوم.",
+            "إصابة الجذع العلوي (C5 وC6) تسبب شلل إرب-دوشين، غالبًا من المباعدة الشديدة بين الرأس والكتف. تتكون الضفيرة من الفروع الأمامية للأعصاب من C5 إلى T1.",
           ]
         : [
             "They request comparison but do not supply specific label identities.",

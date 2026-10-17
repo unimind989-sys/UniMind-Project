@@ -67,7 +67,7 @@ export function ChatExchange({
           {answer.language === "mixed" ? (
             <>
               {" "}
-              <bdi lang="en">Synthetic source · study sequence</bdi>
+              <bdi lang="en">Lecture 6 handout, page 14</bdi>
             </>
           ) : null}
         </p>

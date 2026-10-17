@@ -227,7 +227,7 @@ inLocales(["en"], (locale) => {
       await language.check();
       await send(page, "supported", locale);
       await expect(page.locator("#exchange-1")).toContainText(
-        "Synthetic source · study sequence",
+        "Lecture 6 handout, page 14",
       );
       const message = page.getByLabel(t("Message", "السؤال"), { exact: true });
       await message.fill(

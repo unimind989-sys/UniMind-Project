@@ -954,7 +954,7 @@ inLocales(["en"], (locale) => {
       await page.locator(`a[href*="${unit}/evidence?"]`).first().click();
       await expect(
         page.getByText(
-          pick(locale, "Synthetic sequence handout", "ملزمة الترتيب التجريبية"),
+          pick(locale, "Lecture 6 handout", "ملزمة المحاضرة 6"),
           { exact: true },
         ),
       ).toBeVisible();
@@ -1412,7 +1412,7 @@ inLocales(["en"], (locale) => {
       });
       await expect(dialog).toBeVisible();
       await expect(dialog.getByRole("blockquote")).toContainText(
-        pick(locale, "Identify the labels", "حدد الأسماء"),
+        pick(locale, "Injury to the upper trunk", "إصابة الجذع العلوي"),
       );
       await page.keyboard.press("Escape");
       await expect(citation).toBeFocused();
@@ -1677,7 +1677,7 @@ inLocales(["en"], (locale) => {
       );
       const meta = page.locator("form p[class*='composerMeta']");
       await expect(meta.locator("strong")).toHaveText(
-        pick(locale, "Founder-visible by default", "ظاهر للمؤسسين افتراضيًا"),
+        pick(locale, "Visible to UniMind’s founders", "ظاهرة لمؤسسي UniMind"),
       );
       await expect(meta.locator("span")).toHaveText(
         pick(

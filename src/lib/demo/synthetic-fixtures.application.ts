@@ -201,28 +201,28 @@ export type ResponseKind =
   | "patient";
 export const promptExamples: Record<ResponseKind, Localized> = {
   supported: [
-    "Explain the sample unit's study sequence.",
-    "اشرح ترتيب المذاكرة في الوحدة التجريبية.",
+    "What happens if the upper trunk of the brachial plexus is injured?",
+    "إيه اللي بيحصل لو الجذع العلوي للضفيرة العضدية اتصاب؟",
   ],
   partial: [
-    "Explain the sequence and its missing timing.",
-    "اشرح الترتيب والتوقيت غير الموجود.",
+    "How long does recovery from Erb's palsy take?",
+    "التعافي من شلل إرب بياخد وقت قد إيه؟",
   ],
   unavailable: [
-    "What is not covered by these sample sources?",
-    "ما المعلومات غير الموجودة في المصادر التجريبية؟",
+    "What does the brachial plexus look like on an MRI?",
+    "شكل الضفيرة العضدية في الرنين المغناطيسي عامل إزاي؟",
   ],
   conflict: [
-    "Do the two sample sources agree?",
-    "هل المصدران التجريبيان متفقان؟",
+    "Which spinal roots form the brachial plexus?",
+    "إيه الجذور اللي بتكوّن الضفيرة العضدية؟",
   ],
   hint: [
-    "What did the sample professor emphasize?",
-    "ما النقطة التي أكد عليها المحاضر التجريبي؟",
+    "What did the practical session stress?",
+    "العملي ركّز على إيه؟",
   ],
   educational: [
-    "In this fictional teaching case, what is the study sequence?",
-    "في حالة تعليمية خيالية، ما ترتيب الدراسة؟",
+    "In a teaching case, a newborn's arm hangs limp after a difficult delivery. Which trunk is injured?",
+    "في حالة تعليمية، ذراع مولود مرتخية بعد ولادة متعسرة. أي جذع اتصاب؟",
   ],
   patient: [
     "Treat an identifiable real patient.",
@@ -231,28 +231,28 @@ export const promptExamples: Record<ResponseKind, Localized> = {
 };
 export const answerExamples: Record<ResponseKind, Localized> = {
   supported: [
-    "The synthetic handout says to identify the labelled structures, then compare the two diagrams. This fixed example uses only the sample handout.",
-    "الملزمة التجريبية تطلب تحديد الأجزاء المسماة ثم مقارنة الرسمين. هذا مثال ثابت من الملزمة فقط.",
+    "An upper trunk injury damages the C5 and C6 roots: Erb's palsy. The arm hangs adducted and medially rotated, with the forearm extended and pronated, the waiter's tip position. This answer uses only the Lecture 6 handout.",
+    "إصابة الجذع العلوي تؤثر على الجذرين C5 وC6، وتُعرف بشلل إرب. يتدلى الذراع مقرّبًا ومدوّرًا للداخل والساعد ممدود ومكبوب، وهو وضع «بقشيش النادل». هذه الإجابة تعتمد على ملزمة المحاضرة 6 فقط.",
   ],
   partial: [
-    "Supported: identify the labelled structures before comparison. Missing: the sample materials do not specify how long either step takes.",
-    "المتاح: تحديد الأجزاء المسماة قبل المقارنة. غير المتاح: المصادر التجريبية لا تحدد وقت كل خطوة.",
+    "Supported: an upper trunk injury (C5, C6) causes Erb's palsy. Missing: your materials don't say how long recovery takes.",
+    "المتاح: إصابة الجذع العلوي (C5 وC6) تسبب شلل إرب. غير المتاح: موادك لا تذكر مدة التعافي.",
   ],
   unavailable: [
-    "This information is unavailable in the sample uploaded materials. No outside knowledge or web search is used.",
-    "المعلومة غير متاحة في المواد التجريبية المرفوعة. لا نستخدم معرفة خارجية أو بحثًا على الإنترنت.",
+    "This information isn't in your uploaded materials. No outside knowledge or web search is used.",
+    "هذه المعلومة غير موجودة في المواد المرفوعة. لا نستخدم معرفة خارجية أو بحثًا على الإنترنت.",
   ],
   conflict: [
-    "The sample handout puts identification before comparison. The sample recording puts comparison first. The materials conflict; neither source resolves the disagreement.",
-    "الملزمة التجريبية تضع التحديد قبل المقارنة، والتسجيل التجريبي يضع المقارنة أولًا. المواد متعارضة ولا يوجد مصدر يحسم الخلاف.",
+    "The Lecture 6 handout says the plexus is formed by C5 to T1. The Practical 3 recording says it can also take a branch from C4, a prefixed plexus. Your materials disagree, and neither one settles it.",
+    "ملزمة المحاضرة 6 تقول إن الضفيرة تتكون من C5 إلى T1. تسجيل العملي 3 يقول إنها قد تأخذ فرعًا من C4 أيضًا، وهي الضفيرة المتقدمة. موادك متعارضة ولا يحسم أي منها الخلاف.",
   ],
   hint: [
-    "Professor hint: the sample recording emphasizes comparing diagrams. This is emphasis in a fixture, not guaranteed exam content.",
-    "تلميح محاضر: التسجيل التجريبي يؤكد مقارنة الرسوم. هذا تأكيد داخل المثال وليس ضمانًا لمحتوى الامتحان.",
+    "Professor hint: the Practical 3 recording stresses counting the roots before naming the trunks. This is emphasis in your material, not a guarantee of exam content.",
+    "تلميح المحاضر: تسجيل العملي 3 يؤكد عدّ الجذور قبل تسمية الجذوع. هذا تأكيد داخل موادك وليس ضمانًا لمحتوى الامتحان.",
   ],
   educational: [
-    "For this fictional educational case, the sample handout's sequence is identification followed by comparison. No patient advice is generated.",
-    "في هذه الحالة التعليمية الخيالية، ترتيب الملزمة التجريبية هو التحديد ثم المقارنة. لا يتم توليد نصيحة لمريض.",
+    "In this teaching case, a limp, inward-turned arm after a difficult delivery matches the handout's upper trunk injury (C5, C6), Erb's palsy. This is study material; no patient advice is given.",
+    "في هذه الحالة التعليمية، الذراع المرتخية المدوّرة للداخل بعد ولادة متعسرة تطابق وصف الملزمة لإصابة الجذع العلوي (C5 وC6)، أي شلل إرب. هذه مادة للمذاكرة ولا تُقدَّم نصيحة لمريض.",
   ],
   patient: [
     "UniMind is for study, not treatment of a real patient. Consult a qualified professional. No patient details are collected in this review.",

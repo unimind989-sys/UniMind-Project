@@ -22,5 +22,5 @@ export const themeBootstrap = `(() => {
   const dark = typeof matchMedia === 'function' && matchMedia('(prefers-color-scheme: dark)').matches;
   root.dataset.themePreference = preference;
   root.dataset.theme = preference === 'system' ? (dark ? 'dark' : 'light') : preference;
-  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', root.dataset.theme === 'dark' ? '#1b1c1f' : '#f6f7f8');
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', root.dataset.theme === 'dark' ? '#050b12' : '#0c1823');
 })();`;

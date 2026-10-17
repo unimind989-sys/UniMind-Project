@@ -60,7 +60,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <meta name="theme-color" content="#f6f7f8" />
+        <meta name="theme-color" content="#0c1823" />
         <script dangerouslySetInnerHTML={{ __html: themeBootstrap }} />
       </head>
       <body>

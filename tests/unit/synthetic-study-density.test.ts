@@ -131,8 +131,8 @@ describe("prepared study density", () => {
       new Set(studyDensitySourceTitles.map((title) => title[1])).size,
     ).toBe(24);
     expect(studyDensitySourceTitles.slice(0, 2)).toEqual([
-      ["Synthetic sequence handout", "ملزمة الترتيب التجريبية"],
-      ["Synthetic comparison recording", "تسجيل المقارنة التجريبي"],
+      ["Lecture 6 handout", "ملزمة المحاضرة 6"],
+      ["Practical 3 recording", "تسجيل العملي 3"],
     ]);
     for (const title of studyDensitySourceTitles.slice(2)) {
       expect(title[0].length).toBeGreaterThan(90);

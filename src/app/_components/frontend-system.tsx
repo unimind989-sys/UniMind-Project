@@ -119,89 +119,92 @@ export function FrontendShell({
           </Link>
         </p>
       ) : null}
-      <header className={styles.subjectHeader} data-workspace-chrome>
-        <div>
-          <Link
-            className={styles.back}
-            href={("/learn?view=subjects&lang=" + locale) as Route}
-            prefetch={false}
-          >
-            <FrontendIcon name="back" />
-            {t("Subjects", "المواد")}
-          </Link>
-          <h1>
-            <bdi>{title}</bdi>
-          </h1>
-          <p className={styles.scopeCaption}>
-            <bdi>{context}</bdi>
-          </p>
-        </div>
-        {institution || scopeControl ? (
-          <details
-            className={styles.subjectSwitch}
-            onKeyDown={(event) => {
-              if (event.key === "Escape" && event.currentTarget.open) {
-                event.currentTarget.open = false;
-                event.currentTarget.querySelector("summary")?.focus();
-                event.stopPropagation();
-              }
-            }}
-          >
-            <summary>
-              <FrontendIcon name="sources" />
-              {t(`${unitLabel} details`, `تفاصيل ${unitLabel}`)}
-            </summary>
-            <div>
-              {institution ? (
-                <p className={styles.institution}>
-                  <strong>{t("Institution", "الجامعة أو النظام")}</strong>
-                  <br />
-                  <bdi>{institution}</bdi>
+      <div className={styles.band} data-workspace-chrome>
+        <header className={styles.subjectHeader}>
+          <div>
+            <Link
+              className={styles.back}
+              href={("/learn?view=subjects&lang=" + locale) as Route}
+              prefetch={false}
+            >
+              <FrontendIcon name="back" />
+              <span className={styles.backLabel}>
+                {t("Subjects", "المواد")}
+              </span>
+            </Link>
+            <h1>
+              <bdi>{title}</bdi>
+            </h1>
+            <p className={styles.scopeCaption}>
+              <bdi>{context}</bdi>
+            </p>
+          </div>
+          {institution || scopeControl ? (
+            <details
+              className={styles.subjectSwitch}
+              onKeyDown={(event) => {
+                if (event.key === "Escape" && event.currentTarget.open) {
+                  event.currentTarget.open = false;
+                  event.currentTarget.querySelector("summary")?.focus();
+                  event.stopPropagation();
+                }
+              }}
+            >
+              <summary>
+                <FrontendIcon name="sources" />
+                {t(`${unitLabel} details`, `تفاصيل ${unitLabel}`)}
+              </summary>
+              <div>
+                {institution ? (
+                  <p className={styles.institution}>
+                    <strong>{t("Institution", "الجامعة أو النظام")}</strong>
+                    <br />
+                    <bdi>{institution}</bdi>
+                  </p>
+                ) : null}
+                <p>
+                  <bdi>{context}</bdi>
                 </p>
-              ) : null}
-              <p>
-                <bdi>{context}</bdi>
-              </p>
-              {scopeControl ? (
-                <>
-                  <h2 className={styles.switchHeading}>
-                    {t(
-                      `Switch ${unitLabel.toLowerCase()}`,
-                      `تغيير ${unitLabel}`,
-                    )}
-                  </h2>
-                  {scopeControl}
-                </>
-              ) : null}
-            </div>
-          </details>
-        ) : null}
-      </header>
-      <nav
-        className={styles.subjectNav}
-        data-workspace-chrome
-        aria-label={t("Workspace navigation", "تنقل مساحة المذاكرة")}
-      >
-        {destinations.map(([suffix, label], index) => (
-          <Link
-            key={suffix}
-            href={(base + suffix + "?lang=" + locale) as Route}
-            prefetch={false}
-            aria-current={
-              pathname === base + suffix ||
-              (suffix === "" && pathname === base + "/sources") ||
-              (suffix === "/quiz" && pathname.startsWith(base + "/quiz/"))
-                ? "page"
-                : undefined
-            }
-          >
-            <FrontendIcon
-              name={(["sources", "chat", "studio", "quiz"] as const)[index]!}
-            />
-            {label}
-          </Link>
-        ))}
-      </nav>
+                {scopeControl ? (
+                  <>
+                    <h2 className={styles.switchHeading}>
+                      {t(
+                        `Switch ${unitLabel.toLowerCase()}`,
+                        `تغيير ${unitLabel}`,
+                      )}
+                    </h2>
+                    {scopeControl}
+                  </>
+                ) : null}
+              </div>
+            </details>
+          ) : null}
+        </header>
+        <nav
+          className={styles.subjectNav}
+          aria-label={t("Workspace navigation", "تنقل مساحة المذاكرة")}
+        >
+          {destinations.map(([suffix, label], index) => (
+            <Link
+              key={suffix}
+              href={(base + suffix + "?lang=" + locale) as Route}
+              prefetch={false}
+              aria-current={
+                pathname === base + suffix ||
+                (suffix === "" && pathname === base + "/sources") ||
+                (suffix === "/quiz" && pathname.startsWith(base + "/quiz/"))
+                  ? "page"
+                  : undefined
+              }
+            >
+              <FrontendIcon
+                name={(["sources", "chat", "studio", "quiz"] as const)[index]!}
+              />
+              {label}
+            </Link>
+          ))}
+        </nav>
+      </div>
       {!available ? (
         <p className={styles.unavailable} role="status" data-workspace-chrome>
           {t(

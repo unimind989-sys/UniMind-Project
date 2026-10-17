@@ -283,7 +283,7 @@ const setupStates: readonly ScreenState[] = [
       }
       await expectTaskHeading(page, t("Materials", "مصادر المذاكرة"), width);
       await expect(
-        page.getByText(t("Sample timestamp 02:10", "توقيت تجريبي ٠٢:١٠"), {
+        page.getByText(t("Timestamp 18:42", "التوقيت ١٨:٤٢"), {
           exact: true,
         }),
       ).toBeVisible();

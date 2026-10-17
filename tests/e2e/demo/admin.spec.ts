@@ -841,7 +841,7 @@ inLocales(["en"], (locale) => {
       await evidence.click();
       await expect(page).toHaveURL(/\/evidence\?exchange=1&session=2/u);
       await expect(page.getByRole("main")).toContainText(
-        t("Synthetic comparison recording", "تسجيل المقارنة التجريبي"),
+        t("Practical 3 recording", "تسجيل العملي 3"),
       );
       await page
         .getByRole("link", {

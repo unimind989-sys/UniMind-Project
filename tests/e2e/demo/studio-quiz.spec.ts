@@ -1443,7 +1443,7 @@ inLocales(["en"], (locale) => {
         "lang",
         locale,
       );
-      await expect(output).toContainText(t("Study sequence", "ترتيب الدراسة"));
+      await expect(output).toContainText(t("Upper trunk injury", "إصابة الجذع العلوي"));
       await expect(
         page.getByLabel(t("Output language", "لغة المخرج"), { exact: true }),
       ).toHaveValue("mixed");
@@ -1463,8 +1463,8 @@ inLocales(["ar"], (locale) => {
       const source = page.getByRole("heading", {
         name: pick(
           locale,
-          "Synthetic sequence handout",
-          "ملزمة الترتيب التجريبية",
+          "Lecture 6 handout",
+          "ملزمة المحاضرة 6",
         ),
         exact: true,
       });
@@ -1507,7 +1507,7 @@ inLocales(["ar"], (locale) => {
       const answer = pick(
         locale,
         "Identify labels, then compare diagrams.",
-        "حدد الأسماء ثم قارن الرسوم.",
+        "إصابة الجذع العلوي (C5 وC6) تسبب شلل إرب-دوشين، غالبًا من المباعدة الشديدة بين الرأس والكتف. تتكون الضفيرة من الفروع الأمامية للأعصاب من C5 إلى T1.",
       );
       await expect(
         card.getByRole("paragraph").filter({ hasText: question }),
@@ -1655,8 +1655,8 @@ inLocales(["ar"], (locale) => {
         page.getByText(
           pick(
             locale,
-            "Identify the labels, then compare the diagrams.",
-            "حدد الأسماء ثم قارن الرسوم.",
+            "Injury to the upper trunk (C5, C6) produces Erb–Duchenne paralysis, commonly from excessive separation of the head and shoulder. The plexus is formed by the ventral rami of C5 to T1.",
+            "إصابة الجذع العلوي (C5 وC6) تسبب شلل إرب-دوشين، غالبًا من المباعدة الشديدة بين الرأس والكتف. تتكون الضفيرة من الفروع الأمامية للأعصاب من C5 إلى T1.",
           ),
           { exact: true },
         ),

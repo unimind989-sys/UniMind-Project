@@ -122,7 +122,7 @@ export function StudyShelf({
         ...journey.options.terms
           .filter((item) => item.id === journey.selection.termId)
           .map((item) => (locale === "ar" ? item.nameAr : item.nameEn)),
-      ].join(" · ")
+      ].join(", ")
     : "";
   const safe = {
     NO_MEMBERSHIP: [copy.noMembershipTitle, copy.noMembershipBody],
@@ -132,6 +132,19 @@ export function StudyShelf({
     READY_SOURCE_MISSING: [copy.noReadySourceTitle, copy.noReadySourceBody],
     ERROR: [copy.errorTitle, copy.errorBody],
   };
+  const featured = resumeUnit ?? startUnit;
+  const unitHref = (unitId: string) =>
+    journey.selectedCohort
+      ? `${basePath}/${journey.selectedCohort.id}/${unitId}?lang=${locale}`
+      : null;
+  const count = (value: number | undefined) =>
+    value === undefined
+      ? null
+      : `${new Intl.NumberFormat(locale).format(value)} ${t(
+          value === 1 ? "material" : "materials",
+          "مصادر",
+        )}`;
+  const ready = state === "READY" && journey.units.length > 0;
   return (
     <AppShell
       locale={locale}
@@ -140,29 +153,122 @@ export function StudyShelf({
       title={subjects ? t("Subjects", "المواد") : t("Study", "المذاكرة")}
     >
       <div className={styles.content} aria-busy={false}>
-        <header className={styles.pageHeader}>
-          <h1 ref={heading} tabIndex={-1}>
-            {subjects
-              ? t(
-                  `Your ${collectionLabel.toLocaleLowerCase(locale)}`,
-                  `قائمة ${collectionLabel}`,
-                )
-              : t("Your Study Shelf", "رف المذاكرة")}
-          </h1>
-          <p>
-            {context ||
-              t(
-                "Your subjects and materials, together.",
-                "موادك ومصادرك في مكان واحد.",
-              )}
-          </p>
-          {!subjects ? (
-            <Link
-              className={styles.contextLink}
-              href={`/settings?lang=${locale}&section=academic` as Route}
-            >
-              {t("Academic settings", "الإعدادات الدراسية")}
-            </Link>
+        <header
+          className={styles.pageHeader}
+          data-view={subjects ? "subjects" : "study"}
+        >
+          <div className={styles.headerText}>
+            <h1 ref={heading} tabIndex={-1}>
+              {subjects
+                ? t(
+                    `Your ${collectionLabel.toLocaleLowerCase(locale)}`,
+                    `قائمة ${collectionLabel}`,
+                  )
+                : t("Your Study Shelf", "رف المذاكرة")}
+            </h1>
+            <p>
+              {context ||
+                t(
+                  "Your subjects and materials, together.",
+                  "موادك ومصادرك في مكان واحد.",
+                )}
+            </p>
+            {!subjects ? (
+              <Link
+                className={styles.contextLink}
+                href={`/settings?lang=${locale}&section=academic` as Route}
+              >
+                {t("Academic settings", "الإعدادات الدراسية")}
+              </Link>
+            ) : null}
+          </div>
+          {ready && !subjects ? (
+            <section className={styles.resume}>
+              <div className={styles.planeText}>
+                <p className={styles.planeLabel}>
+                  {resumeName ? (
+                    <>
+                      <span className={styles.planePill}>
+                        <bdi>{resumeName}</bdi>
+                      </span>
+                      <span>{resumeTool}</span>
+                    </>
+                  ) : (
+                    <span className={styles.planePill}>
+                      {t("Start here", "ابدأ من هنا")}
+                    </span>
+                  )}
+                </p>
+                <h2>
+                  {resumeAddress && lastStudyDetails ? (
+                    <bdi className={styles.recentTitle}>
+                      {lastStudyDetails.title}
+                    </bdi>
+                  ) : resumeName ? (
+                    <>
+                      <bdi>{resumeName}</bdi> · {resumeTool}
+                    </>
+                  ) : startName ? (
+                    <>
+                      {t("Start in", "ابدأ في")} <bdi>{startName}</bdi>
+                    </>
+                  ) : (
+                    t("Start studying", "ابدأ المذاكرة")
+                  )}
+                </h2>
+                {resumeAddress && lastStudyDetails ? (
+                  <p className={styles.planeDetail}>
+                    {lastStudyDetails.detail}
+                  </p>
+                ) : null}
+                <p className={styles.planeNote}>
+                  {resumeAddress
+                    ? t(
+                        synthetic
+                          ? hosted
+                            ? "Only your latest work is shown here."
+                            : "Only the latest work in this tab is shown. Reload starts fresh."
+                          : "Continue your newest open Chat conversation. Other tools are not listed here yet.",
+                        synthetic
+                          ? hosted
+                            ? "يظهر آخر عمل لك هنا فقط."
+                            : "يظهر آخر عمل في هذا التبويب فقط. إعادة التحميل تبدأ من جديد."
+                          : "تابع أحدث محادثة مفتوحة. الأدوات الأخرى لا تظهر هنا بعد.",
+                      )
+                    : startName
+                      ? t(
+                          "Open learning materials in your current study path.",
+                          "افتح مصادر المذاكرة في مسارك الدراسي الحالي.",
+                        )
+                      : t(
+                          `Choose a ${singularLabel.toLocaleLowerCase(locale)} to open its learning materials and study tools.`,
+                          `اختر ${singularLabel} لفتح مصادر المذاكرة والأدوات.`,
+                        )}
+                </p>
+              </div>
+              <Link
+                className={styles.open}
+                href={
+                  resumeAddress
+                    ? ((resumeAddress.pathname +
+                        resumeAddress.search +
+                        resumeAddress.hash) as Route)
+                    : startAddress
+                      ? (startAddress as Route)
+                      : browseHref
+                }
+              >
+                <FrontendIcon name={resumeName ? "chat" : "sources"} />
+                {resumeName
+                  ? t(`Resume ${resumeName}`, `متابعة ${resumeName}`)
+                  : startName
+                    ? t(`Open ${startName}`, `فتح ${startName}`)
+                    : t(
+                        `Choose a ${singularLabel.toLocaleLowerCase(locale)}`,
+                        `اختر ${singularLabel}`,
+                      )}
+              </Link>
+            </section>
           ) : null}
         </header>
         {state !== "READY" ? (
@@ -178,208 +284,166 @@ export function StudyShelf({
               </Link>
             ) : null}
           </section>
-        ) : (
-          <>
-            {journey.units.length === 0 ? (
-              <section className={styles.emptyState} role="status">
-                <h2>{copy.choosePathTitle}</h2>
-                <p>{copy.choosePathBody}</p>
-                {!subjects ? (
-                  <Link href={`/settings?lang=${locale}` as Route}>
-                    {t("Choose academic settings", "اختيار الإعدادات الدراسية")}
-                  </Link>
-                ) : null}
-              </section>
-            ) : (
-              <>
-                {!subjects ? (
+        ) : journey.units.length === 0 ? (
+          <section className={styles.emptyState} role="status">
+            <h2>{copy.choosePathTitle}</h2>
+            <p>{copy.choosePathBody}</p>
+            {!subjects ? (
+              <Link href={`/settings?lang=${locale}` as Route}>
+                {t("Choose academic settings", "اختيار الإعدادات الدراسية")}
+              </Link>
+            ) : null}
+          </section>
+        ) : !subjects ? (
+          <section
+            className={styles.covers}
+            aria-labelledby="shelf-covers-heading"
+          >
+            <div className={styles.coversHead}>
+              <h2 id="shelf-covers-heading">{collectionLabel}</h2>
+              {resumeAddress || startAddress ? (
+                <Link className={styles.contextLink} href={browseHref}>
+                  {t("Browse all subjects", "تصفح كل المواد")}
+                </Link>
+              ) : null}
+            </div>
+            <ul className={styles.coverGrid}>
+              {journey.units.map((unit) => {
+                const href = unitHref(unit.id);
+                const name = locale === "ar" ? unit.nameAr : unit.nameEn;
+                const other = locale === "ar" ? unit.nameEn : unit.nameAr;
+                const materials = count(unit.sourceCount);
+                const body = (
                   <>
-                    <section className={styles.resume}>
-                      <div>
-                        <h2>
-                          {resumeName ? (
-                            <>
-                              <bdi>{resumeName}</bdi> · {resumeTool}
-                            </>
-                          ) : startName ? (
-                            <>
-                              {t("Start in", "ابدأ في")} <bdi>{startName}</bdi>
-                            </>
-                          ) : (
-                            t("Start studying", "ابدأ المذاكرة")
-                          )}
-                        </h2>
-                        {resumeAddress && lastStudyDetails ? (
-                          <>
-                            <p className={styles.recentTitle}>
-                              <bdi>{lastStudyDetails.title}</bdi>
-                            </p>
-                            <p>{lastStudyDetails.detail}</p>
-                          </>
-                        ) : null}
-                        <p>
-                          {resumeAddress
-                            ? t(
-                                synthetic
-                                  ? hosted
-                                    ? "Only your latest work is shown here."
-                                    : "Only the latest work in this tab is shown. Reload starts fresh."
-                                  : "Continue your newest open Chat conversation. Other tools are not listed here yet.",
-                                synthetic
-                                  ? hosted
-                                    ? "يظهر آخر عمل لك هنا فقط."
-                                    : "يظهر آخر عمل في هذا التبويب فقط. إعادة التحميل تبدأ من جديد."
-                                  : "تابع أحدث محادثة مفتوحة. الأدوات الأخرى لا تظهر هنا بعد.",
-                              )
-                            : startName
-                              ? t(
-                                  "Open learning materials in your current study path.",
-                                  "افتح مصادر المذاكرة في مسارك الدراسي الحالي.",
-                                )
-                              : t(
-                                  `Choose a ${singularLabel.toLocaleLowerCase(locale)} to open its learning materials and study tools.`,
-                                  `اختر ${singularLabel} لفتح مصادر المذاكرة والأدوات.`,
-                                )}
-                        </p>
-                      </div>
-                      <Link
-                        className={styles.open}
-                        href={
-                          resumeAddress
-                            ? ((resumeAddress.pathname +
-                                resumeAddress.search +
-                                resumeAddress.hash) as Route)
-                            : startAddress
-                              ? (startAddress as Route)
-                              : browseHref
-                        }
-                      >
-                        {resumeName
-                          ? t(`Resume ${resumeName}`, `متابعة ${resumeName}`)
-                          : startName
-                            ? t(`Open ${startName}`, `فتح ${startName}`)
-                            : t(
-                                `Choose a ${singularLabel.toLocaleLowerCase(locale)}`,
-                                `اختر ${singularLabel}`,
-                              )}
-                      </Link>
-                    </section>
-                    {resumeAddress || startAddress ? (
-                      <Link className={styles.contextLink} href={browseHref}>
-                        {t("Browse all subjects", "تصفح كل المواد")}
-                      </Link>
+                    <span
+                      className={styles.coverOther}
+                      lang={locale === "ar" ? "en" : "ar"}
+                      dir={locale === "ar" ? "ltr" : "rtl"}
+                      aria-hidden="true"
+                    >
+                      {other}
+                    </span>
+                    <span className={styles.coverTitle}>
+                      <bdi>{name}</bdi>
+                    </span>
+                    {materials ? (
+                      <span className={styles.coverMeta}>{materials}</span>
                     ) : null}
                   </>
-                ) : null}
-                {subjects ? (
-                  <div className={styles.indexLayout}>
-                    <div>
-                      <div className={styles.shelfHeading}>
-                        <h2 tabIndex={-1}>{collectionLabel}</h2>
-                        <label className={styles.search}>
-                          <span>
-                            {t(
-                              `Search ${collectionLabel.toLocaleLowerCase(locale)}`,
-                              `البحث في ${collectionLabel}`,
-                            )}
+                );
+                return (
+                  <li
+                    key={unit.id}
+                    data-cover-unit-id={unit.id}
+                    data-current={unit === featured ? true : undefined}
+                  >
+                    {href ? (
+                      <Link
+                        className={styles.cover}
+                        href={href as Route}
+                        aria-current={unit === featured ? "true" : undefined}
+                      >
+                        {body}
+                      </Link>
+                    ) : (
+                      <div className={styles.cover}>{body}</div>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        ) : (
+          <div className={styles.indexLayout}>
+            <div className={styles.shelfHeading}>
+              <h2 tabIndex={-1}>{collectionLabel}</h2>
+              <label className={styles.search}>
+                <span>
+                  {t(
+                    `Search ${collectionLabel.toLocaleLowerCase(locale)}`,
+                    `البحث في ${collectionLabel}`,
+                  )}
+                </span>
+                <input
+                  type="search"
+                  value={search}
+                  placeholder={t(
+                    `Find a ${singularLabel.toLocaleLowerCase(locale)}…`,
+                    `ابحث عن ${singularLabel}…`,
+                  )}
+                  onChange={(event) => setSearch(event.target.value)}
+                />
+              </label>
+            </div>
+            {units.length === 0 ? (
+              <section className={styles.emptyState} role="status">
+                <h3>
+                  {t(
+                    `No ${collectionLabel.toLocaleLowerCase(locale)} match this search`,
+                    `لا توجد ${collectionLabel} تطابق هذا البحث`,
+                  )}
+                </h3>
+                <p>
+                  {t(
+                    `Try a different ${singularLabel.toLocaleLowerCase(locale)} name or clear the search.`,
+                    `جرّب اسم ${singularLabel} آخر أو امسح البحث.`,
+                  )}
+                </p>
+                <button type="button" onClick={() => setSearch("")}>
+                  {copy.clearSearch}
+                </button>
+              </section>
+            ) : (
+              <ul className={styles.units}>
+                {units.map((unit) => {
+                  const href = unitHref(unit.id);
+                  const name = locale === "ar" ? unit.nameAr : unit.nameEn;
+                  const materials = count(unit.sourceCount);
+                  const contents = (
+                    <>
+                      <span className={styles.subjectBook} aria-hidden="true">
+                        <span />
+                      </span>
+                      <span className={styles.unitCopy}>
+                        <span className={styles.unitHeading}>
+                          <span className={styles.unitTitle}>
+                            <bdi>{name}</bdi>
                           </span>
-                          <input
-                            type="search"
-                            value={search}
-                            placeholder={t(
-                              `Find a ${singularLabel.toLocaleLowerCase(locale)}…`,
-                              `ابحث عن ${singularLabel}…`,
-                            )}
-                            onChange={(event) => setSearch(event.target.value)}
-                          />
-                        </label>
-                      </div>
-                      {units.length === 0 ? (
-                        <section className={styles.emptyState} role="status">
-                          <h3>
-                            {t(
-                              `No ${collectionLabel.toLocaleLowerCase(locale)} match this search`,
-                              `لا توجد ${collectionLabel} تطابق هذا البحث`,
-                            )}
-                          </h3>
-                          <p>
-                            {t(
-                              `Try a different ${singularLabel.toLocaleLowerCase(locale)} name or clear the search.`,
-                              `جرّب اسم ${singularLabel} آخر أو امسح البحث.`,
-                            )}
-                          </p>
-                          <button type="button" onClick={() => setSearch("")}>
-                            {copy.clearSearch}
-                          </button>
-                        </section>
+                          <span className={styles.ready}>
+                            {t("Ready", "جاهزة")}
+                          </span>
+                        </span>
+                        {materials ? (
+                          <span className={styles.materialCount}>
+                            {materials}
+                          </span>
+                        ) : null}
+                      </span>
+                      <span className={styles.unitAction}>
+                        {href ? <span>{t("Open", "فتح")}</span> : null}
+                        <FrontendIcon name="arrow" />
+                      </span>
+                    </>
+                  );
+                  return (
+                    <li key={unit.id} data-unit-id={unit.id}>
+                      {href ? (
+                        <Link
+                          className={styles.unit}
+                          href={href as Route}
+                          aria-label={`${t("Open", "فتح")} ${name}`}
+                        >
+                          {contents}
+                        </Link>
                       ) : (
-                        <ul className={styles.units}>
-                          {units.map((unit) => {
-                            const href = journey.selectedCohort
-                              ? `${basePath}/${journey.selectedCohort.id}/${unit.id}?lang=${locale}`
-                              : null;
-                            const name =
-                              locale === "ar" ? unit.nameAr : unit.nameEn;
-                            const contents = (
-                              <>
-                                <span
-                                  className={styles.subjectBook}
-                                  aria-hidden="true"
-                                >
-                                  <span />
-                                </span>
-                                <span className={styles.unitCopy}>
-                                  <span className={styles.unitHeading}>
-                                    <span className={styles.unitTitle}>
-                                      <bdi>{name}</bdi>
-                                    </span>
-                                    <span className={styles.ready}>
-                                      {t("Ready", "جاهزة")}
-                                    </span>
-                                  </span>
-                                  <span className={styles.materialCount}>
-                                    {unit.sourceCount !== undefined
-                                      ? new Intl.NumberFormat(locale).format(
-                                          unit.sourceCount,
-                                        )
-                                      : ""}{" "}
-                                    {synthetic
-                                      ? t("sample materials", "مصادر تجريبية")
-                                      : t("available materials", "مواد متاحة")}
-                                  </span>
-                                </span>
-                                <span className={styles.unitAction}>
-                                  {href ? (
-                                    <span>{t("Open", "فتح")}</span>
-                                  ) : null}
-                                  <FrontendIcon name="arrow" />
-                                </span>
-                              </>
-                            );
-                            return (
-                              <li key={unit.id} data-unit-id={unit.id}>
-                                {href ? (
-                                  <Link
-                                    className={styles.unit}
-                                    href={href as Route}
-                                    aria-label={`${t("Open", "فتح")} ${name}`}
-                                  >
-                                    {contents}
-                                  </Link>
-                                ) : (
-                                  <div className={styles.unit}>{contents}</div>
-                                )}
-                              </li>
-                            );
-                          })}
-                        </ul>
+                        <div className={styles.unit}>{contents}</div>
                       )}
-                    </div>
-                  </div>
-                ) : null}
-              </>
+                    </li>
+                  );
+                })}
+              </ul>
             )}
-          </>
+          </div>
         )}
         <p className={styles.srOnly} role="status">
           {copy.resultsUpdated}

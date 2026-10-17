@@ -1,3 +1,4 @@
+/* Native radios presented as a segmented control (Direction B). */
 .group {
   min-width: 0;
   padding: 0;
@@ -8,36 +9,56 @@
   padding: 0;
   margin-block-end: 8px;
   font-size: 0.875rem;
+  font-weight: 650;
   color: var(--secondary);
 }
 .group > div {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 4px;
+  width: fit-content;
+  max-width: 100%;
+  padding: 4px;
+  border-radius: var(--radius-control);
+  background: var(--surface-2);
+  box-shadow: inset 0 0 0 1px var(--line);
 }
 .group label {
   display: flex;
   align-items: center;
   gap: 8px;
   min-height: 44px;
-  padding: 8px 12px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--surface);
+  padding: 0 14px;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--secondary);
   cursor: pointer;
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
+  font-weight: 650;
+  transition:
+    background-color var(--motion-control),
+    color var(--motion-control);
+}
+.group label:hover {
+  color: var(--ink);
 }
 .group label:has(:checked) {
-  border-color: var(--accent-ink);
-  background: var(--annotation);
-  color: var(--accent-ink);
+  background: var(--surface);
+  color: var(--ink);
+  font-weight: 750;
+  box-shadow:
+    0 1px 2px rgb(12 24 35 / 0.12),
+    inset 0 0 0 1.5px var(--action);
 }
 .group label:has(:focus-visible) {
-  outline: 2px solid var(--accent-ink);
-  outline-offset: 3px;
+  outline: 2px solid var(--cobalt);
+  outline-offset: 2px;
 }
 .group input {
-  accent-color: var(--accent-ink);
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--action);
 }
 .group:disabled {
   opacity: 0.7;
