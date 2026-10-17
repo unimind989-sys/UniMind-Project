@@ -53,6 +53,7 @@
 - `database-ci` now also runs for frontend and `tests/e2e-database` changes, because real-mode UI is browser-tested only there.
 - Landing CSS split proven pixel-identical (16 screenshots, en/ar × light/dark × 4 widths, with a control).
 - Line-ending normalization runs last.
+- Large binaries (founder decision, 2026-10-17: remove what is not needed): the unused `.impeccable/mocks`, `.impeccable/review` and `.impeccable/work` design-exploration artifacts (81 files, about 18 MB) were removed in a follow-up PR; study-shelf images, the RLS matrix CSV and skill assets are in use and stay.
 
 ## Current state
 
