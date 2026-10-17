@@ -2,7 +2,7 @@
 
 **Task ID:** WP03-T22
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** Loopback demo requests are rewritten to `/synthetic-runtime/...` inside the same Next server, so no demo render goes through Next's 30-second HTTP proxy.
 
@@ -12,7 +12,7 @@
 
 **Branch:** claude/wp03-t22-internal-demo-rewrite
 
-**Updated (UTC):** 2026-10-17T20:30:00Z
+**Updated (UTC):** 2026-10-17T22:10:00Z
 
 ## Contract
 
@@ -41,7 +41,7 @@
 - [x] Unit-test the config scoping and the rewrite origin; assert in `signIn` that every demo sign-in rewrite is relative, so a regression fails every demo test instead of flaking.
 - [x] Verify locally (single proxy call, gate probes, a demo e2e subset), then `pnpm check`.
 - [x] Review finding: with normalization off, the proxy sees raw `/_next/data/development/<route>.json`, which passed the `/_next/` allowance while the router rendered the real `<route>` (live probe: `/_next/data/development/api/health/live.json` → 200 from the real handler). The demo gate now answers 404 for `/_next/data/`; App Router never requests it, and `/_next/static` and `/_next/image` stay allowed.
-- [ ] Independent review of the exact diff; PR; two full CI runs with no `Failed to proxy`; merge; close.
+- [x] Independent review of the exact diff; PR #85; two full CI runs with no `Failed to proxy`; `pnpm verify`; sync with main after WP03-T21 merged; merge; close.
 
 ## Decisions
 
@@ -52,14 +52,14 @@
 
 **Changed:** `next.config.ts` adds `skipProxyUrlNormalize: true` only when `UNIMIND_SYNTHETIC_DEMO === "true"`; `src/proxy.ts` answers 404 for `/_next/data/` in the demo and its comment is corrected; `tests/unit/synthetic-demo-runtime.test.ts` covers the config for unset, `false` and `true`, plus the rewrite origin, gate headers, 404 for raw data URLs and the kept `/_next/static` and `/_next/image` allowance; `tests/e2e/demo/auth.spec.ts` probes two data URLs for 404; `tests/e2e/support/session.ts` asserts a relative `/synthetic-runtime/login?` rewrite on every demo sign-in.
 
-**Proof:** local demo on 3140 before → proxy ran twice per `/login`, `x-middleware-rewrite: http://localhost:3140/synthetic-runtime/login?lang=en`; after → once, `x-middleware-rewrite: /synthetic-runtime/login?lang=en`. Gate probes after: `POST /login`, `GET /api/health/live` and `next-action` → 403; `/not-a-product-path` → 404; foreign Host → 503; asset → `private, no-store` and `noindex, nofollow`; pages → `noindex, nofollow` and the same `no-cache, must-revalidate` that Next dev set before the change (baseline captured on the old config). The new unit test fails on the old config. Demo e2e locally: the three CI failures plus `auth.spec.ts` → 12 passed, no `Failed to proxy`; the sign-in guard passes with the fix and fails on the old config with the absolute `localhost` target. After the review fix: live probes on 3140 → `/_next/data/development/{admin,api/health/live,login,images/product/provenance.json}.json` all 404, `/admin.rsc` → relative rewrite, `/_next/image` reaches Next; the data-URL unit tests fail on the previous proxy. `pnpm verify` and the two full CI runs: PENDING.
+**Proof:** local demo on 3140 before → proxy ran twice per `/login`, `x-middleware-rewrite: http://localhost:3140/synthetic-runtime/login?lang=en`; after → once, `x-middleware-rewrite: /synthetic-runtime/login?lang=en`. Gate probes after: `POST /login`, `GET /api/health/live` and `next-action` → 403; `/not-a-product-path` → 404; foreign Host → 503; asset → `private, no-store` and `noindex, nofollow`; pages → `noindex, nofollow` and the same `no-cache, must-revalidate` that Next dev set before the change (baseline captured on the old config). The new unit test fails on the old config. Demo e2e locally: the three CI failures plus `auth.spec.ts` → 12 passed, no `Failed to proxy`; the sign-in guard passes with the fix and fails on the old config with the absolute `localhost` target. After the review fix: live probes on 3140 → `/_next/data/development/{admin,api/health/live,login,images/product/provenance.json}.json` all 404, `/admin.rsc` → relative rewrite, `/_next/image` reaches Next; the data-URL unit tests fail on the previous proxy. `pnpm verify` on `b81f736` → exit 0 (static, 956 node tests, 39 e2e, 192 demo in 36.3 min with zero `Failed to proxy`, env build). PR #85 CI run 39065977093 on `8246a25` → all checks green; demo shards 39/39/38/38/38 passed, zero `Failed to proxy`. Run 39067911066 on `b81f736` → demo shards 39/38/38/39/38 passed, zero `Failed to proxy`; its `ci-selector` failed only because main moved to `d64c9e7` (WP03-T21) mid-run ("Checked-out PR merge commit does not match event base and head"). Synced main as `1c3b577` (no overlap with this task's files); `pnpm check` → green (929 unit tests); required CI on the final head is the merge gate.
 
-**Review:** independent review by the Claude Code `independent-reviewer` sub-agent of `b8f5647..8246a25`: one blocker (raw `/_next/data/` URLs bypassed the demo path allow-list and `/api/*` 403), fixed and confirmed by live probe; one minor (runbook still blamed the 30 s timeout), fixed. Re-review of the fix: PENDING.
+**Review:** independent review by the Claude Code `independent-reviewer` sub-agent of `b8f5647..8246a25`: one blocker (raw `/_next/data/` URLs bypassed the demo path allow-list and `/api/*` 403), fixed and confirmed by live probe; one minor (runbook still blamed the 30 s timeout), fixed. Re-review of `b8f5647..b81f736`: no findings (blocker closed; no other raw-URL form reaches a real route).
 
 **Approved commit:** NOT REQUIRED: no visible UI change.
 
-**Remaining:** re-review of the fix, `pnpm verify`, two full CI runs on PR #85, merge, closure.
+**Remaining:** NONE once PR #85 merges; these closure markers become authoritative only then. Follow-up option: the gate's `localhost:<port>` Host allowance now serves no request and could be dropped.
 
 ## Next action
 
-Get the re-review of the `/_next/data/` fix, push it to PR #85, run `pnpm verify`, and check two full CI runs for `Failed to proxy`.
+None. Squash-merge PR #85 after required CI on its final head, then remove the branch and worktree.
