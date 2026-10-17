@@ -1508,6 +1508,15 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 - [x] Leader intake and history, admin decision queue and resource pages as working tools in the new direction; keep every governed-action guard; Ahmed approves the rendered candidate; deliver through one PR with required CI ([task record](../../planning/tasks/wp03-t21-leader-admin-cobalt.md)). Approved at `c197682` by the overseeing session under Ahmed's delegation; delivered in [#84](https://github.com/unimind989-sys/UniMind-Project/pull/84), squash-merged as `d64c9e7` with all 15 checks green, and promoted to production ([evidence](../../evidence/wp03-product-shell/2026-10-17_wp03-t21-leader-admin-cobalt_production_d64c9e7.md)).
 
+#### WP03-T22 — Keep the loopback demo rewrite internal
+
+**Dependencies:** WP03-T15 (loopback demo gate in `src/proxy.ts`). Since the WP03-T19 merge, about one demo e2e test per CI run fails when the dev server logs `Failed to proxy http://localhost:3102/synthetic-runtime/... socket hang up`: Next sends the demo rewrite back to itself over HTTP, where a pooled connection the dev server has just closed resets, or a cold route compile hits the 30-second proxy timeout ([task record](../../planning/tasks/wp03-t22-internal-demo-rewrite.md)).
+
+- [x] Find why the rewrite becomes external and make it internal without weakening the demo gate (mutation 403, path allow-list 404 including raw `/_next/data/` URLs, `no-store` and `noindex` headers, production 404 for `/synthetic-runtime`); say whether WP03-T19 made renders slower.
+- [x] Independent review of the exact diff; deliver through one PR with required CI; two full demo e2e runs with no `Failed to proxy` line in the dev-server log. Reviewed by the `independent-reviewer` sub-agent (one blocker fixed, then no findings); delivered in [#85](https://github.com/unimind989-sys/UniMind-Project/pull/85), with demo runs 39065977093 and 39067911066 at 192 passed each and zero `Failed to proxy`. These closure markers become authoritative only when that PR merges.
+
+**Pass:** each demo request runs the proxy once and renders in the same server; no `Failed to proxy` lines across two full CI demo runs; the demo gate and real-mode behaviour unchanged.
+
 ### 6.1 Routes
 
 Implement at minimum:

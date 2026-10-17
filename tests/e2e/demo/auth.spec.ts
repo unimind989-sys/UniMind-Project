@@ -91,6 +91,12 @@ test(
       ).status(),
     ).toBe(403);
     expect((await request.get("/api/health/live")).status()).toBe(403);
+    // Raw data URLs that the router maps to real routes (WP03-T22).
+    for (const path of [
+      "/_next/data/development/admin.json",
+      "/_next/data/development/api/health/live.json",
+    ])
+      expect((await request.get(path)).status()).toBe(404);
     expect(
       (await request.get("/images/study-shelf/clinical-medicine.png")).status(),
     ).toBe(200);
