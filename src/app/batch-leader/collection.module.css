@@ -45,6 +45,7 @@
   line-height: var(--type-display-leading);
   letter-spacing: var(--type-display-tracking);
   overflow-wrap: anywhere;
+  hyphens: auto;
 }
 .bandText > p {
   margin: 0;
