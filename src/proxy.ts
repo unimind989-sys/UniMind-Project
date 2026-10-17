@@ -68,14 +68,18 @@ export async function proxy(request: NextRequest) {
       );
     const path = request.nextUrl.pathname;
     // Build from request.url, not nextUrl: nextUrl reports 127.0.0.1 as
-    // localhost, so its origin never matches the incoming one and Next would
-    // proxy the rewrite over HTTP instead of handling it internally.
+    // localhost. The demo's next.config sets skipProxyUrlNormalize, so
+    // request.url keeps 127.0.0.1 and Next keeps this rewrite internal instead
+    // of proxying it over HTTP.
     const url = new URL(request.url);
     if (isProductDemoPath(path))
       url.pathname = `/synthetic-runtime/${path === "/" ? "home" : path.slice(1)}`;
+    // skipProxyUrlNormalize shows raw /_next/data/<build>/<route>.json URLs
+    // here after the router has already mapped them to <route>. App Router
+    // never requests them, so they get the 404 instead of the real route.
     if (
       !isProductDemoPath(path) &&
-      !path.startsWith("/_next/") &&
+      (!path.startsWith("/_next/") || path.startsWith("/_next/data/")) &&
       !path.startsWith("/demo-files/") &&
       !/^\/images\/study-shelf\/[a-z-]+\.png$/u.test(path) &&
       !/^\/images\/product\/studio-(?:en|ar)-(?:light|dark)\.jpg$/u.test(

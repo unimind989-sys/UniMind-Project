@@ -153,3 +153,71 @@ describe("explicit synthetic runtime", () => {
     expect(refresh).not.toHaveBeenCalled();
   });
 });
+describe("internal demo rewrite", () => {
+  it.each([
+    [undefined, false],
+    ["false", false],
+    ["true", true],
+  ])(
+    "UNIMIND_SYNTHETIC_DEMO=%s skips proxy URL normalization: %s",
+    async (flag, skip) => {
+      vi.stubEnv("UNIMIND_SYNTHETIC_DEMO", flag);
+      vi.resetModules();
+      const { default: config } = await import("../../next.config");
+      // Absent rather than false outside the demo, so real builds are unchanged.
+      expect(Object.hasOwn(config, "skipProxyUrlNormalize")).toBe(skip);
+      expect(config.skipProxyUrlNormalize === true).toBe(skip);
+    },
+  );
+  it("rewrites to the launcher origin so Next keeps the rewrite internal", async () => {
+    for (const [key, value] of Object.entries(safe)) vi.stubEnv(key, value);
+    // What skipProxyUrlNormalize turns on inside the demo's Next bundle.
+    vi.stubEnv("__NEXT_NO_MIDDLEWARE_URL_NORMALIZE", "true");
+    const { proxy } = await import("../../src/proxy");
+    const response = await proxy(
+      new NextRequest("http://127.0.0.1:3102/login?lang=en", {
+        headers: { host: "127.0.0.1:3102" },
+      }),
+    );
+    expect(response.headers.get("x-middleware-rewrite")).toBe(
+      "http://127.0.0.1:3102/synthetic-runtime/login?lang=en",
+    );
+    expect(response.headers.get("cache-control")).toBe("private, no-store");
+    expect(response.headers.get("x-robots-tag")).toBe("noindex, nofollow");
+  });
+});
+describe("raw proxy input in the demo", () => {
+  it.each([
+    "/_next/data/development/admin.json",
+    "/_next/data/development/api/health/live.json",
+    "/_next/data/development/images/product/provenance.json.json",
+  ])("answers 404 for router-mapped data URL %s", async (path) => {
+    for (const [key, value] of Object.entries(safe)) vi.stubEnv(key, value);
+    vi.stubEnv("__NEXT_NO_MIDDLEWARE_URL_NORMALIZE", "true");
+    const { proxy } = await import("../../src/proxy");
+    const response = await proxy(
+      new NextRequest(`http://127.0.0.1:3102${path}`, {
+        headers: { host: "127.0.0.1:3102" },
+      }),
+    );
+    expect(response.status).toBe(404);
+    expect(response.headers.get("x-middleware-next")).toBeNull();
+    expect(refresh).not.toHaveBeenCalled();
+  });
+  it("still serves Next static and image assets", async () => {
+    for (const [key, value] of Object.entries(safe)) vi.stubEnv(key, value);
+    vi.stubEnv("__NEXT_NO_MIDDLEWARE_URL_NORMALIZE", "true");
+    const { proxy } = await import("../../src/proxy");
+    for (const path of [
+      "/_next/static/chunks/main.js",
+      "/_next/image?url=%2Fbrand%2Funimind%2Ficons%2Ffavicon.svg&w=64&q=75",
+    ]) {
+      const response = await proxy(
+        new NextRequest(`http://127.0.0.1:3102${path}`, {
+          headers: { host: "127.0.0.1:3102" },
+        }),
+      );
+      expect(response.headers.get("x-middleware-next")).toBe("1");
+    }
+  });
+});
