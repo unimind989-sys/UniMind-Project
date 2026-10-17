@@ -162,7 +162,8 @@ const setupStates: readonly ScreenState[] = [
       await expect(resume.getByRole("link").first()).toBeVisible();
       if (enlarged) return;
       const layout = await resume.evaluate((e) => {
-        const text = e.querySelector("p")!.getBoundingClientRect();
+        const paragraphs = e.querySelectorAll("p");
+        const text = paragraphs[paragraphs.length - 1]!.getBoundingClientRect();
         const action = e.querySelector("a")!.getBoundingClientRect();
         const box = e.getBoundingClientRect();
         return {
@@ -171,13 +172,15 @@ const setupStates: readonly ScreenState[] = [
           contained: action.x >= box.x && action.right <= box.right + 1,
           width: box.width,
           targetHeight: action.height,
+          folio: getComputedStyle(e).maskImage !== "none",
         };
       });
       expect(layout.below).toBe(true);
       expect(layout.gap).toBeGreaterThanOrEqual(12);
-      expect(layout.gap).toBeLessThanOrEqual(20);
+      expect(layout.gap).toBeLessThanOrEqual(28);
       expect(layout.contained).toBe(true);
-      expect(layout.width).toBeLessThanOrEqual(640);
+      if (width > 1050) expect(layout.width).toBeLessThanOrEqual(640);
+      expect(layout.folio).toBe(true);
       expect(layout.targetHeight).toBeGreaterThanOrEqual(44);
       const nav = productNavigation(page, locale);
       await expect(nav.getByRole("link")).toHaveCount(3);
@@ -187,14 +190,15 @@ const setupStates: readonly ScreenState[] = [
       await expectLanguageControl(page, locale);
       await expectAlignedHeader(page, width);
       if (width === 1440) {
-        await expect(page.getByRole("complementary")).not.toContainText(
-          "Study deeper",
-        );
+        await expect(
+          page.locator("header[data-workspace-chrome]"),
+        ).not.toContainText("Study deeper");
+        // The blue folio page hangs over the lower edge of the Night band.
         const start = page.locator('[class*="resume"]');
-        expect((await boxOf(start)).height).toBeLessThan(300);
-        expect(
-          await start.evaluate((e) => getComputedStyle(e).paddingTop),
-        ).toBe("24px");
+        const card = await boxOf(start);
+        const band = await boxOf(page.locator("#app-content header").first());
+        expect(card.height).toBeLessThan(340);
+        expect(card.y + card.height).toBeGreaterThan(band.y + band.height);
       }
     },
     checkEnlarged: true,

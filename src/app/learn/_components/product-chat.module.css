@@ -615,7 +615,7 @@
   }
   .sectionHeading {
     gap: 8px;
-    padding-block-end: 8px;
+    padding-block-end: 6px;
   }
   .chatTools {
     display: contents;
@@ -709,6 +709,10 @@
   }
   .composerTools > button {
     min-width: 84px;
+  }
+  /* Phones have no Shift+Enter; keep the privacy line only. */
+  .composerMeta > span {
+    display: none;
   }
   :global([data-workspace-flow="page"]) .chatLayout {
     height: auto;

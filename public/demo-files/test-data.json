@@ -11851,7 +11851,7 @@
     "combinations": 144,
     "singleFlashcard": true,
     "quizPreviewOnly": true,
-    "note": "Fixed invented examples for every exposed setting. Comparison examines supplied instructions and evidence limits, not undisclosed actual diagram facts. No model generation, retrieval or quality claim."
+    "note": "Fixed invented examples for every exposed setting. The roots topic compares two supplied statements and their evidence limits. No model generation, retrieval or quality claim."
   },
   "unitScopes": [
     {

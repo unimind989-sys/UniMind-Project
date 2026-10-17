@@ -140,20 +140,15 @@ describe("fixed Studio examples", () => {
     expect(model.card).toEqual({
       front: [
         [
-          "What sequence does the sample handout use?",
-          "ما ترتيب الملزمة التجريبية؟",
+          "Which roots does an upper trunk injury damage?",
+          "ما الجذور التي تتأثر عند إصابة الجذع العلوي؟",
         ],
       ],
-      back: [
-        [
-          "Identify labels, then compare diagrams.",
-          "إصابة الجذع العلوي (C5 وC6) تسبب شلل إرب-دوشين، غالبًا من المباعدة الشديدة بين الرأس والكتف. تتكون الضفيرة من الفروع الأمامية للأعصاب من C5 إلى T1.",
-        ],
-      ],
+      back: [["C5 and C6: Erb's palsy.", "الجذران C5 وC6: شلل إرب."]],
     });
     expect(model.questions).toHaveLength(0);
   });
-  it("comparison questions expose missing labels and conflict rather than inventing diagram facts", () => {
+  it("roots questions expose missing details and conflict rather than inventing facts", () => {
     const model = buildStudioFixture({
       ...defaults,
       type: "practice",
@@ -163,10 +158,14 @@ describe("fixed Studio examples", () => {
       language: "mixed",
     })!;
     expect(model.questions).toHaveLength(3);
-    expect(body(model)).toContain("No specific label identities are supplied");
-    expect(body(model)).toContain("لا ترد أسماء محددة");
-    expect(body(model)).not.toContain("Which step comes first");
-    expect(body(model)).toContain("retain the conflict without deciding");
+    expect(body(model)).toContain(
+      "Your materials do not say how often it occurs",
+    );
+    expect(body(model)).toContain("لا تذكر موادك مدى تكرارها");
+    expect(body(model)).not.toContain(
+      "Which roots does an upper trunk injury damage",
+    );
+    expect(body(model)).toContain("keep the conflict without deciding");
   });
   it("quiz is a fixed preview whose size does not configure an attempt", () => {
     const short = buildStudioFixture({ ...defaults, type: "quiz" })!;

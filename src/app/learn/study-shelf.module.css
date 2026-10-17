@@ -2,6 +2,7 @@
    and the one next action on a blue folio page, then subject covers. */
 .content {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 40px;
   margin-block-start: -40px;
 }
@@ -176,9 +177,11 @@
   padding: 0;
   list-style: none;
 }
+.coverGrid li {
+  min-width: 0;
+}
 .coverGrid li[data-current] {
   grid-column: span 2;
-  grid-row: span 1;
 }
 .cover {
   position: relative;
@@ -203,6 +206,8 @@ a.cover:hover {
     var(--float);
 }
 .coverOther {
+  min-width: 0;
+  overflow-wrap: anywhere;
   font-family: var(--font-unimind-arabic), sans-serif;
   font-size: 0.9375rem;
   color: var(--secondary);
@@ -282,6 +287,8 @@ li[data-current] a.cover:hover {
   font-weight: 650;
 }
 .search input {
+  width: 100%;
+  min-width: 0;
   min-height: 48px;
   padding: 0 16px;
   border: 1.5px solid var(--control);
@@ -452,8 +459,11 @@ a.unit:hover {
     justify-content: center;
   }
   .coverGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 9rem), 1fr));
     gap: 12px;
+  }
+  .coverGrid li[data-current] {
+    grid-column: 1 / -1;
   }
   .cover {
     min-height: 9.5rem;
@@ -467,10 +477,19 @@ a.unit:hover {
     font-size: 1.1875rem;
   }
   .unit {
-    grid-template-columns: auto minmax(0, 1fr);
-    padding: 12px 14px;
+    gap: 12px;
+    min-height: 64px;
+    padding: 10px 14px 10px 12px;
   }
-  .unitAction {
-    grid-column: 2;
+  .subjectBook {
+    width: 34px;
+    height: 42px;
+  }
+  .subjectBook span {
+    width: 11px;
+    height: 18px;
+  }
+  .unitTitle {
+    font-size: 1.0625rem;
   }
 }

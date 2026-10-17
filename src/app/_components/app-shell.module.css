@@ -248,8 +248,8 @@
   }
   .topbar {
     position: relative;
-    min-height: 56px;
-    padding-block: 6px;
+    min-height: 52px;
+    padding-block: 4px;
     gap: 8px;
   }
   .railBrand,

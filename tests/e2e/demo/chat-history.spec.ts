@@ -181,13 +181,13 @@ inLocales(["ar"], (locale) => {
           name: pick(locale, "Open Anatomy", "فتح علم التشريح"),
           exact: true,
         }),
-      ).toContainText(/(?:24|٢٤) (?:sample materials|مصادر تجريبية)/u);
+      ).toContainText(/(?:24|٢٤) (?:materials|مصادر)/u);
       await expect(
         page.getByRole("link", {
           name: pick(locale, "Open Biochemistry", "فتح الكيمياء الحيوية"),
           exact: true,
         }),
-      ).toContainText(/(?:8|٨) (?:sample materials|مصادر تجريبية)/u);
+      ).toContainText(/(?:8|٨) (?:materials|مصادر)/u);
       finish();
     },
   );

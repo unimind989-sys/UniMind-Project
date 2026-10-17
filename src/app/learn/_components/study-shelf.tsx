@@ -122,7 +122,7 @@ export function StudyShelf({
         ...journey.options.terms
           .filter((item) => item.id === journey.selection.termId)
           .map((item) => (locale === "ar" ? item.nameAr : item.nameEn)),
-      ].join(", ")
+      ].join(locale === "ar" ? "، " : ", ")
     : "";
   const safe = {
     NO_MEMBERSHIP: [copy.noMembershipTitle, copy.noMembershipBody],

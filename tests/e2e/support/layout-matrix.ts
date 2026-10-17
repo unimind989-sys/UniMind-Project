@@ -174,28 +174,36 @@ export async function expectLanguageControl(page: Page, locale: Locale) {
   expect(style.root).not.toBe("");
 }
 
-/** The workspace header label starts where the page heading starts. */
+/** The page heading starts at the top bar's inset, where the brand starts. */
 export async function expectAlignedHeader(page: Page, width: number) {
   if (width < 768) return;
   await expect
     .poll(() =>
-      page.locator("#app-content h1").evaluate((heading) => {
-        const label = document.querySelector(
-          "header[data-workspace-chrome] [class*='location']",
-        )!;
-        const first = label.getBoundingClientRect(),
-          second = heading.getBoundingClientRect();
-        return Math.abs(
-          document.documentElement.dir === "rtl"
-            ? first.right - second.right
-            : first.left - second.left,
-        );
-      }),
+      page
+        .locator("#app-content h1")
+        .first()
+        .evaluate((heading) => {
+          const rtl = document.documentElement.dir === "rtl";
+          const brand = [
+            ...document.querySelectorAll<HTMLElement>(
+              "header[data-workspace-chrome] a[aria-label='UniMind']",
+            ),
+          ].find((element) => element.getBoundingClientRect().width > 0)!;
+          const anchor = heading.closest("header") ?? heading;
+          const style = getComputedStyle(anchor);
+          const box = anchor.getBoundingClientRect();
+          const start = rtl
+            ? box.right - parseFloat(style.paddingRight)
+            : box.left + parseFloat(style.paddingLeft);
+          const mark = brand.getBoundingClientRect();
+          return Math.abs(start - (rtl ? mark.right : mark.left));
+        }),
     )
     .toBeLessThanOrEqual(1);
 }
 
-/** The student profile link names its Settings destination with a 44px target. */
+/** The student profile link names its Settings destination with a 44px target. The
+ * caption is the accessible description; Direction B shows the avatar and name. */
 export async function expectProfileTarget(page: Page, locale: Locale) {
   const profile = page.getByRole("link", { name: "Samir Hassan", exact: true });
   await expect(profile).toHaveAccessibleDescription(
@@ -203,7 +211,6 @@ export async function expectProfileTarget(page: Page, locale: Locale) {
   );
   const caption = profile.locator("[class*='profileDestination']");
   await expect(caption).toHaveText(pick(locale, "Settings", "الإعدادات"));
-  await expect(caption).toBeVisible();
   expect((await boxOf(profile)).height).toBeGreaterThanOrEqual(44);
 }
 

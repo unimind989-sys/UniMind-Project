@@ -1491,9 +1491,9 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 #### WP03-T19 — Rebuild the student flow in the approved direction
 
-**Dependencies:** WP03-T18 delivered.
+**Dependencies:** WP03-T18 delivered. Ahmed delegated approval of the rendered candidates for WP03-T19 to T21 to the overseeing Claude Code session on 17 October 2026 ([task record](../../planning/tasks/wp03-t19-student-cobalt.md)).
 
-- [ ] Shared tokens, shell and component kit; onboarding, Study Shelf, Subjects, unit, Materials, Chat, Studio, Quiz, evidence and Settings in the new direction, phone first, EN/AR and both themes, with realistic invented fixtures.
+- [~] Shared tokens, shell and component kit; onboarding, Study Shelf, Subjects, unit, Materials, Chat, Studio, Quiz, evidence and Settings in the new direction, phone first, EN/AR and both themes, with realistic invented fixtures.
 - [ ] Keep every real-route guard and the shared real/synthetic screens from WP03-T17; Ahmed approves the rendered candidate (`Approved commit:`); deliver through one PR with required CI.
 
 #### WP03-T20 — Rebuild the landing and access pages in the approved direction

@@ -42,7 +42,7 @@
 .subjectHeader h1 {
   font-size: var(--type-workspace-title-size);
   font-weight: 800;
-  line-height: 1.02;
+  line-height: var(--type-display-leading);
   letter-spacing: var(--type-display-tracking);
   margin: 0;
 }
@@ -252,9 +252,9 @@
 }
 @media (max-width: 767px) {
   .band {
-    gap: 12px;
-    margin-block-end: 16px;
-    padding: 6px 16px 14px;
+    gap: 10px;
+    margin-block-end: 12px;
+    padding: 4px 16px 12px;
   }
   .subjectHeader {
     flex-basis: 100%;
