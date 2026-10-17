@@ -25,7 +25,7 @@ export function AuthShell({
       dir={locale === "ar" ? "rtl" : "ltr"}
     >
       <header className={styles.header}>
-        <Brand href={`/?lang=${locale}` as Route} />
+        <Brand href={`/?lang=${locale}` as Route} tone="dark" />
         <nav className={styles.languageSwitch} aria-label={copy.language}>
           <Link
             href={languageHref.en as Route}
@@ -48,39 +48,35 @@ export function AuthShell({
             locale === "ar" ? "المذاكرة مع UniMind" : "Studying with UniMind"
           }
         >
-          <div className={styles.folioScene} aria-hidden="true">
-            <div className={styles.folio}>
-              <div className={styles.folioCover} />
-              <div className={styles.folioPages} />
-              <div className={styles.folioLeaf}>
-                <span />
-                <span />
-                <span />
-                <span />
-                <div className={styles.folioMark}>U</div>
-              </div>
-            </div>
-            <div className={styles.folioNote}>
-              <span />
-              <span />
-              <span />
-            </div>
-          </div>
           <p className={styles.introductionTitle} lang="en" dir="ltr">
-            Study deeper
-            <br />
-            Go further.
+            <span>Study deeper</span> <span>Go further.</span>
           </p>
           <p className={styles.introductionCopy}>
             {locale === "ar"
-              ? "موادك المعتمدة، محادثاتك، وأدوات المذاكرة في مساحة واحدة."
-              : "Your approved materials, conversations, and study tools. One considered workspace."}
+              ? "اسأل عن محاضراتك وراجع كل إجابة على الصفحة التي جاءت منها."
+              : "Ask about your own lectures and check every answer against the page it came from."}
           </p>
-          <p className={styles.introductionCopy}>
-            {locale === "ar"
-              ? "حسابك يحدد دورك والمواد المتاحة لك."
-              : "Your account determines your role and available materials."}
-          </p>
+          <ul className={styles.proof}>
+            {(locale === "ar"
+              ? [
+                  "إجابات من موادك المعتمدة فقط",
+                  "صفحة أو توقيت وراء كل معلومة",
+                  "حسابك يحدد دورك والمواد المتاحة لك",
+                ]
+              : [
+                  "Answers only from your approved material",
+                  "A page or timestamp behind every claim",
+                  "Your account determines your role and available materials",
+                ]
+            ).map((line) => (
+              <li key={line}>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 12.5 10 17l9-10" />
+                </svg>
+                {line}
+              </li>
+            ))}
+          </ul>
         </aside>
         <main className={styles.workspace}>
           {activeStep > 0 ? (
