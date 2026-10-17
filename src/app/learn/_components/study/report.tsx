@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useProductText } from "@/app/_components/product-copy";
-import { useProductServices } from "@/app/_components/product-services";
+import { useOptionalProductServices } from "@/app/_components/product-services";
 import {
   Button,
   Notice,
@@ -17,35 +17,44 @@ import {
 import { resolveChatExchangeSelection } from "@/lib/study/study-origin.application";
 import type { ProductStudyProps } from "./study-props";
 import { selectedExchange } from "./study-sources";
+import { useLiveStudy } from "./live-study";
 
-/** A simulated report about one selected Chat exchange, kept in this tab. */
+/**
+ * A report about one selected Chat exchange. Synthetic reports stay in this
+ * tab; real routes have no exchanges to report until Chat answers exist.
+ */
 export function Report({ scope, locale, base }: ProductStudyProps) {
-  const { state, update } = useProductServices();
+  const live = useLiveStudy();
+  const services = useOptionalProductServices();
   const query = useSearchParams();
   const [reason, setReason] = useState("poor-answer");
   const [confirmed, setConfirmed] = useState(false);
   const t = useProductText(locale);
   const selection = resolveChatExchangeSelection(query);
-  const { session, exchange, answer } = selectedExchange(
-    state.sessions,
-    scope.unitId,
-    selection,
-  );
+  const { session, exchange, answer } = services
+    ? selectedExchange(services.state.sessions, scope.unitId, selection)
+    : { session: undefined, exchange: undefined, answer: undefined };
   const reportKey = `${scope.unitId}:${session?.id}:${exchange}`;
-  if (!answer)
+  if (!answer || !services)
     return (
       <section className={styles.panel}>
         <p>
-          {t(
-            "There is no exchange to report in this scope. Start a sample session and reveal a fixed answer first.",
-            "لا توجد محادثة للإبلاغ عنها في هذا النطاق. ابدأ جلسة تجريبية وأظهر إجابة ثابتة أولًا.",
-          )}
+          {live
+            ? t(
+                "There is no exchange to report in this scope. Chat answers are not available yet.",
+                "لا توجد محادثة للإبلاغ عنها في هذا النطاق. إجابات المحادثة غير متاحة بعد.",
+              )
+            : t(
+                "There is no exchange to report in this scope. Start a sample session and reveal a fixed answer first.",
+                "لا توجد محادثة للإبلاغ عنها في هذا النطاق. ابدأ جلسة تجريبية وأظهر إجابة ثابتة أولًا.",
+              )}
         </p>
         <ProductLink href={base + "/chat"} locale={locale}>
           {t("Open Chat", "فتح المحادثة")}
         </ProductLink>
       </section>
     );
+  const { state, update } = services;
   return (
     <section className={styles.panel}>
       <h2>{t("Selected sample exchange", "المحادثة التجريبية المختارة")}</h2>

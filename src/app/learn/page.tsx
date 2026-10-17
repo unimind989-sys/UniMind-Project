@@ -148,7 +148,6 @@ export default async function LearnPage({
       journey={journey}
       state={catalogState}
       basePath="/learn"
-      showLogout
       lastStudyPath={lastStudyPath}
       profileName={profileName}
     />

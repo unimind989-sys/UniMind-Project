@@ -3,17 +3,15 @@
 import { useEffect, useState } from "react";
 import { AppShell } from "@/app/_components/app-shell";
 import { AcademicSettings } from "@/app/_components/academic-settings";
-import { FrontendShell } from "@/app/_components/frontend-system";
 import styles from "@/app/_components/product.module.css";
 import { StudyShelf } from "@/app/learn/_components/study-shelf";
 import { ProductStudy } from "@/app/learn/_components/product-study";
-import { UnitSwitch } from "@/app/learn/_components/study/unit-switch";
+import { StudyFrame } from "@/app/learn/_components/study-frame";
 import { authorizedAcademicContext } from "@/lib/account/account.application";
 import {
   parseCatalogSelectionHints,
   resolveCatalogJourney,
 } from "@/lib/catalog/catalog-journey.application";
-import { syntheticUnitPresentationById } from "@/lib/demo/synthetic-catalog.application";
 import { adminPreviewReturn } from "@/lib/demo/synthetic-admin-context.application";
 import {
   defaultScope,
@@ -76,7 +74,6 @@ export function CatalogScreen(page: ScreenProps) {
         state={shelfState}
         basePath="/learn"
         synthetic
-        unitPresentationById={syntheticUnitPresentationById}
       />
     );
   else {
@@ -129,10 +126,8 @@ export function CatalogScreen(page: ScreenProps) {
         state="READY"
         basePath="/learn"
         synthetic
-        completeNavigation
         lastStudyPath={currentStudyReturn(state, studyReturnTime)?.href ?? null}
         lastStudyDetails={currentStudyDetails(state, locale, studyReturnTime)}
-        unitPresentationById={syntheticUnitPresentationById}
       />
     );
   }
@@ -235,25 +230,23 @@ export function StudyScreen(
       </AppShell>
     );
   return (
-    <FrontendShell
+    <StudyFrame
+      scope={scope}
       locale={locale}
-      title={locale === "ar" ? scope.unitTitleAr : scope.unitTitleEn}
-      unitLabel={
-        locale === "ar" ? scope.unitLabelSingularAr : scope.unitLabelSingularEn
-      }
-      institution={
-        locale === "ar" ? scope.institutionNameAr : scope.institutionNameEn
-      }
-      context={`${locale === "ar" ? scope.programNameAr : scope.programNameEn} · ${locale === "ar" ? scope.levelNameAr : scope.levelNameEn} · ${locale === "ar" ? scope.termNameAr : scope.termNameEn}`}
-      base={base}
-      scopeControl={<UnitSwitch scope={scope} locale={locale} base={base} />}
+      units={reviewCatalogRows
+        .filter(
+          (row) =>
+            row.cohort.id === scope.cohortId &&
+            sampleScopeAvailable(state, row.cohort.id, row.unit.id),
+        )
+        .map((row) => row.unit)}
       available={visible}
       account={`${state.role}@example.invalid`}
       returnToAdmin={state.role === "admin" || state.role === "second-admin"}
       adminReturnHref={adminPreviewReturn(state, scope, locale)}
       signOut={signedOut}
     >
-      <div className={styles.studyBody}>{content}</div>
-    </FrontendShell>
+      {content}
+    </StudyFrame>
   );
 }

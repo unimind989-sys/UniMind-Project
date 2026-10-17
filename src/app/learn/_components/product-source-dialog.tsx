@@ -3,7 +3,7 @@
 import { ProductDialog } from "@/app/_components/product-dialog";
 import { ProductLink } from "@/app/_components/product-ui";
 import { useProductText } from "@/app/_components/product-copy";
-import { useProductServices } from "@/app/_components/product-services";
+import { useOptionalProductServices } from "@/app/_components/product-services";
 import { defaultScope } from "@/lib/demo/synthetic-fixtures.application";
 import {
   studyPassage,
@@ -31,9 +31,10 @@ export function ProductSourceDialog({
   onClose: () => void;
 }) {
   const t = useProductText(locale);
-  const { state } = useProductServices();
+  const state = useOptionalProductServices()?.state;
   const handoutActive =
-    scope.unitId !== defaultScope.unitId || state.availability.sourceActive;
+    scope.unitId !== defaultScope.unitId ||
+    state?.availability.sourceActive === true;
   return (
     <ProductDialog
       open={open}

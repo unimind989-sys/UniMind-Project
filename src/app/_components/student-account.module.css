@@ -153,19 +153,6 @@
   height: 14px;
   flex: none;
 }
-.quietAction {
-  min-height: 44px;
-  padding: 8px 12px;
-  border: 1px solid transparent;
-  border-radius: 8px;
-  background: transparent;
-  color: var(--accent-ink);
-  font: inherit;
-  cursor: pointer;
-}
-.quietAction:hover {
-  background: var(--hover);
-}
 .choices {
   border: 0;
   padding: 0;

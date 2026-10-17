@@ -696,3 +696,6 @@
 .composerTools {
   justify-content: flex-end;
 }
+.sessionForm {
+  display: contents;
+}

@@ -1,29 +1,31 @@
 "use client";
 import { usePathname } from "next/navigation";
-import { useProductServices } from "@/app/_components/product-services";
 import { ProductLink } from "@/app/_components/product-ui";
 import styles from "@/app/_components/product.module.css";
-import {
-  reviewCatalogRows,
-  sampleScopeAvailable,
-} from "@/lib/demo/synthetic-fixtures.application";
 import type { ProductStudyProps } from "./study-props";
 
-/** The cohort's other available units, keeping the current study tool. */
+export type UnitChoice = Readonly<{
+  id: string;
+  nameEn: string;
+  nameAr: string;
+}>;
+
+/**
+ * The cohort's available units, keeping the current study tool. Real routes
+ * pass the student's authorized catalog units; the synthetic runtime passes
+ * its available sample units.
+ */
 export function UnitSwitch({
   scope,
   locale,
   base,
-}: Pick<ProductStudyProps, "scope" | "locale" | "base">) {
-  const { state } = useProductServices();
+  units,
+}: Pick<ProductStudyProps, "scope" | "locale" | "base"> & {
+  units: readonly UnitChoice[];
+}) {
   const pathname = usePathname();
   const suffix =
     ["/chat", "/studio", "/quiz"].find((tab) => pathname === base + tab) ?? "";
-  const units = reviewCatalogRows.filter(
-    (row) =>
-      row.cohort.id === scope.cohortId &&
-      sampleScopeAvailable(state, row.cohort.id, row.unit.id),
-  );
   return (
     <nav
       className={styles.unitChoices}
@@ -33,7 +35,7 @@ export function UnitSwitch({
           : `${scope.unitLabelPluralEn} in your cohort`
       }
     >
-      {units.map(({ unit }) => (
+      {units.map((unit) => (
         <ProductLink
           key={unit.id}
           href={`/learn/${scope.cohortId}/${unit.id}${suffix}`}

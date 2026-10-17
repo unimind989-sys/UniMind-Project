@@ -93,6 +93,10 @@ export function SyntheticProductProvider({
     </AcademicSetupDraftProvider>
   );
 }
+/** The synthetic store, or null on a real route (shared study screens). */
+export function useOptionalProductServices() {
+  return useContext(ProductContext);
+}
 export function useProductServices() {
   const services = useContext(ProductContext);
   if (!services)
