@@ -14,6 +14,7 @@ import {
   showAccountView,
   unit,
 } from "../support/demo";
+import { resize } from "../support/layout";
 import {
   isolation,
   navigate,
@@ -416,7 +417,9 @@ inLocales(["en"], (locale) => {
         [390, 844],
         [320, 720],
       ] as const) {
-        await page.setViewportSize({ width, height });
+        // The shell picks its pane or page flow on the frame after a resize;
+        // until then 320x720 still has the 390x844 pane (133px of reading).
+        await resize(page, width, height);
         await page.evaluate(() => document.fonts.ready);
         await expect(page.locator('[data-layout="workspace"]')).toHaveAttribute(
           "data-workspace-flow",
