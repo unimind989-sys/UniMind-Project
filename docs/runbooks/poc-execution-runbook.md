@@ -1521,8 +1521,8 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 **Dependencies:** WP03-T15 (the compact-context journey in `tests/e2e/demo/chat.spec.ts`). CI run 39071765080 (PR #85) failed that journey once at 320x720 with 133 px of reading space against the 160 px floor, while the same test passed on earlier runs and on main ([task record](../../planning/tasks/wp03-t23-settled-chat-layout.md)).
 
-- [~] Find the cause from the failure artifacts and a local reproduction, and make the measurement wait for the settled layout without weakening the 160 px floor, the single scroll owner or the no-overflow check; stop and report instead if the product layout itself is wrong.
-- [ ] Show the fixed test stable over repeated local runs; deliver through one PR with required CI and the same demo test count.
+- [x] Find the cause from the failure artifacts and a local reproduction, and make the measurement wait for the settled layout without weakening the 160 px floor, the single scroll owner or the no-overflow check; stop and report instead if the product layout itself is wrong. Cause: the shell picks its pane or page flow on the animation frame after a resize, and the journey measured inside that frame (133 px is the old pane at 320x720; the settled page flow gives 214 px). The journey now resizes through the shared `resize` helper; no product change.
+- [x] Show the fixed test stable over repeated local runs; deliver through one PR with required CI and the same demo test count. Local runs: 10/10 and 20/20 on 4 workers; 192 demo tests as before; delivered in [#87](https://github.com/unimind989-sys/UniMind-Project/pull/87). These closure markers become authoritative only when that PR merges with green required CI.
 
 **Pass:** the journey reads geometry only after the shell's flow decision; repeated local runs and required CI green; no assertion weakened and no product change.
 

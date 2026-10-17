@@ -2,7 +2,7 @@
 
 **Task ID:** WP03-T23
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** The compact-context Chat journey reads the reading region only after the workspace shell has chosen its flow, so it no longer fails when a CI frame runs late.
 
@@ -37,7 +37,7 @@
 - [x] Diagnose from the CI trace and a local reproduction.
 - [x] Resize through the shared `resize` helper, which waits two animation frames for the shell's re-measure.
 - [x] Repeated local runs and `pnpm check`.
-- [ ] PR, required CI, merge, close.
+- [x] PR [#87](https://github.com/unimind989-sys/UniMind-Project/pull/87); squash-merge after required CI on its final head; close.
 
 ## Decisions
 
@@ -54,8 +54,8 @@
 
 **Approved commit:** NOT REQUIRED: test-only; no product change.
 
-**Remaining:** PR, required CI, merge, closure.
+**Remaining:** NONE once PR #87 merges with green required CI; these closure markers become authoritative only then. No production proof: test-only change.
 
 ## Next action
 
-Open the PR, wait for required CI on its head, squash-merge, then close the runbook task and this record.
+None. Squash-merge PR #87 after required CI on its final head, then remove the branch and worktree.
