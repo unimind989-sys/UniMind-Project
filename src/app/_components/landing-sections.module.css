@@ -73,6 +73,9 @@
   background: var(--night);
   color: var(--on-night);
 }
+:global([data-theme="dark"]) .gapCard {
+  box-shadow: inset 0 0 0 1px var(--night-line);
+}
 .gapQuestion {
   justify-self: end;
   max-width: min(100%, 26rem);

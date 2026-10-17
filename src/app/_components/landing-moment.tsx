@@ -44,6 +44,7 @@ export function AnswerMoment({ locale }: { locale: Locale }) {
     };
     const observer = new IntersectionObserver(([entry]) => {
       visible = entry?.isIntersecting ?? false;
+      element.dataset.measured = "true";
       sync();
     });
     observer.observe(element);

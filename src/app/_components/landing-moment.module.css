@@ -334,13 +334,15 @@
   }
 }
 @media (prefers-reduced-motion: no-preference) {
-  .moment[data-moment="waiting"] [data-step] {
+  /* Hidden before the first play only when scripts run: the pre-paint theme
+     script sets data-theme, so without it the final composition shows. */
+  :global(:root[data-theme]) .moment[data-moment="waiting"] [data-step] {
     opacity: 0;
   }
-  .moment[data-moment="waiting"] .highlight {
+  :global(:root[data-theme]) .moment[data-moment="waiting"] .highlight {
     background-size: 0% 60%;
   }
-  .moment[data-moment="waiting"] .answerText {
+  :global(:root[data-theme]) .moment[data-moment="waiting"] .answerText {
     clip-path: inset(0 0 0 100%);
   }
   .moment[data-moment="playing"] [data-step="question"] {

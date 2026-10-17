@@ -45,19 +45,33 @@
 ## Decisions
 
 - 2026-10-17, Ahmed: delegated approval and end-to-end responsibility for WP03-T18 to T21 to the overseeing session while he is away. Approvals here are the overseer's under that delegation, not founder review.
+- The evidence moment starts when the stage is first seen in a visible document, and its stage stacks by its own width (35rem). Laptops (1180px and up) keep the full handout composition.
+- The access pages keep `auth-form.tsx` untouched. The submit button's decorative arrow is hidden in CSS, because `DESIGN.md` forbids arrows appended to button text.
+- Lower landing sections use the brief's invented brachial plexus content; the sample Chat, Studio and Quiz keep their behaviour.
 
 ## Current state
 
-**Changed:** NOT STARTED
+**Changed:**
+- Landing: `landing.tsx`, the new `landing-moment.tsx` and `landing-sections.module.css`, and the rewritten workspace, icons and styles. Four old modules were removed.
+- Access pages: `auth-shell.tsx` and `auth.module.css`.
+- Also changed: `DESIGN.md` and `tests/e2e/landing-experience.spec.ts`.
 
-**Proof:** none yet.
+**Proof:**
+- Static checks: `format:check`, `lint`, `tsc`, `check:boundaries`, `scan:secrets`, `lint:agents`, `test:unit` 917/917.
+- Browser runs: demo `public`, `auth` and `rtl` 28/28; real `landing-experience` 7/7; real `foundation`, `auth-flows`, `hosted-synthetic-login` and `product-shell-contracts` all passing.
+- Rendered review at 1440, 1280, 1180, 820, 390 and 320px, light and dark, EN and AR, in two rounds.
+- The landing test caught a real pause bug, now fixed: the playing shorthand had outranked the pause rule.
+- The full demo suite and `database-ci` run in CI on [#83](https://github.com/unimind989-sys/UniMind-Project/pull/83).
 
-**Review:** pending (independent review required for the access routes).
+**Review:** independent review by the `independent-reviewer` agent of `4849cf0..4821e40`: CHANGES REQUIRED. There were no auth, consent, hosted-synthetic or data-safety findings.
+- One should-fix: the access language links were 40px, below the 44px touch minimum.
+- Five nits: hidden moment content without scripts, a weak "waits" and pointer test, Arabic tracking on two elements, and the stale record.
+- All six were fixed in the next commit.
 
 **Approved commit:** PENDING (overseer review under Ahmed's 17 Oct delegation).
 
-**Remaining:** all steps.
+**Remaining:** review result, required CI, approval, merge, production proof, closure.
 
 ## Next action
 
-Build the L1 hero in `landing.tsx` and its CSS Module.
+Record the independent review, let required CI pass on #83, record approval, merge, then deploy production.

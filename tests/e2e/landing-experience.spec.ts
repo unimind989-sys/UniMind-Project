@@ -77,16 +77,28 @@ test("evidence moment plays once on view, replays, ignores the pointer and pause
   // Opened below the hero, the moment waits until it is first seen.
   await page.goto("/?lang=en#how-it-works");
   const moment = page.locator("[data-moment]");
+  // Measured offscreen after hydration, it still waits.
+  await expect(moment).toHaveAttribute("data-measured", "true");
   await expect(moment).toHaveAttribute("data-moment", "waiting");
   await page.evaluate(() => window.scrollTo(0, 0));
   await expect(moment).toHaveAttribute("data-moment", "playing");
   await expect(moment).toHaveAttribute("data-paused", "false");
-  await moment.hover({ position: { x: 30, y: 30 } });
-  await moment.hover({ position: { x: 180, y: 180 } });
   // It plays once, then settles on the final composition without looping.
   await expect(moment).toHaveAttribute("data-moment", "done", {
     timeout: 10_000,
   });
+  const stepTransforms = () =>
+    moment.evaluate((element) =>
+      Array.from(
+        element.querySelectorAll("[data-step]"),
+        (step) => getComputedStyle(step).transform,
+      ),
+    );
+  const settled = await stepTransforms();
+  await moment.hover({ position: { x: 30, y: 30 } });
+  await moment.hover({ position: { x: 180, y: 180 } });
+  // The pointer moves nothing and starts nothing.
+  expect(await stepTransforms()).toEqual(settled);
   expect(
     await moment.evaluate(
       (element) => element.getAnimations({ subtree: true }).length,
