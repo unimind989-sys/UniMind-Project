@@ -1506,7 +1506,7 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 **Dependencies:** WP03-T19 delivered.
 
-- [~] Leader intake and history, admin decision queue and resource pages as working tools in the new direction; keep every governed-action guard; Ahmed approves the rendered candidate; deliver through one PR with required CI ([task record](../../planning/tasks/wp03-t21-leader-admin-cobalt.md)).
+- [x] Leader intake and history, admin decision queue and resource pages as working tools in the new direction; keep every governed-action guard; Ahmed approves the rendered candidate; deliver through one PR with required CI ([task record](../../planning/tasks/wp03-t21-leader-admin-cobalt.md)). Approved at `c197682` by the overseeing session under Ahmed's delegation; delivered in [#84](https://github.com/unimind989-sys/UniMind-Project/pull/84), squash-merged as `d64c9e7` with all 15 checks green, and promoted to production ([evidence](../../evidence/wp03-product-shell/2026-10-17_wp03-t21-leader-admin-cobalt_production_d64c9e7.md)).
 
 ### 6.1 Routes
 
