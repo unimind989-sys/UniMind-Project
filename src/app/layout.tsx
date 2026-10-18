@@ -34,20 +34,15 @@ const latinFont = Manrope({
   display: "swap",
 });
 
+// No metric-adjusted local fallback for the Arabic face: its subset has no
+// Latin letters, so Latin runs in Arabic text fall through to Manrope (the
+// next family in the stack) instead of a local system face (DESIGN.md).
 const arabicFont = Noto_Sans_Arabic({
   subsets: ["arabic"],
   variable: "--font-unimind-arabic",
   display: "swap",
+  adjustFontFallback: false,
 });
-
-const directionContract = `<!--
-THESIS: UniMind keeps subjects, materials and study tools in one continuous workspace with a clear next action.
-OWN-WORLD: Paired neutral grey themes, quiet borders, Manrope and Noto Sans Arabic, restrained blue interaction accent and the supplied Open Folio identifier.
-STORY: A student sets academic context once, opens a subject, studies its materials and checks supporting evidence without losing context.
-FIRST VIEWPORT: A 216px role rail anchors the subject title and four local destinations; the reading and working area carries the content.
-FORM: Code-led Phase 1 proposal, user-fixed direction approved at ab568b6; historical direction seed 30b1cf13 is retained for provenance, not a new random roll.
-FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
--->`;
 
 export default function RootLayout({
   children,
@@ -65,10 +60,6 @@ export default function RootLayout({
       </head>
       <body>
         <ThemeRuntime />
-        <template
-          data-direction-contract="frontend-overhaul-ab568b6"
-          dangerouslySetInnerHTML={{ __html: directionContract }}
-        />
         {resolveDemoRuntime(process.env) === "ENABLED" ? (
           // The loopback demo renders every product URL in the synthetic
           // client runtime; its route segment only selects the HTTP status.

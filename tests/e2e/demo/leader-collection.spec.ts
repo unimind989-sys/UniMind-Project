@@ -1131,7 +1131,10 @@ inLocales(["ar"], (locale) => {
         `/batch-leader/campaigns/sample-unassigned-campaign?fixture=dense&lang=${locale}`,
       );
       await expect(
-        page.getByRole("heading", { name: "Page not found", exact: true }),
+        page.getByRole("heading", {
+          name: pick(locale, "Page not found", "الصفحة غير موجودة"),
+          exact: true,
+        }),
       ).toBeVisible();
       finish();
     },

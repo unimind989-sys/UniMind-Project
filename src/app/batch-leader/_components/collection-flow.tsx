@@ -1,6 +1,7 @@
 "use client";
 
 import { ProductNavigationLink as Link } from "@/app/_components/product-navigation";
+import { Notice } from "@/app/_components/notice";
 import type { Route } from "next";
 import { AppShell } from "@/app/_components/app-shell";
 import { FrontendIcon } from "@/app/_components/frontend-controls";
@@ -95,9 +96,9 @@ export function CollectionFlow(props: CollectionFlowProps) {
           </div>
         </header>
         {windowState !== "ACTIVE" ? (
-          <p role="status" className={styles.windowNotice}>
+          <Notice live locale={locale}>
             {collectionWindowMessage(windowState, locale)}
-          </p>
+          </Notice>
         ) : null}
         <p
           role="status"

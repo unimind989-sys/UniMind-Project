@@ -1,6 +1,8 @@
 "use client";
 
 import { useRef } from "react";
+import { Notice } from "@/app/_components/notice";
+import { PageState } from "@/app/_components/page-state";
 
 import type { AdminQueueState } from "@/lib/admin/admin-readiness.application";
 import { getAdminCopy } from "@/lib/i18n/admin-copy";
@@ -58,9 +60,9 @@ export function AdminDecisionQueue({
     <div className={styles.queue}>
       {recheckComplete && <p role="status">{copy.recheckDone}</p>}
       {decisions.selectionError && (
-        <p role="alert" className={styles.errorMessage}>
+        <Notice tone="error" live locale={locale}>
           {copy.invalidSelection}
-        </p>
+        </Notice>
       )}
       {queue.status === "FORBIDDEN" || queue.status === "UNAVAILABLE" ? (
         <QueueNotice
@@ -71,10 +73,9 @@ export function AdminDecisionQueue({
           recheck={decisions.recheck}
         />
       ) : candidates.length === 0 ? (
-        <section className={styles.emptyState}>
-          <h2>{copy.emptyTitle}</h2>
+        <PageState kind="empty" locale={locale} title={copy.emptyTitle}>
           <p>{copy.emptyBody}</p>
-        </section>
+        </PageState>
       ) : (
         <div
           className={styles.queueLayout}
@@ -104,7 +105,7 @@ export function AdminDecisionQueue({
               </>
             ) : (
               <section className={styles.decisionEmpty}>
-                <FrontendIcon name="shield" />
+                <FrontendIcon name="shield" size={24} />
                 <h2>
                   {locale === "ar"
                     ? "اختر قرارًا للمراجعة"

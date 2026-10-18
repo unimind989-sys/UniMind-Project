@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: column;
   min-height: 100svh;
-  background: var(--canvas);
+  background: var(--paper);
 }
 .topbar {
   position: sticky;
@@ -17,7 +17,8 @@
   padding: 10px var(--shell-inset);
   background: var(--night);
   color: var(--on-night);
-  border-block-end: 1px solid var(--night-line);
+  /* Drawn inside the 64px so the bar keeps DESIGN's height. */
+  box-shadow: inset 0 -1px 0 var(--night-line);
 }
 .brand {
   display: inline-flex;
@@ -25,7 +26,6 @@
   align-items: center;
   justify-content: center;
   min-height: 44px;
-  padding: 4px 0;
   flex: none;
   width: 148px;
 }
@@ -64,6 +64,7 @@
   display: none;
 }
 .railBrand {
+  display: flex;
   flex: none;
 }
 .compactBrand {
@@ -104,6 +105,8 @@
 }
 .topbar .globalNav a[data-account] svg {
   display: block;
+  width: 20px;
+  height: 20px;
 }
 .globalNav a[aria-current] {
   color: var(--on-night);
@@ -128,10 +131,6 @@
   font-size: 0.875rem;
   font-weight: 650;
   color: var(--on-night);
-}
-.identity svg {
-  width: 20px;
-  height: 20px;
 }
 .stage {
   min-width: 0;
@@ -170,7 +169,8 @@
   padding: 12px 16px;
   border-radius: var(--radius-control);
   background: var(--surface);
-  color: var(--accent-ink);
+  color: var(--action);
+  font-weight: 700;
 }
 .skip:focus {
   inset-block-start: 16px;
@@ -232,10 +232,19 @@
     display: none;
   }
   .compactBrand {
-    display: block;
+    display: flex;
   }
   .topbar {
     gap: 8px 12px;
+  }
+  /* The identity keeps its icon; its words stay for screen readers. */
+  .identity > span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 }
 @media (max-width: 767px) {
@@ -259,7 +268,7 @@
     display: none;
   }
   .compactBrand {
-    display: block;
+    display: flex;
     margin-inline-end: auto;
   }
   .topbar .globalNav {
@@ -288,24 +297,23 @@
     font-size: var(--type-mobile-nav-size);
     overflow-wrap: anywhere;
   }
+  /* 24px icons in a 56x30 pill that takes --tint when current. */
   .topbar .globalNav a svg {
     display: block;
     box-sizing: content-box;
-    width: 22px;
-    height: 22px;
     padding: 3px 16px;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
   }
   .topbar .globalNav a[aria-current] {
     background: var(--surface);
-    color: var(--accent-ink);
+    color: var(--action);
     font-weight: 800;
   }
-  .topbar .globalNav a[aria-current] svg {
+  .topbar .globalNav a[aria-current] :is(svg, .profileMarker) {
     background: var(--tint);
   }
   .topbar .globalNav a:hover {
-    background: var(--hover);
+    background: var(--surface-2);
     color: var(--ink);
   }
   .content {
@@ -396,15 +404,16 @@
   }
 }
 
+/* The avatar is small text, so it sits on --action (AA), not on Cobalt. */
 .profileAvatar {
   display: grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   flex: none;
-  border-radius: 50%;
-  background: var(--cobalt);
-  color: #fff;
+  border-radius: var(--radius-pill);
+  background: var(--action);
+  color: var(--on-action);
   font-size: 0.9375rem;
   font-weight: 800;
 }
@@ -414,12 +423,8 @@
   gap: 3px;
   flex: none;
 }
+/* The visually hidden "Settings" description (global utility). */
 .profileDestination {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
   white-space: nowrap;
 }
 .profileName {
@@ -432,12 +437,20 @@
 @media (max-width: 767px) {
   .globalNav a:has(.profileAvatar) {
     flex-direction: column;
-    gap: 2px;
+    gap: 3px;
+  }
+  .profileMarker {
+    justify-content: center;
+    width: 56px;
+    height: 30px;
+    border-radius: var(--radius-pill);
   }
   .profileAvatar {
-    width: 28px;
-    height: 28px;
-    font-size: 0.8125rem;
+    width: 24px;
+    height: 24px;
+    background: var(--secondary);
+    color: var(--surface);
+    font-size: 0.75rem;
   }
   .profileName {
     max-width: 100%;

@@ -18,8 +18,6 @@ export function StudyFrame({
   available = true,
   synthetic = true,
   profileName,
-  account,
-  signOut,
   returnToAdmin = false,
   adminReturnHref,
   children,
@@ -30,8 +28,6 @@ export function StudyFrame({
   available?: boolean;
   synthetic?: boolean;
   profileName?: string | null | undefined;
-  account?: string;
-  signOut?: () => void;
   returnToAdmin?: boolean;
   adminReturnHref?: string;
   children: ReactNode;
@@ -48,7 +44,7 @@ export function StudyFrame({
         ar ? scope.programNameAr : scope.programNameEn,
         ar ? scope.levelNameAr : scope.levelNameEn,
         ar ? scope.termNameAr : scope.termNameEn,
-      ].join(" · ")}
+      ]}
       base={base}
       scopeControl={
         units.length > 0 ? (
@@ -58,8 +54,6 @@ export function StudyFrame({
       available={available}
       synthetic={synthetic}
       profileName={profileName}
-      {...(account ? { account } : {})}
-      {...(signOut ? { signOut } : {})}
       returnToAdmin={returnToAdmin}
       {...(adminReturnHref ? { adminReturnHref } : {})}
     >

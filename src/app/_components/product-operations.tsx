@@ -40,7 +40,9 @@ import {
   type Locale,
 } from "@/lib/demo/synthetic-fixtures.application";
 import { useProductServices } from "./product-services";
-import { Button, Notice, ProductLink, Select } from "./product-ui";
+import { buttonLook } from "./button-look";
+import { Notice } from "./notice";
+import { Button, ProductLink, Select } from "./product-ui";
 import {
   ResourceList,
   targetState,
@@ -89,12 +91,12 @@ export function ProductResource({ screen, locale }: Props) {
   /** A short verb that opens the governed decision for its row's target. */
   const decision = (item: AdminActionCandidate, origin: AdminOrigin) => (
     <ProductNavigationLink
-      className={adminStyles.verbLink}
+      {...buttonLook({ variant: "secondary" })}
       prefetch={false}
       href={syntheticDecisionHref(item, locale, origin) as Route}
     >
       {copy.verbs[item.action]}
-      <span className={adminStyles.srOnly}>
+      <span className="visually-hidden">
         {" "}
         {locale === "ar" ? item.targetLabelAr : item.targetLabelEn}
       </span>
@@ -137,10 +139,15 @@ export function ProductResource({ screen, locale }: Props) {
   };
   const contextLinks = (
     <div className={adminStyles.contextLinks}>
-      <ProductLink href="/admin" locale={locale}>
+      <ProductLink variant="quiet" href="/admin" locale={locale}>
         {t("All decisions", "كل القرارات")}
       </ProductLink>
-      <ProductLink href={defaultUnitPath} locale={locale} onClick={preview}>
+      <ProductLink
+        variant="quiet"
+        href={defaultUnitPath}
+        locale={locale}
+        onClick={preview}
+      >
         {t("Preview exact student scope", "معاينة نطاق الطالب المحدد")}
       </ProductLink>
     </div>
@@ -291,7 +298,7 @@ export function ProductResource({ screen, locale }: Props) {
                 )}
               </p>
               <Button
-                primary
+                variant="primary"
                 onClick={() =>
                   update((current) => ({
                     ...current,
@@ -304,7 +311,7 @@ export function ProductResource({ screen, locale }: Props) {
             </>
           ) : null}
           {state.catalogDraft ? (
-            <Notice>
+            <Notice tone="success" live locale={locale}>
               {t(
                 "Sample catalog draft saved in memory. Publication remains governed separately.",
                 "حفظت مسودة الدليل في الذاكرة. النشر منضبط بشكل منفصل.",
@@ -359,7 +366,7 @@ export function ProductResource({ screen, locale }: Props) {
           ]}
         />
         {state.cohortDraft ? (
-          <Notice>
+          <Notice tone="success" live locale={locale}>
             {t(
               "Cohort configuration reviewed. No cohort unlocked.",
               "تمت مراجعة إعدادات المجموعة. لم تُفتح المجموعة.",
@@ -418,7 +425,7 @@ export function ProductResource({ screen, locale }: Props) {
             <bdi>{unitTitle}</bdi>
           </p>
           <Button
-            primary
+            variant="primary"
             onClick={() =>
               update((current) => ({ ...current, campaignDraft: true }))
             }
@@ -427,7 +434,7 @@ export function ProductResource({ screen, locale }: Props) {
           </Button>
           {state.campaignDraft ? (
             <>
-              <Notice>
+              <Notice tone="success" live locale={locale}>
                 {t(
                   "Simulated campaign draft created in this tab.",
                   "أنشئت مسودة حملة محاكاة داخل التبويب.",
@@ -453,7 +460,7 @@ export function ProductResource({ screen, locale }: Props) {
                 {t("Review invitation example", "مراجعة مثال الدعوة")}
               </Button>
               {state.invitation ? (
-                <Notice>
+                <Notice tone="success" live locale={locale}>
                   {t(
                     "Invitation example reviewed. No email, assignment or access grant.",
                     "روجع مثال الدعوة. لا بريد أو تكليف أو منح وصول.",

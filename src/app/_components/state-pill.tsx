@@ -3,9 +3,10 @@ import type { ReactNode } from "react";
 import styles from "./state-pill.module.css";
 
 export type StateTone = "ok" | "bad" | "wait" | "neutral";
+export type StateIconName = StateTone | "info" | "warn";
 
-/** Line icons on a 24-unit grid (DESIGN.md): the pill never relies on colour alone. */
-const icons: Record<StateTone, ReactNode> = {
+/** Line icons on a 24-unit grid (DESIGN.md): states never rely on colour alone. */
+const icons: Record<StateIconName, ReactNode> = {
   ok: <path d="m5 12 4 4L19 6" />,
   bad: (
     <>
@@ -25,12 +26,29 @@ const icons: Record<StateTone, ReactNode> = {
       <path d="M8 12h8" />
     </>
   ),
+  info: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 11v5.5M12 7.5v.01" />
+    </>
+  ),
+  warn: (
+    <>
+      <path d="M12 3.5 21.5 20h-19L12 3.5Z" />
+      <path d="M12 10v4.5M12 17.5v.01" />
+    </>
+  ),
 };
 
-export function StateIcon({ tone }: Readonly<{ tone: StateTone }>) {
+export function StateIcon({
+  tone,
+  size = 16,
+}: Readonly<{ tone: StateIconName; size?: 16 | 20 | 24 }>) {
   return (
     <svg
       className={styles.icon}
+      width={size}
+      height={size}
       aria-hidden="true"
       viewBox="0 0 24 24"
       fill="none"

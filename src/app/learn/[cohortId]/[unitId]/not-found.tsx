@@ -1,39 +1,43 @@
 "use client";
 
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
+import { PageState } from "@/app/_components/page-state";
+import { ProductLink } from "@/app/_components/product-ui";
 import { getWorkspaceCopy } from "@/lib/i18n/workspace-copy";
+import { localizedHref, resolveLocale, type Locale } from "@/lib/i18n/locale";
 
-import styles from "../../workspace.module.css";
-
-function WorkspaceNotFoundContent() {
-  const locale = useSearchParams().get("lang") === "ar" ? "ar" : "en";
+function WorkspaceNotFoundState({ locale }: Readonly<{ locale: Locale }>) {
   const text = getWorkspaceCopy(locale);
   return (
-    <main
-      className={styles.standaloneState}
-      dir={locale === "ar" ? "rtl" : "ltr"}
+    <PageState
+      kind="not-found"
+      standalone
+      headingLevel={1}
+      locale={locale}
+      homeHref={localizedHref("/learn", locale)}
+      title={text.notFoundTitle}
+      actions={
+        <ProductLink href="/learn" locale={locale} variant="primary">
+          {text.backToShelf}
+        </ProductLink>
+      }
     >
-      <p className={styles.plannedLabel}>UniMind</p>
-      <h1>{text.notFoundTitle}</h1>
       <p>{text.notFoundBody}</p>
-      <Link href={`/learn?lang=${locale}`}>{text.backToShelf}</Link>
-    </main>
+    </PageState>
   );
+}
+
+function LocalizedWorkspaceNotFound() {
+  const locale = resolveLocale(useSearchParams().get("lang"));
+  return <WorkspaceNotFoundState locale={locale} />;
 }
 
 export default function WorkspaceNotFound() {
   return (
-    <Suspense
-      fallback={
-        <main className={styles.standaloneState}>
-          <h1>Workspace unavailable</h1>
-        </main>
-      }
-    >
-      <WorkspaceNotFoundContent />
+    <Suspense fallback={<WorkspaceNotFoundState locale="en" />}>
+      <LocalizedWorkspaceNotFound />
     </Suspense>
   );
 }

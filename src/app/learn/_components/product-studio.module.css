@@ -1,6 +1,6 @@
 /* .caption and .secondaryOptions match product-chat.module.css; keep both copies in step. */
 .caption {
-  color: var(--muted);
+  color: var(--secondary);
   font-size: 0.8125rem;
   line-height: 1.6;
   margin: 8px 0 0;
@@ -55,62 +55,6 @@
   font-size: 0.9375rem;
   font-weight: 600;
   line-height: 1.4;
-}
-.artifactTypes {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.5rem;
-  padding: 0;
-  margin: 0;
-  border: 0;
-  min-width: 0;
-}
-.artifactTypes legend {
-  padding: 0 0 0.75rem;
-  color: var(--text-secondary);
-  font-weight: 600;
-}
-.artifactTypes label {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  min-height: 64px;
-  padding: 0.75rem;
-  border: 1px solid var(--control-border);
-  border-radius: var(--radius-control);
-  color: var(--text-secondary);
-  background: var(--surface);
-  cursor: pointer;
-  font-size: var(--type-body-compact-size);
-  overflow-wrap: anywhere;
-  transition:
-    background-color 180ms ease,
-    color 180ms ease,
-    border-color 180ms ease;
-}
-.artifactTypes label[data-selected="true"] {
-  background: var(--accent-soft);
-  border-color: var(--accent);
-  color: var(--accent-ink);
-}
-.artifactTypes label:hover {
-  color: var(--text-primary);
-  background: var(--surface-active);
-}
-.artifactTypes input {
-  position: absolute;
-  inline-size: 1px;
-  block-size: 1px;
-  opacity: 0;
-}
-.artifactTypes label:has(input:focus-visible) {
-  outline: 2px solid var(--cobalt);
-  outline-offset: 2px;
-}
-.artifactTypes:disabled label {
-  cursor: wait;
-  opacity: 0.6;
 }
 /*
  * Generate stays reachable when the controls are taller than the viewport.
@@ -215,9 +159,7 @@
 }
 .artifactEmpty > svg {
   box-sizing: content-box;
-  width: 22px;
-  height: 22px;
-  padding: 13px;
+  padding: 12px;
   border-radius: var(--radius-pill);
   background: var(--tint);
   color: var(--action);
@@ -304,7 +246,7 @@
 /* Missing and conflicting evidence reads as a note, then the sources line. */
 .artifactOutput > div[lang] + p {
   padding: 14px 16px;
-  border-radius: 10px;
+  border-radius: var(--radius-quote);
   background: var(--surface-2);
   color: var(--ink);
   font-size: 0.9375rem;
@@ -396,10 +338,5 @@
   }
   .artifactEmpty {
     padding-block: 16px 24px;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .artifactTypes label {
-    transition: none;
   }
 }

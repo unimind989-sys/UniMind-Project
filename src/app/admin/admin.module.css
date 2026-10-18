@@ -51,17 +51,6 @@
   justify-content: end;
   gap: 8px;
 }
-.bandActions :is(button, a) {
-  color: var(--on-night-blue);
-}
-.bandActions :is(button, a):hover:not(:disabled) {
-  background: var(--night-2);
-  color: var(--on-night);
-}
-.band :focus-visible {
-  outline: 2px solid var(--on-night);
-  outline-offset: 2px;
-}
 /* The queue stacks title, count tabs and actions in source order until all
    three fit on one row. */
 .band[data-view="queue"] {
@@ -89,66 +78,24 @@
 /* Section resources: the segmented control on Night. */
 .resourceNav {
   justify-self: start;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2px;
-  max-width: 100%;
-  padding: 4px;
-  border-radius: var(--radius-control);
-  background: var(--night-2);
-}
-.resourceNav a {
-  display: flex;
-  align-items: center;
-  min-height: 44px;
-  padding: 0 18px;
-  border-radius: 9px;
-  color: var(--on-night-2);
-  font-size: 0.9375rem;
-  font-weight: 650;
-  text-decoration: none;
-  overflow-wrap: anywhere;
-}
-.resourceNav a:hover {
-  color: var(--on-night);
-}
-.resourceNav a[aria-current="page"] {
-  background: var(--seg-on);
-  color: var(--seg-on-ink);
-  font-weight: 750;
 }
 
-/* ---------- Count tabs ---------- */
-.countTabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2px;
-  padding: 4px;
-  border-radius: 14px;
-  background: var(--night-2);
+/* ---------- Count tabs: the Night SegmentedControl with counts ---------- */
+.countTabs > button {
+  flex: 1 1 auto;
+  justify-content: flex-start;
+  min-width: 6.5rem;
+  min-height: 72px;
+  padding: 8px 18px;
+  text-align: start;
 }
-.countTabs button {
+.countTabs > button > span > span {
   display: grid;
   grid-template-areas:
     "number"
     "label";
-  align-content: center;
   justify-items: start;
   gap: 4px;
-  flex: 1 1 auto;
-  min-width: 6.5rem;
-  min-height: 72px;
-  padding: 8px 18px;
-  border: 0;
-  border-radius: 11px;
-  background: transparent;
-  color: var(--on-night-2);
-  font: inherit;
-  text-align: start;
-  cursor: pointer;
-}
-.countTabs button:hover {
-  color: var(--on-night);
 }
 .countNumber {
   grid-area: number;
@@ -164,10 +111,6 @@
   font-size: 0.875rem;
   font-weight: 600;
   line-height: 1.3;
-}
-.countTabs button[aria-pressed="true"] {
-  background: var(--seg-on);
-  color: var(--seg-on-ink);
 }
 .countTabs button[aria-pressed="true"] .countNumber {
   color: var(--action);
@@ -234,7 +177,7 @@
   min-height: 74px;
   padding: 12px 16px;
   border: 0;
-  border-radius: 14px;
+  border-radius: var(--radius-card);
   background: transparent;
   color: var(--ink);
   font: inherit;
@@ -320,13 +263,11 @@
   gap: 12px;
   min-height: 24rem;
   padding: 36px;
-  border-radius: 14px;
+  border-radius: var(--radius-card);
   background: var(--surface);
 }
 .decisionEmpty > svg {
-  width: 28px;
-  height: 28px;
-  color: var(--accent-ink);
+  color: var(--action);
 }
 .decisionEmpty h2 {
   margin: 0;
@@ -345,7 +286,7 @@
   gap: 22px;
   min-width: 0;
   padding: 30px 36px 28px;
-  border-radius: 14px;
+  border-radius: var(--radius-card);
   background: var(--surface);
 }
 .detailHeading {
@@ -363,13 +304,8 @@
 .detailHeading h2:focus {
   outline: none;
 }
-.detailHeading h2:focus-visible {
-  outline: 2px solid var(--cobalt);
-  outline-offset: 4px;
-  border-radius: 4px;
-}
 .detailVerb {
-  color: var(--accent-ink);
+  color: var(--action);
 }
 .detailMeta {
   display: flex;
@@ -385,9 +321,7 @@
   gap: 6px;
 }
 .protectedNote svg {
-  width: 18px;
-  height: 18px;
-  color: var(--accent-ink);
+  color: var(--action);
 }
 .statePair {
   display: grid;
@@ -397,7 +331,7 @@
 .statePair dl {
   margin: 0;
   padding: 16px 18px 18px;
-  border-radius: 14px;
+  border-radius: var(--radius-card);
   min-width: 0;
 }
 .statePair dt {
@@ -422,16 +356,12 @@
   box-shadow: inset 0 0 0 1.5px var(--action);
 }
 .stateProposed dt {
-  color: var(--accent-ink);
+  color: var(--action);
 }
 .stateArrow {
   display: grid;
   place-items: center;
   color: var(--secondary);
-}
-.stateArrow > svg {
-  width: 24px;
-  height: 24px;
 }
 .consequence {
   max-width: 64ch;
@@ -463,7 +393,7 @@
   min-height: 40px;
   max-width: 100%;
   padding: 6px 14px 6px 10px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--surface-2);
   box-shadow: inset 0 0 0 1px var(--line);
   font-size: 0.875rem;
@@ -496,7 +426,7 @@
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  color: var(--accent-ink);
+  color: var(--action);
   font-weight: 700;
 }
 .targetDetails {
@@ -510,7 +440,7 @@
   gap: 10px;
   min-height: 44px;
   font-weight: 700;
-  color: var(--accent-ink);
+  color: var(--action);
   list-style: none;
   cursor: pointer;
 }
@@ -550,8 +480,14 @@
   color: var(--ink);
   overflow-wrap: anywhere;
 }
-.targetDetails code {
-  font-size: 0.8125rem;
+/* Exact IDs stay exact but in the interface face: no monospace labels
+   (DESIGN.md); tabular numerals keep digits aligned. */
+.targetDetails code,
+.reviewPanel code {
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
 }
 
 /* ---------- Form ---------- */
@@ -636,46 +572,8 @@
   font-size: 0.8125rem;
   color: var(--secondary);
 }
-.primaryAction,
-.secondaryAction {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 48px;
-  padding: 10px 22px;
-  border-radius: var(--radius-control);
-  font: inherit;
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1.3;
-  cursor: pointer;
-  white-space: normal;
-  overflow-wrap: anywhere;
-  transition: background-color var(--motion-control) ease;
-}
-.primaryAction {
-  border: 0;
-  background: var(--action);
-  color: var(--on-action);
-}
-.primaryAction:hover:not(:disabled) {
-  background: var(--action-strong);
-}
-.secondaryAction {
+.alignStart {
   justify-self: start;
-  border: 1.5px solid var(--control);
-  background: var(--surface);
-  color: var(--ink);
-}
-.secondaryAction:hover:not(:disabled) {
-  background: var(--surface-2);
-}
-.primaryAction:disabled,
-.secondaryAction:disabled {
-  border: 1.5px solid var(--line);
-  background: var(--surface-2);
-  color: var(--secondary);
-  cursor: not-allowed;
 }
 .reviewPanel {
   display: grid;
@@ -704,10 +602,6 @@
   font-weight: 650;
   overflow-wrap: anywhere;
 }
-.reviewPanel code {
-  font-size: 0.8125rem;
-  font-weight: 500;
-}
 .reviewPanel dl + p {
   color: var(--ink);
 }
@@ -717,43 +611,19 @@
   gap: 12px;
   margin-block-start: 20px;
 }
-.errorMessage,
-.successMessage,
-.blockedMessage {
-  margin: 0;
-  padding: 12px 16px;
-  border-radius: var(--radius-control);
-  overflow-wrap: anywhere;
-}
-.errorMessage,
-.blockedMessage {
-  background: var(--danger-tint);
-  color: var(--danger);
-}
-.successMessage {
-  background: var(--success-tint);
-  color: var(--success);
-}
-.errorMessage:focus,
-.successMessage:focus {
-  outline: 2px solid var(--cobalt);
-  outline-offset: 2px;
-}
 
 /* ---------- Page states ---------- */
 .notice,
-.emptyState,
 .resourceNotice {
   display: grid;
   gap: 12px;
   justify-items: start;
   max-width: 44rem;
   padding: 28px 32px;
-  border-radius: 14px;
+  border-radius: var(--radius-card);
   background: var(--surface);
 }
 .notice h2,
-.emptyState h2,
 .resourceNotice h2 {
   margin: 0;
   font-size: 1.3125rem;
@@ -762,7 +632,6 @@
   line-height: 1.3;
 }
 .notice p,
-.emptyState p,
 .resourceNotice p {
   margin: 0;
   color: var(--secondary);
@@ -771,7 +640,7 @@
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  color: var(--accent-ink);
+  color: var(--action);
   font-weight: 700;
 }
 
@@ -806,7 +675,7 @@
   margin: 0;
   padding: 0 20px;
   list-style: none;
-  border-radius: 14px;
+  border-radius: var(--radius-card);
   background: var(--surface);
 }
 .resourceList > li {
@@ -869,27 +738,6 @@
   gap: 10px 16px;
   min-width: 0;
 }
-.verbLink {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 0 18px;
-  border: 1.5px solid var(--control);
-  border-radius: var(--radius-control);
-  background: var(--surface);
-  color: var(--ink);
-  font-weight: 700;
-  text-decoration: none;
-  transition: background-color var(--motion-control) ease;
-}
-.verbLink:hover {
-  background: var(--surface-2);
-}
-.verbLink svg {
-  width: 18px;
-  height: 18px;
-}
 .workPanel {
   display: grid;
   gap: 16px;
@@ -897,7 +745,7 @@
   min-width: 0;
   max-width: 52rem;
   padding: 24px 28px;
-  border-radius: 14px;
+  border-radius: var(--radius-card);
   background: var(--surface);
 }
 .workPanel h2,
@@ -930,42 +778,9 @@
   align-items: center;
   gap: 4px 8px;
 }
-.contextLinks a {
-  min-height: 44px;
-  padding: 0 12px;
-  border: 0;
-  background: transparent;
-  color: var(--accent-ink);
-  font-weight: 700;
-}
-.contextLinks a:hover {
-  background: var(--surface-2);
-  color: var(--accent-ink);
-}
-.srOnly {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
 
-/* ---------- Focus and motion ---------- */
-.queue :is(button, input, textarea, select, a):focus-visible,
-.resourcePage :is(button, input, select, a, summary):focus-visible,
-.detail summary:focus-visible {
-  outline: 2px solid var(--cobalt);
-  outline-offset: 2px;
-}
+/* ---------- Motion ---------- */
 @media (prefers-reduced-motion: reduce) {
-  .primaryAction,
-  .verbLink,
   .targetDetails summary::after,
   .disclosure > summary::after {
     transition: none;
@@ -1004,7 +819,7 @@
   .band h1 {
     font-size: var(--type-display-mobile-size);
   }
-  .countTabs button {
+  .countTabs > button {
     min-width: 5.25rem;
     min-height: 60px;
     padding: 8px 12px;
@@ -1030,7 +845,7 @@
     padding: 0;
     border: 0;
     background: transparent;
-    color: var(--accent-ink);
+    color: var(--action);
     font: inherit;
     font-weight: 700;
     cursor: pointer;
@@ -1067,7 +882,6 @@
   }
   .workPanel,
   .notice,
-  .emptyState,
   .resourceNotice {
     padding: 20px;
   }

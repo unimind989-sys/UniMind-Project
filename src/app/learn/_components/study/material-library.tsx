@@ -1,6 +1,7 @@
 "use client";
 import { useProductText } from "@/app/_components/product-copy";
 import { useProductServices } from "@/app/_components/product-services";
+import { StatePill } from "@/app/_components/state-pill";
 import styles from "@/app/_components/product.module.css";
 import {
   defaultScope,
@@ -45,14 +46,14 @@ export function MaterialLibrary({
               <p>{source.locator}</p>
               <p>{reading.caption}</p>
             </div>
-            <span className={styles.pill}>
+            <StatePill tone={active ? "ok" : "neutral"}>
               {active
                 ? t("Available for learning tools", "متاح لأدوات المذاكرة")
                 : t(
                     "INACTIVE sample · excluded from new requests",
                     "مثال غير نشط · مستبعد من الطلبات الجديدة",
                   )}
-            </span>
+            </StatePill>
             {reading.readable && passage ? (
               <details>
                 <summary>{reading.action}</summary>
@@ -62,7 +63,7 @@ export function MaterialLibrary({
                     "Processed excerpt only. Full file reading and audio playback are not available here.",
                     "مقتطف معالج فقط. قراءة الملف الكامل وتشغيل الصوت غير متاحين هنا.",
                   )}{" "}
-                  · {passage.locator}
+                  {passage.locator}
                 </p>
               </details>
             ) : null}

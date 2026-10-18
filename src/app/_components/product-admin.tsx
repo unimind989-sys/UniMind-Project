@@ -163,16 +163,21 @@ export function ProductAdmin({
       />
       <div className={adminStyles.contextLinks}>
         {origin && (
-          <ProductLink href={adminResourceHref(origin, locale)} locale={locale}>
+          <ProductLink
+            variant="quiet"
+            href={adminResourceHref(origin, locale)}
+            locale={locale}
+          >
             {locale === "ar"
               ? "العودة إلى " + resourceNames[origin][1]
               : "Return to " + resourceNames[origin][0]}
           </ProductLink>
         )}
-        <ProductLink href="/admin" locale={locale}>
+        <ProductLink variant="quiet" href="/admin" locale={locale}>
           {locale === "ar" ? "كل القرارات" : "All decisions"}
         </ProductLink>
         <ProductLink
+          variant="quiet"
           href={defaultUnitPath}
           locale={locale}
           onClick={(event) => {

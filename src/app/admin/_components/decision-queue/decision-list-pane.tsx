@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { createPortal } from "react-dom";
+import { SegmentedControl } from "@/app/_components/segmented-control";
 
 import { adminTargetKind } from "@/lib/admin/admin-presentation.application";
 import type { Locale } from "@/lib/i18n/locale";
@@ -40,31 +41,32 @@ export function DecisionListPane({
     queue;
   const slot = useContext(AdminBandSlot);
   const number = new Intl.NumberFormat(locale);
+  // CountTabs (DESIGN.md): the Night SegmentedControl with real counts.
   const counts = (
-    <div
+    <SegmentedControl
+      mode="buttons"
+      tone="night"
       className={styles.countTabs}
-      role="group"
-      aria-label={copy.filtersLabel}
-    >
-      {queueFilters.map((id) => (
-        <button
-          key={id}
-          type="button"
-          aria-pressed={queue.filter === id}
-          onClick={() => queue.setFilter(id)}
-        >
-          <span className={styles.countLabel}>{copy.filters[id]}</span>{" "}
-          <span className={styles.countNumber}>
-            {number.format(
-              id === "all"
-                ? matching.length
-                : matching.filter((candidate) => group(candidate) === id)
-                    .length,
-            )}
-          </span>
-        </button>
-      ))}
-    </div>
+      label={copy.filtersLabel}
+      items={queueFilters.map((id) => ({
+        key: id,
+        pressed: queue.filter === id,
+        onClick: () => queue.setFilter(id),
+        label: (
+          <>
+            <span className={styles.countLabel}>{copy.filters[id]}</span>{" "}
+            <span className={styles.countNumber}>
+              {number.format(
+                id === "all"
+                  ? matching.length
+                  : matching.filter((candidate) => group(candidate) === id)
+                      .length,
+              )}
+            </span>
+          </>
+        ),
+      }))}
+    />
   );
 
   return (

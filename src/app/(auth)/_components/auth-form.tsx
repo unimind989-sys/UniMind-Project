@@ -26,6 +26,8 @@ import {
   updatePasswordAction,
   type AuthFormState,
 } from "../actions";
+import { Notice } from "@/app/_components/notice";
+import { Button } from "@/app/_components/product-ui";
 import styles from "../auth.module.css";
 import { useSyntheticNavigation } from "@/app/_components/product-navigation";
 import { syntheticLoginRole } from "@/lib/demo/synthetic-account.application";
@@ -194,7 +196,7 @@ export function AuthForm({
       : (actionOverride ?? actions[mode]),
     initialState,
   );
-  const summaryRef = useRef<HTMLDivElement>(null);
+  const summaryRef = useRef<HTMLParagraphElement>(null);
   const stateNotice = actionNotice(state, copy);
   const visibleNotice = stateNotice ?? initialNoticeMessage(notice, copy);
   const noticeIsInformational =
@@ -241,15 +243,23 @@ export function AuthForm({
         <p>{copy.passwordHelp}</p>
       ) : null}
       {visibleNotice !== null ? (
-        <div
+        <Notice
           className={styles.formNotice}
-          data-status={state.status}
-          role={noticeIsInformational ? "status" : "alert"}
+          locale={locale}
+          live
+          tone={
+            !noticeIsInformational
+              ? "error"
+              : state.status === "CHECK_EMAIL"
+                ? "success"
+                : "neutral"
+          }
+          status={state.status}
           tabIndex={-1}
           ref={summaryRef}
         >
           {visibleNotice}
-        </div>
+        </Notice>
       ) : null}
 
       <form
@@ -422,29 +432,29 @@ export function AuthForm({
           </div>
         ) : null}
 
-        <button
-          className={styles.primaryAction}
+        <Button
+          variant="primary"
+          size="large"
+          block
           type="submit"
+          pending={pending}
+          pendingLabel={copy.loading}
           disabled={
-            pending ||
             (!!actionOverride && !hydrated) ||
             (mode === "consent" && currentTerms == null)
           }
         >
-          <span>
-            {pending
-              ? copy.loading
-              : {
-                  login: copy.signIn,
-                  register: copy.register,
-                  verify: copy.resend,
-                  forgot: copy.sendReset,
-                  reset: copy.updatePassword,
-                  consent: copy.accept,
-                }[mode]}
-          </span>
-          <span aria-hidden="true">{direction === "rtl" ? "←" : "→"}</span>
-        </button>
+          {
+            {
+              login: copy.signIn,
+              register: copy.register,
+              verify: copy.resend,
+              forgot: copy.sendReset,
+              reset: copy.updatePassword,
+              consent: copy.accept,
+            }[mode]
+          }
+        </Button>
       </form>
 
       <div className={styles.secondaryActions}>

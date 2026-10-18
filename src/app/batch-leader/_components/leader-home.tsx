@@ -1,5 +1,6 @@
 "use client";
 import { ProductNavigationLink as Link } from "@/app/_components/product-navigation";
+import { buttonLook } from "@/app/_components/button-look";
 import type { Route } from "next";
 import { AppShell } from "@/app/_components/app-shell";
 import { StatePill, type StateTone } from "@/app/_components/state-pill";
@@ -19,7 +20,7 @@ import {
   projectCollectionRecords,
   type CollectionAcknowledgement,
 } from "@/lib/collection/collection-presentation.application";
-import type { Locale } from "@/lib/i18n/locale";
+import { localizedHref, type Locale } from "@/lib/i18n/locale";
 import { useCollectionClock } from "./use-collection-clock";
 import {
   CollectionDateDetails,
@@ -95,11 +96,7 @@ export function CollectionHistory({
       b.submission.createdAt.localeCompare(a.submission.createdAt),
     );
   return (
-    <section
-      className={styles.history}
-      aria-label={heading}
-      id="latest-submissions"
-    >
+    <section aria-label={heading} id="latest-submissions">
       <div className={styles.sectionHead}>
         <h2>{heading}</h2>
         <p className={styles.helper}>
@@ -215,9 +212,12 @@ export function CollectionHistory({
                     submission.id,
                   ) ? (
                     <Link
-                      className={styles.open}
+                      {...buttonLook({ variant: "primary" }, styles.open)}
                       href={
-                        `/batch-leader/campaigns/${encodeURIComponent(campaign.id)}?request=${encodeURIComponent(item.id)}&submission=${encodeURIComponent(submission.id)}&lang=${locale}#collection-intake` as Route
+                        localizedHref(
+                          `/batch-leader/campaigns/${encodeURIComponent(campaign.id)}?request=${encodeURIComponent(item.id)}&submission=${encodeURIComponent(submission.id)}#collection-intake`,
+                          locale,
+                        ) as Route
                       }
                     >
                       {submission.correction?.action === "FIX_INFORMATION"
@@ -305,7 +305,7 @@ export function LeaderHome({
   const number = new Intl.NumberFormat(locale === "ar" ? "ar-EG" : "en");
   return (
     <AppShell locale={locale} role="leader" title={title} synthetic={synthetic}>
-      <div className={`${styles.workspace} ${styles.campaignOverview}`}>
+      <div className={styles.workspace}>
         <header className={styles.band}>
           <div className={styles.bandText}>
             <h1>{title}</h1>
@@ -330,10 +330,7 @@ export function LeaderHome({
             {...(referenceTime ? { referenceTime } : {})}
           />
         ) : (
-          <section
-            className={styles.campaigns}
-            aria-label={t("Assigned campaigns", "الحملات المسندة")}
-          >
+          <section aria-label={t("Assigned campaigns", "الحملات المسندة")}>
             <div className={styles.sectionHead}>
               <h2>{t("Assigned campaigns", "الحملات المسندة")}</h2>
             </div>
@@ -352,7 +349,10 @@ export function LeaderHome({
                         <h3>
                           <Link
                             href={
-                              `/batch-leader/campaigns/${encodeURIComponent(campaign.id)}?lang=${locale}` as Route
+                              localizedHref(
+                                `/batch-leader/campaigns/${encodeURIComponent(campaign.id)}`,
+                                locale,
+                              ) as Route
                             }
                           >
                             {campaign.name}
@@ -395,9 +395,12 @@ export function LeaderHome({
                         />
                       </div>
                       <Link
-                        className={styles.open}
+                        {...buttonLook({ variant: "primary" }, styles.open)}
                         href={
-                          `/batch-leader/campaigns/${encodeURIComponent(campaign.id)}?lang=${locale}` as Route
+                          localizedHref(
+                            `/batch-leader/campaigns/${encodeURIComponent(campaign.id)}`,
+                            locale,
+                          ) as Route
                         }
                       >
                         {window === "ACTIVE"

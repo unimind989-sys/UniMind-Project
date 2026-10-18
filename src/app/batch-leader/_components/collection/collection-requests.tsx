@@ -1,13 +1,14 @@
 "use client";
 
 import { ProductNavigationLink as Link } from "@/app/_components/product-navigation";
+import { buttonLook } from "@/app/_components/button-look";
 import type { Route } from "next";
 import { Button } from "@/app/_components/product-ui";
 import { StatePill } from "@/app/_components/state-pill";
 import type { CollectionCampaign } from "@/lib/collection/collection.application";
 import { collectionRequestAction } from "@/lib/collection/collection-presentation.application";
 import { getCollectionCopy } from "@/lib/i18n/collection-copy";
-import type { Locale } from "@/lib/i18n/locale";
+import { localizedHref, type Locale } from "@/lib/i18n/locale";
 import { collectionText } from "./collection-text";
 import type { CollectionFlowState } from "./use-collection-flow";
 import styles from "../../collection.module.css";
@@ -25,10 +26,7 @@ export function CollectionRequests({
   const t = collectionText(locale);
   const { windowState, queue, projection, outstanding, beginUpload } = flow;
   return (
-    <section
-      className={styles.workRequests}
-      aria-labelledby="outstanding-requests"
-    >
+    <section aria-labelledby="outstanding-requests">
       <div className={styles.requestHeading}>
         <h2 id="outstanding-requests">
           {t("Awaiting your action", "بانتظار إجراء منك")}{" "}
@@ -103,9 +101,12 @@ export function CollectionRequests({
                       </Button>
                     ) : (
                       <Link
-                        className={styles.open}
+                        {...buttonLook({ variant: "primary" }, styles.open)}
                         href={
-                          `/batch-leader/campaigns/${encodeURIComponent(campaign.id)}?request=${encodeURIComponent(item.id)}&submission=${encodeURIComponent(item.latestSubmission!.id)}&lang=${locale}#collection-intake` as Route
+                          localizedHref(
+                            `/batch-leader/campaigns/${encodeURIComponent(campaign.id)}?request=${encodeURIComponent(item.id)}&submission=${encodeURIComponent(item.latestSubmission!.id)}#collection-intake`,
+                            locale,
+                          ) as Route
                         }
                       >
                         {action === "FIX_INFORMATION"

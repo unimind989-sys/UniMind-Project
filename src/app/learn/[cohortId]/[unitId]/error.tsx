@@ -3,38 +3,43 @@
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
+import { RouteErrorState } from "@/app/_components/route-error-state";
 import { getWorkspaceCopy } from "@/lib/i18n/workspace-copy";
+import { resolveLocale, type Locale } from "@/lib/i18n/locale";
 
-import styles from "../../workspace.module.css";
+type ErrorProps = Readonly<{
+  error: Error & { digest?: string };
+  retry: () => void;
+}>;
 
-function WorkspaceErrorContent({
-  reset,
-}: Readonly<{ error: Error & { digest?: string }; reset: () => void }>) {
-  const locale = useSearchParams().get("lang") === "ar" ? "ar" : "en";
+function WorkspaceErrorState({
+  locale,
+  retry,
+}: Readonly<{ locale: Locale; retry: () => void }>) {
   const text = getWorkspaceCopy(locale);
   return (
-    <section
-      className={styles.routeState}
-      role="alert"
-      dir={locale === "ar" ? "rtl" : "ltr"}
+    <RouteErrorState
+      locale={locale}
+      retry={retry}
+      title={text.genericErrorTitle}
+      retryLabel={text.retry}
+      exitHref="/learn?view=subjects"
+      exitLabel={locale === "ar" ? "تصفح المواد" : "Browse subjects"}
     >
-      <h2>{text.genericErrorTitle}</h2>
       <p>{text.genericErrorBody}</p>
-      <button type="button" onClick={reset}>
-        {text.retry}
-      </button>
-    </section>
+    </RouteErrorState>
   );
 }
 
-export default function WorkspaceError(
-  props: Readonly<{ error: Error & { digest?: string }; reset: () => void }>,
-) {
+function LocalizedWorkspaceError({ retry }: Pick<ErrorProps, "retry">) {
+  const locale = resolveLocale(useSearchParams().get("lang"));
+  return <WorkspaceErrorState locale={locale} retry={retry} />;
+}
+
+export default function WorkspaceError({ retry }: ErrorProps) {
   return (
-    <Suspense
-      fallback={<div role="alert">We could not load this workspace.</div>}
-    >
-      <WorkspaceErrorContent {...props} />
+    <Suspense fallback={<WorkspaceErrorState locale="en" retry={retry} />}>
+      <LocalizedWorkspaceError retry={retry} />
     </Suspense>
   );
 }

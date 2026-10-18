@@ -12,7 +12,8 @@ import {
   type Locale,
 } from "@/lib/demo/synthetic-fixtures.application";
 import { useProductServices } from "./product-services";
-import { Button, Notice, ProductLink, Row } from "./product-ui";
+import { Notice } from "./notice";
+import { Button, ProductLink } from "./product-ui";
 import styles from "./product.module.css";
 
 type Props = { screen: string; locale: Locale; scenario: string };
@@ -26,7 +27,7 @@ export function ProductCampaigns({ screen, locale, scenario }: Props) {
   if (["expired", "replayed"].includes(scenario))
     return (
       <section className={styles.panel}>
-        <Notice error>
+        <Notice tone="error" locale={locale}>
           {t(
             "The sample assignment or invitation is expired/already used. No campaign access can be granted. Request a new invitation from the admin in the real product.",
             "التكليف أو الدعوة التجريبية منتهية أو مستخدمة. لا يمكن منح وصول للحملة. اطلب دعوة جديدة من الإدارة في المنتج الحقيقي.",
@@ -47,7 +48,7 @@ export function ProductCampaigns({ screen, locale, scenario }: Props) {
     return (
       <section className={styles.panel}>
         <h2>{campaign.name}</h2>
-        <dl className={styles.definition}>
+        <dl className={styles.facts}>
           <div>
             <dt>{t("Cohort", "المجموعة")}</dt>
             <dd>{campaign.cohortName}</dd>
@@ -70,7 +71,7 @@ export function ProductCampaigns({ screen, locale, scenario }: Props) {
         </p>
         <div className={styles.actions}>
           <Button
-            primary
+            variant="primary"
             disabled={accepted}
             onClick={() =>
               update((current) => ({ ...current, invitationUsed: true }))
@@ -83,7 +84,7 @@ export function ProductCampaigns({ screen, locale, scenario }: Props) {
           </ProductLink>
         </div>
         {accepted ? (
-          <Notice>
+          <Notice tone="success" live locale={locale}>
             {t(
               "Invitation accepted · simulated. No real access granted.",
               "تمت مراجعة الدعوة داخل التبويب. لم يمنح وصول.",
@@ -100,43 +101,47 @@ export function ProductCampaigns({ screen, locale, scenario }: Props) {
           "هذا الدور يعرض تكليفات تجريبية ثابتة فقط. لا يتم اعتبار الدعوات أو الصلاحيات وصولًا حقيقيًا.",
         )}
       </p>
-      <Row
-        title={campaign.name}
-        action={
+      <ul className={styles.listRows}>
+        <li className={styles.listRow}>
+          <div>
+            <h3>{campaign.name}</h3>
+            <p>
+              <bdi>
+                {locale === "ar"
+                  ? defaultScope.unitTitleAr
+                  : defaultScope.unitTitleEn}
+              </bdi>
+              {t(", ", "، ")}
+              {campaign.cohortName}
+            </p>
+            <p>
+              {t(
+                "Awaiting handout, recording or image with a rights declaration.",
+                "بانتظار ملزمة أو تسجيل أو صورة بإقرار حقوق.",
+              )}
+            </p>
+          </div>
           <ProductLink
             href={reviewBase + "/batch-leader/campaigns/" + demoCampaignId}
             locale={locale}
           >
             {t("Open assigned campaign", "فتح الحملة المسندة")}
           </ProductLink>
-        }
-      >
-        <p>
-          <bdi>
-            {locale === "ar"
-              ? defaultScope.unitTitleAr
-              : defaultScope.unitTitleEn}
-          </bdi>
-          {t(", ", "، ")}
-          {campaign.cohortName}
-        </p>
-        <p>
-          {t(
-            "Awaiting handout, recording or image with a rights declaration.",
-            "بانتظار ملزمة أو تسجيل أو صورة بإقرار حقوق.",
-          )}
-        </p>
-      </Row>
-      {state.campaignDraft ? (
-        <Row title={t("New campaign draft", "مسودة حملة محاكاة جديدة")}>
-          <p>
-            {t(
-              "Admin draft exists, but no real assignment has been created. Review its invitation from Admin.",
-              "توجد مسودة إدارة، لكن لم ينشأ تكليف حقيقي. راجع دعوتها من الإدارة.",
-            )}
-          </p>
-        </Row>
-      ) : null}
+        </li>
+        {state.campaignDraft ? (
+          <li className={styles.listRow}>
+            <div>
+              <h3>{t("New campaign draft", "مسودة حملة محاكاة جديدة")}</h3>
+              <p>
+                {t(
+                  "Admin draft exists, but no real assignment has been created. Review its invitation from Admin.",
+                  "توجد مسودة إدارة، لكن لم ينشأ تكليف حقيقي. راجع دعوتها من الإدارة.",
+                )}
+              </p>
+            </div>
+          </li>
+        ) : null}
+      </ul>
     </>
   );
 }

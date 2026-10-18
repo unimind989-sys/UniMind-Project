@@ -137,41 +137,58 @@ export const productNavigation = (page: Page, locale: Locale) =>
     exact: true,
   });
 
-/** Interface-language buttons: selected state, check icon and 44px targets. */
+/** Interface-language control (WP03 plan D1): two pressed-state buttons with
+ * full accessible names and short visible labels, 44px targets, a filled
+ * current segment and no check icon; the Night bar keeps DESIGN's height
+ * (64px from 768px, at most 52px on phones). */
 export async function expectLanguageControl(page: Page, locale: Locale) {
   const group = page.getByRole("group", {
     name: pick(locale, "Interface language", "لغة الواجهة"),
     exact: true,
   });
   await expect(group.getByRole("button")).toHaveCount(2);
+  await expect(group.getByRole("button")).toHaveText(["EN", "ع"]);
+  await expect(group.locator("svg")).toHaveCount(0);
   const selected = group.getByRole("button", {
     name: languageName(locale),
     exact: true,
   });
   await expect(selected).toHaveAttribute("aria-pressed", "true");
-  await expect(selected.locator("svg[aria-hidden='true']")).toHaveCount(1);
   await expect(
-    group
-      .getByRole("button", {
-        name: languageName(otherLocale(locale)),
-        exact: true,
-      })
-      .locator("svg"),
-  ).toHaveCount(0);
+    group.getByRole("button", {
+      name: languageName(otherLocale(locale)),
+      exact: true,
+    }),
+  ).toHaveAttribute("aria-pressed", "false");
   const heights = await group
     .getByRole("button")
     .evaluateAll((elements) =>
       elements.map((element) => element.getBoundingClientRect().height),
     );
   expect(heights.every((height) => height >= 44)).toBe(true);
-  const style = await selected.evaluate((e) => ({
-    background: getComputedStyle(e).backgroundColor,
-    root: getComputedStyle(document.documentElement)
-      .getPropertyValue("--accent-soft")
-      .trim(),
-  }));
-  expect(style.background).not.toBe("rgba(0, 0, 0, 0)");
-  expect(style.root).not.toBe("");
+  const fill = await selected.evaluate(
+    (element) =>
+      getComputedStyle(element.firstElementChild ?? element).backgroundColor,
+  );
+  expect(fill).not.toBe("rgba(0, 0, 0, 0)");
+  // Enlarged text (the 200% pass) grows the control and the bar with it.
+  const scale = await page.evaluate(
+    () => parseFloat(getComputedStyle(document.documentElement).fontSize) / 16,
+  );
+  const control = await boxOf(group);
+  expect(control.width).toBeLessThanOrEqual(120 * scale);
+  expect(control.height).toBeLessThanOrEqual(48 * scale);
+  if (scale > 1) return;
+  // A phone workspace that fell back to page flow folds the bottom bar into
+  // the header (the keyboard state belongs to WP03-T26), so only the docked
+  // bar is measured.
+  const pageFlow = await page.locator("[data-workspace-flow='page']").count();
+  if (pageFlow > 0) return;
+  const width = page.viewportSize()?.width ?? 1280;
+  const bar = await boxOf(
+    page.locator("header[data-workspace-chrome]").first(),
+  );
+  expect(bar.height).toBeLessThanOrEqual(width >= 768 ? 64 : 52);
 }
 
 /** The page heading starts at the top bar's inset, where the brand starts. */
