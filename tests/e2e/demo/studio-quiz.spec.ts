@@ -18,6 +18,10 @@ import {
   send,
   signIn,
 } from "../support/session";
+import {
+  resizeOnPausedClock,
+  setRootFontSizeOnPausedClock,
+} from "../support/layout";
 import { expect, test } from "../support/test";
 inLocales(["en"], (locale) => {
   test(
@@ -675,8 +679,7 @@ inLocales(["en"], (locale) => {
         [390, 844],
         [320, 720],
       ] as const) {
-        await page.setViewportSize({ width, height });
-        await page.clock.runFor(64);
+        await resizeOnPausedClock(page, width, height);
         const last = page.locator('input[name="sample-question-5"]').first();
         await last.check();
         await expect(page.locator("#quiz-progress")).toContainText(
@@ -698,10 +701,7 @@ inLocales(["en"], (locale) => {
         expect(visible).toBe(true);
         await expect(page.getByRole("timer")).toBeVisible();
       }
-      await page.evaluate(
-        () => (document.documentElement.style.fontSize = "32px"),
-      );
-      await page.clock.runFor(64);
+      await setRootFontSizeOnPausedClock(page, "32px");
       await expect(page.locator('[data-layout="workspace"]')).toHaveAttribute(
         "data-workspace-flow",
         "page",

@@ -13,6 +13,7 @@ const env: NodeJS.ProcessEnv = {
   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: "synthetic-public-credential-only",
   NEXT_PUBLIC_RELEASE_ID: "synthetic-product-demo",
   NEXT_PUBLIC_TELEMETRY_ENABLED: "false",
+  NEXT_TELEMETRY_DISABLED: "1",
   DATABASE_URL:
     "postgresql://synthetic:synthetic@db.synthetic.invalid:5432/synthetic_demo",
   SUPABASE_SERVICE_ROLE_KEY: "synthetic-server-credential-only",

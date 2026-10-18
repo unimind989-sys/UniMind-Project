@@ -1,11 +1,21 @@
+import { availableParallelism } from "node:os";
 import { defineConfig, devices } from "@playwright/test";
 
 const reuseDemo =
   process.env.UNIMIND_DEMO_REUSE === "1" ||
   process.env.UNIMIND_FRONTEND_AUDIT === "1";
 // Every demo test starts from its own sign-in in a fresh page, so tests are
-// independent. Locally one worker is the default; CI passes --workers/--shard.
-const workers = Number(process.env.PW_WORKERS ?? 1);
+// independent. PW_WORKERS overrides the worker count (CI pins 2 per shard);
+// locally the default leaves headroom for the dev server: 2 on 4 CPUs.
+function demoWorkers(value = process.env.PW_WORKERS): number {
+  if (value === undefined || value === "")
+    return Math.max(1, Math.floor((availableParallelism() - 1) / 1.5));
+  const workers = Number(value);
+  if (!Number.isInteger(workers) || workers < 1)
+    throw new Error("PW_WORKERS must be a positive integer.");
+  return workers;
+}
+const workers = demoWorkers();
 
 export default defineConfig({
   testDir: "./tests/e2e/demo",

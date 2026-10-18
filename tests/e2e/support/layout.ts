@@ -43,6 +43,69 @@ export async function resize(page: Page, width: number, height = 900) {
   await settle(page);
 }
 
+/**
+ * `resize` for a page whose fake clock is paused (`page.clock.pauseAt`).
+ * Animation frames then run only when the test advances the clock, so this
+ * waits for the real resize event (the shell's listener runs before this one,
+ * because it was added first) and only then advances the clock to run the
+ * shell's re-measure frame.
+ */
+export async function resizeOnPausedClock(
+  page: Page,
+  width: number,
+  height: number,
+) {
+  const current = page.viewportSize();
+  if (current?.width !== width || current.height !== height) {
+    // Install the listener before resizing, so the event cannot be missed.
+    await page.evaluate(() => {
+      (window as Window & { unimindResized?: Promise<void> }).unimindResized =
+        new Promise<void>((resolve) =>
+          addEventListener("resize", () => resolve(), { once: true }),
+        );
+    });
+    await page.setViewportSize({ width, height });
+    await page.evaluate(
+      () =>
+        (window as Window & { unimindResized?: Promise<void> }).unimindResized,
+    );
+  }
+  await page.clock.runFor(64);
+}
+
+/**
+ * Sets the root font size on a page whose fake clock is paused, waits until
+ * resize observers have seen the new layout (the shell's observer was created
+ * first, so it has scheduled its re-measure), then runs that frame.
+ */
+export async function setRootFontSizeOnPausedClock(page: Page, size: string) {
+  await page.evaluate(
+    (fontSize) =>
+      new Promise<void>((resolve) => {
+        let initial = true;
+        const observer = new ResizeObserver(() => {
+          if (initial) {
+            initial = false;
+            document.documentElement.style.fontSize = fontSize;
+            return;
+          }
+          observer.disconnect();
+          resolve();
+        });
+        // The workspace pins the body to the viewport, so watch the chrome
+        // and content, whose sizes follow the root font. Observing body keeps
+        // this observer's shallowest depth at 1, so the shell's observations
+        // of its chrome are delivered in the same frame, before this one.
+        for (const element of document.querySelectorAll(
+          "body, main, [data-workspace-chrome]",
+        ))
+          observer.observe(element);
+      }),
+    size,
+  );
+  await page.clock.runFor(64);
+}
+
 /** The document never scrolls horizontally at the current viewport. */
 export async function expectReflow(page: Page, { strict = false } = {}) {
   expect(
