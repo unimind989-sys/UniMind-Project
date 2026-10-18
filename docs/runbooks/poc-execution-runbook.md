@@ -1539,9 +1539,9 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 **Dependencies:** WP03-T24. Findings DS-01 to DS-34 (except DS-17, DS-19, DS-20, DS-24), IX-02, IX-03, IX-07, IX-17, IX-30 ([plan](../reviews/wp03-refinement/plan.md#t25--consolidate-the-cobalt-design-system-and-shared-primitives)).
 
-- [~] One `LanguageSwitch` for shell, access pages and landing; rebuilt `Button` and action link; `SubmitButton`, `Field`, `Notice` with icon, `PageState`, `SegmentedControl` and `MetaList`; error pages on `retry()` with a safe exit.
-- [ ] Open Folio alias tokens replaced and removed with a guard; avatar contrast, status colours, font stacks, icon sizes, focus and disabled styles fixed; Report, Evidence, Quiz states and the campaign invitation moved onto the primitives; dead code removed.
-- [ ] Rendered review (EN/AR, light/dark, 320 to 1440px, 200% text) approved by the overseeing session under the delegation (`Approved commit:`); deliver through one PR with required CI.
+- [x] One `LanguageSwitch` for shell, access pages and landing; rebuilt `Button` and action link; `SubmitButton`, `Field`, `Notice` with icon, `PageState`, `SegmentedControl` and `MetaList`; error pages on `retry()` with a safe exit.
+- [x] Open Folio alias tokens replaced and removed with a guard; avatar contrast, status colours, font stacks, icon sizes, focus and disabled styles fixed; Report, Evidence, Quiz states and the campaign invitation moved onto the primitives; dead code removed.
+- [x] Rendered review (EN/AR, light/dark, 320 to 1440px, 200% text) approved by the overseeing session under the delegation (`Approved commit:`); deliver through one PR with required CI. Approved at `d6dbd43` by the overseeing session under Ahmed's delegation ([task record](../../planning/tasks/wp03-t25-cobalt-primitives.md)). These closure markers become authoritative only when that PR merges with green required CI.
 
 **Pass:** one implementation per DESIGN component in use; no alias token or legacy button left; no behaviour change; required CI green.
 

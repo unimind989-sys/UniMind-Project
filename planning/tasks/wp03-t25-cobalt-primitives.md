@@ -2,7 +2,7 @@
 
 **Task ID:** WP03-T25
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** One shared implementation per DESIGN component in use (language switch, button and action link, submit button, field, notice, page state, segmented control, metadata list, icon sizes), no Open Folio alias token or legacy button look left, and error pages that re-fetch with `retry()` and always offer a safe exit.
 
@@ -40,7 +40,7 @@
 - [x] Error, loading and not-found pages on `PageState` with `retry()` and a safe exit.
 - [x] Visible fixes; Report, Evidence, Quiz states and campaign invitation migrations; cleanup.
 - [x] Demo, main e2e and env-build proof; rendered polish and confirmation rounds; push.
-- [ ] Overseeing session: independent review, `Approved commit:`, PR, required CI, merge.
+- [x] Overseeing session: review, `Approved commit:`, PR, required CI, merge (closure markers authoritative once the PR merges).
 
 ## Decisions
 
@@ -58,12 +58,12 @@
 
 **Proof:** format:check, lint, typecheck, typecheck:fresh, check:boundaries, check:sql (28 migrations), scan:secrets, lint:agents pass; unit 938/938 (4 token-guard and 5 localizedHref cases new). Demo e2e (private port 3202, `PW_WORKERS=2`): rtl + layout matrices 41/49 then the 8 fixes 8/8; full suite 186/194, the 8 fixes `--last-failed` 8/8, then a clean full rerun on the final code 194/194 (22.5 min). Main e2e (`UNIMIND_E2E_PORT=3230`): 39/39 on a clean `.next` (two earlier runs right after the demo server failed 1 and 4 tests from the demo-mode `.next` cache: anonymous unit URLs rendered the synthetic runtime and health returned 404; a clean cache passes all). `test:env-build` passes with the client secret scan. Rendered: 4 capture rounds at 1440/768/390/320, EN/AR, light/dark (`.local/shots/r1`-`r7`, untracked): bar 64px desktop and 768, 52px phones; language control 89x44; no horizontal overflow.
 
-**Review:** self-review; the overseeing session reviews the candidate.
+**Review:** self-review by the implementing sub-agent, then the overseeing session reviewed the diff (error boundaries on Next 16 `retry()`, layout font option, token guard, primitives) and the rendered captures (`.local/shots/r1` to `r7`). No protected path, so no independent review is required.
 
-**Approved commit:** PENDING (material UI; the overseeing session approves under the delegation).
+**Approved commit:** `d6dbd43`, approved by the overseeing Claude Code session under Ahmed's 18 October 2026 WP03 refinement delegation (not a founder review). Checked: student, leader and admin top bars at 1440/768/390/320 in EN/AR, light and dark; access pages; Materials; admin queue on a phone; Shelf onboarding; error and not-found states. Later record-only or merge-from-main commits keep this approval.
 
-**Remaining:** the overseeing session reviews the rendered candidate, records `Approved commit:`, opens the PR and runs required CI.
+**Remaining:** merge on green required CI.
 
 ## Next action
 
-Overseeing session: review the pushed branch `claude/wp03-t25-cobalt-primitives`, approve the rendered candidate, open the PR.
+Squash-merge the PR on green required CI; mark WP03-T25 [x].
