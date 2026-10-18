@@ -35,12 +35,15 @@ const stages = planVerification(
 );
 const concurrency = Math.max(1, Math.min(4, availableParallelism() - 1));
 
-// pnpm exports its own entry point to the scripts it runs; fall back to
-// corepack so the runner also works when started through `corepack pnpm`.
+// pnpm exports its own entry point to the scripts it runs: a JavaScript
+// file under corepack, the executable itself for a standalone pnpm. Fall
+// back to corepack when neither is available.
 function command(component: string): [string, string[]] {
   const execPath = process.env.npm_execpath;
-  if (execPath !== undefined && /pnpm/u.test(execPath))
+  if (execPath !== undefined && /pnpm[^/\\]*\.(?:c|m)?js$/u.test(execPath))
     return [process.execPath, [execPath, "run", component]];
+  if (execPath !== undefined && /pnpm(?:\.exe)?$/iu.test(execPath))
+    return [execPath, ["run", component]];
   return [
     process.platform === "win32" ? "corepack.cmd" : "corepack",
     ["pnpm", "run", component],
@@ -69,7 +72,8 @@ function run(component: string, buffered: boolean): Promise<Outcome> {
       resolve({ component, status, milliseconds: Date.now() - started });
     };
     child.once("error", () => finish(1));
-    child.once("exit", finish);
+    // "close" fires after the output streams end, so no diagnostics are lost.
+    child.once("close", finish);
   });
 }
 

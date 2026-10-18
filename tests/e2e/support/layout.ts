@@ -57,14 +57,18 @@ export async function resizeOnPausedClock(
 ) {
   const current = page.viewportSize();
   if (current?.width !== width || current.height !== height) {
-    const resized = page.evaluate(
-      () =>
+    // Install the listener before resizing, so the event cannot be missed.
+    await page.evaluate(() => {
+      (window as Window & { unimindResized?: Promise<void> }).unimindResized =
         new Promise<void>((resolve) =>
           addEventListener("resize", () => resolve(), { once: true }),
-        ),
-    );
+        );
+    });
     await page.setViewportSize({ width, height });
-    await resized;
+    await page.evaluate(
+      () =>
+        (window as Window & { unimindResized?: Promise<void> }).unimindResized,
+    );
   }
   await page.clock.runFor(64);
 }
@@ -89,7 +93,9 @@ export async function setRootFontSizeOnPausedClock(page: Page, size: string) {
           resolve();
         });
         // The workspace pins the body to the viewport, so watch the chrome
-        // and content, whose sizes follow the root font.
+        // and content, whose sizes follow the root font. Observing body keeps
+        // this observer's shallowest depth at 1, so the shell's observations
+        // of its chrome are delivered in the same frame, before this one.
         for (const element of document.querySelectorAll(
           "body, main, [data-workspace-chrome]",
         ))
