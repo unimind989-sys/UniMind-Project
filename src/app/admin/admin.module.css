@@ -541,6 +541,25 @@
   color: var(--secondary);
   font-size: 0.8125rem;
 }
+/* Decision-form controls come from `Field`; read-only ones keep the quiet
+   surface, and the attestation error sits under its checkbox (IX-27). */
+.actionForm :is(textarea, input)[readonly] {
+  background: var(--surface-2);
+}
+.fieldError {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 0;
+  color: var(--danger);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.fieldError > svg {
+  flex: none;
+  margin-block-start: 0.15em;
+}
 .reviewAttestation,
 .check {
   display: flex;

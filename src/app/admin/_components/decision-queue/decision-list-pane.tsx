@@ -41,6 +41,8 @@ export function DecisionListPane({
     queue;
   const slot = useContext(AdminBandSlot);
   const number = new Intl.NumberFormat(locale);
+  const filterName =
+    copy.filters[queue.filter as (typeof queueFilters)[number]] ?? "";
   // CountTabs (DESIGN.md): the Night SegmentedControl with real counts.
   const counts = (
     <SegmentedControl
@@ -75,19 +77,37 @@ export function DecisionListPane({
       aria-label={locale === "ar" ? "قائمة القرارات" : "Decisions"}
     >
       {slot === undefined ? counts : slot ? createPortal(counts, slot) : null}
-      <label className={styles.queueSearch}>
-        <span>{locale === "ar" ? "البحث عن قرار" : "Find a decision"}</span>
-        <input
-          type="search"
-          value={queue.search}
-          onChange={(event) => queue.setSearch(event.target.value)}
-        />
-      </label>
+      <search>
+        <label className={styles.queueSearch}>
+          <span>{locale === "ar" ? "البحث عن قرار" : "Find a decision"}</span>
+          <input
+            type="search"
+            name="q"
+            value={queue.search}
+            autoComplete="off"
+            spellCheck={false}
+            enterKeyHint="search"
+            onChange={(event) => queue.setSearch(event.target.value)}
+          />
+        </label>
+      </search>
       {filtered.length === 0 ? (
+        // The copy names the cause: a search miss, a search that only misses
+        // in this filter, or a filter with nothing in it (IX-26).
         <p role="status" className={styles.queueEmpty}>
-          {locale === "ar"
-            ? "لا توجد قرارات تطابق البحث."
-            : "No decisions match this search."}
+          {queue.search.trim()
+            ? matching.length === 0 || queue.filter === "all"
+              ? locale === "ar"
+                ? "لا توجد قرارات تطابق البحث."
+                : "No decisions match this search."
+              : locale === "ar"
+                ? `لا توجد قرارات في «${filterName}» تطابق البحث.`
+                : `No decisions in “${filterName}” match this search.`
+            : matching.length === 0 || queue.filter === "all"
+              ? copy.emptyTitle
+              : locale === "ar"
+                ? `لا توجد قرارات في «${filterName}» الآن.`
+                : `No decisions in “${filterName}” right now.`}
         </p>
       ) : null}
       <div className={styles.mobileDecision}>

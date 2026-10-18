@@ -20,21 +20,27 @@ export function DecisionActionPanel({
   submitAction,
   refreshing,
   reloadAction,
+  referenceTime,
 }: Readonly<{
   candidate: AdminActionCandidate;
   locale: Locale;
   submitAction: SubmitAdminAction;
   refreshing: boolean;
   reloadAction?: (() => void | Promise<void>) | undefined;
+  /** The demo's fixed clock for the hold expiry; real pages use now. */
+  referenceTime?: string | undefined;
 }>) {
   const copy = getAdminCopy(locale);
   const reviewButton = useRef<HTMLButtonElement>(null);
   const confirmButton = useRef<HTMLButtonElement>(null);
   const feedbackRef = useRef<HTMLParagraphElement>(null);
-  const review = useDecisionReview(candidate, submitAction, copy, {
-    reviewButton,
-    feedbackRef,
-  });
+  const review = useDecisionReview(
+    candidate,
+    submitAction,
+    copy,
+    { reviewButton, feedbackRef },
+    referenceTime,
+  );
   const direction = getTextDirection(locale);
   const { state, pending } = review;
 
@@ -61,6 +67,7 @@ export function DecisionActionPanel({
           copy={copy}
           direction={direction}
           review={review}
+          referenceTime={referenceTime}
         />
 
         <DecisionFeedback
