@@ -239,8 +239,12 @@ a {
 }
 
 /* Hidden on screen, still announced: the one shared utility. */
+/* Anchored at its containing block's corner, so a hidden label deep in a
+   scrolled list never extends the document's scrollable area. */
 .visually-hidden {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 1px;
   height: 1px;
   margin: -1px;

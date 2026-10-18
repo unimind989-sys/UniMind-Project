@@ -858,17 +858,18 @@ inLocales(["en"], (locale) => {
             exact: true,
           }),
         ).toBeVisible();
+        // The band shows program, level and term as a structured list
+        // (MetaList), not a middle-dot string.
         await expect(
           page
-            .getByText(
-              t(
-                `Mathematics track · Third year · Term ${term}`,
-                `شعبة علمي رياضة · السنة الثالثة · الترم ${term === 1 ? "الأول" : "الثاني"}`,
-              ),
-              { exact: true },
-            )
-            .filter({ visible: true }),
-        ).toBeVisible();
+            .locator("[class*='scopeCaption']")
+            .filter({ visible: true })
+            .getByRole("listitem"),
+        ).toHaveText([
+          t("Mathematics track", "شعبة علمي رياضة"),
+          t("Third year", "السنة الثالثة"),
+          t(`Term ${term}`, `الترم ${term === 1 ? "الأول" : "الثاني"}`),
+        ]);
         await page
           .getByRole("button", {
             name: locale === "en" ? "العربية" : "English",

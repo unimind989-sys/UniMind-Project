@@ -260,7 +260,7 @@ export function ProductAuth({
     >
       {blocked ? (
         <>
-          <Notice tone="error" locale={locale}>
+          <Notice tone="error" live locale={locale}>
             {t(
               "This account or link is unavailable. Request a fresh link or return to sign in.",
               "هذا الحساب أو الرابط غير متاح. اطلب رابطًا جديدًا أو ارجع للدخول.",

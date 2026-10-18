@@ -21,7 +21,8 @@ const prefix: Record<NoticeTone, Readonly<Record<Locale, string>> | null> = {
 
 /**
  * `Notice` (DESIGN.md "Status / Notice"): text plus icon on its status tint,
- * never colour alone; a visually hidden tone word leads for screen readers.
+ * never colour alone; a visually hidden tone word (generated content, so the
+ * message text itself stays exact) leads for screen readers.
  * `live` gives the message a live role and is only for messages that appear
  * after a user action: `alert` for errors, `status` otherwise. A notice
  * rendered with the page stays static.
@@ -59,12 +60,10 @@ export function Notice({
       role={live ? (tone === "error" ? "alert" : "status") : undefined}
       className={className ? `${styles.notice} ${className}` : styles.notice}
       data-tone={tone}
+      data-prefix={word}
     >
       <StateIcon tone={icon[tone]} />
-      <span className={styles.text}>
-        {word ? <span className="visually-hidden">{word} </span> : null}
-        {children}
-      </span>
+      {children}
     </p>
   );
 }
