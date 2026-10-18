@@ -394,7 +394,7 @@ const settingsStates: readonly ScreenState[] = [
     phoneAxe: true,
     check: async ({ page, locale, width, enlarged }) => {
       const tabs = page.getByRole("tablist");
-      await expect(tabs.getByRole("tab")).toHaveCount(4);
+      await expect(tabs.getByRole("tab")).toHaveCount(5);
       if (enlarged) return;
       // audit 01: the contextual return stays separate from the tabs.
       const returnBox = await boxOf(

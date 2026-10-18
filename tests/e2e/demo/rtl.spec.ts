@@ -560,7 +560,7 @@ inLocales(["en", "ar"], (locale) => {
       );
       // Return/tab separation and the phone tab grid per width and scheme run
       // in the layout matrix Settings state.
-      await expect(tabs.getByRole("tab")).toHaveCount(4);
+      await expect(tabs.getByRole("tab")).toHaveCount(5);
       // The keyboard and unit-switcher steps run in the narrow layout.
       await page.setViewportSize({ width: 320, height: 900 });
       const appearance = page.getByRole("tab", {
@@ -592,7 +592,12 @@ inLocales(["en", "ar"], (locale) => {
         }),
       ).toBeVisible();
       await academic.press("Home");
-      await expect(appearance).toBeFocused();
+      await expect(
+        page.getByRole("tab", {
+          name: pick(locale, "Profile", "الملف الشخصي"),
+          exact: true,
+        }),
+      ).toBeFocused();
       await returnLink.click();
       await expect(page).toHaveURL(`${unit}/chat?lang=${locale}`);
       const switcher = page
