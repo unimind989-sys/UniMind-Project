@@ -676,7 +676,15 @@ inLocales(["en", "ar"], (locale) => {
       );
       expect(typing.owners).toBe(1);
       expect(typing.overflow).toBe(false);
-      expect(typing.visible).toBeGreaterThanOrEqual(120);
+      // As at rest, the hosted presentation has no local service line; it
+      // wraps to more lines at 360px with some fonts (Linux CI).
+      const serviceLineWhileTyping = await page
+        .getByRole("note")
+        .filter({ hasText: t("Synthetic demo", "عرض تجريبي") })
+        .evaluate((note) => note.getBoundingClientRect().height);
+      expect(typing.visible + serviceLineWhileTyping).toBeGreaterThanOrEqual(
+        120,
+      );
       // The page itself does not scroll: the composer stays docked.
       expect(
         await page.evaluate(
