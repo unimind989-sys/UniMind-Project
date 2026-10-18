@@ -409,7 +409,7 @@ jobs:
     expect(
       auditCiWorkflow(
         workflow.replace(
-          "        run: corepack pnpm exec playwright install --with-deps chromium\n",
+          "        run: corepack pnpm exec playwright install --with-deps chromium --only-shell\n",
           "        run: echo browser-not-installed\n",
         ),
       ),

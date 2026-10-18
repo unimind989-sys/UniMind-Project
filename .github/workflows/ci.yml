@@ -100,8 +100,6 @@ jobs:
         run: corepack pnpm format:check
       - name: Lint
         run: corepack pnpm lint
-      - name: Typecheck
-        run: corepack pnpm typecheck
       - name: Typecheck a fresh project
         run: corepack pnpm typecheck:fresh
       - name: Check module boundaries
@@ -159,7 +157,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: [1, 2]
+        shard: [1]
     concurrency:
       group: e2e-${{ matrix.shard }}-${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: true
@@ -176,8 +174,8 @@ jobs:
         run: corepack enable
       - name: Install from the immutable lockfile
         run: corepack pnpm install --frozen-lockfile
-      - name: Install the pinned Chromium runtime
-        run: corepack pnpm exec playwright install --with-deps chromium
+      - name: Install the pinned Chromium headless shell
+        run: corepack pnpm exec playwright install --with-deps chromium --only-shell
       - name: Run the credential-free browser suite shard
         env:
           PLAYWRIGHT_HTML_OPEN: never
@@ -217,11 +215,13 @@ jobs:
         run: corepack enable
       - name: Install from the immutable lockfile
         run: corepack pnpm install --frozen-lockfile
-      - name: Install the pinned Chromium runtime
-        run: corepack pnpm exec playwright install --with-deps chromium
+      - name: Install the pinned Chromium headless shell
+        run: corepack pnpm exec playwright install --with-deps chromium --only-shell
       - name: Run the credential-free product demo shard
         env:
           PLAYWRIGHT_HTML_OPEN: never
+          # Two workers per 4-vCPU runner; every demo test signs in on its own page.
+          PW_WORKERS: "2"
         run: corepack pnpm test:e2e:demo --fully-parallel --shard=${{ matrix.shard }}/${{ strategy.job-total }}
       - name: Upload sanitized local reports
         if: always()

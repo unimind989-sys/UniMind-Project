@@ -12,7 +12,7 @@
     "dev": "next dev --hostname 127.0.0.1",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint . --max-warnings=0",
+    "lint": "eslint . --max-warnings=0 --concurrency=auto --cache --cache-strategy content --cache-location node_modules/.cache/eslint/",
     "check:boundaries": "tsx scripts/check-module-boundaries.ts",
     "check:sql": "tsx scripts/check-sql-conventions.ts",
     "scan:secrets": "tsx scripts/scan-repository-secrets.ts",
@@ -23,7 +23,7 @@
     "typecheck": "tsc --noEmit",
     "typecheck:fresh": "tsc --noEmit --project tsconfig.fresh.json",
     "format": "prettier . --write",
-    "format:check": "prettier . --check",
+    "format:check": "prettier . --check --cache --cache-strategy content",
     "test:unit": "tsx scripts/run-vitest-layer.ts unit",
     "test:integration": "tsx scripts/run-vitest-layer.ts integration",
     "test:integration:hosted": "tsx scripts/run-hosted-auth-integration.ts --environment development",
@@ -52,9 +52,9 @@
     "db:ci:stop": "tsx scripts/run-ephemeral-supabase.ts stop",
     "db:types:check": "git diff --exit-code -- src/types/database.generated.ts",
     "test:env-build": "tsx scripts/build-with-safe-env.ts",
-    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm check:boundaries && pnpm check:sql && pnpm scan:secrets && pnpm lint:agents && pnpm test:unit",
-    "verify": "pnpm verify:ci",
-    "verify:ci": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm typecheck:fresh && pnpm check:boundaries && pnpm check:sql && pnpm verify:ci-workflow && pnpm lint:agents && pnpm scan:secrets && pnpm test:node && pnpm test:e2e && pnpm test:e2e:demo && pnpm test:env-build"
+    "check": "tsx scripts/run-verify.ts check",
+    "verify": "tsx scripts/run-verify.ts verify",
+    "verify:ci": "pnpm format:check && pnpm lint && pnpm typecheck:fresh && pnpm check:boundaries && pnpm check:sql && pnpm verify:ci-workflow && pnpm lint:agents && pnpm scan:secrets && pnpm test:node && pnpm test:e2e && pnpm test:e2e:demo && pnpm test:env-build"
   },
   "dependencies": {
     "@supabase/ssr": "0.12.4",

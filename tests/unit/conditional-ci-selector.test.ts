@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
 import {
-  assertExactPrMergeParents,
+  inspectPrMergeParents,
   loadCiPathConfig,
   selectCiJobs,
   validateCiPathConfig,
@@ -164,16 +164,45 @@ describe("conditional CI selector", () => {
     const base = "b".repeat(40);
     const head = "c".repeat(40);
     expect(
-      assertExactPrMergeParents(`${merge} ${base} ${head}`, base, head),
-    ).toEqual({
-      baseSha: base,
-      headSha: head,
-    });
+      inspectPrMergeParents(`${merge} ${base} ${head}`, base, head),
+    ).toEqual({ kind: "EXACT", baseSha: base, headSha: head });
     expect(() =>
-      assertExactPrMergeParents(`${merge} ${base} ${head}`, base, merge),
+      inspectPrMergeParents(`${merge} ${base} ${head}`, base, merge),
     ).toThrow("does not match event base and head");
-    expect(() => assertExactPrMergeParents(merge, base, head)).toThrow(
+    expect(() => inspectPrMergeParents(merge, base, head)).toThrow(
       "does not match event base and head",
     );
+    expect(() =>
+      inspectPrMergeParents(`${merge} ${base} ${head}`, "main", head),
+    ).toThrow("missing or malformed");
+    expect(() =>
+      inspectPrMergeParents(`${merge} ${base} zz`, base, head),
+    ).toThrow("does not match event base and head");
+  });
+
+  it("runs every job instead of failing when only the PR base moved", () => {
+    const merge = "a".repeat(40);
+    const base = "b".repeat(40);
+    const movedBase = "d".repeat(40);
+    const head = "c".repeat(40);
+    expect(
+      inspectPrMergeParents(`${merge} ${movedBase} ${head}`, base, head),
+    ).toEqual({
+      kind: "BASE_MOVED",
+      headSha: head,
+      checkedOutBaseSha: movedBase,
+    });
+    expect(
+      selectCiJobs({
+        config,
+        event: "pull_request",
+        changedPaths: ["docs/README.md"],
+        baseMoved: true,
+      }),
+    ).toMatchObject({
+      dependencyAudit: "RUN",
+      application: "RUN",
+      databaseCi: "RUN",
+    });
   });
 });
