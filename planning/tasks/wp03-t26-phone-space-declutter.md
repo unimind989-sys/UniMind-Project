@@ -12,7 +12,7 @@
 
 **Branch:** claude/wp03-t26-phone-space-declutter
 
-**Updated (UTC):** 2026-10-18T08:30:00Z
+**Updated (UTC):** 2026-10-18T11:00:00Z
 
 ## Contract
 
@@ -43,8 +43,9 @@
 ## Decisions
 
 - D2 to D5 (plan) applied. DESIGN.md updated: unit header and menu, no bottom bar in units on phones, keyboard state, band slot, composer, one evidence route, floating-menu behaviour, language switch in the title menu.
-- One `<details>` menu serves both widths: on desktop its summary is the `--night-2` pill beside the h1; on phones it is the title button (unit title shown `aria-hidden`, the h1 kept as a visually hidden heading). Chat's summary is named "Sessions and privacy: {session}" (label-in-name); other tools name "{Unit} details". The panel opens from the band's start edge, so it stays inside the viewport in RTL.
-- `Disclosure`: Escape closes and refocuses the summary; a press outside or focus leaving closes without stealing focus, except when focus would fall to the body. Unit menu and admin Menu use it.
+- One `<details>` menu serves both widths: on desktop its summary is the `--night-2` pill beside the h1; on phones it is the title button (the h1 stays a visually hidden heading). The summary's name comes from its content (WCAG 2.5.3, fixed in review): the visible unit title on phones, then the visible line, with a hidden "Sessions and privacy" in Chat ("Anatomy, Sessions and privacy: …"); other tools "Anatomy, {Unit} details". The panel opens from the band's start edge, so it stays inside the viewport in RTL and at 200% text.
+- `Disclosure`: Escape closes and refocuses the summary; a press outside or focus leaving closes and never moves focus (review fix); a close from inside that hides the focused control refocuses the summary. Unit menu and admin Menu use it; on phones the admin panel hangs from the bar's 16px gutters (review fix: it ran 36px off a 320px screen).
+- Dialog backdrop: closes only when both the press and the release land on it, so a text selection dragged out of a dialog keeps it open (review fix).
 - Enter sends only with a fine pointer, and `enterKeyHint="send"` is set only there: on touch keyboards Enter adds a line, so a key labelled Send would mislead (IX-34 refinement).
 - The composer keeps a 1px `--control` ring with `--float` (a visible field boundary on paper); fully round at one line; an empty field never grows (one-line placeholder).
 - Chat's source sheet adds "Browse material library" beside "Open evidence details" (as Studio's), so the library with "Return to Chat" stays reachable after MD-09.
@@ -57,7 +58,7 @@
 
 **Changed:** see Files; commits on the branch (head in the PR). Merged `origin/main` (T27, T28); the only conflict was `layout.tsx` (T28's async layout plus this viewport export).
 
-**Proof (after merging main):** every `verify:ci` component, run singly so the browser suites use the private ports: `pnpm check` passed (unit 1027/1027); `typecheck:fresh`, `verify:ci-workflow` passed; `test:node` 1061 passed, 2 skipped; demo e2e on 3302 `PW_WORKERS=2 --repeat-each=2` 400/400 (46.2 min); main e2e `UNIMIND_E2E_PORT=3330` 42/42 (first run 39/42: hosted admin Menu and hosted Report copy, fixed); `test:env-build` passed with the client secret scan. Before the merge the plain full demo run was 194 passed + 3 fixed and rerun 3/3. Database e2e not run locally (CI `database-ci`); its real-session assertion now expects links. Chat conversation, hosted-like (EN/AR): 390x844 395→619/610; 360x640 270/222 page flow → 415/406 docked; 320x720 298/273 page → 495/486 docked; 768x1024 482/462 → 685/667; 1280x720 300/280 → 445/427; 1440x900 480 → 625. Bars: desktop 64px; phone 52px outside units, none inside: the unit header is the band, 130/140px (EN/AR) at 360px instead of 52 + 134 + 50; desktop band 83/101px instead of 111 + 64. Rendered: `.local/shots/r3` (polish round) and `r4` (confirmation), untracked. Open: the Arabic Report action still wraps under the citation at 360px.
+**Proof (after merging main):** every `verify:ci` component, run singly so the browser suites use the private ports: `pnpm check` passed (unit 1027/1027); `typecheck:fresh`, `verify:ci-workflow` passed; `test:node` 1061 passed, 2 skipped; demo e2e on 3302 `PW_WORKERS=2 --repeat-each=2` 400/400 (46.2 min); main e2e `UNIMIND_E2E_PORT=3330` 42/42 (first run 39/42: hosted admin Menu and hosted Report copy, fixed); `test:env-build` passed with the client secret scan. Before the merge the plain full demo run was 194 passed + 3 fixed and rerun 3/3. Database e2e not run locally (CI `database-ci`); its real-session assertion now expects links. After the review fixes (admin phone panel, summary name from content, backdrop press and release, no focus move on an outside press): `pnpm check` passed (unit 1027/1027); full demo `PW_WORKERS=2` 201/201 (21.8 min; includes the new outside-press test and the drag-out-of-dialog, admin panel and 200%-text unit panel checks); main e2e 42/42. Chat conversation, hosted-like (EN/AR): 390x844 395→619/610; 360x640 270/222 page flow → 415/406 docked; 320x720 298/273 page → 495/486 docked; 768x1024 482/462 → 685/667; 1280x720 300/280 → 445/427; 1440x900 480 → 625. Bars: desktop 64px; phone 52px outside units, none inside: the unit header is the band, 130/140px (EN/AR) at 360px instead of 52 + 134 + 50; desktop band 83/101px instead of 111 + 64. Rendered: `.local/shots/r3` (polish round) and `r4` (confirmation), untracked. Open: the Arabic Report action still wraps under the citation at 360px.
 
 **Review:** self-review of the full diff; no protected path.
 

@@ -717,7 +717,11 @@ inLocales(["en"], (locale) => {
         name: t("Source excerpt", "نص المصدر"),
       });
       await expect(sheet).toBeVisible();
-      // A bottom sheet: full width, on the bottom edge, 22px top corners.
+      // A bottom sheet: full width, on the bottom edge, 22px top corners,
+      // read once its 300ms rise has settled.
+      await sheet.evaluate((element) =>
+        Promise.all(element.getAnimations().map((motion) => motion.finished)),
+      );
       const geometry = await sheet.evaluate((element) => {
         const r = element.getBoundingClientRect();
         const style = getComputedStyle(element);
@@ -758,6 +762,19 @@ inLocales(["en"], (locale) => {
       await page.keyboard.press("Escape");
       await expect(sheet).toBeHidden();
       await expect(citation).toBeFocused();
+      // A text selection dragged from the sheet onto the backdrop keeps it
+      // open; a press and release on the backdrop closes it.
+      await citation.click();
+      await expect(sheet).toBeVisible();
+      const quote = await sheet.locator("blockquote").first().boundingBox();
+      await page.mouse.move(quote!.x + 20, quote!.y + 10);
+      await page.mouse.down();
+      await page.mouse.move(195, 40, { steps: 8 });
+      await page.mouse.up();
+      await expect(sheet).toBeVisible();
+      await page.mouse.click(195, 40);
+      await expect(sheet).toBeHidden();
+      await expect(citation).toBeFocused();
       // Desktop keeps the centred dialog.
       await page.setViewportSize({ width: 1280, height: 800 });
       await citation.click();
@@ -768,6 +785,48 @@ inLocales(["en"], (locale) => {
       expect(dialog.centred).toBe(true);
       await page.keyboard.press("Escape");
       await expect(citation).toBeFocused();
+      finish();
+    },
+  );
+});
+
+inLocales(["en"], (locale) => {
+  test(
+    `a press outside the unit menu closes it without moving focus to it`,
+    { tag: ["@WP03-T26", `@${locale}`] },
+    async ({ page }) => {
+      const finish = isolation(page);
+      const t = bilingual(locale);
+      await page.setViewportSize({ width: 1280, height: 800 });
+      await signIn(page, "student", locale, `${unit}/chat`);
+      const summary = unitMenuSummary(page);
+      await summary.click();
+      await expect(summary).toHaveAttribute("aria-expanded", "true");
+      // A press on the conversation dismisses the menu and leaves focus
+      // where the user pressed; Space then does not reopen it.
+      const conversation = await page
+        .getByRole("region", { name: t("Conversation", "المحادثة الحالية") })
+        .boundingBox();
+      await page.mouse.click(
+        conversation!.x + conversation!.width - 40,
+        conversation!.y + conversation!.height - 40,
+      );
+      await expect(summary).toHaveAttribute("aria-expanded", "false");
+      await page.evaluate(
+        () =>
+          new Promise<void>((resolve) =>
+            requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+          ),
+      );
+      await expect(summary).not.toBeFocused();
+      await page.keyboard.press("Space");
+      await expect(summary).toHaveAttribute("aria-expanded", "false");
+      // Escape still returns focus to the summary.
+      await summary.click();
+      await expect(summary).toHaveAttribute("aria-expanded", "true");
+      await page.keyboard.press("Escape");
+      await expect(summary).toHaveAttribute("aria-expanded", "false");
+      await expect(summary).toBeFocused();
       finish();
     },
   );
@@ -1678,9 +1737,9 @@ inLocales(["en"], (locale) => {
       const finish = isolation(page);
       await signIn(page, "student", locale, unit + "/chat");
       const sessions = page.locator(
-        'summary[aria-label^="' +
+        'summary:has-text("' +
           pick(locale, "Sessions and privacy", "الجلسات والخصوصية") +
-          '"]',
+          '")',
       );
       const meta = page.locator("p[class*='composerMeta']");
       await expect(meta.locator("strong")).toHaveText(

@@ -722,7 +722,7 @@ inLocales(["ar"], (locale) => {
       });
       await message.fill(draft);
       const sessions = page.locator(
-        `summary[aria-label^="${t("Sessions and privacy", "الجلسات والخصوصية")}"]`,
+        `summary:has-text("${t("Sessions and privacy", "الجلسات والخصوصية")}")`,
       );
       await sessions.press("Enter");
       await expect(sessions.locator("..")).toHaveAttribute("open", "");

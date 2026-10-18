@@ -44,7 +44,7 @@ const chatStates: readonly ScreenState[] = [
       // WP03-T26: the session switcher is the band's menu (the title button on
       // phones), and the answer language is a menu in the composer.
       const sessions = page.locator(
-        `summary[aria-label^="${t("Sessions and privacy", "الجلسات والخصوصية")}"]`,
+        `summary:has-text("${t("Sessions and privacy", "الجلسات والخصوصية")}")`,
       );
       await expect(sessions).toHaveCount(1);
       expect(
@@ -58,9 +58,29 @@ const chatStates: readonly ScreenState[] = [
             exact: true,
           }),
         ).toBeVisible();
+        // With 200% text at 320px the panel still fits the viewport.
+        const panel = await boxOf(page.locator("[class*='menuPanel']"));
+        expect(panel.x).toBeGreaterThanOrEqual(0);
+        expect(panel.x + panel.width).toBeLessThanOrEqual(width + 1);
         await sessions.press("Escape");
         return;
       }
+      // WCAG 2.5.3: the name contains the visible text of the control: the
+      // session line, and on phones the unit title too.
+      const visible = await sessions.evaluate((element) =>
+        [...element.querySelectorAll("bdi")]
+          .filter((part) => part.checkVisibility())
+          .map((part) => part.textContent!.trim()),
+      );
+      expect(visible.length).toBeGreaterThan(0);
+      for (const part of visible)
+        await expect(sessions).toHaveAccessibleName(
+          new RegExp(part.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&"), "u"),
+        );
+      await expect(sessions).toHaveAccessibleName(
+        new RegExp(t("Sessions and privacy", "الجلسات والخصوصية"), "u"),
+      );
+      if (narrow) expect(visible[0]).toBe(t("Anatomy", "علم التشريح"));
       const language = answerLanguage(page, locale);
       const send = page.getByRole("button", {
         name: t("Send", "إرسال"),
@@ -755,7 +775,7 @@ const denseStates: readonly ScreenState[] = [
     leave: async (page, locale) => {
       await page
         .locator(
-          `summary[aria-label^="${pick(locale, "Sessions and privacy", "الجلسات والخصوصية")}"]`,
+          `summary:has-text("${pick(locale, "Sessions and privacy", "الجلسات والخصوصية")}")`,
         )
         .press("Escape");
     },

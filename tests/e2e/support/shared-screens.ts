@@ -83,7 +83,7 @@ export async function expectChatScreen(
   ).toBeVisible();
   await expect(
     page.locator(
-      `summary[aria-label^="${say(locale, "Sessions and privacy", "الجلسات والخصوصية")}"]`,
+      `summary:has-text("${say(locale, "Sessions and privacy", "الجلسات والخصوصية")}")`,
     ),
   ).toBeVisible();
   const message = page.getByRole("textbox", {
@@ -210,7 +210,7 @@ export async function expectStudentSettingsScreen(
 /** Opens the Chat "Sessions and privacy" menu if it is closed. */
 export async function openChatSessions(page: Page, locale: Locale) {
   const summary = page.locator(
-    `summary[aria-label^="${say(locale, "Sessions and privacy", "الجلسات والخصوصية")}"]`,
+    `summary:has-text("${say(locale, "Sessions and privacy", "الجلسات والخصوصية")}")`,
   );
   await summary.waitFor();
   if ((await summary.locator("..").getAttribute("open")) === null)

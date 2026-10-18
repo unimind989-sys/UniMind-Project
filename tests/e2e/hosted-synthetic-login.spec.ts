@@ -341,7 +341,7 @@ for (const locale of ["en"] as const) {
     ).toBeVisible();
     const history = page.locator("details").filter({
       has: page.locator(
-        `summary[aria-label^="${t("Sessions and privacy", "الجلسات والخصوصية")}"]`,
+        `summary:has-text("${t("Sessions and privacy", "الجلسات والخصوصية")}")`,
       ),
     });
     await history.locator("summary").first().click();
