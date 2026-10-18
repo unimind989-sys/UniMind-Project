@@ -41,14 +41,6 @@
 .bandSlot:empty {
   display: none;
 }
-.bandActions {
-  grid-area: actions;
-  align-self: start;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: end;
-  gap: 8px;
-}
 /* The queue stacks title, count tabs and actions in source order until all
    three fit on one row. */
 .band[data-view="queue"] {
@@ -58,18 +50,12 @@
     "slot"
     "actions";
 }
-.band[data-view="queue"] .bandActions {
-  justify-self: end;
-}
 @media (min-width: 1280px) {
   .band[data-view="queue"] {
     grid-template-columns: minmax(0, 1fr) auto auto;
     grid-template-areas: "title slot actions";
     min-height: 128px;
     padding-block: 28px;
-  }
-  .band[data-view="queue"] .bandActions {
-    align-self: center;
   }
 }
 

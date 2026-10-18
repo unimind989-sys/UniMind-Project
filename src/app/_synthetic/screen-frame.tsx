@@ -467,7 +467,7 @@ export function RoleChrome({
   page: ScreenProps;
   children: ReactNode;
 }) {
-  const { state, t, loading, query, signedOut } = ctx;
+  const { state, t, loading, query } = ctx;
   const { screen, fixture, locale } = page;
   const { blocked, standalone } = access;
   if (state.role === "admin" || state.role === "second-admin") {
@@ -497,11 +497,6 @@ export function RoleChrome({
             : t("Admin", "مسؤول")
         }
         synthetic
-        actions={
-          <Button variant="quiet" tone="night" onClick={signedOut}>
-            {t("Sign out", "تسجيل الخروج")}
-          </Button>
-        }
         resource={screen.startsWith("admin-") ? screen.slice(6) : undefined}
       >
         {children}

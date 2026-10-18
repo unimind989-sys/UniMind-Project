@@ -14,6 +14,7 @@ import {
   openLibraryFromChat,
   openUnitMenu,
   showAccountView,
+  signOutFromAdmin,
   unit,
   unitMenuSummary,
 } from "../support/demo";
@@ -278,12 +279,7 @@ inLocales(["ar"], (locale) => {
       await expect(
         page.getByRole("status").filter({ hasText: copy.actionPending }),
       ).toBeVisible();
-      await page
-        .getByRole("button", {
-          name: t("Sign out", "تسجيل الخروج"),
-          exact: true,
-        })
-        .click();
+      await signOutFromAdmin(page, locale);
       await page
         .getByLabel(t("Email address", "البريد الإلكتروني"), { exact: true })
         .fill("second-admin@example.invalid");

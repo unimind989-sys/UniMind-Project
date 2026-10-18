@@ -12,6 +12,7 @@ import {
   b05Confirm,
   b05Select,
   changeAdmin,
+  signOutFromAdmin,
   switchAdmin,
   unit,
 } from "../support/demo";
@@ -482,13 +483,7 @@ inLocales(["en"], (locale) => {
       await expect(page.getByRole("main").getByRole("alert")).toContainText(
         copy.errors.DIFFERENT_FOUNDER_REQUIRED,
       );
-      await page
-        .getByRole("main")
-        .getByRole("button", {
-          name: pick(locale, "Sign out", "تسجيل الخروج"),
-          exact: true,
-        })
-        .click();
+      await signOutFromAdmin(page, locale);
       await page
         .getByLabel(pick(locale, "Email address", "البريد الإلكتروني"))
         .fill("second-admin@example.invalid");
@@ -1118,13 +1113,7 @@ inLocales(["en"], (locale) => {
           await expect(expiryInput).toHaveValue(expiryValue);
           await expect(expiryInput).toHaveAttribute("readonly", "");
         }
-        await page
-          .getByRole("main")
-          .getByRole("button", {
-            name: t("Sign out", "تسجيل الخروج"),
-            exact: true,
-          })
-          .click();
+        await signOutFromAdmin(page, locale);
         await page
           .getByLabel(t("Email address", "البريد الإلكتروني"))
           .fill("second-admin@example.invalid");
@@ -1329,10 +1318,7 @@ test(
       await expect(page.getByRole("main").getByRole("alert")).toContainText(
         "distinct founder",
       );
-      await page
-        .getByRole("main")
-        .getByRole("button", { name: "Sign out", exact: true })
-        .click();
+      await signOutFromAdmin(page);
       await page
         .getByLabel("Email address")
         .fill("second-admin@example.invalid");
@@ -1435,10 +1421,7 @@ test(
         "The request is recorded and needs a distinct founder confirmation.",
       ),
     ).toBeVisible();
-    await page
-      .getByRole("button", { name: "Sign out", exact: true })
-      .first()
-      .click();
+    await signOutFromAdmin(page);
     await page.getByLabel("Email address").fill("second-admin@example.invalid");
     await page.getByRole("button", { name: "Continue", exact: true }).click();
     await page.getByRole("checkbox").check();

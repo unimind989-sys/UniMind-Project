@@ -648,6 +648,7 @@ Video adds a processor behind the existing pipeline; it must not create a separa
 | D-21 | Zero-cost development, CI, Preview, and Beta infrastructure | Workstation mocks, ephemeral Supabase CI, and two persistent Supabase Free projects for separate Preview/Beta; conditional Vercel Hobby use (revised 2026-08-27) | Ahmed | Approved direction |
 | D-22 | Founder authorization and autonomous finalization | Shared service accounts; selected runbook tasks complete their non-financial lifecycle by default; `$finalize` is a manual/recovery entry; real-money actions require fresh confirmation (revised 2026-09-16) | Ahmed + Ziad — shared founder authority | Approved direction |
 | D-23 | Program progression mode | Human Medicine and Veterinary Medicine begin as `TERM_BASED`; future credit-hour programs use configuration-driven `FLEXIBLE_CREDIT` course selection without a rigid semester list | Ahmed | Approved direction |
+| D-24 | Batch Leader access by one-time upload link | Batch Leaders need no account; an admin issues a one-time, expiring, revocable upload link for one campaign; D-11 scope and the rights gate unchanged ([record](../decisions/d-24-batch-leader-one-time-upload-links.md)) | Ahmed + Ziad | Proposed |
 
 ## 16. Immediate actions
 
