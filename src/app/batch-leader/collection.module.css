@@ -530,6 +530,7 @@
   justify-self: start;
   display: inline-flex;
   align-items: center;
+  gap: 0.35em;
   min-height: 28px;
   padding: 3px 12px;
   border-radius: var(--radius-pill);
@@ -585,6 +586,55 @@
   height: 20px;
   margin: 2px 0 0;
   accent-color: var(--action);
+}
+.field :is(input, textarea)[aria-invalid="true"] {
+  border-color: var(--danger);
+}
+/* The cleared-permission line is a live region that is always present;
+   while empty it takes no space but stays in the accessibility tree. */
+.rightsCleared {
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.rightsCleared:empty {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+/* "To submit": what Submit still needs, next to the button (IX-08). */
+.submitNeeds {
+  display: grid;
+  gap: 4px;
+  font-size: 0.875rem;
+}
+.submitNeeds p {
+  margin: 0;
+  font-weight: 700;
+}
+.submitNeeds ul {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.submitNeeds li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: var(--secondary);
+  overflow-wrap: anywhere;
+}
+.submitNeeds li > svg {
+  flex: none;
+  margin-block-start: 0.15em;
+}
+.submitNeeds li[data-done] {
+  color: var(--success);
 }
 
 /* ---------- Recorded submissions ---------- */
@@ -706,14 +756,6 @@
   letter-spacing: -0.02em;
   line-height: 1.25;
   overflow-wrap: anywhere;
-}
-.campaignMain h3 a {
-  color: var(--ink);
-  text-decoration: none;
-}
-.campaignMain h3 a:hover {
-  color: var(--action);
-  text-decoration: underline;
 }
 .campaignCohort,
 .campaignStatus {

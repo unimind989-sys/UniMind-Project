@@ -3,6 +3,7 @@
 import type { CollectionCampaign } from "@/lib/collection/collection.application";
 import { Button } from "@/app/_components/product-ui";
 import { FrontendIcon } from "@/app/_components/frontend-controls";
+import { StateIcon } from "@/app/_components/state-pill";
 import { getCollectionCopy } from "@/lib/i18n/collection-copy";
 import type { Locale } from "@/lib/i18n/locale";
 import { CollectionQueueRow } from "./collection-queue-row";
@@ -28,19 +29,49 @@ export function CollectionIntake({
     selectedRequestId,
     correction,
     drag,
-    setDrag,
+    dropZone,
     queue,
     add,
     picker,
+    chooseButton,
     windowState,
     description,
     setDescription,
     rights,
-    setRights,
+    confirmRights,
+    rightsCleared,
     canSubmit,
     ready,
     submit,
+    cancel,
   } = flow;
+  const descriptionShort = description.trim().length < 10;
+  const editable = !queue.running && windowState === "ACTIVE";
+  // Why Submit and Retry are disabled, next to the button (IX-08).
+  const needs = [
+    {
+      key: "description",
+      done: !descriptionShort,
+      label: t(
+        "A description of at least 10 characters",
+        "وصف من ١٠ أحرف على الأقل",
+      ),
+    },
+    {
+      key: "rights",
+      done: rights,
+      label: t("Permission confirmed", "تأكيد صلاحية الإرسال"),
+    },
+    {
+      key: "file",
+      done: ready.length > 0,
+      label: t(
+        "A file with its requested material and a title of at least 3 characters",
+        "ملف محدد له المادة المطلوبة وعنوان من ٣ أحرف على الأقل",
+      ),
+    },
+  ] as const;
+  const blocked = editable && needs.some((need) => !need.done);
   return (
     <section
       className={styles.intake}
@@ -98,20 +129,7 @@ export function CollectionIntake({
           "PDF أو WAV أو PNG، حتى ١٠ ميجابايت للملف.",
         )}
       </p>
-      <div
-        className={styles.drop}
-        data-drag={drag || undefined}
-        onDragOver={(event) => {
-          event.preventDefault();
-          if (!queue.running) setDrag(true);
-        }}
-        onDragLeave={() => setDrag(false)}
-        onDrop={(event) => {
-          event.preventDefault();
-          setDrag(false);
-          add(Array.from(event.dataTransfer.files));
-        }}
-      >
+      <div className={styles.drop} data-drag={drag || undefined} {...dropZone}>
         <div className={styles.uploadMark} aria-hidden="true">
           <FrontendIcon name="upload" size={24} />
         </div>
@@ -122,20 +140,22 @@ export function CollectionIntake({
           )}
         </p>
         <Button
+          ref={chooseButton}
           variant="primary"
           onClick={() => picker.current?.click()}
-          disabled={queue.running || windowState !== "ACTIVE"}
+          disabled={!editable}
         >
           {t("Choose files", "اختيار ملفات")}
         </Button>
+        {/* Hidden: the button above names and opens it. MIME types beside
+            the extensions let Android pickers offer matching files. */}
         <input
           ref={picker}
           type="file"
           hidden
           multiple={!selectedRequestId && !correction}
-          accept=".pdf,.wav,.png"
-          aria-label={t("Choose files", "اختيار ملفات")}
-          disabled={queue.running || windowState !== "ACTIVE"}
+          accept=".pdf,.wav,.png,application/pdf,audio/wav,audio/x-wav,image/png"
+          disabled={!editable}
           onChange={(event) => {
             add(Array.from(event.target.files ?? []));
             event.target.value = "";
@@ -192,34 +212,45 @@ export function CollectionIntake({
       {correction ||
       queue.files.some((row) => row.inspection && row.state !== "RECEIVED") ? (
         <div className={styles.context}>
-          <label className={styles.field}>
-            {text.description}
+          {/* The label holds only the name; the hint describes the field
+              (inventory #20). What is still missing shows next to Submit,
+              not under the field, so nothing shifts while a press is in
+              flight. */}
+          <div className={styles.field}>
+            <label htmlFor="collection-description">{text.description}</label>
             <textarea
               id="collection-description"
               rows={3}
               minLength={10}
               maxLength={1000}
+              required
+              dir="auto"
               value={description}
               placeholder={t(
                 "Who prepared these materials, and what do they cover?",
                 "من أعد هذه المواد، وما موضوعها؟",
               )}
-              disabled={queue.running || windowState !== "ACTIVE"}
+              disabled={!editable}
+              aria-describedby="collection-description-hint"
               onChange={(event) => setDescription(event.target.value)}
             />
-            <span>
+            <span id="collection-description-hint">
               {t(
                 "This context will accompany each file. Minimum 10 characters.",
                 "يرفق هذا الوصف بكل ملف. ١٠ أحرف على الأقل.",
               )}
             </span>
-          </label>
+          </div>
           <label className={styles.rights}>
             <input
               type="checkbox"
               checked={rights}
-              disabled={queue.running || windowState !== "ACTIVE"}
-              onChange={(event) => setRights(event.target.checked)}
+              required
+              disabled={!editable}
+              aria-describedby={
+                rightsCleared ? "collection-rights-cleared" : undefined
+              }
+              onChange={(event) => confirmRights(event.target.checked)}
             />
             <span>
               {t(
@@ -228,16 +259,53 @@ export function CollectionIntake({
               )}
             </span>
           </label>
+          {/* Always present, so adding files announces the cleared
+              permission (IX-08). */}
+          <p
+            id="collection-rights-cleared"
+            className={styles.rightsCleared}
+            role="status"
+          >
+            {rightsCleared
+              ? t(
+                  "Permission was cleared because the files changed. Confirm it again for every selected file.",
+                  "أُلغي تأكيد الصلاحية لأن الملفات تغيرت. أكّده مرة أخرى لكل الملفات المختارة.",
+                )
+              : null}
+          </p>
+          {blocked ? (
+            <div className={styles.submitNeeds} id="collection-submit-needs">
+              <p>{t("To submit:", "للإرسال:")}</p>
+              <ul>
+                {needs.map((need) => (
+                  <li
+                    key={need.key}
+                    data-need={need.key}
+                    data-done={need.done || undefined}
+                  >
+                    <StateIcon tone={need.done ? "ok" : "neutral"} />
+                    <span className="visually-hidden">
+                      {need.done
+                        ? t("Done: ", "تم: ")
+                        : t("Missing: ", "ناقص: ")}
+                    </span>
+                    {need.label}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
           <div className={styles.actions}>
             <Button
               variant="primary"
               disabled={queue.running || !canSubmit || !ready.length}
+              aria-describedby={blocked ? "collection-submit-needs" : undefined}
               onClick={() => void submit(ready.map((row) => row.id))}
             >
               {t("Submit files", "إرسال الملفات")}
             </Button>
             {queue.running ? (
-              <Button variant="secondary" onClick={queue.cancel}>
+              <Button variant="secondary" onClick={cancel}>
                 {text.cancel}
               </Button>
             ) : null}
