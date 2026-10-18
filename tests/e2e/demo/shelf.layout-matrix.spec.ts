@@ -524,7 +524,7 @@ const settingsStates: readonly ScreenState[] = [
       const identity = page.locator("#identity-settings");
       expect((await boxOf(identity)).width).toBeLessThanOrEqual(640);
       const reset = identity.getByRole("link", {
-        name: pick(locale, "Reset password", "تغيير كلمة المرور"),
+        name: pick(locale, "Reset password", "إعادة تعيين كلمة المرور"),
         exact: true,
       });
       await expect(reset).toHaveAttribute(

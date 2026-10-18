@@ -14,7 +14,8 @@ import {
 } from "@/app/_components/account-settings";
 import { Button } from "@/app/_components/product-ui";
 import { logoutAction } from "@/app/(auth)/actions";
-import { saveAcademicAction } from "./actions";
+import { Notice } from "@/app/_components/product-ui";
+import { saveAcademicAction, saveProfileAction } from "./actions";
 
 export default async function SettingsPage({
   searchParams,
@@ -32,7 +33,16 @@ export default async function SettingsPage({
       : account.home === "/batch-leader"
         ? "leader"
         : "student";
-  const catalog = role === "student" ? await loadCurrentStudentCatalog() : null;
+  // A catalog failure must not take Settings (and its sign-out) down with it.
+  let catalogFailed = false;
+  let catalog: Awaited<ReturnType<typeof loadCurrentStudentCatalog>> | null =
+    null;
+  if (role === "student")
+    try {
+      catalog = await loadCurrentStudentCatalog();
+    } catch {
+      catalogFailed = true;
+    }
   const saved = catalog
     ? authorizedAcademicContext(account.academicContext, catalog.rows)
     : null;
@@ -67,6 +77,14 @@ export default async function SettingsPage({
       profileName={account.displayName}
     >
       <h1>{title}</h1>
+      {catalogFailed ? (
+        <Notice error>
+          {t(
+            "Your academic settings could not be loaded. The other settings still work; try again later.",
+            "تعذّر تحميل إعداداتك الدراسية. باقي الإعدادات تعمل؛ حاول مرة أخرى لاحقًا.",
+          )}
+        </Notice>
+      ) : null}
       <AccountSettings
         locale={locale}
         name={account.displayName}
@@ -90,6 +108,11 @@ export default async function SettingsPage({
             : null
         }
         privacy={null}
+        profile={{
+          email: account.email,
+          displayName: account.displayName,
+          save: saveProfileAction,
+        }}
       />
     </AppShell>
   );

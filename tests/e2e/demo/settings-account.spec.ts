@@ -685,7 +685,7 @@ inLocales(["ar"], (locale) => {
       await expect(identity).toBeVisible();
       await expect(
         identity.getByRole("link", {
-          name: t("Reset password", "تغيير كلمة المرور"),
+          name: t("Reset password", "إعادة تعيين كلمة المرور"),
           exact: true,
         }),
       ).toHaveAttribute("href", `/forgot-password?lang=${locale}`);

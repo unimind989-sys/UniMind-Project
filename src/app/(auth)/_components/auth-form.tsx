@@ -7,6 +7,7 @@ import {
   useRef,
   useState,
   useSyncExternalStore,
+  type ReactNode,
 } from "react";
 
 import type { CurrentTerms } from "@/lib/auth/auth-access.application";
@@ -144,6 +145,7 @@ export function AuthForm({
   actionOverride,
   initialEmail,
   initialPassword,
+  secondaryAction,
 }: Readonly<{
   mode: AuthFormMode;
   locale: Locale;
@@ -156,6 +158,8 @@ export function AuthForm({
   ) => Promise<AuthFormState>;
   initialEmail?: string | undefined;
   initialPassword?: string | undefined;
+  /** An extra exit beside the form's links, such as sign-out on consent. */
+  secondaryAction?: ReactNode;
 }>) {
   const copy = getAuthCopy(locale);
   const synthetic = useSyntheticNavigation();
@@ -467,6 +471,7 @@ export function AuthForm({
             {copy.loginLink}
           </Link>
         ) : null}
+        {secondaryAction}
       </div>
     </section>
   );

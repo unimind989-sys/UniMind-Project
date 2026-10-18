@@ -19,7 +19,11 @@ import { useProductServices } from "./product-services";
 import { ProductLink, Notice } from "./product-ui";
 import type { Locale } from "@/lib/demo/synthetic-fixtures.application";
 import { syntheticCampaignId } from "@/lib/demo/synthetic-campaigns.application";
-import { useHostedSynthetic } from "./product-navigation";
+import {
+  useHostedSynthetic,
+  useSyntheticNavigation,
+} from "./product-navigation";
+import authStyles from "@/app/(auth)/auth.module.css";
 import {
   syntheticAccountFor,
   syntheticPassword,
@@ -49,6 +53,7 @@ export function ProductAuth({
 }) {
   const { state, update } = useProductServices();
   const hosted = useHostedSynthetic();
+  const synthetic = useSyntheticNavigation();
   const router = useProductRouter();
   const query = useSearchParams();
   const notice: AuthNotice | undefined =
@@ -299,6 +304,29 @@ export function ProductAuth({
                 : "student@example.invalid"
           }
           initialPassword={hosted ? undefined : syntheticPassword}
+          secondaryAction={
+            mode === "consent" ? (
+              <button
+                type="button"
+                className={authStyles.textAction}
+                onClick={() => {
+                  if (hosted && synthetic) return synthetic.leave(locale);
+                  update((current) => ({
+                    ...current,
+                    role: null,
+                    accountEmail: null,
+                    displayName: null,
+                    consent: false,
+                    account: "NEW",
+                    returnPath: null,
+                  }));
+                  go("/login?status=signed_out");
+                }}
+              >
+                {t("Sign out", "تسجيل الخروج")}
+              </button>
+            ) : undefined
+          }
         />
       )}
     </AuthShell>

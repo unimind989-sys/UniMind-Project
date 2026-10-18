@@ -13,6 +13,7 @@ import { Appearance } from "./appearance";
 import { ChoiceGroup } from "./choice-group";
 import { useProductText } from "./product-copy";
 import { Notice, ProductLink } from "./product-ui";
+import { ProfileSettings, type ProfileSettingsProps } from "./profile-settings";
 import styles from "./product.module.css";
 import accountStyles from "./student-account.module.css";
 
@@ -41,6 +42,7 @@ export function AccountSettings({
   studyPath,
   academic,
   privacy,
+  profile,
 }: {
   locale: Locale;
   name: string | null;
@@ -59,6 +61,8 @@ export function AccountSettings({
     sharing: SharingMode;
     onSharingChange: (value: SharingMode) => void;
   } | null;
+  /** The caller's own name and interface language (WP03-T27). */
+  profile?: ProfileSettingsProps | null;
 }) {
   const t = useProductText(locale);
   const sectionClass = accountStyles.section;
@@ -99,6 +103,15 @@ export function AccountSettings({
         ) : null
       }
       views={[
+        ...(profile
+          ? [
+              {
+                id: "profile",
+                label: t("Profile", "الملف الشخصي"),
+                content: <ProfileSettings locale={locale} {...profile} />,
+              },
+            ]
+          : []),
         {
           id: "appearance",
           label: t("Appearance", "المظهر"),
@@ -128,85 +141,100 @@ export function AccountSettings({
               },
             ]
           : []),
-        {
-          id: "privacy",
-          label: t("Privacy", "الخصوصية"),
-          content: (
-            <>
-              <section id="privacy-settings" className={sectionClass}>
-                <h2>
-                  {t("Future exchange sharing", "مشاركة المحادثات القادمة")}
-                </h2>
-                {privacy ? null : (
-                  <Notice>
-                    {t(
-                      "Sharing choices are not available yet. They apply once Chat answers launch.",
-                      "خيارات المشاركة غير متاحة بعد. ستُطبق عند إطلاق إجابات المحادثة.",
-                    )}
-                  </Notice>
-                )}
-                <ChoiceGroup
-                  label={t("Sharing mode", "وضع المشاركة")}
-                  value={privacy?.sharing ?? ""}
-                  disabled={!privacy}
-                  options={[
-                    [
-                      "shared",
-                      t(
-                        "Visible to UniMind’s founders",
-                        "ظاهرة لمؤسسي UniMind",
-                      ),
-                    ],
-                    ["private", t("Private / no sharing", "خاص / عدم مشاركة")],
-                  ]}
-                  onChange={(value) =>
-                    privacy?.onSharingChange(
-                      value === "private" ? "private" : "shared",
-                    )
-                  }
-                />
-                <dl className={accountStyles.privacyDetails}>
-                  <div>
-                    <dt>{t("Earlier exchanges", "المحادثات السابقة")}</dt>
-                    <dd>
-                      {t(
-                        "Earlier exchanges keep their recorded mode.",
-                        "تحتفظ المحادثات السابقة بوضعها المسجل.",
+        // Chat sharing applies to students only (PJ-15).
+        ...(role !== "student"
+          ? []
+          : [
+              {
+                id: "privacy",
+                label: t("Privacy", "الخصوصية"),
+                content: (
+                  <>
+                    <section id="privacy-settings" className={sectionClass}>
+                      <h2>
+                        {t(
+                          "Future exchange sharing",
+                          "مشاركة المحادثات القادمة",
+                        )}
+                      </h2>
+                      {privacy ? null : (
+                        <Notice>
+                          {t(
+                            "Sharing choices are not available yet. They apply once Chat answers launch.",
+                            "خيارات المشاركة غير متاحة بعد. ستُطبق عند إطلاق إجابات المحادثة.",
+                          )}
+                        </Notice>
                       )}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt>{t("Saving and retention", "الحفظ والاحتفاظ")}</dt>
-                    <dd>
-                      {t(
-                        "Private mode is separate from saving and retention.",
-                        "الخصوصية منفصلة عن الحفظ والاحتفاظ.",
-                      )}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt>{t("Reported exchanges", "المحادثات المبلغ عنها")}</dt>
-                    <dd>
-                      {t(
-                        "Qualifying reports permit audited review of the reported exchange only; the disclosure wording is still being confirmed.",
-                        "البلاغ المؤهل يسمح بمراجعة المحادثة المبلغ عنها فقط مع التدقيق؛ صياغة الإفصاح ما زالت قيد التأكيد.",
-                      )}
-                    </dd>
-                  </div>
-                </dl>
-              </section>
-              <section className={sectionClass}>
-                <h2>{t("Saving and retention", "الحفظ والاحتفاظ")}</h2>
-                <Notice>
-                  {t(
-                    "Retention settings are still being confirmed. No retention period or deletion action is available here yet.",
-                    "إعدادات الاحتفاظ ما زالت قيد التأكيد. لا تتوفر هنا مدة احتفاظ أو إجراءات حذف بعد.",
-                  )}
-                </Notice>
-              </section>
-            </>
-          ),
-        },
+                      <ChoiceGroup
+                        label={t("Sharing mode", "وضع المشاركة")}
+                        value={privacy?.sharing ?? ""}
+                        disabled={!privacy}
+                        options={[
+                          [
+                            "shared",
+                            t(
+                              "Visible to UniMind’s founders",
+                              "ظاهرة لمؤسسي UniMind",
+                            ),
+                          ],
+                          [
+                            "private",
+                            t("Private / no sharing", "خاص / عدم مشاركة"),
+                          ],
+                        ]}
+                        onChange={(value) =>
+                          privacy?.onSharingChange(
+                            value === "private" ? "private" : "shared",
+                          )
+                        }
+                      />
+                      <dl className={accountStyles.privacyDetails}>
+                        <div>
+                          <dt>{t("Earlier exchanges", "المحادثات السابقة")}</dt>
+                          <dd>
+                            {t(
+                              "Earlier exchanges keep their recorded mode.",
+                              "تحتفظ المحادثات السابقة بوضعها المسجل.",
+                            )}
+                          </dd>
+                        </div>
+                        <div>
+                          <dt>
+                            {t("Saving and retention", "الحفظ والاحتفاظ")}
+                          </dt>
+                          <dd>
+                            {t(
+                              "Private mode is separate from saving and retention.",
+                              "الخصوصية منفصلة عن الحفظ والاحتفاظ.",
+                            )}
+                          </dd>
+                        </div>
+                        <div>
+                          <dt>
+                            {t("Reported exchanges", "المحادثات المبلغ عنها")}
+                          </dt>
+                          <dd>
+                            {t(
+                              "Qualifying reports permit audited review of the reported exchange only; the disclosure wording is still being confirmed.",
+                              "البلاغ المؤهل يسمح بمراجعة المحادثة المبلغ عنها فقط مع التدقيق؛ صياغة الإفصاح ما زالت قيد التأكيد.",
+                            )}
+                          </dd>
+                        </div>
+                      </dl>
+                    </section>
+                    <section className={sectionClass}>
+                      <h2>{t("Saving and retention", "الحفظ والاحتفاظ")}</h2>
+                      <Notice>
+                        {t(
+                          "Retention settings are still being confirmed. No retention period or deletion action is available here yet.",
+                          "إعدادات الاحتفاظ ما زالت قيد التأكيد. لا تتوفر هنا مدة احتفاظ أو إجراءات حذف بعد.",
+                        )}
+                      </Notice>
+                    </section>
+                  </>
+                ),
+              },
+            ]),
         {
           id: "identity",
           label: t("Identity and access", "الهوية والوصول"),
@@ -216,12 +244,9 @@ export function AccountSettings({
               className={`${sectionClass} ${accountStyles.compactSection}`}
             >
               <h2>{t("Your account", "حسابك")}</h2>
-              <p>
-                {t("Manage your account access.", "إدارة الوصول إلى حسابك.")}
-              </p>
               <div className={styles.actions}>
                 <ProductLink href="/forgot-password" locale={locale}>
-                  {t("Reset password", "تغيير كلمة المرور")}
+                  {t("Reset password", "إعادة تعيين كلمة المرور")}
                 </ProductLink>
               </div>
             </section>

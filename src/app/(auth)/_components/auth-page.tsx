@@ -2,6 +2,8 @@ import { AuthForm, type AuthFormMode, type AuthNotice } from "./auth-form";
 import { AuthShell } from "./auth-shell";
 
 import type { CurrentTerms } from "@/lib/auth/auth-access.application";
+import { logoutAction } from "../actions";
+import styles from "../auth.module.css";
 import { validatedInternalReturnPath } from "@/lib/auth/auth-actions.application";
 import { resolveLocale, type Locale } from "@/lib/i18n/locale";
 import { getCurrentAuthAccess } from "@/lib/auth/auth-access.supabase.server";
@@ -119,6 +121,16 @@ export async function AuthPage({
         returnPath={returnPath}
         notice={notice}
         currentTerms={currentTerms}
+        secondaryAction={
+          mode === "consent" ? (
+            // A signed-in caller who does not accept can still leave.
+            <form action={logoutAction}>
+              <button type="submit" className={styles.textAction}>
+                {locale === "ar" ? "تسجيل الخروج" : "Sign out"}
+              </button>
+            </form>
+          ) : undefined
+        }
       />
     </AuthShell>
   );
