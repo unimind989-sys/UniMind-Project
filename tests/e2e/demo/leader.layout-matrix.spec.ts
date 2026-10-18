@@ -324,7 +324,7 @@ const leaderStates: readonly ScreenState[] = [
     `${campaign}?fixture=expired`,
     "/batch-leader/invitation?fixture=replayed",
   ].map((path): ScreenState => ({
-    name: `a denied fixture (${path.split("?")[1]}) offers a readable safe exit`,
+    name: `a denied fixture (${path}) offers a readable safe exit`,
     enter: (page, locale) => signIn(page, "leader", locale, path),
     height: 844,
     axe: [{ include: "main", tags: "all" }],

@@ -21,7 +21,11 @@ async function next(arguments_: string[]): Promise<number> {
   const child = spawn(
     process.execPath,
     [path.resolve("node_modules/next/dist/bin/next"), ...arguments_],
-    { stdio: "inherit", env: process.env, windowsHide: true },
+    {
+      stdio: "inherit",
+      env: { ...process.env, NEXT_TELEMETRY_DISABLED: "1" },
+      windowsHide: true,
+    },
   );
   const stop = () => child.kill("SIGTERM");
   process.once("SIGINT", stop);
