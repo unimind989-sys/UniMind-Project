@@ -3,12 +3,8 @@ import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useProductText } from "@/app/_components/product-copy";
 import { useOptionalProductServices } from "@/app/_components/product-services";
-import {
-  Button,
-  Notice,
-  ProductLink,
-  Select,
-} from "@/app/_components/product-ui";
+import { Notice } from "@/app/_components/notice";
+import { Button, ProductLink, Select } from "@/app/_components/product-ui";
 import styles from "@/app/_components/product.module.css";
 import {
   answerExamples,
@@ -49,9 +45,11 @@ export function Report({ scope, locale, base }: ProductStudyProps) {
                 "لا توجد محادثة للإبلاغ عنها في هذا النطاق. ابدأ جلسة تجريبية وأظهر إجابة ثابتة أولًا.",
               )}
         </p>
-        <ProductLink href={base + "/chat"} locale={locale}>
-          {t("Open Chat", "فتح المحادثة")}
-        </ProductLink>
+        <div className={styles.actions}>
+          <ProductLink href={base + "/chat"} locale={locale}>
+            {t("Open Chat", "فتح المحادثة")}
+          </ProductLink>
+        </div>
       </section>
     );
   const { state, update } = services;
@@ -87,20 +85,22 @@ export function Report({ scope, locale, base }: ProductStudyProps) {
           "مراجعة البلاغ المحاكى للمحادثة المختارة",
         )}
       </label>
-      <Button
-        primary
-        disabled={!confirmed || Boolean(state.reports[reportKey])}
-        onClick={() =>
-          update((current) => ({
-            ...current,
-            reports: { ...current.reports, [reportKey]: reason },
-          }))
-        }
-      >
-        {t("Submit report", "إرسال البلاغ")}
-      </Button>
+      <div className={styles.actions}>
+        <Button
+          variant="primary"
+          disabled={!confirmed || Boolean(state.reports[reportKey])}
+          onClick={() =>
+            update((current) => ({
+              ...current,
+              reports: { ...current.reports, [reportKey]: reason },
+            }))
+          }
+        >
+          {t("Submit report", "إرسال البلاغ")}
+        </Button>
+      </div>
       {state.reports[reportKey] ? (
-        <Notice>
+        <Notice tone="success" live locale={locale}>
           {t(
             "Simulated report received in this tab. Nothing was sent, saved or shared.",
             "استلم البلاغ المحاكى داخل التبويب. لم يرسل أو يحفظ أو يشارك شيء.",

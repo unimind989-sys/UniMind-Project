@@ -1,9 +1,11 @@
 "use client";
+import { MetaList } from "@/app/_components/meta-list";
 import { useProductText } from "@/app/_components/product-copy";
 import type { Locale } from "@/lib/demo/synthetic-fixtures.application";
 import styles from "./quiz.module.css";
 
-/** "Answered: n / total · Unanswered: m", shared by progress and expiry. */
+/** "Answered: n / total" and "Unanswered: m" as one metadata list, shared
+ * by progress and expiry. */
 export function QuizAnsweredCount({
   locale,
   answered,
@@ -14,16 +16,24 @@ export function QuizAnsweredCount({
   total: number;
 }) {
   const t = useProductText(locale);
+  const number = new Intl.NumberFormat(locale);
   return (
-    <>
-      {t("Answered", "تمت الإجابة")}:{" "}
-      <bdi>
-        {new Intl.NumberFormat(locale).format(answered)} /{" "}
-        {new Intl.NumberFormat(locale).format(total)}
-      </bdi>{" "}
-      · {t("Unanswered", "دون إجابة")}:{" "}
-      {new Intl.NumberFormat(locale).format(total - answered)}
-    </>
+    <MetaList
+      items={[
+        {
+          key: "answered",
+          label: t("Answered", "تمت الإجابة"),
+          labelVisible: true,
+          value: `${number.format(answered)} / ${number.format(total)}`,
+        },
+        {
+          key: "unanswered",
+          label: t("Unanswered", "دون إجابة"),
+          labelVisible: true,
+          value: number.format(total - answered),
+        },
+      ]}
+    />
   );
 }
 
@@ -56,13 +66,13 @@ export function QuizProgress({
       data-workspace-chrome={!readOnly ? true : undefined}
     >
       {!expired ? (
-        <p id="quiz-progress" aria-live="polite">
+        <div id="quiz-progress" aria-live="polite">
           <QuizAnsweredCount
             locale={locale}
             answered={answered}
             total={total}
           />
-        </p>
+        </div>
       ) : null}
       {expiresAt && !readOnly ? (
         <p role="timer">

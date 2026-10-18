@@ -1,14 +1,18 @@
 import Image from "next/image";
 import { ProductNavigationLink as Link } from "@/app/_components/product-navigation";
 import type { Route } from "next";
+import { localizedHref, type Locale } from "@/lib/i18n/locale";
 import styles from "./app-shell.module.css";
 
 export function Brand({
   href = "/",
+  locale,
   variant = "full",
   tone,
 }: {
   href?: string;
+  /** Keeps the interface language on the home link. */
+  locale?: Locale | undefined;
   variant?: "full" | "compact" | "small";
   tone?: "light" | "dark";
 }) {
@@ -20,7 +24,7 @@ export function Brand({
         : "symbol";
   return (
     <Link
-      href={href as Route}
+      href={(locale ? localizedHref(href, locale) : href) as Route}
       className={styles.brand}
       data-variant={variant}
       data-brand-tone={tone}

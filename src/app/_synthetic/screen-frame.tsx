@@ -11,10 +11,11 @@ import {
 } from "@/app/_components/product-navigation";
 import { useProductServices } from "@/app/_components/product-services";
 import { AppShell } from "@/app/_components/app-shell";
+import { PageState, type PageStateKind } from "@/app/_components/page-state";
 import { Button, ProductLink } from "@/app/_components/product-ui";
 import { AdminWorkspace } from "@/app/admin/_components/admin-workspace";
 import { LeaderHome } from "@/app/batch-leader/_components/leader-home";
-import styles from "@/app/_components/product.module.css";
+import shellStyles from "@/app/_components/app-shell.module.css";
 import { formatCollectionDate } from "@/lib/i18n/collection-format";
 import { studyRecovery } from "@/lib/study/study-recovery.application";
 import { syntheticDemoTime } from "@/lib/demo/synthetic-clock.application";
@@ -181,7 +182,7 @@ export type SyntheticScreen = ReturnType<typeof useSyntheticScreen>;
 export function DemoBoundary({ screen }: { screen: SyntheticScreen }) {
   if (screen.hosted) return null;
   return (
-    <div className={styles.demoBadge} role="note">
+    <div className={shellStyles.simulation} role="note">
       {screen.t(
         "Synthetic demo · Simulated services · Reload clears demo data",
         "عرض تجريبي · خدمات محاكاة · إعادة التحميل تمسح بيانات العرض",
@@ -336,9 +337,86 @@ export function FixturePanel({
                             "This view could not be loaded. Please retry.",
                             "تعذر تحميل هذا العرض. أعد المحاولة.",
                           )));
+  const kind: PageStateKind = loading
+    ? "loading"
+    : recovery
+      ? fixture === "stale"
+        ? "stale"
+        : fixture === "offline"
+          ? "interrupted"
+          : "error"
+      : !allowedRole ||
+          unassignedCampaign ||
+          ["forbidden", "wrong-scope", "expired", "replayed"].includes(fixture)
+        ? "forbidden"
+        : blocked ||
+            [
+              "locked",
+              "unpublished",
+              "no-ready-source",
+              "empty",
+              "no-membership",
+            ].includes(fixture)
+          ? "empty"
+          : fixture === "stale"
+            ? "stale"
+            : fixture === "offline"
+              ? "interrupted"
+              : "error";
   return (
-    <section className={styles.panel} aria-live="polite">
-      <h2>{message}</h2>
+    <PageState
+      kind={kind}
+      locale={locale}
+      title={message}
+      actions={
+        loading ? null : (
+          <>
+            {!studyView || (!blocked && recovery?.transient) ? (
+              <Button
+                variant="primary"
+                onClick={() => {
+                  const next = new URLSearchParams(query);
+                  next.delete("fixture");
+                  router.replace(`${pathname}?${next}` as Route);
+                }}
+              >
+                {recovery?.retryLabel ?? t("Retry", "إعادة المحاولة")}
+              </Button>
+            ) : null}
+            {scope && recovery?.transient && !blocked ? (
+              <ProductLink
+                href={`/learn/${scope.cohortId}/${scope.unitId}`}
+                locale={locale}
+              >
+                {t("View available materials", "عرض مصادر المذاكرة المتاحة")}
+              </ProductLink>
+            ) : null}
+            {!(
+              scope &&
+              recovery?.transient &&
+              ["admin", "second-admin"].includes(role ?? "")
+            ) ? (
+              <ProductLink
+                href={
+                  scope && (role === "admin" || role === "second-admin")
+                    ? adminPreviewReturn(state, scope, locale)
+                    : studyView && role === "student"
+                      ? "/learn?view=subjects"
+                      : home
+                }
+                locale={locale}
+              >
+                {scope && (role === "admin" || role === "second-admin")
+                  ? t("Return to Admin", "العودة للإدارة")
+                  : studyView && role === "student"
+                    ? t("Browse available subjects", "تصفح المواد المتاحة")
+                    : t("Back", "العودة")}
+              </ProductLink>
+            ) : null}
+          </>
+        )
+      }
+    >
       {recovery && !loading ? <p>{recovery.detail}</p> : null}
       {!loading &&
       !blocked &&
@@ -350,52 +428,7 @@ export function FixturePanel({
           {formatCollectionDate(locale, syntheticDemoTime.expiredAt)}
         </p>
       ) : null}
-      {!loading ? (
-        <div className={styles.actions}>
-          {!studyView || (!blocked && recovery?.transient) ? (
-            <Button
-              onClick={() => {
-                const next = new URLSearchParams(query);
-                next.delete("fixture");
-                router.replace(`${pathname}?${next}` as Route);
-              }}
-            >
-              {recovery?.retryLabel ?? t("Retry", "إعادة المحاولة")}
-            </Button>
-          ) : null}
-          {scope && recovery?.transient && !blocked ? (
-            <ProductLink
-              href={`/learn/${scope.cohortId}/${scope.unitId}`}
-              locale={locale}
-            >
-              {t("View available materials", "عرض مصادر المذاكرة المتاحة")}
-            </ProductLink>
-          ) : null}
-          {!(
-            scope &&
-            recovery?.transient &&
-            ["admin", "second-admin"].includes(role ?? "")
-          ) ? (
-            <ProductLink
-              href={
-                scope && (role === "admin" || role === "second-admin")
-                  ? adminPreviewReturn(state, scope, locale)
-                  : studyView && role === "student"
-                    ? "/learn?view=subjects"
-                    : home
-              }
-              locale={locale}
-            >
-              {scope && (role === "admin" || role === "second-admin")
-                ? t("Return to Admin", "العودة للإدارة")
-                : studyView && role === "student"
-                  ? t("Browse available subjects", "تصفح المواد المتاحة")
-                  : t("Back", "العودة")}
-            </ProductLink>
-          ) : null}
-        </div>
-      ) : null}
-    </section>
+    </PageState>
   );
 }
 
@@ -445,7 +478,7 @@ export function RoleChrome({
         }
         synthetic
         actions={
-          <Button variant="quiet" onClick={signedOut}>
+          <Button variant="quiet" tone="night" onClick={signedOut}>
             {t("Sign out", "تسجيل الخروج")}
           </Button>
         }

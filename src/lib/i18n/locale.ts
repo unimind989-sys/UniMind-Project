@@ -29,3 +29,22 @@ export function formatInteger(locale: Locale, value: number): string {
     useGrouping: false,
   }).format(value);
 }
+
+/**
+ * The same internal address in the given interface locale: the path, every
+ * other query parameter and the fragment stay; only `lang` is set. External
+ * and scheme addresses are returned unchanged.
+ */
+export function localizedHref(href: string, locale: Locale): string {
+  if (/^(?:[a-z][a-z\d+.-]*:|\/\/)/i.test(href)) return href;
+  const hashAt = href.indexOf("#");
+  const hash = hashAt === -1 ? "" : href.slice(hashAt);
+  const beforeHash = hashAt === -1 ? href : href.slice(0, hashAt);
+  const queryAt = beforeHash.indexOf("?");
+  const path = queryAt === -1 ? beforeHash : beforeHash.slice(0, queryAt);
+  const query = new URLSearchParams(
+    queryAt === -1 ? "" : beforeHash.slice(queryAt + 1),
+  );
+  query.set("lang", locale);
+  return `${path}?${query.toString()}${hash}`;
+}

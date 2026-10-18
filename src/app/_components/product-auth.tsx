@@ -16,7 +16,8 @@ import {
   type AuthActionResult,
 } from "@/lib/auth/auth-actions.application";
 import { useProductServices } from "./product-services";
-import { ProductLink, Notice } from "./product-ui";
+import { Notice } from "./notice";
+import { ProductLink } from "./product-ui";
 import type { Locale } from "@/lib/demo/synthetic-fixtures.application";
 import { syntheticCampaignId } from "@/lib/demo/synthetic-campaigns.application";
 import { useHostedSynthetic } from "./product-navigation";
@@ -259,7 +260,7 @@ export function ProductAuth({
     >
       {blocked ? (
         <>
-          <Notice error>
+          <Notice tone="error" locale={locale}>
             {t(
               "This account or link is unavailable. Request a fresh link or return to sign in.",
               "هذا الحساب أو الرابط غير متاح. اطلب رابطًا جديدًا أو ارجع للدخول.",

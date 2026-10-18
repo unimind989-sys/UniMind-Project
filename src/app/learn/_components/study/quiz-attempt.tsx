@@ -1,6 +1,8 @@
 "use client";
 import { useProductText } from "@/app/_components/product-copy";
-import { Button, Notice, ProductLink } from "@/app/_components/product-ui";
+import { MetaList } from "@/app/_components/meta-list";
+import { Notice } from "@/app/_components/notice";
+import { Button, ProductLink } from "@/app/_components/product-ui";
 import styles from "@/app/_components/product.module.css";
 import type { Locale } from "@/lib/demo/synthetic-fixtures.application";
 import type { WorkspaceScope } from "@/lib/workspace/workspace.application";
@@ -58,35 +60,47 @@ export function QuizAttempt({
             : t("Quiz attempt", "محاولة الاختبار")}
         </h2>
       ) : null}
-      <p>
-        {
+      <MetaList
+        className={styles.attemptMeta}
+        items={[
           {
-            easy: t("Easy", "سهل"),
-            medium: t("Medium", "متوسط"),
-            hard: t("Hard", "صعب"),
-          }[attempt.configuration.difficulty]
-        }{" "}
-        ·{" "}
-        {attempt.configuration.mode === "timed"
-          ? `${t("Timed", "مؤقت")} · ${new Intl.NumberFormat(locale).format(attempt.configuration.durationMinutes)} ${t("minutes", "دقائق")}`
-          : t("Untimed", "دون توقيت")}
-      </p>
+            key: "difficulty",
+            label: t("Difficulty", "الصعوبة"),
+            value: {
+              easy: t("Easy", "سهل"),
+              medium: t("Medium", "متوسط"),
+              hard: t("Hard", "صعب"),
+            }[attempt.configuration.difficulty],
+          },
+          {
+            key: "timing",
+            label: t("Timing", "التوقيت"),
+            value:
+              attempt.configuration.mode === "timed"
+                ? t("Timed", "مؤقت")
+                : t("Untimed", "دون توقيت"),
+          },
+          attempt.configuration.mode === "timed" && {
+            key: "duration",
+            label: t("Duration", "المدة"),
+            value: `${new Intl.NumberFormat(locale).format(attempt.configuration.durationMinutes)} ${t("minutes", "دقائق")}`,
+          },
+        ]}
+      />
       {expired ? (
         <>
           <h2>{t("Expired quiz review", "مراجعة الاختبار المنتهي")}</h2>
-          <Notice error>
+          <Notice tone="error" live locale={locale}>
             {t(
               "This timed attempt has expired. No score was recorded. Your answers are frozen; review the corrections below.",
               "انتهى وقت المحاولة. لم تسجل نتيجة. إجاباتك ثابتة؛ راجع التصحيحات أدناه.",
             )}
           </Notice>
-          <p>
-            <QuizAnsweredCount
-              locale={locale}
-              answered={answered}
-              total={questions.length}
-            />
-          </p>
+          <QuizAnsweredCount
+            locale={locale}
+            answered={answered}
+            total={questions.length}
+          />
         </>
       ) : null}
       <QuizProgress
@@ -99,11 +113,11 @@ export function QuizAttempt({
         remainingSeconds={remainingSeconds}
       />
       {attempt.submitted ? (
-        <Notice>
+        <Notice live locale={locale}>
           {t("Simulated score", "نتيجة محاكاة")}:{" "}
           {new Intl.NumberFormat(locale).format(score)} /{" "}
-          {new Intl.NumberFormat(locale).format(questions.length)} ·{" "}
-          {t("illustrative only", "توضيحية فقط")}
+          {new Intl.NumberFormat(locale).format(questions.length)} (
+          {t("illustrative only", "توضيحية فقط")})
         </Notice>
       ) : null}
       {questions.map((question, index) => (
@@ -154,7 +168,7 @@ export function QuizAttempt({
       <div className={styles.actions}>
         {!readOnly ? (
           <Button
-            primary
+            variant="primary"
             disabled={
               !handoutAvailable || attempt.answers.some((answer) => answer < 0)
             }
@@ -164,7 +178,7 @@ export function QuizAttempt({
           </Button>
         ) : (
           <Button
-            primary
+            variant="primary"
             disabled={!handoutAvailable}
             onClick={() =>
               quiz.start(attempt.configuration, attempt.inspectionKey)

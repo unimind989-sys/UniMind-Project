@@ -113,7 +113,7 @@ export function CollectionIntake({
         }}
       >
         <div className={styles.uploadMark} aria-hidden="true">
-          <FrontendIcon name="upload" />
+          <FrontendIcon name="upload" size={24} />
         </div>
         <p>
           {t(

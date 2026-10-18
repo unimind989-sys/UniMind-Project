@@ -37,8 +37,9 @@ export function QuizQuestion({
             {t("Question", "السؤال")}{" "}
             {new Intl.NumberFormat(locale).format(index + 1)} {t("of", "من")}{" "}
             {new Intl.NumberFormat(locale).format(total)}
-          </span>{" "}
-          · <span>{question.prompt}</span>
+          </span>
+          <span className="visually-hidden">: </span>
+          <span>{question.prompt}</span>
         </legend>
         {question.choices.map((choice, answerIndex) => (
           <label className={styles.check} key={choice}>

@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/app/_components/product-ui";
+import { buttonLook } from "@/app/_components/button-look";
 import type { CollectionCampaign } from "@/lib/collection/collection.application";
 import type { CollectionQueueFile } from "@/lib/collection/collection-client-state.application";
 import {
@@ -195,7 +196,7 @@ export function CollectionQueueRow({
                   )
                 : t("Ready to upload", "جاهز للرفع")
             : row.state === "UPLOADING"
-              ? `${t("Uploading", "جارٍ الرفع")} · ${row.progress}%`
+              ? `${t("Uploading", "جارٍ الرفع")} ${row.progress}%`
               : row.state === "FINALIZING"
                 ? t("Confirming submission…", "جارٍ تأكيد الإرسال…")
                 : row.state === "RECEIVED"
@@ -227,7 +228,10 @@ export function CollectionQueueRow({
           </Button>
         ) : null}
         {row.error === "DUPLICATE_FILE" || row.error === "CORRECTION_STALE" ? (
-          <a className={styles.open} href="#latest-submissions">
+          <a
+            {...buttonLook({ variant: "primary" }, styles.open)}
+            href="#latest-submissions"
+          >
             {t("View recorded submission", "عرض الإرسال المسجل")}
           </a>
         ) : null}

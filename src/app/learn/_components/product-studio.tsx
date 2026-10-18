@@ -3,12 +3,9 @@ import { useProductText } from "@/app/_components/product-copy";
 import { useEffect, useRef, useState } from "react";
 import { ProductSourceDialog } from "./product-source-dialog";
 import { useOptionalProductServices } from "@/app/_components/product-services";
-import {
-  Button,
-  Notice,
-  ProductLink,
-  Select,
-} from "@/app/_components/product-ui";
+import { MetaList } from "@/app/_components/meta-list";
+import { Notice } from "@/app/_components/notice";
+import { Button, ProductLink, Select } from "@/app/_components/product-ui";
 import {
   artifactTypes,
   defaultScope,
@@ -240,14 +237,14 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
           }}
         >
           {unavailable ? (
-            <Notice>
+            <Notice locale={locale}>
               {t(
                 "Studio is not available yet. Study aids will be generated from approved materials when it launches.",
                 "الاستوديو غير متاح بعد. ستُنشأ أدوات المذاكرة من المصادر المعتمدة عند إطلاقه.",
               )}
             </Notice>
           ) : !handoutAvailable ? (
-            <Notice error>
+            <Notice tone="warning" locale={locale}>
               {t(
                 `The handout needed by this artifact fixture is inactive. Other ${scope.unitLabelSingularEn.toLowerCase()} sources remain available; choose another ${scope.unitLabelSingularEn.toLowerCase()} or reactivate the source through governed review.`,
                 `الملزمة اللازمة لمثال المخرج غير نشطة. المصادر الأخرى متاحة؛ اختر ${scope.unitLabelSingularAr} أخرى أو أعد تفعيل المصدر بمراجعة منضبطة.`,
@@ -383,7 +380,7 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
                     )}
               </p>
               <Button
-                primary
+                variant="primary"
                 type="submit"
                 disabled={request !== null || !handoutAvailable}
               >
@@ -415,7 +412,7 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
           </header>
           {request ? (
             <div className={studyStyles.artifactLoading}>
-              <Notice>
+              <Notice live locale={locale}>
                 {t("Preparing artifact… · Simulated", "إعداد المخرج… · محاكاة")}
               </Notice>
               <Button
@@ -433,7 +430,11 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
               </Button>
             </div>
           ) : null}
-          {notice && type !== "quiz" ? <Notice>{notice}</Notice> : null}
+          {notice && type !== "quiz" ? (
+            <Notice live locale={locale}>
+              {notice}
+            </Notice>
+          ) : null}
           {artifact ? (
             <section
               className={studyStyles.artifactOutput}
@@ -449,20 +450,35 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
                   locale,
                 )}
               </h2>
-              <p>
-                {t("Selected study focus", "محور المذاكرة المختار")}:{" "}
-                {artifact.topic === "comparison"
-                  ? t("Roots of the plexus", "جذور الضفيرة")
-                  : t("Upper trunk injury", "إصابة الجذع العلوي")}{" "}
-                ·{" "}
-                {artifact.depth === "detailed"
-                  ? t("Detailed", "مفصل")
-                  : t("Concise", "موجز")}{" "}
-                ·{" "}
-                {artifact.size === "extended"
-                  ? t("Extended sample", "مثال موسع")
-                  : t("Short sample", "مثال قصير")}
-              </p>
+              <MetaList
+                items={[
+                  {
+                    key: "focus",
+                    label: t("Selected study focus", "محور المذاكرة المختار"),
+                    labelVisible: true,
+                    value:
+                      artifact.topic === "comparison"
+                        ? t("Roots of the plexus", "جذور الضفيرة")
+                        : t("Upper trunk injury", "إصابة الجذع العلوي"),
+                  },
+                  {
+                    key: "depth",
+                    label: t("Depth", "العمق"),
+                    value:
+                      artifact.depth === "detailed"
+                        ? t("Detailed", "مفصل")
+                        : t("Concise", "موجز"),
+                  },
+                  {
+                    key: "size",
+                    label: t("Length", "الطول"),
+                    value:
+                      artifact.size === "extended"
+                        ? t("Extended sample", "مثال موسع")
+                        : t("Short sample", "مثال قصير"),
+                  },
+                ]}
+              />
               {example ? (
                 <div
                   lang={example.options.language === "en" ? "en" : "ar"}
@@ -607,7 +623,7 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
                   ) : null}
                 </div>
               ) : (
-                <Notice error>
+                <Notice tone="error" live locale={locale}>
                   {t(
                     "These settings do not match a fixed example. Choose supported settings and Generate again.",
                     "لا تطابق هذه الإعدادات مثالًا ثابتًا. اختر إعدادات مدعومة واضغط إنشاء مجددًا.",
@@ -641,7 +657,7 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
             </section>
           ) : (
             <div className={studyStyles.artifactEmpty}>
-              <FrontendIcon name="studio" />
+              <FrontendIcon name="studio" size={24} />
               <h3>
                 {type === "quiz"
                   ? t(

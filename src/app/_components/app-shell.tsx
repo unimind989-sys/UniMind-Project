@@ -6,14 +6,11 @@ import type { Route } from "next";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useHostedSynthetic } from "./product-navigation";
 import { syntheticDemoTime } from "@/lib/demo/synthetic-clock.application";
-import type { Locale } from "@/lib/i18n/locale";
+import { localizedHref, type Locale } from "@/lib/i18n/locale";
 import { useProductProfileName } from "./product-profile";
 import { Brand } from "./brand";
-import {
-  FrontendIcon,
-  LanguageSwitch,
-  type FrontendIconName,
-} from "./frontend-controls";
+import { FrontendIcon, type FrontendIconName } from "./frontend-controls";
+import { LanguageSwitch } from "./language-switch";
 import styles from "./app-shell.module.css";
 
 export function AppShell({
@@ -53,7 +50,14 @@ export function AppShell({
   useLayoutEffect(() => {
     if (title) document.title = `${title} · UniMind`;
   }, [title, pathname]);
-  const homeHref = `${role === "leader" ? "/batch-leader" : role === "admin" ? "/admin" : "/learn"}?lang=${locale}`;
+  const homeHref = localizedHref(
+    role === "leader"
+      ? "/batch-leader"
+      : role === "admin"
+        ? "/admin"
+        : "/learn",
+    locale,
+  );
   const identity =
     roleLabel ??
     t(
@@ -207,10 +211,9 @@ export function AppShell({
     return (
       <Link
         key={href}
-        href={`${href}${href.includes("?") ? "&" : "?"}lang=${locale}` as Route}
+        href={localizedHref(href, locale) as Route}
         prefetch={false}
         aria-current={isCurrent ? "page" : undefined}
-        title={label}
         data-account={href === "/settings" ? true : undefined}
         aria-describedby={
           role === "student" && href === "/settings"
@@ -229,7 +232,7 @@ export function AppShell({
               </b>
               <span
                 id={profileDestinationId}
-                className={styles.profileDestination}
+                className={`visually-hidden ${styles.profileDestination}`}
                 aria-hidden="true"
               >
                 {t("Settings", "الإعدادات")}
@@ -239,7 +242,7 @@ export function AppShell({
           </>
         ) : (
           <>
-            <FrontendIcon name={icon} />
+            <FrontendIcon name={icon} size={24} />
             <span>{label}</span>
           </>
         )}
@@ -276,7 +279,7 @@ export function AppShell({
           {role === "admin" ? (
             <Link
               className={styles.adminAccount}
-              href={`/settings?lang=${locale}` as Route}
+              href={localizedHref("/settings", locale) as Route}
               prefetch={false}
             >
               {t("Account", "الحساب")}
@@ -316,7 +319,10 @@ export function AppShell({
                 {navigation}
               </nav>
             </details>
-            <Link href={`/settings?lang=${locale}` as Route} prefetch={false}>
+            <Link
+              href={localizedHref("/settings", locale) as Route}
+              prefetch={false}
+            >
               {t("Account", "الحساب")}
             </Link>
           </div>

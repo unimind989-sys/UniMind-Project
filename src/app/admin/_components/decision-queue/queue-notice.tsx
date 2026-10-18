@@ -1,5 +1,6 @@
 import type { AdminQueueState } from "@/lib/admin/admin-readiness.application";
 
+import { Button } from "@/app/_components/product-ui";
 import styles from "../../admin.module.css";
 import type { AdminCopy } from "./candidate-presentation";
 
@@ -26,15 +27,14 @@ export function QueueNotice({
         {status === "FORBIDDEN" ? copy.forbiddenBody : copy.unavailableBody}
       </p>
       {status === "UNAVAILABLE" && (
-        <button
-          className={styles.secondaryAction}
-          type="button"
+        <Button
+          className={styles.alignStart}
+          size="large"
           onClick={recheck}
-          disabled={refreshing}
-          aria-busy={refreshing}
+          pending={refreshing}
         >
           {refreshing ? copy.checkingState : copy.recheckQueue}
-        </button>
+        </Button>
       )}
       {rechecked && <p role="status">{copy.unavailableBody}</p>}
     </section>

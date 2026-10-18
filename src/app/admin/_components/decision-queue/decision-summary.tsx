@@ -56,7 +56,7 @@ export function DecisionSummary({
           <span>{copy.targetKinds[adminTargetKind(candidate.action)]}</span>
           {candidate.protected ? (
             <span className={styles.protectedNote}>
-              <FrontendIcon name="shield" />
+              <FrontendIcon name="shield" size={16} />
               {copy.protectedNote}
             </span>
           ) : null}
@@ -69,7 +69,7 @@ export function DecisionSummary({
           <dd dir="auto">{stateLabel(candidate.currentState, locale)}</dd>
         </dl>
         <span className={styles.stateArrow} aria-hidden="true">
-          <FrontendIcon name="arrow" />
+          <FrontendIcon name="arrow" size={24} />
         </span>
         <dl className={styles.stateProposed}>
           <dt>{copy.proposedState}</dt>

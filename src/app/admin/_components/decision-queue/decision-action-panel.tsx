@@ -4,6 +4,7 @@ import type { AdminActionCandidate } from "@/lib/admin/admin-actions.application
 import { getAdminCopy } from "@/lib/i18n/admin-copy";
 import { getTextDirection, type Locale } from "@/lib/i18n/locale";
 
+import { Button } from "@/app/_components/product-ui";
 import styles from "../../admin.module.css";
 import type { SubmitAdminAction } from "./candidate-presentation";
 import { DecisionFeedback } from "./decision-feedback";
@@ -80,10 +81,10 @@ export function DecisionActionPanel({
           feedbackRef={feedbackRef}
         />
         <div className={styles.recordActions}>
-          <button
+          <Button
             ref={reviewButton}
-            className={styles.primaryAction}
-            type="button"
+            variant="primary"
+            size="large"
             onClick={review.openReview}
             disabled={
               !review.actionable ||
@@ -95,7 +96,7 @@ export function DecisionActionPanel({
             }
           >
             {refreshing ? copy.checkingState : copy.reviewAction}
-          </button>
+          </Button>
           <p className={styles.auditNote}>{copy.auditNote}</p>
         </div>
       </form>

@@ -1,5 +1,6 @@
 import type { RefObject } from "react";
 
+import { Button } from "@/app/_components/product-ui";
 import styles from "../../admin.module.css";
 import type { AdminCopy } from "./candidate-presentation";
 import type { DecisionReview } from "./use-decision-review";
@@ -48,15 +49,14 @@ export function DecisionFeedback({
         </p>
       )}
       {state.status !== "IDLE" && (
-        <button
-          className={styles.secondaryAction}
-          type="button"
-          disabled={refreshing}
-          aria-busy={refreshing}
+        <Button
+          className={styles.alignStart}
+          size="large"
+          pending={refreshing}
           onClick={reloadAction ?? (() => window.location.reload())}
         >
           {refreshing ? copy.checkingState : copy.reloadQueue}
-        </button>
+        </Button>
       )}
     </>
   );

@@ -3,10 +3,9 @@
 import type { ComponentType } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import NotFound from "@/app/not-found";
-import {
-  ProductNavigationLink,
-  useSyntheticNavigation,
-} from "@/app/_components/product-navigation";
+import { PageState } from "@/app/_components/page-state";
+import { useSyntheticNavigation } from "@/app/_components/product-navigation";
+import { ProductLink } from "@/app/_components/product-ui";
 import { SyntheticProductProvider } from "@/app/_components/product-services";
 import type { SyntheticRole } from "@/lib/demo/synthetic-account.application";
 import {
@@ -57,12 +56,18 @@ export default function SyntheticRuntime({
     screen = <Screen key={`${pathname}|${page.fixture}`} {...props} />;
   } else if (hosted)
     screen = (
-      <main>
-        <h1>{arabic ? "الصفحة غير موجودة" : "Page not found"}</h1>
-        <ProductNavigationLink href={`/settings?lang=${arabic ? "ar" : "en"}`}>
-          {arabic ? "الحساب" : "Account"}
-        </ProductNavigationLink>
-      </main>
+      <PageState
+        kind="not-found"
+        standalone
+        headingLevel={1}
+        locale={arabic ? "ar" : "en"}
+        title={arabic ? "الصفحة غير موجودة" : "Page not found"}
+        actions={
+          <ProductLink href="/settings" locale={arabic ? "ar" : "en"}>
+            {arabic ? "الحساب" : "Account"}
+          </ProductLink>
+        }
+      />
     );
   else screen = <NotFound />;
   return (

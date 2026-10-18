@@ -3,28 +3,29 @@
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
+import { PageState } from "@/app/_components/page-state";
 import { getWorkspaceCopy } from "@/lib/i18n/workspace-copy";
+import { resolveLocale, type Locale } from "@/lib/i18n/locale";
 
-import styles from "../../workspace.module.css";
-
-function WorkspaceLoadingContent() {
-  const locale = useSearchParams().get("lang") === "ar" ? "ar" : "en";
+function WorkspaceLoadingState({ locale }: Readonly<{ locale: Locale }>) {
   return (
-    <div
-      className={styles.routeState}
-      role="status"
-      dir={locale === "ar" ? "rtl" : "ltr"}
-    >
-      <span className={styles.loadingMark} />
-      {getWorkspaceCopy(locale).loading}
-    </div>
+    <PageState
+      kind="loading"
+      locale={locale}
+      title={getWorkspaceCopy(locale).loading}
+    />
   );
+}
+
+function LocalizedWorkspaceLoading() {
+  const locale = resolveLocale(useSearchParams().get("lang"));
+  return <WorkspaceLoadingState locale={locale} />;
 }
 
 export default function WorkspaceLoading() {
   return (
-    <Suspense fallback={<div role="status">Checking workspace access…</div>}>
-      <WorkspaceLoadingContent />
+    <Suspense fallback={<WorkspaceLoadingState locale="en" />}>
+      <LocalizedWorkspaceLoading />
     </Suspense>
   );
 }

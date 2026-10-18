@@ -1,9 +1,10 @@
 "use client";
 
 import { ProductNavigationLink as Link } from "@/app/_components/product-navigation";
+import { buttonLook } from "@/app/_components/button-look";
 import type { Route } from "next";
 import type { CollectionCampaign } from "@/lib/collection/collection.application";
-import type { Locale } from "@/lib/i18n/locale";
+import { localizedHref, type Locale } from "@/lib/i18n/locale";
 import { collectionText } from "./collection-text";
 import styles from "../../collection.module.css";
 
@@ -22,9 +23,12 @@ export function CollectionUnavailable({
         )}
       </p>
       <Link
-        className={styles.open}
+        {...buttonLook({ variant: "primary" }, styles.open)}
         href={
-          `/batch-leader/campaigns/${encodeURIComponent(campaign.id)}?lang=${locale}` as Route
+          localizedHref(
+            `/batch-leader/campaigns/${encodeURIComponent(campaign.id)}`,
+            locale,
+          ) as Route
         }
       >
         {t("Open campaign", "فتح الحملة")}
