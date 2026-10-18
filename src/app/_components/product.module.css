@@ -655,7 +655,7 @@
 .quizConfiguration > :not(label):not(fieldset) {
   grid-column: 1 / -1;
 }
-.quizConfiguration input[type="number"] {
+.quizConfiguration input[inputmode="numeric"] {
   width: 100%;
   max-width: 10rem;
   min-height: 48px;
@@ -664,18 +664,11 @@
   font-size: 1rem;
   font-weight: 650;
   font-variant-numeric: tabular-nums;
-  appearance: textfield;
-  -moz-appearance: textfield;
 }
-.quizConfiguration input[type="number"]::-webkit-inner-spin-button,
-.quizConfiguration input[type="number"]::-webkit-outer-spin-button {
-  margin: 0;
-  -webkit-appearance: none;
-}
-.quizConfiguration input[type="number"]:hover:not(:disabled) {
+.quizConfiguration input[inputmode="numeric"]:hover:not(:disabled) {
   border-color: var(--secondary);
 }
-.quizConfiguration input[type="number"][aria-invalid="true"] {
+.quizConfiguration input[inputmode="numeric"][aria-invalid="true"] {
   border-color: var(--danger);
 }
 .questionCount {

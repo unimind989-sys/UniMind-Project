@@ -23,7 +23,6 @@ const copy = {
     cohort: "Released cohort",
     choose: "Choose…",
     currentPath: "Authorized path",
-    resultsUpdated: "Authorized catalog updated.",
     navigationPending: "Checking access…",
     noMembershipTitle: "Waiting for your cohort",
     noMembershipBody:
@@ -78,7 +77,6 @@ const copy = {
     cohort: "المجموعة المتاحة",
     choose: "اختر…",
     currentPath: "المسار المصرّح",
-    resultsUpdated: "تم تحديث الفهرس المصرّح.",
     navigationPending: "جارٍ التحقق من الصلاحية…",
     noMembershipTitle: "في انتظار إضافتك إلى دفعتك",
     noMembershipBody:

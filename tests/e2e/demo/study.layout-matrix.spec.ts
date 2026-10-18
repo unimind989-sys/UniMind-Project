@@ -569,7 +569,7 @@ const studioStates: readonly ScreenState[] = [
           exact: true,
         })
         .check();
-      const count = page.getByRole("spinbutton", {
+      const count = page.getByRole("textbox", {
         name: pick(locale, "Number of questions", "عدد الأسئلة"),
         exact: true,
       });
@@ -584,7 +584,7 @@ const studioStates: readonly ScreenState[] = [
     name: "a partial attempt keeps its answers, timer and Submit reachable",
     enter: async (page, locale) => {
       await page
-        .getByRole("spinbutton", {
+        .getByRole("textbox", {
           name: pick(locale, "Number of questions", "عدد الأسئلة"),
           exact: true,
         })

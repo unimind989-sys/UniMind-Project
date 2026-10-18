@@ -387,23 +387,38 @@ export function StudyShelf({
               {/* The h1 already names the list; this heading keeps the
                   structure for assistive technology (MD-15). */}
               <h2 className="visually-hidden">{collectionLabel}</h2>
-              <label className={styles.search}>
-                <span>
-                  {t(
-                    `Search ${collectionLabel.toLocaleLowerCase(locale)}`,
-                    `البحث في ${collectionLabel}`,
-                  )}
-                </span>
-                <input
-                  type="search"
-                  value={search}
-                  placeholder={t(
-                    `Find a ${singularLabel.toLocaleLowerCase(locale)}…`,
-                    `ابحث عن ${singularLabel}…`,
-                  )}
-                  onChange={(event) => setSearch(event.target.value)}
-                />
-              </label>
+              {/* A search landmark with a filter field (IX-12). */}
+              <search className={styles.searchLandmark}>
+                <label className={styles.search}>
+                  <span>
+                    {t(
+                      `Search ${collectionLabel.toLocaleLowerCase(locale)}`,
+                      `البحث في ${collectionLabel}`,
+                    )}
+                  </span>
+                  <input
+                    type="search"
+                    name="q"
+                    value={search}
+                    placeholder={t(
+                      `Find a ${singularLabel.toLocaleLowerCase(locale)}…`,
+                      `ابحث عن ${singularLabel}…`,
+                    )}
+                    autoComplete="off"
+                    spellCheck={false}
+                    enterKeyHint="search"
+                    aria-describedby="subjects-shown"
+                    onChange={(event) => setSearch(event.target.value)}
+                  />
+                </label>
+              </search>
+              {/* The count is live, so typing announces what the filter
+                  leaves; it only exists in the Subjects view. */}
+              <p id="subjects-shown" className="visually-hidden" role="status">
+                {locale === "ar"
+                  ? `${collectionLabel} المعروضة: ${new Intl.NumberFormat("ar-EG").format(units.length)}`
+                  : `${new Intl.NumberFormat("en").format(units.length)} ${(units.length === 1 ? singularLabel : collectionLabel).toLocaleLowerCase("en")} shown`}
+              </p>
             </div>
             {units.length === 0 ? (
               <section className={styles.emptyState} role="status">
@@ -469,9 +484,6 @@ export function StudyShelf({
             )}
           </div>
         )}
-        <p className="visually-hidden" role="status">
-          {copy.resultsUpdated}
-        </p>
       </div>
     </AppShell>
   );

@@ -10,6 +10,7 @@ import {
   quizAttemptReviewable,
   validQuizConfiguration,
   quizConfigurationErrors,
+  parseQuizNumber,
 } from "../../src/lib/quiz/quiz-fixture.application";
 
 describe("document-local sample quiz configuration", () => {
@@ -242,5 +243,66 @@ describe("frozen synthetic quiz outcomes", () => {
       [0, -1],
     ])
       expect(answerQuizAttempt(original, index!, answer!, 100)).toBe(original);
+  });
+});
+
+// WP03-T29 IX-13: quiz numbers typed on an Arabic keyboard.
+describe("typed quiz numbers", () => {
+  const arabicIndic = (digits: string) =>
+    Array.from(digits, (digit) =>
+      String.fromCharCode(0x0660 + Number(digit)),
+    ).join("");
+  const extendedArabicIndic = (digits: string) =>
+    Array.from(digits, (digit) =>
+      String.fromCharCode(0x06f0 + Number(digit)),
+    ).join("");
+
+  it.each([
+    ["3", 3],
+    [" 12 ", 12],
+    ["06", 6],
+    [arabicIndic("3"), 3],
+    [arabicIndic("240"), 240],
+    [extendedArabicIndic("45"), 45],
+    [`${arabicIndic("1")}5`, 15],
+    ["2.5", 2.5],
+    [
+      `${arabicIndic("2")}${String.fromCharCode(0x066b)}${arabicIndic("5")}`,
+      2.5,
+    ],
+  ])("reads %j as %d", (text, expected) => {
+    expect(parseQuizNumber(text)).toBe(expected);
+  });
+
+  it.each([
+    "",
+    "   ",
+    "-1",
+    "1e2",
+    "3 4",
+    "three",
+    `${arabicIndic("3")}a`,
+    "+3",
+    "0x10",
+  ])("reads %j as not a number", (text) => {
+    expect(parseQuizNumber(text)).toBeNaN();
+  });
+
+  it("feeds the same whole-number rules as typed Latin digits", () => {
+    const timed = { ...defaultQuizConfiguration, mode: "timed" as const };
+    expect(
+      validQuizConfiguration({
+        ...timed,
+        questionCount: parseQuizNumber(arabicIndic("6")),
+        durationMinutes: parseQuizNumber(arabicIndic("240")),
+      }),
+    ).toBe(true);
+    expect(
+      quizConfigurationErrors({
+        ...timed,
+        questionCount: parseQuizNumber(arabicIndic("7")),
+        durationMinutes: parseQuizNumber(`${arabicIndic("2")}.5`),
+      }),
+    ).toEqual({ questionCount: true, durationMinutes: true });
   });
 });

@@ -732,7 +732,9 @@ inLocales(["en", "ar"], (locale) => {
           exact: true,
         })
         .fill("0");
-      await expect(start).toBeDisabled();
+      // Start validates instead of being disabled (WP03-T29 IX-13).
+      await start.click();
+      await expect(page.locator("#quiz-question-count-error")).toBeVisible();
       await page
         .getByLabel(pick(locale, "Number of questions", "عدد الأسئلة"), {
           exact: true,

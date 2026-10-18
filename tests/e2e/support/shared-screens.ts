@@ -158,7 +158,7 @@ export async function expectQuizSetupScreen(
   const start = page.getByRole("button", {
     name: say(locale, "Start quiz", "بدء الاختبار"),
   });
-  const count = page.getByRole("spinbutton", {
+  const count = page.getByRole("textbox", {
     name: say(locale, "Number of questions", "عدد الأسئلة"),
   });
   const unavailable = page.getByText(

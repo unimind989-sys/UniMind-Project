@@ -292,6 +292,23 @@ export function validQuizConfiguration(value: QuizConfiguration): boolean {
     !errors.durationMinutes
   );
 }
+/**
+ * Reads a typed quiz number (duration or question count). Arabic-Indic
+ * (U+0660–U+0669) and Extended Arabic-Indic (U+06F0–U+06F9) digits become
+ * ASCII digits, so an Arabic keyboard works; the Arabic decimal separator is
+ * a point. Blank or non-numeric text is `NaN`; a decimal stays a decimal, so
+ * `quizConfigurationErrors` reports it as not a whole number.
+ */
+export function parseQuizNumber(text: string): number {
+  const normalized = Array.from(text.trim(), (character) => {
+    const code = character.charCodeAt(0);
+    if (code >= 0x0660 && code <= 0x0669) return String(code - 0x0660);
+    if (code >= 0x06f0 && code <= 0x06f9) return String(code - 0x06f0);
+    return code === 0x066b ? "." : character;
+  }).join("");
+  return /^\d+(?:\.\d+)?$/u.test(normalized) ? Number(normalized) : Number.NaN;
+}
+
 export function quizConfigurationErrors(value: QuizConfiguration) {
   return {
     questionCount:
