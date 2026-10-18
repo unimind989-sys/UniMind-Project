@@ -5,7 +5,7 @@ import type { CurrentTerms } from "@/lib/auth/auth-access.application";
 import { validatedInternalReturnPath } from "@/lib/auth/auth-actions.application";
 import { resolveLocale, type Locale } from "@/lib/i18n/locale";
 import { getCurrentAuthAccess } from "@/lib/auth/auth-access.supabase.server";
-import { accessDestination } from "@/lib/auth/auth-flow.domain";
+import { accessDestination } from "@/lib/auth/auth-actions.application";
 import { currentRoleHome } from "@/lib/account/account.supabase.server";
 import { redirect } from "next/navigation";
 import type { Route } from "next";

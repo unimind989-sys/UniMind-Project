@@ -12,7 +12,7 @@ import {
   acceptCurrentAuthConsent,
 } from "@/lib/auth/auth-access.supabase.server";
 import { getAuthApplication } from "@/lib/auth/supabase-auth.server";
-import { accessDestination } from "@/lib/auth/auth-flow.domain";
+import { accessDestination } from "@/lib/auth/auth-actions.application";
 import { resolveLocale } from "@/lib/i18n/locale";
 import { currentRoleHome } from "@/lib/account/account.supabase.server";
 

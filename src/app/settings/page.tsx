@@ -1,5 +1,3 @@
-import { redirect } from "next/navigation";
-import type { Route } from "next";
 import { requireReadyAccess } from "@/lib/auth/access-route.server";
 import {
   loadCurrentAccount,

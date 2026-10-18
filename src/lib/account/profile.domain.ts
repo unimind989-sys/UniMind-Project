@@ -11,7 +11,7 @@ export type AccountLanguage = "EN" | "AR_EG";
 // Control characters and bidirectional controls can reorder or hide text
 // where the name is shown to other people (Arabic letter mark, LRM/RLM,
 // embeddings, overrides and isolates).
-const forbidden = /[\p{Cc}؜‎‏‪-‮⁦-⁩]/u;
+const forbidden = /[\p{Cc}\u061C\u200E\u200F\u202A-\u202E\u2066-\u2069]/u;
 
 /** Normalizes a typed name (NFC, trimmed, single spaces) or explains why it cannot be saved. */
 export function normalizeDisplayName(

@@ -5,7 +5,7 @@ import {
   type AuthCallbackGateway,
 } from "@/lib/auth/auth-callback.application";
 import { getCurrentAuthAccess } from "@/lib/auth/auth-access.supabase.server";
-import { accessDestination } from "@/lib/auth/auth-flow.domain";
+import { accessDestination } from "@/lib/auth/auth-actions.application";
 import { currentRoleHome } from "@/lib/account/account.supabase.server";
 import { createServerSupabaseClient } from "@/lib/db/supabase/server";
 import { getServerEnvironment } from "@/lib/config/env.server";

@@ -28,8 +28,8 @@ describe("profile name rules", () => {
     ["   ", "DISPLAY_NAME_REQUIRED"],
     ["a".repeat(81), "DISPLAY_NAME_TOO_LONG"],
     ["12345", "DISPLAY_NAME_INVALID"],
-    ["Samir‮nassaH", "DISPLAY_NAME_INVALID"],
-    ["سمير‏حسن", "DISPLAY_NAME_INVALID"],
+    ["Samir\u202EnassaH", "DISPLAY_NAME_INVALID"],
+    ["سمير\u200Fحسن", "DISPLAY_NAME_INVALID"],
     ["Samir\u0000", "DISPLAY_NAME_INVALID"],
     ["Samir\u0085", "DISPLAY_NAME_INVALID"],
   ])("rejects %j", (input, error) => {
