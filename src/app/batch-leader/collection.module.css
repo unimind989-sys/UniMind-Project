@@ -224,13 +224,6 @@
 }
 
 /* ---------- Notices ---------- */
-.windowNotice {
-  margin: 0;
-  padding: 12px 16px;
-  border-radius: var(--radius-control);
-  background: var(--tint);
-  color: var(--ink);
-}
 .receivedNotice {
   margin: 0;
   padding: 12px 16px;

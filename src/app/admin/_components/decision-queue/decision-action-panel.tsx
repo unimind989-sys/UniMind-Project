@@ -64,6 +64,7 @@ export function DecisionActionPanel({
         />
 
         <DecisionFeedback
+          locale={locale}
           copy={copy}
           review={review}
           refreshing={refreshing}

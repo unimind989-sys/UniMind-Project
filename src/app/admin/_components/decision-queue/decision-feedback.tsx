@@ -1,6 +1,8 @@
 import type { RefObject } from "react";
 
+import { Notice } from "@/app/_components/notice";
 import { Button } from "@/app/_components/product-ui";
+import type { Locale } from "@/lib/i18n/locale";
 import styles from "../../admin.module.css";
 import type { AdminCopy } from "./candidate-presentation";
 import type { DecisionReview } from "./use-decision-review";
@@ -10,12 +12,14 @@ import type { DecisionReview } from "./use-decision-review";
  * a queue reload because the candidate's version is no longer trustworthy.
  */
 export function DecisionFeedback({
+  locale,
   copy,
   review,
   refreshing,
   reloadAction,
   feedbackRef,
 }: Readonly<{
+  locale: Locale;
   copy: AdminCopy;
   review: DecisionReview;
   refreshing: boolean;
@@ -27,26 +31,25 @@ export function DecisionFeedback({
   return (
     <>
       {feedback !== null && (
-        <p
+        <Notice
           ref={feedbackRef}
           tabIndex={-1}
-          className={
-            state.status === "ERROR"
-              ? styles.errorMessage
-              : styles.successMessage
-          }
-          role={state.status === "ERROR" ? "alert" : "status"}
+          locale={locale}
+          live
+          tone={state.status === "ERROR" ? "error" : "success"}
         >
           {feedback}
-        </p>
+        </Notice>
       )}
       {blocked && !completed && (
-        <p className={styles.blockedMessage}>{copy.blocked}</p>
+        <Notice tone="error" locale={locale}>
+          {copy.blocked}
+        </Notice>
       )}
       {changedAfterReview && (
-        <p role="alert" className={styles.errorMessage}>
+        <Notice tone="error" live locale={locale}>
           {copy.reviewChanged}
-        </p>
+        </Notice>
       )}
       {state.status !== "IDLE" && (
         <Button

@@ -142,6 +142,9 @@ ol.track .segment {
   padding: 0;
   border: 0;
 }
+.fieldset > .track {
+  width: fit-content;
+}
 .legend {
   margin-block-end: 8px;
   padding: 0;

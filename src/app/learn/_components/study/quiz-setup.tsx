@@ -186,6 +186,7 @@ export function QuizSetup({
             : t("Start quiz", "بدء الاختبار")}
         </Button>
         <Button
+          size="large"
           disabled={unavailable}
           onClick={() =>
             setConfiguration(() => ({ ...defaultQuizConfiguration }))
@@ -195,6 +196,7 @@ export function QuizSetup({
         </Button>
         {attempt ? (
           <ProductLink
+            size="large"
             href={`${base}/quiz/sample-attempt${quizAttemptReviewable(attempt, now) ? "/review" : ""}?attempt=${encodeURIComponent(attempt.inspectionKey)}`}
             locale={locale}
           >

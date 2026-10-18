@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import { Notice } from "@/app/_components/notice";
 import { PageState } from "@/app/_components/page-state";
 
 import type { AdminQueueState } from "@/lib/admin/admin-readiness.application";
@@ -59,9 +60,9 @@ export function AdminDecisionQueue({
     <div className={styles.queue}>
       {recheckComplete && <p role="status">{copy.recheckDone}</p>}
       {decisions.selectionError && (
-        <p role="alert" className={styles.errorMessage}>
+        <Notice tone="error" live locale={locale}>
           {copy.invalidSelection}
-        </p>
+        </Notice>
       )}
       {queue.status === "FORBIDDEN" || queue.status === "UNAVAILABLE" ? (
         <QueueNotice

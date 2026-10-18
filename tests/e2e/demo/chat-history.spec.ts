@@ -306,7 +306,10 @@ inLocales(["ar"], (locale) => {
         `${unit.replace("year-1-term-1-cohort", "year-3-term-2-cohort")}/chat?fixture=dense&lang=${locale}`,
       );
       await expect(
-        page.getByRole("heading", { name: "Page not found", exact: true }),
+        page.getByRole("heading", {
+          name: pick(locale, "Page not found", "الصفحة غير موجودة"),
+          exact: true,
+        }),
       ).toBeVisible();
       await signIn(
         page,

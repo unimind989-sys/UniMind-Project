@@ -10,7 +10,7 @@
   min-height: 44px;
   max-width: 100%;
   padding: 8px 16px;
-  border: 0;
+  border: 0 solid transparent;
   border-radius: var(--radius-control);
   background: transparent;
   color: var(--ink);

@@ -521,14 +521,21 @@ for (const role of ["student", "leader", "admin"]) {
           name: pick(locale, "Interface language", "لغة الواجهة"),
           exact: true,
         });
+        // The compact "EN | ع" control (WP03 plan D1): current state by fill
+        // and aria-pressed, no check icon; the Night bar stays 64px.
+        await expect(language.getByRole("button")).toHaveText(["EN", "ع"]);
         await expect(
-          language.locator(
-            "button[aria-pressed='true'] svg[aria-hidden='true']",
-          ),
-        ).toHaveCount(1);
-        await expect(
-          language.locator("button[aria-pressed='false'] svg"),
-        ).toHaveCount(0);
+          language.getByRole("button", {
+            name: locale === "ar" ? "العربية" : "English",
+            exact: true,
+          }),
+        ).toHaveAttribute("aria-pressed", "true");
+        await expect(language.locator("svg")).toHaveCount(0);
+        const bar = await page
+          .locator("header[data-workspace-chrome]")
+          .first()
+          .boundingBox();
+        expect(bar!.height).toBeLessThanOrEqual(64);
         expect(new URL(page.url()).pathname).toBe(before.pathname);
         // Language button targets per width and scheme: layout matrix.
       }
@@ -536,6 +543,54 @@ for (const role of ["student", "leader", "admin"]) {
     },
   );
 }
+
+inLocales(["en", "ar"], (locale) => {
+  test(
+    `language switch keeps the Chat draft, route, query and fragment [${locale}]`,
+    { tag: ["@product-language", `@${locale}`] },
+    async ({ page }) => {
+      const finish = isolation(page);
+      await signIn(page, "student", locale, unit + "/chat");
+      const draft = pick(
+        locale,
+        "Which roots form the upper trunk? (unsent draft)",
+        "إيه الجذور اللي بتكوّن الجذع العلوي؟ (مسودة غير مرسلة)",
+      );
+      await page
+        .getByLabel(pick(locale, "Message", "السؤال"), { exact: true })
+        .fill(draft);
+      // Same-document history change, as the product router makes it.
+      await page.evaluate(() => {
+        const address = new URL(window.location.href);
+        address.searchParams.set("probe", "kept");
+        address.hash = "app-content";
+        window.history.replaceState(null, "", address);
+      });
+      const before = new URL(page.url());
+      const next = locale === "en" ? "ar" : "en";
+      await page
+        .getByRole("group", {
+          name: pick(locale, "Interface language", "لغة الواجهة"),
+          exact: true,
+        })
+        .getByRole("button", {
+          name: next === "ar" ? "العربية" : "English",
+          exact: true,
+        })
+        .click();
+      await expect(page.locator("html")).toHaveAttribute("lang", next);
+      const after = new URL(page.url());
+      expect(after.pathname).toBe(before.pathname);
+      expect(after.searchParams.get("lang")).toBe(next);
+      expect(after.searchParams.get("probe")).toBe("kept");
+      expect(after.hash).toBe("#app-content");
+      await expect(
+        page.getByLabel(pick(next, "Message", "السؤال"), { exact: true }),
+      ).toHaveValue(draft);
+      finish();
+    },
+  );
+});
 
 inLocales(["en", "ar"], (locale) => {
   test(

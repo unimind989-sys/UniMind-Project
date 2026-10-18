@@ -1,6 +1,7 @@
 import type { Route } from "next";
 
 import { FrontendIcon } from "@/app/_components/frontend-controls";
+import { Notice } from "@/app/_components/notice";
 import { ProductNavigationLink } from "@/app/_components/product-navigation";
 import { StateIcon, StatePill } from "@/app/_components/state-pill";
 import type { AdminActionCandidate } from "@/lib/admin/admin-actions.application";
@@ -120,9 +121,9 @@ export function DecisionSummary({
         </div>
       )}
       {missingExpiry && (
-        <p role="alert" className={styles.errorMessage}>
+        <Notice tone="error" live locale={locale}>
           {copy.missingHoldExpiry}
-        </p>
+        </Notice>
       )}
       {candidate.commandState === "PENDING_OWNER_REVIEW" && (
         <p className={styles.pendingNote} role="status">

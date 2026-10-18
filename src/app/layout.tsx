@@ -34,10 +34,14 @@ const latinFont = Manrope({
   display: "swap",
 });
 
+// No metric-adjusted local fallback for the Arabic face: its subset has no
+// Latin letters, so Latin runs in Arabic text fall through to Manrope (the
+// next family in the stack) instead of a local system face (DESIGN.md).
 const arabicFont = Noto_Sans_Arabic({
   subsets: ["arabic"],
   variable: "--font-unimind-arabic",
   display: "swap",
+  adjustFontFallback: false,
 });
 
 export default function RootLayout({

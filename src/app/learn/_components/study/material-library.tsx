@@ -63,7 +63,7 @@ export function MaterialLibrary({
                     "Processed excerpt only. Full file reading and audio playback are not available here.",
                     "مقتطف معالج فقط. قراءة الملف الكامل وتشغيل الصوت غير متاحين هنا.",
                   )}{" "}
-                  <bdi>{passage.locator}</bdi>
+                  {passage.locator}
                 </p>
               </details>
             ) : null}

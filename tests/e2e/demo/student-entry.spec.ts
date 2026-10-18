@@ -968,7 +968,10 @@ inLocales(["ar"], (locale) => {
         // These are nonexistent fixture pairs. The route's existing server
         // layout rejects them before mounting the synthetic product adapter.
         await expect(
-          page.getByRole("heading", { name: "Page not found", exact: true }),
+          page.getByRole("heading", {
+            name: pick(locale, "Page not found", "الصفحة غير موجودة"),
+            exact: true,
+          }),
         ).toBeVisible();
         await expect(
           page.getByRole("heading", {

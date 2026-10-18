@@ -1,12 +1,11 @@
 "use client";
 
 import { createContext, useState, type ReactNode } from "react";
-import { ProductNavigationLink as Link } from "@/app/_components/product-navigation";
-import type { Route } from "next";
 import { useSearchParams } from "next/navigation";
 import { AppShell } from "@/app/_components/app-shell";
 import { getAdminCopy } from "@/lib/i18n/admin-copy";
-import type { Locale } from "@/lib/i18n/locale";
+import { localizedHref, type Locale } from "@/lib/i18n/locale";
+import { SegmentedControl } from "@/app/_components/segmented-control";
 import styles from "../admin.module.css";
 
 const groups = {
@@ -75,21 +74,18 @@ export function AdminWorkspace({
           <div className={styles.bandTitle}>
             <h1>{title}</h1>
             {group?.length ? (
-              <nav
+              <SegmentedControl
+                mode="links"
+                tone="night"
                 className={styles.resourceNav}
-                aria-label={t("Section resources", "موارد القسم")}
-              >
-                {group.map((key) => (
-                  <Link
-                    key={key}
-                    prefetch={false}
-                    href={`/admin/${key}?lang=${locale}` as Route}
-                    aria-current={key === resource ? "page" : undefined}
-                  >
-                    {resources[key]}
-                  </Link>
-                ))}
-              </nav>
+                label={t("Section resources", "موارد القسم")}
+                items={group.map((key) => ({
+                  key,
+                  label: resources[key],
+                  href: localizedHref(`/admin/${key}`, locale),
+                  current: key === resource,
+                }))}
+              />
             ) : null}
           </div>
           <div ref={setSlot} className={styles.bandSlot} />

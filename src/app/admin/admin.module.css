@@ -78,66 +78,24 @@
 /* Section resources: the segmented control on Night. */
 .resourceNav {
   justify-self: start;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2px;
-  max-width: 100%;
-  padding: 4px;
-  border-radius: var(--radius-control);
-  background: var(--night-2);
-}
-.resourceNav a {
-  display: flex;
-  align-items: center;
-  min-height: 44px;
-  padding: 0 18px;
-  border-radius: var(--radius-segment);
-  color: var(--on-night-2);
-  font-size: 0.9375rem;
-  font-weight: 650;
-  text-decoration: none;
-  overflow-wrap: anywhere;
-}
-.resourceNav a:hover {
-  color: var(--on-night);
-}
-.resourceNav a[aria-current="page"] {
-  background: var(--seg-on);
-  color: var(--seg-on-ink);
-  font-weight: 750;
 }
 
-/* ---------- Count tabs ---------- */
-.countTabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2px;
-  padding: 4px;
-  border-radius: var(--radius-control);
-  background: var(--night-2);
+/* ---------- Count tabs: the Night SegmentedControl with counts ---------- */
+.countTabs > button {
+  flex: 1 1 auto;
+  justify-content: flex-start;
+  min-width: 6.5rem;
+  min-height: 72px;
+  padding: 8px 18px;
+  text-align: start;
 }
-.countTabs button {
+.countTabs > button > span > span {
   display: grid;
   grid-template-areas:
     "number"
     "label";
-  align-content: center;
   justify-items: start;
   gap: 4px;
-  flex: 1 1 auto;
-  min-width: 6.5rem;
-  min-height: 72px;
-  padding: 8px 18px;
-  border: 0;
-  border-radius: var(--radius-segment);
-  background: transparent;
-  color: var(--on-night-2);
-  font: inherit;
-  text-align: start;
-  cursor: pointer;
-}
-.countTabs button:hover {
-  color: var(--on-night);
 }
 .countNumber {
   grid-area: number;
@@ -153,10 +111,6 @@
   font-size: 0.875rem;
   font-weight: 600;
   line-height: 1.3;
-}
-.countTabs button[aria-pressed="true"] {
-  background: var(--seg-on);
-  color: var(--seg-on-ink);
 }
 .countTabs button[aria-pressed="true"] .countNumber {
   color: var(--action);
@@ -657,28 +611,6 @@
   gap: 12px;
   margin-block-start: 20px;
 }
-.errorMessage,
-.successMessage,
-.blockedMessage {
-  margin: 0;
-  padding: 12px 16px;
-  border-radius: var(--radius-control);
-  overflow-wrap: anywhere;
-}
-.errorMessage,
-.blockedMessage {
-  background: var(--danger-tint);
-  color: var(--danger);
-}
-.successMessage {
-  background: var(--success-tint);
-  color: var(--success);
-}
-.errorMessage:focus,
-.successMessage:focus {
-  outline: 2px solid var(--cobalt);
-  outline-offset: 2px;
-}
 
 /* ---------- Page states ---------- */
 .notice,
@@ -887,7 +819,7 @@
   .band h1 {
     font-size: var(--type-display-mobile-size);
   }
-  .countTabs button {
+  .countTabs > button {
     min-width: 5.25rem;
     min-height: 60px;
     padding: 8px 12px;
