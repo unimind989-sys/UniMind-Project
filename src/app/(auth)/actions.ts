@@ -1,6 +1,7 @@
 "use server";
 
 import type { Route } from "next";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import {
@@ -13,8 +14,13 @@ import {
 } from "@/lib/auth/auth-access.supabase.server";
 import { getAuthApplication } from "@/lib/auth/supabase-auth.server";
 import { accessDestination } from "@/lib/auth/auth-actions.application";
-import { resolveLocale } from "@/lib/i18n/locale";
-import { currentRoleHome } from "@/lib/account/account.supabase.server";
+import { isSupportedLocale, resolveLocale } from "@/lib/i18n/locale";
+import { localeCookieName } from "@/lib/i18n/locale-preference.application";
+import { rememberInterfaceLanguage } from "@/lib/i18n/locale-cookie.server";
+import {
+  currentRoleHome,
+  loadCurrentAccount,
+} from "@/lib/account/account.supabase.server";
 
 export type AuthFormState = AuthActionResult;
 
@@ -32,20 +38,39 @@ function authPath(
   return `${path}?${query.toString()}` as Route;
 }
 
+function reservedEmailDomain(email: FormDataEntryValue | null): boolean {
+  return (
+    typeof email === "string" &&
+    /\.(?:invalid|test|example|localhost)\s*$/iu.test(email)
+  );
+}
+
 function trustedRoute(path: string): Route {
   return path as Route;
 }
 
 async function redirectAfterAuthentication(
   returnPath: string,
-  localeValue: unknown,
+  requestedLocale: unknown,
+  preferAccountLanguage = false,
 ): Promise<AuthFormState | never> {
+  let localeValue = requestedLocale;
+  // On a new device the sign-in page has no language yet: use the account's.
+  if (preferAccountLanguage)
+    try {
+      localeValue = (await loadCurrentAccount()).language ?? requestedLocale;
+    } catch {
+      /* Keep the page language when the account cannot be read. */
+    }
   let access: Awaited<ReturnType<typeof getCurrentAuthAccess>>;
   try {
     access = await getCurrentAuthAccess();
   } catch {
     return { status: "UNAVAILABLE", returnPath };
   }
+  // The language this sign-in continues in is remembered on this device.
+  if (access.gate !== "SIGN_IN")
+    await rememberInterfaceLanguage(resolveLocale(localeValue));
 
   if (access.gate === "READY") {
     let destination = returnPath;
@@ -93,6 +118,7 @@ export async function loginAction(
   return redirectAfterAuthentication(
     result.returnPath,
     value(formData, "locale"),
+    value(formData, "localeSource") === "default",
   );
 }
 
@@ -100,12 +126,33 @@ export async function registerAction(
   _state: AuthFormState,
   formData: FormData,
 ): Promise<AuthFormState> {
-  return getAuthApplication().register({
+  // Reserved test domains (RFC 2606/6761) can never receive the verification
+  // email; the published demo addresses use them, so refuse before Auth. The
+  // check lives here, not in the shared auth application, because the
+  // synthetic demo registers exactly these addresses.
+  if (reservedEmailDomain(value(formData, "email")))
+    return {
+      status: "INVALID_INPUT",
+      returnPath: validatedInternalReturnPath(value(formData, "returnPath")),
+      fieldErrors: { email: ["EMAIL_UNDELIVERABLE"] },
+    };
+  const result = await getAuthApplication().register({
     email: value(formData, "email"),
     password: value(formData, "password"),
     passwordConfirmation: value(formData, "passwordConfirmation"),
     returnPath: value(formData, "returnPath"),
+    locale: value(formData, "locale"),
   });
+  // The next step is the inbox: continue on the verification page, where a
+  // resend lives, instead of staying on the registration form.
+  if (result.status === "CHECK_EMAIL")
+    redirect(
+      authPath("/verify-email", value(formData, "locale"), {
+        status: "check_email",
+        next: result.returnPath,
+      }),
+    );
+  return result;
 }
 
 export async function resendVerificationAction(
@@ -115,6 +162,7 @@ export async function resendVerificationAction(
   return getAuthApplication().resendVerification({
     email: value(formData, "email"),
     returnPath: value(formData, "returnPath"),
+    locale: value(formData, "locale"),
   });
 }
 
@@ -124,6 +172,7 @@ export async function requestPasswordResetAction(
 ): Promise<AuthFormState> {
   return getAuthApplication().requestPasswordReset({
     email: value(formData, "email"),
+    locale: value(formData, "locale"),
   });
 }
 
@@ -179,8 +228,13 @@ export async function acceptConsentAction(
   return { status: "UNAVAILABLE", returnPath: "/learn" };
 }
 
-export async function logoutAction(): Promise<void> {
+export async function logoutAction(formData?: FormData): Promise<void> {
   const result = await getAuthApplication().logout();
   const status = result.status === "SUCCESS" ? "signed_out" : "unavailable";
-  redirect(`/login?status=${status}` as Route);
+  // Sign-out keeps the page's language, else the remembered one.
+  const pageLocale = formData?.get("locale");
+  const locale = isSupportedLocale(pageLocale)
+    ? pageLocale
+    : resolveLocale((await cookies()).get(localeCookieName)?.value);
+  redirect(`/login?lang=${locale}&status=${status}` as Route);
 }

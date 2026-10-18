@@ -175,3 +175,55 @@ test("mobile routes expose the current access step without page overflow", async
   }));
   expect(geometry.documentWidth).toBeLessThanOrEqual(geometry.viewportWidth);
 });
+
+// WP03-T28: the interface language is remembered between visits.
+test("a chosen interface language is remembered for later visits", async ({
+  page,
+  context,
+}) => {
+  await page.goto("/login?lang=ar");
+  const cookie = (await context.cookies()).find(
+    (entry) => entry.name === "unimind-locale",
+  );
+  expect(cookie).toMatchObject({
+    value: "ar",
+    httpOnly: true,
+    sameSite: "Lax",
+  });
+  // A later visit without ?lang= (a typed address or an old bookmark).
+  await page.goto("/login?next=%2Flearn");
+  await expect(page).toHaveURL(/\/login\?next=%2Flearn&lang=ar$/u);
+  await expect(page.locator("html")).toHaveAttribute("lang", "ar");
+  // Signed-out guards keep it too.
+  await page.goto("/learn");
+  await expect(page).toHaveURL(/\/login\?.*lang=ar/u);
+  // Choosing English updates the memory.
+  await page.getByRole("link", { name: "English", exact: true }).click();
+  await expect(page).toHaveURL(/lang=en/u);
+  await page.goto("/register");
+  await expect(page).toHaveURL(/\/register\?lang=en$/u);
+});
+
+test("registration refuses reserved test domains before Auth", async ({
+  page,
+}) => {
+  await page.goto("/register?lang=en");
+  await page.getByLabel("Email address").fill("student@example.invalid");
+  await page
+    .getByLabel("Password", { exact: true })
+    .fill("Synthetic!Password1");
+  await page
+    .getByLabel("Confirm password", { exact: true })
+    .fill("Synthetic!Password1");
+  await page
+    .getByRole("button", { name: "Create account", exact: true })
+    .click();
+  await expect(page.getByLabel("Email address")).toHaveAttribute(
+    "aria-invalid",
+    "true",
+  );
+  await expect(page.getByRole("main")).toContainText(
+    "Demo accounts sign in directly on the sign-in page.",
+  );
+  await expect(page).toHaveURL(/\/register\?/u);
+});

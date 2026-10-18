@@ -37,6 +37,7 @@ export type ProviderErrorLike = Readonly<{
 export type FieldErrorCode =
   | "ACCEPTANCE_REQUIRED"
   | "EMAIL_INVALID"
+  | "EMAIL_UNDELIVERABLE"
   | "PASSWORD_REQUIRED"
   | "PASSWORD_REQUIREMENTS"
   | "PASSWORD_MISMATCH";

@@ -1569,8 +1569,8 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 **Dependencies:** WP03-T27. Findings PJ-07 to PJ-09, PJ-18 to PJ-20, PJ-22 to PJ-24, PJ-26, PJ-30, IX-28. Protected paths: proxy and auth callback.
 
-- [ ] Locale precedence `?lang=`, cookie, account language, English; `lang` kept through email links, callback, sign-out and guard redirects; `lang` and `dir` rendered on the server.
-- [ ] Demo parity for register, password reset, privacy and admin resources; hosted registration of demo emails intercepted; copy fixes; independent review; deliver through one PR with required CI.
+- [x] Locale precedence `?lang=`, cookie, account language, English; `lang` kept through email links, callback, sign-out and guard redirects; `lang` and `dir` rendered on the server.
+- [x] Demo parity for register, password reset, privacy and admin resources; hosted registration of demo emails intercepted; copy fixes; independent review; deliver through one PR with required CI. Reviewed twice by the `independent-reviewer` sub-agent (request changes, all addressed); PJ-19 and PJ-21 remain open ([task record](../../planning/tasks/wp03-t28-locale-demo-parity.md)). These closure markers become authoritative only when that PR merges with green required CI.
 
 **Pass:** an Arabic user stays in Arabic across sign-out, email return and a new session; demo exits match the real flow; required CI green.
 

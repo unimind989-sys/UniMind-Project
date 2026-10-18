@@ -111,6 +111,47 @@ describe("auth application", () => {
     });
   });
 
+  it("carries a valid interface language into every email link, and nothing else", async () => {
+    const application = createAuthApplication(
+      gateway,
+      "https://preview.unimind.invalid",
+    );
+    await application.register({
+      email: "new@synthetic.unimind.invalid",
+      password: "Synthetic!Password1",
+      passwordConfirmation: "Synthetic!Password1",
+      returnPath: "/learn",
+      locale: "ar",
+    });
+    expect(gateway.signUp).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        emailRedirectTo:
+          "https://preview.unimind.invalid/auth/callback?next=%2Flearn&lang=ar",
+      }),
+    );
+    await application.requestPasswordReset({
+      email: "new@synthetic.unimind.invalid",
+      locale: "ar",
+    });
+    expect(gateway.requestPasswordReset).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        redirectTo:
+          "https://preview.unimind.invalid/auth/callback?next=%2Freset-password&lang=ar",
+      }),
+    );
+    await application.resendVerification({
+      email: "new@synthetic.unimind.invalid",
+      returnPath: "/learn",
+      locale: "javascript:alert(1)",
+    });
+    expect(gateway.resendVerification).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        emailRedirectTo:
+          "https://preview.unimind.invalid/auth/callback?next=%2Flearn",
+      }),
+    );
+  });
+
   it("surfaces rate limiting without account-discovery detail", async () => {
     gateway.resendVerification.mockResolvedValue({
       error: { code: "over_email_send_rate_limit", status: 429 },

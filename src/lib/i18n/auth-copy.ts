@@ -65,6 +65,8 @@ const authCopy = {
     invalidLink: "This secure link is invalid. Request a new one.",
     signedOut: "You have signed out safely.",
     emailInvalid: "Enter a valid email address.",
+    emailUndeliverable:
+      "This address can't receive email. Demo accounts sign in directly on the sign-in page.",
     passwordRequired: "Enter your password.",
     passwordRequirements:
       "Use at least 12 characters with a letter, number, and symbol.",
@@ -137,6 +139,8 @@ const authCopy = {
     invalidLink: "هذا الرابط الآمن غير صالح. اطلب رابطًا جديدًا.",
     signedOut: "تم تسجيل خروجك بأمان.",
     emailInvalid: "أدخل بريدًا إلكترونيًا صالحًا.",
+    emailUndeliverable:
+      "لا يمكن لهذا العنوان استقبال البريد. تدخل حسابات العرض التجريبي مباشرةً من صفحة تسجيل الدخول.",
     passwordRequired: "أدخل كلمة المرور.",
     passwordRequirements: "استخدم ١٢ حرفًا على الأقل، مع حرف ورقم ورمز.",
     passwordMismatch: "كلمتا المرور غير متطابقتين.",

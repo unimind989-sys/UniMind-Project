@@ -65,13 +65,14 @@ export function ProductAuth({
           ? "replayed_link"
           : undefined;
   const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
-  const destination =
+  const homeFor = (role: typeof state.role) =>
     state.returnPath ??
-    (state.role === "leader"
+    (role === "leader"
       ? "/batch-leader"
-      : state.role === "admin" || state.role === "second-admin"
+      : role === "admin" || role === "second-admin"
         ? "/admin"
         : "/learn");
+  const destination = homeFor(state.role);
   const path = {
     login: "/login",
     register: "/register",
@@ -245,14 +246,31 @@ export function ProductAuth({
           account: "UNVERIFIED",
         }));
         go("/verify-email?status=check_email");
-      }
+      } else if (mode === "forgot")
+        // Remember which demo account asked, as the real email link would.
+        update((current) => ({ ...current, accountEmail: rawEmail }));
     } else if (response.status === "SUCCESS" && mode === "reset") {
+      // As in the real flow, the recovery session is signed in afterwards;
+      // the usual commitments and profile gates then apply.
+      // The recovered account's own role and name, not the previous state's.
+      const email = state.accountEmail ?? "student@example.invalid";
+      const recovered = syntheticAccountFor(email);
+      const role = recovered?.role ?? state.role ?? "student";
       update((current) => ({
         ...current,
         recoveryUsed: true,
         recoveryToken: false,
+        role,
+        accountEmail: email,
+        displayName:
+          current.profiles[email] ??
+          (current.accountEmail === email ? current.displayName : null) ??
+          recovered?.displayName ??
+          null,
+        verified: true,
+        account: "SIGNED_IN",
       }));
-      go("/login?status=signed_out");
+      go(homeFor(role));
     }
     return response;
   }

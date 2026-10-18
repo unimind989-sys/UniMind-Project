@@ -10,7 +10,12 @@ import { getCurrentAuthAccess } from "@/lib/auth/auth-access.supabase.server";
 import { accessDestination } from "@/lib/auth/auth-actions.application";
 import { currentRoleHome } from "@/lib/account/account.supabase.server";
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 import type { Route } from "next";
+import {
+  hasChosenLanguage,
+  localeCookieName,
+} from "@/lib/i18n/locale-preference.application";
 
 type SearchParameters = Record<string, string | string[] | undefined>;
 
@@ -40,12 +45,17 @@ function pagePath(mode: AuthFormMode): string {
   }[mode];
 }
 
-export function resolveAuthPageParameters(parameters: SearchParameters) {
+export function resolveAuthPageParameters(
+  parameters: SearchParameters,
+  rememberedLocale?: string | undefined,
+) {
   const locale = resolveLocale(first(parameters.lang));
   const returnPath = validatedInternalReturnPath(first(parameters.next));
   const status = first(parameters.status);
   return {
     locale,
+    /** This device chose its language; otherwise sign-in uses the account's. */
+    localeExplicit: hasChosenLanguage(first(parameters.lang), rememberedLocale),
     returnPath,
     notice:
       status !== undefined && notices.has(status as AuthNotice)
@@ -74,9 +84,11 @@ export async function AuthPage({
   searchParams: Promise<SearchParameters>;
   currentTerms?: CurrentTerms | null | undefined;
 }>) {
-  const { locale, returnPath, notice } = resolveAuthPageParameters(
-    await searchParams,
-  );
+  const { locale, localeExplicit, returnPath, notice } =
+    resolveAuthPageParameters(
+      await searchParams,
+      (await cookies()).get(localeCookieName)?.value,
+    );
   let destination: string | null = null;
   if (["login", "register", "verify"].includes(mode)) {
     try {
@@ -121,10 +133,12 @@ export async function AuthPage({
         returnPath={returnPath}
         notice={notice}
         currentTerms={currentTerms}
+        localeExplicit={localeExplicit}
         secondaryAction={
           mode === "consent" ? (
             // A signed-in caller who does not accept can still leave.
             <form action={logoutAction}>
+              <input type="hidden" name="locale" value={locale} />
               <Button variant="quiet" type="submit">
                 {locale === "ar" ? "تسجيل الخروج" : "Sign out"}
               </Button>

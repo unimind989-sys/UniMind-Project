@@ -58,7 +58,9 @@ test(
     await page
       .getByRole("button", { name: "Update password", exact: true })
       .click();
-    await expect(page).toHaveURL(/\/login\?/u);
+    // As in the real flow, the recovered session is signed in; commitments
+    // come next in this fresh document.
+    await expect(page).toHaveURL(/\/consent\?/u);
     for (const fixture of ["expired", "replayed"]) {
       await page.goto(
         `/reset-password?token=sample-recovery&fixture=${fixture}`,

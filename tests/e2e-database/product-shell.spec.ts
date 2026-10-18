@@ -646,6 +646,47 @@ test("student: a real account without a name completes the profile step once", a
   }
 });
 
+// WP03-T28: a device that never chose a language signs in in the account's
+// language, remembers it, and signs out in it. (The inspection route below
+// re-fetches documents without Sec-Fetch headers, so the proxy's page-load
+// redirect is proved in the main e2e suite and the proxy unit tests.)
+test("student: a new device signs in in the account language and remembers it", async ({
+  page,
+  context,
+}) => {
+  // Each test's inspected page starts in a fresh context: a new device.
+  const student = users.get("student")!;
+  const rememberedLocale = async () =>
+    (await context.cookies()).find((entry) => entry.name === "unimind-locale")
+      ?.value;
+  sql(
+    `update public.profiles set preferred_language = 'AR_EG' where user_id = '${student.id}';`,
+  );
+  try {
+    // The landing page links to sign-in in the default language.
+    await page.goto("/login?lang=en");
+    expect(await rememberedLocale()).toBeUndefined();
+    await page.getByLabel("Email address", { exact: true }).fill(student.email);
+    await page.getByLabel("Password", { exact: true }).fill(student.password);
+    await page.getByRole("button", { name: "Continue", exact: true }).click();
+    await expect(page).toHaveURL(/\/learn\?(?:.*&)?lang=ar(?:&|$)/u);
+    expect(await rememberedLocale()).toBe("ar");
+    // `lang` and `dir` arrive in the server-rendered document.
+    const settings = await page.goto("/settings?lang=ar");
+    expect(await settings!.text()).toMatch(/<html[^>]* lang="ar" dir="rtl"/u);
+    await page
+      .getByRole("button", { name: "تسجيل الخروج", exact: true })
+      .click();
+    await expect(page).toHaveURL(/\/login\?lang=ar&status=signed_out$/u);
+    // Sign-out keeps the memory for the next session on this device.
+    expect(await rememberedLocale()).toBe("ar");
+  } finally {
+    sql(
+      `update public.profiles set preferred_language = 'EN' where user_id = '${student.id}';`,
+    );
+  }
+});
+
 test("revoked leader loses campaign access in the same browser", async ({
   page,
 }) => {

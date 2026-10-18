@@ -71,6 +71,7 @@ function fieldMessage(
   const messages = {
     ACCEPTANCE_REQUIRED: copy.invalidInput,
     EMAIL_INVALID: copy.emailInvalid,
+    EMAIL_UNDELIVERABLE: copy.emailUndeliverable,
     PASSWORD_REQUIRED: copy.passwordRequired,
     PASSWORD_REQUIREMENTS: copy.passwordRequirements,
     PASSWORD_MISMATCH: copy.passwordMismatch,
@@ -148,6 +149,7 @@ export function AuthForm({
   initialEmail,
   initialPassword,
   secondaryAction,
+  localeExplicit = true,
 }: Readonly<{
   mode: AuthFormMode;
   locale: Locale;
@@ -162,6 +164,8 @@ export function AuthForm({
   initialPassword?: string | undefined;
   /** An extra exit beside the form's links, such as sign-out on consent. */
   secondaryAction?: ReactNode;
+  /** False when the page fell back to English without being asked. */
+  localeExplicit?: boolean;
 }>) {
   const copy = getAuthCopy(locale);
   const synthetic = useSyntheticNavigation();
@@ -286,6 +290,11 @@ export function AuthForm({
         }}
       >
         <input type="hidden" name="locale" value={locale} />
+        <input
+          type="hidden"
+          name="localeSource"
+          value={localeExplicit ? "explicit" : "default"}
+        />
         <input type="hidden" name="returnPath" value={returnPath} />
 
         {mode !== "reset" && mode !== "consent" ? (

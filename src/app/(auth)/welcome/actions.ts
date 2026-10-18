@@ -3,6 +3,7 @@
 import type { Route } from "next";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { rememberInterfaceLanguage } from "@/lib/i18n/locale-cookie.server";
 
 import {
   accessDestination,
@@ -30,6 +31,7 @@ export async function completeProfileAction(
   const locale = resolveLocale(field(formData, "locale"));
   const result = await saveCurrentProfile({ displayName, locale });
   if (result.status !== "SAVED") return { result, displayName };
+  await rememberInterfaceLanguage(result.locale);
   revalidatePath("/", "layout");
   const returnPath = validatedInternalReturnPath(field(formData, "returnPath"));
   let destination: string | null;
