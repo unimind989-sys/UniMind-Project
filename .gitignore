@@ -56,4 +56,5 @@ supabase/.temp/
 # Local coding-agent state
 /.claude/worktrees/
 /.claude/settings.local.json
+/.claude/launch.json
 /CLAUDE.local.md
