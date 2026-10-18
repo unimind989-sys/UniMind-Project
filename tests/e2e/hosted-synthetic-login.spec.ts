@@ -200,6 +200,13 @@ for (const [role, locale] of [
       .first()
       .click();
     await expect(page).toHaveURL(/\/settings\?/u);
+    // Settings opens on Profile (WP03-T27); Appearance is the next section.
+    await page
+      .getByRole("tab", {
+        name: pick(locale, "Appearance", "المظهر"),
+        exact: true,
+      })
+      .click();
     await expect(
       page.getByRole("group", {
         name: pick(locale, "Theme", "السمة"),
