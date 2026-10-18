@@ -227,7 +227,7 @@ The demo still differs from the real product where it must: document-local state
 
 **Founder actions** (not taken during the refinement, by plan D13):
 
-1. **Production promotion: done on 18 October 2026, at Ahmed's request, after this page was first published.** `680a507` is live as `dpl_1ZyAFwbfAkcU4r2EjXfMvvDbYVcs`; the [production proof](../../../evidence/wp03-product-shell/2026-10-18_wp03-refinement_production_680a507.md) records it. Still open: the WP03-T27 migration `20261018001935_profile_display_name_format.sql` on hosted Supabase. It is an additive trigger that checks a name only when it changes; existing rows and data are untouched, and the live code does not depend on it. It waits for the paused Supabase project (see Later checks).
+1. **Production promotion and hosted migration: done on 18 October 2026, at Ahmed's request, after this page was first published.** `680a507` went live as `dpl_1ZyAFwbfAkcU4r2EjXfMvvDbYVcs` ([proof](../../../evidence/wp03-product-shell/2026-10-18_wp03-refinement_production_680a507.md)); then WP03-T32 at `09a8149` as `dpl_BSywTFbR58CdAzmj1XonNR8N1JN8`, after the paused Supabase project was resumed and the WP03-T27 migration was applied in one guarded transaction ([proof](../../../evidence/wp03-product-shell/2026-10-18_wp03-t32-follow-ups_production_09a8149.md)). The Free-plan project pauses again after a quiet week.
 2. **Vercel bypass secret.** If not already done, revoke the Vercel Protection Bypass for Automation secret that `vercel curl --debug` printed during WP03-T19. This was recorded in [#88](https://github.com/unimind989-sys/UniMind-Project/pull/88), before this work.
 3. **Founder review of the UI.** The material-UI approvals (`Approved commit:` in T25, T26, T27 and T29) were given by the overseeing session under Ahmed's delegation, not by a founder. A founder look at the rendered result is still advisable.
 
@@ -242,7 +242,6 @@ The demo still differs from the real product where it must: document-local state
 
 - **PJ-21: two-device email test.** Sign up on one device and open the confirmation email on another, on the live site with a real address. Expected: either the link works, or the user can request a new one without a dead end.
 - **iPhone keyboard.** On a real iPhone, open Chat in a unit and focus the message box. Check that the composer sits right above the keyboard and the conversation still scrolls. The shell sizes Chat to the visual viewport but does not use its scroll offset.
-- **Hosted migration.** Apply `20261018001935_profile_display_name_format.sql` to the hosted Supabase project (`sha256:5575d1c3d806`). On 18 October 2026 that Free-plan project was paused, so the migration waits until it is resumed.
 
 **Still open:**
 

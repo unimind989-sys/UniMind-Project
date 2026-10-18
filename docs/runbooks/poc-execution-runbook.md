@@ -1606,8 +1606,8 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 **Dependencies:** WP03-T31. Ahmed's answers of 18 October 2026 to the final verification's open items ([task record](../../planning/tasks/wp03-t32-refinement-follow-ups.md)).
 
-- [~] Remove the synthetic admin's header Sign out (IX-35); the demo admin signs out from Account like the real admin.
-- [ ] Record the answers: PJ-19 keeps the email flow, TC-07 unchanged, proposed D-24 (Batch Leaders upload through one-time links without accounts) supersedes PJ-16 and the D9 follow-up; list the later checks (two-device email, iPhone keyboard, hosted migration); deliver through one PR with required CI and promote.
+- [x] Remove the synthetic admin's header Sign out (IX-35); the demo admin signs out from Account like the real admin.
+- [x] Record the answers: PJ-19 keeps the email flow, TC-07 unchanged, proposed D-24 (Batch Leaders upload through one-time links without accounts) supersedes PJ-16 and the D9 follow-up; list the later checks (two-device email, iPhone keyboard, hosted migration); deliver through one PR with required CI and promote. Delivered in [#98](https://github.com/unimind989-sys/UniMind-Project/pull/98) and promoted; the paused Supabase project was resumed and the WP03-T27 migration applied at Ahmed's request ([evidence](../../evidence/wp03-product-shell/2026-10-18_wp03-t32-follow-ups_production_09a8149.md)). These closure markers become authoritative only when this record's PR merges with green required CI.
 
 **Pass:** the demo admin has no header Sign out and every admin journey still passes; the decisions and later checks are recorded; required CI green; production carries the change.
 
