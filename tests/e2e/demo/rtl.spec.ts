@@ -10,7 +10,7 @@ import {
   inLocales,
   pick,
 } from "../support/copy";
-import { b07DetailsName, b07UnitsName, campaign, unit } from "../support/demo";
+import { b07UnitsName, campaign, unit, unitMenuSummary } from "../support/demo";
 import { expectReflow } from "../support/layout";
 import { isolation, navigate, signIn } from "../support/session";
 import { expect, test } from "../support/test";
@@ -150,8 +150,10 @@ inLocales(["en", "ar"], (locale) => {
           .map((n) => formatNumber(locale, n))
           .join(locale === "ar" ? "، " : ", "),
       );
-      await expect(page.locator("#quiz-progress")).toContainText(
-        `${formatNumber(locale, 2)} / ${formatNumber(locale, 6)}`,
+      await expect(page.locator("#quiz-progress")).toHaveText(
+        locale === "ar"
+          ? `تمت الإجابة عن ${formatNumber(locale, 2)} من ${formatNumber(locale, 6)}`
+          : `${formatNumber(locale, 2)} of ${formatNumber(locale, 6)} answered`,
       );
       await expect(
         page.getByRole("button", {
@@ -416,7 +418,7 @@ inLocales(["en", "ar"], (locale) => {
       ).toHaveCount(5);
       await page
         .getByRole("link", {
-          name: t("Latest submissions", "آخر الإرسالات"),
+          name: t("History", "السجل"),
           exact: true,
         })
         .click();
@@ -655,9 +657,7 @@ inLocales(["en", "ar"], (locale) => {
       ).toBeFocused();
       await returnLink.click();
       await expect(page).toHaveURL(`${unit}/chat?lang=${locale}`);
-      const switcher = page
-        .locator("header summary")
-        .filter({ hasText: b07DetailsName(locale) });
+      const switcher = unitMenuSummary(page);
       expect(
         await switcher.evaluate((element) =>
           Number.parseFloat(getComputedStyle(element).fontSize),

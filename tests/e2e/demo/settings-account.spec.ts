@@ -2,11 +2,10 @@ import { reviewCatalogRows } from "../support/app-fixtures";
 import { bilingual, formatNumber, inLocales, pick } from "../support/copy";
 import {
   b07ChooseName,
-  b07DetailsName,
   b07People,
-  b07SourcesName,
   chooseTheme,
-  openStudyOptions,
+  closeUnitMenu,
+  openUnitMenu,
   showAccountView,
   unit,
 } from "../support/demo";
@@ -402,10 +401,7 @@ inLocales(["ar"], (locale) => {
         page.url(),
       ).searchParams.get("attempt")!;
       await first.click();
-      await page
-        .locator("summary")
-        .filter({ hasText: b07DetailsName(locale) })
-        .click();
+      await openUnitMenu(page);
       const foreign = reviewCatalogRows.find(
         (row) =>
           row.cohort.id === unit.split("/")[2] &&
@@ -712,9 +708,12 @@ inLocales(["ar"], (locale) => {
         })
         .click();
       await expect(page.locator("article")).toHaveCount(8);
-      await expect(page.locator('[class*="scopeCaption"]')).toContainText(
+      // The academic context lives in the unit menu (WP03-T26).
+      await openUnitMenu(page);
+      await expect(page.locator('[class*="unitDetails"]')).toContainText(
         t("Faculty of Medicine", "كلية الطب البشري"),
       );
+      await closeUnitMenu(page);
       await navigate(page, `${unit}/chat`, locale);
       const draft = "Roots of the plexus — synthetic unsent draft.";
       const message = page.getByRole("textbox", {
@@ -722,25 +721,24 @@ inLocales(["ar"], (locale) => {
         exact: true,
       });
       await message.fill(draft);
-      const sessions = page
-        .locator("summary[aria-label]")
-        .filter({ hasText: t("Sessions", "الجلسات") });
+      const sessions = page.locator(
+        `summary:has-text("${t("Sessions and privacy", "الجلسات والخصوصية")}")`,
+      );
       await sessions.press("Enter");
       await expect(sessions.locator("..")).toHaveAttribute("open", "");
       await sessions.press("Escape");
       await expect(sessions).toBeFocused();
-      await openStudyOptions(page, locale);
-      await page
-        .getByRole("link", {
-          name: b07SourcesName(locale),
-          exact: true,
-        })
+      // The library is the Materials tool; Chat keeps the draft on return.
+      const tools = page.getByRole("navigation", {
+        name: t("Workspace navigation", "تنقل مساحة المذاكرة"),
+        exact: true,
+      });
+      await tools
+        .getByRole("link", { name: t("Materials", "المصادر"), exact: true })
         .press("Enter");
-      await page
-        .getByRole("link", {
-          name: t("Return to Chat", "العودة للمحادثة"),
-          exact: true,
-        })
+      await expect(page.locator("article")).toHaveCount(8);
+      await tools
+        .getByRole("link", { name: t("Chat", "المحادثة"), exact: true })
         .press("Enter");
       await expect(message).toHaveValue(draft);
       finish();

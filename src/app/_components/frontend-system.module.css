@@ -1,64 +1,45 @@
-/* Subject band: the Night plane that carries the current unit, its
-   details and the Materials/Chat/Studio/Quiz segmented control. */
+/* Subject band: the Night plane that carries the current unit, its one menu
+   (sessions, details, switch unit) and the Materials/Chat/Studio/Quiz
+   segmented control. On phones it is the whole header: back, a title button
+   and the tools (DESIGN.md "Surfaces and shell"). */
 .band {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
-  gap: 16px 32px;
+  gap: 12px 32px;
   flex: none;
-  margin-inline: calc(-1 * var(--shell-inset));
-  margin-block-end: 24px;
-  padding: 16px var(--shell-inset) 18px;
+  margin-block-end: 16px;
+  padding: 14px var(--shell-inset);
   background: var(--night);
   color: var(--on-night);
 }
 .subjectHeader {
+  position: relative;
   display: flex;
-  gap: 20px;
-  align-items: flex-end;
-  min-width: 0;
-  flex: 1 1 22rem;
-}
-.subjectHeader > div {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  flex-wrap: wrap;
   align-items: center;
-  column-gap: 6px;
+  gap: 8px 16px;
   min-width: 0;
-  overflow-wrap: break-word;
-}
-.subjectHeader .scopeCaption {
-  grid-column: 2;
+  flex: 1 1 auto;
 }
 .subjectHeader h1 {
+  min-width: 0;
+  margin: 0;
   font-size: var(--type-workspace-title-size);
   font-weight: 800;
   line-height: var(--type-display-leading);
   letter-spacing: var(--type-display-tracking);
-  margin: 0;
-}
-.subjectHeader p,
-.subjectHeader .scopeCaption {
-  margin: 0;
-  color: var(--on-night-2);
-  font-size: 0.875rem;
-}
-.institution {
-  margin-block-end: 12px !important;
-  color: var(--ink) !important;
-}
-.switchHeading {
-  font-size: 0.9375rem;
-  margin-block: 16px 8px;
+  overflow-wrap: break-word;
 }
 .back {
   display: inline-flex;
+  flex: none;
   align-items: center;
   justify-content: center;
   width: 44px;
   min-height: 44px;
-  margin-inline-start: -10px;
+  margin-inline: -10px -8px;
   border-radius: var(--radius-control);
   font-size: 0.875rem;
   font-weight: 650;
@@ -69,51 +50,110 @@
   background: var(--night-2);
   color: var(--on-night);
 }
-.subjectSwitch {
-  position: relative;
-  flex: none;
-  font-size: 0.875rem;
+
+/* The menu's summary: a --night-2 pill naming the current session (Chat) or
+   the unit details (other tools). Its panel opens under the title row from
+   the band's start edge, so it never runs off the viewport in either
+   direction. */
+.unitMenu {
+  min-width: 0;
+  flex: 0 1 auto;
+  font-size: 0.9375rem;
 }
-.subjectSwitch summary {
+.unitSummary {
   display: flex;
-  gap: 8px;
   align-items: center;
-  cursor: pointer;
+  min-width: 0;
   min-height: 44px;
   padding: 0 14px;
   border-radius: var(--radius-pill);
   background: var(--night-2);
   color: var(--on-night);
-  font-weight: 650;
+  font-weight: 600;
   list-style: none;
+  cursor: pointer;
 }
-.subjectSwitch summary::-webkit-details-marker {
+.unitSummary::-webkit-details-marker {
   display: none;
 }
-.subjectSwitch summary:hover {
+.unitSummary:hover {
   box-shadow: inset 0 0 0 1px var(--night-control);
 }
-.subjectSwitch > div {
+.summaryTitle {
+  display: none;
+}
+.summaryLine {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.summaryLine > bdi {
+  min-width: 0;
+  max-width: 22rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.summaryLine > svg {
+  color: var(--on-night-2);
+}
+.unitMenu[open] .summaryLine > svg:last-child {
+  transform: rotate(180deg);
+}
+.menuPanel {
   position: absolute;
   z-index: 40;
   inset-inline-start: 0;
   inset-block-start: calc(100% + 8px);
-  width: 280px;
-  max-width: calc(100vw - 32px);
-  max-height: min(480px, 60dvh);
+  display: grid;
+  gap: 16px;
+  width: min(30rem, calc(100vw - 32px));
+  max-height: min(36rem, calc(100dvh - 180px));
   overflow: auto;
   padding: 16px;
   border-radius: var(--radius-card);
   background: var(--surface);
   color: var(--ink);
   box-shadow: var(--float);
+  font-weight: 500;
 }
-.subjectSwitch > div p {
+.toolMenu:empty {
+  display: none;
+}
+.toolMenu:not(:empty) {
+  padding-block-end: 16px;
+  border-block-end: 1px solid var(--line);
+}
+.unitDetails {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  font-size: 0.875rem;
+}
+.unitDetails p,
+.unitContext {
+  margin: 0;
   color: var(--secondary);
+  overflow-wrap: anywhere;
 }
+.institution {
+  margin-block-end: 8px !important;
+  color: var(--ink) !important;
+}
+.switchHeading {
+  margin-block: 12px 4px;
+  font-size: 0.9375rem;
+  font-weight: 800;
+}
+.menuLanguage {
+  display: none;
+}
+
 /* The unit segmented control sits at the band's inline end. */
 .subjectNav {
   flex: none;
+  margin-inline-start: auto;
 }
 .icon {
   flex: none;
@@ -132,18 +172,16 @@
   scrollbar-gutter: stable;
 }
 .previewContext {
-  margin: 0 calc(-1 * var(--shell-inset));
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+  margin: 0;
   padding: 10px var(--shell-inset);
   font-size: 0.875rem;
   color: var(--on-night-2);
   background: var(--night);
   border-block-end: 1px solid var(--night-line);
-}
-.previewContext {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 4px 12px;
 }
 .previewContext a {
   color: var(--on-night-blue);
@@ -155,9 +193,6 @@
   font-weight: 650;
 }
 @media (max-width: 1050px) {
-  .band {
-    align-items: stretch;
-  }
   .subjectNav {
     flex-basis: 100%;
   }
@@ -167,53 +202,100 @@
 }
 @media (max-width: 767px) {
   .band {
-    gap: 10px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
     margin-block-end: 12px;
-    padding: 4px 16px 12px;
+    padding: 4px 16px 10px;
+  }
+  /* Chat's transcript brings its own top padding. */
+  :global(main):has([data-study-tool="chat"]) .band {
+    margin-block-end: 0;
   }
   .subjectHeader {
-    flex-basis: 100%;
-    gap: 8px;
-    align-items: center;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 2px;
   }
-  .subjectHeader > div {
-    flex: 1 1 11rem;
-    column-gap: 2px;
+  .back {
+    margin-inline: -10px 0;
+    color: var(--on-night);
   }
-  .subjectHeader .scopeCaption {
-    display: none;
-  }
+  /* The title button carries the visible title; the h1 stays for AT. */
   .subjectHeader h1 {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .unitSummary {
+    display: grid;
+    align-content: center;
+    gap: 1px;
+    min-height: 52px;
+    padding: 4px 8px;
+    border-radius: var(--radius-control);
+    background: transparent;
+  }
+  .unitSummary:hover {
+    box-shadow: none;
+    background: var(--night-2);
+  }
+  .summaryTitle {
+    display: block;
+    min-width: 0;
     font-size: var(--type-workspace-title-mobile-size);
-    margin: 0;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+    overflow-wrap: anywhere;
   }
-  .subjectHeader .scopeCaption {
-    grid-column: 2;
+  :global([dir="rtl"]) .summaryTitle {
+    line-height: 1.4;
+    letter-spacing: 0;
+  }
+  .summaryLine {
+    gap: 4px;
+    color: var(--on-night-2);
     font-size: 0.8125rem;
+    font-weight: 600;
   }
-  .subjectSwitch {
-    position: static;
-    margin-inline-start: auto;
-  }
-  .subjectSwitch summary {
-    min-height: 44px;
-    padding: 0 12px;
-    font-size: 0.8125rem;
-  }
-  .subjectSwitch summary svg {
+  .summaryLine > svg:first-child {
     display: none;
   }
-  .subjectSwitch > div {
-    inset-inline: 16px;
+  .summaryLine > bdi {
+    max-width: none;
+  }
+  .menuPanel {
+    inset-inline: 0;
+    inset-block-start: calc(100% + 4px);
     width: auto;
+    max-height: calc(100dvh - 72px);
+  }
+  .menuLanguage {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 16px;
+    padding-block-start: 12px;
+    border-block-start: 1px solid var(--line);
+  }
+  .subjectNav {
+    width: 100%;
+    margin-inline-start: 0;
   }
   .subjectNav > a {
-    flex: 1 0 auto;
-    padding: 0 10px;
+    flex: 1 1 auto;
+    padding: 0 8px;
     font-size: 0.875rem;
   }
   .subjectNav svg {
+    display: none;
+  }
+  /* While the phone keyboard is open, the conversation keeps the room. */
+  :global([data-keyboard]) .subjectNav {
     display: none;
   }
   .workspaceBody {
@@ -223,23 +305,23 @@
     overflow: visible;
     display: flex;
   }
-  .workspaceBody[data-study-tool="quiz"] {
-    scroll-padding-block-start: 8rem;
-  }
-}
-@media (max-width: 767px) {
   :global([data-workspace-flow="page"]) .workspaceBody {
     overflow: visible;
     flex: none;
   }
-  :global([data-workspace-flow="page"]) .subjectSwitch > div {
-    position: static;
-    width: auto;
-    max-height: none;
+}
+/* Phones scroll the document for Materials, Studio and Quiz, so the quiz
+   progress strip's clearance moves to the root scroller. */
+@media (max-width: 767px) {
+  :global(html):has([data-workspace-flow="page"] [data-study-tool="quiz"]) {
+    scroll-padding-block-start: 8rem;
+  }
+  :global([data-workspace-flow="pane"]) .workspaceBody[data-study-tool="quiz"] {
+    scroll-padding-block-start: 8rem;
   }
 }
 @media (max-height: 600px) {
-  .workspaceBody {
+  :global([data-layout="workspace"]:not([data-keyboard])) .workspaceBody {
     overflow: visible;
   }
 }

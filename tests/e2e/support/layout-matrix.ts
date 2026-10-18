@@ -140,12 +140,22 @@ export const productNavigation = (page: Page, locale: Locale) =>
 /** Interface-language control (WP03 plan D1): two pressed-state buttons with
  * full accessible names and short visible labels, 44px targets, a filled
  * current segment and no check icon; the Night bar keeps DESIGN's height
- * (64px from 768px, at most 52px on phones). */
+ * (64px from 768px, at most 52px on phones). Inside a unit on phones the
+ * control lives in the title menu (WP03-T26), which this opens and closes. */
 export async function expectLanguageControl(page: Page, locale: Locale) {
   const group = page.getByRole("group", {
     name: pick(locale, "Interface language", "لغة الواجهة"),
     exact: true,
   });
+  const unitMenu = page.locator('summary[class*="unitSummary"]');
+  const inMenu =
+    (await group.count()) === 0 &&
+    (await unitMenu.count()) > 0 &&
+    (page.viewportSize()?.width ?? 1280) < 768;
+  if (inMenu) {
+    await unitMenu.click();
+    await expect(unitMenu).toHaveAttribute("aria-expanded", "true");
+  }
   await expect(group.getByRole("button")).toHaveCount(2);
   await expect(group.getByRole("button")).toHaveText(["EN", "ع"]);
   await expect(group.locator("svg")).toHaveCount(0);
@@ -178,12 +188,14 @@ export async function expectLanguageControl(page: Page, locale: Locale) {
   const control = await boxOf(group);
   expect(control.width).toBeLessThanOrEqual(120 * scale);
   expect(control.height).toBeLessThanOrEqual(48 * scale);
+  if (inMenu) {
+    await unitMenu.press("Escape");
+    await expect(unitMenu).toBeFocused();
+    // Phones have no top bar inside a unit: the band is the header.
+    await expect(page.locator("header[data-workspace-chrome]")).toBeHidden();
+    return;
+  }
   if (scale > 1) return;
-  // A phone workspace that fell back to page flow folds the bottom bar into
-  // the header (the keyboard state belongs to WP03-T26), so only the docked
-  // bar is measured.
-  const pageFlow = await page.locator("[data-workspace-flow='page']").count();
-  if (pageFlow > 0) return;
   const width = page.viewportSize()?.width ?? 1280;
   const bar = await boxOf(
     page.locator("header[data-workspace-chrome]").first(),

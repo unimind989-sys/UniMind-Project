@@ -3,72 +3,47 @@
 import { ProductNavigationLink as Link } from "@/app/_components/product-navigation";
 import type { Route } from "next";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import type { Locale } from "@/lib/demo/synthetic-fixtures.application";
 import styles from "./frontend-system.module.css";
 import { AppShell } from "./app-shell";
+import { Disclosure, type DisclosureHandle } from "./disclosure";
 import { FrontendIcon } from "./frontend-controls";
-import { localizedHref } from "@/lib/i18n/locale";
+import { LanguageSwitch } from "./language-switch";
 import { MetaList } from "./meta-list";
+import { localizedHref } from "@/lib/i18n/locale";
 import { SegmentedControl } from "./segmented-control";
+import { useKeyboardScroll } from "./use-keyboard-scroll";
 export { FrontendIcon } from "./frontend-controls";
 export type { FrontendIconName } from "./frontend-controls";
 
-const focusable =
-  'a[href],button:not(:disabled),input:not(:disabled),select:not(:disabled),textarea:not(:disabled),summary,[tabindex]:not([tabindex="-1"])';
-
 /**
- * Keyboard access to the study body's scroll area. Content with focusable
- * elements scrolls with them; a scrolling body without any (for example a
- * real-mode notice at 200% text) becomes a labelled focusable region.
+ * The unit band's one menu (DESIGN: the session switcher on desktop, the
+ * title button on phones). A study tool may portal its own section into
+ * `panel` (Chat's sessions) and name its current item in the title line.
  */
-function useKeyboardScroll(label: string) {
-  const body = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const element = body.current;
-    if (!element) return;
-    // Set directly in the observer callback so the region exists in the same
-    // frame the overflow appears; React does not own these attributes.
-    const measure = () => {
-      const needed =
-        element.scrollHeight > element.clientHeight + 1 &&
-        element.querySelector(focusable) === null;
-      if (needed) {
-        element.tabIndex = 0;
-        element.setAttribute("role", "region");
-        element.setAttribute("aria-label", label);
-      } else {
-        element.removeAttribute("tabindex");
-        element.removeAttribute("role");
-        element.removeAttribute("aria-label");
-      }
-    };
-    const resize = new ResizeObserver(measure);
-    const observeChildren = () => {
-      resize.disconnect();
-      resize.observe(element);
-      for (const child of element.children) resize.observe(child);
-    };
-    const mutation = new MutationObserver(() => {
-      observeChildren();
-      measure();
-    });
-    observeChildren();
-    mutation.observe(element, { childList: true, subtree: true });
-    measure();
-    return () => {
-      resize.disconnect();
-      mutation.disconnect();
-    };
-  }, [label]);
-  return body;
+export type UnitMenu = Readonly<{
+  panel: HTMLElement | null;
+  setLine: (line: string | null) => void;
+  close: (restoreFocus?: boolean) => void;
+}>;
+const UnitMenuContext = createContext<UnitMenu | null>(null);
+export function useUnitMenu() {
+  return useContext(UnitMenuContext);
 }
 
 type ShellProps = {
   locale: Locale;
   title: string;
   unitLabel: string;
-  /** Program, level and term: shown as structured metadata. */
+  /** Program, level and term: shown in the unit menu. */
   context: readonly string[];
   institution?: string;
   base: string;
@@ -98,21 +73,41 @@ export function FrontendShell({
 }: ShellProps) {
   const pathname = usePathname();
   const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
-  const body = useKeyboardScroll(t("Study content", "محتوى المذاكرة"));
+  const body = useKeyboardScroll<HTMLDivElement>(
+    t("Study content", "محتوى المذاكرة"),
+  );
+  const menu = useRef<DisclosureHandle>(null);
+  const [panel, setPanel] = useState<HTMLDivElement | null>(null);
+  const [line, setLine] = useState<string | null>(null);
+  const unitMenu = useMemo<UnitMenu>(
+    () => ({
+      panel,
+      setLine,
+      close: (restoreFocus) => menu.current?.close(restoreFocus),
+    }),
+    [panel],
+  );
+  const tool = pathname.includes("/chat")
+    ? "chat"
+    : pathname.includes("/studio")
+      ? "studio"
+      : pathname.includes("/quiz")
+        ? "quiz"
+        : "materials";
+  const chat = tool === "chat";
   const destinations: readonly (readonly [string, string])[] = [
-    ["", t("Materials", "مصادر المذاكرة")],
+    // A short Arabic label keeps the four tools on one row at 320px (MD-07).
+    ["", t("Materials", "المصادر")],
     ["/chat", t("Chat", "المحادثة")],
     ["/studio", t("Studio", "الاستوديو")],
     ["/quiz", t("Quiz", "الاختبار")],
   ];
-  return (
-    <AppShell
-      locale={locale}
-      profileName={profileName}
-      synthetic={synthetic}
-      title={`${title} · ${t("Study", "المذاكرة")}`}
-      workspace
-    >
+  const details = t(`${unitLabel} details`, `تفاصيل ${unitLabel}`);
+  const sessions = t("Sessions and privacy", "الجلسات والخصوصية");
+  // Chat names its current session; the other tools name the details menu.
+  const summaryLine = chat ? line || t("Sessions", "الجلسات") : details;
+  const band = (
+    <>
       {returnToAdmin ? (
         <p className={styles.previewContext} data-workspace-chrome>
           <span>{t("Student preview", "معاينة الطالب")}</span>
@@ -125,42 +120,50 @@ export function FrontendShell({
       ) : null}
       <div className={styles.band} data-workspace-chrome>
         <header className={styles.subjectHeader}>
-          <div>
-            <Link
-              className={styles.back}
-              href={localizedHref("/learn?view=subjects", locale) as Route}
-              prefetch={false}
-            >
-              <FrontendIcon name="back" size={24} />
-              <span className="visually-hidden">{t("Subjects", "المواد")}</span>
-            </Link>
-            <h1>
-              <bdi>{title}</bdi>
-            </h1>
-            <MetaList
-              className={styles.scopeCaption}
-              items={context.map((value, index) => ({
-                key: String(index),
-                value,
-              }))}
-            />
-          </div>
-          {institution || scopeControl ? (
-            <details
-              className={styles.subjectSwitch}
-              onKeyDown={(event) => {
-                if (event.key === "Escape" && event.currentTarget.open) {
-                  event.currentTarget.open = false;
-                  event.currentTarget.querySelector("summary")?.focus();
-                  event.stopPropagation();
-                }
-              }}
-            >
-              <summary>
-                <FrontendIcon name="sources" />
-                {t(`${unitLabel} details`, `تفاصيل ${unitLabel}`)}
-              </summary>
-              <div>
+          <Link
+            className={styles.back}
+            href={localizedHref("/learn?view=subjects", locale) as Route}
+            prefetch={false}
+          >
+            <FrontendIcon name="back" size={24} />
+            <span className="visually-hidden">{t("Subjects", "المواد")}</span>
+          </Link>
+          <h1>
+            <bdi>{title}</bdi>
+          </h1>
+          <Disclosure
+            ref={menu}
+            className={styles.unitMenu}
+            summaryProps={{ className: styles.unitSummary }}
+            summary={
+              <>
+                {/* The name comes from this content, so everything shown is
+                    part of it (WCAG 2.5.3): on phones the unit title (the h1
+                    stays the heading), then the line; Chat adds a hidden
+                    "Sessions and privacy". */}
+                <span className={styles.summaryTitle}>
+                  <bdi>{title}</bdi>
+                  <span className="visually-hidden">, </span>
+                </span>
+                <span className={styles.summaryLine}>
+                  <FrontendIcon name={chat ? "chat" : "sources"} />
+                  {chat && line ? (
+                    <span className="visually-hidden">{sessions}: </span>
+                  ) : null}
+                  <bdi>{summaryLine}</bdi>
+                  {chat && !line ? (
+                    <span className="visually-hidden">
+                      {t(" and privacy", " والخصوصية")}
+                    </span>
+                  ) : null}
+                  <FrontendIcon name="chevron" size={16} />
+                </span>
+              </>
+            }
+          >
+            <div className={styles.menuPanel}>
+              <div ref={setPanel} className={styles.toolMenu} />
+              <section className={styles.unitDetails} aria-label={details}>
                 {institution ? (
                   <p className={styles.institution}>
                     <strong>{t("Institution", "الجامعة أو النظام")}</strong>
@@ -168,9 +171,13 @@ export function FrontendShell({
                     <bdi>{institution}</bdi>
                   </p>
                 ) : null}
-                <p>
-                  <bdi>{context.join(locale === "ar" ? "، " : ", ")}</bdi>
-                </p>
+                <MetaList
+                  className={styles.unitContext}
+                  items={context.map((value, index) => ({
+                    key: String(index),
+                    value,
+                  }))}
+                />
                 {scopeControl ? (
                   <>
                     <h2 className={styles.switchHeading}>
@@ -182,9 +189,14 @@ export function FrontendShell({
                     {scopeControl}
                   </>
                 ) : null}
+              </section>
+              {/* Phones have no top bar inside a unit, so the interface
+                  language lives here (DESIGN.md "Surfaces and shell"). */}
+              <div className={styles.menuLanguage}>
+                <LanguageSwitch locale={locale} tone="paper" />
               </div>
-            </details>
-          ) : null}
+            </div>
+          </Disclosure>
         </header>
         <SegmentedControl
           mode="links"
@@ -207,6 +219,17 @@ export function FrontendShell({
           }))}
         />
       </div>
+    </>
+  );
+  return (
+    <AppShell
+      locale={locale}
+      profileName={profileName}
+      synthetic={synthetic}
+      title={`${title} · ${t("Study", "المذاكرة")}`}
+      workspace
+      band={band}
+    >
       {!available ? (
         <p className={styles.unavailable} role="status" data-workspace-chrome>
           {t(
@@ -215,21 +238,11 @@ export function FrontendShell({
           )}
         </p>
       ) : null}
-      <div
-        ref={body}
-        className={styles.workspaceBody}
-        data-study-tool={
-          pathname.includes("/chat")
-            ? "chat"
-            : pathname.includes("/studio")
-              ? "studio"
-              : pathname.includes("/quiz")
-                ? "quiz"
-                : "materials"
-        }
-      >
-        {children}
-      </div>
+      <UnitMenuContext.Provider value={unitMenu}>
+        <div ref={body} className={styles.workspaceBody} data-study-tool={tool}>
+          {children}
+        </div>
+      </UnitMenuContext.Provider>
     </AppShell>
   );
 }

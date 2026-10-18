@@ -26,6 +26,8 @@ type SwitchProps = Readonly<{
   /** Accessible name of the group or nav. */
   label?: string | undefined;
   className?: string | undefined;
+  /** Night bar (default) or a paper surface such as the unit menu. */
+  tone?: "night" | "paper" | undefined;
 }>;
 
 /**
@@ -61,6 +63,7 @@ function ButtonSwitch({
   labels = "short",
   label,
   className,
+  tone = "night",
 }: SwitchProps) {
   const router = useProductRouter();
   const pathname = usePathname();
@@ -68,7 +71,7 @@ function ButtonSwitch({
   return (
     <SegmentedControl
       mode="buttons"
-      tone="night"
+      tone={tone}
       compact
       dir="ltr"
       label={groupName(locale, label)}

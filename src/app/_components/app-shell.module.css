@@ -75,7 +75,7 @@
   display: grid;
   gap: 4px;
 }
-.topbar .globalNav {
+.topbar > .globalNav {
   display: flex;
   flex: 1;
   align-items: center;
@@ -96,14 +96,14 @@
   font-weight: 600;
   /* Navigation changes palette at once (DESIGN.md): no colour transition. */
 }
-.topbar .globalNav a svg {
+.topbar > .globalNav a svg {
   display: none;
 }
-.topbar .globalNav a[data-account] {
+.topbar > .globalNav a[data-account] {
   margin-inline-start: auto;
   padding-inline: 6px 14px;
 }
-.topbar .globalNav a[data-account] svg {
+.topbar > .globalNav a[data-account] svg {
   display: block;
   width: 20px;
   height: 20px;
@@ -151,6 +151,18 @@
   padding: 40px var(--shell-inset) 56px;
   min-width: 0;
 }
+/* A page band (Shelf, unit, admin, Batch Leader) runs full width above the
+   padded body, so no band needs negative margins tied to these insets. */
+.content[data-band] {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+.body {
+  flex: 1;
+  min-width: 0;
+  padding: 40px var(--shell-inset) 56px;
+}
 .content :where(h1) {
   overflow-wrap: break-word;
 }
@@ -190,11 +202,11 @@
   background: var(--night-2);
   color: var(--on-night);
 }
-.adminMenuRow {
+.adminMenu {
   display: none;
 }
 .shell[data-layout="workspace"] {
-  height: 100dvh;
+  height: var(--workspace-height, 100dvh);
   min-height: 0;
 }
 .shell[data-layout="workspace"] .content {
@@ -202,26 +214,23 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
+}
+.shell[data-layout="workspace"] .body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
   padding: 0 var(--shell-inset) 24px;
 }
-/* The admin queue and resources need all five labelled destinations or the menu. */
+/* The admin queue and resources need all five labelled destinations, or the
+   labelled Menu inside the bar itself. */
 @media (max-width: 1199px) {
-  .shell[data-role="admin"] .topbar .globalNav {
+  .shell[data-role="admin"] .topbar > .globalNav {
     display: none;
   }
-  .shell[data-role="admin"] .topbar {
-    justify-content: space-between;
-  }
-  .shell[data-role="admin"] .adminMenuRow {
-    display: flex;
-    gap: 16px;
-    align-items: start;
-    padding: 0 var(--shell-inset) 8px;
-    background: var(--night);
-    color: var(--on-night);
-  }
-  .shell[data-role="admin"] .adminMenuRow > a {
-    display: none;
+  .shell[data-role="admin"] .adminMenu {
+    display: block;
+    margin-inline-end: auto;
   }
 }
 @media (min-width: 768px) and (max-width: 1050px) {
@@ -271,7 +280,11 @@
     display: flex;
     margin-inline-end: auto;
   }
-  .topbar .globalNav {
+  /* Admin: logo, then Menu, then the language control at the end. */
+  .shell[data-role="admin"] .compactBrand {
+    margin-inline-end: 0;
+  }
+  .topbar > .globalNav {
     position: fixed;
     inset-block-end: 0;
     inset-inline: 0;
@@ -283,8 +296,8 @@
     border-block-start: 1px solid var(--line);
     background: var(--surface);
   }
-  .topbar .globalNav a,
-  .topbar .globalNav a[data-account] {
+  .topbar > .globalNav a,
+  .topbar > .globalNav a[data-account] {
     margin: 0;
     min-height: 60px;
     padding: 4px;
@@ -298,21 +311,21 @@
     overflow-wrap: anywhere;
   }
   /* 24px icons in a 56x30 pill that takes --tint when current. */
-  .topbar .globalNav a svg {
+  .topbar > .globalNav a svg {
     display: block;
     box-sizing: content-box;
     padding: 3px 16px;
     border-radius: var(--radius-pill);
   }
-  .topbar .globalNav a[aria-current] {
+  .topbar > .globalNav a[aria-current] {
     background: var(--surface);
     color: var(--action);
     font-weight: 800;
   }
-  .topbar .globalNav a[aria-current] :is(svg, .profileMarker) {
+  .topbar > .globalNav a[aria-current] :is(svg, .profileMarker) {
     background: var(--tint);
   }
-  .topbar .globalNav a:hover {
+  .topbar > .globalNav a:hover {
     background: var(--surface-2);
     color: var(--ink);
   }
@@ -322,9 +335,21 @@
   .content > h1 {
     font-size: var(--type-display-mobile-size);
   }
+  .body {
+    padding: 24px 16px 32px;
+  }
+  /* Inside a unit the phone header is the subject band itself (DESIGN: back,
+     title menu, tools): no logo row and no bottom bar; back is the exit. */
   .shell[data-layout="workspace"] {
     display: flex;
     flex-direction: column;
+    padding-block-end: env(safe-area-inset-bottom);
+  }
+  .shell[data-layout="workspace"] .topbar {
+    display: none;
+  }
+  .shell[data-layout="workspace"] .topbar > .globalNav {
+    position: static;
   }
   .shell[data-layout="workspace"] .stage {
     display: flex;
@@ -332,41 +357,26 @@
     flex: 1;
     min-height: 0;
   }
-  .shell[data-layout="workspace"] .content {
-    flex: 1;
+  .shell[data-layout="workspace"] .body {
     padding: 0 16px 12px;
   }
   .shell[data-layout="workspace"][data-workspace-flow="page"] {
     height: auto;
     min-height: 100dvh;
   }
-  .shell[data-layout="workspace"][data-workspace-flow="page"] .topbar {
-    flex-wrap: wrap;
-  }
   .shell[data-layout="workspace"][data-workspace-flow="page"]
-    .topbar
-    .globalNav {
-    position: static;
-    order: 3;
-    flex-basis: 100%;
-    border-radius: var(--radius-control);
-    border: 0;
-  }
-  .shell[data-layout="workspace"][data-workspace-flow="page"] .content {
+    :is(.content, .body) {
     flex: none;
   }
   .shell[data-role="admin"] {
     padding-block-end: env(safe-area-inset-bottom);
   }
-  .shell[data-role="admin"] .adminMenuRow > a {
-    display: flex;
-  }
 }
 .adminMenu {
-  flex: 1;
+  position: relative;
   min-width: 0;
 }
-.adminMenu summary {
+.adminMenu > summary {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
@@ -376,16 +386,54 @@
   cursor: pointer;
   color: var(--on-night);
   font-weight: 700;
+  list-style: none;
 }
-.adminMenuRow > a {
+.adminMenu > summary::-webkit-details-marker {
+  display: none;
+}
+.adminMenuPanel {
+  position: absolute;
+  z-index: 40;
+  inset-block-start: calc(100% + 8px);
+  inset-inline-start: 0;
+  display: grid;
+  gap: 4px;
+  width: min(18rem, calc(100vw - 32px));
+  padding: 8px;
+  border-radius: var(--radius-card);
+  background: var(--night);
+  box-shadow:
+    var(--float),
+    0 0 0 1px var(--night-line);
+}
+.adminMenuPanel .globalNav {
+  padding: 0;
+}
+.adminMenuAccount {
+  display: none;
   align-items: center;
   min-height: 44px;
-  padding-block: 10px;
+  padding: 0 14px;
+  border-block-start: 1px solid var(--night-line);
   color: var(--on-night-blue);
   font-weight: 650;
+  text-decoration: none;
 }
-.adminMenu .globalNav {
-  padding: 8px 0;
+/* On phones the panel hangs from the bar itself, inside its 16px gutters,
+   so it never runs past either edge (at 320px or with enlarged text). */
+@media (max-width: 767px) {
+  .adminMenu {
+    position: static;
+  }
+  .adminMenuPanel {
+    inset-inline: 16px;
+    width: auto;
+    max-height: calc(100dvh - 76px);
+    overflow: auto;
+  }
+  .adminMenuAccount {
+    display: flex;
+  }
 }
 .adminMenu .globalNav a {
   color: var(--on-night-2);
@@ -394,12 +442,14 @@
   background: var(--night-2);
   color: var(--on-night);
 }
+/* Short windows scroll the whole workspace, except while a phone keyboard
+   is open: then the composer stays docked above it. */
 @media (max-height: 600px) {
-  .shell[data-layout="workspace"] {
+  .shell[data-layout="workspace"]:not([data-keyboard]) {
     height: auto;
     min-height: 100dvh;
   }
-  .shell[data-layout="workspace"] .content {
+  .shell[data-layout="workspace"]:not([data-keyboard]) :is(.content, .body) {
     display: block;
   }
 }

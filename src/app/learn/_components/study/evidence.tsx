@@ -19,6 +19,7 @@ import { SourceReturnContext } from "./source-return-context";
 import type { ProductStudyProps } from "./study-props";
 import { getSources, kindNames, selectedExchange } from "./study-sources";
 import { useLiveStudy } from "./live-study";
+import { useHostedSynthetic } from "@/app/_components/product-navigation";
 
 /**
  * The material library, or the supporting passages of one Chat reply, with
@@ -36,6 +37,7 @@ export function Evidence({
   quizTime,
 }: ProductStudyProps & { embedded?: boolean; quizTime?: number }) {
   const live = useLiveStudy();
+  const hosted = useHostedSynthetic();
   const state = useOptionalProductServices()?.state;
   const query = useSearchParams();
   const t = useProductText(locale);
@@ -77,7 +79,7 @@ export function Evidence({
           quizSource={quizSource}
           chatHref={`${base}/chat${session ? `?session=${session.id}#exchange-${exchange}` : ""}`}
         />
-      ) : (
+      ) : live || !hosted ? (
         <p className={styles.materialsCaption}>
           {live
             ? t(
@@ -89,7 +91,7 @@ export function Evidence({
                 "هذه مواد تجريبية. النصوص ومواضع الصفحات أدناه للتوضيح.",
               )}
         </p>
-      )}
+      ) : null}
       {screen === "evidence" ? (
         !answer ? (
           <Notice locale={locale}>

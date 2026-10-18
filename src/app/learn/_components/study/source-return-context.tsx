@@ -2,6 +2,7 @@
 import { useProductText } from "@/app/_components/product-copy";
 import { Notice } from "@/app/_components/notice";
 import { ProductLink } from "@/app/_components/product-ui";
+import { useHostedSynthetic } from "@/app/_components/product-navigation";
 import styles from "@/app/_components/product.module.css";
 import type { Locale } from "@/lib/demo/synthetic-fixtures.application";
 import type { QuizSourceSelection } from "@/lib/study/study-origin.application";
@@ -26,6 +27,7 @@ export function SourceReturnContext({
   chatHref: string;
 }) {
   const t = useProductText(locale);
+  const hosted = useHostedSynthetic();
   return (
     <div className={styles.sourceContext}>
       <h2>
@@ -74,12 +76,14 @@ export function SourceReturnContext({
           )}
         </Notice>
       ) : null}
-      <p>
-        {t(
-          "These are sample materials. The excerpts and page references below are illustrative.",
-          "هذه مواد تجريبية. النصوص ومواضع الصفحات أدناه للتوضيح.",
-        )}
-      </p>
+      {hosted ? null : (
+        <p>
+          {t(
+            "These are sample materials. The excerpts and page references below are illustrative.",
+            "هذه مواد تجريبية. النصوص ومواضع الصفحات أدناه للتوضيح.",
+          )}
+        </p>
+      )}
     </div>
   );
 }

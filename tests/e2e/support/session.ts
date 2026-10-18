@@ -121,7 +121,7 @@ export async function send(
 /** Opens the Chat "Sessions and privacy" disclosure if it is closed. */
 export async function openSessionTools(page: Page, locale: Locale) {
   const summary = page.locator(
-    `summary[aria-label="${locale === "ar" ? "الجلسات والخصوصية" : "Sessions and privacy"}"]`,
+    `summary:has-text("${locale === "ar" ? "الجلسات والخصوصية" : "Sessions and privacy"}")`,
   );
   await summary.waitFor();
   if ((await summary.locator("..").getAttribute("open")) === null)

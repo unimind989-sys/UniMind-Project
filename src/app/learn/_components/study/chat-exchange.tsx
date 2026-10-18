@@ -1,7 +1,8 @@
 "use client";
+import type { ReactNode } from "react";
 import { useProductText } from "@/app/_components/product-copy";
 import { FrontendIcon } from "@/app/_components/frontend-system";
-import { ProductLink } from "@/app/_components/product-ui";
+import { Button, ProductLink } from "@/app/_components/product-ui";
 import productStyles from "@/app/_components/product.module.css";
 import {
   answerExamples,
@@ -13,7 +14,12 @@ import type { ProductStudyProps } from "./study-props";
 import { kindNames } from "./study-sources";
 import styles from "../product-chat.module.css";
 
-/** One question and its sample reply, with its citations and follow-ups. */
+/**
+ * One question and its sample reply. Evidence has one route per answer: the
+ * citation chip opens the source sheet, which links to the evidence details.
+ * Report is a quiet action, the sharing mode shows only when it differs from
+ * the current setting, and covered or clarifying questions fill Message.
+ */
 export function ChatExchange({
   answer,
   exchange,
@@ -22,15 +28,32 @@ export function ChatExchange({
   locale,
   base,
   handoutAvailable,
+  currentSharing,
+  tip,
   onInspect,
+  onUseQuestion,
 }: Pick<ProductStudyProps, "scope" | "locale" | "base"> & {
   answer: SampleAnswer;
   exchange: number;
   sessionNumber: number;
   handoutAvailable: boolean;
+  currentSharing: SampleAnswer["sharing"] | undefined;
+  /** The first-visit citation tip, shown under this answer's citation. */
+  tip?: ReactNode;
   onInspect: () => void;
+  /** Puts a question in Message; absent where Chat cannot answer. */
+  onUseQuestion?: ((question: string) => void) | undefined;
 }) {
   const t = useProductText(locale);
+  const covered = [
+    ...(handoutAvailable ? [text(promptExamples.supported, locale)] : []),
+    text(promptExamples.hint, locale),
+  ];
+  const clarification = t(
+    `The handout places identification before comparison, but the recording places comparison first. Which sequence should I follow for this ${scope.unitLabelSingularEn.toLowerCase()}, and is there an approved source resolving the difference?`,
+    `الملزمة تضع التحديد قبل المقارنة، لكن التسجيل يضع المقارنة أولًا. أي ترتيب أتبع في ${scope.unitLabelSingularAr}، وهل يوجد مصدر معتمد يحسم الاختلاف؟`,
+  );
+  const cited = !["unavailable", "patient"].includes(answer.kind);
   return (
     <article className={styles.exchange} id={`exchange-${exchange}`}>
       <div
@@ -97,20 +120,22 @@ export function ChatExchange({
                   "أسئلة تغطيها هذه المصادر",
                 )}
               </summary>
-              <ul>
-                {handoutAvailable ? (
-                  <li>
-                    <bdi>{text(promptExamples.supported, locale)}</bdi>
-                  </li>
-                ) : null}
-                <li>
-                  <bdi>{text(promptExamples.hint, locale)}</bdi>
-                </li>
-              </ul>
+              <div className={styles.followUps}>
+                {covered.map((question) => (
+                  <button
+                    key={question}
+                    type="button"
+                    disabled={!onUseQuestion}
+                    onClick={() => onUseQuestion?.(question)}
+                  >
+                    <bdi>{question}</bdi>
+                  </button>
+                ))}
+              </div>
               <p>
                 {t(
-                  "You can copy a question into Message. Your current draft stays unchanged.",
-                  "يمكنك نسخ سؤال إلى خانة السؤال. مسودتك الحالية تبقى كما هي.",
+                  "Choosing a question puts it in Message; nothing is sent until you press Send.",
+                  "اختيار سؤال يضعه في خانة السؤال؛ لا يُرسل شيء حتى تضغط إرسال.",
                 )}
               </p>
             </details>
@@ -129,8 +154,8 @@ export function ChatExchange({
             </summary>
             <p>
               {t(
-                "Inspect both excerpts, then copy this question if you want to ask for clarification. Nothing is sent from here.",
-                "افحص النصين، ثم انسخ هذا السؤال إن أردت طلب توضيح. لا يُرسل شيء من هنا.",
+                "Inspect both excerpts, then use this question to ask for clarification. Nothing is sent until you press Send.",
+                "افحص النصين، ثم استخدم هذا السؤال لطلب التوضيح. لا يُرسل شيء حتى تضغط إرسال.",
               )}
             </p>
             <div className={productStyles.field}>
@@ -145,16 +170,18 @@ export function ChatExchange({
                 rows={4}
                 lang={locale}
                 dir={locale === "ar" ? "rtl" : "ltr"}
-                value={t(
-                  `The handout places identification before comparison, but the recording places comparison first. Which sequence should I follow for this ${scope.unitLabelSingularEn.toLowerCase()}, and is there an approved source resolving the difference?`,
-                  `الملزمة تضع التحديد قبل المقارنة، لكن التسجيل يضع المقارنة أولًا. أي ترتيب أتبع في ${scope.unitLabelSingularAr}، وهل يوجد مصدر معتمد يحسم الاختلاف؟`,
-                )}
+                value={clarification}
               />
             </div>
+            {onUseQuestion ? (
+              <Button onClick={() => onUseQuestion(clarification)}>
+                {t("Use this question", "استخدم هذا السؤال")}
+              </Button>
+            ) : null}
           </details>
         ) : null}
         <div className={styles.replyActions}>
-          {!["unavailable", "patient"].includes(answer.kind) ? (
+          {cited ? (
             <button
               type="button"
               className={styles.citation}
@@ -168,25 +195,23 @@ export function ChatExchange({
                   : t("Lecture 6, p. 14", "المحاضرة 6، ص ١٤")}
             </button>
           ) : null}
+          {currentSharing && answer.sharing !== currentSharing ? (
+            <span>
+              {answer.sharing === "private"
+                ? t("Private", "خاص")
+                : t("Shared", "مشارك")}
+            </span>
+          ) : null}
           <ProductLink
-            href={`${base}/evidence?exchange=${exchange}&session=${sessionNumber}`}
-            locale={locale}
-          >
-            <FrontendIcon name="sources" />
-            {t("Inspect evidence", "فحص الأدلة")}
-          </ProductLink>
-          <ProductLink
+            className={styles.reportLink}
+            variant="quiet"
             href={`${base}/report?exchange=${exchange}&session=${sessionNumber}`}
             locale={locale}
           >
             {t("Report example", "الإبلاغ عن المثال")}
           </ProductLink>
-          <span>
-            {answer.sharing === "private"
-              ? t("Private", "خاص")
-              : t("Shared", "مشارك")}
-          </span>
         </div>
+        {tip}
       </div>
     </article>
   );

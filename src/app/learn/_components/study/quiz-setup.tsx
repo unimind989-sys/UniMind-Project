@@ -3,6 +3,7 @@ import { ChoiceGroup } from "@/app/_components/choice-group";
 import { useProductText } from "@/app/_components/product-copy";
 import { Notice } from "@/app/_components/notice";
 import { Button, ProductLink } from "@/app/_components/product-ui";
+import { useHostedSynthetic } from "@/app/_components/product-navigation";
 import styles from "@/app/_components/product.module.css";
 import type { Locale } from "@/lib/demo/synthetic-fixtures.application";
 import {
@@ -26,6 +27,7 @@ export function QuizSetup({
   now: number;
 }) {
   const t = useProductText(locale);
+  const hosted = useHostedSynthetic();
   const {
     unavailable,
     attempt,
@@ -45,7 +47,7 @@ export function QuizSetup({
             "الاختبار غير متاح بعد. ستأتي الأسئلة من المصادر المعتمدة عند إطلاقه.",
           )}
         </Notice>
-      ) : (
+      ) : hosted ? null : (
         <p>
           {t(
             "Choose from six sample questions per difficulty. Scores are illustrative and stay in this tab.",
@@ -186,7 +188,7 @@ export function QuizSetup({
             : t("Start quiz", "بدء الاختبار")}
         </Button>
         <Button
-          size="large"
+          variant="quiet"
           disabled={unavailable}
           onClick={() =>
             setConfiguration(() => ({ ...defaultQuizConfiguration }))

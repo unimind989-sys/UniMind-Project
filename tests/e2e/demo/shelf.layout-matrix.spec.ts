@@ -1,10 +1,10 @@
 import { bilingual, pick } from "../support/copy";
 import {
-  b07DetailsName,
   expectOriginalTypography,
   humanMedicinePath,
   showAccountView,
   unit,
+  unitMenuSummary,
 } from "../support/demo";
 import { boxOf } from "../support/layout";
 import {
@@ -217,22 +217,24 @@ const setupStates: readonly ScreenState[] = [
     check: async ({ page, locale, width }) => {
       const rows = page.locator("li[data-unit-id] > a");
       await expect(rows).toHaveCount(5);
+      // No constant "Ready" pill and no decorative book tile (MD-16, D5):
+      // the title starts the row.
       const geometry = await rows.first().evaluate((row) => {
         const title = row.querySelector("bdi")!.getBoundingClientRect();
-        const status = row
-          .querySelector('span[class*="ready"]')!
-          .getBoundingClientRect();
+        const box = row.getBoundingClientRect();
         const rtl = document.documentElement.dir === "rtl";
         return {
-          height: row.getBoundingClientRect().height,
-          gap: rtl ? title.left - status.right : status.left - title.right,
-          y: Math.abs(title.top - status.top),
+          height: box.height,
+          inset: rtl ? box.right - title.right : title.left - box.left,
+          pills: row.querySelectorAll('[class*="ready"]').length,
         };
       });
-      expect(geometry.gap).toBeGreaterThanOrEqual(0);
-      expect(geometry.gap).toBeLessThanOrEqual(17);
-      expect(geometry.y).toBeLessThan(12);
+      expect(geometry.pills).toBe(0);
+      expect(geometry.inset).toBeLessThanOrEqual(24);
       if (width <= 390) expect(geometry.height).toBeLessThan(100);
+      // The h1 names the list; its h2 stays for structure only (MD-15).
+      const listHeading = page.locator("[class*='shelfHeading'] h2");
+      expect((await boxOf(listHeading)).height).toBe(1);
       for (const row of await rows.all()) {
         await expect(row.locator("[class*='unitAction']")).toContainText(
           pick(locale, "Open", "فتح"),
@@ -291,34 +293,24 @@ const setupStates: readonly ScreenState[] = [
           exact: true,
         }),
       ).toBeVisible();
-      // audit 10: the scope context stays readable inside the viewport.
-      const phone = width < 768;
-      const disclosure = page
-        .locator("summary")
-        .filter({ hasText: b07DetailsName(locale) });
-      if (phone) await disclosure.click();
-      const context = phone
-        ? page
-            .locator('[class*="subjectSwitch"] p')
-            .filter({ hasText: t("Faculty of Medicine", "كلية الطب البشري") })
-            .filter({ visible: true })
-        : page.locator('[class*="scopeCaption"]');
+      // audit 10: the scope context stays readable inside the viewport, in
+      // the unit menu at every width (WP03-T26).
+      const disclosure = unitMenuSummary(page);
+      await disclosure.click();
+      const context = page.locator('[class*="unitContext"]');
       await expect(context).toContainText(
         t("Faculty of Medicine", "كلية الطب البشري"),
       );
-      if (phone)
-        expect(
-          Number.parseFloat(
-            await context.evaluate((e) => getComputedStyle(e).fontSize),
-          ),
-        ).toBeGreaterThanOrEqual(14);
+      expect(
+        Number.parseFloat(
+          await context.evaluate((e) => getComputedStyle(e).fontSize),
+        ),
+      ).toBeGreaterThanOrEqual(14);
       const rect = await boxOf(context);
       expect(rect.x).toBeGreaterThanOrEqual(0);
       expect(rect.x + rect.width).toBeLessThanOrEqual(width);
-      if (phone) {
-        await disclosure.press("Escape");
-        await expect(disclosure).toBeFocused();
-      }
+      await disclosure.press("Escape");
+      await expect(disclosure).toBeFocused();
       await expectLanguageControl(page, locale);
       await expectAlignedHeader(page, width);
       await expectOriginalTypography(page, locale);

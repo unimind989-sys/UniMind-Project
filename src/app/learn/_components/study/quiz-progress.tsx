@@ -4,8 +4,8 @@ import { useProductText } from "@/app/_components/product-copy";
 import type { Locale } from "@/lib/demo/synthetic-fixtures.application";
 import styles from "./quiz.module.css";
 
-/** "Answered: n / total" and "Unanswered: m" as one metadata list, shared
- * by progress and expiry. */
+/** "Answered: n / total" and "Unanswered: m" as one metadata list: the
+ * summary of an expired attempt. */
 export function QuizAnsweredCount({
   locale,
   answered,
@@ -37,7 +37,9 @@ export function QuizAnsweredCount({
   );
 }
 
-/** The sticky progress, timer and low-time warning of an open attempt. */
+/** The sticky progress strip of an open attempt: "n of total answered",
+ * the timer when timed, and the low-time warning. Timing and difficulty are
+ * already named above it, so the strip repeats neither. */
 export function QuizProgress({
   locale,
   answered,
@@ -56,6 +58,7 @@ export function QuizProgress({
   remainingSeconds: number | null;
 }) {
   const t = useProductText(locale);
+  const number = new Intl.NumberFormat(locale);
   const clockNumber = new Intl.NumberFormat(locale, {
     minimumIntegerDigits: 2,
     useGrouping: false,
@@ -66,13 +69,12 @@ export function QuizProgress({
       data-workspace-chrome={!readOnly ? true : undefined}
     >
       {!expired ? (
-        <div id="quiz-progress" aria-live="polite">
-          <QuizAnsweredCount
-            locale={locale}
-            answered={answered}
-            total={total}
-          />
-        </div>
+        <p id="quiz-progress" aria-live="polite">
+          {t(
+            `${number.format(answered)} of ${number.format(total)} answered`,
+            `تمت الإجابة عن ${number.format(answered)} من ${number.format(total)}`,
+          )}
+        </p>
       ) : null}
       {expiresAt && !readOnly ? (
         <p role="timer">
@@ -83,7 +85,6 @@ export function QuizProgress({
           </bdi>
         </p>
       ) : null}
-      {!expiresAt && !readOnly ? <p>{t("Untimed", "دون توقيت")}</p> : null}
       {remainingSeconds !== null &&
       remainingSeconds > 0 &&
       remainingSeconds < 60 &&

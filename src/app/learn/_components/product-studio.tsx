@@ -14,6 +14,7 @@ import {
 import { FrontendIcon } from "@/app/_components/frontend-system";
 import type { ProductStudyProps } from "./study/study-props";
 import { useLiveStudy } from "./study/live-study";
+import { useHostedSynthetic } from "@/app/_components/product-navigation";
 import styles from "@/app/_components/product.module.css";
 import studyStyles from "./product-studio.module.css";
 import {
@@ -131,7 +132,11 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
   const state = services?.state;
   const update = services?.update;
   const unavailable = live !== null || !services;
+  const hosted = useHostedSynthetic();
   const [showPassages, setShowPassages] = useState(false);
+  // Phones show the result first; the settings fold into one summary line
+  // once an aid exists (desktop keeps both columns open).
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const draft = state?.studioDrafts[scope.unitId] ?? {
     type: "summary",
     language: locale,
@@ -189,6 +194,7 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
       }));
       setRequest(null);
       setFlipped(false);
+      setSettingsOpen(false);
     }, 1000);
     return () => clearTimeout(timer);
   }, [request, scope.unitId, update]);
@@ -206,11 +212,30 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
     (scope.unitId !== defaultScope.unitId ||
       state?.availability.sourceActive === true);
   const controlsDisabled = request !== null || unavailable;
+  const languageName = (value: string) =>
+    value === "ar"
+      ? "العربية"
+      : value === "en"
+        ? "English"
+        : t("Bilingual", "ثنائي اللغة");
+  const typeName = (value: string) =>
+    text(
+      (artifactTypes.find(([id]) => id === value) ?? artifactTypes[0]).slice(
+        1,
+      ) as [string, string],
+      locale,
+    );
+  const topicName = (value: string) =>
+    value === "comparison"
+      ? t("Roots of the plexus", "جذور الضفيرة")
+      : t("Upper trunk injury", "إصابة الجذع العلوي");
   return (
     <div className={studyStyles.studio}>
       <div className={studyStyles.studioLayout}>
         <form
+          id="studio-settings"
           className={studyStyles.studioControls}
+          data-collapsed={artifact && !settingsOpen ? "" : undefined}
           onSubmit={(event) => {
             event.preventDefault();
             if (type === "quiz") return;
@@ -236,6 +261,24 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
             }
           }}
         >
+          {artifact ? (
+            <button
+              type="button"
+              className={studyStyles.settingsToggle}
+              aria-expanded={settingsOpen}
+              aria-controls="studio-settings"
+              onClick={() => setSettingsOpen(!settingsOpen)}
+            >
+              <span className={studyStyles.settingsLabel}>
+                {t("Settings", "الإعدادات")}
+              </span>
+              <span className={studyStyles.settingsSummary}>
+                <span>{typeName(type)}</span>
+                <span>{languageName(language)}</span>
+                {type === "quiz" ? null : <span>{topicName(topic)}</span>}
+              </span>
+            </button>
+          ) : null}
           {unavailable ? (
             <Notice locale={locale}>
               {t(
@@ -368,6 +411,8 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
                 </div>
               </details>
 
+              {/* One caption: the replace rule, plus the sample boundary
+                  where the demo is not the hosted presentation (WP03 D4). */}
               <p className={studyStyles.caption}>
                 {artifact
                   ? t(
@@ -378,6 +423,12 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
                       `Studio keeps one current aid for each ${scope.unitLabelSingularEn.toLowerCase()}.`,
                       "يحتفظ الاستوديو بأداة حالية واحدة لكل مقرر.",
                     )}
+                {unavailable || hosted
+                  ? null
+                  : ` ${t(
+                      "Fixed examples for these settings, no model generation, cleared on reload.",
+                      "أمثلة ثابتة لهذه الإعدادات، دون توليد بنموذج، وتمسح عند إعادة التحميل.",
+                    )}`}
               </p>
               <Button
                 variant="primary"
@@ -386,29 +437,15 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
               >
                 {t("Generate", "إنشاء")}
               </Button>
-              {unavailable ? null : (
-                <p className={studyStyles.caption}>
-                  {t(
-                    "Fixed examples for these settings · no model generation · cleared on reload",
-                    "أمثلة ثابتة لهذه الإعدادات · دون توليد بنموذج · تمسح عند إعادة التحميل",
-                  )}
-                </p>
-              )}
             </>
           )}
         </form>
         <div className={studyStyles.artifactArea} aria-busy={request !== null}>
+          {/* The output names itself; this heading stays for structure. */}
           <header className={studyStyles.artifactHeader}>
-            <h2>{t("Your artifact", "مخرجك الدراسي")}</h2>
-            {artifact || type !== "quiz" ? (
-              <span>
-                {(artifact?.language ?? language) === "ar"
-                  ? "العربية"
-                  : (artifact?.language ?? language) === "en"
-                    ? "English"
-                    : t("Bilingual", "ثنائي اللغة")}
-              </span>
-            ) : null}
+            <h2 className="visually-hidden">
+              {t("Your artifact", "مخرجك الدراسي")}
+            </h2>
           </header>
           {request ? (
             <div className={studyStyles.artifactLoading}>
@@ -442,14 +479,12 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
             >
               <h2 ref={outputHeading} tabIndex={-1}>
                 {t("Simulated artifact", "مخرج محاكى")}:{" "}
-                {text(
-                  (
-                    artifactTypes.find(([id]) => id === artifact.type) ??
-                    artifactTypes[0]
-                  ).slice(1) as [string, string],
-                  locale,
-                )}
+                {typeName(artifact.type)}
               </h2>
+              {/* The output language, beside the title (MD-20). */}
+              <span className={studyStyles.outputLanguage}>
+                {languageName(artifact.language)}
+              </span>
               <MetaList
                 items={[
                   {
@@ -679,15 +714,6 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
               </p>
             </div>
           )}
-          <footer className={studyStyles.artifactFooter}>
-            <ProductLink href={base + "/sources?from=studio"} locale={locale}>
-              <FrontendIcon name="sources" />
-              {t(
-                `${scope.unitLabelSingularEn} sources`,
-                `مصادر ${scope.unitLabelSingularAr}`,
-              )}
-            </ProductLink>
-          </footer>
         </div>
       </div>
       <ProductSourceDialog

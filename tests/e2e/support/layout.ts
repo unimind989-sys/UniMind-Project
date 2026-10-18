@@ -176,3 +176,58 @@ export async function boxOf(target: Locator) {
     .toBe(true);
   return read.box!;
 }
+
+/**
+ * The visible height of a scroll region (Chat's "Conversation") after every
+ * scroller is reset to the top, clipped by its scrolling ancestors and a
+ * fixed bottom bar; the number of scroll owners (the document counts as one);
+ * and horizontal overflow.
+ */
+export async function readingLayout(page: Page, name: string) {
+  return page.evaluate((label) => {
+    const reading = document.querySelector<HTMLElement>(
+      `[aria-label="${label}"]`,
+    )!;
+    window.scrollTo(0, 0);
+    for (const e of document.querySelectorAll<HTMLElement>("*"))
+      if (e.scrollTop) e.scrollTop = 0;
+    const r = reading.getBoundingClientRect();
+    let top = Math.max(0, r.top),
+      bottom = Math.min(innerHeight, r.bottom);
+    for (let e = reading.parentElement; e; e = e.parentElement)
+      if (
+        ["auto", "scroll", "hidden", "clip"].includes(
+          getComputedStyle(e).overflowY,
+        )
+      ) {
+        const b = e.getBoundingClientRect();
+        top = Math.max(top, b.top);
+        bottom = Math.min(bottom, b.bottom);
+      }
+    const nav = document.querySelector<HTMLElement>(
+      'nav[aria-label="Product navigation"],nav[aria-label="تنقل المنتج"]',
+    );
+    if (nav?.checkVisibility() && getComputedStyle(nav).position === "fixed")
+      bottom = Math.min(bottom, nav.getBoundingClientRect().top);
+    const owners = Array.from(
+      document.querySelectorAll<HTMLElement>("*"),
+    ).filter(
+      (e) =>
+        e.checkVisibility() &&
+        !e.matches("input,textarea,select") &&
+        !e.closest("dialog") &&
+        ["auto", "scroll"].includes(getComputedStyle(e).overflowY) &&
+        e.scrollHeight > e.clientHeight + 2 &&
+        e.clientHeight > 0,
+    );
+    return {
+      visible: Math.max(0, Math.round(bottom - top)),
+      owners:
+        owners.length +
+        (document.documentElement.scrollHeight > innerHeight + 2 ? 1 : 0),
+      overflow:
+        document.documentElement.scrollWidth >
+        document.documentElement.clientWidth + 1,
+    };
+  }, name);
+}

@@ -57,7 +57,15 @@ const adminStates: readonly ScreenState[] = [
       const menu = page
         .locator("summary")
         .filter({ hasText: new RegExp(pick(locale, "^Menu$", "^القائمة$")) });
-      if (phone) await menu.click();
+      if (phone) {
+        await menu.click();
+        // The open panel stays inside the viewport at 320 and 390px and with
+        // 200% text, in both directions (it hangs from the bar's gutters).
+        const panel = await boxOf(page.locator("[class*='adminMenuPanel']"));
+        const viewport = page.viewportSize()!.width;
+        expect(panel.x).toBeGreaterThanOrEqual(0);
+        expect(panel.x + panel.width).toBeLessThanOrEqual(viewport);
+      }
       await expect(nav.getByRole("link")).toHaveCount(5);
       for (const destination of await nav.getByRole("link").all())
         expect((await boxOf(destination)).height).toBeGreaterThanOrEqual(44);

@@ -14,21 +14,15 @@
   margin-inline: auto;
 }
 
-/* ---------- Night band ---------- */
-.workspace > .band {
+/* ---------- Night band (the shell's band slot) ---------- */
+/* Full width; its content lines up with the 78rem workspace column. */
+.band {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 24px 48px;
   align-items: end;
-  width: auto;
-  max-width: none;
-  margin-block: -40px 4px;
-  margin-inline: calc(-1 * var(--shell-inset));
   padding-block: 36px 40px;
-  padding-inline: max(
-    var(--shell-inset),
-    calc((100% - 78rem) / 2 + var(--shell-inset))
-  );
+  padding-inline: max(var(--shell-inset), calc((100% - 78rem) / 2));
   background: var(--night);
   color: var(--on-night);
 }
@@ -78,7 +72,7 @@
   color: var(--on-night);
 }
 @media (min-width: 1024px) {
-  .requestWorkspace > .band {
+  .requestBand {
     grid-template-columns: minmax(0, 1fr) minmax(0, 40rem);
   }
 }
@@ -767,12 +761,58 @@
   .workspace {
     gap: 20px;
   }
-  .workspace > .band {
-    margin-block-start: -24px;
+  .band {
     padding-block: 20px 28px;
   }
   .band h1 {
     font-size: var(--type-display-mobile-size);
+  }
+  /* Campaign intake on phones: the name at section-title scale and one
+     facts row (deadline and time left, then sent requests), so the first
+     request reaches the first screen (MD-24). */
+  .requestBand {
+    gap: 12px;
+    padding-block: 12px 20px;
+  }
+  .requestBand .bandText {
+    gap: 4px;
+  }
+  .requestBand h1 {
+    font-size: var(--type-headline-size);
+    line-height: var(--type-headline-leading);
+    letter-spacing: var(--type-headline-tracking);
+  }
+  .requestBand .bandFacts {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+  .requestBand .deadline,
+  .requestBand .progress {
+    padding: 0;
+    background: none;
+  }
+  .requestBand .deadline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 10px;
+  }
+  .requestBand .deadline h2 {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .requestBand .deadlineValue strong {
+    font-size: 1rem;
+  }
+  .requestBand .progress {
+    gap: 6px;
+  }
+  .requestBand .progress p {
+    font-size: 0.875rem;
   }
   .requestList > li,
   .campaignList > li {

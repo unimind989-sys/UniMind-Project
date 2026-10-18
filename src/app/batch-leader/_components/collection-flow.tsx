@@ -7,7 +7,10 @@ import { AppShell } from "@/app/_components/app-shell";
 import { FrontendIcon } from "@/app/_components/frontend-controls";
 import { collectionRequestProgress } from "@/lib/collection/collection-presentation.application";
 import { CollectionHistory, collectionWindowMessage } from "./leader-home";
-import { CollectionDeadline } from "./collection/collection-deadline";
+import {
+  CollectionDateDetails,
+  CollectionDeadline,
+} from "./collection/collection-deadline";
 import { CollectionProgress } from "./collection/collection-progress";
 import { CollectionIntake } from "./collection/collection-intake";
 import { CollectionRequests } from "./collection/collection-requests";
@@ -65,9 +68,8 @@ export function CollectionFlow(props: CollectionFlowProps) {
       locale={locale}
       role="leader"
       title={t("Source intake", "استلام المصادر")}
-    >
-      <div className={`${styles.workspace} ${styles.requestWorkspace}`}>
-        <header className={styles.band}>
+      band={
+        <header className={`${styles.band} ${styles.requestBand}`}>
           <div className={styles.bandText}>
             <Link
               className={styles.back}
@@ -81,12 +83,10 @@ export function CollectionFlow(props: CollectionFlowProps) {
           </div>
           <div className={styles.bandFacts}>
             <CollectionDeadline
-              campaign={campaign}
               locale={locale}
               deadline={deadline}
               now={now}
               live={windowState === "ACTIVE"}
-              dateReference={dateReference}
             />
             <CollectionProgress
               sent={progress.sent}
@@ -95,6 +95,15 @@ export function CollectionFlow(props: CollectionFlowProps) {
             />
           </div>
         </header>
+      }
+    >
+      <div className={`${styles.workspace} ${styles.requestWorkspace}`}>
+        {/* The dates behind the cutoff sit under the band (MD-24). */}
+        <CollectionDateDetails
+          campaign={campaign}
+          locale={locale}
+          dateReference={dateReference}
+        />
         {windowState !== "ACTIVE" ? (
           <Notice live locale={locale}>
             {collectionWindowMessage(windowState, locale)}
@@ -108,7 +117,7 @@ export function CollectionFlow(props: CollectionFlowProps) {
           data-empty={receivedCount ? undefined : true}
         >
           {receivedCount
-            ? `${t("Received files", "الملفات المستلمة")}: ${new Intl.NumberFormat(locale === "ar" ? "ar-EG" : "en").format(receivedCount)}. ${t("Processing and review are separate; receipt does not make a file available to students.", "المعالجة والمراجعة خطوتان منفصلتان؛ الاستلام لا يجعل الملف متاحًا للطلاب.")}`
+            ? `${t("Received files", "الملفات المستلمة")}: ${new Intl.NumberFormat(locale === "ar" ? "ar-EG" : "en").format(receivedCount)}.`
             : ""}
         </p>
         <CollectionRequests campaign={campaign} locale={locale} flow={flow} />

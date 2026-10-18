@@ -1,12 +1,12 @@
 import { artifactTypes, reviewCatalogRows } from "../support/app-fixtures";
 import { bilingual, formatNumber, inLocales, pick } from "../support/copy";
 import {
-  b07DetailsName,
   b07SavePath,
-  b07SourcesName,
   b07UnitsName,
   chooseTheme,
   generateStudioExample,
+  openLibraryFromStudio,
+  openUnitMenu,
   selectStudioExample,
   showAccountView,
   unit,
@@ -435,7 +435,8 @@ inLocales(["ar"], (locale) => {
             "Studio keeps one current aid for each module.",
             "يحتفظ الاستوديو بأداة حالية واحدة لكل مقرر.",
           ),
-          { exact: true },
+          // One merged caption also carries the local sample boundary.
+          { exact: false },
         ),
       ).toBeVisible();
       await page.locator("#artifact-type").selectOption("flashcards");
@@ -500,7 +501,7 @@ inLocales(["ar"], (locale) => {
             "Generating again replaces the current aid for this module when it finishes. Cancel keeps the current aid.",
             "عند اكتمال إنشاء أداة جديدة، تحل محل الأداة الحالية في هذا المقرر. الإلغاء يُبقي الأداة الحالية.",
           ),
-          { exact: true },
+          { exact: false },
         ),
       ).toBeVisible();
       const reference = new Date(await page.evaluate(() => Date.now()));
@@ -683,7 +684,7 @@ inLocales(["en"], (locale) => {
         const last = page.locator('input[name="sample-question-5"]').first();
         await last.check();
         await expect(page.locator("#quiz-progress")).toContainText(
-          t("Answered", "تمت الإجابة"),
+          t("answered", "تمت الإجابة"),
         );
         await page.keyboard.press("Tab");
         await last.focus();
@@ -808,10 +809,7 @@ inLocales(["ar"], (locale) => {
           exact: true,
         }),
       ).toHaveValue("7");
-      await page
-        .locator("summary")
-        .filter({ hasText: b07DetailsName(changed) })
-        .click();
+      await openUnitMenu(page);
       const foreign = reviewCatalogRows.find(
         (row) =>
           row.cohort.id === unit.split("/")[2] &&
@@ -1230,13 +1228,14 @@ inLocales(["ar"], (locale) => {
           .getByLabel(t("Artifact type", "نوع المخرج"), { exact: true })
           .locator("option"),
       ).toHaveCount(6);
+      // One merged caption: the replace rule and the local sample boundary.
       await expect(
         page.getByText(
           t(
-            "Fixed examples for these settings · no model generation · cleared on reload",
-            "أمثلة ثابتة لهذه الإعدادات · دون توليد بنموذج · تمسح عند إعادة التحميل",
+            "Fixed examples for these settings, no model generation, cleared on reload.",
+            "أمثلة ثابتة لهذه الإعدادات، دون توليد بنموذج، وتمسح عند إعادة التحميل.",
           ),
-          { exact: true },
+          { exact: false },
         ),
       ).toBeVisible();
       for (const type of types) {
@@ -1339,12 +1338,7 @@ inLocales(["ar"], (locale) => {
       await revealRetainedExplanations();
       await expect(body).toHaveText(retained, { useInnerText: true });
       await page.locator("#artifact-type").selectOption("revision");
-      await page
-        .getByRole("link", {
-          name: b07SourcesName(locale),
-          exact: true,
-        })
-        .click();
+      await openLibraryFromStudio(page, locale);
       await expect(page.getByRole("article")).toHaveCount(8);
       await page
         .getByRole("link", {
@@ -1539,6 +1533,13 @@ inLocales(["ar"], (locale) => {
           .evaluate((element) => getComputedStyle(element).transitionDuration),
       ).toBe("0s");
       // A saved appearance choice is a Settings detour that returns to Studio.
+      // Inside a unit on phones back is the exit to the bottom bar (D2).
+      await page
+        .getByRole("link", {
+          name: pick(locale, "Subjects", "المواد"),
+          exact: true,
+        })
+        .click();
       await navigate(page, "/settings", locale);
       await chooseTheme(page, "dark");
       await page
@@ -1638,12 +1639,7 @@ inLocales(["ar"], (locale) => {
           }),
         ).toBeEnabled();
       }
-      await page
-        .getByRole("link", {
-          name: b07SourcesName(locale),
-          exact: true,
-        })
-        .click();
+      await openLibraryFromStudio(page, locale);
       await page
         .getByText(
           pick(locale, "Read processed passage", "قراءة النص المعالج"),
@@ -1758,17 +1754,19 @@ test(
       .getByRole("button", { name: "New session", exact: true })
       .click();
     await send(page, "supported");
-    await page
-      .locator("summary")
-      .filter({ hasText: b07DetailsName("en") })
-      .click();
+    await openUnitMenu(page);
     await expect(
       page
         .getByRole("navigation", { name: b07UnitsName("en") })
         .getByRole("link")
         .filter({ hasText: /Veterinary|Biology|Flexible/u }),
     ).toHaveCount(0);
-    await expect(page.locator("article")).toContainText("Private");
+    // The answer follows the current private mode, so it needs no label;
+    // the composer's privacy line names the mode (MD-10).
+    await expect(page.locator("article")).not.toContainText("Shared");
+    await expect(page.locator("p[class*='composerMeta'] strong")).toHaveText(
+      "Private for future exchanges",
+    );
     await page
       .getByRole("navigation", { name: b07UnitsName("en") })
       .getByRole("link", { name: "Biochemistry", exact: true })

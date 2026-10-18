@@ -118,6 +118,19 @@
   color: var(--seg-on-ink);
 }
 
+.track[data-tone="paper"][data-compact]
+  .segment:is([aria-current], [aria-pressed="true"]) {
+  background: transparent;
+  box-shadow: none;
+}
+.track[data-tone="paper"][data-compact]
+  .segment:is([aria-current], [aria-pressed="true"])
+  .chip {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1.5px var(--action);
+}
+
 /* Steps: a static sequence, current on Night and done marked with a tick. */
 ol.track .segment {
   flex: 1 1 auto;

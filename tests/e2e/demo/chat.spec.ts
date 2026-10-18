@@ -6,15 +6,19 @@ import {
 } from "../support/app-fixtures";
 import { bilingual, inLocales, localized, pick } from "../support/copy";
 import {
-  b07DetailsName,
-  b07SourcesName,
+  answerLanguage,
   b07SwitchName,
   b07UnitsName,
-  openStudyOptions,
+  closeUnitMenu,
+  openEvidenceFromChat,
+  openLibraryFromChat,
+  openUnitMenu,
   showAccountView,
   unit,
+  unitMenuSummary,
 } from "../support/demo";
-import { resize } from "../support/layout";
+import { readingLayout, resize, settle } from "../support/layout";
+import { productNavigation } from "../support/layout-matrix";
 import {
   isolation,
   navigate,
@@ -362,50 +366,46 @@ inLocales(["en"], (locale) => {
     async ({ page }) => {
       const finish = isolation(page);
       const t = bilingual(locale);
-      const inspectOptions = async () => {
-        const summary = page.locator("summary").filter({
-          hasText: t("Study options", "خيارات المذاكرة"),
-        });
+      /** The open unit menu is usable and stays inside the viewport. */
+      const inspectMenu = async () => {
         expect(
-          await summary.evaluate((element) => {
-            const panel = element.parentElement!.querySelector<HTMLElement>(
-              "[class*='chatPreferences']",
-            )!;
+          await page.locator("[class*='menuPanel']").evaluate((panel) => {
             const r = panel.getBoundingClientRect();
-            const card = element
-              .closest("[class*='conversation']")!
-              .getBoundingClientRect();
             return {
               usableWidth: r.width >= 240,
-              withinCard: r.left >= card.left && r.right <= card.right + 1,
               withinViewport:
                 r.left >= 0 &&
                 r.right <= document.documentElement.clientWidth + 1,
               noHorizontalScroll: panel.scrollWidth <= panel.clientWidth + 1,
               controlsUnclipped: Array.from(
-                panel.querySelectorAll<HTMLElement>("a,label"),
-              ).every(
-                (control) =>
-                  control.scrollWidth <= control.clientWidth + 1 &&
-                  control.scrollHeight <= control.clientHeight + 1,
-              ),
+                panel.querySelectorAll<HTMLElement>("a,button"),
+              )
+                .filter((control) => control.checkVisibility())
+                .every(
+                  (control) => control.scrollWidth <= control.clientWidth + 1,
+                ),
             };
           }),
         ).toEqual({
           usableWidth: true,
-          withinCard: true,
           withinViewport: true,
           noHorizontalScroll: true,
           controlsUnclipped: true,
         });
       };
       await signIn(page, "student", locale, `${unit}/chat`);
+      for (let n = 0; n < 3; n++) await send(page, "supported", locale);
+      // The first-visit citation tip sits under the first cited answer.
       const hint = page.getByRole("button", {
         name: t("Got it", "فهمت"),
         exact: true,
       });
-      if (await hint.isVisible()) await hint.click();
-      for (let n = 0; n < 3; n++) await send(page, "supported", locale);
+      await expect(
+        page.locator("#exchange-1").getByRole("complementary", {
+          name: t("Citation help", "مساعدة الاستشهادات"),
+        }),
+      ).toBeVisible();
+      await hint.click();
       await expect(
         page.getByText(localized(answerExamples.supported, locale), {
           exact: true,
@@ -417,13 +417,13 @@ inLocales(["en"], (locale) => {
         [390, 844],
         [320, 720],
       ] as const) {
-        // The shell picks its pane or page flow on the frame after a resize;
-        // until then 320x720 still has the 390x844 pane (133px of reading).
+        // The shell picks its pane or page flow on the frame after a resize.
         await resize(page, width, height);
         await page.evaluate(() => document.fonts.ready);
+        // WP03-T26: Chat keeps the docked composer on phones.
         await expect(page.locator('[data-layout="workspace"]')).toHaveAttribute(
           "data-workspace-flow",
-          /pane|page/u,
+          "pane",
         );
         expect(
           await page.evaluate(
@@ -433,64 +433,20 @@ inLocales(["en"], (locale) => {
                 document.documentElement.clientWidth + 1,
           ),
         ).toBe(true);
-        const layout = await page.evaluate(
-          (name) => {
-            const reading = document.querySelector<HTMLElement>(
-              `[aria-label="${name}"]`,
-            )!;
-            window.scrollTo(0, 0);
-            for (const e of document.querySelectorAll<HTMLElement>("*"))
-              if (e.scrollTop) e.scrollTop = 0;
-            const r = reading.getBoundingClientRect();
-            let top = Math.max(0, r.top),
-              bottom = Math.min(innerHeight, r.bottom);
-            for (let e = reading.parentElement; e; e = e.parentElement)
-              if (
-                ["auto", "scroll", "hidden", "clip"].includes(
-                  getComputedStyle(e).overflowY,
-                )
-              ) {
-                const b = e.getBoundingClientRect();
-                top = Math.max(top, b.top);
-                bottom = Math.min(bottom, b.bottom);
-              }
-            const nav = document.querySelector<HTMLElement>(
-              'nav[aria-label="Product navigation"],nav[aria-label="تنقل المنتج"]',
-            )!;
-            if (getComputedStyle(nav).position === "fixed")
-              bottom = Math.min(bottom, nav.getBoundingClientRect().top);
-            const owners = Array.from(
-              document.querySelectorAll<HTMLElement>("*"),
-            ).filter(
-              (e) =>
-                e.checkVisibility() &&
-                !e.matches("input,textarea,select") &&
-                !e.closest("dialog") &&
-                ["auto", "scroll"].includes(getComputedStyle(e).overflowY) &&
-                e.scrollHeight > e.clientHeight + 2 &&
-                e.clientHeight > 0,
-            );
-            return {
-              visible: Math.max(0, Math.round(bottom - top)),
-              owners:
-                owners.length +
-                (document.documentElement.scrollHeight > innerHeight + 2
-                  ? 1
-                  : 0),
-              overflow:
-                document.documentElement.scrollWidth >
-                document.documentElement.clientWidth + 1,
-            };
-          },
+        const layout = await readingLayout(
+          page,
           t("Conversation", "المحادثة الحالية"),
         );
         expect(layout.visible).toBeGreaterThanOrEqual(160);
         expect(layout.owners).toBe(1);
         expect(layout.overflow).toBe(false);
-        const context = page
-          .locator("summary")
-          .filter({ hasText: b07DetailsName(locale) });
-        await context.press("Enter");
+        // One header: no logo row and no bottom bar inside a unit (MD-01, D2).
+        await expect(
+          page.locator("header[data-workspace-chrome]"),
+        ).toBeHidden();
+        await expect(productNavigation(page, locale)).toBeHidden();
+        // The title button opens the one menu with the unit's details (MD-02).
+        await openUnitMenu(page);
         await expect(
           page.getByText(t("Zagazig University", "جامعة الزقازيق"), {
             exact: true,
@@ -502,49 +458,33 @@ inLocales(["en"], (locale) => {
             exact: true,
           }),
         ).toBeVisible();
-        await context.press("Escape");
-        await expect(context).toBeFocused();
+        await inspectMenu();
+        await unitMenuSummary(page).press("Escape");
+        await expect(unitMenuSummary(page)).toBeFocused();
         await expect(
           page.getByText(t("Zagazig University", "جامعة الزقازيق"), {
             exact: true,
           }),
         ).toBeHidden();
-        const studyOptions = page
-          .locator("summary")
-          .filter({ hasText: t("Study options", "خيارات المذاكرة") });
-        await studyOptions.click();
-        await inspectOptions();
-        await studyOptions.press("Escape");
-        await page
+        const citation = page
           .getByRole("button", {
             name: t("Lecture 6, p. 14", "المحاضرة 6، ص ١٤"),
             exact: true,
           })
-          .last()
-          .click();
+          .last();
+        await citation.click();
         await expect(page.getByRole("dialog")).toBeVisible();
         await page
           .getByRole("dialog")
           .getByRole("button", { name: t("Close", "إغلاق"), exact: true })
           .click();
-        await expect(
-          page
-            .getByRole("button", {
-              name: t("Lecture 6, p. 14", "المحاضرة 6، ص ١٤"),
-              exact: true,
-            })
-            .last(),
-        ).toBeFocused();
+        await expect(citation).toBeFocused();
       }
       await page.locator("#message").fill("Keep this synthetic B06 draft.");
-      const options = page
-        .locator("summary")
-        .filter({ hasText: t("Study options", "خيارات المذاكرة") });
-      await options.click();
-      await page
-        .getByRole("radio", { name: t("Arabic", "العربية"), exact: true })
-        .check();
-      await options.press("Escape");
+      // The answer language is a menu in the composer (MD-02).
+      await answerLanguage(page, locale).selectOption("ar");
+      // On phones the interface language sits in the unit menu.
+      await openUnitMenu(page);
       await page
         .getByRole("button", {
           name: locale === "en" ? "العربية" : "English",
@@ -558,6 +498,7 @@ inLocales(["en"], (locale) => {
       await expect(page.locator("#message")).toHaveValue(
         "Keep this synthetic B06 draft.",
       );
+      await openUnitMenu(page);
       await page
         .getByRole("button", {
           name: locale === "en" ? "English" : "العربية",
@@ -565,17 +506,8 @@ inLocales(["en"], (locale) => {
         })
         .click();
       await expect(page.locator("html")).toHaveAttribute("lang", locale);
-      await page
-        .locator("summary")
-        .filter({ hasText: t("Study options", "خيارات المذاكرة") })
-        .click();
-      await expect(
-        page.getByRole("radio", { name: t("Arabic", "العربية"), exact: true }),
-      ).toBeChecked();
-      await page
-        .locator("summary")
-        .filter({ hasText: t("Study options", "خيارات المذاكرة") })
-        .press("Escape");
+      await expect(answerLanguage(page, locale)).toHaveValue("ar");
+      await closeUnitMenu(page);
       await navigate(page, `${unit}/studio`, locale);
       await page
         .locator("summary")
@@ -594,16 +526,23 @@ inLocales(["en"], (locale) => {
       ).toBeVisible();
       for (const width of [390, 320]) {
         await page.setViewportSize({ width, height: 844 });
-        const sources = page.getByRole("link", {
-          name: b07SourcesName(locale),
+        // Phones show the result first, its settings folded into one line.
+        await expect(
+          page.getByRole("button", {
+            name: new RegExp(`^${t("Settings", "الإعدادات")}`, "u"),
+          }),
+        ).toHaveAttribute("aria-expanded", "false");
+        const passages = page.getByRole("button", {
+          name: t("Supporting passages", "النصوص الداعمة"),
           exact: true,
         });
-        await sources.focus();
-        await expect(sources).toBeFocused();
-        // The shell re-measures on the next frame after a resize; read settled geometry.
+        await passages.focus();
+        await expect(passages).toBeFocused();
+        // The shell re-measures on the next frame after a resize; read
+        // settled geometry. Studio scrolls the document on phones (MD-06).
         await expect
           .poll(() =>
-            sources.evaluate((e) => {
+            passages.evaluate((e) => {
               const r = e.getBoundingClientRect();
               const owners = Array.from(
                 document.querySelectorAll<HTMLElement>("*"),
@@ -617,24 +556,20 @@ inLocales(["en"], (locale) => {
                   item.scrollHeight > item.clientHeight + 2 &&
                   item.clientHeight > 0,
               );
-              const nav = document.querySelector<HTMLElement>(
-                'nav[aria-label="Product navigation"],nav[aria-label="تنقل المنتج"]',
-              )!;
-              const bottom =
-                getComputedStyle(nav).position === "fixed"
-                  ? nav.getBoundingClientRect().top
-                  : innerHeight;
               return {
+                flow: document
+                  .querySelector("[data-workspace-flow]")
+                  ?.getAttribute("data-workspace-flow"),
                 owners:
                   owners.length +
                   (document.documentElement.scrollHeight > innerHeight + 2
                     ? 1
                     : 0),
-                actionVisible: r.top >= 0 && r.bottom <= bottom + 1,
+                actionVisible: r.top >= 0 && r.bottom <= innerHeight + 1,
               };
             }),
           )
-          .toEqual({ owners: 1, actionVisible: true });
+          .toEqual({ flow: "page", owners: 1, actionVisible: true });
       }
       await navigate(page, `${unit}/chat`, locale);
       await expect(page.locator("#message")).toHaveValue(
@@ -642,12 +577,7 @@ inLocales(["en"], (locale) => {
       );
       for (const width of [768, 1440]) {
         await page.setViewportSize({ width, height: 900 });
-        await expect(
-          page.getByRole("group", {
-            name: t("Study language", "لغة المذاكرة"),
-            exact: true,
-          }),
-        ).toBeVisible();
+        await expect(answerLanguage(page, locale)).toBeVisible();
         expect(
           await page.evaluate(
             () =>
@@ -656,27 +586,18 @@ inLocales(["en"], (locale) => {
           ),
         ).toBe(true);
       }
-      await page
-        .getByRole("radio", { name: t("Arabic", "العربية"), exact: true })
-        .focus();
       await page.setViewportSize({ width: 320, height: 720 });
-      await expect(options).toBeFocused();
-      await page.setViewportSize({ width: 768, height: 900 });
-      await expect(
-        page.getByRole("radio", { name: t("Arabic", "العربية"), exact: true }),
-      ).toBeFocused();
-      await page.setViewportSize({ width: 320, height: 720 });
-      await expect(options).toBeFocused();
       await page.evaluate(
         () => (document.documentElement.style.fontSize = "32px"),
       );
+      // 200% text leaves no room to dock: the page scrolls instead.
       await expect(page.locator('[data-layout="workspace"]')).toHaveAttribute(
         "data-workspace-flow",
         "page",
       );
-      await options.click();
-      await inspectOptions();
-      await options.press("Escape");
+      await openUnitMenu(page);
+      await inspectMenu();
+      await closeUnitMenu(page);
       expect(
         await page.evaluate(
           () =>
@@ -694,15 +615,226 @@ inLocales(["en"], (locale) => {
       await page.evaluate(
         () => (document.documentElement.style.fontSize = "16px"),
       );
-      await page.setViewportSize({ width: 390, height: 420 });
-      await expect(page.locator('[data-layout="workspace"]')).toHaveAttribute(
-        "data-workspace-flow",
-        "page",
-      );
-      await page.locator("#message").fill("Keyboard-sized viewport example.");
+      await page.locator("#message").blur();
+      await resize(page, 390, 420);
+      // A short window without a focused field is not a keyboard.
       await expect(
-        page.getByRole("link", { name: "Samir Hassan", exact: true }),
-      ).toBeVisible();
+        page.locator('[data-layout="workspace"]'),
+      ).not.toHaveAttribute("data-keyboard", /./u);
+      await page.locator("#message").fill("Keyboard-sized viewport example.");
+      await expect(page.locator("#message")).toBeInViewport();
+      finish();
+    },
+  );
+});
+
+inLocales(["en", "ar"], (locale) => {
+  test(
+    `a phone keyboard keeps the composer docked without a page-flow flip [${locale}]`,
+    { tag: ["@WP03-T26", `@${locale}`] },
+    async ({ page }) => {
+      const finish = isolation(page);
+      const t = bilingual(locale);
+      const workspace = page.locator('[data-layout="workspace"]');
+      await page.setViewportSize({ width: 360, height: 640 });
+      await signIn(page, "student", locale, `${unit}/chat`);
+      await send(page, "supported", locale);
+      await send(page, "conflict", locale);
+      await settle(page);
+      await expect(workspace).toHaveAttribute("data-workspace-flow", "pane");
+      const resting = await readingLayout(
+        page,
+        t("Conversation", "المحادثة الحالية"),
+      );
+      // The docked phone layout keeps 400px of conversation at 360x640 in
+      // the hosted presentation; the local demo adds its service line.
+      const serviceLine = await page
+        .getByRole("note")
+        .filter({ hasText: t("Synthetic demo", "عرض تجريبي") })
+        .evaluate((note) => note.getBoundingClientRect().height);
+      expect(resting.visible + serviceLine).toBeGreaterThanOrEqual(400);
+      const tools = page.getByRole("navigation", {
+        name: t("Workspace navigation", "تنقل مساحة المذاكرة"),
+        exact: true,
+      });
+      await expect(tools).toBeVisible();
+      // A software keyboard: the field has focus, then the viewport shrinks
+      // at the same width (resizes-content; iOS shrinks the visual viewport).
+      await page.locator("#message").focus();
+      await resize(page, 360, 360);
+      await expect(workspace).toHaveAttribute("data-keyboard", "open");
+      await expect(workspace).toHaveAttribute("data-workspace-flow", "pane");
+      await expect(tools).toBeHidden();
+      await expect(page.locator("#message")).toBeFocused();
+      await expect(page.locator("#message")).toBeInViewport({ ratio: 1 });
+      await expect(
+        page.getByRole("button", { name: t("Send", "إرسال"), exact: true }),
+      ).toBeInViewport({ ratio: 1 });
+      const typing = await readingLayout(
+        page,
+        t("Conversation", "المحادثة الحالية"),
+      );
+      expect(typing.owners).toBe(1);
+      expect(typing.overflow).toBe(false);
+      // As at rest, the hosted presentation has no local service line; it
+      // wraps to more lines at 360px with some fonts (Linux CI).
+      const serviceLineWhileTyping = await page
+        .getByRole("note")
+        .filter({ hasText: t("Synthetic demo", "عرض تجريبي") })
+        .evaluate((note) => note.getBoundingClientRect().height);
+      expect(typing.visible + serviceLineWhileTyping).toBeGreaterThanOrEqual(
+        120,
+      );
+      // The page itself does not scroll: the composer stays docked.
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollHeight <= innerHeight + 1,
+        ),
+      ).toBe(true);
+      await page.locator("#message").fill(t("A typed question", "سؤال مكتوب"));
+      // The keyboard closes: the tools come back and the flow is unchanged.
+      await page.locator("#message").blur();
+      await resize(page, 360, 640);
+      await expect(workspace).not.toHaveAttribute("data-keyboard", /./u);
+      await expect(workspace).toHaveAttribute("data-workspace-flow", "pane");
+      await expect(tools).toBeVisible();
+      await expect(page.locator("#message")).toHaveValue(
+        t("A typed question", "سؤال مكتوب"),
+      );
+      finish();
+    },
+  );
+});
+
+inLocales(["en"], (locale) => {
+  test(
+    `the phone source sheet traps focus, closes on Escape and returns focus`,
+    { tag: ["@WP03-T26", `@${locale}`] },
+    async ({ page }) => {
+      const finish = isolation(page);
+      const t = bilingual(locale);
+      await page.setViewportSize({ width: 390, height: 844 });
+      await signIn(page, "student", locale, `${unit}/chat`);
+      await send(page, "conflict", locale);
+      const citation = page.getByRole("button", {
+        name: t("Two source excerpts", "نصان من مصدرين"),
+        exact: true,
+      });
+      await citation.click();
+      const sheet = page.getByRole("dialog", {
+        name: t("Source excerpt", "نص المصدر"),
+      });
+      await expect(sheet).toBeVisible();
+      // A bottom sheet: full width, on the bottom edge, 22px top corners,
+      // read once its 300ms rise has settled.
+      await sheet.evaluate((element) =>
+        Promise.all(element.getAnimations().map((motion) => motion.finished)),
+      );
+      const geometry = await sheet.evaluate((element) => {
+        const r = element.getBoundingClientRect();
+        const style = getComputedStyle(element);
+        return {
+          left: Math.round(r.left),
+          width: Math.round(r.width),
+          bottom: Math.abs(Math.round(innerHeight - r.bottom)),
+          radius: style.borderTopLeftRadius,
+          bottomRadius: style.borderBottomLeftRadius,
+          modal: element.matches(":modal"),
+        };
+      });
+      expect(geometry).toEqual({
+        left: 0,
+        width: 390,
+        bottom: 0,
+        radius: "22px",
+        bottomRadius: "0px",
+        modal: true,
+      });
+      await expect(sheet.locator("blockquote")).toHaveCount(2);
+      // Focus stays inside the modal sheet: tabbing moves within it and the
+      // page behind is inert.
+      for (let step = 0; step < 2; step++) {
+        await page.keyboard.press("Tab");
+        expect(
+          await sheet.evaluate((element) =>
+            element.contains(document.activeElement),
+          ),
+        ).toBe(true);
+      }
+      expect(
+        await sheet.evaluate((element) => {
+          document.querySelector<HTMLElement>("#message")?.focus();
+          return element.contains(document.activeElement);
+        }),
+      ).toBe(true);
+      await page.keyboard.press("Escape");
+      await expect(sheet).toBeHidden();
+      await expect(citation).toBeFocused();
+      // A text selection dragged from the sheet onto the backdrop keeps it
+      // open; a press and release on the backdrop closes it.
+      await citation.click();
+      await expect(sheet).toBeVisible();
+      const quote = await sheet.locator("blockquote").first().boundingBox();
+      await page.mouse.move(quote!.x + 20, quote!.y + 10);
+      await page.mouse.down();
+      await page.mouse.move(195, 40, { steps: 8 });
+      await page.mouse.up();
+      await expect(sheet).toBeVisible();
+      await page.mouse.click(195, 40);
+      await expect(sheet).toBeHidden();
+      await expect(citation).toBeFocused();
+      // Desktop keeps the centred dialog.
+      await page.setViewportSize({ width: 1280, height: 800 });
+      await citation.click();
+      const dialog = await sheet.evaluate((element) => {
+        const r = element.getBoundingClientRect();
+        return { centred: Math.abs(r.left + r.width / 2 - innerWidth / 2) < 2 };
+      });
+      expect(dialog.centred).toBe(true);
+      await page.keyboard.press("Escape");
+      await expect(citation).toBeFocused();
+      finish();
+    },
+  );
+});
+
+inLocales(["en"], (locale) => {
+  test(
+    `a press outside the unit menu closes it without moving focus to it`,
+    { tag: ["@WP03-T26", `@${locale}`] },
+    async ({ page }) => {
+      const finish = isolation(page);
+      const t = bilingual(locale);
+      await page.setViewportSize({ width: 1280, height: 800 });
+      await signIn(page, "student", locale, `${unit}/chat`);
+      const summary = unitMenuSummary(page);
+      await summary.click();
+      await expect(summary).toHaveAttribute("aria-expanded", "true");
+      // A press on the conversation dismisses the menu and leaves focus
+      // where the user pressed; Space then does not reopen it.
+      const conversation = await page
+        .getByRole("region", { name: t("Conversation", "المحادثة الحالية") })
+        .boundingBox();
+      await page.mouse.click(
+        conversation!.x + conversation!.width - 40,
+        conversation!.y + conversation!.height - 40,
+      );
+      await expect(summary).toHaveAttribute("aria-expanded", "false");
+      await page.evaluate(
+        () =>
+          new Promise<void>((resolve) =>
+            requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+          ),
+      );
+      await expect(summary).not.toBeFocused();
+      await page.keyboard.press("Space");
+      await expect(summary).toHaveAttribute("aria-expanded", "false");
+      // Escape still returns focus to the summary.
+      await summary.click();
+      await expect(summary).toHaveAttribute("aria-expanded", "true");
+      await page.keyboard.press("Escape");
+      await expect(summary).toHaveAttribute("aria-expanded", "false");
+      await expect(summary).toBeFocused();
       finish();
     },
   );
@@ -718,13 +850,8 @@ inLocales(["ar"], (locale) => {
       await signIn(page, "student", locale, `${unit}/chat`);
       await send(page, "supported", locale);
       await send(page, "conflict", locale);
-      await page
-        .getByRole("link", {
-          name: t("Inspect evidence", "فحص الأدلة"),
-          exact: true,
-        })
-        .first()
-        .click();
+      // One evidence route per answer: citation, then the sheet's link.
+      await openEvidenceFromChat(page, locale, 1);
       await expect(page.getByRole("main")).toContainText(
         localized(answerExamples.supported, locale),
       );
@@ -859,12 +986,7 @@ inLocales(["en"], (locale) => {
         );
       }
       await navigate(page, `${unit}/chat`, locale);
-      await page
-        .getByRole("link", {
-          name: t("Inspect evidence", "فحص الأدلة"),
-          exact: true,
-        })
-        .click();
+      await openEvidenceFromChat(page, locale);
       await expect(
         page.getByRole("link", {
           name: t("Report selected exchange", "الإبلاغ عن المحادثة المختارة"),
@@ -887,10 +1009,7 @@ inLocales(["en"], (locale) => {
           `/learn/${row.cohort.id}/${row.unit.id}` !== unit,
       )!;
       const foreignPath = `/learn/${foreign.cohort.id}/${foreign.unit.id}`;
-      await page
-        .locator("summary")
-        .filter({ hasText: b07DetailsName(locale) })
-        .click();
+      await openUnitMenu(page);
       await page
         .getByRole("link", {
           name: locale === "ar" ? foreign.unit.nameAr : foreign.unit.nameEn,
@@ -954,7 +1073,7 @@ inLocales(["en"], (locale) => {
       ) as (keyof typeof promptExamples)[])
         await send(page, kind, locale);
       await expect(page.locator("article")).toHaveCount(7);
-      await page.locator(`a[href*="${unit}/evidence?"]`).first().click();
+      await openEvidenceFromChat(page, locale);
       await expect(
         page.getByText(pick(locale, "Lecture 6 handout", "ملزمة المحاضرة 6"), {
           exact: true,
@@ -1019,9 +1138,7 @@ inLocales(["ar"], (locale) => {
           exact: true,
         })
         .click();
-      await expect(
-        page.locator("summary").filter({ hasText: b07DetailsName(locale) }),
-      ).toHaveCount(1);
+      await expect(unitMenuSummary(page)).toHaveCount(1);
       await expect(
         page.getByRole("button", {
           name: pick(locale, "Send", "إرسال"),
@@ -1032,13 +1149,7 @@ inLocales(["ar"], (locale) => {
       await page
         .getByLabel(pick(locale, "Message", "السؤال"), { exact: true })
         .fill(prompt);
-      await page
-        .getByRole("group", {
-          name: pick(locale, "Study language", "لغة المذاكرة"),
-          exact: true,
-        })
-        .locator('input[value="mixed"]')
-        .check();
+      await answerLanguage(page, locale).selectOption("mixed");
       const nextLocale = locale === "en" ? "ar" : "en";
       const languageButton = page
         .getByRole("group", {
@@ -1055,14 +1166,7 @@ inLocales(["ar"], (locale) => {
       await expect(
         page.getByLabel(pick(nextLocale, "Message", "السؤال"), { exact: true }),
       ).toHaveValue(prompt);
-      await expect(
-        page
-          .getByRole("group", {
-            name: pick(nextLocale, "Study language", "لغة المذاكرة"),
-            exact: true,
-          })
-          .locator('input[value="mixed"]'),
-      ).toBeChecked();
+      await expect(answerLanguage(page, nextLocale)).toHaveValue("mixed");
       await expect(
         page
           .getByRole("group", {
@@ -1188,10 +1292,8 @@ inLocales(["en"], (locale) => {
       const input = page.getByLabel(pick(locale, "Message", "السؤال"), {
         exact: true,
       });
-      const evidence = page.getByRole("link", {
-        name: pick(locale, "Inspect evidence", "فحص الأدلة"),
-        exact: true,
-      });
+      // Completed exchanges (each answer is one article).
+      const evidence = page.locator('article[id^="exchange-"]');
       const prompt = localized(promptExamples.supported, locale);
       await input.fill(prompt);
       await page
@@ -1271,9 +1373,9 @@ inLocales(["ar"], (locale) => {
         });
         const rect = await send.boundingBox();
         expect(rect!.y).toBeGreaterThanOrEqual(0);
-        expect(rect!.y + rect!.height).toBeLessThanOrEqual(
-          height! - (width! < 768 ? 64 : 0),
-        );
+        // No bottom bar inside a unit on phones (WP03-T26): the composer
+        // docks at the bottom edge.
+        expect(rect!.y + rect!.height).toBeLessThanOrEqual(height!);
         expect(
           await page.evaluate(() => document.documentElement.scrollWidth),
         ).toBeLessThanOrEqual(width! + 1);
@@ -1344,9 +1446,7 @@ inLocales(["ar"], (locale) => {
             exact: true,
           })
           .boundingBox();
-        expect(rect!.y + rect!.height).toBeLessThanOrEqual(
-          height! - (width! < 768 ? 64 : 0),
-        );
+        expect(rect!.y + rect!.height).toBeLessThanOrEqual(height!);
       }
       await navigate(page, unit + "/chat", locale);
       await page.setViewportSize({ width: 390, height: 844 });
@@ -1385,24 +1485,32 @@ inLocales(["en"], (locale) => {
       await expect(
         nav.locator('a[data-account] b[aria-hidden="true"]'),
       ).toHaveText("S");
+      // No tip before an answer exists (IX-21).
       await expect(
         page.getByRole("complementary", {
           name: pick(locale, "Citation help", "مساعدة الاستشهادات"),
         }),
-      ).toBeVisible();
+      ).toHaveCount(0);
+      await answerLanguage(page, locale).selectOption("mixed");
+      await send(page, "supported", locale);
+      // The first-visit tip sits under the first cited answer.
+      await expect(
+        page.locator("#exchange-1").getByRole("complementary", {
+          name: pick(locale, "Citation help", "مساعدة الاستشهادات"),
+        }),
+      ).toContainText(
+        pick(
+          locale,
+          "Select a citation to read its source passage.",
+          "اختر الاستشهاد لقراءة نص المصدر.",
+        ),
+      );
       await page
         .getByRole("button", {
           name: pick(locale, "Got it", "فهمت"),
           exact: true,
         })
         .click();
-      const languages = () =>
-        page.getByRole("group", {
-          name: pick(locale, "Study language", "لغة المذاكرة"),
-          exact: true,
-        });
-      await languages().locator('input[value="mixed"]').check();
-      await send(page, "supported", locale);
       const citation = page.getByRole("button", {
         name: pick(locale, "Lecture 6, p. 14", "المحاضرة 6، ص ١٤"),
         exact: true,
@@ -1425,7 +1533,7 @@ inLocales(["en"], (locale) => {
           exact: true,
         })
         .click();
-      await expect(languages().locator('input[value="mixed"]')).toBeChecked();
+      await expect(answerLanguage(page, locale)).toHaveValue("mixed");
       await navigate(page, "/settings", locale);
       await expect(page.getByRole("tabpanel")).toHaveCount(1);
       await expect(
@@ -1483,10 +1591,7 @@ inLocales(["en"], (locale) => {
           name: pick(locale, "Citation help", "مساعدة الاستشهادات"),
         }),
       ).toHaveCount(0);
-      await page
-        .locator("summary")
-        .filter({ hasText: b07DetailsName(locale) })
-        .click();
+      await openUnitMenu(page);
       const subjects = page.getByRole("navigation", {
         name: b07UnitsName(locale),
       });
@@ -1516,10 +1621,7 @@ inLocales(["en"], (locale) => {
           name: pick(locale, "Conversation", "المحادثة الحالية"),
         }),
       ).toBeVisible();
-      await page
-        .locator("summary")
-        .filter({ hasText: b07DetailsName(locale) })
-        .click();
+      await openUnitMenu(page);
       await page
         .getByRole("navigation", {
           name: b07UnitsName(locale),
@@ -1548,12 +1650,6 @@ inLocales(["ar"], (locale) => {
     async ({ page }) => {
       const finish = isolation(page);
       await signIn(page, "student", locale, unit + "/chat");
-      await page
-        .getByRole("button", {
-          name: pick(locale, "Got it", "فهمت"),
-          exact: true,
-        })
-        .click();
       const interfaceGroup = () =>
         page.getByRole("group", {
           name: pick(locale, "Interface language", "لغة الواجهة"),
@@ -1563,18 +1659,8 @@ inLocales(["ar"], (locale) => {
         page.getByText(pick(locale, "Interface language", "لغة الواجهة"), {
           exact: true,
         });
-      const sources = page.getByRole("link", {
-        name: b07SourcesName(locale),
-        exact: true,
-      });
-      const sessions = page
-        .locator("summary")
-        .filter({ hasText: pick(locale, "Sessions", "الجلسات") })
-        .first();
-      const languages = page.getByRole("group", {
-        name: pick(locale, "Study language", "لغة المذاكرة"),
-        exact: true,
-      });
+      const sessions = unitMenuSummary(page);
+      const languages = answerLanguage(page, locale);
       // Tool alignment at each width is checked by the layout matrix chat state.
       await expect(scopeLabel()).toHaveCount(0);
       await expect(interfaceGroup()).toBeVisible();
@@ -1587,8 +1673,7 @@ inLocales(["ar"], (locale) => {
       ).toBeVisible();
       await sessions.press("Escape");
       await expect(sessions).toBeFocused();
-      await openStudyOptions(page, locale);
-      await languages.locator('input[value="mixed"]').check();
+      await languages.selectOption("mixed");
       const message = page.getByLabel(pick(locale, "Message", "السؤال"), {
         exact: true,
       });
@@ -1604,14 +1689,7 @@ inLocales(["ar"], (locale) => {
       await expect(
         page.getByLabel(pick(alternate, "Message", "السؤال"), { exact: true }),
       ).toHaveValue(prompt);
-      await expect(
-        page
-          .getByRole("group", {
-            name: pick(alternate, "Study language", "لغة المذاكرة"),
-            exact: true,
-          })
-          .locator('input[value="mixed"]'),
-      ).toBeChecked();
+      await expect(answerLanguage(page, alternate)).toHaveValue("mixed");
       await page
         .getByRole("group", {
           name: pick(alternate, "Interface language", "لغة الواجهة"),
@@ -1639,8 +1717,8 @@ inLocales(["ar"], (locale) => {
         })
         .click();
       await expect(page.locator("article")).toHaveCount(1);
-      await openStudyOptions(page, locale);
-      await sources.press("Enter");
+      await page.keyboard.press("Escape");
+      await openLibraryFromChat(page, locale);
       await expect(
         page.getByRole("link", {
           name: pick(locale, "Return to Chat", "العودة للمحادثة"),
@@ -1666,18 +1744,12 @@ inLocales(["en"], (locale) => {
     async ({ page }) => {
       const finish = isolation(page);
       await signIn(page, "student", locale, unit + "/chat");
-      await page
-        .getByRole("button", {
-          name: pick(locale, "Got it", "فهمت"),
-          exact: true,
-        })
-        .click();
       const sessions = page.locator(
-        'summary[aria-label="' +
+        'summary:has-text("' +
           pick(locale, "Sessions and privacy", "الجلسات والخصوصية") +
-          '"]',
+          '")',
       );
-      const meta = page.locator("form p[class*='composerMeta']");
+      const meta = page.locator("p[class*='composerMeta']");
       await expect(meta.locator("strong")).toHaveText(
         pick(locale, "Visible to UniMind’s founders", "ظاهرة لمؤسسي UniMind"),
       );
@@ -1735,11 +1807,40 @@ inLocales(["en"], (locale) => {
       await expect(message).toHaveValue(prompt + "\n");
       await message.press("Enter");
       await expect(page.locator("article")).toHaveCount(1);
-      await expect(
-        page
-          .locator("article")
-          .getByText(pick(locale, "Private", "خاص"), { exact: true }),
-      ).toBeVisible();
+      // The sharing label shows only when an answer's mode differs from the
+      // current setting (MD-10).
+      const label = page
+        .locator("article")
+        .getByText(pick(locale, "Private", "خاص"), { exact: true });
+      await expect(label).toHaveCount(0);
+      await sessions.press("Enter");
+      await page
+        .getByRole("link", {
+          name: pick(locale, "Privacy settings", "إعدادات الخصوصية"),
+          exact: true,
+        })
+        .click();
+      await page
+        .getByRole("radio", {
+          name: pick(
+            locale,
+            "Visible to UniMind’s founders",
+            "ظاهرة لمؤسسي UniMind",
+          ),
+          exact: true,
+        })
+        .check();
+      await page
+        .getByRole("link", {
+          name: pick(
+            locale,
+            "Return to Chat · Anatomy",
+            "العودة إلى المحادثة · علم التشريح",
+          ),
+          exact: true,
+        })
+        .click();
+      await expect(label).toBeVisible();
       finish();
     },
   );

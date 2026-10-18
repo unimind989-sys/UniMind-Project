@@ -147,137 +147,152 @@ export function StudyShelf({
           "مصادر",
         )}`;
   const ready = state === "READY" && journey.units.length > 0;
+  const band = (
+    <header
+      className={styles.pageHeader}
+      data-view={subjects ? "subjects" : "study"}
+    >
+      <div className={styles.headerText}>
+        <h1 ref={heading} tabIndex={-1}>
+          {subjects
+            ? t(
+                `Your ${collectionLabel.toLocaleLowerCase(locale)}`,
+                `قائمة ${collectionLabel}`,
+              )
+            : t("Your Study Shelf", "رف المذاكرة")}
+        </h1>
+        {!subjects && context ? (
+          // The academic line is itself the way to change it (MD-17).
+          <Link
+            className={styles.contextLink}
+            href={`/settings?lang=${locale}&section=academic` as Route}
+          >
+            <span className="visually-hidden">
+              {t("Academic settings", "الإعدادات الدراسية")}:{" "}
+            </span>
+            <bdi>{context}</bdi>
+            <FrontendIcon name="settings" size={16} />
+          </Link>
+        ) : (
+          <p>
+            {context ||
+              t(
+                "Your subjects and materials, together.",
+                "موادك ومصادرك في مكان واحد.",
+              )}
+          </p>
+        )}
+        {!subjects && !context ? (
+          <Link
+            className={styles.contextLink}
+            href={`/settings?lang=${locale}&section=academic` as Route}
+          >
+            {t("Academic settings", "الإعدادات الدراسية")}
+          </Link>
+        ) : null}
+      </div>
+      {ready && !subjects ? (
+        <section className={styles.resume} data-plane="cobalt">
+          <div className={styles.planeText}>
+            {resumeName ? (
+              <>
+                <h2 className={styles.planeLabel}>
+                  <span className={styles.planePill}>
+                    <bdi>{resumeName}</bdi>
+                  </span>
+                  <span className="visually-hidden"> · </span>
+                  <span>{resumeTool}</span>
+                </h2>
+                {resumeAddress && lastStudyDetails ? (
+                  <p className={styles.recentTitle}>
+                    <bdi>{lastStudyDetails.title}</bdi>
+                  </p>
+                ) : null}
+              </>
+            ) : (
+              <>
+                <p className={styles.planeLabel}>
+                  <span className={styles.planePill}>
+                    {t("Start here", "ابدأ من هنا")}
+                  </span>
+                </p>
+                <h2>
+                  {startName ? (
+                    <>
+                      {t("Start in", "ابدأ في")} <bdi>{startName}</bdi>
+                    </>
+                  ) : (
+                    t("Start studying", "ابدأ المذاكرة")
+                  )}
+                </h2>
+              </>
+            )}
+            {resumeAddress && lastStudyDetails ? (
+              <p className={styles.planeDetail}>{lastStudyDetails.detail}</p>
+            ) : null}
+            {/* The resume card names what to resume; only the local
+                    demo adds its tab-boundary note (MD-17, WP03 D4). */}
+            {resumeAddress && (!synthetic || hosted) ? null : (
+              <p className={styles.planeNote}>
+                {resumeAddress
+                  ? t(
+                      "Only the latest work in this tab is shown. Reload starts fresh.",
+                      "يظهر آخر عمل في هذا التبويب فقط. إعادة التحميل تبدأ من جديد.",
+                    )
+                  : startName
+                    ? t(
+                        "Open learning materials in your current study path.",
+                        "افتح مصادر المذاكرة في مسارك الدراسي الحالي.",
+                      )
+                    : t(
+                        `Choose a ${singularLabel.toLocaleLowerCase(locale)} to open its learning materials and study tools.`,
+                        `اختر ${singularLabel} لفتح مصادر المذاكرة والأدوات.`,
+                      )}
+              </p>
+            )}
+          </div>
+          <Link
+            {...buttonLook(
+              { variant: "primary", tone: "cobalt", size: "large" },
+              styles.open,
+            )}
+            href={
+              resumeAddress
+                ? ((resumeAddress.pathname +
+                    resumeAddress.search +
+                    resumeAddress.hash) as Route)
+                : startAddress
+                  ? (startAddress as Route)
+                  : browseHref
+            }
+          >
+            <FrontendIcon name={resumeName ? "chat" : "sources"} />
+            {resumeName
+              ? t(`Resume ${resumeName}`, `متابعة ${resumeName}`)
+              : startName
+                ? t(`Open ${startName}`, `فتح ${startName}`)
+                : t(
+                    `Choose a ${singularLabel.toLocaleLowerCase(locale)}`,
+                    `اختر ${singularLabel}`,
+                  )}
+          </Link>
+        </section>
+      ) : null}
+    </header>
+  );
   return (
     <AppShell
       locale={locale}
       synthetic={synthetic}
       profileName={profileName}
       title={subjects ? t("Subjects", "المواد") : t("Study", "المذاكرة")}
+      band={band}
     >
-      <div className={styles.content}>
-        <header
-          className={styles.pageHeader}
-          data-view={subjects ? "subjects" : "study"}
-        >
-          <div className={styles.headerText}>
-            <h1 ref={heading} tabIndex={-1}>
-              {subjects
-                ? t(
-                    `Your ${collectionLabel.toLocaleLowerCase(locale)}`,
-                    `قائمة ${collectionLabel}`,
-                  )
-                : t("Your Study Shelf", "رف المذاكرة")}
-            </h1>
-            <p>
-              {context ||
-                t(
-                  "Your subjects and materials, together.",
-                  "موادك ومصادرك في مكان واحد.",
-                )}
-            </p>
-            {!subjects ? (
-              <Link
-                className={styles.contextLink}
-                href={`/settings?lang=${locale}&section=academic` as Route}
-              >
-                {t("Academic settings", "الإعدادات الدراسية")}
-              </Link>
-            ) : null}
-          </div>
-          {ready && !subjects ? (
-            <section className={styles.resume} data-plane="cobalt">
-              <div className={styles.planeText}>
-                {resumeName ? (
-                  <>
-                    <h2 className={styles.planeLabel}>
-                      <span className={styles.planePill}>
-                        <bdi>{resumeName}</bdi>
-                      </span>
-                      <span className="visually-hidden"> · </span>
-                      <span>{resumeTool}</span>
-                    </h2>
-                    {resumeAddress && lastStudyDetails ? (
-                      <p className={styles.recentTitle}>
-                        <bdi>{lastStudyDetails.title}</bdi>
-                      </p>
-                    ) : null}
-                  </>
-                ) : (
-                  <>
-                    <p className={styles.planeLabel}>
-                      <span className={styles.planePill}>
-                        {t("Start here", "ابدأ من هنا")}
-                      </span>
-                    </p>
-                    <h2>
-                      {startName ? (
-                        <>
-                          {t("Start in", "ابدأ في")} <bdi>{startName}</bdi>
-                        </>
-                      ) : (
-                        t("Start studying", "ابدأ المذاكرة")
-                      )}
-                    </h2>
-                  </>
-                )}
-                {resumeAddress && lastStudyDetails ? (
-                  <p className={styles.planeDetail}>
-                    {lastStudyDetails.detail}
-                  </p>
-                ) : null}
-                <p className={styles.planeNote}>
-                  {resumeAddress
-                    ? t(
-                        synthetic
-                          ? hosted
-                            ? "Only your latest work is shown here."
-                            : "Only the latest work in this tab is shown. Reload starts fresh."
-                          : "Continue your newest open Chat conversation. Other tools are not listed here yet.",
-                        synthetic
-                          ? hosted
-                            ? "يظهر آخر عمل لك هنا فقط."
-                            : "يظهر آخر عمل في هذا التبويب فقط. إعادة التحميل تبدأ من جديد."
-                          : "تابع أحدث محادثة مفتوحة. الأدوات الأخرى لا تظهر هنا بعد.",
-                      )
-                    : startName
-                      ? t(
-                          "Open learning materials in your current study path.",
-                          "افتح مصادر المذاكرة في مسارك الدراسي الحالي.",
-                        )
-                      : t(
-                          `Choose a ${singularLabel.toLocaleLowerCase(locale)} to open its learning materials and study tools.`,
-                          `اختر ${singularLabel} لفتح مصادر المذاكرة والأدوات.`,
-                        )}
-                </p>
-              </div>
-              <Link
-                {...buttonLook(
-                  { variant: "primary", tone: "cobalt", size: "large" },
-                  styles.open,
-                )}
-                href={
-                  resumeAddress
-                    ? ((resumeAddress.pathname +
-                        resumeAddress.search +
-                        resumeAddress.hash) as Route)
-                    : startAddress
-                      ? (startAddress as Route)
-                      : browseHref
-                }
-              >
-                <FrontendIcon name={resumeName ? "chat" : "sources"} />
-                {resumeName
-                  ? t(`Resume ${resumeName}`, `متابعة ${resumeName}`)
-                  : startName
-                    ? t(`Open ${startName}`, `فتح ${startName}`)
-                    : t(
-                        `Choose a ${singularLabel.toLocaleLowerCase(locale)}`,
-                        `اختر ${singularLabel}`,
-                      )}
-              </Link>
-            </section>
-          ) : null}
-        </header>
+      <div
+        className={styles.content}
+        data-view={subjects ? "subjects" : "study"}
+        data-resume={ready && !subjects ? "" : undefined}
+      >
         {state !== "READY" ? (
           <section
             className={styles.emptyState}
@@ -315,7 +330,7 @@ export function StudyShelf({
             <div className={styles.coversHead}>
               <h2 id="shelf-covers-heading">{collectionLabel}</h2>
               {resumeAddress || startAddress ? (
-                <Link className={styles.contextLink} href={browseHref}>
+                <Link className={styles.browseLink} href={browseHref}>
                   {t("Browse all subjects", "تصفح كل المواد")}
                 </Link>
               ) : null}
@@ -369,7 +384,9 @@ export function StudyShelf({
         ) : (
           <div className={styles.indexLayout}>
             <div className={styles.shelfHeading}>
-              <h2>{collectionLabel}</h2>
+              {/* The h1 already names the list; this heading keeps the
+                  structure for assistive technology (MD-15). */}
+              <h2 className="visually-hidden">{collectionLabel}</h2>
               <label className={styles.search}>
                 <span>
                   {t(
@@ -414,16 +431,10 @@ export function StudyShelf({
                   const materials = count(unit.sourceCount);
                   const contents = (
                     <>
-                      <span className={styles.subjectBook} aria-hidden="true">
-                        <span />
-                      </span>
                       <span className={styles.unitCopy}>
                         <span className={styles.unitHeading}>
                           <span className={styles.unitTitle}>
                             <bdi>{name}</bdi>
-                          </span>
-                          <span className={styles.ready}>
-                            {t("Ready", "جاهزة")}
                           </span>
                         </span>
                         {materials ? (
