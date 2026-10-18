@@ -3,7 +3,7 @@
 import NextLink from "next/link";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useMemo, type ComponentProps } from "react";
-import type { SyntheticRole } from "@/lib/demo/synthetic-account.application";
+import type { SyntheticEntryAccount } from "@/lib/demo/synthetic-account.application";
 
 export type SyntheticNavigation = {
   /** A browser-only synthetic runtime owns rendering and navigation. */
@@ -11,7 +11,11 @@ export type SyntheticNavigation = {
   /** The runtime was entered from the real login (WP03-T11), not from the
    * loopback demo; hosted presentation omits every local review extra. */
   hosted: boolean;
-  enter: (role: SyntheticRole, locale: string, returnPath: string) => void;
+  enter: (
+    account: SyntheticEntryAccount,
+    locale: string,
+    returnPath: string,
+  ) => void;
   leave: (locale: string) => void;
   navigate: (href: string, replace?: boolean) => void;
 };

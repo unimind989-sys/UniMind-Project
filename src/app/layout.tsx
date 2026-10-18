@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { headers } from "next/headers";
 import { Manrope, Noto_Sans_Arabic } from "next/font/google";
 import type { ReactNode } from "react";
 
@@ -7,6 +8,8 @@ import { resolveDemoRuntime } from "@/lib/demo/demo-runtime.application";
 import { ThemeRuntime } from "./_components/appearance";
 import { themeBootstrap } from "@/lib/theme/theme.application";
 import { getServerEnvironment } from "@/lib/config/env.server";
+import { getTextDirection, resolveLocale } from "@/lib/i18n/locale";
+import { localeHeaderName } from "@/lib/i18n/locale-preference.application";
 import { HostedSyntheticRuntime } from "./_synthetic/hosted-synthetic-runtime";
 import { LoopbackSyntheticRuntime } from "./_synthetic/loopback-synthetic-runtime";
 
@@ -53,13 +56,16 @@ const arabicFont = Noto_Sans_Arabic({
   adjustFontFallback: false,
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
+  // Real runtime: the proxy names the request's language, so Arabic pages
+  // arrive right-to-left; otherwise English, corrected by the client shell.
+  const locale = resolveLocale((await headers()).get(localeHeaderName));
   return (
     <html
-      lang="en"
-      dir="ltr"
+      lang={locale}
+      dir={getTextDirection(locale)}
       className={`${latinFont.variable} ${arabicFont.variable}`}
       suppressHydrationWarning
     >

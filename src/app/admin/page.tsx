@@ -1,7 +1,7 @@
 import type { Metadata, Route } from "next";
 import { redirect } from "next/navigation";
 
-import { getCurrentAuthAccess } from "@/lib/auth/auth-access.supabase.server";
+import { requireReadyAccess } from "@/lib/auth/access-route.server";
 import { requireVerifiedIdentity } from "@/lib/auth/verified-identity.server";
 import { loadVerifiedAdminActionQueue } from "@/lib/admin/admin-actions.supabase.server";
 import { selectedAdminDecision } from "@/lib/admin/admin-presentation.application";
@@ -25,28 +25,7 @@ export default async function AdminPage({
     : parameters.lang;
   const locale = resolveLocale(requestedLocale);
 
-  let access: Awaited<ReturnType<typeof getCurrentAuthAccess>>;
-  try {
-    access = await getCurrentAuthAccess();
-  } catch {
-    redirect(`/login?lang=${locale}&status=unavailable` as Route);
-  }
-
-  const next = encodeURIComponent(`/admin?lang=${locale}`);
-  if (access.gate === "CONSENT_REQUIRED") {
-    redirect(`/consent?lang=${locale}&next=${next}` as Route);
-  }
-  if (access.gate === "VERIFY_EMAIL") {
-    redirect(`/verify-email?lang=${locale}&next=${next}` as Route);
-  }
-  if (access.gate === "SUSPENDED" || access.gate === "DISABLED") {
-    redirect(
-      `/login?lang=${locale}&status=${access.gate.toLowerCase()}` as Route,
-    );
-  }
-  if (access.gate !== "READY") {
-    redirect(`/login?lang=${locale}&next=${next}` as Route);
-  }
+  await requireReadyAccess({ locale, next: "/admin" });
 
   try {
     await requireVerifiedIdentity();

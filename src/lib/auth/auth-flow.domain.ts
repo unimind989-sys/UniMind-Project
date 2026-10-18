@@ -17,6 +17,7 @@ export type AuthGate =
   | "SIGN_IN"
   | "VERIFY_EMAIL"
   | "CONSENT_REQUIRED"
+  | "PROFILE_REQUIRED"
   | "ACCOUNT_PENDING"
   | "SUSPENDED"
   | "DISABLED"
@@ -36,6 +37,7 @@ export type ProviderErrorLike = Readonly<{
 export type FieldErrorCode =
   | "ACCEPTANCE_REQUIRED"
   | "EMAIL_INVALID"
+  | "EMAIL_UNDELIVERABLE"
   | "PASSWORD_REQUIRED"
   | "PASSWORD_REQUIREMENTS"
   | "PASSWORD_MISMATCH";
@@ -224,6 +226,8 @@ export function resolveAuthGate(
         emailVerified: boolean;
         accountStatus: AccountStatus;
         hasCurrentConsent: boolean;
+        /** A non-empty trimmed display name; derived, never a stored flag. */
+        hasCompleteProfile: boolean;
       }>,
 ): AuthGate {
   if (!state.hasVerifiedIdentity) return "SIGN_IN";
@@ -232,7 +236,45 @@ export function resolveAuthGate(
   if (state.accountStatus === "DISABLED") return "DISABLED";
   if (!state.hasCurrentConsent) return "CONSENT_REQUIRED";
   if (state.accountStatus === "PENDING") return "ACCOUNT_PENDING";
+  if (!state.hasCompleteProfile) return "PROFILE_REQUIRED";
   return "READY";
+}
+
+/**
+ * The one mapping from an access gate to the page that resolves it. Every
+ * authenticated page, sign-in, the email callback and consent use it, so the
+ * gate order (verify, consent, profile) and the interface language are the
+ * same everywhere. Returns null when the caller may continue.
+ */
+export function accessDestination(
+  gate: AuthGate | "UNAVAILABLE",
+  options: Readonly<{
+    locale?: "en" | "ar" | undefined;
+    next?: string | undefined;
+  }>,
+): string | null {
+  if (gate === "READY") return null;
+  const next = validatedInternalReturnPath(options.next);
+  const query = (parameters: Record<string, string>) =>
+    new URLSearchParams({
+      ...(options.locale ? { lang: options.locale } : {}),
+      ...parameters,
+    }).toString();
+  switch (gate) {
+    case "SIGN_IN":
+      return `/login?${query({ next })}`;
+    case "VERIFY_EMAIL":
+      return `/verify-email?${query({ next })}`;
+    case "CONSENT_REQUIRED":
+      return `/consent?${query({ next })}`;
+    case "PROFILE_REQUIRED":
+      return `/welcome?${query({ next })}`;
+    case "SUSPENDED":
+    case "DISABLED":
+      return `/login?${query({ status: gate.toLowerCase() })}`;
+    default:
+      return `/login?${query({ status: "unavailable" })}`;
+  }
 }
 
 export function classifyAuthProviderError(

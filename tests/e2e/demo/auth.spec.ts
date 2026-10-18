@@ -32,6 +32,13 @@ test(
         exact: true,
       })
       .click();
+    // A new registration has no profile yet: the profile step comes next.
+    await expect(page).toHaveURL(/\/welcome\?/u);
+    await page.getByLabel("Full name", { exact: true }).fill("Nour Adel");
+    await page
+      .getByRole("button", { name: "Save and continue", exact: true })
+      .click();
+    await expect(page).toHaveURL(/\/learn\?/u);
     await navigate(page, "/settings");
     await showAccountView(page, "identity");
     await page
@@ -51,7 +58,9 @@ test(
     await page
       .getByRole("button", { name: "Update password", exact: true })
       .click();
-    await expect(page).toHaveURL(/\/login\?/u);
+    // As in the real flow, the recovered session is signed in; commitments
+    // come next in this fresh document.
+    await expect(page).toHaveURL(/\/consent\?/u);
     for (const fixture of ["expired", "replayed"]) {
       await page.goto(
         `/reset-password?token=sample-recovery&fixture=${fixture}`,

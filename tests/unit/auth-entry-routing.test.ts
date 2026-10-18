@@ -5,14 +5,30 @@ const mocks = vi.hoisted(() => ({
   home: vi.fn(),
   login: vi.fn(),
   redirect: vi.fn(),
+  accept: vi.fn(),
+  account: vi.fn(),
+  remember: vi.fn(),
+  rememberedLocale: vi.fn(),
 }));
 vi.mock("next/navigation", () => ({ redirect: mocks.redirect }));
+vi.mock("next/headers", () => ({
+  cookies: async () => ({
+    get: () => {
+      const value = mocks.rememberedLocale() as string | undefined;
+      return value === undefined ? undefined : { value };
+    },
+  }),
+}));
+vi.mock("@/lib/i18n/locale-cookie.server", () => ({
+  rememberInterfaceLanguage: mocks.remember,
+}));
 vi.mock("@/lib/auth/auth-access.supabase.server", () => ({
   getCurrentAuthAccess: mocks.access,
-  acceptCurrentAuthConsent: vi.fn(),
+  acceptCurrentAuthConsent: mocks.accept,
 }));
 vi.mock("@/lib/account/account.supabase.server", () => ({
   currentRoleHome: mocks.home,
+  loadCurrentAccount: mocks.account,
 }));
 vi.mock("@/lib/auth/supabase-auth.server", () => ({
   getAuthApplication: () => ({ login: mocks.login }),
@@ -24,7 +40,7 @@ vi.mock("../../src/app/(auth)/_components/auth-shell", () => ({
   AuthShell: () => null,
 }));
 
-import { loginAction } from "../../src/app/(auth)/actions";
+import { acceptConsentAction, loginAction } from "../../src/app/(auth)/actions";
 import { AuthPage } from "../../src/app/(auth)/_components/auth-page";
 import ConsentPage from "../../src/app/(auth)/consent/page";
 
@@ -79,6 +95,41 @@ describe("authenticated entry adapters", () => {
       );
     },
   );
+  // WP03-T28: the language a sign-in continues in is remembered on the device.
+  it("remembers the page language a sign-in continues in", async () => {
+    await expect(loginAction(prior, form())).rejects.toThrow("redirect:");
+    expect(mocks.remember).toHaveBeenCalledWith("ar");
+    expect(mocks.account).not.toHaveBeenCalled();
+  });
+  it("uses the account language when this device never chose one", async () => {
+    mocks.account.mockResolvedValue({ language: "ar" });
+    const data = form();
+    data.set("locale", "en");
+    data.set("localeSource", "default");
+    await expect(loginAction(prior, data)).rejects.toThrow(
+      "redirect:/learn?lang=ar",
+    );
+    expect(mocks.remember).toHaveBeenCalledWith("ar");
+  });
+  it.each([
+    [{ lang: "en" }, undefined, "default"],
+    [{}, undefined, "default"],
+    [{ lang: "ar" }, undefined, "explicit"],
+    [{ lang: "en" }, "en", "explicit"],
+  ] as const)(
+    "marks the sign-in language for %o with memory %s as %s",
+    async (searchParams, remembered, source) => {
+      mocks.access.mockResolvedValue({ gate: "SIGN_IN" });
+      mocks.rememberedLocale.mockReturnValue(remembered);
+      const page = (await AuthPage({
+        mode: "login",
+        searchParams: Promise.resolve(searchParams),
+      })) as { props: { children: { props: { localeExplicit: boolean } } } };
+      expect(page.props.children.props.localeExplicit).toBe(
+        source === "explicit",
+      );
+    },
+  );
   it("returns bounded unavailable state when verified role lookup fails", async () => {
     mocks.home.mockRejectedValue(new Error("private database diagnostic"));
     await expect(loginAction(prior, form())).resolves.toEqual({
@@ -126,4 +177,38 @@ describe("authenticated entry adapters", () => {
     );
     expect(mocks.home).not.toHaveBeenCalled();
   });
+  // WP03-T27: the profile step follows consent on every entry path.
+  it("sends a signed-in caller without a profile to /welcome, keeping the return", async () => {
+    mocks.access.mockResolvedValue({ gate: "PROFILE_REQUIRED" });
+    mocks.login.mockResolvedValue({ ...prior, returnPath: deepLink });
+    await expect(loginAction(prior, form())).rejects.toThrow(
+      `redirect:/welcome?lang=ar&next=${encodeURIComponent(deepLink)}`,
+    );
+    expect(mocks.home).not.toHaveBeenCalled();
+  });
+  it("continues from accepted consent to /welcome when the profile is missing", async () => {
+    mocks.accept.mockResolvedValue({ gate: "PROFILE_REQUIRED" });
+    mocks.access.mockResolvedValue({ gate: "PROFILE_REQUIRED" });
+    const data = form();
+    data.set("acceptance", "accepted");
+    data.set("returnPath", "/learn");
+    await expect(acceptConsentAction(prior, data)).rejects.toThrow(
+      "redirect:/welcome?lang=ar&next=%2Flearn",
+    );
+    expect(mocks.accept).toHaveBeenCalledOnce();
+  });
+  it.each(["consent", "login"] as const)(
+    "routes the %s page of a caller without a profile to /welcome",
+    async (page) => {
+      mocks.access.mockResolvedValue({ gate: "PROFILE_REQUIRED" });
+      const searchParams = Promise.resolve({ lang: "ar", next: deepLink });
+      await expect(
+        page === "consent"
+          ? ConsentPage({ searchParams })
+          : AuthPage({ mode: "login", searchParams }),
+      ).rejects.toThrow(
+        `redirect:/welcome?lang=ar&next=${encodeURIComponent(deepLink)}`,
+      );
+    },
+  );
 });

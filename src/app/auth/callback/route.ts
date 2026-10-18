@@ -5,6 +5,7 @@ import {
   type AuthCallbackGateway,
 } from "@/lib/auth/auth-callback.application";
 import { getCurrentAuthAccess } from "@/lib/auth/auth-access.supabase.server";
+import { accessDestination } from "@/lib/auth/auth-actions.application";
 import { currentRoleHome } from "@/lib/account/account.supabase.server";
 import { createServerSupabaseClient } from "@/lib/db/supabase/server";
 import { getServerEnvironment } from "@/lib/config/env.server";
@@ -60,6 +61,18 @@ export async function GET(request: NextRequest) {
   };
   const parameters = request.nextUrl.searchParams;
   const next = parameters.get("next");
+  // Email links carry the interface language chosen when they were sent.
+  const requestedLocale = parameters.get("lang");
+  const locale =
+    requestedLocale === "ar" || requestedLocale === "en"
+      ? requestedLocale
+      : undefined;
+  const withLocale = (path: string) => {
+    if (locale === undefined) return path;
+    const address = new URL(path, "https://unimind.invalid");
+    address.searchParams.set("lang", locale);
+    return address.pathname + address.search + address.hash;
+  };
 
   let result: Awaited<ReturnType<typeof completeAuthCallback>>;
   try {
@@ -80,14 +93,14 @@ export async function GET(request: NextRequest) {
     const recoveryPath =
       result.next === "/reset-password" ? "/forgot-password" : "/verify-email";
     return redirectResponse(
-      `${recoveryPath}?status=${publicLinkState(result.status)}`,
+      withLocale(`${recoveryPath}?status=${publicLinkState(result.status)}`),
       providerHeaders,
       canonicalOrigin,
     );
   }
   if (result.next === "/reset-password") {
     return redirectResponse(
-      "/reset-password",
+      withLocale("/reset-password"),
       providerHeaders,
       canonicalOrigin,
     );
@@ -100,16 +113,17 @@ export async function GET(request: NextRequest) {
       destination = ["/", "/learn"].includes(result.next)
         ? await currentRoleHome()
         : result.next;
-    else if (access.gate === "CONSENT_REQUIRED") {
-      destination = `/consent?next=${encodeURIComponent(result.next)}`;
-    } else if (access.gate === "VERIFY_EMAIL") {
-      destination = `/verify-email?next=${encodeURIComponent(result.next)}`;
-    } else if (access.gate === "SUSPENDED" || access.gate === "DISABLED") {
-      destination = `/login?status=${access.gate.toLowerCase()}`;
-    } else destination = "/login?status=unavailable";
+    else
+      destination =
+        accessDestination(access.gate, { locale, next: result.next }) ??
+        "/login?status=unavailable";
   } catch {
     destination = "/login?status=unavailable";
   }
 
-  return redirectResponse(destination, providerHeaders, canonicalOrigin);
+  return redirectResponse(
+    withLocale(destination),
+    providerHeaders,
+    canonicalOrigin,
+  );
 }

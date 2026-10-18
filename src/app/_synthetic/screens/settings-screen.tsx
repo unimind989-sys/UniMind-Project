@@ -7,6 +7,7 @@ import { useProductServices } from "@/app/_components/product-services";
 import { AccountSettings } from "@/app/_components/account-settings";
 import { Button } from "@/app/_components/product-ui";
 import { authorizedAcademicContext } from "@/lib/account/account.application";
+import { saveProfile } from "@/lib/account/profile.application";
 import {
   reviewCatalogRows,
   sampleScopeAvailable,
@@ -89,6 +90,31 @@ function ProductSettings({
             }
           : null
       }
+      profile={{
+        email: state.accountEmail,
+        displayName: state.displayName,
+        accountLanguage: null,
+        // The same profile rules as the real Server Action, saved to this document.
+        save: (input) =>
+          saveProfile(
+            {
+              eligibleCaller: async () =>
+                state.role ? "synthetic-caller" : null,
+              save: async (_caller, saved) =>
+                update((current) => ({
+                  ...current,
+                  displayName: saved.displayName,
+                  profiles: current.accountEmail
+                    ? {
+                        ...current.profiles,
+                        [current.accountEmail]: saved.displayName,
+                      }
+                    : current.profiles,
+                })),
+            },
+            input,
+          ),
+      }}
       privacy={{
         sharing: state.sharing,
         onSharingChange: (sharing) =>

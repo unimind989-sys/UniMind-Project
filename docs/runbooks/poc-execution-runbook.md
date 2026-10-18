@@ -1559,9 +1559,9 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 **Dependencies:** WP03-T25. Findings PJ-01 to PJ-06, PJ-10 to PJ-15, PJ-27 to PJ-29, IX-05, IX-10, IX-18, IX-19, MD-22, DS-30. Protected paths: auth gate, migration, Batch Leader upload authorization.
 
-- [ ] One access-destination function and server guard for every authenticated page, including the Batch Leader pages, upload route and finalize action; a `PROFILE_REQUIRED` gate after consent derived from a non-empty name.
-- [ ] `/welcome` for every role (name, interface language, appearance) and Settings → Profile on one seam; Settings declutter and recovery; sign-out on consent and welcome; an honest no-membership state; an additive `NOT VALID` name-format constraint with pgTAP.
-- [ ] Demo: a new-account login pair with an empty profile, no fixture-name fallback and returning-user behaviour; independent review of the exact diff; overseer approval; deliver through one PR with required CI including `database-ci`.
+- [x] One access-destination function and server guard for every authenticated page, including the Batch Leader pages, upload route and finalize action; a `PROFILE_REQUIRED` gate after consent derived from a non-empty name.
+- [x] `/welcome` for every role (name, interface language, appearance) and Settings → Profile on one seam; Settings declutter and recovery; sign-out on consent and welcome; an honest no-membership state; an additive change-only name-format trigger with pgTAP.
+- [x] Demo: a new-account login pair with an empty profile, no fixture-name fallback and returning-user behaviour; independent review of the exact diff; overseer approval; deliver through one PR with required CI including `database-ci`. Reviewed by the `independent-reviewer` sub-agent (request changes, all addressed); approved at `765dc5e` by the overseeing session under Ahmed's delegation ([task record](../../planning/tasks/wp03-t27-profile-onboarding.md)). These closure markers become authoritative only when that PR merges with green required CI.
 
 **Pass:** a new real or demo account is asked for its name once and never again; existing accounts stay valid; the leader gate rejects unverified, unconsented and suspended accounts; required CI green.
 
@@ -1569,8 +1569,8 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 **Dependencies:** WP03-T27. Findings PJ-07 to PJ-09, PJ-18 to PJ-20, PJ-22 to PJ-24, PJ-26, PJ-30, IX-28. Protected paths: proxy and auth callback.
 
-- [ ] Locale precedence `?lang=`, cookie, account language, English; `lang` kept through email links, callback, sign-out and guard redirects; `lang` and `dir` rendered on the server.
-- [ ] Demo parity for register, password reset, privacy and admin resources; hosted registration of demo emails intercepted; copy fixes; independent review; deliver through one PR with required CI.
+- [x] Locale precedence `?lang=`, cookie, account language, English; `lang` kept through email links, callback, sign-out and guard redirects; `lang` and `dir` rendered on the server.
+- [x] Demo parity for register, password reset, privacy and admin resources; hosted registration of demo emails intercepted; copy fixes; independent review; deliver through one PR with required CI. Reviewed twice by the `independent-reviewer` sub-agent (request changes, all addressed); PJ-19 and PJ-21 remain open ([task record](../../planning/tasks/wp03-t28-locale-demo-parity.md)). These closure markers become authoritative only when that PR merges with green required CI.
 
 **Pass:** an Arabic user stays in Arabic across sign-out, email return and a new session; demo exits match the real flow; required CI green.
 

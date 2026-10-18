@@ -7,7 +7,7 @@ import { PageState } from "@/app/_components/page-state";
 import { useSyntheticNavigation } from "@/app/_components/product-navigation";
 import { ProductLink } from "@/app/_components/product-ui";
 import { SyntheticProductProvider } from "@/app/_components/product-services";
-import type { SyntheticRole } from "@/lib/demo/synthetic-account.application";
+import type { SyntheticEntryAccount } from "@/lib/demo/synthetic-account.application";
 import {
   resolveSyntheticPage,
   syntheticProductPath,
@@ -40,7 +40,7 @@ const composers: Readonly<
 export default function SyntheticRuntime({
   entry,
 }: {
-  entry?: { role: SyntheticRole; returnPath: string };
+  entry?: { account: SyntheticEntryAccount; returnPath: string };
 }) {
   const hosted = useSyntheticNavigation()?.hosted === true;
   const pathname = syntheticProductPath(usePathname());

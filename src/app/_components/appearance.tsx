@@ -54,7 +54,15 @@ export function ThemeRuntime() {
   return null;
 }
 
-export function Appearance({ locale }: { locale: Locale }) {
+/** `preview={false}` drops the sample screen where the page itself shows the
+ * theme at once (the first-run profile step). */
+export function Appearance({
+  locale,
+  preview = true,
+}: {
+  locale: Locale;
+  preview?: boolean;
+}) {
   const value = useSyncExternalStore(subscribe, snapshot, serverSnapshot);
   return (
     <div className={styles.appearance}>
@@ -77,23 +85,27 @@ export function Appearance({ locale }: { locale: Locale }) {
           window.dispatchEvent(new Event(eventName));
         }}
       />
-      <figure className={styles.preview}>
-        <div className={styles.previewHeader}>UniMind</div>
-        <div className={styles.previewPage}>
-          <strong>{locale === "ar" ? "شاشة نموذجية" : "Example screen"}</strong>
-          <div className={styles.previewMaterial}>
-            <strong>{locale === "ar" ? "المحتوى" : "Content"}</strong>
-            <span>
-              {locale === "ar"
-                ? "نص توضيحي للمعاينة"
-                : "Example supporting text"}
-            </span>
+      {preview ? (
+        <figure className={styles.preview}>
+          <div className={styles.previewHeader}>UniMind</div>
+          <div className={styles.previewPage}>
+            <strong>
+              {locale === "ar" ? "شاشة نموذجية" : "Example screen"}
+            </strong>
+            <div className={styles.previewMaterial}>
+              <strong>{locale === "ar" ? "المحتوى" : "Content"}</strong>
+              <span>
+                {locale === "ar"
+                  ? "نص توضيحي للمعاينة"
+                  : "Example supporting text"}
+              </span>
+            </div>
           </div>
-        </div>
-        <figcaption>
-          {locale === "ar" ? "معاينة السمة" : "Theme preview"}
-        </figcaption>
-      </figure>
+          <figcaption>
+            {locale === "ar" ? "معاينة السمة" : "Theme preview"}
+          </figcaption>
+        </figure>
+      ) : null}
     </div>
   );
 }

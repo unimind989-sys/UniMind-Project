@@ -124,6 +124,96 @@ describe("Supabase session proxy", () => {
     expect(mocks.getClaims).toHaveBeenCalledOnce();
   });
 
+  it("returns a page load without ?lang= in the remembered language before Auth", async () => {
+    const { proxy } = await import("../../src/proxy");
+    const response = await proxy(
+      new NextRequest("https://app.unimind.invalid/register?next=%2Flearn", {
+        headers: { cookie: "unimind-locale=ar", "sec-fetch-dest": "document" },
+      }),
+    );
+    expect(response.status).toBe(307);
+    expect(response.headers.get("location")).toBe(
+      "https://app.unimind.invalid/register?next=%2Flearn&lang=ar",
+    );
+    expect(response.headers.get("cache-control")).toBe("private, no-store");
+    expect(mocks.getClaims).not.toHaveBeenCalled();
+  });
+
+  it("remembers the language a same-origin client navigation names", async () => {
+    const { proxy } = await import("../../src/proxy");
+    const response = await proxy(
+      new NextRequest("https://app.unimind.invalid/login?lang=en", {
+        headers: {
+          cookie: "unimind-locale=ar",
+          "sec-fetch-dest": "empty",
+          "sec-fetch-site": "same-origin",
+        },
+      }),
+    );
+    expect(response.status).toBe(200);
+    expect(response.cookies.get("unimind-locale")).toMatchObject({
+      value: "en",
+      httpOnly: true,
+      sameSite: "lax",
+      secure: true,
+      path: "/",
+    });
+    expect(response.headers.get("x-middleware-request-x-unimind-locale")).toBe(
+      "en",
+    );
+    expect(mocks.getClaims).toHaveBeenCalledOnce();
+  });
+
+  it("names the page language for the root layout and replaces a forged one", async () => {
+    const { proxy } = await import("../../src/proxy");
+    const response = await proxy(
+      new NextRequest("https://app.unimind.invalid/learn", {
+        headers: { "x-unimind-locale": "ar" },
+      }),
+    );
+    expect(response.headers.get("x-middleware-request-x-unimind-locale")).toBe(
+      "en",
+    );
+    const arabic = await proxy(
+      new NextRequest("https://app.unimind.invalid/learn?lang=ar"),
+    );
+    expect(arabic.headers.get("x-middleware-request-x-unimind-locale")).toBe(
+      "ar",
+    );
+  });
+
+  it("writes nothing when an English link reaches a device that remembers nothing", async () => {
+    const { proxy } = await import("../../src/proxy");
+    const response = await proxy(
+      new NextRequest("https://app.unimind.invalid/login?lang=en", {
+        headers: { "sec-fetch-dest": "document" },
+      }),
+    );
+    expect(response.cookies.get("unimind-locale")).toBeUndefined();
+  });
+
+  it.each([
+    ["a cross-site script request", "GET", "empty", "cross-site"],
+    ["a POST", "POST", "empty", "same-origin"],
+    ["an embedded frame", "GET", "iframe", "same-origin"],
+  ])(
+    "does not remember the language from %s",
+    async (_name, method, destination, site) => {
+      const { proxy } = await import("../../src/proxy");
+      const response = await proxy(
+        new NextRequest("https://app.unimind.invalid/login?lang=en", {
+          method,
+          headers: {
+            cookie: "unimind-locale=ar",
+            "sec-fetch-dest": destination,
+            "sec-fetch-site": site,
+          },
+        }),
+      );
+      expect(response.cookies.get("unimind-locale")).toBeUndefined();
+    },
+  );
+
   it("keeps health probes independent from Auth refresh", async () => {
     const { config, proxy } = await import("../../src/proxy");
 

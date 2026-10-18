@@ -1,9 +1,7 @@
 "use client";
 
 import { useId, useRef, type ReactNode } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
-import type { Route } from "next";
-import { useProductRouter } from "./product-navigation";
+import { useSearchParams } from "next/navigation";
 import type { Locale } from "@/lib/i18n/locale";
 import styles from "./student-account.module.css";
 
@@ -22,16 +20,17 @@ export function AccountLayout({
   signOutAction?: ReactNode;
 }) {
   const query = useSearchParams();
-  const pathname = usePathname();
-  const router = useProductRouter();
   const prefix = useId();
   const buttons = useRef<(HTMLButtonElement | null)[]>([]);
-  const active = views.findIndex((view) => view.id === query.get("section"));
-  const selected = active < 0 ? 0 : active;
+  const requested = views.findIndex((view) => view.id === query.get("section"));
+  const selected = requested < 0 ? 0 : requested;
+  // Switching sections stays on the client: Next syncs useSearchParams with
+  // the native History API, so the URL keeps the section for reloads and
+  // links without re-running the page's server loaders.
   function select(index: number) {
-    const next = new URLSearchParams(query);
-    next.set("section", views[index]!.id);
-    router.replace(`${pathname}?${next}` as Route, { scroll: false });
+    const url = new URL(window.location.href);
+    url.searchParams.set("section", views[index]!.id);
+    window.history.replaceState(null, "", url);
   }
   return (
     <>

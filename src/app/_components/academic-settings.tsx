@@ -108,15 +108,25 @@ export function AcademicSettings({
     setSetupStep(next);
     retained?.remember({ selection: journey.selection, step: next });
   };
-  const [result, action, pending] = useActionState<AcademicSaveState, FormData>(
+  // The result remembers which choices it was about, so a "saved" message
+  // never sits next to choices changed after saving (IX-19).
+  const contextKey = JSON.stringify(context);
+  const [result, action, pending] = useActionState<
+    AcademicSaveState & { key?: string },
+    FormData
+  >(
     async () => {
-      if (!context) return { status: "INVALID" };
+      if (!context) return { status: "INVALID", key: contextKey };
       const saved = await save(context);
       if (saved.status === "SAVED") retained?.remember(null);
-      return saved;
+      return { ...saved, key: contextKey };
     },
     { status: "IDLE" },
   );
+  const shownResult =
+    result.status === "SAVED" && result.key !== contextKey
+      ? { status: "IDLE" as const }
+      : result;
   return (
     <section
       className={`${styles.section} ${onboarding ? styles.onboarding : ""}`}
@@ -164,7 +174,17 @@ export function AcademicSettings({
           )}
         </p>
       ) : (
-        <form action={action}>
+        <form
+          action={action}
+          onSubmit={(event) => {
+            // Enter on a question's radio must not submit mid-sequence: it
+            // advances once that question has an answer (IX-18).
+            const active = onboarding ? setupFields[step] : undefined;
+            if (!active) return;
+            event.preventDefault();
+            if (journey.selection[active[0]]) changeStep(sequence.next);
+          }}
+        >
           {onboarding ? (
             <AcademicSetup
               locale={locale}
@@ -228,16 +248,16 @@ export function AcademicSettings({
               {t("Save academic settings", "حفظ الإعدادات الدراسية")}
             </Button>
           ) : null}
-          {result.status !== "IDLE" ? (
-            <p role={result.status === "SAVED" ? "status" : "alert"}>
-              {result.status === "SAVED"
+          {shownResult.status !== "IDLE" ? (
+            <p role={shownResult.status === "SAVED" ? "status" : "alert"}>
+              {shownResult.status === "SAVED"
                 ? t("Academic settings saved.", "تم حفظ الإعدادات الدراسية.")
-                : result.status === "INVALID"
+                : shownResult.status === "INVALID"
                   ? t(
                       "Choose a complete available academic path.",
                       "اختر مسارًا دراسيًا متاحًا ومكتملًا.",
                     )
-                  : result.status === "FORBIDDEN"
+                  : shownResult.status === "FORBIDDEN"
                     ? t(
                         "Sign in and complete account access before saving.",
                         "سجل الدخول وأكمل خطوات الوصول قبل الحفظ.",

@@ -70,11 +70,16 @@ These files are invented byte fixtures: a one-page synthetic PDF, silent audio a
 | Account                        | Password                | Journey                                                   |
 | ------------------------------ | ----------------------- | --------------------------------------------------------- |
 | `student@example.invalid`      | `Synthetic-study-2026!` | Study Shelf, all study screens and Settings               |
+| `new-student@example.invalid`  | `Synthetic-study-2026!` | A brand-new account: profile step, then academic setup    |
 | `leader@example.invalid`       | `Synthetic-study-2026!` | Assigned campaign, invitation and source submission       |
 | `admin@example.invalid`        | `Synthetic-study-2026!` | Admin resources, first founder simulation and containment |
 | `second-admin@example.invalid` | `Synthetic-study-2026!` | Distinct second founder simulation                        |
 
-Ready accounts begin verified, with current commitments awaiting acceptance. The local review launcher prefills the student fixture; its sign-out/sign-in preserves shared review records for two-account governance examples. Hosted login starts empty and hosted sign-out discards all synthetic records. Enter any of the four pairs above to select its role. Other credentials use real Auth on the live site; the local launcher rejects unknown credentials. Use no real details in the review launcher.
+Ready accounts begin verified, with current commitments awaiting acceptance. The local review launcher prefills the student fixture; its sign-out/sign-in preserves shared review records for two-account governance examples. Hosted login starts empty and hosted sign-out discards all synthetic records. Enter any of the five pairs above to select its role. Other credentials use real Auth on the live site; the local launcher rejects unknown credentials. Use no real details in the review launcher.
+
+### New account
+
+Sign in with `new-student@example.invalid`. After the commitments, UniMind asks for a full name, the interface language and the appearance (the first-run profile step, `/welcome`), then for the academic path, exactly as a newly registered real account. Nothing pre-fills the name. Registering any demo email through **Create an account** follows the same path. In the local launcher, signing out and back in with the same account in the same document skips the step, as a returning account does; the hosted demo discards everything on sign-out, so every hosted sign-in with this pair starts new. Settings → Profile edits the name and language later.
 
 ## 1. Access, verification and recovery
 
@@ -372,6 +377,19 @@ A new tab/document begins without previous synthetic sessions, attempts, uploads
 Already functional WP03 seams: real Auth/verification/consent/recovery, authorized catalog availability and workspace/session boundaries, validated campaign uploads/submission lifecycle, governed admin actions and role/authorization/error contracts. The demo shares their existing frontend components while injecting synthetic ports. Those services remain separately protected and are not exercised by this review.
 
 Simulated here: all account state and every review interaction; automatic chat replies/streams, evidence/report receipt, all artifacts, scoring/timer, files/progress/reference acceptance, tracking transitions, campaign/draft/invitation state, admin decisions, resource operations and preference changes. Future real backend work remains in WP04/WP06/WP07/WP08. Reload durability is intentionally absent.
+
+### Where the demo and the real product differ
+
+The demo shows intended behaviour ahead of its backend. These are the places where it does something the real product does not do yet; nothing here should be read as live functionality.
+
+| Area | Demo | Real product today |
+| --- | --- | --- |
+| New account access | A registered or new demo student sees the full sample catalog after the academic setup | No role or cohort is granted at sign-up; an administrator adds the account to a cohort, and until then the Study Shelf explains that (`?fixture=no-membership` shows this state in the demo) |
+| Chat, Studio, Quiz, report | Fixed sample answers, artifacts, scoring and receipts | Same screens with the controls disabled and a "not available yet" notice |
+| Chat sharing (Settings → Privacy) | The choice works for the current document | Disabled with a notice until the sharing and retention decisions (D-08) are made |
+| Admin resources (Sources, Campaigns, Catalog, Cohorts, Jobs, Quality, Usage, Incidents) | Populated working lists | "This view is not available yet" |
+| Batch Leader invitation | A sample invitation screen | No invitation delivery; assignments are created by an administrator |
+| Returning sign-in on the hosted demo | Every sign-in starts a new document, so commitments are asked again | Commitments are accepted once per terms version |
 
 Open decisions remain D-08 saving/retention and exact report disclosure/payload, D-18 reference/storage policy, paid provider/budget approval, detailed broad management editors and invitation delivery contracts. This frontend review neither approves those decisions nor verifies live academic/provider behavior. Historical WP03-T09/T10 delivery is complete for the candidates recorded in the runbook. The current audit repairs on `codex/frontend-refinements` are uncommitted local work under WP03-T13; their final candidate acceptance and delivery proof remain pending.
 

@@ -17,7 +17,12 @@ export type ProductState = Omit<ReviewState, "attempts"> & {
     }
   >;
   role: SyntheticRole | null;
+  /** The demo account signed in to this document, if any. */
+  accountEmail: string | null;
+  /** Null until the profile step runs, as for a newly registered account. */
   displayName: string | null;
+  /** Names saved in this document, so a loopback re-sign-in is a returning user. */
+  profiles: Record<string, string>;
   studyLanguage: "en" | "ar" | "mixed" | null;
   evidenceHintSeen: boolean;
   verified: boolean;

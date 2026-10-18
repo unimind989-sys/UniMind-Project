@@ -386,7 +386,7 @@ const settingsStates: readonly ScreenState[] = [
     phoneAxe: true,
     check: async ({ page, locale, width, enlarged }) => {
       const tabs = page.getByRole("tablist");
-      await expect(tabs.getByRole("tab")).toHaveCount(4);
+      await expect(tabs.getByRole("tab")).toHaveCount(5);
       if (enlarged) return;
       // audit 01: the contextual return stays separate from the tabs.
       const returnBox = await boxOf(
@@ -456,6 +456,7 @@ const settingsStates: readonly ScreenState[] = [
       }
       expect(styles[0]!.background).not.toBe(styles[1]!.background);
       // audit 05 and 10: a readable, control-free preview below the choices.
+      await showAccountView(page, "appearance");
       const appearance = page.locator("#appearance-settings");
       expect((await boxOf(appearance)).width).toBeLessThanOrEqual(640);
       const preview = appearance.locator("figure");
@@ -516,7 +517,7 @@ const settingsStates: readonly ScreenState[] = [
       const identity = page.locator("#identity-settings");
       expect((await boxOf(identity)).width).toBeLessThanOrEqual(640);
       const reset = identity.getByRole("link", {
-        name: pick(locale, "Reset password", "تغيير كلمة المرور"),
+        name: pick(locale, "Reset password", "إعادة تعيين كلمة المرور"),
         exact: true,
       });
       await expect(reset).toHaveAttribute(

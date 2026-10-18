@@ -25,9 +25,9 @@ const copy = {
     currentPath: "Authorized path",
     resultsUpdated: "Authorized catalog updated.",
     navigationPending: "Checking access…",
-    noMembershipTitle: "No active learning membership",
+    noMembershipTitle: "Waiting for your cohort",
     noMembershipBody:
-      "Your account is ready, but it is not currently assigned to a learning cohort.",
+      "Your account is ready. A UniMind administrator adds you to your cohort, and your subjects appear here as soon as that happens. If you expected access already, check that you signed up with the email address your faculty uses, or ask your Batch Leader.",
     cohortLockedTitle: "Your cohort is not open yet",
     cohortLockedBody:
       "The catalog will appear here after the cohort release is approved.",
@@ -80,8 +80,9 @@ const copy = {
     currentPath: "المسار المصرّح",
     resultsUpdated: "تم تحديث الفهرس المصرّح.",
     navigationPending: "جارٍ التحقق من الصلاحية…",
-    noMembershipTitle: "لا توجد عضوية دراسية نشطة",
-    noMembershipBody: "حسابك جاهز، لكنه غير مرتبط حاليًا بمجموعة دراسية.",
+    noMembershipTitle: "في انتظار إضافتك إلى دفعتك",
+    noMembershipBody:
+      "حسابك جاهز. يضيفك أحد مسؤولي UniMind إلى دفعتك، وتظهر موادك هنا فور حدوث ذلك. إذا كنت تتوقع الوصول بالفعل، فتأكد أنك سجّلت بالبريد الذي تستخدمه كليتك، أو اسأل مسؤول الدفعة.",
     cohortLockedTitle: "مجموعتك لم تُفتح بعد",
     cohortLockedBody: "سيظهر الفهرس هنا بعد اعتماد فتح المجموعة.",
     noCatalogTitle: "لم يُجهّز الفهرس بعد",

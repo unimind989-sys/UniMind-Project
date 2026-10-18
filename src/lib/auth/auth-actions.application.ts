@@ -9,7 +9,10 @@ import {
   validateRegistrationInput,
 } from "./auth-flow.domain";
 
-export { validatedInternalReturnPath } from "./auth-flow.domain";
+export {
+  accessDestination,
+  validatedInternalReturnPath,
+} from "./auth-flow.domain";
 export type { FieldErrorCode } from "./auth-flow.domain";
 
 export type AuthActionStatus =
@@ -68,6 +71,15 @@ function providerStatus(error: ProviderErrorLike | null): AuthActionStatus {
   return error === null ? "SUCCESS" : classifyAuthProviderError(error);
 }
 
+/** The email-link return, carrying the interface language when known. */
+function callbackUrl(origin: string, next: string, locale: unknown): URL {
+  const callback = new URL("/auth/callback", origin);
+  callback.searchParams.set("next", next);
+  if (locale === "en" || locale === "ar")
+    callback.searchParams.set("lang", locale);
+  return callback;
+}
+
 export function createAuthApplication(
   gateway: AuthGateway,
   canonicalOrigin: string,
@@ -96,14 +108,14 @@ export function createAuthApplication(
         password: unknown;
         passwordConfirmation: unknown;
         returnPath?: unknown;
+        locale?: unknown;
       }>,
     ): Promise<AuthActionResult> {
       const returnPath = validatedInternalReturnPath(input.returnPath);
       const parsed = validateRegistrationInput(input);
       if (!parsed.success) return invalidInput(returnPath, parsed.fieldErrors);
 
-      const callback = new URL("/auth/callback", origin);
-      callback.searchParams.set("next", returnPath);
+      const callback = callbackUrl(origin, returnPath, input.locale);
       const result = await gateway.signUp({
         email: parsed.data.email,
         password: parsed.data.password,
@@ -120,14 +132,14 @@ export function createAuthApplication(
       input: Readonly<{
         email: unknown;
         returnPath?: unknown;
+        locale?: unknown;
       }>,
     ): Promise<AuthActionResult> {
       const returnPath = validatedInternalReturnPath(input.returnPath);
       const parsed = validateEmailInput(input);
       if (!parsed.success) return invalidInput(returnPath, parsed.fieldErrors);
 
-      const callback = new URL("/auth/callback", origin);
-      callback.searchParams.set("next", returnPath);
+      const callback = callbackUrl(origin, returnPath, input.locale);
       const result = await gateway.resendVerification({
         email: parsed.data.email,
         emailRedirectTo: callback.toString(),
@@ -142,14 +154,14 @@ export function createAuthApplication(
     async requestPasswordReset(
       input: Readonly<{
         email: unknown;
+        locale?: unknown;
       }>,
     ): Promise<AuthActionResult> {
       const returnPath = "/learn";
       const parsed = validateEmailInput(input);
       if (!parsed.success) return invalidInput(returnPath, parsed.fieldErrors);
 
-      const callback = new URL("/auth/callback", origin);
-      callback.searchParams.set("next", "/reset-password");
+      const callback = callbackUrl(origin, "/reset-password", input.locale);
       const result = await gateway.requestPasswordReset({
         email: parsed.data.email,
         redirectTo: callback.toString(),

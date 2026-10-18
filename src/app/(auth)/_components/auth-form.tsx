@@ -7,6 +7,7 @@ import {
   useRef,
   useState,
   useSyncExternalStore,
+  type ReactNode,
 } from "react";
 
 import type { CurrentTerms } from "@/lib/auth/auth-access.application";
@@ -30,7 +31,7 @@ import { Notice } from "@/app/_components/notice";
 import { Button } from "@/app/_components/product-ui";
 import styles from "../auth.module.css";
 import { useSyntheticNavigation } from "@/app/_components/product-navigation";
-import { syntheticLoginRole } from "@/lib/demo/synthetic-account.application";
+import { syntheticLoginAccount } from "@/lib/demo/synthetic-account.application";
 
 const subscribeToClient = () => () => {};
 const clientReady = () => true;
@@ -70,6 +71,7 @@ function fieldMessage(
   const messages = {
     ACCEPTANCE_REQUIRED: copy.invalidInput,
     EMAIL_INVALID: copy.emailInvalid,
+    EMAIL_UNDELIVERABLE: copy.emailUndeliverable,
     PASSWORD_REQUIRED: copy.passwordRequired,
     PASSWORD_REQUIREMENTS: copy.passwordRequirements,
     PASSWORD_MISMATCH: copy.passwordMismatch,
@@ -146,6 +148,8 @@ export function AuthForm({
   actionOverride,
   initialEmail,
   initialPassword,
+  secondaryAction,
+  localeExplicit = true,
 }: Readonly<{
   mode: AuthFormMode;
   locale: Locale;
@@ -158,6 +162,10 @@ export function AuthForm({
   ) => Promise<AuthFormState>;
   initialEmail?: string | undefined;
   initialPassword?: string | undefined;
+  /** An extra exit beside the form's links, such as sign-out on consent. */
+  secondaryAction?: ReactNode;
+  /** False when the page fell back to English without being asked. */
+  localeExplicit?: boolean;
 }>) {
   const copy = getAuthCopy(locale);
   const synthetic = useSyntheticNavigation();
@@ -173,19 +181,19 @@ export function AuthForm({
           previous: AuthFormState,
           data: FormData,
         ): Promise<AuthFormState> => {
-          const role = syntheticLoginRole(
+          const account = syntheticLoginAccount(
             data.get("email"),
             data.get("password"),
           );
-          if (role) {
+          if (account) {
             const home =
-              role === "leader"
+              account.role === "leader"
                 ? "/batch-leader"
-                : role === "student"
+                : account.role === "student"
                   ? "/learn"
                   : "/admin";
             synthetic.enter(
-              role,
+              account,
               locale,
               ["/", "/learn"].includes(returnPath) ? home : returnPath,
             );
@@ -282,6 +290,11 @@ export function AuthForm({
         }}
       >
         <input type="hidden" name="locale" value={locale} />
+        <input
+          type="hidden"
+          name="localeSource"
+          value={localeExplicit ? "explicit" : "default"}
+        />
         <input type="hidden" name="returnPath" value={returnPath} />
 
         {mode !== "reset" && mode !== "consent" ? (
@@ -477,6 +490,7 @@ export function AuthForm({
             {copy.loginLink}
           </Link>
         ) : null}
+        {secondaryAction}
       </div>
     </section>
   );

@@ -94,7 +94,10 @@ function ButtonSwitch({
 }
 
 /** Access pages and landing: links built on the server; the fragment, which
- * the server never sees, is added on click. */
+ * the server never sees, is added on click. The links never prefetch: the
+ * proxy remembers the language a same-origin page request names, so no page
+ * fetch may name a language other than the one on screen
+ * (`locale-preference.application.ts`). */
 function LinkSwitch({
   locale,
   variant = "segmented",

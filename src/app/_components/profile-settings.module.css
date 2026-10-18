@@ -1,0 +1,29 @@
+.form {
+  display: grid;
+  gap: 24px;
+  max-width: 560px;
+}
+
+.email {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+}
+
+.email dt {
+  color: var(--secondary);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.email dd {
+  margin: 0;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
