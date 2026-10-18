@@ -216,7 +216,7 @@ inLocales(["ar"], (locale) => {
         }),
       ).toBeVisible();
       await expect(
-        page.getByRole("spinbutton", {
+        page.getByRole("textbox", {
           name: t("Number of questions", "عدد الأسئلة"),
           exact: true,
         }),
@@ -225,7 +225,7 @@ inLocales(["ar"], (locale) => {
         page.getByRole("radio", { name: t("Medium", "متوسط"), exact: true }),
       ).toBeChecked();
       await page
-        .getByRole("spinbutton", {
+        .getByRole("textbox", {
           name: t("Number of questions", "عدد الأسئلة"),
           exact: true,
         })
@@ -237,7 +237,7 @@ inLocales(["ar"], (locale) => {
         .getByRole("radio", { name: t("Timed", "مؤقت"), exact: true })
         .check();
       await page
-        .getByRole("spinbutton", {
+        .getByRole("textbox", {
           name: t("Duration (minutes)", "المدة (بالدقائق)"),
           exact: true,
         })
@@ -327,7 +327,7 @@ inLocales(["en"], (locale) => {
         .getByRole("radio", { name: t("Timed", "مؤقت"), exact: true })
         .check();
       await page
-        .getByRole("spinbutton", {
+        .getByRole("textbox", {
           name: t("Duration (minutes)", "المدة (بالدقائق)"),
           exact: true,
         })
@@ -360,7 +360,7 @@ inLocales(["en"], (locale) => {
         page.getByRole("radio", { name: t("Timed", "مؤقت"), exact: true }),
       ).toBeChecked();
       await expect(
-        page.getByRole("spinbutton", {
+        page.getByRole("textbox", {
           name: t("Duration (minutes)", "المدة (بالدقائق)"),
           exact: true,
         }),
@@ -763,15 +763,22 @@ inLocales(["ar"], (locale) => {
         name: t("Start quiz", "بدء الاختبار"),
         exact: true,
       });
+      // Each field validates when it is left or on Start, never while typing
+      // (WP03-T29 IX-13); Start stays pressable and points at the field.
       for (const value of ["0", "7", "2.5", ""]) {
+        await count.fill("3");
         await count.fill(value);
-        await expect(start).toBeDisabled();
+        await expect(page.locator("#quiz-question-count-error")).toHaveCount(0);
+        await count.blur();
         await expect(count).toHaveAttribute("aria-invalid", "true");
         await expect(page.locator("#quiz-question-count-error")).toContainText(
           t("whole number of questions", "عددًا صحيحًا من الأسئلة"),
         );
         await expect(page.locator("#quiz-duration-error")).toHaveCount(0);
       }
+      await start.click();
+      await expect(count).toBeFocused();
+      await expect(page).toHaveURL(/\/quiz\?/u);
       await count.fill("6");
       await page
         .getByRole("radio", { name: t("Timed", "مؤقت"), exact: true })
@@ -781,13 +788,18 @@ inLocales(["ar"], (locale) => {
         { exact: true },
       );
       for (const value of ["0", "241", ""]) {
+        await duration.fill("5");
         await duration.fill(value);
-        await expect(start).toBeDisabled();
+        await expect(page.locator("#quiz-duration-error")).toHaveCount(0);
+        await duration.blur();
         await expect(page.locator("#quiz-duration-error")).toContainText(
           t("whole number of minutes", "عددًا صحيحًا من الدقائق"),
         );
         await expect(page.locator("#quiz-question-count-error")).toHaveCount(0);
       }
+      await start.click();
+      await expect(duration).toBeFocused();
+      await expect(page).toHaveURL(/\/quiz\?/u);
       await page
         .getByRole("radio", { name: t("Untimed", "دون توقيت"), exact: true })
         .check();
@@ -1809,12 +1821,15 @@ inLocales(["ar"], (locale) => {
           exact: true,
         })
         .fill("7");
-      await expect(start).toBeDisabled();
+      // Start validates instead of being disabled (WP03-T29 IX-13).
+      await start.click();
+      await expect(page.locator("#quiz-question-count-error")).toBeVisible();
       await page
         .getByLabel(pick(locale, "Number of questions", "عدد الأسئلة"), {
           exact: true,
         })
         .fill("3");
+      await expect(page.locator("#quiz-question-count-error")).toHaveCount(0);
       await expect(start).toBeEnabled();
       await start.press("Enter");
       await expect(

@@ -1,6 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type DragEvent,
+  type ReactNode,
+} from "react";
 import { useProductRouter } from "@/app/_components/product-navigation";
 import { useSearchParams } from "next/navigation";
 import type { Route } from "next";
@@ -80,6 +87,9 @@ export function useCollectionFlow({
   const clock = useCollectionClock(referenceTime);
   const windowState = collectionWindow(campaign, clock);
   const picker = useRef<HTMLInputElement>(null);
+  // The visible "Choose files" button: the target when the intake opens and
+  // after a cancelled upload (IX-24, IX-31).
+  const chooseButton = useRef<HTMLButtonElement>(null);
   const correction = initialCorrection;
   const uploadSelection = resolveCollectionUploadSelection(campaign, query);
   const selectedRequestId =
@@ -181,32 +191,88 @@ export function useCollectionFlow({
       ? (uploadSelection.itemId ?? "all")
       : null;
   useEffect(() => {
-    if (
-      uploadFocus &&
-      picker.current?.previousElementSibling instanceof HTMLElement
-    )
-      picker.current.previousElementSibling.focus();
+    if (uploadFocus) chooseButton.current?.focus();
   }, [uploadFocus]);
   const [description, setDescription] = useState(
     draft?.current?.description ?? initialMetadata?.description ?? "",
   );
   const [rights, setRights] = useState(draft?.current?.rights ?? false);
+  // Adding files clears the permission; the intake says so until the leader
+  // confirms it again (IX-08).
+  const [rightsCleared, setRightsCleared] = useState(false);
+  function confirmRights(checked: boolean) {
+    setRights(checked);
+    if (checked) setRightsCleared(false);
+  }
   useEffect(() => {
     draft?.save({ files: queue.files, description, rights });
   }, [draft, queue.files, description, rights]);
   const [drag, setDrag] = useState(false);
+  // Entering a child fires `dragleave` on the parent, so the highlight
+  // follows a depth count instead of single events (IX-31).
+  const dragDepth = useRef(0);
+  const accepting = windowState === "ACTIVE" && !queue.running;
+  const dropZone = {
+    onDragEnter(event: DragEvent<HTMLElement>) {
+      event.preventDefault();
+      dragDepth.current += 1;
+      if (accepting) setDrag(true);
+    },
+    onDragOver(event: DragEvent<HTMLElement>) {
+      // Always handled, so a refused drop never opens the file in the tab.
+      event.preventDefault();
+      event.dataTransfer.dropEffect = accepting ? "copy" : "none";
+    },
+    onDragLeave() {
+      dragDepth.current = Math.max(0, dragDepth.current - 1);
+      if (dragDepth.current === 0) setDrag(false);
+    },
+    onDrop(event: DragEvent<HTMLElement>) {
+      event.preventDefault();
+      dragDepth.current = 0;
+      setDrag(false);
+      if (accepting) add(Array.from(event.dataTransfer.files));
+    },
+  };
 
   const correctionAction = correction?.action;
   const correctionSubmissionId = correction?.submissionId;
   useEffect(() => {
     if (correctionAction === "FIX_INFORMATION")
       document.getElementById("collection-description")?.focus();
-    else if (
-      correctionAction === "REPLACE_FILE" &&
-      picker.current?.previousElementSibling instanceof HTMLElement
-    )
-      picker.current.previousElementSibling.focus();
+    else if (correctionAction === "REPLACE_FILE") chooseButton.current?.focus();
   }, [correctionAction, correctionSubmissionId]);
+  // Cancel unmounts itself; focus returns to Choose files once the queue
+  // has stopped and the button is enabled again (IX-24).
+  const cancelFocus = useRef(false);
+  function cancel() {
+    cancelFocus.current = true;
+    queue.cancel();
+  }
+  useEffect(() => {
+    if (queue.running || !cancelFocus.current) return;
+    cancelFocus.current = false;
+    chooseButton.current?.focus();
+  }, [queue.running]);
+  // Queue drafts live in document memory: a reload, tab close or address
+  // change during an upload or with files still to send would lose them
+  // (IX-09). Files that can never be sent do not hold the page.
+  const unsent =
+    queue.running ||
+    queue.files.some(
+      (row) =>
+        row.state !== "RECEIVED" &&
+        !(
+          (row.state === "INVALID" || row.state === "ERROR") &&
+          !collectionRetryable(row.error)
+        ),
+    );
+  useEffect(() => {
+    if (!unsent) return;
+    const warn = (event: BeforeUnloadEvent) => event.preventDefault();
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, [unsent]);
   const back = homeHref ?? "/batch-leader";
   const ready = queue.files.filter(
     (row) =>
@@ -235,6 +301,7 @@ export function useCollectionFlow({
       refreshWindow((value) => value + 1);
       return;
     }
+    if (rights) setRightsCleared(true);
     setRights(false);
     const pathname = window.location.pathname;
     const uploadIntent =
@@ -295,6 +362,7 @@ export function useCollectionFlow({
     query,
     windowState,
     picker,
+    chooseButton,
     correction,
     uploadSelection,
     selectedRequestId,
@@ -310,9 +378,11 @@ export function useCollectionFlow({
     description,
     setDescription,
     rights,
-    setRights,
+    confirmRights,
+    rightsCleared,
     drag,
-    setDrag,
+    dropZone,
+    cancel,
     back,
     ready,
     canSubmit,

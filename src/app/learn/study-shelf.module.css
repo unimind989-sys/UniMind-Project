@@ -284,11 +284,16 @@ li[data-current] a.cover:hover {
 .shelfHeading h2:focus {
   outline: none;
 }
+/* The search landmark is the flex item; the label inside stacks its name
+   above the field. */
+.searchLandmark {
+  flex: 1 1 18rem;
+  min-width: 0;
+  max-width: 26rem;
+}
 .search {
   display: grid;
   gap: 6px;
-  flex: 1 1 18rem;
-  max-width: 26rem;
   font-size: 0.875rem;
   font-weight: 650;
 }

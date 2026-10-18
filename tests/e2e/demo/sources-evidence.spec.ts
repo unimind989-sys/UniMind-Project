@@ -1494,7 +1494,7 @@ inLocales(["en"], (locale) => {
         new RegExp(`${unit}/studio\\?lang=${locale}$`, "u"),
       );
       await navigate(page, unit + "/quiz", locale);
-      const count = page.getByRole("spinbutton", {
+      const count = page.getByRole("textbox", {
         name: pick(locale, "Number of questions", "عدد الأسئلة"),
         exact: true,
       });
@@ -1503,8 +1503,9 @@ inLocales(["en"], (locale) => {
         "1–6 questions per sample attempt.",
         "من ١ إلى ٦ أسئلة في المحاولة التجريبية.",
       );
-      await expect(count).toHaveAttribute("min", "1");
-      await expect(count).toHaveAttribute("max", "6");
+      // A numeric text field (Arabic-Indic digits work); its range is the
+      // help text and the error, shown after blur (WP03-T29 IX-13).
+      await expect(count).toHaveAttribute("inputmode", "numeric");
       await expect(count).toHaveAccessibleDescription(help);
       await expect(page.getByText(help, { exact: true })).toBeVisible();
       const start = page.getByRole("button", {
@@ -1513,7 +1514,9 @@ inLocales(["en"], (locale) => {
       });
       for (const value of ["0", "7", ""]) {
         await count.fill(value);
-        await expect(start).toBeDisabled();
+        await count.blur();
+        await expect(count).toHaveAttribute("aria-invalid", "true");
+        await expect(page.locator("#quiz-question-count-error")).toBeVisible();
       }
       await count.fill("3");
       await count.press("ArrowUp");

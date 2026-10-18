@@ -1,16 +1,14 @@
 import type { Metadata, Route } from "next";
 import { redirect } from "next/navigation";
 
-import { logoutAction } from "../actions";
+import { SignOutForm } from "../_components/sign-out-form";
 import { completeProfileAction } from "./actions";
 import { AuthShell } from "../_components/auth-shell";
 import { resolveAuthPageParameters } from "../_components/auth-page";
 import { WelcomeForm } from "../_components/welcome-form";
-import { Button } from "@/app/_components/product-ui";
 import { getCurrentAuthAccess } from "@/lib/auth/auth-access.supabase.server";
 import { accessDestination } from "@/lib/auth/auth-actions.application";
 import { currentRoleHome } from "@/lib/account/account.supabase.server";
-import { getProfileCopy } from "@/lib/i18n/profile-copy";
 
 export const metadata: Metadata = { title: "Your profile | UniMind" };
 
@@ -50,14 +48,7 @@ export default async function WelcomePage({
         locale={locale}
         returnPath={returnPath}
         action={completeProfileAction}
-        secondaryAction={
-          <form action={logoutAction}>
-            <input type="hidden" name="locale" value={locale} />
-            <Button variant="quiet" type="submit">
-              {getProfileCopy(locale).signOut}
-            </Button>
-          </form>
-        }
+        secondaryAction={<SignOutForm locale={locale} />}
       />
     </AuthShell>
   );

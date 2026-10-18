@@ -96,6 +96,7 @@ export function ChatComposer({
           maxLength={1000}
           autoComplete="off"
           enterKeyHint={fine ? "send" : "enter"}
+          aria-describedby="composer-meta"
           placeholder={t(
             `Ask about this ${scope.unitLabelSingularEn.toLowerCase()}…`,
             `اسأل عن ${scope.unitLabelSingularAr}…`,
@@ -151,7 +152,7 @@ export function ChatComposer({
           </Button>
         )}
       </form>
-      <p className={styles.composerMeta}>
+      <p id="composer-meta" className={styles.composerMeta}>
         {answering ? (
           <>
             <strong>

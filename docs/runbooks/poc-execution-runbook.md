@@ -1578,8 +1578,8 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 **Dependencies:** WP03-T25 and WP03-T26. Findings IX-01, IX-04, IX-08, IX-09, IX-11 to IX-16, IX-24 to IX-27, IX-29, IX-31, IX-32, IX-35 and the input inventory.
 
-- [ ] Failed auth keeps the email; pending states on New session and Sign out; Batch Leader intake explains its disabled actions and guards against losing the queue; live counts and state-only announcements; Arabic-Indic quiz numbers.
-- [ ] Every input has the right type, keyboard hint, autocomplete and error wiring; deliver through one PR with required CI.
+- [x] Failed auth keeps the email; pending states on New session and Sign out; Batch Leader intake explains its disabled actions and guards against losing the queue; live counts and state-only announcements; Arabic-Indic quiz numbers.
+- [x] Every input has the right type, keyboard hint, autocomplete and error wiring; deliver through one PR with required CI. Reviewed by the `independent-reviewer` sub-agent (approve with nits, fixed); approved at `f324d39` by the overseeing session under Ahmed's delegation; IX-35 partial ([task record](../../planning/tasks/wp03-t29-interactions-inputs.md)). These closure markers become authoritative only when that PR merges with green required CI.
 
 **Pass:** each repaired control has an observable outcome proven by a test; required CI green.
 

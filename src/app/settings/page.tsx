@@ -12,8 +12,7 @@ import {
   AccountSettings,
   type AccountStudyReturn,
 } from "@/app/_components/account-settings";
-import { Button } from "@/app/_components/product-ui";
-import { logoutAction } from "@/app/(auth)/actions";
+import { SignOutForm } from "@/app/(auth)/_components/sign-out-form";
 import { Notice } from "@/app/_components/notice";
 import { saveAcademicAction, saveProfileAction } from "./actions";
 
@@ -89,14 +88,7 @@ export default async function SettingsPage({
         locale={locale}
         name={account.displayName}
         role={role}
-        signOutAction={
-          <form action={logoutAction}>
-            <input type="hidden" name="locale" value={locale} />
-            <Button variant="quiet" type="submit">
-              {t("Sign out", "تسجيل الخروج")}
-            </Button>
-          </form>
-        }
+        signOutAction={<SignOutForm locale={locale} />}
         studyReturn={studyReturn}
         studyPath={saved !== null}
         academic={

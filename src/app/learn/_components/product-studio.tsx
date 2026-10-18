@@ -198,6 +198,18 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
     }, 1000);
     return () => clearTimeout(timer);
   }, [request, scope.unitId, update]);
+  // Cancel unmounts itself; focus returns to Generate once it is enabled
+  // again, or to the settings summary when phones have folded them (IX-24).
+  const generateButton = useRef<HTMLButtonElement>(null);
+  const settingsToggle = useRef<HTMLButtonElement>(null);
+  const cancelFocus = useRef(false);
+  useEffect(() => {
+    if (request || !cancelFocus.current) return;
+    cancelFocus.current = false;
+    const generate = generateButton.current;
+    if (generate?.getClientRects().length) generate.focus();
+    else settingsToggle.current?.focus();
+  }, [request]);
   const t = useProductText(locale);
   const artifact = state?.artifacts[scope.unitId];
   const example = artifact ? buildStudioFixture(artifact) : null;
@@ -263,6 +275,7 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
         >
           {artifact ? (
             <button
+              ref={settingsToggle}
               type="button"
               className={studyStyles.settingsToggle}
               aria-expanded={settingsOpen}
@@ -364,7 +377,7 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
                   label={t("Study focus", "محور المذاكرة")}
                   value={topic}
                   onChange={(value) => setOption("topic", value)}
-                  disabled={unavailable}
+                  disabled={controlsDisabled}
                   options={[
                     ["sequence", t("Upper trunk injury", "إصابة الجذع العلوي")],
                     ["comparison", t("Roots of the plexus", "جذور الضفيرة")],
@@ -375,7 +388,7 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
                   label={t("Output language", "لغة المخرج")}
                   value={language}
                   onChange={(value) => setOption("language", value)}
-                  disabled={unavailable}
+                  disabled={controlsDisabled}
                   options={[
                     ["en", t("English", "الإنجليزية")],
                     ["ar", t("Arabic", "العربية")],
@@ -384,14 +397,17 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
                 />
               </div>
               <details className={studyStyles.secondaryOptions}>
-                <summary>{t("Depth and size", "التفصيل والحجم")}</summary>
+                <summary>
+                  {t("Depth and size", "التفصيل والحجم")}
+                  <FrontendIcon name="chevron" size={16} />
+                </summary>
                 <div className={studyStyles.configuration}>
                   <Select
                     id="artifact-depth"
                     label={t("Depth", "التفصيل")}
                     value={depth}
                     onChange={(value) => setOption("depth", value)}
-                    disabled={unavailable}
+                    disabled={controlsDisabled}
                     options={[
                       ["concise", t("Concise", "موجز")],
                       ["detailed", t("Detailed", "مفصل")],
@@ -402,7 +418,7 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
                     label={t("Size", "الحجم")}
                     value={size}
                     onChange={(value) => setOption("size", value)}
-                    disabled={unavailable}
+                    disabled={controlsDisabled}
                     options={[
                       ["short", t("Short sample", "مثال قصير")],
                       ["extended", t("Extended sample", "مثال موسع")],
@@ -431,6 +447,7 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
                     )}`}
               </p>
               <Button
+                ref={generateButton}
                 variant="primary"
                 type="submit"
                 disabled={request !== null || !handoutAvailable}
@@ -454,6 +471,7 @@ export function ProductStudio({ scope, locale, base }: ProductStudyProps) {
               </Notice>
               <Button
                 onClick={() => {
+                  cancelFocus.current = true;
                   setRequest(null);
                   setNotice(
                     t(

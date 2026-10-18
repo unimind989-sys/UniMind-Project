@@ -5,6 +5,7 @@ import { selectedAdminDecision } from "@/lib/admin/admin-presentation.applicatio
 import { AdminDecisionQueue } from "@/app/admin/_components/admin-decision-queue";
 import type { AdminActionFormState } from "@/app/admin/actions";
 import { parseAdminHoldExpiry } from "@/lib/admin/admin-actions.application";
+import { syntheticDemoTime } from "@/lib/demo/synthetic-clock.application";
 import { useProductServices } from "./product-services";
 import {
   actionFixtures,
@@ -160,6 +161,7 @@ export function ProductAdmin({
         embedded
         refreshOnSelect={false}
         onSelection={setSelectedId}
+        referenceTime={syntheticDemoTime.now}
       />
       <div className={adminStyles.contextLinks}>
         {origin && (

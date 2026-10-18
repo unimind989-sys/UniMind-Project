@@ -42,9 +42,11 @@ test("landing preview explains the study loop with local, keyboard-accessible co
   await expect(studio).toBeFocused();
   await expect(studio).toHaveAttribute("aria-selected", "true");
   await page.getByRole("button", { name: /Sample flashcard/ }).click();
-  await expect(
-    page.getByRole("button", { name: /Sample answer/ }),
-  ).toHaveAttribute("aria-pressed", "true");
+  // The name follows the turned card, with no contradicting pressed state
+  // (WP03-T29 IX-16).
+  const turned = page.getByRole("button", { name: /Sample answer/ });
+  await expect(turned).toHaveAccessibleName(/Show question/u);
+  await expect(turned).not.toHaveAttribute("aria-pressed");
   await studio.press("End");
   await expect(
     page.getByRole("tab", { name: "Quiz", exact: true }),

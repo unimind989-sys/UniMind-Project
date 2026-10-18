@@ -90,12 +90,33 @@
   border-block-start: 1px solid var(--line);
 }
 .secondaryOptions summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   min-height: 44px;
   padding-block: 12px;
   font-size: 0.9375rem;
   font-weight: 700;
   color: var(--ink);
   cursor: pointer;
+  list-style: none;
+}
+/* The shared disclosure chevron instead of the native marker. */
+.secondaryOptions summary::-webkit-details-marker {
+  display: none;
+}
+.secondaryOptions summary > svg {
+  flex: none;
+  color: var(--secondary);
+  transition: transform var(--motion-control) ease;
+}
+.secondaryOptions[open] summary > svg {
+  transform: rotate(180deg);
+}
+@media (prefers-reduced-motion: reduce) {
+  .secondaryOptions summary > svg {
+    transition: none;
+  }
 }
 .secondaryOptions > div {
   margin-block: 8px;

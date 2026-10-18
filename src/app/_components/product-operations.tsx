@@ -299,6 +299,7 @@ export function ProductResource({ screen, locale }: Props) {
               </p>
               <Button
                 variant="primary"
+                disabled={state.catalogDraft === unitType}
                 onClick={() =>
                   update((current) => ({
                     ...current,
@@ -350,6 +351,9 @@ export function ProductResource({ screen, locale }: Props) {
               actions: (
                 <>
                   <Button
+                    // One effect only; afterwards the notice says it is done
+                    // (IX-35).
+                    disabled={state.cohortDraft}
                     onClick={() =>
                       update((current) => ({ ...current, cohortDraft: true }))
                     }
@@ -426,6 +430,7 @@ export function ProductResource({ screen, locale }: Props) {
           </p>
           <Button
             variant="primary"
+            disabled={state.campaignDraft}
             onClick={() =>
               update((current) => ({ ...current, campaignDraft: true }))
             }

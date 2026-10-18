@@ -174,10 +174,13 @@ export function WorkspacePreview({ locale }: { locale: Locale }) {
                     "أعد ملخصات وبطاقات مذاكرة وأسئلة تدريب من مصادر مادتك. جرّب بطاقة واحدة.",
                   )}
                 </p>
+                {/* The name follows the visible side and action, so the
+                    button has no `aria-pressed` that could contradict it
+                    (IX-16). */}
                 <button
                   type="button"
                   className={workspace.flashcard}
-                  aria-pressed={flipped}
+                  data-flipped={flipped || undefined}
                   onClick={() => setFlipped(!flipped)}
                 >
                   <span className={workspace.flashcardLabel}>

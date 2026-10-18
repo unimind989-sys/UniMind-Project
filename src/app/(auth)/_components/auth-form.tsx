@@ -7,6 +7,7 @@ import {
   useRef,
   useState,
   useSyncExternalStore,
+  type InputHTMLAttributes,
   type ReactNode,
 } from "react";
 
@@ -34,6 +35,13 @@ import { useSyntheticNavigation } from "@/app/_components/product-navigation";
 import { syntheticLoginAccount } from "@/lib/demo/synthetic-account.application";
 
 const subscribeToClient = () => () => {};
+// The registration policy (`registrationPasswordSchema`) for password
+// managers that generate passwords. React passes the attribute through; the
+// cast only satisfies the DOM attribute types, which do not list it.
+const newPasswordRules = {
+  passwordrules:
+    "minlength: 12; maxlength: 128; required: lower, upper; required: digit; required: special;",
+} as InputHTMLAttributes<HTMLInputElement>;
 const clientReady = () => true;
 const serverReady = () => false;
 
@@ -231,6 +239,13 @@ export function AuthForm({
 
   const [showPassword, setShowPassword] = useState(false);
   const [missingPassword, setMissingPassword] = useState<string | null>(null);
+  // React resets an action form after every submission, which puts each
+  // field back to its default value. The email's default follows what was
+  // submitted, so a failed action keeps the typed email; the passwords still
+  // clear (IX-01). The field stays uncontrolled, so text typed before
+  // hydration is never replaced.
+  const [submittedEmail, setSubmittedEmail] = useState<string>();
+  const newPassword = mode === "register" || mode === "reset";
   const emailError = firstFieldError(state, "email", copy);
   const passwordError =
     missingPassword === "password"
@@ -247,8 +262,8 @@ export function AuthForm({
       <h1 id={`${mode}-title`}>{title}</h1>
       {mode === "verify" ? <p>{copy.verifyHelp}</p> : null}
       {mode === "forgot" ? <p>{copy.recoveryHelp}</p> : null}
-      {mode === "register" || mode === "reset" ? (
-        <p>{copy.passwordHelp}</p>
+      {newPassword ? (
+        <p id={`${mode}-password-help`}>{copy.passwordHelp}</p>
       ) : null}
       {visibleNotice !== null ? (
         <Notice
@@ -275,6 +290,8 @@ export function AuthForm({
         noValidate
         onInput={() => setMissingPassword(null)}
         onSubmit={(event) => {
+          const email = event.currentTarget.elements.namedItem("email");
+          if (email instanceof HTMLInputElement) setSubmittedEmail(email.value);
           if (!["login", "register", "reset"].includes(mode)) return;
           for (const name of mode === "login"
             ? ["password"]
@@ -306,9 +323,25 @@ export function AuthForm({
                 id={`${mode}-email`}
                 name="email"
                 type="email"
-                defaultValue={initialEmail}
+                defaultValue={submittedEmail ?? initialEmail}
                 inputMode="email"
-                autoComplete={actionOverride ? "off" : "email"}
+                // Sign-in names the account; the other forms ask for an
+                // address (password managers pair username with the
+                // current password).
+                autoComplete={
+                  actionOverride
+                    ? "off"
+                    : mode === "login"
+                      ? "username"
+                      : "email"
+                }
+                autoCapitalize="none"
+                autoCorrect="off"
+                spellCheck={false}
+                enterKeyHint={
+                  mode === "login" || mode === "register" ? "next" : "send"
+                }
+                maxLength={320}
                 aria-invalid={emailError !== null}
                 aria-describedby={
                   emailError === null ? undefined : `${mode}-email-error`
@@ -341,16 +374,26 @@ export function AuthForm({
                       ? "current-password"
                       : "new-password"
                 }
+                {...(newPassword
+                  ? { ...newPasswordRules, minLength: 12, maxLength: 128 }
+                  : { maxLength: 1024 })}
+                enterKeyHint={mode === "login" ? "go" : "next"}
                 aria-invalid={passwordError !== null}
                 aria-describedby={
-                  passwordError === null ? undefined : `${mode}-password-error`
+                  [
+                    newPassword ? `${mode}-password-help` : null,
+                    passwordError === null ? null : `${mode}-password-error`,
+                  ]
+                    .filter(Boolean)
+                    .join(" ") || undefined
                 }
                 required
               />
+              {/* A switching label without `aria-pressed`, so the name and
+                  the state never contradict each other (IX-16). */}
               <button
                 type="button"
                 className={styles.passwordVisibility}
-                aria-pressed={showPassword}
                 aria-label={
                   locale === "ar"
                     ? showPassword
@@ -392,6 +435,9 @@ export function AuthForm({
                 type={showPassword ? "text" : "password"}
                 defaultValue={initialPassword}
                 autoComplete={actionOverride ? "off" : "new-password"}
+                minLength={12}
+                maxLength={128}
+                enterKeyHint="go"
                 aria-invalid={confirmationError !== null}
                 aria-describedby={
                   confirmationError === null
@@ -435,12 +481,19 @@ export function AuthForm({
                 value="accepted"
                 type="checkbox"
                 aria-invalid={acceptanceError !== null}
+                aria-describedby={
+                  acceptanceError === null
+                    ? undefined
+                    : "consent-acceptance-error"
+                }
                 required
               />
               <span>{copy.acceptLabel}</span>
             </label>
             {acceptanceError !== null ? (
-              <span className={styles.fieldError}>{acceptanceError}</span>
+              <span id="consent-acceptance-error" className={styles.fieldError}>
+                {acceptanceError}
+              </span>
             ) : null}
           </div>
         ) : null}

@@ -207,13 +207,21 @@ export function AcademicSettings({
                   ([key, , options]) =>
                     key !== "cohortId" || options.length > 1,
                 )
-                .map(([key, label, options]) => (
+                .map(([key, label, options], index, shown) => (
                   <div key={key}>
                     <label htmlFor={`academic-${key}`}>{label}</label>
                     <select
                       id={`academic-${key}`}
+                      name={key}
+                      required
                       value={journey.selection[key] ?? ""}
                       disabled={options.length === 0}
+                      // An empty select says which choice unlocks it.
+                      aria-describedby={
+                        options.length === 0 && index > 0
+                          ? `academic-${key}-hint`
+                          : undefined
+                      }
                       onChange={(event) => choose(key, event.target.value)}
                     >
                       <option value="">{t("Choose…", "اختر…")}</option>
@@ -223,6 +231,14 @@ export function AcademicSettings({
                         </option>
                       ))}
                     </select>
+                    {options.length === 0 && index > 0 ? (
+                      <p id={`academic-${key}-hint`} className={styles.hint}>
+                        {t(
+                          `Choose ${shown[index - 1]![1].toLocaleLowerCase("en")} first.`,
+                          `اختر ${shown[index - 1]![1]} أولًا.`,
+                        )}
+                      </p>
+                    ) : null}
                   </div>
                 ))}
             </fieldset>
@@ -347,6 +363,7 @@ function AcademicSetup({
                 <input
                   type="radio"
                   name={`setup-${active[0]}`}
+                  required
                   value={option.id}
                   checked={selection[active[0]] === option.id}
                   onChange={() => choose(active[0], option.id)}

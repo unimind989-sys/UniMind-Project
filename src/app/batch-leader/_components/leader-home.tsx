@@ -352,17 +352,10 @@ export function LeaderHome({
                   return (
                     <li key={campaign.id}>
                       <div className={styles.campaignMain}>
-                        <h3>
-                          <Link
-                            href={
-                              localizedHref(
-                                `/batch-leader/campaigns/${encodeURIComponent(campaign.id)}`,
-                                locale,
-                              ) as Route
-                            }
-                          >
-                            {campaign.name}
-                          </Link>
+                        {/* One link per row (IX-32): the action below names
+                            the destination; this title describes it. */}
+                        <h3 id={`campaign-${campaign.id}-title`}>
+                          {campaign.name}
                         </h3>
                         <p className={styles.campaignCohort}>
                           {campaign.cohortName}
@@ -402,6 +395,7 @@ export function LeaderHome({
                       </div>
                       <Link
                         {...buttonLook({ variant: "primary" }, styles.open)}
+                        aria-describedby={`campaign-${campaign.id}-title`}
                         href={
                           localizedHref(
                             `/batch-leader/campaigns/${encodeURIComponent(campaign.id)}`,

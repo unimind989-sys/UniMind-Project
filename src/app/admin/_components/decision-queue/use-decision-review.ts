@@ -18,6 +18,12 @@ import type {
 
 import type { AdminCopy, SubmitAdminAction } from "./candidate-presentation";
 
+export type DecisionErrors = {
+  reason?: true | undefined;
+  expiry?: "required" | "past" | undefined;
+  attestation?: true | undefined;
+};
+
 /**
  * Owns one decision's review lifecycle: the server action state, the
  * confirmation dialog binding (so a candidate that changes after review cannot
@@ -32,6 +38,8 @@ export function useDecisionReview(
     reviewButton: RefObject<HTMLButtonElement | null>;
     feedbackRef: RefObject<HTMLParagraphElement | null>;
   }>,
+  /** The demo's fixed clock for the hold expiry; real pages use now. */
+  referenceTime?: string,
 ) {
   const { reviewButton, feedbackRef } = refs;
   const [state, formAction, pending] = useActionState(submitAction, {
@@ -44,6 +52,7 @@ export function useDecisionReview(
   const [reasonDraft, setReasonDraft] = useState("");
   const [expiryDraft, setExpiryDraft] = useState("");
   const [reviewAttested, setReviewAttested] = useState(false);
+  const [errors, setErrors] = useState<DecisionErrors>({});
   const [correlationId, setCorrelationId] = useState(
     candidate.correlationId ?? "",
   );
@@ -70,20 +79,48 @@ export function useDecisionReview(
     if (form === undefined || form === null) return;
     const reason = form.elements.namedItem("reason");
     const expiry = form.elements.namedItem("holdExpiresAtLocal");
-    if (reason instanceof HTMLTextAreaElement) {
-      reason.setCustomValidity(
-        reason.value.trim().length < 8 || reason.value.trim().length > 500
-          ? copy.reasonHint
-          : "",
-      );
+    const attestation = form.elements.namedItem("reviewAttested");
+    // Inline, localized errors instead of the browser's validation bubbles
+    // (IX-27); focus moves to the first field to fix.
+    const next: DecisionErrors = {};
+    if (reason instanceof HTMLTextAreaElement && !reason.readOnly) {
+      const length = reason.value.trim().length;
+      if (length < 8 || length > 500) next.reason = true;
     }
-    if (!form.reportValidity()) return;
+    if (expiry instanceof HTMLInputElement && !expiry.readOnly) {
+      if (expiry.value === "") next.expiry = "required";
+      else if (
+        new Date(expiry.value).getTime() <=
+        (referenceTime ? Date.parse(referenceTime) : Date.now())
+      )
+        next.expiry = "past";
+    }
+    if (attestation instanceof HTMLInputElement && !attestation.checked)
+      next.attestation = true;
+    setErrors(next);
+    const first = next.reason
+      ? reason
+      : next.expiry
+        ? expiry
+        : next.attestation
+          ? attestation
+          : null;
+    if (first instanceof HTMLElement) {
+      first.focus();
+      return;
+    }
     setReviewReason(
       reason instanceof HTMLTextAreaElement ? reason.value.trim() : "",
     );
     setReviewExpiry(expiry instanceof HTMLInputElement ? expiry.value : "");
     setReviewBinding(adminReviewBinding(candidate));
     setReviewOpen(true);
+  }
+
+  function clearError(field: keyof DecisionErrors) {
+    setErrors((current) =>
+      current[field] ? { ...current, [field]: undefined } : current,
+    );
   }
 
   function closeReview() {
@@ -125,7 +162,6 @@ export function useDecisionReview(
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) {
     setReviewOpen(false);
-    event.currentTarget.setCustomValidity("");
     const form = event.currentTarget.form;
     if (form === null) return;
     const correlation = form.elements.namedItem("correlationId");
@@ -179,6 +215,8 @@ export function useDecisionReview(
     changedAfterReview,
     ownerReviewPending,
     feedback,
+    errors,
+    clearError,
     openReview,
     closeReview,
     prepareAction,

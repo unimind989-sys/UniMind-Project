@@ -28,6 +28,7 @@ export function AdminDecisionQueue({
   initialSelection,
   recheckComplete = false,
   onSelection,
+  referenceTime,
 }: Readonly<{
   initialLocale: Locale;
   queue: AdminQueueState;
@@ -38,6 +39,8 @@ export function AdminDecisionQueue({
   initialSelection?: { id: string; error: boolean };
   recheckComplete?: boolean;
   onSelection?: (candidateId: string) => void;
+  /** The demo's fixed clock for the hold expiry; real pages use now. */
+  referenceTime?: string | undefined;
 }>) {
   const locale = initialLocale;
   const copy = getAdminCopy(locale);
@@ -101,6 +104,7 @@ export function AdminDecisionQueue({
                   submitAction={submitAction}
                   refreshing={refreshing}
                   reloadAction={decisions.recheck}
+                  referenceTime={referenceTime}
                 />
               </>
             ) : (
