@@ -12,20 +12,20 @@
 
 **Owner:** Claude Code (overseeing session); Ahmed selected; delegated under the WP03 refinement brief (18 October 2026)
 
-**Branch:** claude/wp03-t28-locale-demo-parity (stacked on WP03-T27 until it merges)
+**Branch:** claude/wp03-t28-locale-demo-parity
 
 **Updated (UTC):** 2026-10-18T11:30Z
 
 ## Contract
 
-**Dependencies:** WP03-T27 (account language in `profiles.preferred_language`, profile seam).
+**Dependencies:** WP03-T27 (merged as `4373a41`: account language in `profiles.preferred_language`, profile seam).
 
 **Inputs:** `docs/reviews/wp03-refinement/audits/journeys.md` (PJ-07, PJ-08, PJ-09, PJ-16, PJ-18, PJ-20, PJ-22 to PJ-24, PJ-26, PJ-30), IX-28.
 
 **Files:** `src/proxy.ts`, new `src/lib/i18n/locale-preference.application.ts`, `src/lib/auth/auth-actions.application.ts`, `src/app/(auth)/{actions.ts,_components/auth-page.tsx,_components/auth-form.tsx}`, `src/app/auth/callback/route.ts`, `src/app/_components/product-auth.tsx`, leader empty state, walkthrough and demo pack, tests.
 
 **Protected paths:** the proxy (runs before the session refresh) and the auth callback and actions.
-- Allowed: a functional HttpOnly `unimind-locale` cookie set from `?lang=` on real-runtime page loads; a 307 that adds the remembered `lang` to a page load without one; `lang` on email links; the account language on a sign-in from a page without a language.
+- Allowed: a functional HttpOnly `unimind-locale` cookie set from `?lang=` on real-runtime page loads and client navigations (not prefetches) and on profile saves; a 307 that adds the remembered `lang` to a page load without one; `lang` on email links; the account language on a sign-in from a page without a language.
 - Forbidden (proved): any cookie or redirect in the synthetic runtime; any change to session refresh, POST, API, RSC or callback requests; a forged cookie or `lang` value; registration with reserved test domains reaching Auth.
 
 **Verify:** unit (`locale-preference`, `auth-actions`); main e2e (`auth-flows`: remembered language, reserved domains); demo e2e (`auth.spec` reset and registration); `corepack pnpm verify`; required CI.
@@ -43,7 +43,8 @@
 - [x] Real registration continues on the verification page; reserved test domains are refused before Auth (PJ-24, PJ-30).
 - [x] Demo password reset ends signed in like the real flow (PJ-23); leader empty state no longer promises an invitation (PJ-18).
 - [x] Walkthrough table of demo-only behaviour (PJ-07, PJ-20, PJ-22, PJ-25); demo pack rebuilt.
-- [ ] Verification, independent review, PR after WP03-T27 merges.
+- [x] Remember on client navigations too (the shell switch is one) and on profile saves.
+- [ ] Verification, independent review, PR.
 
 ## Decisions
 
@@ -66,4 +67,4 @@
 
 ## Next action
 
-Rebase onto main after WP03-T27 merges, run `corepack pnpm verify`, independent review, PR.
+Run `corepack pnpm verify`, independent review, PR.
