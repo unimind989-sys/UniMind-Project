@@ -52,6 +52,12 @@ The security-aware result of authenticated membership, an unlocked cohort, a pub
 **Strict RAG**  
 The rule that factual student output comes only from retrieved passages in the authorized uploaded material. There is no web-search, general-reference, or hidden-knowledge completion branch.
 
+**Profile completion**
+The derived state of an account that has a non-empty display name. A verified, consenting account without one is sent to the first-run profile step (`/welcome`) before any product page; there is no stored onboarding flag.
+
+**Account language**
+The interface language an account chose (English or Arabic), stored in `profiles.preferred_language` as `EN` or `AR_EG`. `MIXED` is a study-language value and carries no interface preference. Appearance (System, Light, Dark) stays on the device.
+
 **Chat sharing mode**
 
 The student's time-effective choice for founder access to retained chat content. Chats are founder-visible by default. Private/no-sharing mode hides future exchanges from routine founder review, except for the specific exchange covered by a student report, explicit consent, or a qualifying approved automated misuse-policy flag. Sharing mode is separate from whether content is saved and how long it is retained.
