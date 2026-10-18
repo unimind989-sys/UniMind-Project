@@ -1526,6 +1526,73 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 **Pass:** the journey reads geometry only after the shell's flow decision; repeated local runs and required CI green; no assertion weakened and no product change.
 
+#### WP03-T24 — Audit the platform and plan the WP03 refinement
+
+**Dependencies:** WP03-T19 to T23 delivered. Ahmed's WP03 manager brief of 18 October 2026 asks for a platform-wide refinement in six connected areas (design-system consistency, phone space and clutter, journeys and onboarding with demo parity, interactions and inputs, verification and CI cost) and delegates every decision and delivery step to the overseeing Claude Code session ([task record](../../planning/tasks/wp03-t24-refinement-audit.md)).
+
+- [x] Audit the six areas against `bcab083` with evidence, measure the local `pnpm verify` and CI baselines, and capture a rendered baseline; publish the prioritized [findings](../reviews/wp03-refinement/findings.md), the [plan](../reviews/wp03-refinement/plan.md) with its decisions, and the area reports.
+- [x] Deliver through one PR with required CI. These closure markers become authoritative only when that PR merges with green required CI.
+
+**Pass:** every finding is classed, prioritized and either planned in WP03-T25 to T30 or recorded as not planned with a reason; decisions taken under the delegation are listed; required CI green.
+
+#### WP03-T25 — Consolidate the Cobalt design system and shared primitives
+
+**Dependencies:** WP03-T24. Findings DS-01 to DS-34 (except DS-17, DS-19, DS-20, DS-24), IX-02, IX-03, IX-07, IX-17, IX-30 ([plan](../reviews/wp03-refinement/plan.md#t25--consolidate-the-cobalt-design-system-and-shared-primitives)).
+
+- [ ] One `LanguageSwitch` for shell, access pages and landing; rebuilt `Button` and action link; `SubmitButton`, `Field`, `Notice` with icon, `PageState`, `SegmentedControl` and `MetaList`; error pages on `retry()` with a safe exit.
+- [ ] Open Folio alias tokens replaced and removed with a guard; avatar contrast, status colours, font stacks, icon sizes, focus and disabled styles fixed; Report, Evidence, Quiz states and the campaign invitation moved onto the primitives; dead code removed.
+- [ ] Rendered review (EN/AR, light/dark, 320 to 1440px, 200% text) approved by the overseeing session under the delegation (`Approved commit:`); deliver through one PR with required CI.
+
+**Pass:** one implementation per DESIGN component in use; no alias token or legacy button left; no behaviour change; required CI green.
+
+#### WP03-T26 — Give content the screen on phones and declutter screens
+
+**Dependencies:** WP03-T25. Findings MD-01 to MD-29 (except MD-22), DS-17, DS-19, DS-20, DS-24, IX-06, IX-20 to IX-23, IX-33, IX-34, IX-36.
+
+- [ ] Phone unit header with the session menu, desktop session switcher in the band, answer language in the composer, compact composer, keyboard-aware Chat, no bottom bar inside units on phones, document scroll for the other unit tools, a phone source sheet and a shared disclosure.
+- [ ] Declutter Chat answers, Shelf, Subjects, Materials, Studio, Quiz, the Batch Leader band and the admin header; hosted demo shows no explanatory captions beyond safety labels; DESIGN.md updated for the changed rules.
+- [ ] Rendered numbers meet the plan's targets; overseer approval recorded; deliver through one PR with required CI.
+
+**Pass:** Chat keeps at least 400px of conversation at 360x640 and 400px at 1280x720; the compact-chat journey, layout matrices and RTL stay green; required CI green.
+
+#### WP03-T27 — Add first-run profile onboarding and one shared access gate
+
+**Dependencies:** WP03-T25. Findings PJ-01 to PJ-06, PJ-10 to PJ-15, PJ-27 to PJ-29, IX-05, IX-10, IX-18, IX-19, MD-22, DS-30. Protected paths: auth gate, migration, Batch Leader upload authorization.
+
+- [ ] One access-destination function and server guard for every authenticated page, including the Batch Leader pages, upload route and finalize action; a `PROFILE_REQUIRED` gate after consent derived from a non-empty name.
+- [ ] `/welcome` for every role (name, interface language, appearance) and Settings → Profile on one seam; Settings declutter and recovery; sign-out on consent and welcome; an honest no-membership state; an additive `NOT VALID` name-format constraint with pgTAP.
+- [ ] Demo: a new-account login pair with an empty profile, no fixture-name fallback and returning-user behaviour; independent review of the exact diff; overseer approval; deliver through one PR with required CI including `database-ci`.
+
+**Pass:** a new real or demo account is asked for its name once and never again; existing accounts stay valid; the leader gate rejects unverified, unconsented and suspended accounts; required CI green.
+
+#### WP03-T28 — Remember the interface language and align demo journeys
+
+**Dependencies:** WP03-T27. Findings PJ-07 to PJ-09, PJ-18 to PJ-20, PJ-22 to PJ-24, PJ-26, PJ-30, IX-28. Protected paths: proxy and auth callback.
+
+- [ ] Locale precedence `?lang=`, cookie, account language, English; `lang` kept through email links, callback, sign-out and guard redirects; `lang` and `dir` rendered on the server.
+- [ ] Demo parity for register, password reset, privacy and admin resources; hosted registration of demo emails intercepted; copy fixes; independent review; deliver through one PR with required CI.
+
+**Pass:** an Arabic user stays in Arabic across sign-out, email return and a new session; demo exits match the real flow; required CI green.
+
+#### WP03-T29 — Repair interactions and input semantics
+
+**Dependencies:** WP03-T25 and WP03-T26. Findings IX-01, IX-04, IX-08, IX-09, IX-11 to IX-16, IX-24 to IX-27, IX-29, IX-31, IX-32, IX-35 and the input inventory.
+
+- [ ] Failed auth keeps the email; pending states on New session and Sign out; Batch Leader intake explains its disabled actions and guards against losing the queue; live counts and state-only announcements; Arabic-Indic quiz numbers.
+- [ ] Every input has the right type, keyboard hint, autocomplete and error wiring; deliver through one PR with required CI.
+
+**Pass:** each repaired control has an observable outcome proven by a test; required CI green.
+
+#### WP03-T30 — Speed up local verification and CI without losing coverage
+
+**Dependencies:** WP03-T24. Findings TC-01 to TC-06, TC-08 to TC-12, TC-19 to TC-22. Protected path: CI workflow and selector.
+
+- [ ] Fix the quiz fake-clock flake; two Playwright workers per demo shard, one main e2e shard, headless-shell Chromium, a selector that runs everything when only the base moved, and no duplicate plain typecheck in `verify:ci`.
+- [ ] A local verify runner (no bare `pnpm`, parallel static checks, build first, timing table), CPU-based local workers, lint and format caches, telemetry off, corrected docs.
+- [ ] Independent review, a `--repeat-each=2` demo run and two green PR CI runs; before and after measurements in the [CI and testing report](../reviews/wp03-refinement/ci-testing-report.md); deliver through one PR.
+
+**Pass:** the same tests and gates run; CI wall time and compute per run fall measurably; local verify is faster; required CI green.
+
 ### 6.1 Routes
 
 Implement at minimum:
