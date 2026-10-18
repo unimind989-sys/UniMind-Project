@@ -464,6 +464,7 @@ const settingsStates: readonly ScreenState[] = [
       }
       expect(styles[0]!.background).not.toBe(styles[1]!.background);
       // audit 05 and 10: a readable, control-free preview below the choices.
+      await showAccountView(page, "appearance");
       const appearance = page.locator("#appearance-settings");
       expect((await boxOf(appearance)).width).toBeLessThanOrEqual(640);
       const preview = appearance.locator("figure");

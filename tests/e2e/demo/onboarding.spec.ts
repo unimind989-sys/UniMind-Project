@@ -24,8 +24,10 @@ inLocales(["en"], (locale) => {
       await page
         .getByRole("button", { name: "Save and continue", exact: true })
         .click();
-      await expect(page.getByRole("alert")).toHaveText("Enter your name.");
-      await expect(page.getByRole("alert")).toBeFocused();
+      await expect(page.getByRole("main").getByRole("alert")).toHaveText(
+        "Enter your name.",
+      );
+      await expect(page.getByRole("main").getByRole("alert")).toBeFocused();
       const name = page.getByLabel("Full name", { exact: true });
       await expect(name).toHaveAttribute("aria-invalid", "true");
       await expect(name).toHaveAttribute("autocomplete", "name");
@@ -78,7 +80,7 @@ inLocales(["ar"], (locale) => {
       await page
         .getByRole("button", { name: t("Save and continue", "حفظ ومتابعة") })
         .click();
-      await expect(page.getByRole("alert")).toHaveText(
+      await expect(page.getByRole("main").getByRole("alert")).toHaveText(
         t(
           "Use letters, spaces and common punctuation in your name.",
           "استخدم حروفًا ومسافات وعلامات ترقيم عادية في اسمك.",

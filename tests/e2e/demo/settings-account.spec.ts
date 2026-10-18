@@ -45,6 +45,7 @@ inLocales(["ar"], (locale) => {
         });
         await expect(exit).toHaveCount(1);
         await expect(exit).toBeVisible();
+        await showAccountView(page, "appearance");
         const figure = main.getByRole("figure", {
           name: t("Theme preview", "معاينة السمة"),
           exact: true,
@@ -107,15 +108,22 @@ inLocales(["ar"], (locale) => {
           }),
         ).toBeFocused();
         await expect(exit).toBeVisible();
-        await page
-          .getByRole("tab", { name: t("Privacy", "الخصوصية"), exact: true })
-          .click();
-        await expect(
-          page.getByRole("group", {
-            name: t("Sharing mode", "وضع المشاركة"),
-            exact: true,
-          }),
-        ).toBeVisible();
+        const privacy = page.getByRole("tab", {
+          name: t("Privacy", "الخصوصية"),
+          exact: true,
+        });
+        if (role === "student") {
+          await privacy.click();
+          await expect(
+            page.getByRole("group", {
+              name: t("Sharing mode", "وضع المشاركة"),
+              exact: true,
+            }),
+          ).toBeVisible();
+        } else {
+          // Chat sharing applies to students only (WP03-T27, PJ-15).
+          await expect(privacy).toHaveCount(0);
+        }
         await expect(exit).toBeVisible();
         await exit.press("Enter");
         await expect(page).toHaveURL(/\/login\?lang=/u);
@@ -667,6 +675,7 @@ inLocales(["ar"], (locale) => {
         })
         .press("Enter");
       await navigate(page, "/settings", locale);
+      await showAccountView(page, "appearance");
       const appearance = page.locator("#appearance-settings");
       await expect(appearance).toBeVisible();
       await expect(
@@ -905,6 +914,7 @@ inLocales(["ar"], (locale) => {
           .getByRole("banner")
           .getByText(pick(locale, "Settings", "الإعدادات"), { exact: true }),
       ).toBeVisible();
+      await showAccountView(page, "appearance");
       const preview = page.locator("#appearance-settings figure");
       await expect(
         preview.getByText(pick(locale, "Example screen", "شاشة نموذجية"), {
