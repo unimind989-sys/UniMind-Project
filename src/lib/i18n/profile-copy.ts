@@ -15,6 +15,7 @@ const profileCopy = {
     saving: "Saving…",
     saved: "Profile saved.",
     signOut: "Sign out",
+    signingOut: "Signing out…",
     errors: {
       DISPLAY_NAME_REQUIRED: "Enter your name.",
       DISPLAY_NAME_TOO_LONG: "Use 80 characters or fewer.",
@@ -39,6 +40,7 @@ const profileCopy = {
     saving: "جارٍ الحفظ…",
     saved: "تم حفظ الملف الشخصي.",
     signOut: "تسجيل الخروج",
+    signingOut: "جارٍ تسجيل الخروج…",
     errors: {
       DISPLAY_NAME_REQUIRED: "اكتب اسمك.",
       DISPLAY_NAME_TOO_LONG: "استخدم 80 حرفًا أو أقل.",

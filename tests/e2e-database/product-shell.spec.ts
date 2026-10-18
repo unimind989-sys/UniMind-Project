@@ -7,6 +7,7 @@ import {
   test,
   type Page,
   type Request as BrowserRequest,
+  type Route,
 } from "@playwright/test";
 import { assertGitHubHostedLinuxRunner } from "../../scripts/lib/ephemeral-supabase";
 import {
@@ -33,6 +34,22 @@ let exposure: string[] = [];
 let inspectedDocuments = 0;
 let stopInspection: () => void;
 let capturedRequests: WeakSet<BrowserRequest>;
+
+/**
+ * Holds the Server Action responses of one page for 1.5 s so a pending state
+ * is observable (WP03-T29 IX-04). The request then falls back to the response
+ * inspector registered before each test. Returns the release function.
+ */
+async function holdActions(page: Page, pathname: string) {
+  const matcher = (url: URL) => url.pathname === pathname;
+  const handler = async (route: Route) => {
+    if (route.request().method() === "POST")
+      await new Promise((resolve) => setTimeout(resolve, 1_500));
+    await route.fallback();
+  };
+  await page.route(matcher, handler);
+  return () => page.unroute(matcher, handler);
+}
 
 function sql(query: string): string {
   try {
@@ -477,8 +494,15 @@ for (const role of roles) {
     }
     if (role === "student") {
       await page.goto("/settings?lang=en");
+      // WP03-T29 IX-04: while the sign-out action runs, the button names it
+      // and cannot be pressed again.
+      const release = await holdActions(page, "/settings");
       await page.getByRole("button", { name: "Sign out", exact: true }).click();
+      await expect(
+        page.locator("button", { hasText: "Signing out…" }),
+      ).toBeDisabled();
       await expect(page).toHaveURL(/\/login\?/u);
+      await release();
       await page.goto(workspace);
       await expect(page).toHaveURL(/\/login\?/u);
     }
@@ -746,8 +770,14 @@ test("student: shared study, settings and catalog screens against the real backe
   await expectAccessibleWorkspacePage(page, "en", "chat");
 
   await openChatSessions(page, "en");
+  // WP03-T29 IX-04: a pending New session cannot start a second session.
+  const release = await holdActions(page, `${base}/chat`);
   await page.getByRole("button", { name: "New session" }).click();
+  await expect(
+    page.locator("button", { hasText: "Starting session…" }),
+  ).toBeDisabled();
   await expect(page).toHaveURL(/session=[0-9a-f-]+/u);
+  await release();
   const firstSession = new URL(page.url()).searchParams.get("session");
   expect(firstSession).not.toBeNull();
   await page.reload();

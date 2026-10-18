@@ -21,9 +21,11 @@ test("login presents one identity form and supports RTL", async ({ page }) => {
     page.getByRole("heading", { name: "Sign in to UniMind" }),
   ).toBeVisible();
   await expect(page.getByRole("search")).toHaveCount(0);
+  // Sign-in names the account: password managers pair `username` with the
+  // current password (WP03-T29 IX-14).
   await expect(page.getByLabel("Email address")).toHaveAttribute(
     "autocomplete",
-    "email",
+    "username",
   );
   await expect(page.getByLabel("Password", { exact: true })).toHaveAttribute(
     "autocomplete",
@@ -77,6 +79,87 @@ test("invalid login restores focus to a generic summary and marks fields", async
   await expect(page.getByLabel("Password", { exact: true })).toHaveAttribute(
     "aria-invalid",
     "false",
+  );
+});
+
+// WP03-T29 IX-01: React resets an action form after every submission. A
+// failed sign-in (here Auth is unreachable) keeps the typed email and never
+// the password.
+test("a failed sign-in keeps the typed email and clears the password", async ({
+  page,
+}) => {
+  await page.goto("/login?lang=en");
+  const email = page.getByLabel("Email address");
+  const password = page.getByLabel("Password", { exact: true });
+  await email.fill("synthetic.student@example.com");
+  await password.fill("synthetic-specimen-only");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("main").getByRole("alert")).toBeFocused();
+  // The cleared password proves React's reset ran; the email survived it.
+  await expect(password).toHaveValue("");
+  await expect(email).toHaveValue("synthetic.student@example.com");
+  // A second failure keeps the corrected address, not the first one.
+  await email.fill("another.student@example.com");
+  await password.fill("synthetic-specimen-only");
+  await page.getByRole("button", { name: "Continue" }).click();
+  await expect(password).toHaveValue("");
+  await expect(email).toHaveValue("another.student@example.com");
+  await expect(page.getByRole("main").getByRole("alert")).toBeVisible();
+});
+
+// WP03-T29 IX-14, IX-16: keyboard hints, autocomplete, limits and the
+// password policy reach browsers, password managers and screen readers.
+test("auth inputs carry their keyboard, autocomplete and policy semantics", async ({
+  page,
+}) => {
+  await page.goto("/login?lang=en");
+  const email = page.getByLabel("Email address");
+  await expect(email).toHaveAttribute("type", "email");
+  await expect(email).toHaveAttribute("enterkeyhint", "next");
+  await expect(email).toHaveAttribute("autocapitalize", "none");
+  await expect(email).toHaveAttribute("spellcheck", "false");
+  await expect(email).toHaveAttribute("maxlength", "320");
+  const loginPassword = page.getByLabel("Password", { exact: true });
+  await expect(loginPassword).toHaveAttribute("enterkeyhint", "go");
+  await expect(loginPassword).toHaveAttribute("maxlength", "1024");
+  await expect(loginPassword).not.toHaveAttribute("passwordrules");
+  // One signal per state: a switching name, no `aria-pressed`.
+  const show = page.getByRole("button", { name: "Show password" });
+  await expect(show).not.toHaveAttribute("aria-pressed");
+  await show.click();
+  await expect(loginPassword).toHaveAttribute("type", "text");
+  await expect(
+    page.getByRole("button", { name: "Hide password" }),
+  ).not.toHaveAttribute("aria-pressed");
+
+  await page.goto("/register?lang=en");
+  await expect(page.getByLabel("Email address")).toHaveAttribute(
+    "autocomplete",
+    "email",
+  );
+  const password = page.getByLabel("Password", { exact: true });
+  await expect(password).toHaveAttribute("autocomplete", "new-password");
+  await expect(password).toHaveAttribute("minlength", "12");
+  await expect(password).toHaveAttribute("maxlength", "128");
+  await expect(password).toHaveAttribute(
+    "passwordrules",
+    "minlength: 12; maxlength: 128; required: lower, upper; required: digit; required: special;",
+  );
+  await expect(password).toHaveAccessibleDescription(
+    "Use at least 12 characters with a letter, number, and symbol.",
+  );
+  const confirmation = page.getByLabel("Confirm password", { exact: true });
+  await expect(confirmation).toHaveAttribute("autocomplete", "new-password");
+  await expect(confirmation).toHaveAttribute("enterkeyhint", "go");
+
+  await page.goto("/forgot-password?lang=en");
+  await expect(page.getByLabel("Email address")).toHaveAttribute(
+    "enterkeyhint",
+    "send",
+  );
+  await expect(page.getByLabel("Email address")).toHaveAttribute(
+    "autocomplete",
+    "email",
   );
 });
 
@@ -226,4 +309,9 @@ test("registration refuses reserved test domains before Auth", async ({
     "Demo accounts sign in directly on the sign-in page.",
   );
   await expect(page).toHaveURL(/\/register\?/u);
+  // The refused address stays for correction; the passwords clear (IX-01).
+  await expect(page.getByLabel("Email address")).toHaveValue(
+    "student@example.invalid",
+  );
+  await expect(page.getByLabel("Password", { exact: true })).toHaveValue("");
 });

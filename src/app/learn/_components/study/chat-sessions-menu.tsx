@@ -3,7 +3,11 @@ import type { Route } from "next";
 import { useProductText } from "@/app/_components/product-copy";
 import { FrontendIcon } from "@/app/_components/frontend-system";
 import { ProductNavigationLink as Link } from "@/app/_components/product-navigation";
-import { Button, ProductLink } from "@/app/_components/product-ui";
+import {
+  Button,
+  ProductLink,
+  SubmitButton,
+} from "@/app/_components/product-ui";
 import type { Locale } from "@/lib/i18n/locale";
 import type { WorkspaceScope } from "@/lib/workspace/workspace.application";
 import styles from "../product-chat.module.css";
@@ -69,10 +73,15 @@ export function ChatSessionsMenu({
             <input type="hidden" name="cohortId" value={scope.cohortId} />
             <input type="hidden" name="unitId" value={scope.unitId} />
             <input type="hidden" name="locale" value={locale} />
-            <Button type="submit">
+            {/* Pending while the action runs, so a double press cannot start
+                two durable sessions (IX-04). */}
+            <SubmitButton
+              variant="secondary"
+              pendingLabel={t("Starting session…", "جارٍ بدء الجلسة…")}
+            >
               <FrontendIcon name="plus" />
               {t("New session", "جلسة جديدة")}
-            </Button>
+            </SubmitButton>
           </form>
         ) : (
           <Button onClick={onStart} disabled={sending}>
