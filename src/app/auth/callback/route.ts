@@ -61,6 +61,18 @@ export async function GET(request: NextRequest) {
   };
   const parameters = request.nextUrl.searchParams;
   const next = parameters.get("next");
+  // Email links carry the interface language chosen when they were sent.
+  const requestedLocale = parameters.get("lang");
+  const locale =
+    requestedLocale === "ar" || requestedLocale === "en"
+      ? requestedLocale
+      : undefined;
+  const withLocale = (path: string) => {
+    if (locale === undefined) return path;
+    const address = new URL(path, "https://unimind.invalid");
+    address.searchParams.set("lang", locale);
+    return address.pathname + address.search + address.hash;
+  };
 
   let result: Awaited<ReturnType<typeof completeAuthCallback>>;
   try {
@@ -81,14 +93,14 @@ export async function GET(request: NextRequest) {
     const recoveryPath =
       result.next === "/reset-password" ? "/forgot-password" : "/verify-email";
     return redirectResponse(
-      `${recoveryPath}?status=${publicLinkState(result.status)}`,
+      withLocale(`${recoveryPath}?status=${publicLinkState(result.status)}`),
       providerHeaders,
       canonicalOrigin,
     );
   }
   if (result.next === "/reset-password") {
     return redirectResponse(
-      "/reset-password",
+      withLocale("/reset-password"),
       providerHeaders,
       canonicalOrigin,
     );
@@ -103,11 +115,15 @@ export async function GET(request: NextRequest) {
         : result.next;
     else
       destination =
-        accessDestination(access.gate, { next: result.next }) ??
+        accessDestination(access.gate, { locale, next: result.next }) ??
         "/login?status=unavailable";
   } catch {
     destination = "/login?status=unavailable";
   }
 
-  return redirectResponse(destination, providerHeaders, canonicalOrigin);
+  return redirectResponse(
+    withLocale(destination),
+    providerHeaders,
+    canonicalOrigin,
+  );
 }

@@ -416,8 +416,8 @@ export function LeaderHome({
                 <p>{getCollectionCopy(locale).noCampaigns}</p>
                 <p className={styles.helper}>
                   {t(
-                    "An administrator can assign you a campaign. Its invitation will take you here.",
-                    "يمكن للمسؤول إسناد حملة إليك. ستنقلك دعوتها إلى هنا.",
+                    "An administrator assigns campaigns. They appear here while they are active.",
+                    "يسند المسؤول الحملات إليك، وتظهر هنا ما دامت نشطة.",
                   )}
                 </p>
               </div>

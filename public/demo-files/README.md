@@ -378,6 +378,19 @@ Already functional WP03 seams: real Auth/verification/consent/recovery, authoriz
 
 Simulated here: all account state and every review interaction; automatic chat replies/streams, evidence/report receipt, all artifacts, scoring/timer, files/progress/reference acceptance, tracking transitions, campaign/draft/invitation state, admin decisions, resource operations and preference changes. Future real backend work remains in WP04/WP06/WP07/WP08. Reload durability is intentionally absent.
 
+### Where the demo and the real product differ
+
+The demo shows intended behaviour ahead of its backend. These are the places where it does something the real product does not do yet; nothing here should be read as live functionality.
+
+| Area | Demo | Real product today |
+| --- | --- | --- |
+| New account access | A registered or new demo student sees the full sample catalog after the academic setup | No role or cohort is granted at sign-up; an administrator adds the account to a cohort, and until then the Study Shelf explains that (`?fixture=no-membership` shows this state in the demo) |
+| Chat, Studio, Quiz, report | Fixed sample answers, artifacts, scoring and receipts | Same screens with the controls disabled and a "not available yet" notice |
+| Chat sharing (Settings → Privacy) | The choice works for the current document | Disabled with a notice until the sharing and retention decisions (D-08) are made |
+| Admin resources (Sources, Campaigns, Catalog, Cohorts, Jobs, Quality, Usage, Incidents) | Populated working lists | "This view is not available yet" |
+| Batch Leader invitation | A sample invitation screen | No invitation delivery; assignments are created by an administrator |
+| Returning sign-in on the hosted demo | Every sign-in starts a new document, so commitments are asked again | Commitments are accepted once per terms version |
+
 Open decisions remain D-08 saving/retention and exact report disclosure/payload, D-18 reference/storage policy, paid provider/budget approval, detailed broad management editors and invitation delivery contracts. This frontend review neither approves those decisions nor verifies live academic/provider behavior. Historical WP03-T09/T10 delivery is complete for the candidates recorded in the runbook. The current audit repairs on `codex/frontend-refinements` are uncommitted local work under WP03-T13; their final candidate acceptance and delivery proof remain pending.
 
 ### Checkpoint coverage and boundaries

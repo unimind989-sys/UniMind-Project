@@ -5,7 +5,11 @@ import type { CurrentTerms } from "@/lib/auth/auth-access.application";
 import { logoutAction } from "../actions";
 import { Button } from "@/app/_components/product-ui";
 import { validatedInternalReturnPath } from "@/lib/auth/auth-actions.application";
-import { resolveLocale, type Locale } from "@/lib/i18n/locale";
+import {
+  isSupportedLocale,
+  resolveLocale,
+  type Locale,
+} from "@/lib/i18n/locale";
 import { getCurrentAuthAccess } from "@/lib/auth/auth-access.supabase.server";
 import { accessDestination } from "@/lib/auth/auth-actions.application";
 import { currentRoleHome } from "@/lib/account/account.supabase.server";
@@ -46,6 +50,8 @@ export function resolveAuthPageParameters(parameters: SearchParameters) {
   const status = first(parameters.status);
   return {
     locale,
+    /** The page named its language; otherwise sign-in uses the account's. */
+    localeExplicit: isSupportedLocale(first(parameters.lang)),
     returnPath,
     notice:
       status !== undefined && notices.has(status as AuthNotice)
@@ -74,9 +80,8 @@ export async function AuthPage({
   searchParams: Promise<SearchParameters>;
   currentTerms?: CurrentTerms | null | undefined;
 }>) {
-  const { locale, returnPath, notice } = resolveAuthPageParameters(
-    await searchParams,
-  );
+  const { locale, localeExplicit, returnPath, notice } =
+    resolveAuthPageParameters(await searchParams);
   let destination: string | null = null;
   if (["login", "register", "verify"].includes(mode)) {
     try {
@@ -121,6 +126,7 @@ export async function AuthPage({
         returnPath={returnPath}
         notice={notice}
         currentTerms={currentTerms}
+        localeExplicit={localeExplicit}
         secondaryAction={
           mode === "consent" ? (
             // A signed-in caller who does not accept can still leave.

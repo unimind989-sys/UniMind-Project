@@ -245,14 +245,29 @@ export function ProductAuth({
           account: "UNVERIFIED",
         }));
         go("/verify-email?status=check_email");
-      }
+      } else if (mode === "forgot")
+        // Remember which demo account asked, as the real email link would.
+        update((current) => ({ ...current, accountEmail: rawEmail }));
     } else if (response.status === "SUCCESS" && mode === "reset") {
+      // As in the real flow, the recovery session is signed in afterwards;
+      // the usual commitments and profile gates then apply.
+      const email = state.accountEmail ?? "student@example.invalid";
+      const recovered = syntheticAccountFor(email);
       update((current) => ({
         ...current,
         recoveryUsed: true,
         recoveryToken: false,
+        role: current.role ?? recovered?.role ?? "student",
+        accountEmail: email,
+        displayName:
+          current.displayName ??
+          current.profiles[email] ??
+          recovered?.displayName ??
+          null,
+        verified: true,
+        account: "SIGNED_IN",
       }));
-      go("/login?status=signed_out");
+      go(destination);
     }
     return response;
   }
