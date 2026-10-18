@@ -1,0 +1,153 @@
+/* Button and action link (DESIGN.md "Shared components"): primary on
+   --action, secondary on surface with a 1.5px --control ring, quiet in action
+   text, destructive in danger text; Night and Cobalt tones for those planes.
+   700 weight, 44px minimum (48px large), one explicit disabled look. */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  max-width: 100%;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition:
+    background-color var(--motion-control) ease,
+    box-shadow var(--motion-control) ease,
+    color var(--motion-control) ease;
+}
+.button[data-size="large"] {
+  min-height: 48px;
+  padding-inline: 22px;
+  font-size: 1rem;
+}
+.button[data-block] {
+  width: 100%;
+}
+.button > svg {
+  flex: none;
+}
+.button:active:not(:disabled, [aria-disabled="true"]) {
+  transform: translateY(1px);
+}
+
+/* Paper (default tone). */
+.button[data-variant="primary"] {
+  background: var(--action);
+  color: var(--on-action);
+}
+.button[data-variant="primary"]:hover:not(:disabled) {
+  background: var(--action-strong);
+}
+.button[data-variant="secondary"] {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1.5px var(--control);
+}
+.button[data-variant="secondary"]:hover:not(:disabled) {
+  background: var(--surface-2);
+}
+.button[data-variant="quiet"] {
+  padding-inline: 12px;
+  color: var(--action);
+}
+.button[data-variant="quiet"]:hover:not(:disabled) {
+  background: var(--surface-2);
+  color: var(--action-strong);
+}
+.button[data-variant="destructive"] {
+  background: var(--surface);
+  color: var(--danger);
+  box-shadow: inset 0 0 0 1.5px var(--danger);
+}
+.button[data-variant="destructive"]:hover:not(:disabled) {
+  background: var(--danger-tint);
+}
+
+/* Night planes: primary stays on --action; secondary is ringed in
+   --night-control; quiet text is the on-Night blue. */
+.button[data-tone="night"][data-variant="secondary"],
+.button[data-tone="night"][data-variant="destructive"] {
+  background: transparent;
+  color: var(--on-night);
+  box-shadow: inset 0 0 0 1.5px var(--night-control);
+}
+.button[data-tone="night"][data-variant="secondary"]:hover:not(:disabled),
+.button[data-tone="night"][data-variant="destructive"]:hover:not(:disabled),
+.button[data-tone="night"][data-variant="quiet"]:hover:not(:disabled) {
+  background: var(--night-2);
+  color: var(--on-night);
+}
+.button[data-tone="night"][data-variant="quiet"] {
+  color: var(--on-night-blue);
+}
+
+/* Cobalt planes: the action is Night-filled; other variants use the
+   on-Cobalt colour. */
+.button[data-tone="cobalt"][data-variant="primary"] {
+  background: var(--night);
+  color: var(--on-night);
+}
+.button[data-tone="cobalt"][data-variant="primary"]:hover:not(:disabled) {
+  background: var(--night-2);
+}
+.button[data-tone="cobalt"]:is(
+    [data-variant="secondary"],
+    [data-variant="destructive"],
+    [data-variant="quiet"]
+  ) {
+  background: transparent;
+  color: var(--on-cobalt);
+  box-shadow: inset 0 0 0 1.5px var(--on-cobalt);
+}
+.button[data-tone="cobalt"][data-variant="quiet"] {
+  box-shadow: none;
+}
+
+/* One disabled look with explicit colours, never opacity on text. A pending
+   button keeps its own colours and only shows it is busy. */
+.button:is(:disabled, [aria-disabled="true"]):not([aria-busy="true"]) {
+  background: var(--surface-2);
+  color: var(--secondary);
+  box-shadow: inset 0 0 0 1.5px var(--line);
+  cursor: not-allowed;
+}
+.button[data-variant="quiet"]:is(:disabled, [aria-disabled="true"]):not(
+    [aria-busy="true"]
+  ) {
+  background: transparent;
+  box-shadow: none;
+}
+.button[data-tone="night"]:is(:disabled, [aria-disabled="true"]):not(
+    [aria-busy="true"]
+  ) {
+  background: var(--night-2);
+  color: var(--on-night-2);
+  box-shadow: none;
+}
+.button[aria-busy="true"] {
+  cursor: progress;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: none;
+  }
+}
+@media (forced-colors: active) {
+  .button {
+    border: 1.5px solid ButtonText;
+  }
+}

@@ -1,0 +1,31 @@
+/* MetaList: inline structured metadata; items separated by a short drawn
+   rule in the current text colour, not by a middle-dot character. */
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px 0;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.list > li {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.list > li + li::before {
+  content: "";
+  flex: none;
+  width: 1px;
+  height: 0.9em;
+  margin-inline: 10px;
+  background: currentColor;
+  opacity: 0.45;
+}
+.label {
+  margin-inline-end: 4px;
+  font-weight: 700;
+}

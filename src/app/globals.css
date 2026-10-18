@@ -25,7 +25,6 @@
   --tint: #e8effd;
   --ink: #0c1823;
   --secondary: #4b5b6e;
-  --muted: #56667a;
   --line: #d4dfeb;
   --control: #7a8ca3;
   --success: #236746;
@@ -35,48 +34,20 @@
   --mark: #d6e3fd;
   --seg-on: #ecf3f9;
   --seg-on-ink: #0c1823;
+  --cover-current: #0c1823;
   --float:
     0 22px 44px -20px rgb(12 24 35 / 0.42), 0 3px 10px -2px rgb(12 24 35 / 0.1);
   --float-up: 0 -14px 34px -14px rgb(12 24 35 / 0.36);
-  /* Earlier names map onto the Cobalt roles. */
-  --canvas: var(--paper);
-  --subtle: var(--surface-2);
-  --hover: #e4ecf6;
-  --border: var(--line);
-  --control-border: var(--control);
-  --accent: var(--action);
-  --accent-hover: var(--action-strong);
-  --accent-soft: var(--tint);
-  --accent-ink: #2456cc;
-  --on-accent: var(--on-action);
-  --spine: var(--night);
-  --spine-ink: var(--on-night);
-  --spine-secondary: var(--on-night-2);
-  --spine-active: var(--night-2);
-  --annotation: var(--tint);
-  --success-surface: var(--success-tint);
-  --danger-surface: var(--danger-tint);
   --motion-control: 120ms;
   --motion-dialog: 180ms;
   --motion-result: 280ms;
   --motion-evidence: 300ms;
   --ease-settle: cubic-bezier(0.22, 1, 0.36, 1);
-  --canvas-deep: var(--subtle);
-  --surface-strong: var(--subtle);
-  --surface-focus: var(--hover);
-  --surface-active: var(--accent-soft);
-  --text-primary: var(--ink);
-  --text-secondary: var(--secondary);
-  --text-muted: var(--muted);
-  --accent-focus: var(--accent-hover);
-  --accent-text: var(--accent-ink);
-  --ready: var(--success);
-  --ready-surface: var(--success-tint);
-  --error: var(--danger);
-  --line-quiet: var(--line);
   --radius-cover: 1.5rem;
   --radius-card: 0.875rem;
   --radius-control: 0.75rem;
+  --radius-quote: 0.625rem;
+  --radius-segment: 0.5625rem;
   --radius-pill: 999px;
   --space-1: 0.25rem;
   --space-2: 0.5rem;
@@ -86,7 +57,9 @@
   --space-6: 2rem;
   --space-7: 3rem;
   --shell-inset: 3rem;
-  --font-unimind-ui: var(--font-unimind-latin);
+  /* Each locale chains both brand families, so the other script still gets
+     its brand face instead of a system fallback (DESIGN.md typography). */
+  --font-unimind-ui: var(--font-unimind-latin), var(--font-unimind-arabic);
   --type-workspace-title-size: 3.25rem;
   --type-workspace-title-mobile-size: 1.625rem;
   --type-study-invitation-size: 2.125rem;
@@ -114,8 +87,8 @@
   --type-headline-tracking: -0.03em;
   font-family: var(--font-unimind-ui), sans-serif;
   line-height: var(--type-body-leading);
-  background: var(--canvas);
-  color: var(--text-primary);
+  background: var(--paper);
+  color: var(--ink);
 }
 
 :root[data-theme="dark"] {
@@ -134,7 +107,6 @@
   --tint: #17294a;
   --ink: #ecf3f9;
   --secondary: #a6b5c7;
-  --muted: #97a8bb;
   --line: #203347;
   --control: #5d7189;
   --success: #91d2ad;
@@ -146,13 +118,12 @@
   --seg-on-ink: #ecf3f9;
   --float: 0 26px 50px -18px rgb(0 0 0 / 0.72), 0 0 0 1px #203347;
   --float-up: 0 -16px 36px -12px rgb(0 0 0 / 0.6), 0 0 0 1px #203347;
-  --hover: #17293d;
-  --accent-ink: #9fbcff;
+  --cover-current: #15304b;
 }
 
 html[lang="ar"],
 [lang="ar"][dir="rtl"] {
-  --font-unimind-ui: var(--font-unimind-arabic);
+  --font-unimind-ui: var(--font-unimind-arabic), var(--font-unimind-latin);
   --type-body-weight: 450;
   --type-display-leading: 1.4;
   --type-headline-leading: 1.5;
@@ -173,23 +144,35 @@ html[lang="ar"] :where(h1, h2, h3),
   letter-spacing: 0;
 }
 
+/* Mixed-script runs: an element that names its language takes that script's
+   brand face first, and Arabic keeps neutral tracking. */
+[lang="ar"] {
+  font-family:
+    var(--font-unimind-arabic), var(--font-unimind-latin), sans-serif;
+  letter-spacing: 0;
+}
+[lang="en"] {
+  font-family:
+    var(--font-unimind-latin), var(--font-unimind-arabic), sans-serif;
+}
+
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100svh;
-  background: var(--canvas);
-  color: var(--text-primary);
+  background: var(--paper);
+  color: var(--ink);
   font-weight: var(--type-body-weight);
   text-rendering: optimizeLegibility;
 }
 
 ::selection {
-  background: var(--accent);
-  color: var(--on-accent);
+  background: var(--action);
+  color: var(--on-action);
 }
 
 * {
-  scrollbar-color: var(--accent-focus) var(--canvas-deep);
+  scrollbar-color: var(--control) var(--surface-2);
   scrollbar-width: thin;
 }
 
@@ -211,29 +194,24 @@ button,
 select {
   cursor: pointer;
 }
-button:disabled,
-select:disabled,
-input:disabled,
-textarea:disabled {
+/* One disabled look with explicit colours; text never fades through opacity.
+   Button, Field and ChoiceGroup apply the same values to their own parts. */
+:where(button, select, input, textarea):disabled {
   cursor: not-allowed;
-  opacity: 0.65;
+}
+:where(
+  select,
+  textarea,
+  input:not([type="checkbox"], [type="radio"], [type="file"])
+):disabled {
+  border-color: var(--line);
+  background-color: var(--surface-2);
+  color: var(--secondary);
 }
 input::placeholder,
 textarea::placeholder {
-  color: var(--muted);
+  color: var(--secondary);
   opacity: 1;
-}
-.appearance-field {
-  display: grid;
-  gap: 8px;
-  width: min(100%, 24rem);
-}
-.appearance-field select {
-  min-height: 44px;
-  padding: 8px 12px;
-  background: var(--surface);
-  border: 1px solid var(--control-border);
-  border-radius: 8px;
 }
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -250,65 +228,25 @@ a {
   text-underline-offset: 0.2em;
 }
 
+/* The one focus ring (DESIGN.md): 2px Cobalt with a 2px offset, switching to
+   the on-Cobalt colour on a Cobalt plane. */
 :focus-visible {
   outline: 2px solid var(--cobalt);
   outline-offset: 2px;
 }
-
-.foundation-page {
-  width: min(100% - 2rem, 70ch);
-  margin-inline: auto;
-  padding-block: 4rem;
+[data-plane="cobalt"] :focus-visible {
+  outline-color: var(--on-cobalt);
 }
 
-.foundation-page h1,
-.foundation-page h2,
-.foundation-page p {
-  margin-block-start: 0;
-}
-
-.foundation-page section {
-  margin-block-start: 3rem;
-}
-
-.foundation-page dl {
-  display: grid;
-  gap: 1rem;
-  margin: 0;
-}
-
-.foundation-page dl div {
-  display: grid;
-  grid-template-columns: minmax(7rem, 1fr) 2fr;
-  gap: 1rem;
-}
-
-.foundation-page dt {
-  font-weight: 700;
-}
-
-.foundation-page dd {
-  margin: 0;
-}
-
-@media (max-width: 32rem) {
-  .foundation-page {
-    padding-block: 2rem;
-  }
-
-  .foundation-page dl div {
-    grid-template-columns: 1fr;
-    gap: 0.25rem;
-  }
-}
-.status-page {
-  width: min(100% - 2rem, 40rem);
-  margin: 3rem auto;
-}
-.status-page button {
-  border: 1px solid var(--control-border);
-  min-height: 48px;
-  padding: 0.75rem 1rem;
-  background: var(--surface);
-  border-radius: var(--radius-control);
+/* Hidden on screen, still announced: the one shared utility. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }

@@ -11,10 +11,6 @@
   background: var(--paper);
   color: var(--ink);
 }
-.page :where(a, button, input):focus-visible {
-  outline: 2px solid var(--cobalt);
-  outline-offset: 3px;
-}
 .page :where(a, button, label) {
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
@@ -61,6 +57,10 @@
   background: var(--night);
   color: var(--on-night);
 }
+/* The landing keeps its approved logo spacing (the shell brand is 44px). */
+.header > a:first-child {
+  padding-block: 4px;
+}
 .header nav {
   display: flex;
   align-items: center;
@@ -77,20 +77,14 @@
   gap: 28px;
   margin-inline-start: auto;
 }
-.sectionNav a,
-.language {
+.sectionNav a {
   color: var(--on-night-2);
 }
-.sectionNav a:hover,
-.language:hover {
+.sectionNav a:hover {
   color: var(--on-night);
 }
 .accountNav {
   gap: 20px;
-}
-.language {
-  min-width: 44px;
-  justify-content: center;
 }
 .header .signIn {
   padding: 0 18px;

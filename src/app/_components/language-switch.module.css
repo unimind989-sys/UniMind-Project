@@ -1,0 +1,33 @@
+/* LanguageSwitch: segment layout comes from SegmentedControl; this module
+   only fixes the switch's footprint and the Arabic label's face. */
+.switch {
+  flex: none;
+  flex-wrap: nowrap;
+}
+.switch [lang="ar"] {
+  font-family:
+    var(--font-unimind-arabic), var(--font-unimind-latin), sans-serif;
+}
+.switch[data-compact] [lang="ar"] {
+  font-size: 1rem;
+}
+/* Landing: a single text link on the Night bar. */
+.text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  color: var(--on-night-2);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.text:hover {
+  color: var(--on-night);
+}
+.text[lang="ar"] {
+  font-family:
+    var(--font-unimind-arabic), var(--font-unimind-latin), sans-serif;
+  font-size: 1rem;
+}

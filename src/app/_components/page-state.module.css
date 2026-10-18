@@ -1,0 +1,111 @@
+/* PageState: one quiet column on paper; the recovery actions follow the
+   explanation. Standalone pages add the 64px Night bar with the dark logo. */
+.state {
+  display: grid;
+  justify-items: start;
+  align-content: center;
+  gap: 12px;
+  min-height: 18rem;
+  max-width: 40rem;
+  padding-block: 32px;
+  color: var(--secondary);
+}
+.mark {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--action);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.state[data-kind="error"] .mark {
+  background: var(--danger-tint);
+  color: var(--danger);
+  box-shadow: none;
+}
+.title {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1.625rem;
+  font-weight: 800;
+  line-height: var(--type-headline-leading);
+  letter-spacing: var(--type-headline-tracking);
+  overflow-wrap: break-word;
+}
+h1.title {
+  font-size: 2.125rem;
+  letter-spacing: var(--type-display-tracking);
+}
+.body {
+  max-width: 60ch;
+  font-size: 1rem;
+  line-height: var(--type-body-leading);
+}
+.body > p {
+  margin: 0;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-block-start: 8px;
+}
+/* Indeterminate work: a short line that settles after two passes. */
+.loadingLine {
+  width: 2rem;
+  height: 0.25rem;
+  border-radius: var(--radius-pill);
+  background: var(--action);
+  transform-origin: left;
+  animation: page-state-loading 1200ms ease-in-out 2 alternate;
+}
+.state[dir="rtl"] .loadingLine {
+  transform-origin: right;
+}
+@keyframes page-state-loading {
+  to {
+    transform: scaleX(2.5);
+  }
+}
+.page {
+  min-height: 100svh;
+  background: var(--paper);
+}
+.bar {
+  display: flex;
+  align-items: center;
+  min-height: 64px;
+  padding: 10px var(--shell-inset);
+  background: var(--night);
+  border-block-end: 1px solid var(--night-line);
+}
+.main {
+  width: min(100% - 2 * var(--shell-inset), 48rem);
+  margin-inline: auto;
+}
+.main:focus {
+  outline: none;
+}
+@media (max-width: 767px) {
+  .page {
+    --shell-inset: 16px;
+  }
+  .bar {
+    min-height: 52px;
+    padding-block: 4px;
+  }
+  .title {
+    font-size: 1.3125rem;
+  }
+  h1.title {
+    font-size: 1.75rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .loadingLine {
+    animation: none;
+  }
+}
