@@ -242,7 +242,7 @@ test.beforeAll(async () => {
     if (!/^[a-f0-9-]{36}$/u.test(id))
       throw new Error("Synthetic user identifier invalid.");
     users.set(role, { id, email, password });
-    sql(`update public.profiles set account_status = 'ACTIVE' where user_id = '${id}';
+    sql(`update public.profiles set account_status = 'ACTIVE', display_name = 'Synthetic ${role}' where user_id = '${id}';
       insert into public.terms_acceptances (user_id, terms_version_id, terms_version, privacy_version, educational_boundary_version)
       select '${id}', id, terms_version, privacy_version, educational_boundary_version from public.terms_versions where status = 'ACTIVE';`);
   }

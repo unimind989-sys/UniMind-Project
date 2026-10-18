@@ -10,6 +10,8 @@ import {
   authorizedStudyResume,
 } from "./account.application";
 import type { AuthorizedCatalogRow } from "../catalog/catalog-journey.application";
+import { saveProfile } from "./profile.application";
+import { localeFromAccountLanguage } from "./profile.domain";
 
 export async function loadCurrentAccount() {
   const identity = await requireVerifiedIdentity();
@@ -30,6 +32,8 @@ export async function loadCurrentAccount() {
     throw new Error("Account settings unavailable.");
   return {
     displayName: profile.data.display_name,
+    email: identity.email,
+    language: localeFromAccountLanguage(profile.data.preferred_language),
     locale: profile.data.preferred_language,
     academicContext: readAcademicContext(profile.data.academic_context),
     home: roleHome(roles.data.map((item) => item.role)),
@@ -46,6 +50,37 @@ export async function currentRoleHome() {
   if (error) throw new Error("Account destination unavailable.");
   return roleHome(data.map((item) => item.role));
 }
+/** The caller's own name and interface language, from onboarding or Settings. */
+export function saveCurrentProfile(input: {
+  displayName: unknown;
+  locale: unknown;
+}) {
+  return saveProfile(
+    {
+      async eligibleCaller() {
+        const { gate } = await getCurrentAuthAccess();
+        if (gate !== "READY" && gate !== "PROFILE_REQUIRED") return null;
+        return (await requireVerifiedIdentity()).userId;
+      },
+      async save(caller, profile) {
+        const client = await createServerSupabaseClient();
+        const { data, error } = await client
+          .from("profiles")
+          .update({
+            display_name: profile.displayName,
+            preferred_language: profile.language,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("user_id", caller)
+          .select("user_id")
+          .single();
+        if (error || !data) throw new Error("Profile could not be saved.");
+      },
+    },
+    input,
+  );
+}
+
 export function saveCurrentAcademicSettings(input: unknown) {
   return saveAcademicSettings(
     {
