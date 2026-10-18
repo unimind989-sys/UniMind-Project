@@ -580,6 +580,14 @@
   .reply {
     padding: 16px 16px 12px;
   }
+  /* The citation and the quiet Report action share one row at 360px in
+     both languages (MD-10). */
+  .replyActions {
+    column-gap: 4px;
+  }
+  .replyActions .citation {
+    padding-inline: 12px;
+  }
   .reply > p {
     font-size: 1rem;
   }

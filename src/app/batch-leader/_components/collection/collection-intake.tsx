@@ -224,7 +224,6 @@ export function CollectionIntake({
               minLength={10}
               maxLength={1000}
               required
-              dir="auto"
               value={description}
               placeholder={t(
                 "Who prepared these materials, and what do they cover?",
