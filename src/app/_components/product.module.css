@@ -431,6 +431,13 @@
   gap: 10px;
   max-width: 64rem;
 }
+.materialsLimit {
+  max-width: 68ch;
+  margin: 0 0 6px;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--secondary);
+}
 .sourceRow {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;

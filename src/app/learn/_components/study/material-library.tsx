@@ -28,6 +28,13 @@ export function MaterialLibrary({
   const t = useProductText(locale);
   return (
     <div className={styles.materialLibrary}>
+      {/* The excerpt limitation, said once for the whole list (MD-19). */}
+      <p className={styles.materialsLimit}>
+        {t(
+          "Excerpts show processed passages only. Full file reading and audio playback are not available here.",
+          "المقتطفات تعرض نصوصًا معالجة فقط. قراءة الملف الكامل وتشغيل الصوت غير متاحين هنا.",
+        )}
+      </p>
       {sources.map((source) => {
         const active = !(
           scope.unitId === defaultScope.unitId &&
@@ -46,25 +53,19 @@ export function MaterialLibrary({
               <p>{source.locator}</p>
               <p>{reading.caption}</p>
             </div>
-            <StatePill tone={active ? "ok" : "neutral"}>
-              {active
-                ? t("Available for learning tools", "متاح لأدوات المذاكرة")
-                : t(
-                    "INACTIVE sample · excluded from new requests",
-                    "مثال غير نشط · مستبعد من الطلبات الجديدة",
-                  )}
-            </StatePill>
+            {/* Availability is the norm; only the exception is labelled. */}
+            {active ? null : (
+              <StatePill tone="neutral">
+                {t(
+                  "INACTIVE sample · excluded from new requests",
+                  "مثال غير نشط · مستبعد من الطلبات الجديدة",
+                )}
+              </StatePill>
+            )}
             {reading.readable && passage ? (
               <details>
                 <summary>{reading.action}</summary>
                 <p>{passage.text}</p>
-                <p>
-                  {t(
-                    "Processed excerpt only. Full file reading and audio playback are not available here.",
-                    "مقتطف معالج فقط. قراءة الملف الكامل وتشغيل الصوت غير متاحين هنا.",
-                  )}{" "}
-                  {passage.locator}
-                </p>
               </details>
             ) : null}
           </article>

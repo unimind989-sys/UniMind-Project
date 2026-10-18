@@ -15,8 +15,6 @@
     "slot slot";
   align-items: center;
   gap: 20px 32px;
-  margin-block: -40px 32px;
-  margin-inline: calc(-1 * var(--shell-inset));
   padding: 36px var(--shell-inset) 32px;
   background: var(--night);
   color: var(--on-night);
@@ -812,20 +810,35 @@
 }
 @media (max-width: 767px) {
   .band {
-    margin-block-start: -24px;
-    padding: 24px var(--shell-inset);
+    padding: 20px var(--shell-inset);
     gap: 16px;
   }
   .band h1 {
     font-size: var(--type-display-mobile-size);
   }
+  /* Five compact count tabs share one row; they wrap only when enlarged
+     text no longer fits (MD-26). Counts still equal their lists. */
+  .countTabs {
+    gap: 2px;
+  }
   .countTabs > button {
-    min-width: 5.25rem;
-    min-height: 60px;
-    padding: 8px 12px;
+    flex: 1 1 3.5rem;
+    justify-content: center;
+    min-width: 0;
+    min-height: 56px;
+    padding: 6px 4px;
+    text-align: center;
+  }
+  .countTabs > button > span > span {
+    justify-items: center;
+    gap: 2px;
+  }
+  .countLabel {
+    font-size: 0.75rem;
+    overflow-wrap: anywhere;
   }
   .countNumber {
-    font-size: 1.5rem;
+    font-size: 1.375rem;
   }
   .queueLayout {
     grid-template-columns: minmax(0, 1fr);
@@ -834,7 +847,7 @@
     display: none;
   }
   .queueLayout[data-detail-open="true"] .queuePane,
-  .band:has(~ .console [data-detail-open="true"]) .bandSlot {
+  :global(main):has(.console [data-detail-open="true"]) .bandSlot {
     display: none;
   }
   .detailBack {

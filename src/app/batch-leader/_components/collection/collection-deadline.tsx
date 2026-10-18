@@ -77,20 +77,16 @@ export function CollectionDateDetails({
 }
 
 export function CollectionDeadline({
-  campaign,
   locale,
   deadline,
   now,
   live,
-  dateReference,
 }: Readonly<{
-  campaign: CollectionCampaign;
   locale: Locale;
   deadline: string | null;
   now: number;
   /** Only an open window counts down; closed windows explain themselves. */
   live: boolean;
-  dateReference?: ReactNode;
 }>) {
   const t = collectionText(locale);
   return (
@@ -107,11 +103,6 @@ export function CollectionDeadline({
       {live ? (
         <CollectionTimeLeft deadline={deadline} now={now} locale={locale} />
       ) : null}
-      <CollectionDateDetails
-        campaign={campaign}
-        locale={locale}
-        dateReference={dateReference}
-      />
     </aside>
   );
 }

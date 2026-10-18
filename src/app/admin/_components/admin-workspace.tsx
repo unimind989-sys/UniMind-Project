@@ -65,8 +65,7 @@ export function AdminWorkspace({
       title={section}
       synthetic={synthetic}
       roleLabel={roleLabel}
-    >
-      <AdminBandSlot.Provider value={slot}>
+      band={
         <header
           className={styles.band}
           data-view={resource ? "resource" : "queue"}
@@ -91,6 +90,9 @@ export function AdminWorkspace({
           <div ref={setSlot} className={styles.bandSlot} />
           {actions ? <div className={styles.bandActions}>{actions}</div> : null}
         </header>
+      }
+    >
+      <AdminBandSlot.Provider value={slot}>
         <div className={styles.console}>{children}</div>
       </AdminBandSlot.Provider>
     </AppShell>

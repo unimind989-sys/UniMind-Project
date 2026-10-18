@@ -105,6 +105,15 @@ export function CollectionHistory({
             "آخر إرسال لكل طلب في هذا العرض. لا تظهر الإصدارات السابقة هنا.",
           )}
         </p>
+        {/* "Received is not processed", said once for the whole list. */}
+        {rows.some(({ submission }) => submission.status === "RECEIVED") ? (
+          <p className={styles.helper} data-receipt-note>
+            {t(
+              "Received files are not processed yet: processing and review are separate, and receipt does not make a file available to students.",
+              "الملفات المستلمة لم تُعالَج بعد: المعالجة والمراجعة خطوتان منفصلتان، والاستلام لا يجعل الملف متاحًا للطلاب.",
+            )}
+          </p>
+        ) : null}
       </div>
       {projected.some((p) => p.unresolved.length) ? (
         <p role="status" className={styles.helper}>
@@ -141,14 +150,6 @@ export function CollectionHistory({
                 <p className={styles.helper}>
                   {descriptions[submission.status]}
                 </p>
-                {submission.status === "RECEIVED" ? (
-                  <p className={styles.helper}>
-                    {t(
-                      "File received. Processing and review are separate; this does not make it available to students.",
-                      "تم استلام الملف. المعالجة والمراجعة خطوتان منفصلتان؛ ولا يعني هذا إتاحته للطلاب.",
-                    )}
-                  </p>
-                ) : null}
                 {detail ? (
                   <dl className={styles.receiptDetails}>
                     <dt>{t("File", "الملف")}</dt>
@@ -304,24 +305,29 @@ export function LeaderHome({
   const now = useCollectionClock(referenceTime);
   const number = new Intl.NumberFormat(locale === "ar" ? "ar-EG" : "en");
   return (
-    <AppShell locale={locale} role="leader" title={title} synthetic={synthetic}>
-      <div className={styles.workspace}>
+    <AppShell
+      locale={locale}
+      role="leader"
+      title={title}
+      synthetic={synthetic}
+      band={
         <header className={styles.band}>
           <div className={styles.bandText}>
             <h1>{title}</h1>
-            <p>
-              {history
-                ? t(
-                    "Follow the latest recorded status and open its request.",
-                    "تابع آخر حالة مسجلة وافتح طلبها.",
-                  )
-                : t(
-                    "Start with the requests that need your action.",
-                    "ابدأ بالطلبات التي تحتاج إلى إجراء منك.",
-                  )}
-            </p>
+            {/* History's list explains its own scope (MD-25). */}
+            {history ? null : (
+              <p>
+                {t(
+                  "Start with the requests that need your action.",
+                  "ابدأ بالطلبات التي تحتاج إلى إجراء منك.",
+                )}
+              </p>
+            )}
           </div>
         </header>
+      }
+    >
+      <div className={styles.workspace}>
         {history ? (
           <CollectionHistory
             campaigns={campaigns}

@@ -4,14 +4,13 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 40px;
-  margin-block-start: -40px;
 }
+/* The Night band is the shell's band slot: full width, no negative margins. */
 .pageHeader {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 36rem);
   gap: 24px 48px;
   align-items: start;
-  margin-inline: calc(-1 * var(--shell-inset));
   padding: 48px var(--shell-inset) 56px;
   background: var(--night);
   color: var(--on-night);
@@ -52,8 +51,32 @@
   font-weight: 700;
   text-underline-offset: 0.25em;
 }
+/* The academic line links to its settings (one 44px target). */
 .headerText .contextLink {
+  gap: 8px;
+  max-width: 40em;
+  color: var(--on-night-2);
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: var(--night-control);
+  text-underline-offset: 0.3em;
+}
+.headerText .contextLink:hover {
+  color: var(--on-night);
+  text-decoration-color: currentColor;
+}
+.headerText .contextLink > svg {
+  flex: none;
   color: var(--on-night-blue);
+}
+.browseLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--action);
+  font-weight: 700;
+  text-underline-offset: 0.25em;
 }
 
 /* The one next action: a blue page of the folio. Light uses the deeper
@@ -288,11 +311,12 @@ li[data-current] a.cover:hover {
 }
 .unit {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 16px;
   min-height: 76px;
-  padding: 14px 20px 14px 16px;
+  padding-block: 14px;
+  padding-inline: 20px;
   border-radius: var(--radius-card);
   background: var(--surface);
   color: var(--ink);
@@ -302,20 +326,6 @@ li[data-current] a.cover:hover {
 }
 a.unit:hover {
   box-shadow: inset 0 0 0 1.5px var(--control);
-}
-.subjectBook {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 52px;
-  border-radius: 6px 12px 12px 6px;
-  background: var(--night);
-}
-.subjectBook span {
-  width: 14px;
-  height: 22px;
-  border-radius: 2px 6px 6px 2px;
-  background: var(--cobalt);
 }
 .unitCopy {
   display: grid;
@@ -333,16 +343,6 @@ a.unit:hover {
   font-weight: 800;
   letter-spacing: -0.015em;
   overflow-wrap: anywhere;
-}
-.ready {
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 10px;
-  border-radius: var(--radius-pill);
-  background: var(--success-tint);
-  color: var(--success);
-  font-size: 0.8125rem;
-  font-weight: 750;
 }
 .materialCount {
   font-size: 0.875rem;
@@ -378,25 +378,36 @@ a.unit:hover {
   margin: 0;
   color: var(--secondary);
 }
+/* Narrower, the resume page sits below the title and hangs 48px over the
+   band's lower edge; the content below clears it by 24px. */
 @media (max-width: 1050px) {
   .pageHeader {
     grid-template-columns: minmax(0, 1fr);
     padding-block-end: 0;
   }
+  .pageHeader[data-view="subjects"] {
+    padding-block-end: 40px;
+  }
   .resume {
     margin-block-end: -48px;
   }
-  .content {
-    gap: 72px;
+  .content[data-resume] {
+    padding-block-start: 32px;
   }
 }
 @media (max-width: 767px) {
-  .content {
-    margin-block-start: -24px;
-    gap: 64px;
+  .content[data-resume] {
+    padding-block-start: 48px;
   }
   .pageHeader {
     padding: 28px 16px 0;
+  }
+  .pageHeader[data-view="subjects"] {
+    padding-block-end: 24px;
+  }
+  /* Subjects is in the bottom bar on phones (MD-18). */
+  .browseLink {
+    display: none;
   }
   .resume {
     margin-inline: -4px;
@@ -435,15 +446,8 @@ a.unit:hover {
   .unit {
     gap: 12px;
     min-height: 64px;
-    padding: 10px 14px 10px 12px;
-  }
-  .subjectBook {
-    width: 34px;
-    height: 42px;
-  }
-  .subjectBook span {
-    width: 11px;
-    height: 18px;
+    padding-block: 10px;
+    padding-inline: 16px 14px;
   }
   .unitTitle {
     font-size: 1.0625rem;
