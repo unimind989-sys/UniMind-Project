@@ -4,7 +4,7 @@
 
 **Task ID:** WP03-T29
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** Every repaired control has an observable, tested outcome: a failed auth action keeps the typed email, New session and Sign out cannot be pressed twice, Batch Leader intake explains its disabled actions and guards the queue, Subjects search announces its count, Quiz numbers accept Arabic-Indic digits, and every input carries the right type, keyboard hint, autocomplete and error wiring.
 
@@ -14,7 +14,7 @@
 
 **Branch:** claude/wp03-t29-interactions-inputs
 
-**Updated (UTC):** 2026-10-18T22:30Z
+**Updated (UTC):** 2026-10-18T19:30Z
 
 ## Contract
 
@@ -24,7 +24,7 @@
 
 **Files:** auth form and the three sign-out forms; Chat sessions menu; Batch Leader intake, queue row and flow hook; leader home; Subjects (`study-shelf`); Quiz setup and `quiz-fixture.application`; Studio; admin decision list and form; synthetic admin operations; landing flashcard; academic settings; report; copy files; tests.
 
-**Protected paths:** none. Auth form presentation only: no Server Action, result shape, guard, RLS, storage or demo-isolation change. WP03-T28 invariants kept (`prefetch={false}` on other-language links, hidden `locale` input in every sign-out form, reserved-domain refusal in the Server Action).
+**Protected paths:** auth form UI (`src/app/(auth)/…`, new `sign-out-form.tsx`), treated as protected: independent review before merge. Presentation only: no Server Action, result shape, guard, RLS, storage or demo-isolation change. WP03-T28 invariants kept (`prefetch={false}` on other-language links, hidden `locale` input in every sign-out form, reserved-domain refusal in the Server Action).
 
 **Verify:** `corepack pnpm check`; unit `quiz-fixture`; affected demo specs, then the full demo suite (`PW_WORKERS=2`, private port 3502); `UNIMIND_E2E_PORT=3530 corepack pnpm test:e2e`; `corepack pnpm test:env-build`; one bounded rendered check at 390 and 1440, EN/AR.
 
@@ -43,7 +43,7 @@
 - [x] Admin: empty-state copy by cause, inline decision-form errors, expiry `min` and time zone; synthetic one-effect buttons.
 - [x] Remaining inventory: landing flashcard, academic selects, report label, leader campaign rows.
 - [x] Tests, full verification, rendered check, push.
-- [ ] Overseeing session: review, rendered approval (`Approved commit:`), PR with required CI (including `database-ci`), merge.
+- [x] Overseeing session: independent review, rendered approval (`Approved commit:`), PR with required CI (including `database-ci`).
 
 ## Decisions
 
@@ -67,12 +67,12 @@
 
 **Tests changed (pinned old behaviour):** login `autocomplete` "email" to "username" (IX-14); quiz count/duration role `spinbutton` to `textbox`, `min`/`max` to `inputmode`, disabled Start to Start validation with focus (IX-13); landing flashcard `aria-pressed` to its switching name (IX-16).
 
-**Review:** self-review of the full diff (scope, secrets, T28 invariants); independent review not required (no protected path).
+**Review:** self-review; `independent-reviewer` on `62145aa`: approve with nits (a quiz field re-showed its error mid-edit after one blur, fixed in `f324d39` with a regression step; the record now lists the auth form as protected). PR #95 CI on `62145aa` green including `database-ci` (the new pending Sign out and New session checks) and the full demo suite.
 
-**Approved commit:** PENDING (material UI: small; the overseeing session reviews the rendered candidate).
+**Approved commit:** `f324d39`, approved by the overseeing Claude Code session under Ahmed's 18 October 2026 delegation (not a founder review). Checked: `.local/shots/t29` intake (checklist, cleared permission, uploading), quiz (Arabic-Indic digits and error), Studio lock, admin form, Subjects search and registration at 390 and 1440 in EN/AR; no horizontal overflow.
 
-**Remaining:** IX-35's second half (the synthetic admin band's Sign out versus real admin) left by decision; database e2e proof waits for CI.
+**Remaining:** IX-35's second half (the synthetic admin band's Sign out versus real admin) left by decision.
 
 ## Next action
 
-Overseeing session: review the branch, record `Approved commit:`, open the PR and merge on green required CI.
+None after the PR merges with green required CI.
