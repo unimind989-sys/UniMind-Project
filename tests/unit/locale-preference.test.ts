@@ -8,6 +8,7 @@ const page = {
   search: "",
   cookie: undefined,
   document: true,
+  navigation: false,
 } as const;
 
 describe("remembered interface language", () => {
@@ -32,7 +33,14 @@ describe("remembered interface language", () => {
     ["a forged memory", { cookie: "fr" }],
     ["an invalid ?lang=", { search: "?lang=fr", cookie: "ar" }],
     ["a POST", { method: "POST", cookie: "ar" }],
-    ["an RSC or fetch request", { document: false, cookie: "ar" }],
+    [
+      "a fetch that is neither a page load nor a navigation",
+      { document: false, cookie: "ar" },
+    ],
+    [
+      "a client navigation without ?lang=",
+      { document: false, navigation: true, cookie: "ar" },
+    ],
     ["an API route", { pathname: "/api/health/live", cookie: "ar" }],
     ["the email callback", { pathname: "/auth/callback", cookie: "ar" }],
   ] as const)("leaves %s unchanged", (_label, change) => {
@@ -40,5 +48,17 @@ describe("remembered interface language", () => {
       redirectTo: null,
       remember: null,
     });
+  });
+
+  it("remembers the language a client navigation names (the shell switch)", () => {
+    expect(
+      decideLocale({
+        ...page,
+        document: false,
+        navigation: true,
+        search: "?lang=ar",
+        cookie: "en",
+      }),
+    ).toEqual({ redirectTo: null, remember: "ar" });
   });
 });

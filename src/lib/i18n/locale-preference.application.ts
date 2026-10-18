@@ -9,8 +9,10 @@ export type LocaleRequest = Readonly<{
   pathname: string;
   search: string;
   cookie: string | undefined;
-  /** A top-level page load, not an RSC fetch, prefetch, API call or asset. */
+  /** A top-level page load. */
   document: boolean;
+  /** A client-side navigation (RSC request), not a prefetch. */
+  navigation: boolean;
 }>;
 
 export type LocaleDecision = Readonly<{
@@ -25,13 +27,15 @@ const unchanged: LocaleDecision = { redirectTo: null, remember: null };
 /**
  * The interface language lives in the URL (`?lang=`), so server and client
  * render the same language. A page load without it falls back to the
- * remembered language, then to English; a page load with it updates the
- * memory. Email links and redirects therefore keep an Arabic user in Arabic.
+ * remembered language, then to English. A page load or client navigation
+ * that names a language updates the memory (the shell's language switch is
+ * a client navigation). Email links and redirects therefore keep an Arabic
+ * user in Arabic.
  */
 export function decideLocale(request: LocaleRequest): LocaleDecision {
   if (
     request.method !== "GET" ||
-    !request.document ||
+    (!request.document && !request.navigation) ||
     request.pathname.startsWith("/api/") ||
     request.pathname.startsWith("/auth/")
   )
@@ -42,7 +46,18 @@ export function decideLocale(request: LocaleRequest): LocaleDecision {
     return isSupportedLocale(requested) && requested !== request.cookie
       ? { redirectTo: null, remember: requested }
       : unchanged;
-  if (!isSupportedLocale(request.cookie)) return unchanged;
+  if (!request.document || !isSupportedLocale(request.cookie)) return unchanged;
   query.set("lang", request.cookie);
   return { redirectTo: `${request.pathname}?${query}`, remember: null };
+}
+
+/** Cookie options shared by the proxy and the profile Server Actions. */
+export function localeCookieOptions(secure: boolean) {
+  return {
+    path: "/",
+    sameSite: "lax" as const,
+    httpOnly: true,
+    secure,
+    maxAge: localeCookieMaxAgeSeconds,
+  };
 }

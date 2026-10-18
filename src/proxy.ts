@@ -3,8 +3,8 @@ import { NextResponse, type NextRequest } from "next/server";
 import { refreshSupabaseSession } from "./lib/auth/refresh-session.server";
 import {
   decideLocale,
-  localeCookieMaxAgeSeconds,
   localeCookieName,
+  localeCookieOptions,
 } from "./lib/i18n/locale-preference.application";
 import {
   isProductDemoPath,
@@ -135,8 +135,8 @@ export async function proxy(request: NextRequest) {
   )
     return NextResponse.next();
   // Real runtime only (the synthetic runtime above sets no cookie): a page
-  // load without ?lang= returns in the remembered language; one with it
-  // updates the memory.
+  // load without ?lang= returns in the remembered language; a page load or
+  // client navigation with it updates the memory.
   const locale = decideLocale({
     method: request.method,
     pathname: path,
@@ -145,6 +145,9 @@ export async function proxy(request: NextRequest) {
     document:
       request.headers.get("sec-fetch-dest") === "document" &&
       !request.headers.has("rsc") &&
+      !request.headers.has("next-router-prefetch"),
+    navigation:
+      request.headers.has("rsc") &&
       !request.headers.has("next-router-prefetch"),
   });
   if (locale.redirectTo !== null) {
@@ -156,13 +159,11 @@ export async function proxy(request: NextRequest) {
   }
   const response = await refreshSupabaseSession(request);
   if (locale.remember !== null)
-    response.cookies.set(localeCookieName, locale.remember, {
-      path: "/",
-      sameSite: "lax",
-      httpOnly: true,
-      secure: request.nextUrl.protocol === "https:",
-      maxAge: localeCookieMaxAgeSeconds,
-    });
+    response.cookies.set(
+      localeCookieName,
+      locale.remember,
+      localeCookieOptions(request.nextUrl.protocol === "https:"),
+    );
   return response;
 }
 
