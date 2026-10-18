@@ -57,7 +57,7 @@
 
 **Approved commit:** NOT REQUIRED: documentation only.
 
-**Remaining:** the open items in the final verification (founder actions and recorded risks).
+**Remaining:** the open items in the final verification (founder actions and recorded risks). Production was promoted at Ahmed's request on 18 October 2026 ([proof](../../evidence/wp03-product-shell/2026-10-18_wp03-refinement_production_680a507.md)); the hosted migration still needs a founder's Supabase access.
 
 ## Next action
 

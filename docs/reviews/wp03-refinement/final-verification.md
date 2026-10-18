@@ -225,11 +225,11 @@ The demo still differs from the real product where it must: document-local state
 
 ## Open items and risks
 
-**Founder actions** (not taken, by plan D13):
+**Founder actions** (not taken during the refinement, by plan D13):
 
-1. **Production promotion.** Merging does not deploy (`vercel.json` disables `main` deployments). WP03-T25 to T29 reach production only through a founder promotion. That release applies the WP03-T27 migration `20261018001935_profile_display_name_format.sql` to hosted Supabase. It is an additive trigger that checks a name only when it changes; existing rows and data are untouched.
+1. **Production promotion: done on 18 October 2026, at Ahmed's request, after this page was first published.** `680a507` is live as `dpl_1ZyAFwbfAkcU4r2EjXfMvvDbYVcs`; the [production proof](../../../evidence/wp03-product-shell/2026-10-18_wp03-refinement_production_680a507.md) records it. Still open: the WP03-T27 migration `20261018001935_profile_display_name_format.sql` on hosted Supabase. It is an additive trigger that checks a name only when it changes; existing rows and data are untouched, and the live code does not depend on it. It needs a founder's Supabase access.
 2. **Vercel bypass secret.** If not already done, revoke the Vercel Protection Bypass for Automation secret that `vercel curl --debug` printed during WP03-T19. This was recorded in [#88](https://github.com/unimind989-sys/UniMind-Project/pull/88), before this work.
-3. **Founder review of the UI.** The material-UI approvals (`Approved commit:` in T25, T26, T27 and T29) were given by the overseeing session under Ahmed's delegation, not by a founder. A founder look at the rendered result before promotion is advisable.
+3. **Founder review of the UI.** The material-UI approvals (`Approved commit:` in T25, T26, T27 and T29) were given by the overseeing session under Ahmed's delegation, not by a founder. A founder look at the rendered result is still advisable.
 
 **Open, with reasons:**
 
