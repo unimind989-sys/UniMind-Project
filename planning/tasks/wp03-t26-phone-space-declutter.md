@@ -64,7 +64,7 @@
 
 **Review:** self-review; `independent-reviewer` on `6c4e58d`: request changes (1 major: admin phone Menu panel off-screen at 320px and 200% text; minors: phone title label-in-name, drag-out closes dialogs, outside press refocuses the menu summary), all fixed in `d785b38` to `5d1b702`; re-review of that delta: approve.
 
-**Approved commit:** `5d1b702`, approved by the overseeing Claude Code session under Ahmed's 18 October 2026 delegation (not a founder review). Checked: `.local/shots/r4` Chat empty and answered at 320, 360, 390, 768, 1280 and 1440 in EN/AR, light and dark; Studio and Batch Leader intake on phones; every Chat target met with no horizontal overflow.
+**Approved commit:** `1e39968` (first `5d1b702`; re-approved after the PR #94 CI fixes, whose only visible change is 0.5em below the Arabic privacy line), approved by the overseeing Claude Code session under Ahmed's 18 October 2026 delegation (not a founder review). Checked: `.local/shots/r4` Chat empty and answered at 320, 360, 390, 768, 1280 and 1440 in EN/AR, light and dark; Studio and Batch Leader intake on phones; every Chat target met with no horizontal overflow.
 
 **Remaining:** the Arabic Report action wraps under the citation at 360px (MD-10 partial); iOS keyboard placement (`visualViewport.offsetTop`) unverified on a device; MD-27 sample labels kept as safety labels.
 
