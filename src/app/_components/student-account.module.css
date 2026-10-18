@@ -75,6 +75,13 @@
   gap: 0.5rem;
   min-width: 0;
 }
+/* Why an academic choice is still empty: its parent comes first. */
+.hint {
+  margin: 0;
+  color: var(--secondary);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
 
 /* First-run setup: one focused question at a time. */
 .onboarding {

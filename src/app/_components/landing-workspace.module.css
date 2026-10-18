@@ -257,7 +257,7 @@
   text-align: start;
   box-shadow: var(--float);
 }
-.flashcard[aria-pressed="true"] {
+.flashcard[data-flipped] {
   background: var(--action);
   color: var(--on-action);
 }
@@ -266,7 +266,7 @@
   font-weight: 700;
   color: var(--on-night-2);
 }
-.flashcard[aria-pressed="true"] .flashcardLabel {
+.flashcard[data-flipped] .flashcardLabel {
   color: inherit;
 }
 .flashcard strong {
