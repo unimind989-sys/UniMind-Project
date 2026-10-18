@@ -1598,7 +1598,7 @@ External component catalogs and MCPs are optional implementation aids, never des
 **Dependencies:** WP03-T25 to T30 merged. The WP03 manager brief's final area: integration, final verification and reports ([task record](../../planning/tasks/wp03-t31-final-verification.md)).
 
 - [x] On merged `main`: a full local `corepack pnpm verify` on a quiet machine, green `main` CI, a rendered review of every screen at phone, tablet and desktop sizes in English and Arabic, light and dark, and each new or corrected flow reproduced in the synthetic demo.
-- [x] Publish the [final verification](../reviews/wp03-refinement/final-verification.md) and the after-refinement section of the [CI and testing report](../reviews/wp03-refinement/ci-testing-report.md); ignore the per-machine `.claude/launch.json`; deliver through one PR with required CI. These closure markers become authoritative only when that PR merges with green required CI.
+- [x] Publish the [final verification](../reviews/wp03-refinement/final-verification.md) and the after-refinement section of the [CI and testing report](../reviews/wp03-refinement/ci-testing-report.md); ignore the per-machine `.claude/launch.json`; deliver through one PR with required CI. These closure markers become authoritative only when that PR merges with green required CI. Afterwards, at Ahmed's request, `680a507` was promoted to production ([evidence](../../evidence/wp03-product-shell/2026-10-18_wp03-refinement_production_680a507.md)); the hosted WP03-T27 migration awaits a founder's Supabase access.
 
 **Pass:** every WP03-T25 to T30 outcome is checked on merged `main` or listed as open with a reason; before and after numbers are recorded; required CI green.
 
