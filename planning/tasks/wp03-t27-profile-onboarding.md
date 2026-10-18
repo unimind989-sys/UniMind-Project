@@ -4,7 +4,7 @@
 
 **Task ID:** WP03-T27
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** Every new account (real or demo) is asked once for its name and interface language after consent, can edit both later in Settings, and every authenticated page, including the Batch Leader pages and upload, applies the same account gate.
 
@@ -47,7 +47,7 @@
 - [x] `/welcome` (fourth access step) and Settings → Profile on the T25 primitives; Settings sections switch on the client, one scrolling row on phones; Privacy for students only; catalog failure keeps Settings; sign-out on consent and welcome; an honest no-cohort state; IX-18, IX-19.
 - [x] Demo: `new-student@example.invalid` with an empty profile, no fixture-name fallback, returning-user behaviour, `/welcome` in the route table with the real gate order.
 - [x] Tests and docs; independent review findings addressed.
-- [ ] Rendered review, PR, required CI including `database-ci`, merge.
+- [x] Rendered review, PR, required CI including `database-ci`, merge (closure markers authoritative once the PR merges).
 
 ## Decisions
 
@@ -60,14 +60,14 @@
 
 **Changed:** see Steps; branch commits from `3bec0e1`.
 
-**Proof:** unit and security green (new: access-destination, profile-domain, account-supabase, auth-entry-routing consent → welcome, batch-leader-account-gate); main e2e 40/40; demo full suite run before the review fixes 189/195 with the six pinned-tab tests fixed; `pnpm verify` static, build and Node layers green.
+**Proof:** final head: unit and security 1,019 green; demo onboarding, settings-account and auth specs 21/21; full demo suite 196/197 on the head before the review fixes (the one failure, an admin reason-draft journey untouched by this task, passed 2/2 alone and is attributed to CPU contention; CI is the judge); main e2e 40/40; pgTAP and database e2e run in CI. Earlier: (new: access-destination, profile-domain, account-supabase, auth-entry-routing consent → welcome, batch-leader-account-gate); main e2e 40/40; demo full suite run before the review fixes 189/195 with the six pinned-tab tests fixed; `pnpm verify` static, build and Node layers green.
 
 **Review:** independent review by the `independent-reviewer` sub-agent of `2ca8e1d..a57065e`: request changes (1 major: finalize gate untested; minors: NOT VALID semantics, Settings language baseline, consent → welcome untested, demo assertion; nits). All addressed in the next commit.
 
-**Approved commit:** PENDING (material UI: `/welcome`, Settings → Profile).
+**Approved commit:** `765dc5e`, approved by the overseeing Claude Code session under Ahmed's 18 October 2026 delegation (not a founder review). Checked: `/welcome` and Settings → Profile at 390 and 1440 in EN/AR, light and dark; leader Settings without Privacy; phone Settings sections in one row.
 
-**Remaining:** rendered review, PR, CI, merge.
+**Remaining:** merge on green required CI.
 
 ## Next action
 
-Rendered review of `/welcome` and Settings → Profile (EN/AR, light/dark, 390/1440), then the PR.
+Squash-merge the PR on green required CI (including `database-ci`); mark WP03-T27 [x]; rebase WP03-T28 onto main.
