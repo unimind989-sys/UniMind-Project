@@ -1587,9 +1587,9 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 **Dependencies:** WP03-T24. Findings TC-01 to TC-06, TC-08 to TC-12, TC-19 to TC-22. Protected path: CI workflow and selector.
 
-- [~] Fix the quiz fake-clock flake; two Playwright workers per demo shard, one main e2e shard, headless-shell Chromium, a selector that runs everything when only the base moved, and no duplicate plain typecheck in `verify:ci`.
-- [ ] A local verify runner (no bare `pnpm`, parallel static checks, build first, timing table), CPU-based local workers, lint and format caches, telemetry off, corrected docs.
-- [ ] Independent review, a `--repeat-each=2` demo run and two green PR CI runs; before and after measurements in the [CI and testing report](../reviews/wp03-refinement/ci-testing-report.md); deliver through one PR.
+- [x] Fix the quiz fake-clock flake; two Playwright workers per demo shard, one main e2e shard, headless-shell Chromium, a selector that runs everything when only the base moved, and no duplicate plain typecheck in `verify:ci`.
+- [x] A local verify runner (no bare `pnpm`, parallel static checks, build first, timing table), CPU-based local workers, lint and format caches, telemetry off, corrected docs.
+- [x] Independent review, a `--repeat-each=2` demo run and two green PR CI runs; before and after measurements in the [CI and testing report](../reviews/wp03-refinement/ci-testing-report.md); deliver through one PR. Reviewed by the `independent-reviewer` sub-agent (nits fixed); demo `--repeat-each=2` 384/384; PR [#90](https://github.com/unimind989-sys/UniMind-Project/pull/90) runs 39083623872 and 39085439849 green. These closure markers become authoritative only when that PR merges with green required CI.
 
 **Pass:** the same tests and gates run; CI wall time and compute per run fall measurably; local verify is faster; required CI green.
 

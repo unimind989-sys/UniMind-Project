@@ -4,7 +4,7 @@
 
 **Task ID:** WP03-T30
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** The same tests and gates run in less wall time and compute, locally and in CI, with the one known demo flake fixed and a moved `main` no longer turning the required selector check red.
 
@@ -40,7 +40,7 @@
 - [x] TC-01/05/06 demo two workers, one e2e shard, `--only-shell`; TC-11 drop plain `typecheck` from `verify:ci` and static, with a unit guard on the build's type check.
 - [x] TC-03 selector runs every job when only the base moved; head mismatch still fails.
 - [x] TC-08/09/10/12 local runner, CPU-based workers, lint and format caches, telemetry off; TC-04/21/22 docs and step titles.
-- [ ] Local proof and timings; independent review; PR with two green CI runs; report.
+- [x] Local proof and timings; independent review; PR with two green CI runs; report.
 
 ## Decisions
 
@@ -53,12 +53,16 @@
 
 **Proof:** quiz journey 3/3 on the demo config; ci-workflow-policy, conditional-ci-selector, verification-plan 48/48; `corepack pnpm verify` through the new runner passed every step in 2,042 s (34.0 min) against the 2,906 s baseline, measured while another task built in parallel on the same 4-CPU machine (192 demo in 27.3 min on 2 workers, 39 main e2e); the tree stays clean (no `next-env.d.ts` change).
 
-**Review:** pending independent review (`independent-reviewer`).
+**Review:** independent review by the `independent-reviewer` sub-agent of `origin/main...ac5e6a3`: approve with nits. Fixed in `498e3f0`: parallel steps print on `close`; a standalone pnpm is spawned directly; the resize listener is installed before resizing. The missing evidence it named is now recorded below.
 
 **Approved commit:** NOT REQUIRED: no rendered change.
 
-**Remaining:** proof, review, delivery.
+**Remaining:** merge; a clean local re-measure on a quiet machine goes in the final verification.
+
+**CI:** PR [#90](https://github.com/unimind989-sys/UniMind-Project/pull/90) runs 39083623872 and 39085439849 green: wall 6.95 and 6.75 min (bound by database-ci), application gate at 5.05 and 4.65 min, demo shards 3.4 to 4.5 min on 2 workers, compute 31.9 and 30.7 min (before: 7.4 to 8.0 min wall, 41.9 to 43.0 compute).
+
+**Stress:** full demo `PW_WORKERS=2 --repeat-each=2` 384/384, no `Failed to proxy`; TC-02 reproduction with delayed resize observers: old pattern 3/3 failed, new helper 3/3 passed; real quiz journey 10/10.
 
 ## Next action
 
-Install dependencies in the worktree, run the focused unit tests and the quiz reproduction, then the timed `pnpm verify`.
+Squash-merge PR #90 on green required CI; mark WP03-T30 [x].
