@@ -182,22 +182,28 @@ export function FrontendShell({
           <Disclosure
             ref={menu}
             className={styles.unitMenu}
-            summaryProps={{
-              className: styles.unitSummary,
-              ...(chat
-                ? { "aria-label": line ? `${sessions}: ${line}` : sessions }
-                : {}),
-            }}
+            summaryProps={{ className: styles.unitSummary }}
             summary={
               <>
-                {/* On phones the title button shows the unit title; the h1
-                    beside it stays the heading for assistive technology. */}
-                <span className={styles.summaryTitle} aria-hidden="true">
+                {/* The name comes from this content, so everything shown is
+                    part of it (WCAG 2.5.3): on phones the unit title (the h1
+                    stays the heading), then the line; Chat adds a hidden
+                    "Sessions and privacy". */}
+                <span className={styles.summaryTitle}>
                   <bdi>{title}</bdi>
+                  <span className="visually-hidden">, </span>
                 </span>
                 <span className={styles.summaryLine}>
                   <FrontendIcon name={chat ? "chat" : "sources"} />
+                  {chat && line ? (
+                    <span className="visually-hidden">{sessions}: </span>
+                  ) : null}
                   <bdi>{summaryLine}</bdi>
+                  {chat && !line ? (
+                    <span className="visually-hidden">
+                      {t(" and privacy", " والخصوصية")}
+                    </span>
+                  ) : null}
                   <FrontendIcon name="chevron" size={16} />
                 </span>
               </>
