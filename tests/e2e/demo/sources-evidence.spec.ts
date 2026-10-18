@@ -1602,7 +1602,7 @@ inLocales(["ar"], (locale) => {
       };
       await navigate(page, "/settings", locale);
       const tabs = page.getByRole("tab");
-      await expect(tabs).toHaveCount(4);
+      await expect(tabs).toHaveCount(5);
       await languageState();
       await tabs.first().click();
       await tabs.first().press("End");

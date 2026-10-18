@@ -57,6 +57,7 @@ export const syntheticRoutes: readonly SyntheticRoute[] = [
   { pattern: "/register", composer: "auth", screen: "register" },
   { pattern: "/verify-email", composer: "auth", screen: "verify-email" },
   { pattern: "/consent", composer: "auth", screen: "consent" },
+  { pattern: "/welcome", composer: "auth", screen: "welcome" },
   { pattern: "/forgot-password", composer: "auth", screen: "forgot-password" },
   { pattern: "/reset-password", composer: "auth", screen: "reset-password" },
   { pattern: "/learn", composer: "catalog", screen: "catalog" },

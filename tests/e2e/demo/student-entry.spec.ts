@@ -1769,7 +1769,7 @@ inLocales(["en"], (locale) => {
       });
       await reflow(async () => {
         const reset = identity.getByRole("link", {
-          name: t("Reset password", "تغيير كلمة المرور"),
+          name: t("Reset password", "إعادة تعيين كلمة المرور"),
           exact: true,
         });
         const signOut = page.getByRole("main").getByRole("button", {

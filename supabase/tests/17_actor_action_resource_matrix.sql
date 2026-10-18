@@ -126,7 +126,8 @@ values
   ('validate_artifact_finalization'),
   ('validate_embedding_dimensions'),
   ('validate_final_answer'),
-  ('validate_profile_academic_context');
+  ('validate_profile_academic_context'),
+  ('validate_profile_display_name');
 
 create temporary table reviewed_policies (
   table_name text not null,

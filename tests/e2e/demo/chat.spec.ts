@@ -1473,7 +1473,7 @@ inLocales(["en"], (locale) => {
         .press("Home");
       await expect(
         page.getByRole("tab", {
-          name: pick(locale, "Appearance", "المظهر"),
+          name: pick(locale, "Profile", "الملف الشخصي"),
           exact: true,
         }),
       ).toBeFocused();

@@ -7,6 +7,7 @@ import {
   useRef,
   useState,
   useSyncExternalStore,
+  type ReactNode,
 } from "react";
 
 import type { CurrentTerms } from "@/lib/auth/auth-access.application";
@@ -30,7 +31,7 @@ import { Notice } from "@/app/_components/notice";
 import { Button } from "@/app/_components/product-ui";
 import styles from "../auth.module.css";
 import { useSyntheticNavigation } from "@/app/_components/product-navigation";
-import { syntheticLoginRole } from "@/lib/demo/synthetic-account.application";
+import { syntheticLoginAccount } from "@/lib/demo/synthetic-account.application";
 
 const subscribeToClient = () => () => {};
 const clientReady = () => true;
@@ -146,6 +147,7 @@ export function AuthForm({
   actionOverride,
   initialEmail,
   initialPassword,
+  secondaryAction,
 }: Readonly<{
   mode: AuthFormMode;
   locale: Locale;
@@ -158,6 +160,8 @@ export function AuthForm({
   ) => Promise<AuthFormState>;
   initialEmail?: string | undefined;
   initialPassword?: string | undefined;
+  /** An extra exit beside the form's links, such as sign-out on consent. */
+  secondaryAction?: ReactNode;
 }>) {
   const copy = getAuthCopy(locale);
   const synthetic = useSyntheticNavigation();
@@ -173,19 +177,19 @@ export function AuthForm({
           previous: AuthFormState,
           data: FormData,
         ): Promise<AuthFormState> => {
-          const role = syntheticLoginRole(
+          const account = syntheticLoginAccount(
             data.get("email"),
             data.get("password"),
           );
-          if (role) {
+          if (account) {
             const home =
-              role === "leader"
+              account.role === "leader"
                 ? "/batch-leader"
-                : role === "student"
+                : account.role === "student"
                   ? "/learn"
                   : "/admin";
             synthetic.enter(
-              role,
+              account,
               locale,
               ["/", "/learn"].includes(returnPath) ? home : returnPath,
             );
@@ -477,6 +481,7 @@ export function AuthForm({
             {copy.loginLink}
           </Link>
         ) : null}
+        {secondaryAction}
       </div>
     </section>
   );

@@ -355,9 +355,10 @@ export async function adminNavigate(
 
 export async function showAccountView(
   page: Page,
-  view: "appearance" | "academic" | "privacy" | "identity",
+  view: "profile" | "appearance" | "academic" | "privacy" | "identity",
 ) {
   const labels = {
+    profile: /^(Profile|الملف الشخصي)$/u,
     appearance: /^(Appearance|المظهر)$/u,
     academic: /^(Academic settings|الإعدادات الدراسية)$/u,
     privacy: /^(Privacy|الخصوصية)$/u,

@@ -9,7 +9,10 @@ import {
   validateRegistrationInput,
 } from "./auth-flow.domain";
 
-export { validatedInternalReturnPath } from "./auth-flow.domain";
+export {
+  accessDestination,
+  validatedInternalReturnPath,
+} from "./auth-flow.domain";
 export type { FieldErrorCode } from "./auth-flow.domain";
 
 export type AuthActionStatus =

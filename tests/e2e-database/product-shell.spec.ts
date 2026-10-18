@@ -242,7 +242,7 @@ test.beforeAll(async () => {
     if (!/^[a-f0-9-]{36}$/u.test(id))
       throw new Error("Synthetic user identifier invalid.");
     users.set(role, { id, email, password });
-    sql(`update public.profiles set account_status = 'ACTIVE' where user_id = '${id}';
+    sql(`update public.profiles set account_status = 'ACTIVE', display_name = 'Synthetic ${role}' where user_id = '${id}';
       insert into public.terms_acceptances (user_id, terms_version_id, terms_version, privacy_version, educational_boundary_version)
       select '${id}', id, terms_version, privacy_version, educational_boundary_version from public.terms_versions where status = 'ACTIVE';`);
   }
@@ -548,6 +548,103 @@ for (const transition of ["lock", "deactivate", "revoke"] as const) {
     ).toBe("1");
   });
 }
+
+// WP03-T27: one account gate for every page, including Batch Leader intake.
+test("leader: suspension and a missing profile close intake and uploads", async ({
+  page,
+}) => {
+  const leader = users.get("leader")!.id;
+  await login(page, "leader");
+  await page.goto(`/batch-leader/campaigns/${campaign}?lang=en`);
+  await expect(
+    page.getByRole("heading", { name: "Synthetic collection campaign" }),
+  ).toBeVisible();
+  try {
+    sql(
+      `update public.profiles set account_status = 'SUSPENDED' where user_id = '${leader}';`,
+    );
+    await page.reload();
+    await expect(page).toHaveURL(/\/login\?(?:.*&)?status=suspended/u);
+    const suspended = await page.request.post(
+      `/api/batch-leader/campaigns/${campaign}/uploads`,
+    );
+    expect(suspended.status()).toBe(403);
+    sql(
+      `update public.profiles set account_status = 'ACTIVE', display_name = '' where user_id = '${leader}';`,
+    );
+    await page.goto(`/batch-leader/campaigns/${campaign}?lang=en`);
+    await expect(page).toHaveURL(/\/welcome\?/u);
+    const nameless = await page.request.post(
+      `/api/batch-leader/campaigns/${campaign}/uploads`,
+    );
+    expect(nameless.status()).toBe(403);
+    expect(await nameless.json()).toEqual({ error: "UPLOAD_REJECTED" });
+  } finally {
+    sql(
+      `update public.profiles set account_status = 'ACTIVE', display_name = 'Synthetic leader' where user_id = '${leader}';`,
+    );
+  }
+});
+
+test("student: a real account without a name completes the profile step once", async ({
+  page,
+  browser,
+}) => {
+  const student = users.get("student")!;
+  sql(
+    `update public.profiles set display_name = '' where user_id = '${student.id}';`,
+  );
+  try {
+    await page.goto(`/login?lang=en&next=${encodeURIComponent(workspace)}`);
+    await page.getByLabel("Email address", { exact: true }).fill(student.email);
+    await page.getByLabel("Password", { exact: true }).fill(student.password);
+    await page.getByRole("button", { name: "Continue", exact: true }).click();
+    await expect(page).toHaveURL(/\/welcome\?/u);
+    await expect(
+      page.getByRole("heading", { name: "Set up your profile", level: 1 }),
+    ).toBeVisible();
+    // A forged return path never leaves the product.
+    await page.goto("/welcome?lang=en&next=%2F%2Fattacker.invalid%2Flearn");
+    await page.getByLabel("Full name", { exact: true }).fill("Rana Fathy");
+    await page
+      .getByRole("button", { name: "Save and continue", exact: true })
+      .click();
+    await expect(page).toHaveURL(/\/learn(?:\?|$)/u);
+    // The forged return never leaves the app's own origin.
+    expect(new URL(page.url()).origin).toBe(
+      new URL(test.info().project.use.baseURL!).origin,
+    );
+    expect(
+      sql(
+        `select display_name || '|' || preferred_language from public.profiles where user_id = '${student.id}';`,
+      ),
+    ).toBe("Rana Fathy|EN");
+    // A second browser signs in straight to the role home.
+    const second = await browser.newContext();
+    try {
+      const other = await second.newPage();
+      await other.goto("/login?lang=en");
+      await other
+        .getByLabel("Email address", { exact: true })
+        .fill(student.email);
+      await other
+        .getByLabel("Password", { exact: true })
+        .fill(student.password);
+      await other
+        .getByRole("button", { name: "Continue", exact: true })
+        .click();
+      await expect(other).toHaveURL(/\/learn(?:\?|$)/u);
+      await other.goto("/welcome?lang=en");
+      await expect(other).toHaveURL(/\/learn(?:\?|$)/u);
+    } finally {
+      await second.close();
+    }
+  } finally {
+    sql(
+      `update public.profiles set display_name = 'Synthetic student' where user_id = '${student.id}';`,
+    );
+  }
+});
 
 test("revoked leader loses campaign access in the same browser", async ({
   page,

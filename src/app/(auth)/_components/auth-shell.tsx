@@ -77,18 +77,21 @@ export function AuthShell({
               tone="paper"
               className={styles.steps}
               label={copy.accountAccess}
-              items={[copy.account, copy.verify, copy.consent].map(
-                (label, index) => ({
-                  key: label,
-                  label,
-                  state:
-                    index < activeStep
-                      ? "done"
-                      : index === activeStep
-                        ? "current"
-                        : "todo",
-                }),
-              )}
+              items={[
+                copy.account,
+                copy.verify,
+                copy.consent,
+                copy.profile,
+              ].map((label, index) => ({
+                key: label,
+                label,
+                state:
+                  index < activeStep
+                    ? "done"
+                    : index === activeStep
+                      ? "current"
+                      : "todo",
+              }))}
             />
           ) : null}
           {children}

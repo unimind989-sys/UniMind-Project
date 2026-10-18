@@ -1,4 +1,5 @@
 import "server-only";
+import { z } from "zod";
 import { createServerSupabaseClient } from "../db/supabase/server";
 import { getCurrentAuthAccess } from "../auth/auth-access.supabase.server";
 import { requireVerifiedIdentity } from "../auth/verified-identity.server";
@@ -10,11 +11,15 @@ import {
   authorizedStudyResume,
 } from "./account.application";
 import type { AuthorizedCatalogRow } from "../catalog/catalog-journey.application";
+import { saveProfile } from "./profile.application";
+import { localeFromAccountLanguage } from "./profile.domain";
+
+const displayEmail = z.string().max(320).pipe(z.email());
 
 export async function loadCurrentAccount() {
   const identity = await requireVerifiedIdentity();
   const client = await createServerSupabaseClient();
-  const [profile, roles] = await Promise.all([
+  const [profile, roles, claims] = await Promise.all([
     client
       .from("profiles")
       .select("display_name, preferred_language, academic_context")
@@ -25,11 +30,15 @@ export async function loadCurrentAccount() {
       .select("role")
       .eq("user_id", identity.userId)
       .is("revoked_at", null),
+    client.auth.getClaims(),
   ]);
   if (profile.error || roles.error)
     throw new Error("Account settings unavailable.");
   return {
     displayName: profile.data.display_name,
+    // Display only (Settings); the verified identity carries the subject alone.
+    email: displayEmail.safeParse(claims.data?.claims.email).data ?? null,
+    language: localeFromAccountLanguage(profile.data.preferred_language),
     locale: profile.data.preferred_language,
     academicContext: readAcademicContext(profile.data.academic_context),
     home: roleHome(roles.data.map((item) => item.role)),
@@ -46,6 +55,37 @@ export async function currentRoleHome() {
   if (error) throw new Error("Account destination unavailable.");
   return roleHome(data.map((item) => item.role));
 }
+/** The caller's own name and interface language, from onboarding or Settings. */
+export function saveCurrentProfile(input: {
+  displayName: unknown;
+  locale: unknown;
+}) {
+  return saveProfile(
+    {
+      async eligibleCaller() {
+        const { gate } = await getCurrentAuthAccess();
+        if (gate !== "READY" && gate !== "PROFILE_REQUIRED") return null;
+        return (await requireVerifiedIdentity()).userId;
+      },
+      async save(caller, profile) {
+        const client = await createServerSupabaseClient();
+        const { data, error } = await client
+          .from("profiles")
+          .update({
+            display_name: profile.displayName,
+            preferred_language: profile.language,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("user_id", caller)
+          .select("user_id")
+          .single();
+        if (error || !data) throw new Error("Profile could not be saved.");
+      },
+    },
+    input,
+  );
+}
+
 export function saveCurrentAcademicSettings(input: unknown) {
   return saveAcademicSettings(
     {

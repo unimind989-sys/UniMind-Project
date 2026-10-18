@@ -37,8 +37,11 @@ writeFileSync(
 writeFileSync(
   `${directory}/accounts.csv`,
   "email,password,role\n" +
-    ["student", "leader", "admin", "second-admin"]
-      .map((role) => `${role}@example.invalid,Synthetic-study-2026!,${role}`)
+    ["student", "new-student", "leader", "admin", "second-admin"]
+      .map(
+        (account) =>
+          `${account}@example.invalid,Synthetic-study-2026!,${account === "new-student" ? "student" : account}`,
+      )
       .join("\n") +
     "\n",
 );

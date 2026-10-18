@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { CollectionFlow } from "../../_components/collection-flow";
 import { initialCollectionActionState } from "../../collection-actions";
 import { resolveCollectionCampaign } from "@/lib/collection/collection.application";
+import { requireReadyAccess } from "@/lib/auth/access-route.server";
 import { supabaseCollectionRepository } from "@/lib/collection/collection.supabase.server";
 import { resolveLocale } from "@/lib/i18n/locale";
 
@@ -34,6 +35,10 @@ export default async function CollectionCampaignPage({
   const [{ campaignId }, query] = await Promise.all([params, searchParams]);
   const localeValue = Array.isArray(query.lang) ? query.lang[0] : query.lang;
   const locale = resolveLocale(localeValue);
+  await requireReadyAccess({
+    locale,
+    next: `/batch-leader/campaigns/${campaignId}`,
+  });
   let campaign;
   try {
     campaign = await resolveCollectionCampaign(

@@ -27,11 +27,11 @@ export function createSupabaseAuthAccessRepository(): AuthAccessRepository {
       return identity?.userId ?? null;
     },
 
-    async getAccountStatus(userId) {
+    async getAccountState(userId) {
       const client = await createServerSupabaseClient();
       const { data, error } = await client
         .from("profiles")
-        .select("account_status")
+        .select("account_status, display_name")
         .eq("user_id", userId)
         .maybeSingle();
 
@@ -40,7 +40,7 @@ export function createSupabaseAuthAccessRepository(): AuthAccessRepository {
       if (!isAccountStatus(data.account_status)) {
         throw new AuthAccessDataError("profile");
       }
-      return data.account_status;
+      return { status: data.account_status, displayName: data.display_name };
     },
 
     async getCurrentTerms() {

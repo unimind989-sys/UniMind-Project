@@ -49,6 +49,7 @@ const authScreens = new Set([
   "register",
   "verify-email",
   "consent",
+  "welcome",
   "forgot-password",
   "reset-password",
 ]);
@@ -102,6 +103,17 @@ export function useSyntheticScreen({ screen, locale, fixture }: ScreenProps) {
       screen !== "consent"
     )
       router.replace(`/consent?lang=${locale}` as Route);
+    // The real gate order: verification, consent, then the profile step.
+    else if (
+      !auth &&
+      state.role &&
+      state.verified &&
+      state.consent &&
+      !state.displayName?.trim()
+    )
+      router.replace(
+        `/welcome?lang=${locale}&next=${encodeURIComponent(pathname + (query.size ? "?" + query.toString() : ""))}` as Route,
+      );
     if (loading) {
       const timer = setTimeout(() => setLoading(false), 1200);
       return () => clearTimeout(timer);
@@ -116,6 +128,7 @@ export function useSyntheticScreen({ screen, locale, fixture }: ScreenProps) {
     router,
     screen,
     state.consent,
+    state.displayName,
     state.role,
     state.verified,
   ]);
@@ -125,6 +138,7 @@ export function useSyntheticScreen({ screen, locale, fixture }: ScreenProps) {
       update(() => ({
         ...state,
         role: null,
+        accountEmail: null,
         displayName: null,
         studyLanguage: null,
         evidenceHintSeen: false,
@@ -146,6 +160,7 @@ export function useSyntheticScreen({ screen, locale, fixture }: ScreenProps) {
     update((current) => ({
       ...current,
       role: null,
+      accountEmail: null,
       displayName: null,
       studyLanguage: null,
       evidenceHintSeen: false,
@@ -196,7 +211,12 @@ export function DemoBoundary({ screen }: { screen: SyntheticScreen }) {
 
 /** A signed-out, unverified or unconsented account is being redirected. */
 export function accessPending({ state }: SyntheticScreen) {
-  return !state.role || !state.verified || !state.consent;
+  return (
+    !state.role ||
+    !state.verified ||
+    !state.consent ||
+    !state.displayName?.trim()
+  );
 }
 
 /** Shown while the access redirect for the current account is pending. */

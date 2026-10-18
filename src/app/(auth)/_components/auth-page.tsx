@@ -2,9 +2,12 @@ import { AuthForm, type AuthFormMode, type AuthNotice } from "./auth-form";
 import { AuthShell } from "./auth-shell";
 
 import type { CurrentTerms } from "@/lib/auth/auth-access.application";
+import { logoutAction } from "../actions";
+import { Button } from "@/app/_components/product-ui";
 import { validatedInternalReturnPath } from "@/lib/auth/auth-actions.application";
 import { resolveLocale, type Locale } from "@/lib/i18n/locale";
 import { getCurrentAuthAccess } from "@/lib/auth/auth-access.supabase.server";
+import { accessDestination } from "@/lib/auth/auth-actions.application";
 import { currentRoleHome } from "@/lib/account/account.supabase.server";
 import { redirect } from "next/navigation";
 import type { Route } from "next";
@@ -77,10 +80,14 @@ export async function AuthPage({
   let destination: string | null = null;
   if (["login", "register", "verify"].includes(mode)) {
     try {
-      if ((await getCurrentAuthAccess()).gate === "READY")
+      const { gate } = await getCurrentAuthAccess();
+      if (gate === "READY")
         destination = ["/", "/learn"].includes(returnPath)
           ? await currentRoleHome()
           : returnPath;
+      // A signed-in caller who still owes a profile finishes it first.
+      else if (gate === "PROFILE_REQUIRED")
+        destination = accessDestination(gate, { locale, next: returnPath });
     } catch {
       /* The form retains its safe unavailable behavior. */
     }
@@ -114,6 +121,16 @@ export async function AuthPage({
         returnPath={returnPath}
         notice={notice}
         currentTerms={currentTerms}
+        secondaryAction={
+          mode === "consent" ? (
+            // A signed-in caller who does not accept can still leave.
+            <form action={logoutAction}>
+              <Button variant="quiet" type="submit">
+                {locale === "ar" ? "تسجيل الخروج" : "Sign out"}
+              </Button>
+            </form>
+          ) : undefined
+        }
       />
     </AuthShell>
   );

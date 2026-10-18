@@ -12,6 +12,7 @@ import {
   acceptCurrentAuthConsent,
 } from "@/lib/auth/auth-access.supabase.server";
 import { getAuthApplication } from "@/lib/auth/supabase-auth.server";
+import { accessDestination } from "@/lib/auth/auth-actions.application";
 import { resolveLocale } from "@/lib/i18n/locale";
 import { currentRoleHome } from "@/lib/account/account.supabase.server";
 
@@ -59,17 +60,18 @@ async function redirectAfterAuthentication(
     address.searchParams.set("lang", resolveLocale(localeValue));
     redirect(trustedRoute(address.pathname + address.search + address.hash));
   }
-  if (access.gate === "CONSENT_REQUIRED") {
-    redirect(authPath("/consent", localeValue, { next: returnPath }));
-  }
-  if (access.gate === "VERIFY_EMAIL") {
-    redirect(authPath("/verify-email", localeValue, { next: returnPath }));
-  }
-  if (access.gate === "SUSPENDED" || access.gate === "DISABLED") {
+  if (
+    access.gate === "CONSENT_REQUIRED" ||
+    access.gate === "VERIFY_EMAIL" ||
+    access.gate === "PROFILE_REQUIRED" ||
+    access.gate === "SUSPENDED" ||
+    access.gate === "DISABLED"
+  ) {
     redirect(
-      authPath("/login", localeValue, {
-        status: access.gate.toLowerCase(),
-      }),
+      accessDestination(access.gate, {
+        locale: resolveLocale(localeValue),
+        next: returnPath,
+      }) as Route,
     );
   }
 
@@ -158,7 +160,7 @@ export async function acceptConsentAction(
   } catch {
     return { status: "UNAVAILABLE", returnPath: "/learn" };
   }
-  if (access.gate === "READY") {
+  if (access.gate === "READY" || access.gate === "PROFILE_REQUIRED") {
     return redirectAfterAuthentication(
       validatedInternalReturnPath(value(formData, "returnPath")),
       value(formData, "locale"),

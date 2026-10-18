@@ -1,6 +1,4 @@
-import { redirect } from "next/navigation";
-import type { Route } from "next";
-import { getCurrentAuthAccess } from "@/lib/auth/auth-access.supabase.server";
+import { requireReadyAccess } from "@/lib/auth/access-route.server";
 import {
   loadCurrentAccount,
   loadCurrentStudyResume,
@@ -16,7 +14,8 @@ import {
 } from "@/app/_components/account-settings";
 import { Button } from "@/app/_components/product-ui";
 import { logoutAction } from "@/app/(auth)/actions";
-import { saveAcademicAction } from "./actions";
+import { Notice } from "@/app/_components/notice";
+import { saveAcademicAction, saveProfileAction } from "./actions";
 
 export default async function SettingsPage({
   searchParams,
@@ -26,11 +25,7 @@ export default async function SettingsPage({
   const query = await searchParams;
   const locale = resolveLocale(query.lang);
   const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
-  const access = await getCurrentAuthAccess();
-  if (access.gate !== "READY")
-    redirect(
-      `/${access.gate === "CONSENT_REQUIRED" ? "consent" : access.gate === "VERIFY_EMAIL" ? "verify-email" : "login"}?lang=${locale}&next=%2Fsettings` as Route,
-    );
+  await requireReadyAccess({ locale, next: "/settings" });
   const account = await loadCurrentAccount();
   const role =
     account.home === "/admin"
@@ -38,7 +33,16 @@ export default async function SettingsPage({
       : account.home === "/batch-leader"
         ? "leader"
         : "student";
-  const catalog = role === "student" ? await loadCurrentStudentCatalog() : null;
+  // A catalog failure must not take Settings (and its sign-out) down with it.
+  let catalogFailed = false;
+  let catalog: Awaited<ReturnType<typeof loadCurrentStudentCatalog>> | null =
+    null;
+  if (role === "student")
+    try {
+      catalog = await loadCurrentStudentCatalog();
+    } catch {
+      catalogFailed = true;
+    }
   const saved = catalog
     ? authorizedAcademicContext(account.academicContext, catalog.rows)
     : null;
@@ -73,6 +77,14 @@ export default async function SettingsPage({
       profileName={account.displayName}
     >
       <h1>{title}</h1>
+      {catalogFailed ? (
+        <Notice tone="error" locale={locale}>
+          {t(
+            "Your academic settings could not be loaded. The other settings still work; try again later.",
+            "تعذّر تحميل إعداداتك الدراسية. باقي الإعدادات تعمل؛ حاول مرة أخرى لاحقًا.",
+          )}
+        </Notice>
+      ) : null}
       <AccountSettings
         locale={locale}
         name={account.displayName}
@@ -96,6 +108,12 @@ export default async function SettingsPage({
             : null
         }
         privacy={null}
+        profile={{
+          email: account.email,
+          displayName: account.displayName,
+          accountLanguage: account.language,
+          save: saveProfileAction,
+        }}
       />
     </AppShell>
   );

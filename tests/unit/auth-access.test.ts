@@ -5,6 +5,7 @@ import {
   readAuthAccess,
   type AuthAccessRepository,
 } from "../../src/lib/auth/auth-access.application";
+import type { AccountStatus } from "../../src/lib/auth/auth-flow.domain";
 
 const currentTerms = {
   id: "12000000-0000-0000-0000-000000000001",
@@ -17,7 +18,10 @@ const userId = "10000000-0000-0000-0000-000000000002";
 function createRepository() {
   return {
     getVerifiedUserId: vi.fn().mockResolvedValue(userId),
-    getAccountStatus: vi.fn().mockResolvedValue("ACTIVE" as const),
+    getAccountState: vi.fn().mockResolvedValue({
+      status: "ACTIVE" as AccountStatus,
+      displayName: "Samir Hassan",
+    }),
     getCurrentTerms: vi.fn().mockResolvedValue(currentTerms),
     hasAcceptedTerms: vi.fn().mockResolvedValue(true),
     acceptCurrentTerms: vi.fn().mockResolvedValue(undefined),
@@ -37,14 +41,17 @@ describe("authoritative auth access", () => {
       gate: "SIGN_IN",
       currentTerms: null,
     });
-    expect(repository.getAccountStatus).not.toHaveBeenCalled();
+    expect(repository.getAccountState).not.toHaveBeenCalled();
     expect(repository.getCurrentTerms).not.toHaveBeenCalled();
   });
 
   it.each(["SUSPENDED", "DISABLED"] as const)(
     "denies a %s profile without exposing terms state",
     async (accountStatus) => {
-      repository.getAccountStatus.mockResolvedValue(accountStatus);
+      repository.getAccountState.mockResolvedValue({
+        status: accountStatus,
+        displayName: "",
+      });
       await expect(readAuthAccess(repository)).resolves.toEqual({
         gate: accountStatus,
         currentTerms: null,
@@ -86,12 +93,45 @@ describe("authoritative auth access", () => {
   });
 
   it("routes a pending profile to verification without exposing consent state", async () => {
-    repository.getAccountStatus.mockResolvedValue("PENDING");
+    repository.getAccountState.mockResolvedValue({
+      status: "PENDING",
+      displayName: "",
+    });
     await expect(readAuthAccess(repository)).resolves.toEqual({
       gate: "VERIFY_EMAIL",
       currentTerms: null,
     });
     expect(repository.getCurrentTerms).not.toHaveBeenCalled();
     expect(repository.hasAcceptedTerms).not.toHaveBeenCalled();
+  });
+
+  it("asks a consenting active caller without a name for its profile, after consent", async () => {
+    repository.getAccountState.mockResolvedValue({
+      status: "ACTIVE",
+      displayName: "   ",
+    });
+    await expect(readAuthAccess(repository)).resolves.toEqual({
+      gate: "PROFILE_REQUIRED",
+      currentTerms,
+    });
+    repository.hasAcceptedTerms.mockResolvedValue(false);
+    await expect(readAuthAccess(repository)).resolves.toMatchObject({
+      gate: "CONSENT_REQUIRED",
+    });
+  });
+
+  it("returns the profile gate after accepting consent when the name is missing", async () => {
+    repository.getAccountState.mockResolvedValue({
+      status: "ACTIVE",
+      displayName: "",
+    });
+    repository.hasAcceptedTerms
+      .mockResolvedValueOnce(false)
+      .mockResolvedValueOnce(true);
+    await expect(acceptCurrentConsent(repository)).resolves.toEqual({
+      gate: "PROFILE_REQUIRED",
+      currentTerms,
+    });
+    expect(repository.acceptCurrentTerms).toHaveBeenCalledOnce();
   });
 });

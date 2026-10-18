@@ -17,12 +17,15 @@ import {
 } from "@/lib/auth/auth-actions.application";
 import { useProductServices } from "./product-services";
 import { Notice } from "./notice";
-import { ProductLink } from "./product-ui";
+import { Button, ProductLink } from "./product-ui";
 import type { Locale } from "@/lib/demo/synthetic-fixtures.application";
 import { syntheticCampaignId } from "@/lib/demo/synthetic-campaigns.application";
-import { useHostedSynthetic } from "./product-navigation";
 import {
-  syntheticAccounts as accounts,
+  useHostedSynthetic,
+  useSyntheticNavigation,
+} from "./product-navigation";
+import {
+  syntheticAccountFor,
   syntheticPassword,
 } from "@/lib/demo/synthetic-account.application";
 
@@ -50,6 +53,7 @@ export function ProductAuth({
 }) {
   const { state, update } = useProductServices();
   const hosted = useHostedSynthetic();
+  const synthetic = useSyntheticNavigation();
   const router = useProductRouter();
   const query = useSearchParams();
   const notice: AuthNotice | undefined =
@@ -119,7 +123,8 @@ export function ProductAuth({
     const rawEmail = String(data.get("email") ?? "")
       .toLowerCase()
       .trim();
-    const role = accounts[rawEmail];
+    const account = syntheticAccountFor(rawEmail);
+    const role = account?.role;
     const allowed =
       role !== undefined && data.get("password") === syntheticPassword;
     const result = (valid: boolean) => ({
@@ -207,6 +212,10 @@ export function ProductAuth({
       update((current) => ({
         ...current,
         role: role!,
+        accountEmail: rawEmail,
+        // A loopback re-sign-in is a returning user: it keeps the name saved
+        // in this document; otherwise the account's own starting profile.
+        displayName: current.profiles[rawEmail] ?? account!.displayName,
         verified,
         account: verified ? "SIGNED_IN" : "UNVERIFIED",
         consent: fixture === "outdated-consent" ? false : current.consent,
@@ -221,9 +230,17 @@ export function ProductAuth({
       );
     } else if (response.status === "CHECK_EMAIL") {
       if (mode === "register") {
+        // A new registration has no profile yet, whichever demo email it used.
         update((current) => ({
           ...current,
           role: "student",
+          accountEmail: rawEmail,
+          displayName: null,
+          profiles: Object.fromEntries(
+            Object.entries(current.profiles).filter(
+              ([email]) => email !== rawEmail,
+            ),
+          ),
           verified: false,
           account: "UNVERIFIED",
         }));
@@ -282,11 +299,33 @@ export function ProductAuth({
           initialEmail={
             hosted
               ? undefined
-              : email && accounts[email]
+              : email && syntheticAccountFor(email)
                 ? email
                 : "student@example.invalid"
           }
           initialPassword={hosted ? undefined : syntheticPassword}
+          secondaryAction={
+            mode === "consent" ? (
+              <Button
+                variant="quiet"
+                onClick={() => {
+                  if (hosted && synthetic) return synthetic.leave(locale);
+                  update((current) => ({
+                    ...current,
+                    role: null,
+                    accountEmail: null,
+                    displayName: null,
+                    consent: false,
+                    account: "NEW",
+                    returnPath: null,
+                  }));
+                  go("/login?status=signed_out");
+                }}
+              >
+                {t("Sign out", "تسجيل الخروج")}
+              </Button>
+            ) : undefined
+          }
         />
       )}
     </AuthShell>

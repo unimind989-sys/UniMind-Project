@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 
+import { requireReadyAccess } from "@/lib/auth/access-route.server";
 import { supabaseCollectionRepository } from "@/lib/collection/collection.supabase.server";
 import { resolveLocale } from "@/lib/i18n/locale";
 import { LeaderHome } from "./_components/leader-home";
@@ -33,12 +34,14 @@ export default async function BatchLeaderPage({
   const query = await searchParams;
   const localeValue = Array.isArray(query.lang) ? query.lang[0] : query.lang;
   const locale = resolveLocale(localeValue);
+  const next =
+    query.view === "history" ? "/batch-leader?view=history" : "/batch-leader";
+  // Verification, consent, suspension and profile apply before assignments.
+  await requireReadyAccess({ locale, next });
   let campaigns;
   try {
     campaigns = await supabaseCollectionRepository.listActiveCampaigns();
   } catch {
-    const next =
-      query.view === "history" ? "/batch-leader?view=history" : "/batch-leader";
     redirect(`/login?lang=${locale}&next=${encodeURIComponent(next)}`);
   }
   return (

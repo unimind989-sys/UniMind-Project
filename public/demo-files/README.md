@@ -70,11 +70,16 @@ These files are invented byte fixtures: a one-page synthetic PDF, silent audio a
 | Account                        | Password                | Journey                                                   |
 | ------------------------------ | ----------------------- | --------------------------------------------------------- |
 | `student@example.invalid`      | `Synthetic-study-2026!` | Study Shelf, all study screens and Settings               |
+| `new-student@example.invalid`  | `Synthetic-study-2026!` | A brand-new account: profile step, then academic setup    |
 | `leader@example.invalid`       | `Synthetic-study-2026!` | Assigned campaign, invitation and source submission       |
 | `admin@example.invalid`        | `Synthetic-study-2026!` | Admin resources, first founder simulation and containment |
 | `second-admin@example.invalid` | `Synthetic-study-2026!` | Distinct second founder simulation                        |
 
-Ready accounts begin verified, with current commitments awaiting acceptance. The local review launcher prefills the student fixture; its sign-out/sign-in preserves shared review records for two-account governance examples. Hosted login starts empty and hosted sign-out discards all synthetic records. Enter any of the four pairs above to select its role. Other credentials use real Auth on the live site; the local launcher rejects unknown credentials. Use no real details in the review launcher.
+Ready accounts begin verified, with current commitments awaiting acceptance. The local review launcher prefills the student fixture; its sign-out/sign-in preserves shared review records for two-account governance examples. Hosted login starts empty and hosted sign-out discards all synthetic records. Enter any of the five pairs above to select its role. Other credentials use real Auth on the live site; the local launcher rejects unknown credentials. Use no real details in the review launcher.
+
+### New account
+
+Sign in with `new-student@example.invalid`. After the commitments, UniMind asks for a full name, the interface language and the appearance (the first-run profile step, `/welcome`), then for the academic path, exactly as a newly registered real account. Nothing pre-fills the name. Registering any demo email through **Create an account** follows the same path. In the local launcher, signing out and back in with the same account in the same document skips the step, as a returning account does; the hosted demo discards everything on sign-out, so every hosted sign-in with this pair starts new. Settings → Profile edits the name and language later.
 
 ## 1. Access, verification and recovery
 

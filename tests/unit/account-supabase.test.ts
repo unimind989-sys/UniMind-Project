@@ -32,6 +32,7 @@ import {
   currentRoleHome,
   loadCurrentAccount,
   saveCurrentAcademicSettings,
+  saveCurrentProfile,
   loadCurrentStudyResume,
 } from "../../src/lib/account/account.supabase.server";
 
@@ -77,8 +78,12 @@ const caller = ["eq", "user_id", "verified-caller"];
  */
 let results: Record<string, Result>;
 let queries: RecordedQuery[];
+let claimEmail: unknown = "samir@example.invalid";
 function fakeClient() {
   return {
+    auth: {
+      getClaims: async () => ({ data: { claims: { email: claimEmail } } }),
+    },
     from(table: string) {
       const query: RecordedQuery = { table, filters: [] };
       queries.push(query);
@@ -187,11 +192,16 @@ describe("account Supabase trust seams", () => {
   it("reads the caller's profile and current unrevoked roles, including persisted settings", async () => {
     expect(await loadCurrentAccount()).toEqual({
       displayName: "Sample Student",
+      email: "samir@example.invalid",
+      language: null,
       locale: "en",
       academicContext: context,
       home: "/learn",
     });
     expect(queriesOf("profiles")).toHaveLength(1);
+    claimEmail = { forged: true };
+    expect((await loadCurrentAccount()).email).toBeNull();
+    claimEmail = "samir@example.invalid";
     expect(queriesOf("profiles")[0]!.filters).toContainEqual(caller);
     expect(queriesOf("user_roles")[0]!.filters).toEqual(
       expect.arrayContaining([caller, ["is", "revoked_at", null]]),
@@ -238,6 +248,42 @@ describe("account Supabase trust seams", () => {
     });
     expect(mocks.client).not.toHaveBeenCalled();
     expect(mocks.catalog).not.toHaveBeenCalled();
+  });
+  it("writes only the caller's own name and account language", async () => {
+    expect(
+      await saveCurrentProfile({ displayName: " Samir  Hassan", locale: "ar" }),
+    ).toEqual({ status: "SAVED", displayName: "Samir Hassan", locale: "ar" });
+    const [write] = queriesOf("profiles");
+    expect(write!.filters).toContainEqual(caller);
+    expect(write!.update).toEqual({
+      display_name: "Samir Hassan",
+      preferred_language: "AR_EG",
+      updated_at: expect.any(String),
+    });
+  });
+  it("lets a caller who still owes a profile save it, and nobody earlier", async () => {
+    mocks.access.mockResolvedValue({ gate: "PROFILE_REQUIRED" });
+    expect(
+      await saveCurrentProfile({ displayName: "Samir", locale: "en" }),
+    ).toMatchObject({ status: "SAVED" });
+    for (const gate of ["SIGN_IN", "CONSENT_REQUIRED", "SUSPENDED"]) {
+      vi.clearAllMocks();
+      mocks.client.mockImplementation(async () => fakeClient());
+      mocks.access.mockResolvedValue({ gate });
+      expect(
+        await saveCurrentProfile({ displayName: "Samir", locale: "en" }),
+      ).toEqual({ status: "FORBIDDEN" });
+      expect(mocks.client).not.toHaveBeenCalled();
+    }
+  });
+  it("a profile write rejected by the database never reports success", async () => {
+    results.profiles = { data: null, error: { message: "PRIVATE_DIAGNOSTIC" } };
+    const outcome = await saveCurrentProfile({
+      displayName: "Samir",
+      locale: "en",
+    });
+    expect(outcome).toEqual({ status: "UNAVAILABLE" });
+    expect(JSON.stringify(outcome)).not.toContain("PRIVATE_DIAGNOSTIC");
   });
   it("a revoked catalog path cannot write stale saved hints", async () => {
     mocks.catalog.mockResolvedValue({ rows: [] });

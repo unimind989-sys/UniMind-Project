@@ -1,7 +1,7 @@
 import type { Metadata, Route } from "next";
 import { notFound, redirect } from "next/navigation";
 
-import { getCurrentAuthAccess } from "@/lib/auth/auth-access.supabase.server";
+import { requireReadyAccess } from "@/lib/auth/access-route.server";
 import { requireVerifiedIdentity } from "@/lib/auth/verified-identity.server";
 import { loadVerifiedAdminActionQueue } from "@/lib/admin/admin-actions.supabase.server";
 import { getAdminCopy } from "@/lib/i18n/admin-copy";
@@ -38,17 +38,7 @@ export default async function AdminResourcePage({
     ? parameters.lang[0]
     : parameters.lang;
   const locale = resolveLocale(requestedLocale);
-  let access: Awaited<ReturnType<typeof getCurrentAuthAccess>>;
-  try {
-    access = await getCurrentAuthAccess();
-  } catch {
-    redirect(
-      `/login?lang=${locale}&status=unavailable&next=%2Fadmin%2F${resource}` as Route,
-    );
-  }
-  if (access.gate !== "READY") {
-    redirect(`/login?lang=${locale}&next=%2Fadmin%2F${resource}` as Route);
-  }
+  await requireReadyAccess({ locale, next: `/admin/${resource}` });
 
   try {
     await requireVerifiedIdentity();

@@ -440,17 +440,24 @@
     grid-template-columns: 1fr;
     gap: 16px;
   }
+  /* One row of sections that scrolls sideways on phones: five sections
+     never cost more than one 52px row before the settings themselves. */
   .sectionNav {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    display: flex;
     gap: 4px;
     position: static;
     padding: 4px;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
   }
   .sectionNav button {
-    padding: 8px 10px;
+    flex: 0 0 auto;
+    width: auto;
+    padding: 8px 12px;
     font-size: 0.875rem;
-    /* A label that wraps on narrow phones still keeps the two rows compact. */
     line-height: 1.25;
+    white-space: nowrap;
   }
   .settingsBody .section {
     padding: 20px 18px 22px;
@@ -461,7 +468,13 @@
    supported layout; 544px at 200%). */
 @container (max-width: 17rem) {
   .sectionNav {
+    display: grid;
     grid-template-columns: minmax(0, 1fr);
+    overflow-x: visible;
+  }
+  .sectionNav button {
+    width: 100%;
+    white-space: normal;
   }
 }
 .settingsBody > [hidden] {
