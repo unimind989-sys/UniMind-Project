@@ -9,14 +9,38 @@ import { syntheticDemoTime } from "@/lib/demo/synthetic-clock.application";
 import { localizedHref, type Locale } from "@/lib/i18n/locale";
 import { useProductProfileName } from "./product-profile";
 import { Brand } from "./brand";
+import { Disclosure, type DisclosureHandle } from "./disclosure";
 import { FrontendIcon, type FrontendIconName } from "./frontend-controls";
 import { LanguageSwitch } from "./language-switch";
 import styles from "./app-shell.module.css";
+
+/** A focused field that raises a phone's on-screen keyboard. */
+function isTextField(element: Element | null) {
+  if (element instanceof HTMLTextAreaElement) return true;
+  if (element instanceof HTMLInputElement)
+    return ![
+      "button",
+      "checkbox",
+      "color",
+      "file",
+      "hidden",
+      "image",
+      "radio",
+      "range",
+      "reset",
+      "submit",
+    ].includes(element.type);
+  return element instanceof HTMLElement && element.isContentEditable;
+}
+
+/** A shrink larger than this, while a field has focus, is a keyboard. */
+const keyboardShrink = 120;
 
 export function AppShell({
   locale,
   role = "student",
   children,
+  band,
   synthetic = false,
   title,
   roleLabel,
@@ -26,6 +50,8 @@ export function AppShell({
   locale: Locale;
   role?: "student" | "leader" | "admin";
   children: ReactNode;
+  /** A full-width Night band above the padded content (DESIGN "band"). */
+  band?: ReactNode;
   synthetic?: boolean;
   title?: string;
   roleLabel?: string | undefined;
@@ -68,20 +94,48 @@ export function AppShell({
           : "Student",
       role === "leader" ? "مسؤول الدفعة" : role === "admin" ? "مسؤول" : "طالب",
     );
-  const menu = useRef<HTMLDetailsElement>(null);
+  const menu = useRef<DisclosureHandle>(null);
   const workspaceRoot = useRef<HTMLDivElement>(null);
+  /*
+   * The unit workspace measures its chrome once per frame and picks a flow:
+   * `pane` docks Chat's composer and scrolls only the conversation; `page`
+   * scrolls the document. Phones scroll the document for every tool except
+   * Chat, and for Chat only when the docked layout would leave under 160px to
+   * read. A phone keyboard (a focused field and a viewport at least 120px
+   * shorter than before it had focus) sets `data-keyboard` instead of
+   * changing the flow, so the composer stays docked above the keyboard.
+   */
   useLayoutEffect(() => {
     const root = workspaceRoot.current;
     if (!workspace || !root) return;
     let frame = 0;
     let previousChrome: number | null = null;
     let previousHeight: number | null = null;
+    let restingHeight: number | null = null;
     const measure = () => {
       frame = 0;
+      const phone = window.innerWidth < 768;
       const height = Math.min(
         window.innerHeight,
         window.visualViewport?.height ?? window.innerHeight,
       );
+      const focused = document.activeElement;
+      const typing =
+        phone &&
+        focused instanceof HTMLElement &&
+        root.contains(focused) &&
+        isTextField(focused);
+      if (!typing || restingHeight === null || height > restingHeight)
+        restingHeight = height;
+      const keyboard = typing && restingHeight - height > keyboardShrink;
+      if (keyboard) {
+        root.dataset.keyboard = "open";
+        // iOS resizes only the visual viewport: size the shell to it.
+        root.style.setProperty("--workspace-height", `${height}px`);
+      } else {
+        delete root.dataset.keyboard;
+        root.style.removeProperty("--workspace-height");
+      }
       const chrome = Array.from(
         root.querySelectorAll<HTMLElement>("[data-workspace-chrome]"),
       ).reduce((total, element) => {
@@ -98,24 +152,29 @@ export function AppShell({
       const navigation = root.querySelector<HTMLElement>(
         `nav.${styles.globalNav}`,
       );
-      const navigationHeight = navigation?.getBoundingClientRect().height ?? 64;
-      root.dataset.workspaceFlow =
-        window.innerWidth < 768 && height - chrome - navigationHeight < 160
+      const navigationHeight = navigation?.getBoundingClientRect().height ?? 0;
+      const tool = root
+        .querySelector("[data-study-tool]")
+        ?.getAttribute("data-study-tool");
+      const flowHeight = keyboard ? restingHeight : height;
+      const flow =
+        phone &&
+        (tool !== "chat" || flowHeight - chrome - navigationHeight < 160)
           ? "page"
           : "pane";
-      const focused = document.activeElement;
+      root.dataset.workspaceFlow = flow;
       if (
         previousChrome !== null &&
         previousHeight !== null &&
         (Math.abs(previousChrome - chrome) > 1 ||
           Math.abs(previousHeight - height) > 1) &&
-        window.innerWidth < 768 &&
+        phone &&
         focused instanceof HTMLElement &&
         root.contains(focused) &&
         focused.matches("input,textarea,select,button,a")
       ) {
         focused.scrollIntoView({
-          block: "center",
+          block: flow === "page" ? "center" : "nearest",
           inline: "nearest",
           behavior: "instant",
         });
@@ -135,9 +194,16 @@ export function AppShell({
       schedule();
     };
     const content = new MutationObserver(observe);
-    content.observe(root, { childList: true, subtree: true });
+    content.observe(root, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["data-study-tool"],
+    });
     window.addEventListener("resize", schedule);
     window.visualViewport?.addEventListener("resize", schedule);
+    root.addEventListener("focusin", schedule);
+    root.addEventListener("focusout", schedule);
     observe();
     measure();
     return () => {
@@ -145,6 +211,8 @@ export function AppShell({
       content.disconnect();
       window.removeEventListener("resize", schedule);
       window.visualViewport?.removeEventListener("resize", schedule);
+      root.removeEventListener("focusin", schedule);
+      root.removeEventListener("focusout", schedule);
       cancelAnimationFrame(frame);
     };
   }, [workspace]);
@@ -173,11 +241,8 @@ export function AppShell({
       : role === "leader"
         ? [
             ["/batch-leader", t("Source intake", "استلام المصادر"), "upload"],
-            [
-              "/batch-leader?view=history",
-              t("Latest submissions", "آخر الإرسالات"),
-              "sources",
-            ],
+            // DESIGN IA: "History" (the page itself is "Latest submissions").
+            ["/batch-leader?view=history", t("History", "السجل"), "sources"],
             ["/settings", t("Account", "الحساب"), "settings"],
           ]
         : [
@@ -220,9 +285,7 @@ export function AppShell({
             ? profileDestinationId
             : undefined
         }
-        onClick={() => {
-          if (menu.current) menu.current.open = false;
-        }}
+        onClick={() => menu.current?.close()}
       >
         {role === "student" && href === "/settings" ? (
           <>
@@ -268,6 +331,32 @@ export function AppShell({
         <div className={styles.compactBrand}>
           <Brand href={homeHref} variant="compact" tone="dark" />
         </div>
+        {role === "admin" ? (
+          // Below 1200px the five destinations sit behind one labelled menu
+          // in the bar itself (DESIGN: "a labelled compact menu").
+          <Disclosure
+            ref={menu}
+            className={styles.adminMenu}
+            summary={t("Menu", "القائمة")}
+          >
+            <div className={styles.adminMenuPanel}>
+              <nav
+                className={styles.globalNav}
+                aria-label={t("Admin navigation", "تنقل الإدارة")}
+              >
+                {navigation}
+              </nav>
+              <Link
+                className={styles.adminMenuAccount}
+                href={localizedHref("/settings", locale) as Route}
+                prefetch={false}
+                onClick={() => menu.current?.close()}
+              >
+                {t("Account", "الحساب")}
+              </Link>
+            </div>
+          </Disclosure>
+        ) : null}
         <nav
           className={styles.globalNav}
           aria-label={t("Product navigation", "تنقل المنتج")}
@@ -294,39 +383,6 @@ export function AppShell({
         </div>
       </header>
       <div className={styles.stage}>
-        {role === "admin" ? (
-          <div
-            className={styles.adminMenuRow}
-            role="navigation"
-            aria-label={t("Admin controls", "أدوات الإدارة")}
-          >
-            <details
-              ref={menu}
-              className={styles.adminMenu}
-              onKeyDown={(event) => {
-                if (event.key === "Escape" && event.currentTarget.open) {
-                  event.currentTarget.open = false;
-                  event.currentTarget.querySelector("summary")?.focus();
-                  event.stopPropagation();
-                }
-              }}
-            >
-              <summary>{t("Menu", "القائمة")}</summary>
-              <nav
-                className={styles.globalNav}
-                aria-label={t("Admin navigation", "تنقل الإدارة")}
-              >
-                {navigation}
-              </nav>
-            </details>
-            <Link
-              href={localizedHref("/settings", locale) as Route}
-              prefetch={false}
-            >
-              {t("Account", "الحساب")}
-            </Link>
-          </div>
-        ) : null}
         {synthetic && !hosted ? (
           <p className={styles.simulation} role="note" data-workspace-chrome>
             {t(
@@ -341,11 +397,19 @@ export function AppShell({
         <main
           id="app-content"
           className={styles.content}
+          data-band={band ? "" : undefined}
           tabIndex={-1}
           lang={locale}
           dir={locale === "ar" ? "rtl" : "ltr"}
         >
-          {children}
+          {band ? (
+            <>
+              {band}
+              <div className={styles.body}>{children}</div>
+            </>
+          ) : (
+            children
+          )}
         </main>
       </div>
     </div>

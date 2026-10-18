@@ -42,6 +42,7 @@ export function ProductSourceDialog({
       open={open}
       title={title}
       closeLabel={t("Close", "إغلاق")}
+      presentation="sheet"
       onClose={onClose}
     >
       {open ? (

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Manrope, Noto_Sans_Arabic } from "next/font/google";
 import type { ReactNode } from "react";
 
@@ -27,6 +27,15 @@ export function generateMetadata(): Metadata {
     },
   };
 }
+
+// `resizes-content` lets a phone keyboard shrink the layout viewport, so the
+// docked Chat composer stays above it (Android Chrome and Firefox; iOS still
+// resizes only the visual viewport, which the shell measures). No zoom limits.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  interactiveWidget: "resizes-content",
+};
 
 const latinFont = Manrope({
   subsets: ["latin"],

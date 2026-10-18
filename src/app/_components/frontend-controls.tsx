@@ -17,7 +17,9 @@ export type FrontendIconName =
   | "account"
   | "upload"
   | "shield"
-  | "arrow";
+  | "arrow"
+  | "chevron"
+  | "globe";
 export type IconSize = 16 | 20 | 24;
 // Icons share one 24-unit grid with a 1.75 stroke (2 for check, send and
 // back) and render at 16, 20 or 24px (DESIGN.md).
@@ -96,6 +98,13 @@ export function FrontendIcon({
       </>
     ),
     arrow: <path d="M4 12h16m-6-6 6 6-6 6" />,
+    chevron: <path d="m6 9 6 6 6-6" />,
+    globe: (
+      <>
+        <circle cx="12" cy="12" r="9" />
+        <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" />
+      </>
+    ),
   };
   return (
     <svg

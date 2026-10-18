@@ -73,3 +73,35 @@
     padding-inline: 20px 8px;
   }
 }
+/* Phone source sheet (DESIGN.md): anchored to the bottom edge, full width,
+   22px top corners, --float-up, safe-area padding; it rises at most 10px in
+   300ms with the shared easing. */
+@media (max-width: 767px) {
+  .dialog[data-presentation="sheet"] {
+    inset-block: auto 0;
+    width: 100%;
+    max-width: 100%;
+    max-height: min(85dvh, calc(100dvh - 48px));
+    margin: 0;
+    padding-block-end: calc(20px + env(safe-area-inset-bottom));
+    border-radius: 22px 22px 0 0;
+    box-shadow: var(--float-up);
+  }
+  .dialog[data-presentation="sheet"][open] {
+    animation: sheet-entry var(--motion-evidence) var(--ease-settle);
+  }
+}
+@keyframes sheet-entry {
+  from {
+    transform: translateY(10px);
+  }
+  to {
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dialog[open],
+  .dialog[data-presentation="sheet"][open] {
+    animation: none;
+  }
+}
