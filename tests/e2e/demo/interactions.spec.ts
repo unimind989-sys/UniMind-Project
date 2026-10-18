@@ -268,6 +268,11 @@ inLocales(["ar"], (locale) => {
       // A valid Arabic-Indic number clears the error while typing.
       await count.fill(formatNumber("ar", 4));
       await expect(error).toHaveCount(0);
+      // Leaving a valid field, then clearing it to type again, stays quiet.
+      await count.blur();
+      await count.fill("");
+      await expect(error).toHaveCount(0);
+      await count.fill(formatNumber("ar", 4));
       // Start validates too: an invalid value keeps the page and focuses it.
       await count.fill(formatNumber("ar", 9));
       await expect(error).toHaveCount(0);

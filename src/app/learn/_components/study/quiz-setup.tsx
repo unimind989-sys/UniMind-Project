@@ -209,8 +209,13 @@ export function QuizSetup({
                 )
                   setChecked((current) => ({ ...current, duration: false }));
               }}
+              // Leaving a field shows its error only if it is wrong now, so
+              // a later edit through an empty value stays quiet until blur.
               onBlur={() =>
-                setChecked((current) => ({ ...current, duration: true }))
+                setChecked((current) => ({
+                  ...current,
+                  duration: configurationErrors.durationMinutes,
+                }))
               }
             />
           </div>
@@ -249,7 +254,10 @@ export function QuizSetup({
                 setChecked((current) => ({ ...current, count: false }));
             }}
             onBlur={() =>
-              setChecked((current) => ({ ...current, count: true }))
+              setChecked((current) => ({
+                ...current,
+                count: configurationErrors.questionCount,
+              }))
             }
           />
         </div>
