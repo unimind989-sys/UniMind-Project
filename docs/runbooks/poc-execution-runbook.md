@@ -1593,6 +1593,15 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 **Pass:** the same tests and gates run; CI wall time and compute per run fall measurably; local verify is faster; required CI green.
 
+#### WP03-T31 — Verify the WP03 refinement end to end and publish the reports
+
+**Dependencies:** WP03-T25 to T30 merged. The WP03 manager brief's final area: integration, final verification and reports ([task record](../../planning/tasks/wp03-t31-final-verification.md)).
+
+- [x] On merged `main`: a full local `corepack pnpm verify` on a quiet machine, green `main` CI, a rendered review of every screen at phone, tablet and desktop sizes in English and Arabic, light and dark, and each new or corrected flow reproduced in the synthetic demo.
+- [x] Publish the [final verification](../reviews/wp03-refinement/final-verification.md) and the after-refinement section of the [CI and testing report](../reviews/wp03-refinement/ci-testing-report.md); ignore the per-machine `.claude/launch.json`; deliver through one PR with required CI. These closure markers become authoritative only when that PR merges with green required CI.
+
+**Pass:** every WP03-T25 to T30 outcome is checked on merged `main` or listed as open with a reason; before and after numbers are recorded; required CI green.
+
 ### 6.1 Routes
 
 Implement at minimum:
