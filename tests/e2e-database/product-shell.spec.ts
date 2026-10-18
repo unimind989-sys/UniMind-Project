@@ -495,7 +495,9 @@ for (const role of roles) {
     if (role === "student") {
       await page.goto("/settings?lang=en");
       // WP03-T29 IX-04: while the sign-out action runs, the button names it
-      // and cannot be pressed again.
+      // and cannot be pressed again. The pending state needs the hydrated
+      // form (a press before hydration posts natively and still signs out).
+      await page.waitForLoadState("networkidle");
       const release = await holdActions(page, "/settings");
       await page.getByRole("button", { name: "Sign out", exact: true }).click();
       await expect(
