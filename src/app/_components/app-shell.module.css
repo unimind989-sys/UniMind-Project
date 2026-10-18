@@ -419,7 +419,18 @@
   font-weight: 650;
   text-decoration: none;
 }
+/* On phones the panel hangs from the bar itself, inside its 16px gutters,
+   so it never runs past either edge (at 320px or with enlarged text). */
 @media (max-width: 767px) {
+  .adminMenu {
+    position: static;
+  }
+  .adminMenuPanel {
+    inset-inline: 16px;
+    width: auto;
+    max-height: calc(100dvh - 76px);
+    overflow: auto;
+  }
   .adminMenuAccount {
     display: flex;
   }
