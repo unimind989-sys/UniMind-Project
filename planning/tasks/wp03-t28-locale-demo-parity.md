@@ -25,10 +25,10 @@
 **Files:** `src/proxy.ts`, new `src/lib/i18n/locale-preference.application.ts`, `src/lib/auth/auth-actions.application.ts`, `src/app/(auth)/{actions.ts,_components/auth-page.tsx,_components/auth-form.tsx}`, `src/app/auth/callback/route.ts`, `src/app/_components/product-auth.tsx`, leader empty state, walkthrough and demo pack, tests.
 
 **Protected paths:** the proxy (runs before the session refresh) and the auth callback and actions.
-- Allowed: a functional HttpOnly `unimind-locale` cookie set from `?lang=` on real-runtime page loads and client navigations (not prefetches) and on profile saves; a 307 that adds the remembered `lang` to a page load without one; `lang` on email links; the account language on a sign-in from a page without a language.
-- Forbidden (proved): any cookie or redirect in the synthetic runtime; any change to session refresh, POST, API, RSC or callback requests; a forged cookie or `lang` value; registration with reserved test domains reaching Auth.
+- Allowed: a functional HttpOnly `unimind-locale` cookie, written when a real-runtime page load or same-origin client navigation names a language other than the remembered one (or English), and on sign-in and profile saves; a 307 that adds the remembered `lang` to a page load without one; an `x-unimind-locale` request header (validated, browser value replaced) for the root layout's `lang` and `dir`; `lang` on email links and the callback; the account language on a sign-in from a device that never chose one.
+- Forbidden (proved by proxy, callback and action tests): any cookie or redirect in the synthetic runtime; any change to session refresh, POST, API or callback handling; a forged cookie, header or `lang` value; registration with reserved test domains reaching Auth.
 
-**Verify:** unit (`locale-preference`, `auth-actions`); main e2e (`auth-flows`: remembered language, reserved domains); demo e2e (`auth.spec` reset and registration); `corepack pnpm verify`; required CI.
+**Verify:** unit (`locale-preference`, `auth-session-proxy`, `synthetic-demo-runtime`, `auth-callback-route`, `auth-entry-routing`, `auth-actions`); main e2e (`auth-flows`); database e2e (new device signs in in the account language); demo e2e (`auth.spec`); `corepack pnpm verify`; required CI.
 
 **Pass:** the behaviours above; the demo and real exits agree or are listed; required CI green.
 
@@ -43,14 +43,20 @@
 - [x] Real registration continues on the verification page; reserved test domains are refused before Auth (PJ-24, PJ-30).
 - [x] Demo password reset ends signed in like the real flow (PJ-23); leader empty state no longer promises an invitation (PJ-18).
 - [x] Walkthrough table of demo-only behaviour (PJ-07, PJ-20, PJ-22, PJ-25); demo pack rebuilt.
-- [x] Remember on client navigations too (the shell switch is one) and on profile saves.
-- [ ] Verification, independent review, PR.
+- [x] Remember on client navigations too (the shell switch is one), on sign-in and on profile saves; sign-out keeps the page language.
+- [x] `lang` and `dir` rendered on the server from the proxy's request header (PJ-26).
+- [x] Review fixes: navigation detection, new-device sign-in, entry-point tests, demo reset role, reserved-domain copy.
+- [ ] Verification, PR.
 
 ## Decisions
 
-- The URL stays the single source of the interface language, so server and client render the same; the cookie only fills in a missing `?lang=` on page loads (307), and the proxy writes it only when a page load names a different language.
-- PJ-26 (server-rendered `lang`/`dir` on `<html>`) is not done: the root layout cannot read the query, and forwarding a request header would change the session-refresh plumbing for a P3 flash that the shell already corrects; recorded as remaining.
-- PJ-16: an account that is both a Batch Leader and a cohort student is not supported in the PoC (no provisioning path creates one); no role switch is added.
+- The URL stays the single source of the interface language; the cookie only fills in a missing `?lang=` on page loads (307).
+- Next removes its router headers before the proxy, so a client navigation is recognised as a same-origin script request (`sec-fetch-dest: empty`, `sec-fetch-site: same-origin`). That cannot be told from a prefetch, so every link to another language has `prefetch={false}` (`SegmentedControl`, `LanguageSwitch`). Chosen over a Server Action per switch (an extra POST and router refresh, and the demo blocks POST). Edge: two tabs in different languages; the last page fetched wins.
+- English links on a device with no memory write nothing, so a new device signs in in the account language; the sign-in then remembers it.
+- PJ-26 done: the root layout reads the proxy's header, so every route is dynamic (all already were except `/_not-found`).
+- Reserved domains are refused in the real Server Action, not the shared auth application, because the synthetic demo registers those addresses.
+- PJ-16: disposed in `findings.md` (T24 plan: record only); not decided here.
+- PJ-19 not done: "Change password" from a signed-in session would skip the email round-trip while `secure_password_change = false`; recorded as remaining for a reauthentication decision.
 - PJ-21 (cross-device PKCE email links) needs a hosted check this refinement does not run; recorded as remaining.
 
 ## Current state
@@ -59,7 +65,7 @@
 
 **Proof:** unit and security 997/997 before the new tests; `locale-preference` and `auth-actions` 16/16.
 
-**Review:** pending independent review (`independent-reviewer`).
+**Review:** `independent-reviewer` on `6365350`: request changes (2 major, 2 minor, 3 nits); all addressed or answered in Decisions.
 
 **Approved commit:** NOT REQUIRED: no visual change; copy-only changes to the leader empty state and a demo exit.
 

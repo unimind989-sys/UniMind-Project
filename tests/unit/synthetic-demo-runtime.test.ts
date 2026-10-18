@@ -78,6 +78,27 @@ describe("explicit synthetic runtime", () => {
     expect(response.cookies.getAll()).toEqual([]);
     expect(refresh).not.toHaveBeenCalled();
   });
+  it.each(["/learn", "/login?lang=ar"])(
+    "neither redirects nor remembers the language for %s (WP03-T28)",
+    async (path) => {
+      for (const [key, value] of Object.entries(safe)) vi.stubEnv(key, value);
+      const { proxy } = await import("../../src/proxy");
+      const response = await proxy(
+        new NextRequest(`http://127.0.0.1:3102${path}`, {
+          headers: {
+            host: "localhost:3102",
+            "x-forwarded-host": "127.0.0.1:3102",
+            cookie: "unimind-locale=en",
+            "sec-fetch-dest": "document",
+          },
+        }),
+      );
+      expect(response.status).not.toBe(307);
+      expect(response.headers.get("location")).toBeNull();
+      expect(response.cookies.getAll()).toEqual([]);
+      expect(refresh).not.toHaveBeenCalled();
+    },
+  );
   it.each(["POST", "PUT", "PATCH", "DELETE"])(
     "rejects every %s rather than invoking a service",
     async (method) => {

@@ -71,6 +71,7 @@ function fieldMessage(
   const messages = {
     ACCEPTANCE_REQUIRED: copy.invalidInput,
     EMAIL_INVALID: copy.emailInvalid,
+    EMAIL_UNDELIVERABLE: copy.emailUndeliverable,
     PASSWORD_REQUIRED: copy.passwordRequired,
     PASSWORD_REQUIREMENTS: copy.passwordRequirements,
     PASSWORD_MISMATCH: copy.passwordMismatch,

@@ -6,14 +6,29 @@ const mocks = vi.hoisted(() => ({
   login: vi.fn(),
   redirect: vi.fn(),
   accept: vi.fn(),
+  account: vi.fn(),
+  remember: vi.fn(),
+  rememberedLocale: vi.fn(),
 }));
 vi.mock("next/navigation", () => ({ redirect: mocks.redirect }));
+vi.mock("next/headers", () => ({
+  cookies: async () => ({
+    get: () => {
+      const value = mocks.rememberedLocale() as string | undefined;
+      return value === undefined ? undefined : { value };
+    },
+  }),
+}));
+vi.mock("@/lib/i18n/locale-cookie.server", () => ({
+  rememberInterfaceLanguage: mocks.remember,
+}));
 vi.mock("@/lib/auth/auth-access.supabase.server", () => ({
   getCurrentAuthAccess: mocks.access,
   acceptCurrentAuthConsent: mocks.accept,
 }));
 vi.mock("@/lib/account/account.supabase.server", () => ({
   currentRoleHome: mocks.home,
+  loadCurrentAccount: mocks.account,
 }));
 vi.mock("@/lib/auth/supabase-auth.server", () => ({
   getAuthApplication: () => ({ login: mocks.login }),
@@ -77,6 +92,41 @@ describe("authenticated entry adapters", () => {
           : gate === "VERIFY_EMAIL"
             ? "/verify-email?"
             : `/login?lang=ar&status=${gate.toLowerCase()}`,
+      );
+    },
+  );
+  // WP03-T28: the language a sign-in continues in is remembered on the device.
+  it("remembers the page language a sign-in continues in", async () => {
+    await expect(loginAction(prior, form())).rejects.toThrow("redirect:");
+    expect(mocks.remember).toHaveBeenCalledWith("ar");
+    expect(mocks.account).not.toHaveBeenCalled();
+  });
+  it("uses the account language when this device never chose one", async () => {
+    mocks.account.mockResolvedValue({ language: "ar" });
+    const data = form();
+    data.set("locale", "en");
+    data.set("localeSource", "default");
+    await expect(loginAction(prior, data)).rejects.toThrow(
+      "redirect:/learn?lang=ar",
+    );
+    expect(mocks.remember).toHaveBeenCalledWith("ar");
+  });
+  it.each([
+    [{ lang: "en" }, undefined, "default"],
+    [{}, undefined, "default"],
+    [{ lang: "ar" }, undefined, "explicit"],
+    [{ lang: "en" }, "en", "explicit"],
+  ] as const)(
+    "marks the sign-in language for %o with memory %s as %s",
+    async (searchParams, remembered, source) => {
+      mocks.access.mockResolvedValue({ gate: "SIGN_IN" });
+      mocks.rememberedLocale.mockReturnValue(remembered);
+      const page = (await AuthPage({
+        mode: "login",
+        searchParams: Promise.resolve(searchParams),
+      })) as { props: { children: { props: { localeExplicit: boolean } } } };
+      expect(page.props.children.props.localeExplicit).toBe(
+        source === "explicit",
       );
     },
   );

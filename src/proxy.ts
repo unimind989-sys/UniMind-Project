@@ -1,10 +1,12 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 import { refreshSupabaseSession } from "./lib/auth/refresh-session.server";
+import { resolveLocale } from "./lib/i18n/locale";
 import {
   decideLocale,
   localeCookieName,
   localeCookieOptions,
+  localeHeaderName,
 } from "./lib/i18n/locale-preference.application";
 import {
   isProductDemoPath,
@@ -136,19 +138,19 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next();
   // Real runtime only (the synthetic runtime above sets no cookie): a page
   // load without ?lang= returns in the remembered language; a page load or
-  // client navigation with it updates the memory.
+  // client navigation with it updates the memory. Next removes its router
+  // headers before the proxy runs, so a client navigation is recognised as a
+  // same-origin script request; language links never prefetch.
+  const fetchDestination = request.headers.get("sec-fetch-dest");
   const locale = decideLocale({
     method: request.method,
     pathname: path,
     search: request.nextUrl.search,
     cookie: request.cookies.get(localeCookieName)?.value,
-    document:
-      request.headers.get("sec-fetch-dest") === "document" &&
-      !request.headers.has("rsc") &&
-      !request.headers.has("next-router-prefetch"),
+    document: fetchDestination === "document",
     navigation:
-      request.headers.has("rsc") &&
-      !request.headers.has("next-router-prefetch"),
+      fetchDestination === "empty" &&
+      request.headers.get("sec-fetch-site") === "same-origin",
   });
   if (locale.redirectTo !== null) {
     const target = request.nextUrl.clone();
@@ -157,6 +159,12 @@ export async function proxy(request: NextRequest) {
     redirect.headers.set("Cache-Control", "private, no-store");
     return redirect;
   }
+  // The root layout renders `lang` and `dir` from this (it cannot read the
+  // query); a value the browser sent is replaced.
+  request.headers.set(
+    localeHeaderName,
+    resolveLocale(request.nextUrl.searchParams.get("lang")),
+  );
   const response = await refreshSupabaseSession(request);
   if (locale.remember !== null)
     response.cookies.set(

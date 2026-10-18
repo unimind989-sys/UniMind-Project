@@ -646,6 +646,45 @@ test("student: a real account without a name completes the profile step once", a
   }
 });
 
+// WP03-T28: a device that never chose a language signs in in the account's
+// language and keeps it after sign-out and in a later session.
+test("student: a new device signs in in the account language and remembers it", async ({
+  browser,
+}) => {
+  const student = users.get("student")!;
+  sql(
+    `update public.profiles set preferred_language = 'AR' where user_id = '${student.id}';`,
+  );
+  const device = await browser.newContext();
+  try {
+    const page = await device.newPage();
+    // The landing page links to sign-in in the default language.
+    await page.goto("/login?lang=en");
+    expect(
+      (await device.cookies()).some((entry) => entry.name === "unimind-locale"),
+    ).toBe(false);
+    await page.getByLabel("Email address", { exact: true }).fill(student.email);
+    await page.getByLabel("Password", { exact: true }).fill(student.password);
+    await page.getByRole("button", { name: "Continue", exact: true }).click();
+    await expect(page).toHaveURL(/\/learn\?(?:.*&)?lang=ar(?:&|$)/u);
+    await page.goto("/settings");
+    await expect(page).toHaveURL(/\/settings\?lang=ar$/u);
+    await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
+    await page
+      .getByRole("button", { name: "تسجيل الخروج", exact: true })
+      .click();
+    await expect(page).toHaveURL(/\/login\?lang=ar&status=signed_out$/u);
+    // A later session on the same device opens in Arabic before sign-in.
+    await page.goto("/learn");
+    await expect(page).toHaveURL(/\/login\?.*lang=ar/u);
+  } finally {
+    await device.close();
+    sql(
+      `update public.profiles set preferred_language = 'EN' where user_id = '${student.id}';`,
+    );
+  }
+});
+
 test("revoked leader loses campaign access in the same browser", async ({
   page,
 }) => {

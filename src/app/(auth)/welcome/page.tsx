@@ -52,6 +52,7 @@ export default async function WelcomePage({
         action={completeProfileAction}
         secondaryAction={
           <form action={logoutAction}>
+            <input type="hidden" name="locale" value={locale} />
             <Button variant="quiet" type="submit">
               {getProfileCopy(locale).signOut}
             </Button>

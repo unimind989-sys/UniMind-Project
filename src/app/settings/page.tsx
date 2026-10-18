@@ -91,6 +91,7 @@ export default async function SettingsPage({
         role={role}
         signOutAction={
           <form action={logoutAction}>
+            <input type="hidden" name="locale" value={locale} />
             <Button variant="quiet" type="submit">
               {t("Sign out", "تسجيل الخروج")}
             </Button>

@@ -14,8 +14,9 @@ import {
 } from "@/lib/auth/auth-access.supabase.server";
 import { getAuthApplication } from "@/lib/auth/supabase-auth.server";
 import { accessDestination } from "@/lib/auth/auth-actions.application";
-import { resolveLocale } from "@/lib/i18n/locale";
+import { isSupportedLocale, resolveLocale } from "@/lib/i18n/locale";
 import { localeCookieName } from "@/lib/i18n/locale-preference.application";
+import { rememberInterfaceLanguage } from "@/lib/i18n/locale-cookie.server";
 import {
   currentRoleHome,
   loadCurrentAccount,
@@ -67,6 +68,9 @@ async function redirectAfterAuthentication(
   } catch {
     return { status: "UNAVAILABLE", returnPath };
   }
+  // The language this sign-in continues in is remembered on this device.
+  if (access.gate !== "SIGN_IN")
+    await rememberInterfaceLanguage(resolveLocale(localeValue));
 
   if (access.gate === "READY") {
     let destination = returnPath;
@@ -123,12 +127,14 @@ export async function registerAction(
   formData: FormData,
 ): Promise<AuthFormState> {
   // Reserved test domains (RFC 2606/6761) can never receive the verification
-  // email; the published demo addresses use them, so refuse before Auth.
+  // email; the published demo addresses use them, so refuse before Auth. The
+  // check lives here, not in the shared auth application, because the
+  // synthetic demo registers exactly these addresses.
   if (reservedEmailDomain(value(formData, "email")))
     return {
       status: "INVALID_INPUT",
       returnPath: validatedInternalReturnPath(value(formData, "returnPath")),
-      fieldErrors: { email: ["EMAIL_INVALID"] },
+      fieldErrors: { email: ["EMAIL_UNDELIVERABLE"] },
     };
   const result = await getAuthApplication().register({
     email: value(formData, "email"),
@@ -222,10 +228,13 @@ export async function acceptConsentAction(
   return { status: "UNAVAILABLE", returnPath: "/learn" };
 }
 
-export async function logoutAction(): Promise<void> {
+export async function logoutAction(formData?: FormData): Promise<void> {
   const result = await getAuthApplication().logout();
   const status = result.status === "SUCCESS" ? "signed_out" : "unavailable";
-  // Sign-out keeps the remembered interface language.
-  const locale = resolveLocale((await cookies()).get(localeCookieName)?.value);
+  // Sign-out keeps the page's language, else the remembered one.
+  const pageLocale = formData?.get("locale");
+  const locale = isSupportedLocale(pageLocale)
+    ? pageLocale
+    : resolveLocale((await cookies()).get(localeCookieName)?.value);
   redirect(`/login?lang=${locale}&status=${status}` as Route);
 }

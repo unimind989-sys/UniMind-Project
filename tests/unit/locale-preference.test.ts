@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { decideLocale } from "../../src/lib/i18n/locale-preference.application";
+import {
+  decideLocale,
+  hasChosenLanguage,
+} from "../../src/lib/i18n/locale-preference.application";
 
 const page = {
   method: "GET",
@@ -23,9 +26,33 @@ describe("remembered interface language", () => {
       redirectTo: null,
       remember: "ar",
     });
+    expect(decideLocale({ ...page, search: "?lang=en", cookie: "ar" })).toEqual(
+      { redirectTo: null, remember: "en" },
+    );
     expect(decideLocale({ ...page, search: "?lang=ar", cookie: "ar" })).toEqual(
       { redirectTo: null, remember: null },
     );
+  });
+
+  it("writes nothing for the default language on a device without a memory", () => {
+    // Landing and guard links carry ?lang=en; sign-in may still use the
+    // account's language.
+    expect(decideLocale({ ...page, search: "?lang=en" })).toEqual({
+      redirectTo: null,
+      remember: null,
+    });
+    expect(decideLocale({ ...page, search: "?lang=en", cookie: "fr" })).toEqual(
+      { redirectTo: null, remember: null },
+    );
+  });
+
+  it("treats only a memory or a non-default language as this device's choice", () => {
+    expect(hasChosenLanguage("en", undefined)).toBe(false);
+    expect(hasChosenLanguage(undefined, undefined)).toBe(false);
+    expect(hasChosenLanguage("fr", "de")).toBe(false);
+    expect(hasChosenLanguage("ar", undefined)).toBe(true);
+    expect(hasChosenLanguage("en", "en")).toBe(true);
+    expect(hasChosenLanguage(undefined, "ar")).toBe(true);
   });
 
   it.each([

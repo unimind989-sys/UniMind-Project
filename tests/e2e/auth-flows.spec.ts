@@ -222,5 +222,8 @@ test("registration refuses reserved test domains before Auth", async ({
     "aria-invalid",
     "true",
   );
+  await expect(page.getByRole("main")).toContainText(
+    "Demo accounts sign in directly on the sign-in page.",
+  );
   await expect(page).toHaveURL(/\/register\?/u);
 });
