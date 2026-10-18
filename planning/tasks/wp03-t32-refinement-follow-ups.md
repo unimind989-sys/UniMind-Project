@@ -4,7 +4,7 @@
 
 **Task ID:** WP03-T32
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** The demo admin signs out the way the real admin does. Ahmed's answers to the WP03 open items are recorded, with the later checks listed so they are not forgotten.
 
@@ -14,7 +14,7 @@
 
 **Branch:** claude/wp03-t32-refinement-follow-ups
 
-**Updated (UTC):** 2026-10-18T23:30Z
+**Updated (UTC):** 2026-10-19T00:30Z
 
 ## Contract
 
@@ -52,7 +52,8 @@
 - [x] Demo walkthrough step for the second-founder confirmation; pack rebuilt with the same entries and dates.
 - [x] D-24 proposed: record, master-plan decision log and decision register.
 - [x] Final verification: decided items, later checks, still-open items.
-- [ ] Verification, PR, required CI, promotion.
+- [x] Verification, PR [#98](https://github.com/unimind989-sys/UniMind-Project/pull/98) with required CI, promotion.
+- [x] Hosted WP03-T27 migration: the paused Supabase project was resumed at Ahmed's request and the migration applied in one guarded transaction.
 
 ## Decisions
 
@@ -63,14 +64,14 @@
 
 **Changed:** see Steps.
 
-**Proof:** admin demo specs 37/37. `corepack pnpm verify` on `39bb611`: every step passed except one demo test (208/209). `chat.spec.ts` also pressed the removed header Sign out; it now uses the shared helper and passed alone (1/1). The full demo suite reruns in CI.
+**Proof:** admin demo specs 37/37. `corepack pnpm verify` on `39bb611` passed every step except one demo test, which also used the removed button; it was fixed and passed alone (1/1). PR #98 CI was green on all 14 checks, including the full demo suite and `database-ci`. Production `09a8149` passed 15/15 pre-checks, the fingerprint 6/6 and public smoke 7/7 on both hosts. Hosted migration: the preflight, the guarded transaction and the postflight all matched.
 
 **Review:** self-review. No protected path.
 
 **Approved commit:** NOT REQUIRED: a demo-only control is removed so the demo matches the approved real admin header.
 
-**Remaining:** verification, PR, CI, promotion. The hosted WP03-T27 migration waits for the paused Supabase project and Ahmed's choice to resume it.
+**Remaining:** NONE. The later checks (two-device email, iPhone keyboard) and proposed D-24 are listed in the final verification. [Production and migration proof](../../evidence/wp03-product-shell/2026-10-18_wp03-t32-follow-ups_production_09a8149.md).
 
 ## Next action
 
-Run `corepack pnpm verify`, open the PR, merge on green CI, then promote.
+None after this record's PR merges with green required CI.
