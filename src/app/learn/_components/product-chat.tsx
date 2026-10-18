@@ -9,6 +9,7 @@ import { Notice } from "@/app/_components/notice";
 import { ProductLink } from "@/app/_components/product-ui";
 import { useHostedSynthetic } from "@/app/_components/product-navigation";
 import { FrontendIcon, useUnitMenu } from "@/app/_components/frontend-system";
+import { useKeyboardScroll } from "@/app/_components/use-keyboard-scroll";
 import {
   answerExamples,
   defaultScope,
@@ -87,6 +88,9 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
   }
   const input = useRef<HTMLTextAreaElement>(null);
   const end = useRef<HTMLDivElement>(null);
+  // The conversation is the scroll owner; with nothing focusable inside
+  // (Chat before answers launch), it takes focus itself so keys scroll it.
+  const transcript = useKeyboardScroll<HTMLElement>();
   const t = useProductText(locale);
   const sessions: readonly (ChatSessionView & {
     answers: readonly SampleAnswer[];
@@ -357,6 +361,7 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
       <div className={styles.conversation}>
         <h2 className="visually-hidden">{t("Chat", "المحادثة")}</h2>
         <section
+          ref={transcript}
           className={styles.transcript}
           aria-label={t("Conversation", "المحادثة الحالية")}
         >

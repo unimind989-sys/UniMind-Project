@@ -393,6 +393,12 @@
   line-height: 1.4;
   overflow-wrap: anywhere;
 }
+/* Noto Sans Arabic draws its inline box below this short line; the padding
+   keeps that inside the line, so the workspace never scrolls by a few px. */
+.composerMeta:lang(ar) {
+  margin-block-start: 2px;
+  padding-block-end: 0.5em;
+}
 .composerMeta strong {
   color: var(--ink);
   font-weight: 700;

@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import {
   createContext,
   useContext,
-  useEffect,
   useMemo,
   useRef,
   useState,
@@ -21,58 +20,9 @@ import { LanguageSwitch } from "./language-switch";
 import { MetaList } from "./meta-list";
 import { localizedHref } from "@/lib/i18n/locale";
 import { SegmentedControl } from "./segmented-control";
+import { useKeyboardScroll } from "./use-keyboard-scroll";
 export { FrontendIcon } from "./frontend-controls";
 export type { FrontendIconName } from "./frontend-controls";
-
-const focusable =
-  'a[href],button:not(:disabled),input:not(:disabled),select:not(:disabled),textarea:not(:disabled),summary,[tabindex]:not([tabindex="-1"])';
-
-/**
- * Keyboard access to the study body's scroll area. Content with focusable
- * elements scrolls with them; a scrolling body without any (for example a
- * real-mode notice at 200% text) becomes a labelled focusable region.
- */
-function useKeyboardScroll(label: string) {
-  const body = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const element = body.current;
-    if (!element) return;
-    // Set directly in the observer callback so the region exists in the same
-    // frame the overflow appears; React does not own these attributes.
-    const measure = () => {
-      const needed =
-        element.scrollHeight > element.clientHeight + 1 &&
-        element.querySelector(focusable) === null;
-      if (needed) {
-        element.tabIndex = 0;
-        element.setAttribute("role", "region");
-        element.setAttribute("aria-label", label);
-      } else {
-        element.removeAttribute("tabindex");
-        element.removeAttribute("role");
-        element.removeAttribute("aria-label");
-      }
-    };
-    const resize = new ResizeObserver(measure);
-    const observeChildren = () => {
-      resize.disconnect();
-      resize.observe(element);
-      for (const child of element.children) resize.observe(child);
-    };
-    const mutation = new MutationObserver(() => {
-      observeChildren();
-      measure();
-    });
-    observeChildren();
-    mutation.observe(element, { childList: true, subtree: true });
-    measure();
-    return () => {
-      resize.disconnect();
-      mutation.disconnect();
-    };
-  }, [label]);
-  return body;
-}
 
 /**
  * The unit band's one menu (DESIGN: the session switcher on desktop, the
@@ -123,7 +73,9 @@ export function FrontendShell({
 }: ShellProps) {
   const pathname = usePathname();
   const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
-  const body = useKeyboardScroll(t("Study content", "محتوى المذاكرة"));
+  const body = useKeyboardScroll<HTMLDivElement>(
+    t("Study content", "محتوى المذاكرة"),
+  );
   const menu = useRef<DisclosureHandle>(null);
   const [panel, setPanel] = useState<HTMLDivElement | null>(null);
   const [line, setLine] = useState<string | null>(null);

@@ -169,6 +169,14 @@ const chatStates: readonly ScreenState[] = [
         const region = await boxOf(conversation);
         expect(region.width).toBeGreaterThan(main.width - 110);
         expect(region.height).toBeGreaterThan(125);
+        // The conversation absorbs any overflow: the study body around it
+        // never scrolls too, not even by the Arabic privacy line's few px.
+        await page.evaluate(() => document.fonts.ready);
+        expect(
+          await page
+            .locator("[data-study-tool='chat']")
+            .evaluate((body) => body.scrollHeight - body.clientHeight),
+        ).toBeLessThanOrEqual(1);
       }
     },
     checkEnlarged: true,
