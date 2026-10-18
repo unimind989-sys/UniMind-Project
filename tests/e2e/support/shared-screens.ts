@@ -176,7 +176,7 @@ export async function expectQuizSetupScreen(
   }
 }
 
-/** Student Settings: the four account views and privacy availability. */
+/** Student Settings: the five account views and privacy availability. */
 export async function expectStudentSettingsScreen(
   page: Page,
   locale: Locale,
@@ -186,6 +186,7 @@ export async function expectStudentSettingsScreen(
     name: say(locale, "Account sections", "أقسام الحساب"),
   });
   for (const [en, ar] of [
+    ["Profile", "الملف الشخصي"],
     ["Appearance", "المظهر"],
     ["Academic settings", "الإعدادات الدراسية"],
     ["Privacy", "الخصوصية"],
