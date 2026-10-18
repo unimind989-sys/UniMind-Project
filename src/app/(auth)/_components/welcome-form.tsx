@@ -132,7 +132,7 @@ export function WelcomeForm({
             router.replace(`${pathname}?${next}` as Route, { scroll: false });
           }}
         />
-        <Appearance locale={locale} />
+        <Appearance locale={locale} preview={false} />
         <SubmitButton size="large" block pendingLabel={copy.saving}>
           {copy.save}
         </SubmitButton>
