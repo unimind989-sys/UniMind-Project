@@ -653,7 +653,7 @@ test("student: a new device signs in in the account language and remembers it", 
 }) => {
   const student = users.get("student")!;
   sql(
-    `update public.profiles set preferred_language = 'AR' where user_id = '${student.id}';`,
+    `update public.profiles set preferred_language = 'AR_EG' where user_id = '${student.id}';`,
   );
   const device = await browser.newContext();
   try {

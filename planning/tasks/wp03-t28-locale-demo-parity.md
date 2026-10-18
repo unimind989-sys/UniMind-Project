@@ -4,7 +4,7 @@
 
 **Task ID:** WP03-T28
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** An Arabic user stays in Arabic across email links, sign-out, guard redirects and later visits, a new device signs in in the account's language, and the demo's exits match the real flow or are listed as demo-only.
 
@@ -14,7 +14,7 @@
 
 **Branch:** claude/wp03-t28-locale-demo-parity
 
-**Updated (UTC):** 2026-10-18T11:30Z
+**Updated (UTC):** 2026-10-18T14:20Z
 
 ## Contract
 
@@ -46,7 +46,7 @@
 - [x] Remember on client navigations too (the shell switch is one), on sign-in and on profile saves; sign-out keeps the page language.
 - [x] `lang` and `dir` rendered on the server from the proxy's request header (PJ-26).
 - [x] Review fixes: navigation detection, new-device sign-in, entry-point tests, demo reset role, reserved-domain copy.
-- [ ] Verification, PR.
+- [x] Verification; PR with required CI.
 
 ## Decisions
 
@@ -63,14 +63,14 @@
 
 **Changed:** see Steps.
 
-**Proof:** unit and security 997/997 before the new tests; `locale-preference` and `auth-actions` 16/16.
+**Proof:** final head: unit 1,027 green (proxy, callback route, synthetic runtime, entry routing, locale preference); main e2e 42/42 (remembered language across a client switch, reserved domains); full demo suite 197/197; static checks green. The database e2e (new device signs in in the account language) and pgTAP run in CI.
 
-**Review:** `independent-reviewer` on `6365350`: request changes (2 major, 2 minor, 3 nits); all addressed or answered in Decisions.
+**Review:** `independent-reviewer` on `6365350`: request changes (2 major, 2 minor, 3 nits), addressed in `e898c94`; re-review of `e898c94`: request changes (database e2e used `'AR'`, the column allows `'AR_EG'`; invariant comments), fixed in the next commit.
 
 **Approved commit:** NOT REQUIRED: no visual change; copy-only changes to the leader empty state and a demo exit.
 
-**Remaining:** full verification, review and delivery after WP03-T27.
+**Remaining:** PJ-19 (signed-in password change needs a reauthentication decision) and PJ-21 (hosted cross-device PKCE check).
 
 ## Next action
 
-Run `corepack pnpm verify`, independent review, PR.
+None after the PR merges with green required CI.

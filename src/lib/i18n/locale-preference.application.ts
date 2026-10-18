@@ -19,8 +19,11 @@ export type LocaleRequest = Readonly<{
   document: boolean;
   /**
    * A same-origin script request for a page: a client navigation. The proxy
-   * cannot tell it from a prefetch, so links to another language never
-   * prefetch (`LanguageSwitch`).
+   * cannot tell it from a prefetch, so no same-origin page fetch may name a
+   * language other than the one on screen: links to another language never
+   * prefetch (`LanguageSwitch`). A future cookie-writing Server Action that
+   * does not redirect, on a page with prefetching links, re-prefetches them
+   * and must keep that rule.
    */
   navigation: boolean;
 }>;
