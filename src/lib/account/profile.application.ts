@@ -47,3 +47,9 @@ export async function saveProfile(
     return { status: "UNAVAILABLE" };
   }
 }
+
+export {
+  displayNameMaxLength,
+  localeFromAccountLanguage,
+  type DisplayNameError,
+} from "./profile.domain";
