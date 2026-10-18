@@ -6,8 +6,10 @@ import {
   b07Row,
   b07SavePath,
   expectOriginalTypography,
+  openUnitMenu,
   showAccountView,
   unit,
+  unitMenuSummary,
 } from "../support/demo";
 import {
   isolation,
@@ -415,7 +417,7 @@ inLocales(["ar"], (locale) => {
         });
         await expect(
           tools.getByRole("link", {
-            name: t("Materials", "مصادر المذاكرة"),
+            name: t("Materials", "المصادر"),
             exact: true,
           }),
         ).toHaveAttribute("aria-current", "page");
@@ -467,17 +469,15 @@ inLocales(["ar"], (locale) => {
             `اسأل عن ${singular}…`,
           ),
         );
+        // Materials is one tool away; Chat and Studio no longer repeat it
+        // as a separate link (MD-09).
         await expect(
           page.getByRole("link", {
             name: t(`${singular} sources`, `مصادر ${singular}`),
             exact: true,
           }),
-        ).toBeVisible();
-        await page
-          .locator("summary")
-          .filter({ hasText: t("Sessions", "الجلسات") })
-          .first()
-          .click();
+        ).toHaveCount(0);
+        await openUnitMenu(page);
         await expect(
           page.locator("summary").filter({
             hasText: t(
@@ -486,23 +486,21 @@ inLocales(["ar"], (locale) => {
             ),
           }),
         ).toBeVisible();
-        await page
-          .locator("summary")
-          .filter({ hasText: t("Sessions", "الجلسات") })
-          .first()
-          .press("Escape");
+        await unitMenuSummary(page).press("Escape");
         await tools
           .getByRole("link", { name: t("Studio", "الاستوديو"), exact: true })
           .click();
+        // Materials is one tool away; Chat and Studio no longer repeat it
+        // as a separate link (MD-09).
         await expect(
           page.getByRole("link", {
             name: t(`${singular} sources`, `مصادر ${singular}`),
             exact: true,
           }),
-        ).toBeVisible();
+        ).toHaveCount(0);
         await expect(
           tools.getByRole("link", {
-            name: t("Materials", "مصادر المذاكرة"),
+            name: t("Materials", "المصادر"),
             exact: true,
           }),
         ).toBeVisible();
@@ -787,8 +785,10 @@ inLocales(["en"], (locale) => {
           await navigate(page, "/learn", locale);
           await page
             .getByRole("link", {
-              name: t("Academic settings", "الإعدادات الدراسية"),
-              exact: true,
+              name: new RegExp(
+                `^${t("Academic settings", "الإعدادات الدراسية")}:`,
+                "u",
+              ),
             })
             .click();
           await page
@@ -858,13 +858,11 @@ inLocales(["en"], (locale) => {
             exact: true,
           }),
         ).toBeVisible();
-        // The band shows program, level and term as a structured list
+        // The unit menu shows program, level and term as a structured list
         // (MetaList), not a middle-dot string.
+        await openUnitMenu(page);
         await expect(
-          page
-            .locator("[class*='scopeCaption']")
-            .filter({ visible: true })
-            .getByRole("listitem"),
+          page.locator("[class*='unitContext']").getByRole("listitem"),
         ).toHaveText([
           t("Mathematics track", "شعبة علمي رياضة"),
           t("Third year", "السنة الثالثة"),
@@ -901,8 +899,10 @@ inLocales(["en"], (locale) => {
       await navigate(page, "/learn", locale);
       await page
         .getByRole("link", {
-          name: t("Academic settings", "الإعدادات الدراسية"),
-          exact: true,
+          name: new RegExp(
+            `^${t("Academic settings", "الإعدادات الدراسية")}:`,
+            "u",
+          ),
         })
         .click();
       await page

@@ -1,13 +1,14 @@
 import { type Locale } from "../support/app-fixtures";
 import { bilingual, pick } from "../support/copy";
 import {
-  b07SourcesName,
+  answerLanguage,
   expectOriginalTypography,
   generateStudioExample,
-  openStudyOptions,
+  openLibraryFromChat,
+  openLibraryFromStudio,
   selectStudioExample,
-  studyOptionsSummary,
   unit,
+  unitMenuSummary,
 } from "../support/demo";
 import { boxOf } from "../support/layout";
 import {
@@ -35,18 +36,20 @@ const chatStates: readonly ScreenState[] = [
     phoneAxe: true,
     check: async ({ page, locale, width, enlarged }) => {
       const t = bilingual(locale);
-      const interfaceGroup = page.getByRole("group", {
-        name: t("Interface language", "لغة الواجهة"),
-        exact: true,
-      });
+      const narrow = width < 768;
       // audit 03: the language scope is named by its group, not a visible label.
       await expect(
         page.getByText(t("Interface language", "لغة الواجهة"), { exact: true }),
       ).toHaveCount(0);
-      await expect(interfaceGroup).toBeVisible();
+      // WP03-T26: the session switcher is the band's menu (the title button on
+      // phones), and the answer language is a menu in the composer.
       const sessions = page.locator(
-        `summary[aria-label="${t("Sessions and privacy", "الجلسات والخصوصية")}"]`,
+        `summary[aria-label^="${t("Sessions and privacy", "الجلسات والخصوصية")}"]`,
       );
+      await expect(sessions).toHaveCount(1);
+      expect(
+        await sessions.evaluate((e) => Boolean(e.closest("[class*='band']"))),
+      ).toBe(true);
       if (enlarged) {
         await sessions.press("Enter");
         await expect(
@@ -58,30 +61,22 @@ const chatStates: readonly ScreenState[] = [
         await sessions.press("Escape");
         return;
       }
-      const narrow = width < 768;
-      const sources = page.getByRole("link", {
-        name: b07SourcesName(locale),
+      const language = answerLanguage(page, locale);
+      const send = page.getByRole("button", {
+        name: t("Send", "إرسال"),
         exact: true,
       });
-      const first = await sessions.boundingBox();
-      const second = await (
-        narrow ? studyOptionsSummary(page, locale) : sources
-      ).boundingBox();
-      expect(Math.abs(first!.y - second!.y)).toBeLessThan(2);
-      await openStudyOptions(page, locale);
-      const choices = await page
-        .getByRole("group", {
-          name: t("Study language", "لغة المذاكرة"),
-          exact: true,
-        })
-        .boundingBox();
-      // The language choice may share the toolbar row; it never overlaps Sessions.
+      const pill = await boxOf(language);
+      const action = await boxOf(send);
+      // One composer row: the language pill and Send share its centre line.
       expect(
-        choices!.y >= first!.y + first!.height ||
-          choices!.x >= first!.x + first!.width ||
-          choices!.x + choices!.width <= first!.x,
-      ).toBe(true);
-      // audit 10: the visually hidden heading, sources and Sessions target.
+        Math.abs(pill.y + pill.height / 2 - action.y - action.height / 2),
+      ).toBeLessThan(2);
+      expect(pill.height).toBeGreaterThanOrEqual(44);
+      expect(action.height).toBeGreaterThanOrEqual(44);
+      // Send is an icon on phones; its name stays "Send".
+      if (narrow) expect(action.width).toBeLessThanOrEqual(48);
+      // audit 10: the visually hidden heading and the Sessions target.
       const heading = page.getByRole("heading", {
         name: t("Chat", "المحادثة"),
         level: 2,
@@ -93,25 +88,18 @@ const chatStates: readonly ScreenState[] = [
       // assistive technology at every width (Direction B).
       expect(box.width).toBe(1);
       expect(box.height).toBe(1);
-      await expect(sources).toBeVisible();
-      if (narrow) {
-        const options = studyOptionsSummary(page, locale);
-        await options.press("Escape");
-        await expect(options).toBeFocused();
-      }
       // audit 05: Sessions control, its menu and the sharing note.
       const style = await sessions.evaluate((e) => ({
         height: e.getBoundingClientRect().height,
-        border: getComputedStyle(e).borderTopWidth,
         filled: getComputedStyle(e).backgroundColor !== "rgba(0, 0, 0, 0)",
         size: parseFloat(getComputedStyle(e).fontSize),
       }));
       expect(style.height).toBeGreaterThanOrEqual(44);
-      // A visible boundary: a 1px border or, in Direction B, a filled pill.
-      expect(style.border === "1px" || style.filled).toBe(true);
-      expect(style.size).toBeGreaterThanOrEqual(14);
+      // A --night-2 pill on desktop; the title button on phones (DESIGN).
+      if (!narrow) expect(style.filled).toBe(true);
+      expect(style.size).toBeGreaterThanOrEqual(13);
       const note = await page
-        .locator("form p[class*='composerMeta'] strong")
+        .locator("p[class*='composerMeta'] strong")
         .evaluate((e) => ({
           weight: Number(getComputedStyle(e).fontWeight),
           size: parseFloat(getComputedStyle(e).fontSize),
@@ -119,23 +107,25 @@ const chatStates: readonly ScreenState[] = [
           mainColor: getComputedStyle(e.closest("main")!).color,
         }));
       expect(note.weight).toBeGreaterThanOrEqual(600);
-      expect(note.size).toBeGreaterThanOrEqual(14);
+      expect(note.size).toBeGreaterThanOrEqual(13);
       expect(note.color).toBe(note.mainColor);
       await sessions.press("Enter");
-      const menu = await sessions
-        .locator("..")
-        .locator(":scope > div")
-        .boundingBox();
+      await expect(sessions).toHaveAttribute("aria-expanded", "true");
+      const menu = await boxOf(page.locator("[class*='menuPanel']"));
       const control = await sessions.boundingBox();
-      if (width >= 768)
-        expect(menu!.y).toBeGreaterThanOrEqual(
-          control!.y + control!.height + 7,
-        );
-      else expect(menu!.y).toBeGreaterThanOrEqual(0);
-      expect(menu!.x).toBeGreaterThanOrEqual(0);
-      expect(menu!.x + menu!.width).toBeLessThanOrEqual(width + 1);
+      expect(menu.y).toBeGreaterThanOrEqual(control!.y + control!.height);
+      expect(menu.x).toBeGreaterThanOrEqual(0);
+      expect(menu.x + menu.width).toBeLessThanOrEqual(width + 1);
+      // The interface language is in this menu on phones, in the bar above.
+      await expect(
+        page.getByRole("group", {
+          name: t("Interface language", "لغة الواجهة"),
+          exact: true,
+        }),
+      ).toBeVisible();
       await sessions.press("Escape");
       await expect(sessions).toBeFocused();
+      await expect(sessions).toHaveAttribute("aria-expanded", "false");
       await expectOriginalTypography(page, locale);
       // Workspace revision: the conversation uses the available width.
       const conversation = page.getByRole("region", {
@@ -171,12 +161,13 @@ const chatStates: readonly ScreenState[] = [
     widths: [1440, 768, 430, 390, 360, 320],
     height: 844,
     phoneAxe: true,
-    check: async ({ page, enlarged }) => {
+    check: async ({ page, enlarged, width }) => {
       await expectShellControls(page, "student");
+      // Phones have no bottom bar inside a unit: only the four tools.
       if (!enlarged)
         await expect(
           page.getByRole("navigation").getByRole("link"),
-        ).toHaveCount(7);
+        ).toHaveCount(width >= 768 ? 7 : 4);
     },
     checkEnlarged: true,
     axe: [{}, { include: "main" }],
@@ -220,10 +211,7 @@ const chatStates: readonly ScreenState[] = [
   {
     name: "sources opened from Chat keep a compact return context",
     enter: async (page, locale) => {
-      await openStudyOptions(page, locale);
-      await page
-        .getByRole("link", { name: b07SourcesName(locale), exact: true })
-        .click();
+      await openLibraryFromChat(page, locale);
     },
     widths: [1440, 820, 390, 320],
     height: 1000,
@@ -423,7 +411,7 @@ const studioStates: readonly ScreenState[] = [
     },
     widths: [1440, 768, 430, 390, 360, 320],
     phoneAxe: true,
-    check: async ({ page, locale, enlarged }) => {
+    check: async ({ page, locale, enlarged, width }) => {
       const flip = flashcardFlip(page, locale);
       expect((await boxOf(flip)).height).toBeGreaterThanOrEqual(44);
       await flip.press("Enter");
@@ -435,16 +423,14 @@ const studioStates: readonly ScreenState[] = [
       if (!enlarged)
         await expect(
           page.getByRole("navigation").getByRole("link"),
-        ).toHaveCount(7);
+        ).toHaveCount(width >= 768 ? 7 : 4);
     },
     checkEnlarged: true,
   },
   {
     name: "sources opened from Studio keep compact rows and 44px excerpts",
     enter: async (page, locale) => {
-      await page
-        .getByRole("link", { name: b07SourcesName(locale), exact: true })
-        .click();
+      await openLibraryFromStudio(page, locale);
     },
     widths: [1440, 820, 390, 320],
     check: async ({ page, locale, width }) => {
@@ -458,13 +444,8 @@ const studioStates: readonly ScreenState[] = [
         const firstTitle = await boxOf(first.locator("h3"));
         const secondTitle = await boxOf(rows.nth(1).locator("h3"));
         expect(secondTitle.y - firstTitle.y).toBeLessThan(160);
-        const identity = await boxOf(first.locator(":scope > div"));
-        const status = await boxOf(first.locator(":scope > span"));
-        expect(Math.abs(identity.y - status.y)).toBeLessThan(2);
-        expect(
-          status.x > identity.x + identity.width ||
-            identity.x > status.x + status.width,
-        ).toBe(true);
+        // Availability is labelled only when it is the exception (MD-19).
+        await expect(first.locator(":scope > span")).toHaveCount(0);
       }
       await expectOriginalTypography(page, locale);
     },
@@ -774,7 +755,7 @@ const denseStates: readonly ScreenState[] = [
     leave: async (page, locale) => {
       await page
         .locator(
-          `summary[aria-label="${pick(locale, "Sessions and privacy", "الجلسات والخصوصية")}"]`,
+          `summary[aria-label^="${pick(locale, "Sessions and privacy", "الجلسات والخصوصية")}"]`,
         )
         .press("Escape");
     },
@@ -782,10 +763,12 @@ const denseStates: readonly ScreenState[] = [
   {
     name: "long dense source titles wrap without clipping",
     enter: async (page, locale) => {
-      await openStudyOptions(page, locale);
-      await page
-        .getByRole("link", { name: b07SourcesName(locale), exact: true })
-        .click();
+      // The Materials tool shows the same library (MD-09).
+      await expect(unitMenuSummary(page)).toHaveAttribute(
+        "aria-expanded",
+        "false",
+      );
+      await navigate(page, unit, locale);
       await expect(page.getByRole("article")).toHaveCount(24);
     },
     widths: [1440, 768, 390, 320],

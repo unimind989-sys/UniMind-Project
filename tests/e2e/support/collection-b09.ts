@@ -295,11 +295,17 @@ export async function b09ReceiptJourney(
         "أُقرّ به عند إرسال هذا الملف.",
       ),
     );
-    await expect(record).toContainText(
-      t("does not make it available to students", "ولا يعني هذا إتاحته للطلاب"),
-    );
     await expect(record.locator("input, textarea, select")).toHaveCount(0);
   }
+  // "Received is not processed" is said once for the list (WP03-T26, MD-25).
+  const receiptNote = page.locator("#latest-submissions [data-receipt-note]");
+  await expect(receiptNote).toHaveCount(1);
+  await expect(receiptNote).toContainText(
+    t(
+      "receipt does not make a file available to students",
+      "الاستلام لا يجعل الملف متاحًا للطلاب",
+    ),
+  );
   if (layout)
     for (const theme of themes) {
       await applyTheme(page, theme);

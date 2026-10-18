@@ -24,10 +24,6 @@ export const sameCohortUnit = () =>
 
 // Older return/guard journeys may use either configured course type. New B07-B
 // journeys assert the exact program label; these retain locale-specific names.
-export const b07SourcesName = (locale: string) =>
-  locale === "ar" ? /^مصادر (وحدة|مادة)$/u : /^(Module|Subject) sources$/u;
-export const b07DetailsName = (locale: string) =>
-  locale === "ar" ? /^تفاصيل (وحدة|مادة)$/u : /^(Module|Subject) details$/u;
 export const b07ChooseName = (locale: string) =>
   locale === "ar"
     ? /^(اختر (وحدة|مادة)|تصفح كل المواد)$/u
@@ -39,18 +35,83 @@ export const b07UnitsName = (locale: string) =>
     ? /^(وحدات|مواد) مجموعتك$/u
     : /^(Modules|Subjects) in your cohort$/u;
 
-export const studyOptionsSummary = (page: Page, locale: string) =>
-  page
-    .locator("summary")
-    .filter({ hasText: locale === "ar" ? "خيارات المذاكرة" : "Study options" });
-/** Phone Chat keeps sources and study language inside the Study options menu. */
-export async function openStudyOptions(page: Page, locale: string) {
-  const summary = studyOptionsSummary(page, locale);
-  if (
-    (await summary.isVisible()) &&
-    (await summary.locator("..").getAttribute("open")) === null
-  )
+/**
+ * The unit band's one menu (WP03-T26): Chat's sessions and privacy, the unit
+ * details and switch, and on phones the interface language. Its summary is the
+ * session pill on desktop and the title button on phones.
+ */
+export const unitMenuSummary = (page: Page) =>
+  page.locator('summary[class*="unitSummary"]');
+export async function openUnitMenu(page: Page) {
+  const summary = unitMenuSummary(page);
+  if ((await summary.getAttribute("aria-expanded")) !== "true")
     await summary.click();
+  await expect(summary).toHaveAttribute("aria-expanded", "true");
+}
+export async function closeUnitMenu(page: Page) {
+  const summary = unitMenuSummary(page);
+  if ((await summary.getAttribute("aria-expanded")) === "true") {
+    await summary.press("Escape");
+    await expect(summary).toHaveAttribute("aria-expanded", "false");
+  }
+}
+/** The answer-language menu inside the Chat composer. */
+export const answerLanguage = (page: Page, locale: string) =>
+  page.getByRole("combobox", {
+    name: locale === "ar" ? "لغة الإجابة" : "Answer language",
+    exact: true,
+  });
+/**
+ * Chat's way to the material library: a cited answer's source sheet links to
+ * it (the separate "Module sources" link left with WP03-T26, MD-09).
+ */
+export async function openLibraryFromChat(page: Page, locale: Locale) {
+  await page
+    .locator("article[id^='exchange-'] button[class*='citation']")
+    .last()
+    .click();
+  await page
+    .getByRole("dialog")
+    .getByRole("link", {
+      name: pick(locale, "Browse material library", "تصفح مكتبة المصادر"),
+      exact: true,
+    })
+    .click();
+}
+/** A Chat answer's evidence details: its citation, then the sheet's link. */
+export async function openEvidenceFromChat(
+  page: Page,
+  locale: Locale,
+  exchange?: number,
+) {
+  await page
+    .locator(exchange ? `#exchange-${exchange}` : "article[id^='exchange-']")
+    .locator("button[class*='citation']")
+    .first()
+    .click();
+  await page
+    .getByRole("dialog")
+    .getByRole("link", {
+      name: pick(locale, "Open evidence details", "فتح تفاصيل الأدلة"),
+      exact: true,
+    })
+    .click();
+}
+/** Studio's way to the library: Supporting passages, then the library link. */
+export async function openLibraryFromStudio(page: Page, locale: Locale) {
+  await page
+    .getByRole("button", {
+      name: pick(locale, "Supporting passages", "النصوص الداعمة"),
+      exact: true,
+    })
+    .click();
+  await page
+    .getByRole("dialog")
+    .getByRole("link", {
+      name: pick(locale, "Browse material library", "تصفح مكتبة المصادر"),
+      exact: true,
+    })
+    .click();
 }
 
 export const b07People = [
@@ -238,6 +299,7 @@ export async function selectStudioExample(
   },
 ) {
   const t = (en: string, ar: string) => pick(locale, en, ar);
+  await expandStudioSettings(page, locale);
   const disclosure = page.locator("details").filter({
     has: page
       .locator("summary")
@@ -255,6 +317,22 @@ export async function selectStudioExample(
     await page.getByLabel(label!, { exact: true }).selectOption(value!);
 }
 
+/** On phones an existing aid folds Studio's settings into one line. */
+export async function expandStudioSettings(page: Page, locale: Locale) {
+  const toggle = page.locator("button[aria-controls='studio-settings']");
+  if (
+    (await toggle.isVisible()) &&
+    (await toggle.getAttribute("aria-expanded")) === "false"
+  )
+    await toggle.click();
+  await expect(
+    page.getByRole("heading", {
+      name: pick(locale, "Shape the result", "شكّل المخرج"),
+      exact: true,
+    }),
+  ).toBeVisible();
+}
+
 export async function generateStudioExample(page: Page, locale: Locale) {
   const generate = page.getByRole("button", {
     name: pick(locale, "Generate", "إنشاء"),
@@ -267,7 +345,7 @@ export async function generateStudioExample(page: Page, locale: Locale) {
   });
   await expect(heading).toBeVisible();
   await expect(heading).toBeFocused();
-  return heading.locator("..");
+  return page.locator("section[class*='artifactOutput']");
 }
 
 const governedLabels: Readonly<Record<string, string>> = {

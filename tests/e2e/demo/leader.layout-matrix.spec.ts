@@ -156,7 +156,7 @@ const leaderStates: readonly ScreenState[] = [
     enter: async (page, locale) => {
       await page
         .getByRole("link", {
-          name: pick(locale, "Latest submissions", "آخر الإرسالات"),
+          name: pick(locale, "History", "السجل"),
           exact: true,
         })
         .click();

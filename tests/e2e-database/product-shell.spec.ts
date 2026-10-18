@@ -615,9 +615,10 @@ test("student: shared study, settings and catalog screens against the real backe
   await page.reload();
   await openChatSessions(page, "en");
   // Earlier tests may already have sessions for this student, so read the
-  // selected session's number instead of assuming "Session 1".
+  // selected session's number instead of assuming "Session 1". Real sessions
+  // are addresses: links with aria-current (WP03-T26, IX-20).
   const selected = page
-    .getByRole("button", { pressed: true })
+    .locator('a[aria-current="page"]')
     .filter({ hasText: /Session \d+/u });
   await expect(selected).toHaveCount(1);
   const firstNumber = /Session (\d+)/u.exec(
@@ -630,7 +631,7 @@ test("student: shared study, settings and catalog screens against the real backe
   );
   await openChatSessions(page, "en");
   await page
-    .getByRole("button", {
+    .getByRole("link", {
       name: new RegExp(`Session ${firstNumber}(?!\\d)`, "u"),
     })
     .click();

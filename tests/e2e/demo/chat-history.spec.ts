@@ -1,8 +1,9 @@
 import { bilingual, inLocales, pick } from "../support/copy";
 import {
-  b07DetailsName,
-  b07SourcesName,
+  answerLanguage,
   b07UnitsName,
+  openLibraryFromChat,
+  openUnitMenu,
   unit,
 } from "../support/demo";
 import { isolation, navigate, send, signIn } from "../support/session";
@@ -24,15 +25,18 @@ inLocales(["ar"], (locale) => {
       );
       const history = page.locator("details").filter({
         has: page.locator(
-          `summary[aria-label="${pick(locale, "Sessions and privacy", "الجلسات والخصوصية")}"]`,
+          `summary[aria-label^="${pick(locale, "Sessions and privacy", "الجلسات والخصوصية")}"]`,
         ),
       });
       await history.locator("summary").first().click();
-      await expect(history.getByRole("listitem")).toHaveCount(12, {
+      await expect(
+        history.locator("[class*='historyList']").getByRole("listitem"),
+      ).toHaveCount(12, {
         timeout: 5_000,
       });
       for (const index of [0, 5, 11]) {
         const button = history
+          .locator("[class*='historyList']")
           .getByRole("listitem")
           .nth(index)
           .getByRole("button");
@@ -44,12 +48,12 @@ inLocales(["ar"], (locale) => {
         await expect(button).toHaveAttribute("aria-pressed", "true");
       }
       await history.locator("summary").first().press("Escape");
-      const evidence = page
-        .getByRole("link", {
-          name: pick(locale, "Inspect evidence", "فحص الأدلة"),
-          exact: true,
-        })
-        .nth(1);
+      // One evidence route per answer: the citation's sheet links to it.
+      await page.locator("#exchange-2 button[class*='citation']").click();
+      const evidence = page.getByRole("dialog").getByRole("link", {
+        name: pick(locale, "Open evidence details", "فتح تفاصيل الأدلة"),
+        exact: true,
+      });
       await expect(evidence).toHaveAttribute("href", /exchange=2&session=12/u);
       await evidence.press("Enter");
       await expect(page).toHaveURL(/\/evidence\?exchange=2&session=12/u);
@@ -76,9 +80,7 @@ inLocales(["ar"], (locale) => {
         new RegExp(`lang=${locale === "en" ? "ar" : "en"}`, "u"),
       );
       await expect(
-        page.locator("#exchange-2 a").filter({
-          hasText: locale === "en" ? "فحص الأدلة" : "Inspect evidence",
-        }),
+        page.locator("#exchange-2 a[href*='/report?']"),
       ).toHaveAttribute("href", /session=12/u);
       await page
         .getByRole("button", {
@@ -86,12 +88,7 @@ inLocales(["ar"], (locale) => {
           exact: true,
         })
         .click();
-      await page
-        .getByRole("link", {
-          name: b07SourcesName(locale),
-          exact: true,
-        })
-        .click();
+      await openLibraryFromChat(page, locale);
       await expect(page.getByRole("article")).toHaveCount(24);
       const titles = await page
         .getByRole("heading", { level: 3 })
@@ -108,14 +105,9 @@ inLocales(["ar"], (locale) => {
       await page.goBack();
       await expect(page).toHaveURL(/\/chat\?session=12/u);
       await expect(
-        page
-          .locator("#exchange-2 a")
-          .filter({ hasText: pick(locale, "Inspect evidence", "فحص الأدلة") }),
+        page.locator("#exchange-2 a[href*='/report?']"),
       ).toHaveAttribute("href", /session=12/u);
-      await page
-        .locator("header summary")
-        .filter({ hasText: b07DetailsName(locale) })
-        .press("Enter");
+      await openUnitMenu(page);
       const units = page.getByRole("navigation", {
         name: b07UnitsName(locale),
         exact: true,
@@ -128,13 +120,18 @@ inLocales(["ar"], (locale) => {
         .click();
       await expect(page.locator("#exchange-2")).toHaveCount(0);
       await history.locator("summary").first().click();
-      await expect(history.getByRole("listitem")).toHaveCount(0);
+      await expect(
+        history.locator("[class*='historyList']").getByRole("listitem"),
+      ).toHaveCount(0);
       await history.locator("summary").first().press("Escape");
+      // Without an answer, the library is the Materials tool.
       await page
-        .getByRole("link", {
-          name: b07SourcesName(locale),
+        .getByRole("navigation", {
+          name: pick(locale, "Workspace navigation", "تنقل مساحة المذاكرة"),
           exact: true,
         })
+        .getByRole("link")
+        .first()
         .click();
       await expect(page.getByRole("article")).toHaveCount(8);
       await navigate(page, "/learn", locale);
@@ -208,7 +205,7 @@ inLocales(["en"], (locale) => {
       );
       const history = page.locator("details").filter({
         has: page.locator(
-          `summary[aria-label="${t("Sessions and privacy", "الجلسات والخصوصية")}"]`,
+          `summary[aria-label^="${t("Sessions and privacy", "الجلسات والخصوصية")}"]`,
         ),
       });
       await history.locator("summary").first().click();
@@ -218,13 +215,8 @@ inLocales(["en"], (locale) => {
           exact: true,
         })
         .press("Enter");
-      const language = page
-        .getByRole("group", {
-          name: t("Study language", "لغة المذاكرة"),
-          exact: true,
-        })
-        .locator('input[value="mixed"]');
-      await language.check();
+      const language = answerLanguage(page, locale);
+      await language.selectOption("mixed");
       await send(page, "supported", locale);
       await expect(page.locator("#exchange-1")).toContainText(
         "Lecture 6 handout, page 14",
@@ -233,12 +225,7 @@ inLocales(["en"], (locale) => {
       await message.fill(
         "Synthetic unsent draft for the new thirteenth session.",
       );
-      await page
-        .getByRole("link", {
-          name: b07SourcesName(locale),
-          exact: true,
-        })
-        .click();
+      await openLibraryFromChat(page, locale);
       await expect(page.getByRole("article")).toHaveCount(24);
       await page
         .getByRole("link", {
@@ -252,24 +239,34 @@ inLocales(["en"], (locale) => {
       await expect(message).toHaveValue(
         "Synthetic unsent draft for the new thirteenth session.",
       );
-      await expect(language).toBeChecked();
+      await expect(language).toHaveValue("mixed");
       await history.locator("summary").first().click();
-      await expect(history.getByRole("listitem")).toHaveCount(13);
       await expect(
-        history.getByRole("listitem").last().getByRole("button"),
+        history.locator("[class*='historyList']").getByRole("listitem"),
+      ).toHaveCount(13);
+      await expect(
+        history
+          .locator("[class*='historyList']")
+          .getByRole("listitem")
+          .last()
+          .getByRole("button"),
       ).toHaveAttribute("aria-pressed", "true");
       await history.locator("summary").first().press("Escape");
       await page.reload();
       await expect(page).toHaveURL(/\/login\?/u);
       await signIn(page, "student", locale, `${unit}/chat?lang=${locale}`);
       await history.locator("summary").first().click();
-      await expect(history.getByRole("listitem")).toHaveCount(0);
+      await expect(
+        history.locator("[class*='historyList']").getByRole("listitem"),
+      ).toHaveCount(0);
       await history.locator("summary").first().press("Escape");
       await page
-        .getByRole("link", {
-          name: b07SourcesName(locale),
+        .getByRole("navigation", {
+          name: pick(locale, "Workspace navigation", "تنقل مساحة المذاكرة"),
           exact: true,
         })
+        .getByRole("link")
+        .first()
         .click();
       await expect(page.getByRole("article")).toHaveCount(8);
       finish();
@@ -293,12 +290,7 @@ inLocales(["ar"], (locale) => {
       await expect(page.getByRole("main")).toContainText(
         t("Access unavailable", "الوصول غير متاح"),
       );
-      await expect(
-        page.getByRole("link", {
-          name: t("Inspect evidence", "فحص الأدلة"),
-          exact: true,
-        }),
-      ).toHaveCount(0);
+      await expect(page.locator("button[class*='citation']")).toHaveCount(0);
       await signIn(
         page,
         "student",

@@ -15,8 +15,6 @@ const unit =
   "/learn/zagazig-university-human-medicine-year-1-term-1-cohort/zagazig-university-human-medicine-y1-t1-anatomy";
 const pick = (locale: string, en: string, ar: string) =>
   locale === "ar" ? ar : en;
-const b07SourcesName = (locale: string) =>
-  locale === "ar" ? /^مصادر (وحدة|مادة)$/u : /^(Module|Subject) sources$/u;
 const b07ChooseName = (locale: string) =>
   locale === "ar"
     ? /^(اختر (وحدة|مادة)|تصفح كل المواد)$/u
@@ -328,17 +326,21 @@ for (const locale of ["en"] as const) {
     ).toBeVisible();
     const history = page.locator("details").filter({
       has: page.locator(
-        `summary[aria-label="${t("Sessions and privacy", "الجلسات والخصوصية")}"]`,
+        `summary[aria-label^="${t("Sessions and privacy", "الجلسات والخصوصية")}"]`,
       ),
     });
     await history.locator("summary").first().click();
-    await expect(history.getByRole("listitem")).toHaveCount(0);
+    await expect(
+      history.locator("[class*='historyList']").getByRole("listitem"),
+    ).toHaveCount(0);
     await history.locator("summary").first().press("Escape");
+    // The library is the Materials tool (Chat no longer repeats the link).
     await page
-      .getByRole("link", {
-        name: b07SourcesName(locale),
+      .getByRole("navigation", {
+        name: t("Workspace navigation", "تنقل مساحة المذاكرة"),
         exact: true,
       })
+      .getByRole("link", { name: t("Materials", "المصادر"), exact: true })
       .click();
     await expect(page.getByRole("article")).toHaveCount(8);
     await expect(
@@ -346,8 +348,8 @@ for (const locale of ["en"] as const) {
         /Synthetic demo|Simulated services|Demo clock|وضع تجريبي|محاكاة الخدمات/u,
       ),
     ).toHaveCount(0);
-    // Reload discards synthetic memory; the real sources route then requires
-    // a real sign-in (WP03-T17 added it; before, this path was a 404).
+    // Reload discards synthetic memory; the real unit route then requires a
+    // real sign-in.
     await page.reload();
     await expect(page).toHaveURL(/\/login\?/u);
     await expect(page.getByRole("article")).toHaveCount(0);
@@ -405,15 +407,16 @@ test("hosted student: study memory, locale, sign-out, refresh and new-document i
     .getByLabel("Message", { exact: true })
     .fill("Explain the sample unit's study sequence.");
   await page.getByRole("button", { name: "Send", exact: true }).click();
+  // An unmatched question has no citation; Report is its quiet action.
   await expect(
-    page.getByRole("link", { name: "Inspect evidence", exact: true }),
+    page.getByRole("link", { name: "Report example", exact: true }),
   ).toBeVisible();
   await page
     .getByRole("group", { name: "Interface language", exact: true })
     .getByRole("button", { name: "العربية", exact: true })
     .click();
   await expect(
-    page.getByRole("link", { name: "فحص الأدلة", exact: true }),
+    page.getByRole("link", { name: "الإبلاغ عن المثال", exact: true }),
   ).toBeVisible();
   await page
     .getByRole("group", { name: "لغة الواجهة", exact: true })
@@ -428,7 +431,7 @@ test("hosted student: study memory, locale, sign-out, refresh and new-document i
     .getByRole("link", { name: "Return to Chat · Anatomy", exact: true })
     .click();
   await expect(
-    page.getByRole("link", { name: "Inspect evidence", exact: true }),
+    page.getByRole("link", { name: "Report example", exact: true }),
   ).toBeVisible();
   finish();
   const another = await context.newPage();
@@ -526,8 +529,10 @@ test("hosted student shelf keeps navigation geometry, touch targets and reduced 
   await page
     .getByRole("button", { name: "Open Study Shelf", exact: true })
     .click();
+  // On phones Subjects is the bottom-bar destination (MD-18).
   await page
-    .getByRole("link", { name: b07ChooseName("en"), exact: true })
+    .getByRole("navigation", { name: "Product navigation" })
+    .getByRole("link", { name: "Subjects", exact: true })
     .click();
   const anatomy = page.getByRole("link", { name: "Open Anatomy", exact: true });
   await expect(anatomy).toBeVisible();

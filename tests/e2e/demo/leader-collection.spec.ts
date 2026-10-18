@@ -1265,16 +1265,27 @@ inLocales(["en"], (locale) => {
       await expect(receipt.locator("dl")).toContainText(
         t("Approved reference", "مرجع معتمد"),
       );
-      await expect(receipt).toContainText(
+      // "Received is not processed" is said once for the list (MD-25).
+      const receiptNote = page.locator(
+        "#latest-submissions [data-receipt-note]",
+      );
+      await expect(receiptNote).toHaveCount(1);
+      await expect(receiptNote).toContainText(
         t(
-          "Processing and review are separate",
+          "processing and review are separate",
           "المعالجة والمراجعة خطوتان منفصلتان",
         ),
       );
-      await expect(receipt).toContainText(
+      await expect(receiptNote).toContainText(
         t(
-          "does not make it available to students",
-          "ولا يعني هذا إتاحته للطلاب",
+          "receipt does not make a file available to students",
+          "الاستلام لا يجعل الملف متاحًا للطلاب",
+        ),
+      );
+      await expect(receipt).not.toContainText(
+        t(
+          "Processing and review are separate",
+          "المعالجة والمراجعة خطوتان منفصلتان",
         ),
       );
       await expect(receipt.locator("input,textarea,select")).toHaveCount(0);
@@ -1361,16 +1372,27 @@ inLocales(["ar"], (locale) => {
       await expect(receipt.locator("dl")).toContainText(
         t("Approved reference", "مرجع معتمد"),
       );
-      await expect(receipt).toContainText(
+      // "Received is not processed" is said once for the list (MD-25).
+      const receiptNote = page.locator(
+        "#latest-submissions [data-receipt-note]",
+      );
+      await expect(receiptNote).toHaveCount(1);
+      await expect(receiptNote).toContainText(
         t(
-          "Processing and review are separate",
+          "processing and review are separate",
           "المعالجة والمراجعة خطوتان منفصلتان",
         ),
       );
-      await expect(receipt).toContainText(
+      await expect(receiptNote).toContainText(
         t(
-          "does not make it available to students",
-          "ولا يعني هذا إتاحته للطلاب",
+          "receipt does not make a file available to students",
+          "الاستلام لا يجعل الملف متاحًا للطلاب",
+        ),
+      );
+      await expect(receipt).not.toContainText(
+        t(
+          "Processing and review are separate",
+          "المعالجة والمراجعة خطوتان منفصلتان",
         ),
       );
       await expect(deviceRow).not.toContainText(t("Received", "تم الاستلام"));
@@ -1575,7 +1597,7 @@ inLocales(["en"], (locale) => {
       ).toBeVisible();
       await page
         .getByRole("link", {
-          name: pick(locale, "Latest submissions", "آخر الإرسالات"),
+          name: pick(locale, "History", "السجل"),
           exact: true,
         })
         .click();

@@ -13,12 +13,13 @@ import {
   pick,
 } from "../support/copy";
 import {
-  b07DetailsName,
-  b07SourcesName,
   completeAcademicSetup,
   expectOriginalTypography,
   generateStudioExample,
-  openStudyOptions,
+  openEvidenceFromChat,
+  openLibraryFromChat,
+  openLibraryFromStudio,
+  openUnitMenu,
   selectStudioExample,
   unit,
 } from "../support/demo";
@@ -315,12 +316,13 @@ inLocales(["ar"], (locale) => {
         const rows = page.locator("article[class*='sourceRow']");
         const count = dense ? 24 : 8;
         await expect(rows).toHaveCount(count);
+        // Availability is the norm: only an exception is labelled (MD-19).
         await expect(
           rows.getByText(
             t("Available for learning tools", "متاح لأدوات المذاكرة"),
             { exact: true },
           ),
-        ).toHaveCount(count);
+        ).toHaveCount(0);
         await expect(
           rows.getByText(
             t("No reading passage supplied", "لا يوجد نص متاح للقراءة"),
@@ -369,9 +371,19 @@ inLocales(["ar"], (locale) => {
               { exact: true },
             ),
         ).toBeVisible();
-        await expect(rows.nth(1)).toContainText(
+        // The excerpt limitation is said once, above the list (MD-19).
+        await expect(rows.nth(1)).not.toContainText(
           t("Processed excerpt only.", "مقتطف معالج فقط."),
         );
+        await expect(
+          page.getByText(
+            t(
+              "Excerpts show processed passages only.",
+              "المقتطفات تعرض نصوصًا معالجة فقط.",
+            ),
+            { exact: false },
+          ),
+        ).toHaveCount(1);
         finish();
       }
     },
@@ -430,7 +442,7 @@ inLocales(["en"], (locale) => {
       }
       const output = page.locator("section[class*='artifactOutput']");
       const before = await output.innerText();
-      await page.getByRole("link", { name: b07SourcesName(locale) }).click();
+      await openLibraryFromStudio(page, locale);
       await expect(
         page.getByRole("heading", {
           name: t("Material library", "مكتبة المصادر"),
@@ -903,10 +915,7 @@ inLocales(["en"], (locale) => {
           `/learn/${row.cohort.id}/${row.unit.id}` !== unit,
       )!;
       const foreignPath = `/learn/${foreign.cohort.id}/${foreign.unit.id}`;
-      await page
-        .locator("summary")
-        .filter({ hasText: b07DetailsName(locale) })
-        .click();
+      await openUnitMenu(page);
       await page
         .getByRole("link", {
           name: locale === "ar" ? foreign.unit.nameAr : foreign.unit.nameEn,
@@ -1063,12 +1072,7 @@ inLocales(["en"], (locale) => {
       });
       const artifact = await generateStudioExample(page, locale);
       const original = await artifact.locator(":scope > div[lang]").innerText();
-      await page
-        .getByRole("link", {
-          name: b07SourcesName(locale),
-          exact: true,
-        })
-        .press("Enter");
+      await openLibraryFromStudio(page, locale);
       await expect(page.getByRole("article")).toHaveCount(8);
       await expect(
         page.getByRole("link", {
@@ -1186,14 +1190,10 @@ inLocales(["ar"], (locale) => {
             exact: true,
           },
         ),
-      ).toHaveCount(23);
+      ).toHaveCount(0);
       await navigate(page, unit + "/chat", locale);
       await expect(page.locator("#exchange-2")).toBeVisible();
-      const historical = page.locator("#exchange-2").getByRole("link", {
-        name: t("Inspect evidence", "فحص الأدلة"),
-        exact: true,
-      });
-      await historical.click();
+      await openEvidenceFromChat(page, locale, 2);
       await expect(page).toHaveURL(/exchange=2&session=1/u);
       await expect(
         page.getByText(t("Page 14", "صفحة ١٤"), { exact: false }).first(),
@@ -1230,12 +1230,8 @@ inLocales(["en"], (locale) => {
     async ({ page }) => {
       const finish = isolation(page);
       await signIn(page, "student", locale, unit + "/studio");
-      await page
-        .getByRole("link", {
-          name: b07SourcesName(locale),
-          exact: true,
-        })
-        .click();
+      await generateStudioExample(page, locale);
+      await openLibraryFromStudio(page, locale);
       await expectOriginalTypography(page, locale);
       const rows = page.locator("article");
       await expect(rows).toHaveCount(8);
@@ -1271,19 +1267,15 @@ inLocales(["en"], (locale) => {
       await expect(
         page.getByLabel(pick(locale, "Message", "السؤال"), { exact: true }),
       ).toBeVisible();
+      await send(page, "supported", locale);
+      // The first-visit tip appears under the first cited answer.
       const gotIt = page.getByRole("button", {
         name: pick(locale, "Got it", "فهمت"),
         exact: true,
       });
       await expect(gotIt).toBeVisible();
       await gotIt.click();
-      await openStudyOptions(page, locale);
-      await page
-        .getByRole("link", {
-          name: b07SourcesName(locale),
-          exact: true,
-        })
-        .click();
+      await openLibraryFromChat(page, locale);
       await page
         .getByRole("link", {
           name: pick(locale, "Return to Chat", "العودة للمحادثة"),
@@ -1323,11 +1315,12 @@ inLocales(["ar"], (locale) => {
         page.getByText(missingReference, { exact: false }),
       ).toHaveCount(6);
       await expect(page.locator("article")).toHaveCount(8);
+      // The row names the page once; the excerpt no longer repeats it.
       await expect(
         page.getByText(pick(locale, "Page 14", "صفحة ١٤"), {
           exact: false,
         }),
-      ).toHaveCount(2);
+      ).toHaveCount(1);
       const excerpt = page.locator("article summary").first();
       await excerpt.press("Enter");
       await expect(
@@ -1386,12 +1379,7 @@ inLocales(["ar"], (locale) => {
           { exact: false },
         ),
       ).toBeVisible();
-      await page
-        .getByRole("link", {
-          name: b07SourcesName(locale),
-          exact: true,
-        })
-        .click();
+      await openLibraryFromStudio(page, locale);
       await expect(
         page.getByText(missingReference, { exact: false }),
       ).toHaveCount(6);
@@ -1480,12 +1468,8 @@ inLocales(["en"], (locale) => {
           exact: true,
         }),
       ).toBeEnabled();
-      await page
-        .getByRole("link", {
-          name: b07SourcesName(locale),
-          exact: true,
-        })
-        .click();
+      await generateStudioExample(page, locale);
+      await openLibraryFromStudio(page, locale);
       await materialFormats();
       await page
         .getByRole("link", {
@@ -1644,17 +1628,13 @@ inLocales(["ar"], (locale) => {
       await expect(page.locator("[class*='sourceContext']")).toHaveCount(0);
       await languageState();
       await navigate(page, unit + "/chat", locale);
+      // Chat reaches the library through a cited answer's source sheet.
+      await send(page, "supported", locale);
       const draft = localized(promptExamples.supported, locale);
       await page
         .getByLabel(pick(locale, "Message", "السؤال"), { exact: true })
         .fill(draft);
-      await openStudyOptions(page, locale);
-      await page
-        .getByRole("link", {
-          name: b07SourcesName(locale),
-          exact: true,
-        })
-        .click();
+      await openLibraryFromChat(page, locale);
       const sourceContext = page.locator("[class*='sourceContext']");
       await languageState();
       await expect(
@@ -1698,8 +1678,15 @@ inLocales(["ar"], (locale) => {
           level: 2,
         }),
       ).toBeVisible();
-      const sources = page.getByRole("link", {
-        name: b07SourcesName(locale),
+      await generateStudioExample(page, locale);
+      await page
+        .getByRole("button", {
+          name: pick(locale, "Supporting passages", "النصوص الداعمة"),
+          exact: true,
+        })
+        .click();
+      const sources = page.getByRole("dialog").getByRole("link", {
+        name: pick(locale, "Browse material library", "تصفح مكتبة المصادر"),
         exact: true,
       });
       await expect(sources).toHaveAttribute(
