@@ -249,9 +249,9 @@
 .replyActions .reportLink {
   margin-inline-start: auto;
   min-height: 44px;
-  padding-inline: 8px;
+  padding-inline: 4px;
   color: var(--secondary);
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 650;
 }
 .replyActions .reportLink:hover {
