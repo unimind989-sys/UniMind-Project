@@ -227,20 +227,26 @@ The demo still differs from the real product where it must: document-local state
 
 **Founder actions** (not taken during the refinement, by plan D13):
 
-1. **Production promotion: done on 18 October 2026, at Ahmed's request, after this page was first published.** `680a507` is live as `dpl_1ZyAFwbfAkcU4r2EjXfMvvDbYVcs`; the [production proof](../../../evidence/wp03-product-shell/2026-10-18_wp03-refinement_production_680a507.md) records it. Still open: the WP03-T27 migration `20261018001935_profile_display_name_format.sql` on hosted Supabase. It is an additive trigger that checks a name only when it changes; existing rows and data are untouched, and the live code does not depend on it. It needs a founder's Supabase access.
+1. **Production promotion: done on 18 October 2026, at Ahmed's request, after this page was first published.** `680a507` is live as `dpl_1ZyAFwbfAkcU4r2EjXfMvvDbYVcs`; the [production proof](../../../evidence/wp03-product-shell/2026-10-18_wp03-refinement_production_680a507.md) records it. Still open: the WP03-T27 migration `20261018001935_profile_display_name_format.sql` on hosted Supabase. It is an additive trigger that checks a name only when it changes; existing rows and data are untouched, and the live code does not depend on it. It waits for the paused Supabase project (see Later checks).
 2. **Vercel bypass secret.** If not already done, revoke the Vercel Protection Bypass for Automation secret that `vercel curl --debug` printed during WP03-T19. This was recorded in [#88](https://github.com/unimind989-sys/UniMind-Project/pull/88), before this work.
 3. **Founder review of the UI.** The material-UI approvals (`Approved commit:` in T25, T26, T27 and T29) were given by the overseeing session under Ahmed's delegation, not by a founder. A founder look at the rendered result is still advisable.
 
-**Open, with reasons:**
+**Decided by Ahmed on 18 October 2026, after this page was first published** (recorded in [WP03-T32](../../../planning/tasks/wp03-t32-refinement-follow-ups.md)):
 
-- **PJ-19.** "Change password" for a signed-in user still goes through the recovery email. A direct change would skip reauthentication while `secure_password_change = false` (local config; the hosted setting was not read). It needs a decision.
-- **PJ-21.** Email links opened on a different device (PKCE) need a hosted check.
-- **PJ-16.** A Batch Leader who is also a cohort student is unsupported in the PoC. No provisioning path creates one ([findings](findings.md#not-planned-with-reasons)).
-- **TC-07.** Trimming services in `database-ci` needs a reading of D-21.
-- **D9 follow-up.** The Batch Leader account gate is enforced in the application seam. The reviewed RLS predicate `has_campaign_assignment` is unchanged and is listed for the security review.
-- **IX-35, partial.** The synthetic admin band keeps its Sign out: a demo-versus-real parity question, not an interaction defect.
+- **PJ-19: keep the email flow.** A signed-in user changes the password through the recovery email. A direct change form is not added.
+- **PJ-16 and the D9 follow-up: superseded by proposed [D-24](../../decisions/d-24-batch-leader-one-time-upload-links.md).** Batch Leaders will need no account; an admin sends a one-time upload link. The account-based Batch Leader screens are not extended meanwhile.
+- **TC-07: no change.** `database-ci` keeps the complete Supabase stack (D-21).
+- **IX-35: done.** The synthetic admin no longer has a Sign out in its header; it signs out from Account, as the real admin does (WP03-T32).
+
+**Later checks** (kept here so they are not forgotten):
+
+- **PJ-21: two-device email test.** Sign up on one device and open the confirmation email on another, on the live site with a real address. Expected: either the link works, or the user can request a new one without a dead end.
+- **iPhone keyboard.** On a real iPhone, open Chat in a unit and focus the message box. Check that the composer sits right above the keyboard and the conversation still scrolls. The shell sizes Chat to the visual viewport but does not use its scroll offset.
+- **Hosted migration.** Apply `20261018001935_profile_display_name_format.sql` to the hosted Supabase project (`sha256:5575d1c3d806`). On 18 October 2026 that Free-plan project was paused, so the migration waits until it is resumed.
+
+**Still open:**
+
 - **DS-08, DS-09, DS-15, DS-18, DS-27 and DS-28, partial.** Listed in the WP03-T25 record.
-- **iOS keyboard placement.** Not verified on a device. The shell sizes Chat to the visual viewport but does not use its scroll offset.
 
 ## Decisions
 

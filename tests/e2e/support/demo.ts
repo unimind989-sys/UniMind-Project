@@ -403,12 +403,22 @@ export async function changeAdmin(page: Page, id: string, second = false) {
     .click();
 }
 
-/** Signs out of Admin and continues as another synthetic admin. */
-export async function switchAdmin(page: Page, email: string) {
+/** Signs out of Admin from Account (as the real admin does). */
+export async function signOutFromAdmin(page: Page, locale: Locale = "en") {
+  await adminNavigate(page, "/settings", locale);
+  await showAccountView(page, "identity");
   await page
-    .getByRole("button", { name: "Sign out", exact: true })
+    .getByRole("button", {
+      name: pick(locale, "Sign out", "تسجيل الخروج"),
+      exact: true,
+    })
     .first()
     .click();
+}
+
+/** Signs out of Admin and continues as another synthetic admin. */
+export async function switchAdmin(page: Page, email: string) {
+  await signOutFromAdmin(page);
   await continueAs(page, email);
   await expect(page).toHaveURL(/\/admin\?/u);
 }

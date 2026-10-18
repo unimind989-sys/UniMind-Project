@@ -27,14 +27,12 @@ export function AdminWorkspace({
   resource,
   children,
   synthetic = false,
-  actions,
   roleLabel,
 }: {
   locale: Locale;
   resource?: string | undefined;
   children: ReactNode;
   synthetic?: boolean;
-  actions?: ReactNode;
   roleLabel?: string | undefined;
 }) {
   const query = useSearchParams();
@@ -88,7 +86,6 @@ export function AdminWorkspace({
             ) : null}
           </div>
           <div ref={setSlot} className={styles.bandSlot} />
-          {actions ? <div className={styles.bandActions}>{actions}</div> : null}
         </header>
       }
     >

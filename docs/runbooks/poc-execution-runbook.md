@@ -1602,6 +1602,15 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 **Pass:** every WP03-T25 to T30 outcome is checked on merged `main` or listed as open with a reason; before and after numbers are recorded; required CI green.
 
+#### WP03-T32 — Close the WP03 refinement follow-ups
+
+**Dependencies:** WP03-T31. Ahmed's answers of 18 October 2026 to the final verification's open items ([task record](../../planning/tasks/wp03-t32-refinement-follow-ups.md)).
+
+- [~] Remove the synthetic admin's header Sign out (IX-35); the demo admin signs out from Account like the real admin.
+- [ ] Record the answers: PJ-19 keeps the email flow, TC-07 unchanged, proposed D-24 (Batch Leaders upload through one-time links without accounts) supersedes PJ-16 and the D9 follow-up; list the later checks (two-device email, iPhone keyboard, hosted migration); deliver through one PR with required CI and promote.
+
+**Pass:** the demo admin has no header Sign out and every admin journey still passes; the decisions and later checks are recorded; required CI green; production carries the change.
+
 ### 6.1 Routes
 
 Implement at minimum:

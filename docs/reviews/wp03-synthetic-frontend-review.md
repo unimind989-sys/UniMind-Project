@@ -288,7 +288,7 @@ Use reason **`Synthetic readiness review.`**, or Arabic **`مراجعة جاهز
 | Enable approved mock artifact | Blocked by approval/budget boundary; never enables a provider                                                                                                                                   |
 | Disable provider/artifact     | Applies only to the fixed mock flag                                                                                                                                                             |
 
-To confirm a pending change, **Sign out**, replace the email with `second-admin@example.invalid`, **Continue**, accept commitments, select the same pending candidate and confirm. These are two invented accounts representing the frontend rule; no real founder identity or authorization is asserted. The first account cannot provide its own distinct second confirmation. Repeat an applied action: it is blocked as already applied.
+To confirm a pending change, open **Account** › **Identity and access**, choose **Sign out**, replace the email with `second-admin@example.invalid`, **Continue**, accept commitments, select the same pending candidate and confirm. These are two invented accounts representing the frontend rule; no real founder identity or authorization is asserted. The first account cannot provide its own distinct second confirmation. Repeat an applied action: it is blocked as already applied.
 
 Use **Preview student** to see containment in the same document. Returning through normal navigation keeps the local changes. A full reload resets them. No protected action, audit write, source change, access grant, raw hold or provider transition reaches the working backend.
 
