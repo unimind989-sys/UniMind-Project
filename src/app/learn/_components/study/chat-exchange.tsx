@@ -119,6 +119,7 @@ export function ChatExchange({
                   "Questions covered by these materials",
                   "أسئلة تغطيها هذه المصادر",
                 )}
+                <FrontendIcon name="chevron" size={16} />
               </summary>
               <div className={styles.followUps}>
                 {covered.map((question) => (
@@ -151,6 +152,7 @@ export function ChatExchange({
                 "Question to ask about this conflict",
                 "سؤال للاستفسار عن هذا التعارض",
               )}
+              <FrontendIcon name="chevron" size={16} />
             </summary>
             <p>
               {t(

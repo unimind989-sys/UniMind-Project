@@ -80,10 +80,7 @@ export function Report({ scope, locale, base }: ProductStudyProps) {
           checked={confirmed}
           onChange={(event) => setConfirmed(event.target.checked)}
         />
-        {t(
-          "Confirm report for this exchange",
-          "مراجعة البلاغ المحاكى للمحادثة المختارة",
-        )}
+        {t("Confirm report for this exchange", "تأكيد البلاغ عن هذه المحادثة")}
       </label>
       <div className={styles.actions}>
         <Button
