@@ -192,6 +192,14 @@ for (const [role, locale] of [
     await expect(
       page.getByText("عرض تجريبي · خدمات محاكاة", { exact: false }),
     ).toHaveCount(0);
+    // On phones the admin Account link sits in the labelled Menu (MD-26).
+    if (role === "admin" || role === "second-admin")
+      await page
+        .locator("summary")
+        .filter({
+          hasText: new RegExp(pick(locale, "^Menu$", "^القائمة$"), "u"),
+        })
+        .click();
     await page
       .locator(`a[href="/settings?lang=${locale}"]`)
       .filter({ visible: true })
@@ -416,14 +424,14 @@ test("hosted student: study memory, locale, sign-out, refresh and new-document i
   await page.getByRole("button", { name: "Send", exact: true }).click();
   // An unmatched question has no citation; Report is its quiet action.
   await expect(
-    page.getByRole("link", { name: "Report example", exact: true }),
+    page.getByRole("link", { name: "Report answer", exact: true }),
   ).toBeVisible();
   await page
     .getByRole("group", { name: "Interface language", exact: true })
     .getByRole("button", { name: "العربية", exact: true })
     .click();
   await expect(
-    page.getByRole("link", { name: "الإبلاغ عن المثال", exact: true }),
+    page.getByRole("link", { name: "الإبلاغ عن الإجابة", exact: true }),
   ).toBeVisible();
   await page
     .getByRole("group", { name: "لغة الواجهة", exact: true })
@@ -438,7 +446,7 @@ test("hosted student: study memory, locale, sign-out, refresh and new-document i
     .getByRole("link", { name: "Return to Chat · Anatomy", exact: true })
     .click();
   await expect(
-    page.getByRole("link", { name: "Report example", exact: true }),
+    page.getByRole("link", { name: "Report answer", exact: true }),
   ).toBeVisible();
   finish();
   const another = await context.newPage();
