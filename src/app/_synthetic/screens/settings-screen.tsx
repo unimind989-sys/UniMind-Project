@@ -93,6 +93,7 @@ function ProductSettings({
       profile={{
         email: state.accountEmail,
         displayName: state.displayName,
+        accountLanguage: null,
         // The same profile rules as the real Server Action, saved to this document.
         save: (input) =>
           saveProfile(

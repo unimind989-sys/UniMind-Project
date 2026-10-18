@@ -130,6 +130,13 @@ inLocales(["ar"], (locale) => {
         .click();
       await expect(page).toHaveURL(/\/login\?/u);
       await continueAs(page, "new-student@example.invalid", locale);
+      // Past every gate first: the shell shows the saved name, then no
+      // profile step follows.
+      await expect(
+        page
+          .getByRole("link", { name: "ليلى أحمد", exact: true })
+          .filter({ visible: true }),
+      ).toBeVisible();
       await expect(page).not.toHaveURL(/\/welcome/u);
       await expect(page).not.toHaveURL(/\/consent/u);
       finish();
@@ -143,6 +150,12 @@ test(
   async ({ page }) => {
     for (const role of ["leader", "admin"] as const) {
       await signIn(page, role, "en");
+      await expect(
+        page.getByRole("heading", {
+          level: 1,
+          name: role === "leader" ? "Source intake" : "Decision queue",
+        }),
+      ).toBeVisible();
       await expect(page).not.toHaveURL(/\/welcome/u);
       await page.goto("/login?lang=en");
     }

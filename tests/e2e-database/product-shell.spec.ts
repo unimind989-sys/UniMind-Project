@@ -610,6 +610,10 @@ test("student: a real account without a name completes the profile step once", a
       .getByRole("button", { name: "Save and continue", exact: true })
       .click();
     await expect(page).toHaveURL(/\/learn(?:\?|$)/u);
+    // The forged return never leaves the app's own origin.
+    expect(new URL(page.url()).origin).toBe(
+      new URL(test.info().project.use.baseURL!).origin,
+    );
     expect(
       sql(
         `select display_name || '|' || preferred_language from public.profiles where user_id = '${student.id}';`,

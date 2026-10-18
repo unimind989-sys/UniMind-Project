@@ -87,13 +87,23 @@ function SyntheticWelcome({
   const complete = Boolean(state.displayName?.trim());
   useEffect(() => {
     if (!state.role) router.replace(`/login?lang=${locale}` as Route);
+    else if (!state.verified)
+      router.replace(`/verify-email?lang=${locale}` as Route);
     else if (!state.consent) router.replace(`/consent?lang=${locale}` as Route);
     else if (complete)
       router.replace(
         `${destination}${destination.includes("?") ? "&" : "?"}lang=${locale}` as Route,
       );
-  }, [complete, destination, locale, router, state.consent, state.role]);
-  if (!state.role || !state.consent || complete)
+  }, [
+    complete,
+    destination,
+    locale,
+    router,
+    state.consent,
+    state.role,
+    state.verified,
+  ]);
+  if (!state.role || !state.verified || !state.consent || complete)
     return <AccessPending screen={screen} />;
   const href = (language: string) => {
     const params = new URLSearchParams(query);

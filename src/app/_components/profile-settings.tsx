@@ -22,6 +22,8 @@ import styles from "./profile-settings.module.css";
 export type ProfileSettingsProps = {
   email: string | null;
   displayName: string | null;
+  /** The stored account language; null when the account has none. */
+  accountLanguage: Locale | null;
   save: (input: {
     displayName: string;
     locale: Locale;
@@ -33,6 +35,7 @@ export function ProfileSettings({
   locale,
   email,
   displayName,
+  accountLanguage,
   save,
 }: ProfileSettingsProps & { locale: Locale }) {
   const copy = getProfileCopy(locale);
@@ -41,7 +44,10 @@ export function ProfileSettings({
   const pathname = usePathname();
   const query = useSearchParams();
   const [name, setName] = useState(displayName ?? "");
-  const [language, setLanguage] = useState<Locale>(locale);
+  // Start from the stored choice, not the page, so saving a name never
+  // silently changes the account language.
+  const storedLanguage = accountLanguage ?? locale;
+  const [language, setLanguage] = useState<Locale>(storedLanguage);
   const [result, setResult] = useState<ProfileSaveState>({ status: "IDLE" });
   const [pending, startTransition] = useTransition();
   const error = profileError(result, copy);
@@ -49,7 +55,7 @@ export function ProfileSettings({
     result.status === "INVALID" && result.error !== "LANGUAGE_INVALID"
       ? error
       : null;
-  const changed = name !== (displayName ?? "") || language !== locale;
+  const changed = name !== (displayName ?? "") || language !== storedLanguage;
   return (
     <section
       id="profile-settings"

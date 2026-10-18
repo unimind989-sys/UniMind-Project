@@ -14,56 +14,60 @@
 
 **Branch:** claude/wp03-t27-profile-onboarding
 
-**Updated (UTC):** 2026-10-18T10:00Z
+**Updated (UTC):** 2026-10-18T13:00Z
 
 ## Contract
 
-**Dependencies:** WP03-T24 (findings PJ-01 to PJ-06, PJ-10 to PJ-15, PJ-27 to PJ-29, IX-05, IX-10, IX-18, IX-19, MD-22, DS-30); WP03-T25 primitives for the new screens.
+**Dependencies:** WP03-T24 (findings PJ-01 to PJ-06, PJ-10 to PJ-15, PJ-27 to PJ-29, IX-05, IX-10, IX-18, IX-19, MD-22, DS-30); WP03-T25 primitives (merged).
 
-**Inputs:** `docs/reviews/wp03-refinement/audits/journeys.md` §4; existing grant `update (display_name, preferred_language)` for `authenticated` (`20260831064458`), pinned by pgTAP 17; DESIGN access-page and Settings rules.
+**Inputs:** `docs/reviews/wp03-refinement/audits/journeys.md` §4; existing grant `update (display_name, preferred_language)` for `authenticated` (`20260831064458`), pinned by pgTAP 17.
 
-**Files:** `src/lib/auth/auth-flow.domain.ts`, `auth-access.{application,supabase.server}.ts`, new `src/lib/auth/access-route.server.ts`; new `src/lib/account/profile.{domain,application}.ts`, `account.supabase.server.ts`; every gate consumer (`page.tsx`, `learn`, `settings`, `admin`, `admin/[resource]`, workspace guard, both Batch Leader pages, upload handler, finalize action, `(auth)` actions, callback, consent, auth page); new `(auth)/welcome`; Settings and account components; synthetic account, provider, route table, demo runtime and screens; one migration; pgTAP 30; unit, demo and database e2e tests; CONTEXT, DESIGN, walkthrough.
+**Files:** auth gate (`auth-flow.domain`, `auth-access.*`, new `access-route.server`), every gate consumer, new `(auth)/welcome`, profile seam (`profile.{domain,application}`, `account.supabase.server`), Settings, synthetic account/provider/routes/screens, migration `20261018001935`, pgTAP 30, tests, CONTEXT, DESIGN, walkthrough and demo pack.
 
-**Protected paths:** auth gate and routing, Batch Leader upload authorization, migration.
+**Protected paths:** auth gate and routing, Batch Leader upload and finalize authorization, one migration.
 - Allowed: own-row update of `display_name` and `preferred_language` through the existing grant; `PROFILE_REQUIRED` after consent; the same gate on leader pages, upload (403) and finalize.
-- Forbidden (proved): anonymous and cross-user profile writes; control or bidi-override characters in names; a leader who is unverified, unconsented, suspended or nameless reaching intake or uploading; open redirects through `next`; any grant or RLS policy change.
+- Forbidden (proved): anonymous and cross-user profile writes (pgTAP 30); control or bidi characters in a changed name (pgTAP 30, unit); an unready leader reaching intake, upload or finalize (security test, database e2e); a forged `next` (unit, database e2e origin check); any grant, RLS or predicate change (diff).
 
-**Verify:** unit (`auth-flow`, `access-destination`, `auth-access`, `profile-domain`, `profile-application`, `account-supabase`, `synthetic-login`, `synthetic-route`); pgTAP 30 in `database-ci`; demo e2e `onboarding.spec.ts` plus affected specs; database e2e (nameless user → `/welcome` → home; leader gate); `corepack pnpm verify`; required CI.
+**Trust map:** caller = verified Supabase session (`getClaims` subject only; email read separately for display). Gate = `profiles.account_status`, `display_name` and the current terms acceptance, all caller-scoped under RLS. Writes = own profile row under `profiles_update_own` and the column grant; the new trigger only rejects malformed new names. Leader upload/finalize keep the service-role path behind the gate, the campaign assignment checks and the database predicates, unchanged (D9).
 
-**Pass:** the gate order is verify → consent → profile → ready on every route; existing named accounts never see `/welcome`; all listed tests green.
+**Verify:** unit, security, demo e2e (`onboarding.spec.ts` and adjusted specs), main e2e (hosted new account), database-ci (pgTAP 30, database e2e), `corepack pnpm verify`, required CI.
 
-**Rollback:** revert the PR; the migration's only object is the constraint (`alter table public.profiles drop constraint profiles_display_name_format_check;`).
+**Pass:** gate order verify → consent → profile → ready on every route; named accounts never see `/welcome`; tests green.
 
-**Hard stop:** any grant, RLS policy or authorization predicate change; hosted or production data access; real-money exposure.
+**Rollback:** revert the PR; the migration adds one function and one trigger (`drop trigger profiles_validate_display_name on public.profiles; drop function unimind_private.validate_profile_display_name();` in a forward migration if ever needed).
+
+**Hard stop:** any grant, RLS policy or authorization predicate change; hosted or production access; real-money exposure.
 
 ## Steps
 
-- [ ] Domain: `PROFILE_REQUIRED`, `accessDestination`, return-path allow-list (`/settings`, `/admin`); profile name and language rules.
-- [ ] Application and adapter: account state with the name in the gate's profile read; profile save seam shared by onboarding and Settings.
-- [ ] One server guard on every authenticated page; leader pages, upload and finalize gated; login, callback and consent route through `accessDestination`.
-- [ ] Migration (`NOT VALID` format check) and pgTAP 30.
-- [ ] `/welcome` (fourth access step) and Settings → Profile on T25 primitives; Settings declutter and local error state; sign-out on consent and welcome; honest no-membership state.
-- [ ] Demo: `new-student@example.invalid` with an empty profile, no fixture-name fallback, per-account profiles, `/welcome` in the route table.
-- [ ] Tests, docs (CONTEXT "Profile completion", "Account language"; DESIGN onboarding line; walkthrough), independent review, rendered review, PR.
+- [x] Domain: `PROFILE_REQUIRED`, `accessDestination`; the return-path allow-list is unchanged (it still rejects `/admin` and `/settings`, which then fall back to the role home).
+- [x] Application and adapter: the gate reads the name in its existing profile query; one profile save seam for onboarding and Settings.
+- [x] One server guard on every authenticated page; leader pages, upload and finalize gated; login, callback, consent and `/` route through `accessDestination`.
+- [x] Migration and pgTAP 30: a trigger checks the name only when it changes, so a legacy row never blocks an unrelated update.
+- [x] `/welcome` (fourth access step) and Settings → Profile on the T25 primitives; Settings sections switch on the client, one scrolling row on phones; Privacy for students only; catalog failure keeps Settings; sign-out on consent and welcome; an honest no-cohort state; IX-18, IX-19.
+- [x] Demo: `new-student@example.invalid` with an empty profile, no fixture-name fallback, returning-user behaviour, `/welcome` in the route table with the real gate order.
+- [x] Tests and docs; independent review findings addressed.
+- [ ] Rendered review, PR, required CI including `database-ci`, merge.
 
 ## Decisions
 
-- D6, D7, D8, D9, D10 from the [plan](../../docs/reviews/wp03-refinement/plan.md#decisions-taken-under-the-delegation): derived completion (non-empty trimmed name), account language reuses `preferred_language` (`EN`, `AR_EG`), `NOT VALID` constraint, application-level leader gate, fifth demo pair.
-- The database check enforces structure only (trimmed, single spaces, 1 to 80 characters, no control or bidi controls). "Contains a letter" stays in the application rule, because Postgres character classes depend on the database locale and could reject Arabic names.
-- `getCurrentAuthAccess` stays uncached (PJ-12 not done): a request-cached snapshot could go stale inside the save action that completes the profile.
+- D6, D7, D9, D10 from the [plan](../../docs/reviews/wp03-refinement/plan.md#decisions-taken-under-the-delegation). D8 changed after review: a change-only trigger replaces the `NOT VALID` check, because a check constraint also blocks unrelated updates to a legacy row (account activation, academic save).
+- The database rule checks structure only (trimmed, single spaces, at most 80 characters, no control or bidi controls); "contains a letter" stays in the application rule because Postgres character classes follow the database locale.
+- `getCurrentAuthAccess` stays uncached (PJ-12 not done): a request-cached snapshot could go stale inside the save that completes the profile.
+- Settings opens on Profile; the profile language starts from the stored account language, so saving a name never changes it silently.
 
 ## Current state
 
-**Changed:** NOT STARTED (plan only).
+**Changed:** see Steps; branch commits from `3bec0e1`.
 
-**Proof:** none yet.
+**Proof:** unit and security green (new: access-destination, profile-domain, account-supabase, auth-entry-routing consent → welcome, batch-leader-account-gate); main e2e 40/40; demo full suite run before the review fixes 189/195 with the six pinned-tab tests fixed; `pnpm verify` static, build and Node layers green.
 
-**Review:** pending independent review (`independent-reviewer`).
+**Review:** independent review by the `independent-reviewer` sub-agent of `2ca8e1d..a57065e`: request changes (1 major: finalize gate untested; minors: NOT VALID semantics, Settings language baseline, consent → welcome untested, demo assertion; nits). All addressed in the next commit.
 
 **Approved commit:** PENDING (material UI: `/welcome`, Settings → Profile).
 
-**Remaining:** all steps.
+**Remaining:** rendered review, PR, CI, merge.
 
 ## Next action
 
-Implement the domain and gate slice test-first, then the migration and pgTAP.
+Rendered review of `/welcome` and Settings → Profile (EN/AR, light/dark, 390/1440), then the PR.

@@ -111,6 +111,7 @@ export default async function SettingsPage({
         profile={{
           email: account.email,
           displayName: account.displayName,
+          accountLanguage: account.language,
           save: saveProfileAction,
         }}
       />
