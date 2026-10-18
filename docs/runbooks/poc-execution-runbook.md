@@ -1549,7 +1549,7 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 **Dependencies:** WP03-T25. Findings MD-01 to MD-29 (except MD-22), DS-17, DS-19, DS-20, DS-24, IX-06, IX-20 to IX-23, IX-33, IX-34, IX-36.
 
-- [ ] Phone unit header with the session menu, desktop session switcher in the band, answer language in the composer, compact composer, keyboard-aware Chat, no bottom bar inside units on phones, document scroll for the other unit tools, a phone source sheet and a shared disclosure.
+- [~] Phone unit header with the session menu, desktop session switcher in the band, answer language in the composer, compact composer, keyboard-aware Chat, no bottom bar inside units on phones, document scroll for the other unit tools, a phone source sheet and a shared disclosure.
 - [ ] Declutter Chat answers, Shelf, Subjects, Materials, Studio, Quiz, the Batch Leader band and the admin header; hosted demo shows no explanatory captions beyond safety labels; DESIGN.md updated for the changed rules.
 - [ ] Rendered numbers meet the plan's targets; overseer approval recorded; deliver through one PR with required CI.
 
