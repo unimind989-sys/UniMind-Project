@@ -1821,12 +1821,15 @@ inLocales(["ar"], (locale) => {
           exact: true,
         })
         .fill("7");
-      await expect(start).toBeDisabled();
+      // Start validates instead of being disabled (WP03-T29 IX-13).
+      await start.click();
+      await expect(page.locator("#quiz-question-count-error")).toBeVisible();
       await page
         .getByLabel(pick(locale, "Number of questions", "عدد الأسئلة"), {
           exact: true,
         })
         .fill("3");
+      await expect(page.locator("#quiz-question-count-error")).toHaveCount(0);
       await expect(start).toBeEnabled();
       await start.press("Enter");
       await expect(
