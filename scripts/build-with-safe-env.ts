@@ -49,6 +49,7 @@ const nextBinary = path.resolve("node_modules/next/dist/bin/next");
 const childEnvironment: NodeJS.ProcessEnv = {
   ...inheritedEnvironment,
   ...safeEnvironment,
+  NEXT_TELEMETRY_DISABLED: "1",
 };
 const result = spawnSync(process.execPath, [nextBinary, "build"], {
   cwd: process.cwd(),

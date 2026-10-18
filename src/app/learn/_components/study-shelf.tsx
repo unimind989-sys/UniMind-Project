@@ -1,5 +1,7 @@
 "use client";
 import { useHostedSynthetic } from "@/app/_components/product-navigation";
+import { buttonLook } from "@/app/_components/button-look";
+import { Button } from "@/app/_components/product-ui";
 import { ProductNavigationLink as Link } from "@/app/_components/product-navigation";
 import type { Route } from "next";
 import { useSearchParams } from "next/navigation";
@@ -11,7 +13,7 @@ import type {
   CatalogAccessState,
 } from "@/lib/catalog/catalog-journey.application";
 import { getCatalogCopy } from "@/lib/i18n/catalog-copy";
-import type { Locale } from "@/lib/i18n/locale";
+import { localizedHref, type Locale } from "@/lib/i18n/locale";
 import type { RecentStudyDetails } from "@/lib/study/recent-work.application";
 import styles from "../study-shelf.module.css";
 
@@ -152,7 +154,7 @@ export function StudyShelf({
       profileName={profileName}
       title={subjects ? t("Subjects", "المواد") : t("Study", "المذاكرة")}
     >
-      <div className={styles.content} aria-busy={false}>
+      <div className={styles.content}>
         <header
           className={styles.pageHeader}
           data-view={subjects ? "subjects" : "study"}
@@ -183,7 +185,7 @@ export function StudyShelf({
             ) : null}
           </div>
           {ready && !subjects ? (
-            <section className={styles.resume}>
+            <section className={styles.resume} data-plane="cobalt">
               <div className={styles.planeText}>
                 {resumeName ? (
                   <>
@@ -191,7 +193,7 @@ export function StudyShelf({
                       <span className={styles.planePill}>
                         <bdi>{resumeName}</bdi>
                       </span>
-                      <span className={styles.srOnly}> · </span>
+                      <span className="visually-hidden"> · </span>
                       <span>{resumeTool}</span>
                     </h2>
                     {resumeAddress && lastStudyDetails ? (
@@ -249,7 +251,10 @@ export function StudyShelf({
                 </p>
               </div>
               <Link
-                className={styles.open}
+                {...buttonLook(
+                  { variant: "primary", tone: "cobalt", size: "large" },
+                  styles.open,
+                )}
                 href={
                   resumeAddress
                     ? ((resumeAddress.pathname +
@@ -281,7 +286,10 @@ export function StudyShelf({
             <h2>{safe[state][0]}</h2>
             <p>{safe[state][1]}</p>
             {state === "ERROR" ? (
-              <Link href={`${basePath}?lang=${locale}` as Route}>
+              <Link
+                {...buttonLook({ variant: "primary" })}
+                href={localizedHref(basePath, locale) as Route}
+              >
                 {copy.retry}
               </Link>
             ) : null}
@@ -291,7 +299,10 @@ export function StudyShelf({
             <h2>{copy.choosePathTitle}</h2>
             <p>{copy.choosePathBody}</p>
             {!subjects ? (
-              <Link href={`/settings?lang=${locale}` as Route}>
+              <Link
+                {...buttonLook({ variant: "primary" })}
+                href={localizedHref("/settings", locale) as Route}
+              >
                 {t("Choose academic settings", "اختيار الإعدادات الدراسية")}
               </Link>
             ) : null}
@@ -358,7 +369,7 @@ export function StudyShelf({
         ) : (
           <div className={styles.indexLayout}>
             <div className={styles.shelfHeading}>
-              <h2 tabIndex={-1}>{collectionLabel}</h2>
+              <h2>{collectionLabel}</h2>
               <label className={styles.search}>
                 <span>
                   {t(
@@ -391,9 +402,9 @@ export function StudyShelf({
                     `جرّب اسم ${singularLabel} آخر أو امسح البحث.`,
                   )}
                 </p>
-                <button type="button" onClick={() => setSearch("")}>
+                <Button onClick={() => setSearch("")}>
                   {copy.clearSearch}
-                </button>
+                </Button>
               </section>
             ) : (
               <ul className={styles.units}>
@@ -447,7 +458,7 @@ export function StudyShelf({
             )}
           </div>
         )}
-        <p className={styles.srOnly} role="status">
+        <p className="visually-hidden" role="status">
           {copy.resultsUpdated}
         </p>
       </div>

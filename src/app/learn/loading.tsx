@@ -3,10 +3,10 @@
 import { useSearchParams } from "next/navigation";
 
 import { getCatalogCopy } from "@/lib/i18n/catalog-copy";
-import { getTextDirection, resolveLocale } from "@/lib/i18n/locale";
+import { resolveLocale } from "@/lib/i18n/locale";
 
-import styles from "./study-shelf.module.css";
 import { AppShell } from "@/app/_components/app-shell";
+import { PageState } from "@/app/_components/page-state";
 
 export default function LearnLoading() {
   const parameters = useSearchParams();
@@ -14,17 +14,14 @@ export default function LearnLoading() {
 
   return (
     <AppShell locale={locale}>
-      <section
-        className={styles.emptyState}
-        aria-busy="true"
-        aria-label={getCatalogCopy(locale).navigationPending}
-        aria-live="polite"
-        lang={locale}
-        dir={getTextDirection(locale)}
+      <PageState
+        kind="loading"
+        locale={locale}
+        headingLevel={1}
+        title={locale === "ar" ? "رف المذاكرة" : "Your Study Shelf"}
       >
-        <h1>{locale === "ar" ? "رف المذاكرة" : "Your Study Shelf"}</h1>
-        <p role="status">{getCatalogCopy(locale).navigationPending}</p>
-      </section>
+        <p>{getCatalogCopy(locale).navigationPending}</p>
+      </PageState>
     </AppShell>
   );
 }

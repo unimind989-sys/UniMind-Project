@@ -2,7 +2,7 @@ import { execFileSync } from "node:child_process";
 import { appendFileSync } from "node:fs";
 
 import {
-  assertExactPrMergeParents,
+  inspectPrMergeParents,
   loadCiPathConfig,
   selectCiJobs,
 } from "./lib/conditional-ci-selector";
@@ -18,6 +18,7 @@ if (
   throw new Error(`Unsupported CI event: ${String(event)}`);
 
 let changedPaths: string[] | undefined;
+let baseMoved = false;
 if (event === "pull_request") {
   const baseSha = process.env.PR_BASE_SHA;
   const headSha = process.env.PR_HEAD_SHA;
@@ -28,25 +29,31 @@ if (event === "pull_request") {
       encoding: "utf8",
     },
   );
-  const verified = assertExactPrMergeParents(
+  const verified = inspectPrMergeParents(
     parentLine,
     baseSha ?? "",
     headSha ?? "",
   );
-  changedPaths = execFileSync(
-    "git",
-    [
-      "diff",
-      "--name-only",
-      "--no-renames",
-      "-z",
-      verified.baseSha,
-      verified.headSha,
-    ],
-    { encoding: "utf8" },
-  )
-    .split("\0")
-    .filter(Boolean);
+  if (verified.kind === "BASE_MOVED") {
+    baseMoved = true;
+    console.log(
+      `::notice::PR base moved to ${verified.checkedOutBaseSha} after the event; running every job.`,
+    );
+  } else
+    changedPaths = execFileSync(
+      "git",
+      [
+        "diff",
+        "--name-only",
+        "--no-renames",
+        "-z",
+        verified.baseSha,
+        verified.headSha,
+      ],
+      { encoding: "utf8" },
+    )
+      .split("\0")
+      .filter(Boolean);
 }
 
 const selection = selectCiJobs({
@@ -55,6 +62,7 @@ const selection = selectCiJobs({
   ...(changedPaths === undefined ? {} : { changedPaths }),
   databaseFeedback:
     event === "workflow_dispatch" && process.env.DATABASE_FEEDBACK === "true",
+  baseMoved,
 });
 const allSkipped =
   event === "pull_request" &&

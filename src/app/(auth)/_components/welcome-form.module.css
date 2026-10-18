@@ -2,9 +2,3 @@
   display: grid;
   gap: 24px;
 }
-
-.hint {
-  color: var(--secondary);
-  font-size: 0.875rem;
-  line-height: 1.45;
-}

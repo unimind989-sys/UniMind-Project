@@ -22,57 +22,8 @@
   overflow-wrap: anywhere;
 }
 
-.field {
-  display: grid;
-  gap: 8px;
-  min-width: 0;
-}
-
-.field label {
-  font-weight: 700;
-}
-
-.field input {
-  min-height: 48px;
-  width: 100%;
-  background: var(--surface);
-  color: var(--ink);
-  border: 1.5px solid var(--control);
-  border-radius: var(--radius-control);
-  padding: 8px 12px;
-  font: inherit;
-  font-weight: 600;
-  transition: border-color var(--motion-control) ease;
-}
-
-.field input:hover {
-  border-color: var(--secondary);
-}
-
-.field input[aria-invalid="true"] {
-  border-color: var(--danger);
-}
-
-.hint {
-  color: var(--secondary);
-  font-size: 0.875rem;
-  line-height: 1.45;
-}
-
-.error {
-  color: var(--danger);
-  font-size: 0.875rem;
-  font-weight: 600;
-}
-
 .actions {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .field input {
-    transition: none;
-  }
 }

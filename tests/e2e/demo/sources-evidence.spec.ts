@@ -1590,10 +1590,10 @@ inLocales(["ar"], (locale) => {
         });
         await expect(selected).toHaveAttribute("aria-pressed", "true");
         await expect(selected).toBeVisible();
-        await expect(selected.locator("svg[aria-hidden='true']")).toHaveCount(
-          1,
-        );
-        await expect(other.locator("svg")).toHaveCount(0);
+        // The compact control shows the current state by fill and
+        // aria-pressed, with no check icon (WP03 plan D1).
+        await expect(other).toHaveAttribute("aria-pressed", "false");
+        await expect(group.locator("svg")).toHaveCount(0);
         await expect(
           page.getByText(pick(locale, "Interface language", "لغة الواجهة"), {
             exact: true,

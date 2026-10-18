@@ -6,7 +6,8 @@ import type { Route } from "next";
 import { useSearchParams } from "next/navigation";
 import { useOptionalProductServices } from "@/app/_components/product-services";
 import { useProductRouter } from "@/app/_components/product-navigation";
-import { Button, Notice, ProductLink } from "@/app/_components/product-ui";
+import { Notice } from "@/app/_components/notice";
+import { Button, ProductLink } from "@/app/_components/product-ui";
 import { FrontendIcon } from "@/app/_components/frontend-system";
 import {
   answerExamples,
@@ -348,7 +349,7 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
     <div className={styles.chatLayout}>
       <div className={styles.conversation}>
         <div className={styles.sectionHeading} data-workspace-chrome>
-          <h2 className={styles.chatHeading}>{t("Chat", "المحادثة")}</h2>
+          <h2 className="visually-hidden">{t("Chat", "المحادثة")}</h2>
           <div className={styles.chatTools}>
             <details
               ref={history}
@@ -402,7 +403,7 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
                       `Sessions in this ${scope.unitLabelSingularEn.toLowerCase()}`,
                       `جلسات ${scope.unitLabelSingularAr}`,
                     )}{" "}
-                    · {new Intl.NumberFormat(locale).format(sessions.length)}
+                    ({new Intl.NumberFormat(locale).format(sessions.length)})
                   </summary>
                   {sessions.length ? (
                     <ul>
@@ -421,7 +422,7 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
                               )}
                             </span>
                             <span>
-                              {t("Replies", "الإجابات")} ·{" "}
+                              {t("Replies", "الإجابات")}:{" "}
                               {new Intl.NumberFormat(locale).format(
                                 session.answers.length,
                               )}
@@ -527,7 +528,7 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
         >
           {!selected?.answers.length && !sending ? (
             <div className={styles.chatEmpty}>
-              <FrontendIcon name="chat" />
+              <FrontendIcon name="chat" size={24} />
               <h3>
                 {t("What would you like to understand?", "ما الذي تريد فهمه؟")}
               </h3>
@@ -615,7 +616,9 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
             send();
           }}
         >
-          <label htmlFor="message">{t("Message", "السؤال")}</label>
+          <label htmlFor="message" className="visually-hidden">
+            {t("Message", "السؤال")}
+          </label>
           <textarea
             ref={input}
             id="message"
@@ -663,7 +666,7 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
             ) : (
               <Button
                 key="send"
-                primary
+                variant="primary"
                 type="submit"
                 disabled={!answering || !draft.message.trim()}
               >
@@ -700,7 +703,11 @@ export function ProductChat({ scope, locale, base }: ProductStudyProps) {
             )}
           </p>
         </form>
-        {notice ? <Notice>{notice}</Notice> : null}
+        {notice ? (
+          <Notice live locale={locale}>
+            {notice}
+          </Notice>
+        ) : null}
       </div>
 
       <ProductDialog

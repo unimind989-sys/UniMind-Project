@@ -14,7 +14,7 @@ import {
 } from "@/app/_components/account-settings";
 import { Button } from "@/app/_components/product-ui";
 import { logoutAction } from "@/app/(auth)/actions";
-import { Notice } from "@/app/_components/product-ui";
+import { Notice } from "@/app/_components/notice";
 import { saveAcademicAction, saveProfileAction } from "./actions";
 
 export default async function SettingsPage({
@@ -78,7 +78,7 @@ export default async function SettingsPage({
     >
       <h1>{title}</h1>
       {catalogFailed ? (
-        <Notice error>
+        <Notice tone="error" locale={locale}>
           {t(
             "Your academic settings could not be loaded. The other settings still work; try again later.",
             "تعذّر تحميل إعداداتك الدراسية. باقي الإعدادات تعمل؛ حاول مرة أخرى لاحقًا.",

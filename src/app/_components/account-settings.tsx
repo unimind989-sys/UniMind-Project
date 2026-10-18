@@ -12,7 +12,8 @@ import { AccountLayout } from "./account-layout";
 import { Appearance } from "./appearance";
 import { ChoiceGroup } from "./choice-group";
 import { useProductText } from "./product-copy";
-import { Notice, ProductLink } from "./product-ui";
+import { Notice } from "./notice";
+import { ProductLink } from "./product-ui";
 import { ProfileSettings, type ProfileSettingsProps } from "./profile-settings";
 import styles from "./product.module.css";
 import accountStyles from "./student-account.module.css";
@@ -158,7 +159,7 @@ export function AccountSettings({
                         )}
                       </h2>
                       {privacy ? null : (
-                        <Notice>
+                        <Notice locale={locale}>
                           {t(
                             "Sharing choices are not available yet. They apply once Chat answers launch.",
                             "خيارات المشاركة غير متاحة بعد. ستُطبق عند إطلاق إجابات المحادثة.",
@@ -224,7 +225,7 @@ export function AccountSettings({
                     </section>
                     <section className={sectionClass}>
                       <h2>{t("Saving and retention", "الحفظ والاحتفاظ")}</h2>
-                      <Notice>
+                      <Notice locale={locale}>
                         {t(
                           "Retention settings are still being confirmed. No retention period or deletion action is available here yet.",
                           "إعدادات الاحتفاظ ما زالت قيد التأكيد. لا تتوفر هنا مدة احتفاظ أو إجراءات حذف بعد.",

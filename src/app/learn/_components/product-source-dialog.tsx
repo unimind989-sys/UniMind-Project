@@ -1,6 +1,8 @@
 "use client";
 
+import { MetaList } from "@/app/_components/meta-list";
 import { ProductDialog } from "@/app/_components/product-dialog";
+import { StatePill } from "@/app/_components/state-pill";
 import { ProductLink } from "@/app/_components/product-ui";
 import { useProductText } from "@/app/_components/product-copy";
 import { useOptionalProductServices } from "@/app/_components/product-services";
@@ -55,15 +57,29 @@ export function ProductSourceDialog({
             return passage ? (
               <section key={id} className={styles.excerpt}>
                 <h3>{passage.title}</h3>
-                <p>
-                  <bdi>{passage.format}</bdi> · {passage.locator}
-                </p>
+                <MetaList
+                  items={[
+                    {
+                      key: "format",
+                      label: t("Format", "النوع"),
+                      value: passage.format,
+                      dir: "ltr",
+                    },
+                    {
+                      key: "location",
+                      label: t("Location", "الموضع"),
+                      value: passage.locator,
+                    },
+                  ]}
+                />
                 {id === "handout" && !handoutActive ? (
                   <p>
-                    {t(
-                      "Inactive · excluded from new requests",
-                      "غير نشط · مستبعد من الطلبات الجديدة",
-                    )}
+                    <StatePill tone="neutral">
+                      {t(
+                        "Inactive · excluded from new requests",
+                        "غير نشط · مستبعد من الطلبات الجديدة",
+                      )}
+                    </StatePill>
                   </p>
                 ) : null}
                 <blockquote>{passage.text}</blockquote>

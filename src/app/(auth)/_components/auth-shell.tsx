@@ -1,7 +1,7 @@
-import { ProductNavigationLink as Link } from "@/app/_components/product-navigation";
-import type { Route } from "next";
 import type { ReactNode } from "react";
 import { Brand } from "@/app/_components/brand";
+import { LanguageSwitch } from "@/app/_components/language-switch";
+import { SegmentedControl } from "@/app/_components/segmented-control";
 import { getAuthCopy } from "@/lib/i18n/auth-copy";
 import type { Locale } from "@/lib/i18n/locale";
 import styles from "../auth.module.css";
@@ -25,21 +25,13 @@ export function AuthShell({
       dir={locale === "ar" ? "rtl" : "ltr"}
     >
       <header className={styles.header}>
-        <Brand href={`/?lang=${locale}` as Route} tone="dark" />
-        <nav className={styles.languageSwitch} aria-label={copy.language}>
-          <Link
-            href={languageHref.en as Route}
-            aria-current={locale === "en" ? "page" : undefined}
-          >
-            English
-          </Link>
-          <Link
-            href={languageHref.ar as Route}
-            aria-current={locale === "ar" ? "page" : undefined}
-          >
-            العربية
-          </Link>
-        </nav>
+        <Brand href="/" locale={locale} tone="dark" />
+        <LanguageSwitch
+          locale={locale}
+          labels="full"
+          hrefs={languageHref}
+          label={copy.language}
+        />
       </header>
       <div className={styles.accessLayout}>
         <aside
@@ -80,19 +72,27 @@ export function AuthShell({
         </aside>
         <main className={styles.workspace}>
           {activeStep > 0 ? (
-            <ol className={styles.steps} aria-label={copy.accountAccess}>
-              {[copy.account, copy.verify, copy.consent, copy.profile].map(
-                (label, index) => (
-                  <li
-                    key={label}
-                    aria-current={activeStep === index ? "step" : undefined}
-                  >
-                    {index < activeStep ? "✓ " : ""}
-                    {label}
-                  </li>
-                ),
-              )}
-            </ol>
+            <SegmentedControl
+              mode="steps"
+              tone="paper"
+              className={styles.steps}
+              label={copy.accountAccess}
+              items={[
+                copy.account,
+                copy.verify,
+                copy.consent,
+                copy.profile,
+              ].map((label, index) => ({
+                key: label,
+                label,
+                state:
+                  index < activeStep
+                    ? "done"
+                    : index === activeStep
+                      ? "current"
+                      : "todo",
+              }))}
+            />
           ) : null}
           {children}
           <footer className={styles.safetyRail} id="educational-boundary">

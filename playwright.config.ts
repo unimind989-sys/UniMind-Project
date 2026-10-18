@@ -44,6 +44,7 @@ export default defineConfig({
       NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: syntheticPublicCredential,
       NEXT_PUBLIC_RELEASE_ID: "e2e-synthetic",
       NEXT_PUBLIC_TELEMETRY_ENABLED: "false",
+      NEXT_TELEMETRY_DISABLED: "1",
       APP_ORIGIN: baseURL,
       UNIMIND_E2E_PORT: String(port),
       DATABASE_URL:

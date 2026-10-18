@@ -4,6 +4,7 @@ import { ProductDialog } from "@/app/_components/product-dialog";
 import type { AdminActionCandidate } from "@/lib/admin/admin-actions.application";
 import type { Locale } from "@/lib/i18n/locale";
 
+import { Button } from "@/app/_components/product-ui";
 import styles from "../../admin.module.css";
 import {
   candidateLabel,
@@ -94,9 +95,10 @@ export function DecisionReviewDialog({
         {candidate.protected && <p>{copy.separateFounderNotice}</p>}
       </section>
       <div className={styles.reviewActions}>
-        <button
+        <Button
           ref={confirmButtonRef}
-          className={styles.primaryAction}
+          variant="primary"
+          size="large"
           type="submit"
           disabled={
             !review.actionable ||
@@ -107,12 +109,12 @@ export function DecisionReviewDialog({
             refreshing ||
             state.status !== "IDLE"
           }
-          aria-busy={pending}
+          pending={pending}
         >
           {pending
             ? copy.working
             : `${secondConfirmation ? copy.confirmSecond : candidate.protected ? copy.confirmProtected : copy.confirmAction}: ${copy.actions[candidate.action]}`}
-        </button>
+        </Button>
       </div>
     </ProductDialog>
   );

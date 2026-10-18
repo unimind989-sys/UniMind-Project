@@ -1,6 +1,7 @@
 import type { Route } from "next";
 
 import { FrontendIcon } from "@/app/_components/frontend-controls";
+import { Notice } from "@/app/_components/notice";
 import { ProductNavigationLink } from "@/app/_components/product-navigation";
 import { StateIcon, StatePill } from "@/app/_components/state-pill";
 import type { AdminActionCandidate } from "@/lib/admin/admin-actions.application";
@@ -56,7 +57,7 @@ export function DecisionSummary({
           <span>{copy.targetKinds[adminTargetKind(candidate.action)]}</span>
           {candidate.protected ? (
             <span className={styles.protectedNote}>
-              <FrontendIcon name="shield" />
+              <FrontendIcon name="shield" size={16} />
               {copy.protectedNote}
             </span>
           ) : null}
@@ -69,7 +70,7 @@ export function DecisionSummary({
           <dd dir="auto">{stateLabel(candidate.currentState, locale)}</dd>
         </dl>
         <span className={styles.stateArrow} aria-hidden="true">
-          <FrontendIcon name="arrow" />
+          <FrontendIcon name="arrow" size={24} />
         </span>
         <dl className={styles.stateProposed}>
           <dt>{copy.proposedState}</dt>
@@ -120,9 +121,9 @@ export function DecisionSummary({
         </div>
       )}
       {missingExpiry && (
-        <p role="alert" className={styles.errorMessage}>
+        <Notice tone="error" live locale={locale}>
           {copy.missingHoldExpiry}
-        </p>
+        </Notice>
       )}
       {candidate.commandState === "PENDING_OWNER_REVIEW" && (
         <p className={styles.pendingNote} role="status">

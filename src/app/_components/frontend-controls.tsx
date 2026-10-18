@@ -1,10 +1,4 @@
-"use client";
-import { useProductRouter } from "@/app/_components/product-navigation";
-
-import type { Route } from "next";
-import { usePathname, useSearchParams } from "next/navigation";
 import type { ReactNode } from "react";
-import type { Locale } from "@/lib/demo/synthetic-fixtures.application";
 import styles from "./frontend-system.module.css";
 
 export type FrontendIconName =
@@ -24,8 +18,16 @@ export type FrontendIconName =
   | "upload"
   | "shield"
   | "arrow";
-// Icons share the same authored grid and stroke across study and operations.
-export function FrontendIcon({ name }: { name: FrontendIconName }) {
+export type IconSize = 16 | 20 | 24;
+// Icons share one 24-unit grid with a 1.75 stroke (2 for check, send and
+// back) and render at 16, 20 or 24px (DESIGN.md).
+export function FrontendIcon({
+  name,
+  size = 20,
+}: {
+  name: FrontendIconName;
+  size?: IconSize;
+}) {
   const paths: Record<FrontendIconName, ReactNode> = {
     shelf: (
       <>
@@ -98,55 +100,18 @@ export function FrontendIcon({ name }: { name: FrontendIconName }) {
   return (
     <svg
       className={styles.icon}
+      width={size}
+      height={size}
       data-directional={name === "back" || name === "arrow" || undefined}
       aria-hidden="true"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.75"
+      strokeWidth={["check", "send", "back"].includes(name) ? 2 : 1.75}
       strokeLinecap="round"
       strokeLinejoin="round"
     >
       {paths[name]}
     </svg>
-  );
-}
-
-export function LanguageSwitch({ locale }: { locale: Locale }) {
-  const router = useProductRouter();
-  const pathname = usePathname();
-  const query = useSearchParams();
-  return (
-    <div
-      className={styles.language}
-      role="group"
-      aria-label={locale === "ar" ? "لغة الواجهة" : "Interface language"}
-      dir="ltr"
-    >
-      {(["en", "ar"] as const).map((language) => (
-        <button
-          key={language}
-          type="button"
-          lang={language}
-          aria-pressed={locale === language}
-          onClick={() => {
-            if (locale === language) return;
-            const next = new URLSearchParams(query.toString());
-            next.set("lang", language);
-            router.replace(
-              `${pathname}?${next}${window.location.hash}` as Route,
-              {
-                scroll: false,
-              },
-            );
-          }}
-        >
-          <span className={styles.languageCheck} aria-hidden="true">
-            {locale === language ? <FrontendIcon name="check" /> : null}
-          </span>
-          {language === "en" ? "English" : "العربية"}
-        </button>
-      ))}
-    </div>
   );
 }

@@ -2,8 +2,8 @@
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useProductText } from "@/app/_components/product-copy";
-import { Notice, ProductLink } from "@/app/_components/product-ui";
-import styles from "@/app/_components/product.module.css";
+import { PageState } from "@/app/_components/page-state";
+import { ProductLink } from "@/app/_components/product-ui";
 import { quizAttemptExpired } from "@/lib/quiz/quiz-fixture.application";
 import { quizInspectionKeyMatches } from "@/lib/study/study-origin.application";
 import { QuizAttempt, type PassageQuestion } from "./quiz-attempt";
@@ -40,21 +40,36 @@ export function Quiz({
     !quizInspectionKeyMatches(query, attempt?.inspectionKey)
   )
     return (
-      <section className={styles.panel}>
-        <Notice error>
+      <PageState
+        kind="stale"
+        locale={locale}
+        title={t("This quiz has changed", "تغير هذا الاختبار")}
+        actions={
+          <ProductLink href={base + "/quiz"} locale={locale} variant="primary">
+            {t("Open Quiz", "فتح الاختبار")}
+          </ProductLink>
+        }
+      >
+        <p>
           {t(
             "This source return no longer matches the current quiz. Open Quiz to continue.",
             "لم يعد مسار العودة من المصادر يطابق الاختبار الحالي. افتح الاختبار للمتابعة.",
           )}
-        </Notice>
-        <ProductLink href={base + "/quiz"} locale={locale}>
-          {t("Open Quiz", "فتح الاختبار")}
-        </ProductLink>
-      </section>
+        </p>
+      </PageState>
     );
   if (!attempt)
     return (
-      <section className={styles.panel}>
+      <PageState
+        kind="empty"
+        locale={locale}
+        title={t("No quiz attempt yet", "لا توجد محاولة بعد")}
+        actions={
+          <ProductLink href={base + "/quiz"} locale={locale} variant="primary">
+            {t("Create a sample attempt", "بدء الاختبار")}
+          </ProductLink>
+        }
+      >
         <p>
           {t(
             "No attempt exists in this unit. Reload and reset clear sample attempts.",
@@ -66,10 +81,7 @@ export function Quiz({
             )
             .replace("في هذه الوحدة", `في ${scope.unitLabelSingularAr}`)}
         </p>
-        <ProductLink href={base + "/quiz"} locale={locale}>
-          {t("Create a sample attempt", "بدء الاختبار")}
-        </ProductLink>
-      </section>
+      </PageState>
     );
   const expired =
     attempt.abandoned ||
@@ -77,21 +89,35 @@ export function Quiz({
   const readOnly = attempt.submitted || expired;
   if (screen === "attempt" && readOnly)
     return (
-      <p role="status">{t("Opening your review…", "جارٍ فتح مراجعتك…")}</p>
+      <PageState
+        kind="loading"
+        locale={locale}
+        title={t("Opening your review…", "جارٍ فتح مراجعتك…")}
+      />
     );
   if (screen === "quiz-review" && !readOnly)
     return (
-      <section className={styles.panel}>
+      <PageState
+        kind="interrupted"
+        locale={locale}
+        title={t("Answers not submitted", "لم تُسلَّم الإجابات بعد")}
+        actions={
+          <ProductLink
+            href={base + "/quiz/sample-attempt"}
+            locale={locale}
+            variant="primary"
+          >
+            {t("Return to attempt", "العودة للمحاولة")}
+          </ProductLink>
+        }
+      >
         <p>
           {t(
             "Submit the sample answers before viewing a score.",
             "سلم الإجابات التجريبية قبل عرض النتيجة.",
           )}
         </p>
-        <ProductLink href={base + "/quiz/sample-attempt"} locale={locale}>
-          {t("Return to attempt", "العودة للمحاولة")}
-        </ProductLink>
-      </section>
+      </PageState>
     );
   return (
     <QuizAttempt

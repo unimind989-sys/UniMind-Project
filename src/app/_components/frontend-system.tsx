@@ -8,7 +8,10 @@ import type { Locale } from "@/lib/demo/synthetic-fixtures.application";
 import styles from "./frontend-system.module.css";
 import { AppShell } from "./app-shell";
 import { FrontendIcon } from "./frontend-controls";
-export { FrontendIcon, LanguageSwitch } from "./frontend-controls";
+import { localizedHref } from "@/lib/i18n/locale";
+import { MetaList } from "./meta-list";
+import { SegmentedControl } from "./segmented-control";
+export { FrontendIcon } from "./frontend-controls";
 export type { FrontendIconName } from "./frontend-controls";
 
 const focusable =
@@ -65,14 +68,13 @@ type ShellProps = {
   locale: Locale;
   title: string;
   unitLabel: string;
-  context: string;
+  /** Program, level and term: shown as structured metadata. */
+  context: readonly string[];
   institution?: string;
   base: string;
   scopeControl?: ReactNode;
   profileName?: string | null | undefined;
   available: boolean;
-  account?: string;
-  signOut?: () => void;
   children: ReactNode;
   synthetic?: boolean;
   returnToAdmin?: boolean;
@@ -97,7 +99,7 @@ export function FrontendShell({
   const pathname = usePathname();
   const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
   const body = useKeyboardScroll(t("Study content", "محتوى المذاكرة"));
-  const destinations = [
+  const destinations: readonly (readonly [string, string])[] = [
     ["", t("Materials", "مصادر المذاكرة")],
     ["/chat", t("Chat", "المحادثة")],
     ["/studio", t("Studio", "الاستوديو")],
@@ -113,8 +115,10 @@ export function FrontendShell({
     >
       {returnToAdmin ? (
         <p className={styles.previewContext} data-workspace-chrome>
-          {t("Student preview", "معاينة الطالب")} ·{" "}
-          <Link href={(adminReturnHref ?? "/admin?lang=" + locale) as Route}>
+          <span>{t("Student preview", "معاينة الطالب")}</span>
+          <Link
+            href={(adminReturnHref ?? localizedHref("/admin", locale)) as Route}
+          >
             {t("Return to Admin", "العودة للإدارة")}
           </Link>
         </p>
@@ -124,20 +128,22 @@ export function FrontendShell({
           <div>
             <Link
               className={styles.back}
-              href={("/learn?view=subjects&lang=" + locale) as Route}
+              href={localizedHref("/learn?view=subjects", locale) as Route}
               prefetch={false}
             >
-              <FrontendIcon name="back" />
-              <span className={styles.backLabel}>
-                {t("Subjects", "المواد")}
-              </span>
+              <FrontendIcon name="back" size={24} />
+              <span className="visually-hidden">{t("Subjects", "المواد")}</span>
             </Link>
             <h1>
               <bdi>{title}</bdi>
             </h1>
-            <p className={styles.scopeCaption}>
-              <bdi>{context}</bdi>
-            </p>
+            <MetaList
+              className={styles.scopeCaption}
+              items={context.map((value, index) => ({
+                key: String(index),
+                value,
+              }))}
+            />
           </div>
           {institution || scopeControl ? (
             <details
@@ -163,7 +169,7 @@ export function FrontendShell({
                   </p>
                 ) : null}
                 <p>
-                  <bdi>{context}</bdi>
+                  <bdi>{context.join(locale === "ar" ? "، " : ", ")}</bdi>
                 </p>
                 {scopeControl ? (
                   <>
@@ -180,30 +186,26 @@ export function FrontendShell({
             </details>
           ) : null}
         </header>
-        <nav
+        <SegmentedControl
+          mode="links"
+          tone="night"
           className={styles.subjectNav}
-          aria-label={t("Workspace navigation", "تنقل مساحة المذاكرة")}
-        >
-          {destinations.map(([suffix, label], index) => (
-            <Link
-              key={suffix}
-              href={(base + suffix + "?lang=" + locale) as Route}
-              prefetch={false}
-              aria-current={
-                pathname === base + suffix ||
-                (suffix === "" && pathname === base + "/sources") ||
-                (suffix === "/quiz" && pathname.startsWith(base + "/quiz/"))
-                  ? "page"
-                  : undefined
-              }
-            >
+          label={t("Workspace navigation", "تنقل مساحة المذاكرة")}
+          items={destinations.map(([suffix, label], index) => ({
+            key: suffix,
+            label,
+            href: localizedHref(base + suffix, locale),
+            current:
+              pathname === base + suffix ||
+              (suffix === "" && pathname === base + "/sources") ||
+              (suffix === "/quiz" && pathname.startsWith(base + "/quiz/")),
+            icon: (
               <FrontendIcon
                 name={(["sources", "chat", "studio", "quiz"] as const)[index]!}
               />
-              {label}
-            </Link>
-          ))}
-        </nav>
+            ),
+          }))}
+        />
       </div>
       {!available ? (
         <p className={styles.unavailable} role="status" data-workspace-chrome>

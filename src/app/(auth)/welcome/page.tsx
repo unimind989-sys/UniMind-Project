@@ -6,7 +6,7 @@ import { completeProfileAction } from "./actions";
 import { AuthShell } from "../_components/auth-shell";
 import { resolveAuthPageParameters } from "../_components/auth-page";
 import { WelcomeForm } from "../_components/welcome-form";
-import styles from "../auth.module.css";
+import { Button } from "@/app/_components/product-ui";
 import { getCurrentAuthAccess } from "@/lib/auth/auth-access.supabase.server";
 import { accessDestination } from "@/lib/auth/auth-actions.application";
 import { currentRoleHome } from "@/lib/account/account.supabase.server";
@@ -52,9 +52,9 @@ export default async function WelcomePage({
         action={completeProfileAction}
         secondaryAction={
           <form action={logoutAction}>
-            <button type="submit" className={styles.textAction}>
+            <Button variant="quiet" type="submit">
               {getProfileCopy(locale).signOut}
-            </button>
+            </Button>
           </form>
         }
       />

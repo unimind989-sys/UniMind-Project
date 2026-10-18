@@ -3,6 +3,7 @@ import type { Route } from "next";
 import { Source_Serif_4 } from "next/font/google";
 import type { Locale } from "@/lib/i18n/locale";
 import { Brand } from "./brand";
+import { LanguageSwitch } from "./language-switch";
 // Shared landing tokens and resets load before the section modules.
 import styles from "./landing.module.css";
 import { WorkspacePreview } from "./landing-experience";
@@ -32,7 +33,7 @@ export function Landing({ locale }: { locale: Locale }) {
         {t("Skip to content", "انتقل إلى المحتوى")}
       </a>
       <header className={styles.header}>
-        <Brand href={"/?lang=" + locale} tone="dark" />
+        <Brand href="/" locale={locale} tone="dark" />
         <nav
           className={styles.sectionNav}
           aria-label={t("Explore UniMind", "اكتشف UniMind")}
@@ -44,13 +45,11 @@ export function Landing({ locale }: { locale: Locale }) {
           className={styles.accountNav}
           aria-label={t("Public navigation", "التنقل العام")}
         >
-          <Link
-            className={styles.language}
-            href={("/?lang=" + (locale === "en" ? "ar" : "en")) as Route}
-            lang={locale === "en" ? "ar" : "en"}
-          >
-            {locale === "en" ? "العربية" : "English"}
-          </Link>
+          <LanguageSwitch
+            variant="link"
+            locale={locale}
+            hrefs={{ en: "/?lang=en", ar: "/?lang=ar" }}
+          />
           <Link className={styles.signIn} href={login}>
             {t("Sign in", "تسجيل الدخول")}
           </Link>
@@ -247,7 +246,7 @@ export function Landing({ locale }: { locale: Locale }) {
         </section>
       </main>
       <footer className={styles.footer}>
-        <Brand href={"/?lang=" + locale} />
+        <Brand href="/" locale={locale} />
         <p>
           {t(
             "For learning from your course materials. Educational support does not replace professional advice.",

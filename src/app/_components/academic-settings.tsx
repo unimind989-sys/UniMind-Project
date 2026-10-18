@@ -12,6 +12,7 @@ import {
   type CatalogSelection,
 } from "@/lib/catalog/catalog-journey.application";
 import type { Locale } from "@/lib/i18n/locale";
+import { Button } from "./product-ui";
 import styles from "./student-account.module.css";
 import { FrontendIcon } from "./frontend-controls";
 import { useAcademicSetupDraft } from "./academic-setup-draft";
@@ -107,15 +108,25 @@ export function AcademicSettings({
     setSetupStep(next);
     retained?.remember({ selection: journey.selection, step: next });
   };
-  const [result, action, pending] = useActionState<AcademicSaveState, FormData>(
+  // The result remembers which choices it was about, so a "saved" message
+  // never sits next to choices changed after saving (IX-19).
+  const contextKey = JSON.stringify(context);
+  const [result, action, pending] = useActionState<
+    AcademicSaveState & { key?: string },
+    FormData
+  >(
     async () => {
-      if (!context) return { status: "INVALID" };
+      if (!context) return { status: "INVALID", key: contextKey };
       const saved = await save(context);
       if (saved.status === "SAVED") retained?.remember(null);
-      return saved;
+      return { ...saved, key: contextKey };
     },
     { status: "IDLE" },
   );
+  const shownResult =
+    result.status === "SAVED" && result.key !== contextKey
+      ? { status: "IDLE" as const }
+      : result;
   return (
     <section
       className={`${styles.section} ${onboarding ? styles.onboarding : ""}`}
@@ -163,7 +174,17 @@ export function AcademicSettings({
           )}
         </p>
       ) : (
-        <form action={action}>
+        <form
+          action={action}
+          onSubmit={(event) => {
+            // Enter on a question's radio must not submit mid-sequence: it
+            // advances once that question has an answer (IX-18).
+            const active = onboarding ? setupFields[step] : undefined;
+            if (!active) return;
+            event.preventDefault();
+            if (journey.selection[active[0]]) changeStep(sequence.next);
+          }}
+        >
           {onboarding ? (
             <AcademicSetup
               locale={locale}
@@ -178,7 +199,7 @@ export function AcademicSettings({
             />
           ) : (
             <fieldset disabled={pending} className={styles.fields}>
-              <legend className={styles.srOnly}>
+              <legend className="visually-hidden">
                 {t("Academic settings", "الإعدادات الدراسية")}
               </legend>
               {fields
@@ -215,26 +236,28 @@ export function AcademicSettings({
             </p>
           ) : null}
           {!onboarding ? (
-            <button
-              className={styles.primary}
+            <Button
+              variant="primary"
+              size="large"
+              className={styles.alignStart}
               type="submit"
-              disabled={pending || !context}
+              disabled={!context}
+              pending={pending}
+              pendingLabel={t("Saving…", "جار الحفظ…")}
             >
-              {pending
-                ? t("Saving…", "جار الحفظ…")
-                : t("Save academic settings", "حفظ الإعدادات الدراسية")}
-            </button>
+              {t("Save academic settings", "حفظ الإعدادات الدراسية")}
+            </Button>
           ) : null}
-          {result.status !== "IDLE" ? (
-            <p role={result.status === "SAVED" ? "status" : "alert"}>
-              {result.status === "SAVED"
+          {shownResult.status !== "IDLE" ? (
+            <p role={shownResult.status === "SAVED" ? "status" : "alert"}>
+              {shownResult.status === "SAVED"
                 ? t("Academic settings saved.", "تم حفظ الإعدادات الدراسية.")
-                : result.status === "INVALID"
+                : shownResult.status === "INVALID"
                   ? t(
                       "Choose a complete available academic path.",
                       "اختر مسارًا دراسيًا متاحًا ومكتملًا.",
                     )
-                  : result.status === "FORBIDDEN"
+                  : shownResult.status === "FORBIDDEN"
                     ? t(
                         "Sign in and complete account access before saving.",
                         "سجل الدخول وأكمل خطوات الوصول قبل الحفظ.",
@@ -293,7 +316,7 @@ function AcademicSetup({
           </span>
           {!active ? (
             <span className={styles.reviewCompletion}>
-              <FrontendIcon name="check" />
+              <FrontendIcon name="check" size={16} />
               <span>{t("Academic path complete", "اكتمل المسار الدراسي")}</span>
             </span>
           ) : null}
@@ -318,7 +341,7 @@ function AcademicSetup({
             data-step={active[0]}
             disabled={pending}
           >
-            <legend className={styles.srOnly}>{active[1]}</legend>
+            <legend className="visually-hidden">{active[1]}</legend>
             {active[2].map((option) => (
               <label key={option.id} className={styles.choice}>
                 <input
@@ -383,21 +406,21 @@ function AcademicSetup({
       )}
       <div className={styles.setupActions}>
         {sequence.previous !== null ? (
-          <button
+          <Button
             key="back"
-            type="button"
-            className={styles.secondary}
+            size="large"
             disabled={pending}
             onClick={() => setStep(sequence.previous!)}
           >
             {t("Back", "رجوع")}
-          </button>
+          </Button>
         ) : null}
         {active ? (
-          <button
+          <Button
             key="advance"
-            type="button"
-            className={styles.primary}
+            variant="primary"
+            size="large"
+            className={styles.advance}
             disabled={pending || !selection[active[0]]}
             onClick={(event) => {
               event.preventDefault();
@@ -407,18 +430,20 @@ function AcademicSetup({
             {sequence.next === fields.length
               ? t("Review choices", "مراجعة الاختيارات")
               : t("Continue", "متابعة")}
-          </button>
+          </Button>
         ) : (
-          <button
+          <Button
             key="save"
+            variant="primary"
+            size="large"
+            className={styles.advance}
             type="submit"
-            className={styles.primary}
-            disabled={pending || !complete}
+            disabled={!complete}
+            pending={pending}
+            pendingLabel={t("Saving…", "جار الحفظ…")}
           >
-            {pending
-              ? t("Saving…", "جار الحفظ…")
-              : t("Open Study Shelf", "فتح رف المذاكرة")}
-          </button>
+            {t("Open Study Shelf", "فتح رف المذاكرة")}
+          </Button>
         )}
       </div>
     </div>

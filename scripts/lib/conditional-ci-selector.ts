@@ -97,24 +97,35 @@ export function surfacesForPath(
   return config.surfaces.filter((surface) => surfaces.has(surface));
 }
 
-export function assertExactPrMergeParents(
+export type PrMergeParents =
+  | { kind: "EXACT"; baseSha: string; headSha: string }
+  | { kind: "BASE_MOVED"; headSha: string; checkedOutBaseSha: string };
+
+/**
+ * Checks the checked-out PR merge commit against the event SHAs. A different
+ * head (or a malformed commit) fails closed. A different first parent only
+ * means the base branch moved after the event; the caller then runs every
+ * job, which is the safe superset, instead of failing the required check.
+ */
+export function inspectPrMergeParents(
   parentLine: string,
   baseSha: string,
   headSha: string,
-): { baseSha: string; headSha: string } {
+): PrMergeParents {
   if (!/^[a-f0-9]{40}$/u.test(baseSha) || !/^[a-f0-9]{40}$/u.test(headSha))
     throw new Error("PR base or head SHA is missing or malformed.");
   const parents = parentLine.trim().split(" ");
   if (
     parents.length !== 3 ||
     !parents.every((sha) => /^[a-f0-9]{40}$/u.test(sha)) ||
-    parents[1] !== baseSha ||
     parents[2] !== headSha
   )
     throw new Error(
       "Checked-out PR merge commit does not match event base and head.",
     );
-  return { baseSha, headSha };
+  return parents[1] === baseSha
+    ? { kind: "EXACT", baseSha, headSha }
+    : { kind: "BASE_MOVED", headSha, checkedOutBaseSha: parents[1]! };
 }
 
 export function selectCiJobs(input: {
@@ -122,6 +133,7 @@ export function selectCiJobs(input: {
   event: "pull_request" | "push" | "workflow_dispatch";
   changedPaths?: string[];
   databaseFeedback?: boolean;
+  baseMoved?: boolean;
 }): CiSelection {
   const { config } = input;
   if (input.event === "push")
@@ -136,6 +148,12 @@ export function selectCiJobs(input: {
         }
       : { ...fullSelection, reason: "default manual dispatch runs full CI" };
   }
+  if (input.baseMoved === true)
+    return {
+      ...fullSelection,
+      reason:
+        "PR base moved after the event; every job runs on the newer merge ref",
+    };
   const paths = input.changedPaths;
   if (
     paths === undefined ||

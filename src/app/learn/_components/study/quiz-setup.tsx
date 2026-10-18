@@ -1,7 +1,8 @@
 "use client";
 import { ChoiceGroup } from "@/app/_components/choice-group";
 import { useProductText } from "@/app/_components/product-copy";
-import { Button, Notice, ProductLink } from "@/app/_components/product-ui";
+import { Notice } from "@/app/_components/notice";
+import { Button, ProductLink } from "@/app/_components/product-ui";
 import styles from "@/app/_components/product.module.css";
 import type { Locale } from "@/lib/demo/synthetic-fixtures.application";
 import {
@@ -38,7 +39,7 @@ export function QuizSetup({
     <section className={styles.panel}>
       <h2>{t("Set up your quiz", "إعداد الاختبار")}</h2>
       {unavailable ? (
-        <Notice>
+        <Notice locale={locale}>
           {t(
             "Quiz is not available yet. Questions will come from approved materials when it launches.",
             "الاختبار غير متاح بعد. ستأتي الأسئلة من المصادر المعتمدة عند إطلاقه.",
@@ -175,7 +176,8 @@ export function QuizSetup({
       </div>
       <div className={styles.quizStart}>
         <Button
-          primary
+          variant="primary"
+          size="large"
           onClick={() => start()}
           disabled={!handoutAvailable || !validQuizConfiguration(configuration)}
         >
@@ -184,6 +186,7 @@ export function QuizSetup({
             : t("Start quiz", "بدء الاختبار")}
         </Button>
         <Button
+          size="large"
           disabled={unavailable}
           onClick={() =>
             setConfiguration(() => ({ ...defaultQuizConfiguration }))
@@ -193,6 +196,7 @@ export function QuizSetup({
         </Button>
         {attempt ? (
           <ProductLink
+            size="large"
             href={`${base}/quiz/sample-attempt${quizAttemptReviewable(attempt, now) ? "/review" : ""}?attempt=${encodeURIComponent(attempt.inspectionKey)}`}
             locale={locale}
           >
@@ -205,7 +209,7 @@ export function QuizSetup({
         ) : null}
       </div>
       {!handoutAvailable && !unavailable ? (
-        <Notice error>
+        <Notice tone="warning" locale={locale}>
           {t(
             "This quiz fixture needs the inactive handout. New attempts are unavailable until its source is active.",
             "مثال الاختبار يحتاج الملزمة غير النشطة. المحاولات الجديدة غير متاحة حتى تفعيل المصدر.",
@@ -213,7 +217,7 @@ export function QuizSetup({
         </Notice>
       ) : null}
       {attempt ? (
-        <Notice>
+        <Notice locale={locale}>
           {t(
             "Your setup stays in this tab. A new attempt replaces the latest attempt; reloading clears both.",
             "تبقى إعداداتك في هذا التبويب. المحاولة الجديدة تستبدل آخر محاولة؛ وإعادة التحميل تمسحهما.",

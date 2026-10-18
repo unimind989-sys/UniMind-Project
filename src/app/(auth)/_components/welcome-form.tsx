@@ -13,7 +13,10 @@ import {
 
 import { Appearance } from "@/app/_components/appearance";
 import { ChoiceGroup } from "@/app/_components/choice-group";
+import { Field } from "@/app/_components/field";
+import { Notice } from "@/app/_components/notice";
 import { useProductRouter } from "@/app/_components/product-navigation";
+import { SubmitButton } from "@/app/_components/product-ui";
 import {
   displayNameMaxLength,
   type ProfileSaveState,
@@ -63,10 +66,7 @@ export function WelcomeForm({
   secondaryAction?: ReactNode;
 }) {
   const copy = getProfileCopy(locale);
-  const [state, formAction, pending] = useActionState(
-    action,
-    initialWelcomeState,
-  );
+  const [state, formAction] = useActionState(action, initialWelcomeState);
   // Controlled, so React's reset after a form action never clears the name.
   const [name, setName] = useState(state.displayName);
   const router = useProductRouter();
@@ -88,45 +88,36 @@ export function WelcomeForm({
       <h1 id={`${id}-title`}>{copy.welcomeTitle}</h1>
       <p>{copy.welcomeLede}</p>
       {error ? (
-        <p
-          ref={noticeRef}
-          className={styles.formNotice}
-          role="alert"
-          tabIndex={-1}
-        >
+        <Notice ref={noticeRef} tone="error" live locale={locale} tabIndex={-1}>
           {error}
-        </p>
+        </Notice>
       ) : null}
       <form action={formAction} noValidate className={profile.form}>
         <input type="hidden" name="locale" value={locale} />
         <input type="hidden" name="returnPath" value={returnPath} />
-        <div className={styles.field}>
-          <label htmlFor={`${id}-name`}>{copy.name}</label>
-          <input
-            id={`${id}-name`}
-            name="displayName"
-            type="text"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-            autoComplete="name"
-            autoCapitalize="words"
-            spellCheck={false}
-            enterKeyHint="done"
-            dir="auto"
-            maxLength={displayNameMaxLength}
-            required
-            aria-invalid={nameError !== null}
-            aria-describedby={`${id}-name-hint${nameError ? ` ${id}-name-error` : ""}`}
-          />
-          <span id={`${id}-name-hint`} className={profile.hint}>
-            {copy.nameHint}
-          </span>
-          {nameError ? (
-            <span id={`${id}-name-error`} className={styles.fieldError}>
-              {nameError}
-            </span>
-          ) : null}
-        </div>
+        <Field
+          id={`${id}-name`}
+          label={copy.name}
+          hint={copy.nameHint}
+          error={nameError}
+        >
+          {(control) => (
+            <input
+              {...control}
+              name="displayName"
+              type="text"
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              autoComplete="name"
+              autoCapitalize="words"
+              spellCheck={false}
+              enterKeyHint="done"
+              dir="auto"
+              maxLength={displayNameMaxLength}
+              required
+            />
+          )}
+        </Field>
         <ChoiceGroup
           label={copy.language}
           value={locale}
@@ -142,14 +133,9 @@ export function WelcomeForm({
           }}
         />
         <Appearance locale={locale} />
-        <button
-          className={styles.primaryAction}
-          type="submit"
-          disabled={pending}
-          aria-busy={pending}
-        >
-          <span>{pending ? copy.saving : copy.save}</span>
-        </button>
+        <SubmitButton size="large" block pendingLabel={copy.saving}>
+          {copy.save}
+        </SubmitButton>
       </form>
       {secondaryAction ? (
         <div className={styles.secondaryActions}>{secondaryAction}</div>

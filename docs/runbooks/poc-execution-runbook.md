@@ -1539,9 +1539,9 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 **Dependencies:** WP03-T24. Findings DS-01 to DS-34 (except DS-17, DS-19, DS-20, DS-24), IX-02, IX-03, IX-07, IX-17, IX-30 ([plan](../reviews/wp03-refinement/plan.md#t25--consolidate-the-cobalt-design-system-and-shared-primitives)).
 
-- [ ] One `LanguageSwitch` for shell, access pages and landing; rebuilt `Button` and action link; `SubmitButton`, `Field`, `Notice` with icon, `PageState`, `SegmentedControl` and `MetaList`; error pages on `retry()` with a safe exit.
-- [ ] Open Folio alias tokens replaced and removed with a guard; avatar contrast, status colours, font stacks, icon sizes, focus and disabled styles fixed; Report, Evidence, Quiz states and the campaign invitation moved onto the primitives; dead code removed.
-- [ ] Rendered review (EN/AR, light/dark, 320 to 1440px, 200% text) approved by the overseeing session under the delegation (`Approved commit:`); deliver through one PR with required CI.
+- [x] One `LanguageSwitch` for shell, access pages and landing; rebuilt `Button` and action link; `SubmitButton`, `Field`, `Notice` with icon, `PageState`, `SegmentedControl` and `MetaList`; error pages on `retry()` with a safe exit.
+- [x] Open Folio alias tokens replaced and removed with a guard; avatar contrast, status colours, font stacks, icon sizes, focus and disabled styles fixed; Report, Evidence, Quiz states and the campaign invitation moved onto the primitives; dead code removed.
+- [x] Rendered review (EN/AR, light/dark, 320 to 1440px, 200% text) approved by the overseeing session under the delegation (`Approved commit:`); deliver through one PR with required CI. Approved at `d6dbd43` by the overseeing session under Ahmed's delegation ([task record](../../planning/tasks/wp03-t25-cobalt-primitives.md)). These closure markers become authoritative only when that PR merges with green required CI.
 
 **Pass:** one implementation per DESIGN component in use; no alias token or legacy button left; no behaviour change; required CI green.
 
@@ -1587,9 +1587,9 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 **Dependencies:** WP03-T24. Findings TC-01 to TC-06, TC-08 to TC-12, TC-19 to TC-22. Protected path: CI workflow and selector.
 
-- [ ] Fix the quiz fake-clock flake; two Playwright workers per demo shard, one main e2e shard, headless-shell Chromium, a selector that runs everything when only the base moved, and no duplicate plain typecheck in `verify:ci`.
-- [ ] A local verify runner (no bare `pnpm`, parallel static checks, build first, timing table), CPU-based local workers, lint and format caches, telemetry off, corrected docs.
-- [ ] Independent review, a `--repeat-each=2` demo run and two green PR CI runs; before and after measurements in the [CI and testing report](../reviews/wp03-refinement/ci-testing-report.md); deliver through one PR.
+- [x] Fix the quiz fake-clock flake; two Playwright workers per demo shard, one main e2e shard, headless-shell Chromium, a selector that runs everything when only the base moved, and no duplicate plain typecheck in `verify:ci`.
+- [x] A local verify runner (no bare `pnpm`, parallel static checks, build first, timing table), CPU-based local workers, lint and format caches, telemetry off, corrected docs.
+- [x] Independent review, a `--repeat-each=2` demo run and two green PR CI runs; before and after measurements in the [CI and testing report](../reviews/wp03-refinement/ci-testing-report.md); deliver through one PR. Reviewed by the `independent-reviewer` sub-agent (nits fixed); demo `--repeat-each=2` 384/384; PR [#90](https://github.com/unimind989-sys/UniMind-Project/pull/90) runs 39083623872 and 39085439849 green. These closure markers become authoritative only when that PR merges with green required CI.
 
 **Pass:** the same tests and gates run; CI wall time and compute per run fall measurably; local verify is faster; required CI green.
 

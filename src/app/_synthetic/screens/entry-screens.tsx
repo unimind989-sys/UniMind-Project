@@ -6,7 +6,7 @@ import { Landing } from "@/app/_components/landing";
 import { ProductAuth } from "@/app/_components/product-auth";
 import { AuthShell } from "@/app/(auth)/_components/auth-shell";
 import { WelcomeForm } from "@/app/(auth)/_components/welcome-form";
-import authStyles from "@/app/(auth)/auth.module.css";
+import { Button } from "@/app/_components/product-ui";
 import { saveProfile } from "@/lib/account/profile.application";
 import { getProfileCopy } from "@/lib/i18n/profile-copy";
 import {
@@ -134,13 +134,9 @@ function SyntheticWelcome({
             return { result, displayName };
           }}
           secondaryAction={
-            <button
-              type="button"
-              className={authStyles.textAction}
-              onClick={signedOut}
-            >
+            <Button variant="quiet" onClick={signedOut}>
               {getProfileCopy(locale).signOut}
-            </button>
+            </Button>
           }
         />
       </AuthShell>

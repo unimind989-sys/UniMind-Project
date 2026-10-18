@@ -49,6 +49,44 @@ No category could be removed without losing forbidden-path, RLS, accessibility, 
 
 The chain also fails outright when `pnpm` itself is not on PATH (only corepack), builds last (a build error shows up after the browser suites), and leaves `next-env.d.ts` modified.
 
-## Changes and results
+## Changes and results (WP03-T30)
 
-Filled by WP03-T30 with measured before and after numbers.
+### What changed
+
+| Finding | Change | Why it is safe |
+| --- | --- | --- |
+| TC-02 | The quiz journey waits for the real resize event or a resize-observer delivery before it advances its paused fake clock | With observer callbacks deliberately delayed, the old one-shot advance failed 3/3 and the new helper passed 3/3; the real journey passed 10/10 |
+| TC-01 | Two Playwright workers per demo shard (five shards kept) | Every demo test signs in on its own page; a full local demo `--repeat-each=2` on two workers passed |
+| TC-05 | One main e2e shard instead of two | Its 118 s of tests were never on the critical path; one fewer concurrent job |
+| TC-06 | e2e and e2e-demo install only the Chromium headless shell | Headless runs launch the shell; `--with-deps` keeps fonts and libraries; database-ci unchanged |
+| TC-11 | No plain `typecheck` in `verify:ci` or the static job (kept in `pnpm check`) | `typecheck:fresh` covers every tracked file and the production build type-checks app code; a unit test pins `ignoreBuildErrors: false` |
+| TC-03 | The selector runs every job when only the PR base moved | Running everything is a superset; a different head or malformed commit still fails closed |
+| TC-08, TC-20 | `pnpm verify` and `pnpm check` run through `scripts/run-verify.ts`: static checks in parallel, the build before the browser suites, no bare `pnpm`, a timing table, no leftover `next-env.d.ts` change | It runs exactly the `verify:ci` components (unit-tested) and stops at the first failure |
+| TC-09, TC-10, TC-12 | CPU-based local demo workers, ESLint and Prettier content caches, Next telemetry off | Local only; CI has no cache |
+| TC-04, TC-21, TC-22 | Corrected docs, unique matrix step titles, the `--repeat-each=2` rule for timing-sensitive changes | Documentation and reporting |
+
+Not changed, with reasons in the audit: caching (forbidden by the CI policy, under 1.5 compute-minutes), a production-build demo (weakens the T15 demo gate for a 1 to 2% gain), cross-job build reuse, removing the selector's duplicate workflow check, narrowing the layout matrix, trimming the database stack (needs a reading of D-21).
+
+### CI before and after
+
+| Measure | Before (main pushes 39076457286, 39075001940, 39072885508) | After (PR runs 39083623872, 39085439849) |
+| --- | --- | --- |
+| Wall time | 7.4 to 8.0 min | 6.75 to 6.95 min, now bound by `database-ci` (6.4 to 6.5 min) |
+| Application gate complete (all non-database jobs) | 7.3 to 7.9 min | 4.65 to 5.05 min |
+| Slowest demo shard | 6.1 to 7.2 min | 4.2 to 4.5 min |
+| Demo shards | 4.8 to 7.2 min each, 1 worker | 3.4 to 4.5 min each, 2 workers |
+| Main e2e | 2 shards of 1.7 to 2.0 min | 1 shard of 2.6 to 2.75 min |
+| Compute per run | 41.9 to 43.0 min | 30.7 to 31.9 min (about 26% less; the PR runs also include the 14 s dependency audit) |
+| Concurrent jobs per run | 10 | 9 |
+| Tests run | 192 demo, 39 main e2e, Node layers, database-ci | Same |
+
+A pull request that does not touch database, auth or storage paths skips `database-ci`, so its wall time now ends with the application gate, at about 5 minutes instead of about 7.5.
+
+### Local `pnpm verify` before and after
+
+| Run | Time | Conditions |
+| --- | --- | --- |
+| Before: one step at a time (`bcab083`) | 48.4 min | Five read-only audit agents running |
+| After: `scripts/run-verify.ts` on the WP03-T30 candidate | 34.0 min (every step passed; demo 192 in 27.3 min on 2 workers) | Another task building and testing on the same 4-CPU machine at the same time |
+
+Step detail for the after run: format 18.5 s, lint 34.5 s, `typecheck:fresh` 40.5 s, secret scan 34.1 s and the four small checks ran together in about 41 s instead of about 245 s in sequence; the production build moved first (56.2 s); Node tests 32.5 s; main e2e 244.3 s; demo 1,643.2 s. A clean re-measure on a quiet machine is recorded in the [final verification](final-verification.md).

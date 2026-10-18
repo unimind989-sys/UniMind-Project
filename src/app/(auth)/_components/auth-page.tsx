@@ -3,7 +3,7 @@ import { AuthShell } from "./auth-shell";
 
 import type { CurrentTerms } from "@/lib/auth/auth-access.application";
 import { logoutAction } from "../actions";
-import styles from "../auth.module.css";
+import { Button } from "@/app/_components/product-ui";
 import { validatedInternalReturnPath } from "@/lib/auth/auth-actions.application";
 import { resolveLocale, type Locale } from "@/lib/i18n/locale";
 import { getCurrentAuthAccess } from "@/lib/auth/auth-access.supabase.server";
@@ -125,9 +125,9 @@ export async function AuthPage({
           mode === "consent" ? (
             // A signed-in caller who does not accept can still leave.
             <form action={logoutAction}>
-              <button type="submit" className={styles.textAction}>
+              <Button variant="quiet" type="submit">
                 {locale === "ar" ? "تسجيل الخروج" : "Sign out"}
-              </button>
+              </Button>
             </form>
           ) : undefined
         }

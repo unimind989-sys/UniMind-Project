@@ -2,7 +2,9 @@
 import { useSearchParams } from "next/navigation";
 import { useProductText } from "@/app/_components/product-copy";
 import { useOptionalProductServices } from "@/app/_components/product-services";
-import { Notice, ProductLink, Row } from "@/app/_components/product-ui";
+import { MetaList } from "@/app/_components/meta-list";
+import { Notice } from "@/app/_components/notice";
+import { ProductLink } from "@/app/_components/product-ui";
 import styles from "@/app/_components/product.module.css";
 import {
   answerExamples,
@@ -90,7 +92,7 @@ export function Evidence({
       )}
       {screen === "evidence" ? (
         !answer ? (
-          <Notice>
+          <Notice locale={locale}>
             {live
               ? t(
                   "Evidence opens from a Chat answer. Chat answers are not available yet.",
@@ -113,30 +115,50 @@ export function Evidence({
                 )}
               </p>
             ) : (
-              supporting.map((source) => (
-                <Row key={source.segment} title={source.title}>
-                  <p>
-                    <bdi>{source.format}</bdi> · {source.locator}
-                  </p>
-                  <p>
-                    {t("Fixture excerpt", "نص المثال")}:{" "}
-                    {source.format === "AUDIO"
-                      ? t(
-                          "Count the roots first. In some people the plexus is prefixed and takes a branch from C4, so check before you name the trunks.",
-                          "عُدّ الجذور أولًا. في بعض الناس تكون الضفيرة متقدمة وتأخذ فرعًا من C4، فتأكد قبل أن تسمي الجذوع.",
-                        )
-                      : t(
-                          "Injury to the upper trunk (C5, C6) produces Erb–Duchenne paralysis, commonly from excessive separation of the head and shoulder. The plexus is formed by the ventral rami of C5 to T1.",
-                          "إصابة الجذع العلوي (C5 وC6) تسبب شلل إرب-دوشين، غالبًا من المباعدة الشديدة بين الرأس والكتف. تتكون الضفيرة من الفروع الأمامية للأعصاب من C5 إلى T1.",
-                        )}
-                  </p>
-                </Row>
-              ))
+              <ul className={styles.listRows}>
+                {supporting.map((source) => (
+                  <li key={source.segment} className={styles.listRow}>
+                    <div>
+                      <h3>{source.title}</h3>
+                      <MetaList
+                        className={styles.rowMeta}
+                        items={[
+                          {
+                            key: "format",
+                            label: t("Format", "النوع"),
+                            value: source.format,
+                            dir: "ltr",
+                          },
+                          {
+                            key: "location",
+                            label: t("Location", "الموضع"),
+                            value: source.locator,
+                          },
+                        ]}
+                      />
+                      <blockquote className={styles.quote}>
+                        <span className="visually-hidden">
+                          {t("Fixture excerpt", "نص المثال")}:{" "}
+                        </span>
+                        {source.format === "AUDIO"
+                          ? t(
+                              "Count the roots first. In some people the plexus is prefixed and takes a branch from C4, so check before you name the trunks.",
+                              "عُدّ الجذور أولًا. في بعض الناس تكون الضفيرة متقدمة وتأخذ فرعًا من C4، فتأكد قبل أن تسمي الجذوع.",
+                            )
+                          : t(
+                              "Injury to the upper trunk (C5, C6) produces Erb–Duchenne paralysis, commonly from excessive separation of the head and shoulder. The plexus is formed by the ventral rami of C5 to T1.",
+                              "إصابة الجذع العلوي (C5 وC6) تسبب شلل إرب-دوشين، غالبًا من المباعدة الشديدة بين الرأس والكتف. تتكون الضفيرة من الفروع الأمامية للأعصاب من C5 إلى T1.",
+                            )}
+                      </blockquote>
+                    </div>
+                  </li>
+                ))}
+              </ul>
             )}
           </section>
         )
       ) : live ? (
-        <Notice>
+        <Notice locale={locale}>
           {embedded
             ? t(
                 "The material list is not available yet.",

@@ -1,6 +1,7 @@
 "use client";
 import { useProductText } from "@/app/_components/product-copy";
-import { Notice, ProductLink } from "@/app/_components/product-ui";
+import { Notice } from "@/app/_components/notice";
+import { ProductLink } from "@/app/_components/product-ui";
 import styles from "@/app/_components/product.module.css";
 import type { Locale } from "@/lib/demo/synthetic-fixtures.application";
 import type { QuizSourceSelection } from "@/lib/study/study-origin.application";
@@ -66,7 +67,7 @@ export function SourceReturnContext({
             : t("Return to Chat", "العودة للمحادثة")}
       </ProductLink>
       {quizSource?.kind === "unavailable" ? (
-        <Notice error>
+        <Notice tone="error" live locale={locale}>
           {t(
             "This source return no longer matches the current quiz. Open Quiz to continue.",
             "لم يعد مسار العودة من المصادر يطابق الاختبار الحالي. افتح الاختبار للمتابعة.",

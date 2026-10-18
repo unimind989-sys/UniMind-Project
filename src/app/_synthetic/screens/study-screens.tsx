@@ -144,7 +144,7 @@ export function StudyScreen(
   page: ScreenProps & Required<Pick<ScreenProps, "scope">>,
 ) {
   const screen = useSyntheticScreen(page);
-  const { state, update, t, signedOut } = screen;
+  const { state, update, t } = screen;
   const { locale, fixture, scope: inputScope } = page;
   const scope = {
     ...inputScope,
@@ -241,10 +241,8 @@ export function StudyScreen(
         )
         .map((row) => row.unit)}
       available={visible}
-      account={`${state.role}@example.invalid`}
       returnToAdmin={state.role === "admin" || state.role === "second-admin"}
       adminReturnHref={adminPreviewReturn(state, scope, locale)}
-      signOut={signedOut}
     >
       {content}
     </StudyFrame>

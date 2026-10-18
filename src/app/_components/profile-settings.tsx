@@ -12,8 +12,10 @@ import { getProfileCopy } from "@/lib/i18n/profile-copy";
 import type { Locale } from "@/lib/i18n/locale";
 import { profileError } from "@/app/(auth)/_components/welcome-form";
 import { ChoiceGroup } from "./choice-group";
+import { Field } from "./field";
+import { Notice } from "./notice";
 import { useProductRouter } from "./product-navigation";
-import { Notice } from "./product-ui";
+import { Button } from "./product-ui";
 import accountStyles from "./student-account.module.css";
 import styles from "./profile-settings.module.css";
 
@@ -83,35 +85,31 @@ export function ProfileSettings({
             </dd>
           </dl>
         ) : null}
-        <div className={styles.field}>
-          <label htmlFor={`${id}-name`}>{copy.name}</label>
-          <input
-            id={`${id}-name`}
-            name="displayName"
-            type="text"
-            value={name}
-            onChange={(event) => {
-              setName(event.target.value);
-              setResult({ status: "IDLE" });
-            }}
-            autoComplete="name"
-            autoCapitalize="words"
-            spellCheck={false}
-            dir="auto"
-            maxLength={displayNameMaxLength}
-            required
-            aria-invalid={nameError !== null}
-            aria-describedby={`${id}-hint${nameError ? ` ${id}-error` : ""}`}
-          />
-          <span id={`${id}-hint`} className={styles.hint}>
-            {copy.nameHint}
-          </span>
-          {nameError ? (
-            <span id={`${id}-error`} className={styles.error}>
-              {nameError}
-            </span>
-          ) : null}
-        </div>
+        <Field
+          id={`${id}-name`}
+          label={copy.name}
+          hint={copy.nameHint}
+          error={nameError}
+        >
+          {(control) => (
+            <input
+              {...control}
+              name="displayName"
+              type="text"
+              value={name}
+              onChange={(event) => {
+                setName(event.target.value);
+                setResult({ status: "IDLE" });
+              }}
+              autoComplete="name"
+              autoCapitalize="words"
+              spellCheck={false}
+              dir="auto"
+              maxLength={displayNameMaxLength}
+              required
+            />
+          )}
+        </Field>
         <ChoiceGroup
           label={copy.language}
           value={language}
@@ -125,19 +123,24 @@ export function ProfileSettings({
           }}
         />
         <div className={styles.actions}>
-          <button
+          <Button
             type="submit"
-            className={accountStyles.primary}
-            disabled={pending || !changed}
-            aria-busy={pending}
+            variant="primary"
+            disabled={!changed}
+            pending={pending}
+            pendingLabel={copy.saving}
           >
-            {pending ? copy.saving : copy.saveSettings}
-          </button>
+            {copy.saveSettings}
+          </Button>
         </div>
         {result.status === "SAVED" ? (
-          <Notice success>{copy.saved}</Notice>
+          <Notice tone="success" live locale={locale}>
+            {copy.saved}
+          </Notice>
         ) : error && !nameError ? (
-          <Notice error>{error}</Notice>
+          <Notice tone="error" live locale={locale}>
+            {error}
+          </Notice>
         ) : null}
       </form>
     </section>

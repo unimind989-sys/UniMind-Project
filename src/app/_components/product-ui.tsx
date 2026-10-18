@@ -2,70 +2,126 @@
 
 import type { Route } from "next";
 import { ProductNavigationLink as Link } from "@/app/_components/product-navigation";
-import type { MouseEventHandler, ReactNode } from "react";
+import type { MouseEventHandler, ReactNode, Ref } from "react";
+import { useFormStatus } from "react-dom";
 import {
   text,
   type Locale,
   type Localized,
 } from "@/lib/demo/synthetic-fixtures.application";
-import styles from "./product.module.css";
+import { localizedHref } from "@/lib/i18n/locale";
+import { buttonLook, type ButtonLook } from "./button-look";
+import { Field } from "./field";
 
+export type { ButtonLook } from "./button-look";
+
+/**
+ * Action link: navigation that looks like a Button (DESIGN.md "Button /
+ * action link"; anchors for navigation). The interface language is kept.
+ */
 export function ProductLink({
   href,
   locale,
   children,
+  variant = "secondary",
+  tone,
+  size,
+  block,
+  className,
   "aria-current": current,
+  "aria-describedby": describedBy,
   onClick,
-}: {
+}: ButtonLook & {
   href: string;
   locale: Locale;
   children: ReactNode;
+  className?: string | undefined;
   "aria-current"?: "page" | undefined;
-  onClick?: MouseEventHandler<HTMLAnchorElement>;
+  "aria-describedby"?: string | undefined;
+  onClick?: MouseEventHandler<HTMLAnchorElement> | undefined;
 }) {
-  const address = new URL(href, "https://synthetic.invalid");
-  address.searchParams.set("lang", locale);
   return (
     <Link
-      className={styles.link}
-      href={`${address.pathname}${address.search}${address.hash}` as Route}
+      {...buttonLook({ variant, tone, size, block }, className)}
+      href={localizedHref(href, locale) as Route}
       prefetch={false}
       aria-current={current}
+      aria-describedby={describedBy}
       {...(onClick ? { onClick } : {})}
     >
       {children}
     </Link>
   );
 }
+
+type ButtonProps = ButtonLook & {
+  children: ReactNode;
+  onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
+  disabled?: boolean | undefined;
+  /** Shows `pendingLabel` (or the label), sets `aria-busy` and disables. */
+  pending?: boolean | undefined;
+  pendingLabel?: ReactNode;
+  type?: "submit" | "button";
+  className?: string | undefined;
+  form?: string | undefined;
+  name?: string | undefined;
+  value?: string | undefined;
+  ref?: Ref<HTMLButtonElement> | undefined;
+  "aria-label"?: string | undefined;
+  "aria-describedby"?: string | undefined;
+  "aria-pressed"?: boolean | undefined;
+  "aria-expanded"?: boolean | undefined;
+  "aria-controls"?: string | undefined;
+};
+
+/** `Button` (DESIGN.md): primary, secondary, quiet and destructive on paper,
+ * Night or Cobalt planes, with a pending state and one disabled look. */
 export function Button({
   children,
-  onClick,
+  variant = "secondary",
+  tone,
+  size,
+  block,
+  pending = false,
+  pendingLabel,
   disabled = false,
-  primary = false,
-  variant,
-  "aria-label": ariaLabel,
   type = "button",
-}: {
-  children: ReactNode;
-  onClick?: () => void;
-  disabled?: boolean;
-  primary?: boolean;
-  variant?: "primary" | "secondary" | "quiet";
-  "aria-label"?: string;
-  type?: "submit" | "button";
-}) {
+  className,
+  ...rest
+}: ButtonProps) {
   return (
     <button
-      className={`${styles.button} ${primary || variant === "primary" ? styles.primary : ""} ${variant === "quiet" ? styles.quiet : ""}`}
+      {...buttonLook({ variant, tone, size, block }, className)}
+      {...rest}
       type={type}
-      onClick={onClick}
-      disabled={disabled}
-      aria-label={ariaLabel}
+      disabled={disabled || pending}
+      aria-busy={pending || undefined}
     >
-      {children}
+      {pending && pendingLabel ? pendingLabel : children}
     </button>
   );
 }
+
+/** A form's submit Button that shows its pending label while the form's
+ * action runs (`useFormStatus`), so a second press cannot submit twice. */
+export function SubmitButton({
+  pendingLabel,
+  pending: forcedPending = false,
+  ...props
+}: Omit<ButtonProps, "type"> & { pendingLabel: ReactNode }) {
+  const status = useFormStatus();
+  return (
+    <Button
+      variant="primary"
+      {...props}
+      type="submit"
+      pending={status.pending || forcedPending}
+      pendingLabel={pendingLabel}
+    />
+  );
+}
+
+/** A native select inside a `Field` (label, optional hint and error). */
 export function Select({
   label,
   value,
@@ -73,6 +129,10 @@ export function Select({
   options,
   id,
   disabled = false,
+  hint,
+  error,
+  required,
+  className,
 }: {
   label: string;
   value: string;
@@ -80,63 +140,39 @@ export function Select({
   options: readonly (readonly [string, string])[];
   id: string;
   disabled?: boolean;
+  hint?: ReactNode;
+  error?: ReactNode;
+  required?: boolean;
+  className?: string | undefined;
 }) {
   return (
-    <div className={styles.field}>
-      <label htmlFor={id}>{label}</label>
-      <select
-        id={id}
-        name={id}
-        value={value}
-        disabled={disabled}
-        onChange={(event) => onChange(event.target.value)}
-      >
-        {options.map(([key, title]) => (
-          <option value={key} key={key}>
-            {title}
-          </option>
-        ))}
-      </select>
-    </div>
-  );
-}
-export function Notice({
-  children,
-  error = false,
-  success = false,
-}: {
-  children: ReactNode;
-  error?: boolean;
-  success?: boolean;
-}) {
-  return (
-    <p
-      role={error ? "alert" : "status"}
-      className={`${styles.status} ${error ? styles.error : success ? styles.success : ""}`}
+    <Field
+      id={id}
+      label={label}
+      hint={hint}
+      error={error}
+      className={className}
     >
-      {children}
-    </p>
+      {(control) => (
+        <select
+          {...control}
+          name={id}
+          value={value}
+          disabled={disabled}
+          required={required}
+          onChange={(event) => onChange(event.target.value)}
+        >
+          {options.map(([key, title]) => (
+            <option value={key} key={key}>
+              {title}
+            </option>
+          ))}
+        </select>
+      )}
+    </Field>
   );
 }
-export function Row({
-  title,
-  children,
-  action,
-}: {
-  title: string;
-  children: ReactNode;
-  action?: ReactNode;
-}) {
-  return (
-    <article className={styles.row}>
-      <div>
-        <h3>{title}</h3>
-        {children}
-      </div>
-      {action}
-    </article>
-  );
-}
+
 export const stateNames: Record<string, Localized> = {
   NEW: ["New account", "حساب جديد"],
   UNVERIFIED: ["Unverified", "غير مؤكد"],

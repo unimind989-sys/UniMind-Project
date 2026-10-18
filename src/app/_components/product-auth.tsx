@@ -16,14 +16,14 @@ import {
   type AuthActionResult,
 } from "@/lib/auth/auth-actions.application";
 import { useProductServices } from "./product-services";
-import { ProductLink, Notice } from "./product-ui";
+import { Notice } from "./notice";
+import { Button, ProductLink } from "./product-ui";
 import type { Locale } from "@/lib/demo/synthetic-fixtures.application";
 import { syntheticCampaignId } from "@/lib/demo/synthetic-campaigns.application";
 import {
   useHostedSynthetic,
   useSyntheticNavigation,
 } from "./product-navigation";
-import authStyles from "@/app/(auth)/auth.module.css";
 import {
   syntheticAccountFor,
   syntheticPassword,
@@ -277,7 +277,7 @@ export function ProductAuth({
     >
       {blocked ? (
         <>
-          <Notice error>
+          <Notice tone="error" live locale={locale}>
             {t(
               "This account or link is unavailable. Request a fresh link or return to sign in.",
               "هذا الحساب أو الرابط غير متاح. اطلب رابطًا جديدًا أو ارجع للدخول.",
@@ -306,9 +306,8 @@ export function ProductAuth({
           initialPassword={hosted ? undefined : syntheticPassword}
           secondaryAction={
             mode === "consent" ? (
-              <button
-                type="button"
-                className={authStyles.textAction}
+              <Button
+                variant="quiet"
                 onClick={() => {
                   if (hosted && synthetic) return synthetic.leave(locale);
                   update((current) => ({
@@ -324,7 +323,7 @@ export function ProductAuth({
                 }}
               >
                 {t("Sign out", "تسجيل الخروج")}
-              </button>
+              </Button>
             ) : undefined
           }
         />

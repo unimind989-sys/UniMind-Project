@@ -31,14 +31,6 @@
 .subjectHeader .scopeCaption {
   grid-column: 2;
 }
-.backLabel {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
 .subjectHeader h1 {
   font-size: var(--type-workspace-title-size);
   font-weight: 800;
@@ -46,7 +38,8 @@
   letter-spacing: var(--type-display-tracking);
   margin: 0;
 }
-.subjectHeader p {
+.subjectHeader p,
+.subjectHeader .scopeCaption {
   margin: 0;
   color: var(--on-night-2);
   font-size: 0.875rem;
@@ -88,7 +81,7 @@
   cursor: pointer;
   min-height: 44px;
   padding: 0 14px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--night-2);
   color: var(--on-night);
   font-weight: 650;
@@ -118,47 +111,12 @@
 .subjectSwitch > div p {
   color: var(--secondary);
 }
+/* The unit segmented control sits at the band's inline end. */
 .subjectNav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2px;
-  padding: 4px;
-  border-radius: var(--radius-control);
-  background: var(--night-2);
   flex: none;
-  max-width: 100%;
-}
-.subjectNav a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 44px;
-  min-inline-size: 44px;
-  padding: 0 16px;
-  border-radius: 9px;
-  text-decoration: none;
-  color: var(--on-night-2);
-  font-size: 0.9375rem;
-  font-weight: 650;
-}
-.subjectNav a[aria-current] {
-  background: var(--seg-on);
-  color: var(--seg-on-ink);
-  font-weight: 800;
-}
-.subjectNav a:not([aria-current]):hover {
-  color: var(--on-night);
-  background: rgb(255 255 255 / 0.06);
 }
 .icon {
-  width: 22px;
-  height: 22px;
   flex: none;
-}
-.subjectNav .icon {
-  width: 18px;
-  height: 18px;
 }
 .icon[data-directional] {
   transform: none;
@@ -181,6 +139,12 @@
   background: var(--night);
   border-block-end: 1px solid var(--night-line);
 }
+.previewContext {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+}
 .previewContext a {
   color: var(--on-night-blue);
   font-weight: 700;
@@ -190,52 +154,6 @@
   color: var(--danger);
   font-weight: 650;
 }
-/* Interface language: a compact segmented control on the Night top bar. */
-.language {
-  display: inline-flex;
-  flex: none;
-  align-items: center;
-  gap: 2px;
-  padding: 3px;
-  border-radius: var(--radius-control);
-  background: var(--night-2);
-  color: var(--on-night-2);
-}
-.language button {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  min-height: 44px;
-  padding: 0 10px;
-  border: 0;
-  border-radius: 9px;
-  background: transparent;
-  color: inherit;
-  font-size: 0.8125rem;
-  font-weight: 650;
-  cursor: pointer;
-}
-.language button:hover {
-  color: var(--on-night);
-}
-.language button[aria-pressed="true"] {
-  background: var(--seg-on);
-  color: var(--seg-on-ink);
-  font-weight: 800;
-}
-.languageCheck {
-  display: inline-flex;
-  width: 14px;
-  height: 14px;
-  flex: none;
-}
-.languageCheck:empty {
-  display: none;
-}
-.languageCheck > svg {
-  width: 14px;
-  height: 14px;
-}
 @media (max-width: 1050px) {
   .band {
     align-items: stretch;
@@ -243,8 +161,8 @@
   .subjectNav {
     flex-basis: 100%;
   }
-  .subjectNav a {
-    flex: 1;
+  .subjectNav > a {
+    flex: 1 1 auto;
   }
 }
 @media (max-width: 767px) {
@@ -290,15 +208,12 @@
     inset-inline: 16px;
     width: auto;
   }
-  .subjectNav {
-    flex-wrap: wrap;
-  }
-  .subjectNav a {
+  .subjectNav > a {
     flex: 1 0 auto;
     padding: 0 10px;
     font-size: 0.875rem;
   }
-  .subjectNav .icon {
+  .subjectNav svg {
     display: none;
   }
   .workspaceBody {
@@ -310,9 +225,6 @@
   }
   .workspaceBody[data-study-tool="quiz"] {
     scroll-padding-block-start: 8rem;
-  }
-  .language button {
-    padding-inline: 8px;
   }
 }
 @media (max-width: 767px) {
