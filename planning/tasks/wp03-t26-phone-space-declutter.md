@@ -2,7 +2,7 @@
 
 **Task ID:** WP03-T26
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** Phones and laptops give the conversation, materials and intake lists the screen: one phone unit header (back + title menu), the session switcher in the band, answer language in a compact composer, a keyboard-aware Chat, no bottom bar inside units on phones, document scroll for the other unit tools, a phone source sheet, one shared disclosure and a declutter pass over Chat, Shelf, Subjects, Materials, Studio, Quiz, Batch Leader and admin.
 
@@ -12,7 +12,7 @@
 
 **Branch:** claude/wp03-t26-phone-space-declutter
 
-**Updated (UTC):** 2026-10-18T11:00:00Z
+**Updated (UTC):** 2026-10-18T16:40Z
 
 ## Contract
 
@@ -38,7 +38,7 @@
 - [x] Chat: sessions in the band menu, answer-language pill and compact composer, phone source sheet, answer declutter, inline citation tip, follow-up chips.
 - [x] Studio, Quiz, Materials, Shelf, Subjects, Batch Leader and admin declutter; hosted captions; DESIGN.md.
 - [x] Tests: helpers and specs follow the new structure; keyboard-state and phone-sheet tests added.
-- [ ] Overseeing session: review, `Approved commit:`, PR, required CI, merge.
+- [x] Overseeing session: independent review, rendered review, `Approved commit:`, PR with required CI.
 
 ## Decisions
 
@@ -60,12 +60,12 @@
 
 **Proof (after merging main):** every `verify:ci` component, run singly so the browser suites use the private ports: `pnpm check` passed (unit 1027/1027); `typecheck:fresh`, `verify:ci-workflow` passed; `test:node` 1061 passed, 2 skipped; demo e2e on 3302 `PW_WORKERS=2 --repeat-each=2` 400/400 (46.2 min); main e2e `UNIMIND_E2E_PORT=3330` 42/42 (first run 39/42: hosted admin Menu and hosted Report copy, fixed); `test:env-build` passed with the client secret scan. Before the merge the plain full demo run was 194 passed + 3 fixed and rerun 3/3. Database e2e not run locally (CI `database-ci`); its real-session assertion now expects links. After the review fixes (admin phone panel, summary name from content, backdrop press and release, no focus move on an outside press): `pnpm check` passed (unit 1027/1027); full demo `PW_WORKERS=2` 201/201 (21.8 min; includes the new outside-press test and the drag-out-of-dialog, admin panel and 200%-text unit panel checks); main e2e 42/42. Chat conversation, hosted-like (EN/AR): 390x844 395→619/610; 360x640 270/222 page flow → 415/406 docked; 320x720 298/273 page → 495/486 docked; 768x1024 482/462 → 685/667; 1280x720 300/280 → 445/427; 1440x900 480 → 625. Bars: desktop 64px; phone 52px outside units, none inside: the unit header is the band, 130/140px (EN/AR) at 360px instead of 52 + 134 + 50; desktop band 83/101px instead of 111 + 64. Rendered: `.local/shots/r3` (polish round) and `r4` (confirmation), untracked. Open: the Arabic Report action still wraps under the citation at 360px.
 
-**Review:** self-review of the full diff; no protected path.
+**Review:** self-review; `independent-reviewer` on `6c4e58d`: request changes (1 major: admin phone Menu panel off-screen at 320px and 200% text; minors: phone title label-in-name, drag-out closes dialogs, outside press refocuses the menu summary), all fixed in `d785b38` to `5d1b702`; re-review of that delta: approve.
 
-**Approved commit:** PENDING (overseeing session).
+**Approved commit:** `5d1b702`, approved by the overseeing Claude Code session under Ahmed's 18 October 2026 delegation (not a founder review). Checked: `.local/shots/r4` Chat empty and answered at 320, 360, 390, 768, 1280 and 1440 in EN/AR, light and dark; Studio and Batch Leader intake on phones; every Chat target met with no horizontal overflow.
 
-**Remaining:** overseeing review, PR, required CI, merge.
+**Remaining:** the Arabic Report action wraps under the citation at 360px (MD-10 partial); iOS keyboard placement (`visualViewport.offsetTop`) unverified on a device; MD-27 sample labels kept as safety labels.
 
 ## Next action
 
-Overseeing session: review the rendered candidate and the diff, record `Approved commit:`, open the PR.
+None after the PR merges with green required CI.

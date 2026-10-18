@@ -1549,9 +1549,9 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 **Dependencies:** WP03-T25. Findings MD-01 to MD-29 (except MD-22), DS-17, DS-19, DS-20, DS-24, IX-06, IX-20 to IX-23, IX-33, IX-34, IX-36.
 
-- [~] Phone unit header with the session menu, desktop session switcher in the band, answer language in the composer, compact composer, keyboard-aware Chat, no bottom bar inside units on phones, document scroll for the other unit tools, a phone source sheet and a shared disclosure.
-- [ ] Declutter Chat answers, Shelf, Subjects, Materials, Studio, Quiz, the Batch Leader band and the admin header; hosted demo shows no explanatory captions beyond safety labels; DESIGN.md updated for the changed rules.
-- [ ] Rendered numbers meet the plan's targets; overseer approval recorded; deliver through one PR with required CI.
+- [x] Phone unit header with the session menu, desktop session switcher in the band, answer language in the composer, compact composer, keyboard-aware Chat, no bottom bar inside units on phones, document scroll for the other unit tools, a phone source sheet and a shared disclosure.
+- [x] Declutter Chat answers, Shelf, Subjects, Materials, Studio, Quiz, the Batch Leader band and the admin header; hosted demo shows no explanatory captions beyond safety labels; DESIGN.md updated for the changed rules.
+- [x] Rendered numbers meet the plan's targets; overseer approval recorded; deliver through one PR with required CI. Reviewed by the `independent-reviewer` sub-agent (request changes, all addressed); approved at `5d1b702` by the overseeing session under Ahmed's delegation ([task record](../../planning/tasks/wp03-t26-phone-space-declutter.md)). These closure markers become authoritative only when that PR merges with green required CI.
 
 **Pass:** Chat keeps at least 400px of conversation at 360x640 and 400px at 1280x720; the compact-chat journey, layout matrices and RTL stay green; required CI green.
 
