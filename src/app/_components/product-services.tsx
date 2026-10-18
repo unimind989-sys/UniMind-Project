@@ -6,9 +6,9 @@ import { ProductProfileContext } from "./product-profile";
 import { AcademicSetupDraftProvider } from "./academic-setup-draft";
 import { createSyntheticCollectionMemory } from "@/lib/demo/synthetic-campaigns.application";
 import type { ProductState } from "@/lib/demo/synthetic-product-state.application";
-import {
-  syntheticDisplayNames,
-  type SyntheticRole,
+import type {
+  SyntheticEntryAccount,
+  SyntheticRole,
 } from "@/lib/demo/synthetic-account.application";
 
 export type DemoRole = SyntheticRole;
@@ -17,7 +17,9 @@ export function initialProductState(): ProductState {
     ...initialReviewState(),
     attempts: {},
     role: null,
+    accountEmail: null,
     displayName: null,
+    profiles: {},
     studyLanguage: null,
     evidenceHintSeen: false,
     verified: true,
@@ -54,15 +56,16 @@ export function SyntheticProductProvider({
   entry,
 }: {
   children: ReactNode;
-  entry?: { role: DemoRole; returnPath: string };
+  entry?: { account: SyntheticEntryAccount; returnPath: string };
 }) {
   const [collectionMemory] = useState(createSyntheticCollectionMemory);
   const [state, update] = useState(() => ({
     ...initialProductState(),
     ...(entry
       ? {
-          role: entry.role,
-          displayName: syntheticDisplayNames[entry.role],
+          role: entry.account.role,
+          accountEmail: entry.account.email,
+          displayName: entry.account.displayName,
           account: "SIGNED_IN" as const,
           returnPath: entry.returnPath,
         }
@@ -81,12 +84,7 @@ export function SyntheticProductProvider({
           },
         }}
       >
-        <ProductProfileContext.Provider
-          value={
-            state.displayName ??
-            (state.role ? syntheticDisplayNames[state.role] : null)
-          }
-        >
+        <ProductProfileContext.Provider value={state.displayName}>
           {children}
         </ProductProfileContext.Provider>
       </ProductContext.Provider>

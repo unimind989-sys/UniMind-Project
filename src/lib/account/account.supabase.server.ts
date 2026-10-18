@@ -1,4 +1,5 @@
 import "server-only";
+import { z } from "zod";
 import { createServerSupabaseClient } from "../db/supabase/server";
 import { getCurrentAuthAccess } from "../auth/auth-access.supabase.server";
 import { requireVerifiedIdentity } from "../auth/verified-identity.server";
@@ -13,10 +14,12 @@ import type { AuthorizedCatalogRow } from "../catalog/catalog-journey.applicatio
 import { saveProfile } from "./profile.application";
 import { localeFromAccountLanguage } from "./profile.domain";
 
+const displayEmail = z.string().max(320).pipe(z.email());
+
 export async function loadCurrentAccount() {
   const identity = await requireVerifiedIdentity();
   const client = await createServerSupabaseClient();
-  const [profile, roles] = await Promise.all([
+  const [profile, roles, claims] = await Promise.all([
     client
       .from("profiles")
       .select("display_name, preferred_language, academic_context")
@@ -27,12 +30,14 @@ export async function loadCurrentAccount() {
       .select("role")
       .eq("user_id", identity.userId)
       .is("revoked_at", null),
+    client.auth.getClaims(),
   ]);
   if (profile.error || roles.error)
     throw new Error("Account settings unavailable.");
   return {
     displayName: profile.data.display_name,
-    email: identity.email,
+    // Display only (Settings); the verified identity carries the subject alone.
+    email: displayEmail.safeParse(claims.data?.claims.email).data ?? null,
     language: localeFromAccountLanguage(profile.data.preferred_language),
     locale: profile.data.preferred_language,
     academicContext: readAcademicContext(profile.data.academic_context),

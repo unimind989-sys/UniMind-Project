@@ -5,12 +5,9 @@ import { z } from "zod";
 import { createServerSupabaseClient } from "../db/supabase/server";
 
 const verifiedUserIdSchema = z.string().uuid();
-const verifiedEmailSchema = z.string().max(320).pipe(z.email());
 
 export type VerifiedIdentity = Readonly<{
   userId: string;
-  /** Display only (Settings); never an authorization input. */
-  email: string | null;
 }>;
 
 export class UnauthenticatedError extends Error {
@@ -31,10 +28,8 @@ export async function getVerifiedIdentity(): Promise<VerifiedIdentity | null> {
     return null;
   }
 
-  const email = verifiedEmailSchema.safeParse(data?.claims.email);
   return {
     userId: subject.data,
-    email: email.success ? email.data : null,
   };
 }
 

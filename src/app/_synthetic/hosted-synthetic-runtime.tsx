@@ -9,7 +9,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import type { SyntheticRole } from "@/lib/demo/synthetic-account.application";
+import type { SyntheticEntryAccount } from "@/lib/demo/synthetic-account.application";
 import {
   navigateInDocument,
   SyntheticNavigationContext,
@@ -25,12 +25,12 @@ const SyntheticRuntime = lazy(() => import("./synthetic-runtime"));
  */
 export function HostedSyntheticRuntime({ children }: { children: ReactNode }) {
   const [entry, setEntry] = useState<{
-    role: SyntheticRole;
+    account: SyntheticEntryAccount;
     returnPath: string;
   } | null>(null);
   const enter = useCallback(
-    (role: SyntheticRole, locale: string, returnPath: string) => {
-      setEntry({ role, returnPath });
+    (account: SyntheticEntryAccount, locale: string, returnPath: string) => {
+      setEntry({ account, returnPath });
       navigateInDocument(`/consent?lang=${locale}`, true);
     },
     [],

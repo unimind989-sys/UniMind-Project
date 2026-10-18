@@ -81,15 +81,17 @@ export function AuthShell({
         <main className={styles.workspace}>
           {activeStep > 0 ? (
             <ol className={styles.steps} aria-label={copy.accountAccess}>
-              {[copy.account, copy.verify, copy.consent].map((label, index) => (
-                <li
-                  key={label}
-                  aria-current={activeStep === index ? "step" : undefined}
-                >
-                  {index < activeStep ? "✓ " : ""}
-                  {label}
-                </li>
-              ))}
+              {[copy.account, copy.verify, copy.consent, copy.profile].map(
+                (label, index) => (
+                  <li
+                    key={label}
+                    aria-current={activeStep === index ? "step" : undefined}
+                  >
+                    {index < activeStep ? "✓ " : ""}
+                    {label}
+                  </li>
+                ),
+              )}
             </ol>
           ) : null}
           {children}

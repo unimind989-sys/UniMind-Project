@@ -20,6 +20,7 @@ describe("synthetic route table", () => {
     ["/register", "auth", "register"],
     ["/verify-email", "auth", "verify-email"],
     ["/consent", "auth", "consent"],
+    ["/welcome", "auth", "welcome"],
     ["/forgot-password", "auth", "forgot-password"],
     ["/reset-password", "auth", "reset-password"],
     ["/learn", "catalog", "catalog"],

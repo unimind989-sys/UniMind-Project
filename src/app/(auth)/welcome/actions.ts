@@ -13,14 +13,8 @@ import {
   currentRoleHome,
   saveCurrentProfile,
 } from "@/lib/account/account.supabase.server";
-import type { ProfileSaveState } from "@/lib/account/profile.application";
+import type { WelcomeFormState } from "../_components/welcome-form";
 import { resolveLocale } from "@/lib/i18n/locale";
-
-export type WelcomeFormState = Readonly<{
-  result: ProfileSaveState;
-  /** The typed name comes back so a failed save never clears it. */
-  displayName: string;
-}>;
 
 function field(formData: FormData, name: string): string {
   const value = formData.get(name);

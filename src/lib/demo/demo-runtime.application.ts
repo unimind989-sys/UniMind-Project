@@ -28,7 +28,7 @@ export function isProductDemoPath(path: string) {
   return (
     path === "/" ||
     path === "/auth/callback" ||
-    /^\/(login|register|verify-email|consent|forgot-password|reset-password|settings)$/u.test(
+    /^\/(login|register|verify-email|consent|welcome|forgot-password|reset-password|settings)$/u.test(
       path,
     ) ||
     /^\/(learn|admin|batch-leader)(\/[^?#]*)?$/u.test(path)

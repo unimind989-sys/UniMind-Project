@@ -28,7 +28,7 @@ import {
 } from "../actions";
 import styles from "../auth.module.css";
 import { useSyntheticNavigation } from "@/app/_components/product-navigation";
-import { syntheticLoginRole } from "@/lib/demo/synthetic-account.application";
+import { syntheticLoginAccount } from "@/lib/demo/synthetic-account.application";
 
 const subscribeToClient = () => () => {};
 const clientReady = () => true;
@@ -171,19 +171,19 @@ export function AuthForm({
           previous: AuthFormState,
           data: FormData,
         ): Promise<AuthFormState> => {
-          const role = syntheticLoginRole(
+          const account = syntheticLoginAccount(
             data.get("email"),
             data.get("password"),
           );
-          if (role) {
+          if (account) {
             const home =
-              role === "leader"
+              account.role === "leader"
                 ? "/batch-leader"
-                : role === "student"
+                : account.role === "student"
                   ? "/learn"
                   : "/admin";
             synthetic.enter(
-              role,
+              account,
               locale,
               ["/", "/learn"].includes(returnPath) ? home : returnPath,
             );

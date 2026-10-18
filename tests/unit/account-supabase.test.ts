@@ -78,8 +78,12 @@ const caller = ["eq", "user_id", "verified-caller"];
  */
 let results: Record<string, Result>;
 let queries: RecordedQuery[];
+let claimEmail: unknown = "samir@example.invalid";
 function fakeClient() {
   return {
+    auth: {
+      getClaims: async () => ({ data: { claims: { email: claimEmail } } }),
+    },
     from(table: string) {
       const query: RecordedQuery = { table, filters: [] };
       queries.push(query);
@@ -186,10 +190,6 @@ describe("existing-session resume boundary", () => {
 
 describe("account Supabase trust seams", () => {
   it("reads the caller's profile and current unrevoked roles, including persisted settings", async () => {
-    mocks.identity.mockResolvedValue({
-      userId: "verified-caller",
-      email: "samir@example.invalid",
-    });
     expect(await loadCurrentAccount()).toEqual({
       displayName: "Sample Student",
       email: "samir@example.invalid",
@@ -199,6 +199,9 @@ describe("account Supabase trust seams", () => {
       home: "/learn",
     });
     expect(queriesOf("profiles")).toHaveLength(1);
+    claimEmail = { forged: true };
+    expect((await loadCurrentAccount()).email).toBeNull();
+    claimEmail = "samir@example.invalid";
     expect(queriesOf("profiles")[0]!.filters).toContainEqual(caller);
     expect(queriesOf("user_roles")[0]!.filters).toEqual(
       expect.arrayContaining([caller, ["is", "revoked_at", null]]),

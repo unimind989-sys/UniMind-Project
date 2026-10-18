@@ -444,3 +444,20 @@
     outline: 2px solid Highlight;
   }
 }
+
+/* A form-submitting action that reads as the neighbouring text links. */
+.textAction {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--action);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.textAction:hover {
+  color: var(--action-strong);
+  text-decoration: underline;
+}
