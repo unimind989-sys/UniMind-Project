@@ -63,7 +63,7 @@
 
 **Changed:** see Steps.
 
-**Proof:** pending.
+**Proof:** admin demo specs 37/37. `corepack pnpm verify` on `39bb611`: every step passed except one demo test (208/209). `chat.spec.ts` also pressed the removed header Sign out; it now uses the shared helper and passed alone (1/1). The full demo suite reruns in CI.
 
 **Review:** self-review. No protected path.
 
