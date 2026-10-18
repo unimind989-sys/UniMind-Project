@@ -51,7 +51,7 @@
 
 **Changed:** see Steps.
 
-**Proof:** pending.
+**Proof:** quiz journey 3/3 on the demo config; ci-workflow-policy, conditional-ci-selector, verification-plan 48/48; `corepack pnpm verify` through the new runner passed every step in 2,042 s (34.0 min) against the 2,906 s baseline, measured while another task built in parallel on the same 4-CPU machine (192 demo in 27.3 min on 2 workers, 39 main e2e); the tree stays clean (no `next-env.d.ts` change).
 
 **Review:** pending independent review (`independent-reviewer`).
 
