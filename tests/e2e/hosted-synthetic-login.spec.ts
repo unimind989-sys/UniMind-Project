@@ -633,3 +633,21 @@ test("hosted student shelf keeps navigation geometry, touch targets and reduced 
   await expect(anatomy).toBeFocused();
   finish();
 });
+
+// WP03-T27: the fifth hosted pair is a brand-new account with no profile.
+test("hosted new account: the profile step comes after the commitments", async ({
+  page,
+}) => {
+  test.setTimeout(90_000);
+  const finish = await enter(page, "new-student", "en");
+  await expect(page).toHaveURL(/\/welcome\?/u);
+  await expect(
+    page.getByRole("heading", { name: "Set up your profile", level: 1 }),
+  ).toBeVisible();
+  await page.getByLabel("Full name", { exact: true }).fill("Salma Yousef");
+  await page
+    .getByRole("button", { name: "Save and continue", exact: true })
+    .click();
+  await expect(page).toHaveURL(/\/learn\?/u);
+  finish();
+});
