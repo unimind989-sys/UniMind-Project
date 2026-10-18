@@ -5,6 +5,7 @@ import { notFound, redirect } from "next/navigation";
 import { cache } from "react";
 
 import { getCurrentAuthAccess } from "../auth/auth-access.supabase.server";
+import { accessDestination } from "../auth/auth-flow.domain";
 import { resolveWorkspace, type WorkspaceScope } from "./workspace.application";
 import { supabaseWorkspaceRepository } from "./workspace.supabase.server";
 
@@ -13,29 +14,16 @@ export const requireAuthorizedWorkspace = cache(
     cohortId: string,
     unitId: string,
   ): Promise<WorkspaceScope> {
-    const nextPath = encodeURIComponent(`/learn/${cohortId}/${unitId}`);
-    let access: Awaited<ReturnType<typeof getCurrentAuthAccess>>;
+    let gate: Awaited<ReturnType<typeof getCurrentAuthAccess>>["gate"];
     try {
-      access = await getCurrentAuthAccess();
+      gate = (await getCurrentAuthAccess()).gate;
     } catch {
-      redirect(`/login?status=unavailable` as Route);
+      gate = "UNAVAILABLE";
     }
-
-    if (access.gate === "SIGN_IN") {
-      redirect(`/login?next=${nextPath}` as Route);
-    }
-    if (access.gate === "CONSENT_REQUIRED") {
-      redirect(`/consent?next=${nextPath}` as Route);
-    }
-    if (access.gate === "VERIFY_EMAIL") {
-      redirect(`/verify-email?next=${nextPath}` as Route);
-    }
-    if (access.gate === "SUSPENDED" || access.gate === "DISABLED") {
-      redirect(`/login?status=${access.gate.toLowerCase()}` as Route);
-    }
-    if (access.gate !== "READY") {
-      redirect(`/login?status=unavailable` as Route);
-    }
+    const destination = accessDestination(gate, {
+      next: `/learn/${cohortId}/${unitId}`,
+    });
+    if (destination !== null) redirect(destination as Route);
 
     const scope = await resolveWorkspace(
       supabaseWorkspaceRepository,

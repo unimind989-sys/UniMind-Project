@@ -1,3 +1,4 @@
+import { isProfileComplete } from "../account/profile.domain";
 import {
   resolveAuthGate,
   type AccountStatus,
@@ -18,7 +19,9 @@ export type AuthAccessSnapshot = Readonly<{
 
 export interface AuthAccessRepository {
   getVerifiedUserId(): Promise<string | null>;
-  getAccountStatus(userId: string): Promise<AccountStatus | null>;
+  getAccountState(
+    userId: string,
+  ): Promise<Readonly<{ status: AccountStatus; displayName: string }> | null>;
   getCurrentTerms(): Promise<CurrentTerms | null>;
   hasAcceptedTerms(userId: string, termsVersionId: string): Promise<boolean>;
   acceptCurrentTerms(userId: string, terms: CurrentTerms): Promise<void>;
@@ -30,10 +33,11 @@ export async function readAuthAccess(
   const userId = await repository.getVerifiedUserId();
   if (userId === null) return { gate: "SIGN_IN", currentTerms: null };
 
-  const accountStatus = await repository.getAccountStatus(userId);
-  if (accountStatus === null) {
+  const account = await repository.getAccountState(userId);
+  if (account === null) {
     return { gate: "ACCOUNT_PENDING", currentTerms: null };
   }
+  const accountStatus = account.status;
 
   if (accountStatus === "PENDING") {
     return { gate: "VERIFY_EMAIL", currentTerms: null };
@@ -46,6 +50,7 @@ export async function readAuthAccess(
         emailVerified: true,
         accountStatus,
         hasCurrentConsent: false,
+        hasCompleteProfile: isProfileComplete(account.displayName),
       }),
       currentTerms: null,
     };
@@ -64,6 +69,7 @@ export async function readAuthAccess(
       emailVerified: true,
       accountStatus,
       hasCurrentConsent,
+      hasCompleteProfile: isProfileComplete(account.displayName),
     }),
     currentTerms,
   };

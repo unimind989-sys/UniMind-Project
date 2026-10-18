@@ -1,7 +1,7 @@
 import type { Metadata, Route } from "next";
 import { redirect } from "next/navigation";
 
-import { getCurrentAuthAccess } from "@/lib/auth/auth-access.supabase.server";
+import { requireReadyAccess } from "@/lib/auth/access-route.server";
 import {
   parseCatalogSelectionHints,
   resolveCatalogJourney,
@@ -41,30 +41,7 @@ export default async function LearnPage({
     : parameters.lang;
   const locale = resolveLocale(localeParameter);
 
-  let access: Awaited<ReturnType<typeof getCurrentAuthAccess>>;
-  try {
-    access = await getCurrentAuthAccess();
-  } catch {
-    redirect(`/login?lang=${locale}&status=unavailable` as Route);
-  }
-
-  if (access.gate === "SIGN_IN") {
-    redirect(`/login?lang=${locale}&next=%2Flearn` as Route);
-  }
-  if (access.gate === "CONSENT_REQUIRED") {
-    redirect(`/consent?lang=${locale}&next=%2Flearn` as Route);
-  }
-  if (access.gate === "VERIFY_EMAIL") {
-    redirect(`/verify-email?lang=${locale}&next=%2Flearn` as Route);
-  }
-  if (access.gate === "SUSPENDED" || access.gate === "DISABLED") {
-    redirect(
-      `/login?lang=${locale}&status=${access.gate.toLowerCase()}` as Route,
-    );
-  }
-  if (access.gate !== "READY") {
-    redirect(`/login?lang=${locale}&status=unavailable` as Route);
-  }
+  await requireReadyAccess({ locale, next: "/learn" });
 
   const hints = parseCatalogSelectionHints(parameters);
   let catalogState: CatalogAccessState | "ERROR" = "ERROR";

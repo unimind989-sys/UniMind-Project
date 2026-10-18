@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import type { Route } from "next";
-import { getCurrentAuthAccess } from "@/lib/auth/auth-access.supabase.server";
+import { requireReadyAccess } from "@/lib/auth/access-route.server";
 import {
   loadCurrentAccount,
   loadCurrentStudyResume,
@@ -26,11 +26,7 @@ export default async function SettingsPage({
   const query = await searchParams;
   const locale = resolveLocale(query.lang);
   const t = (en: string, ar: string) => (locale === "ar" ? ar : en);
-  const access = await getCurrentAuthAccess();
-  if (access.gate !== "READY")
-    redirect(
-      `/${access.gate === "CONSENT_REQUIRED" ? "consent" : access.gate === "VERIFY_EMAIL" ? "verify-email" : "login"}?lang=${locale}&next=%2Fsettings` as Route,
-    );
+  await requireReadyAccess({ locale, next: "/settings" });
   const account = await loadCurrentAccount();
   const role =
     account.home === "/admin"
