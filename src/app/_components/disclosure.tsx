@@ -28,10 +28,12 @@ export function useDisclosure() {
 
 /**
  * One behaviour for every floating `<details>` menu (WP03 IX-06). Escape, a
- * pointer press outside and focus leaving the menu close it; Escape returns
- * focus to the summary, and so does any close that would otherwise drop
- * focus on the page body. The summary mirrors the state in `aria-expanded`.
- * The panel's position and look stay with the caller's CSS.
+ * pointer press outside and focus leaving the menu close it. Escape returns
+ * focus to the summary, and so does a close from inside the menu that would
+ * otherwise drop focus on the page body (a choice that hides its control).
+ * A press outside never moves focus: the user chose where to go next. The
+ * summary mirrors the state in `aria-expanded`. The panel's position and
+ * look stay with the caller's CSS.
  */
 export function Disclosure({
   className,
@@ -50,15 +52,15 @@ export function Disclosure({
 }) {
   const details = useRef<HTMLDetailsElement>(null);
   const [open, setOpen] = useState(false);
-  const close = useCallback((restoreFocus = false) => {
+  const dismiss = useCallback((focus: "summary" | "auto" | "none") => {
     const element = details.current;
     if (!element?.open) return;
     const hadFocus = element.contains(document.activeElement);
     element.open = false;
     const summaryElement =
       element.querySelector<HTMLElement>(":scope > summary");
-    if (restoreFocus) summaryElement?.focus({ preventScroll: true });
-    else if (hadFocus)
+    if (focus === "summary") summaryElement?.focus({ preventScroll: true });
+    else if (focus === "auto" && hadFocus)
       // Focus inside a closing panel would fall back to the body.
       requestAnimationFrame(() => {
         const active = document.activeElement;
@@ -66,6 +68,10 @@ export function Disclosure({
           summaryElement?.focus({ preventScroll: true });
       });
   }, []);
+  const close = useCallback(
+    (restoreFocus = false) => dismiss(restoreFocus ? "summary" : "auto"),
+    [dismiss],
+  );
   const handle = useMemo<DisclosureHandle>(() => ({ close }), [close]);
   useImperativeHandle(ref, () => handle, [handle]);
   useEffect(() => {
@@ -75,17 +81,18 @@ export function Disclosure({
       if (event.key !== "Escape" || !element.open) return;
       event.preventDefault();
       event.stopPropagation();
-      close(true);
+      dismiss("summary");
     };
     const pointerdown = (event: PointerEvent) => {
-      if (element.open && !element.contains(event.target as Node)) close();
+      if (element.open && !element.contains(event.target as Node))
+        dismiss("none");
     };
     const focusout = (event: FocusEvent) => {
       const next = event.relatedTarget;
       // A null target means the window lost focus or a click on nothing
       // focusable; the pointer handler covers clicks.
       if (element.open && next instanceof Node && !element.contains(next))
-        close();
+        dismiss("none");
     };
     element.addEventListener("keydown", keydown);
     element.addEventListener("focusout", focusout);
@@ -95,7 +102,7 @@ export function Disclosure({
       element.removeEventListener("focusout", focusout);
       document.removeEventListener("pointerdown", pointerdown, true);
     };
-  }, [close]);
+  }, [dismiss]);
   return (
     <details
       {...rest}

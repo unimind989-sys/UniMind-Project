@@ -1,8 +1,26 @@
 "use client";
 
-import { useEffect, useId, useRef, type ReactNode } from "react";
+import {
+  useEffect,
+  useId,
+  useRef,
+  type MouseEvent,
+  type ReactNode,
+} from "react";
 import { Button } from "./product-ui";
 import styles from "./product-dialog.module.css";
+
+/** A pointer event on the dialog element itself, outside its box: the backdrop. */
+function onBackdrop(event: MouseEvent<HTMLDialogElement>) {
+  if (event.target !== event.currentTarget) return false;
+  const box = event.currentTarget.getBoundingClientRect();
+  return (
+    event.clientX < box.left ||
+    event.clientX > box.right ||
+    event.clientY < box.top ||
+    event.clientY > box.bottom
+  );
+}
 
 /**
  * Native modality keeps focus contained and restores the invoking control.
@@ -32,6 +50,7 @@ export function ProductDialog({
   const dialog = useRef<HTMLDialogElement>(null);
   const heading = useRef<HTMLHeadingElement>(null);
   const headingId = useId();
+  const pressedBackdrop = useRef(false);
   useEffect(() => {
     const element = dialog.current;
     if (!element) return;
@@ -76,17 +95,16 @@ export function ProductDialog({
         event.preventDefault();
         if (dismissible) onClose();
       }}
+      // The backdrop closes the dialog only when both the press and the
+      // release land on it: a text selection dragged out of the dialog ends
+      // with a click on the backdrop too, and must not close it.
+      onPointerDown={(event) => {
+        pressedBackdrop.current = onBackdrop(event);
+      }}
       onClick={(event) => {
-        // A click on the dialog element itself outside its box is the backdrop.
-        if (!dismissible || event.target !== event.currentTarget) return;
-        const box = event.currentTarget.getBoundingClientRect();
-        if (
-          event.clientX < box.left ||
-          event.clientX > box.right ||
-          event.clientY < box.top ||
-          event.clientY > box.bottom
-        )
-          onClose();
+        const pressed = pressedBackdrop.current;
+        pressedBackdrop.current = false;
+        if (dismissible && pressed && onBackdrop(event)) onClose();
       }}
     >
       <header>
