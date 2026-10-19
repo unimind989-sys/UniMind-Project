@@ -4,7 +4,7 @@
 
 **Task ID:** WP03-T33
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** Every screen of every flow (student, Batch Leader, admin, access, landing), desktop and phone, is visibly refined inside the Cobalt planes and the fixed fingerprint: the motion layer of the first candidate plus a felt visual pass over every element, with DESIGN.md recording each changed rule.
 
@@ -43,7 +43,7 @@
 - [x] Student flow: book covers and rows, Subjects search in the band, Materials sheet grid and document tabs, Chat column and marked-page answer, Studio sheets, quiz marked pages and side rail, Settings and onboarding sheets.
 - [x] Batch Leader and admin flows: sheets for campaign, requests, history, intake and files; admin list sheet, selected row on tint, sticky detail, resource and work sheets.
 - [x] Access pages (form sheet) and the landing (sticky masthead with a stuck hairline, bilingual section, footer links).
-- [~] Checks, e2e (landing spec: nine reveals), after-capture, independent review, approval, PR.
+- [x] Checks, e2e (landing spec: nine reveals), after-capture, independent review, approval, PR [#100](https://github.com/unimind989-sys/UniMind-Project/pull/100).
 
 ## Decisions
 
@@ -62,8 +62,8 @@
 
 **Approved commit:** `6c3316a`, approved by Ahmed on 2026-10-19 in chat ("I approve commit 6c3316a as the WP03-T33 candidate"), after the rendered demo review; the later commits change only the task record.
 
-**Remaining:** delivery through `finalize`: push, one PR, required CI, squash-merge, close.
+**Remaining:** NONE once [#100](https://github.com/unimind989-sys/UniMind-Project/pull/100) merges with green required CI. Production promotion was not requested (merging does not deploy; promotion stays a founder action).
 
 ## Next action
 
-Run `finalize`: push, one PR, required CI, squash-merge, close the task.
+None after PR #100 merges with green required CI.
