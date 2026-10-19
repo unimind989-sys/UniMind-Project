@@ -14,7 +14,7 @@
 
 **Branch:** claude/wp03-t33-phone-landing-polish
 
-**Updated (UTC):** 2026-10-19T10:00Z
+**Updated (UTC):** 2026-10-19T14:30Z
 
 ## Contract
 
@@ -38,9 +38,9 @@
 
 - [x] Audit the rendered phone screens and the landing page; list the changes.
 - [x] Motion layer: tokens and shared feedback; content delivery; overlays; landing reveal; `DESIGN.md`.
-- [~] Landing polish at every width, both languages and themes.
-- [~] Phone screen polish across every role.
-- [ ] Checks, rendered inspection (one round plus one confirmation), independent review, approval, PR.
+- [x] Landing polish at every width, both languages and themes.
+- [x] Phone screen polish across every role.
+- [~] Checks, rendered inspection (one round plus one confirmation), independent review, approval, PR.
 
 ## Decisions
 
@@ -54,14 +54,14 @@
 
 **Changed:** `globals.css` (motion tokens, `--press`, tap rule on controls); press feedback in `button`, `segmented-control`, `app-shell` (bottom-bar pills 8%, admin menu), `frontend-system` (back, title menu), `product-chat` (citation, chips, history), `product` (quiz checks, source rows), `student-account` (choices, section tabs), `study-shelf` (covers, rows); delivery rises for Chat exchanges and the streaming placeholder, live notices, the Shelf's resume page and covers (staggered, `--order` on each cover); menu entrances for the unit and admin panels and a backdrop fade; landing: `landing-reveal.tsx` (`Reveal`, IntersectionObserver plus a passed-section scroll fallback, 2.5s unhide if hydration never comes), hero line-by-line entrance, section reveals with staggered evidence cards and steps, flashcard face turn, press and hover transitions, phone step rows; `DESIGN.md` motion layer and landing Reveal bullets; `tests/e2e/landing-experience.spec.ts` reveal test.
 
-**Proof:** `corepack pnpm check` passed after the `Reveal` ref fix (format, boundaries, sql, typecheck, secrets, lint; unit 1027/1027 in the first run). Demo e2e `PW_WORKERS=2` on 3102: 209/209 (25.4 min) on the candidate before the review fixes. Main e2e on 3330 RUNNING (includes the new reveal test). Browser pane at 375px and 1440px: hero entrance, section reveals settle to `in` with zero animations and opacity 1, no overflow; Shelf covers arrive 80 to 240ms apart and settle; Chat exchange rises and settles; unit menu panel enters (`menu-enter`) and sits inside the viewport. After-capture NOT RUN yet.
+**Proof:** `corepack pnpm check` passed on the candidate (format, boundaries, sql, typecheck, secrets, lint; unit 1027/1027). Demo e2e `PW_WORKERS=2` on 3102: 209/209 (25.4 min). Main e2e on 3330: 44/45, the moment test counting a hover-out transition on the landing Replay button; after removing that transition the landing and shell contract suites passed 20/20 (the other 25 main tests are untouched by that CSS). Rendered round one in the browser pane at 375px and 1440px (hero entrance, section reveals, Shelf arrival, Chat rise, unit menu entrance; every state settles with zero animations and no overflow). Confirmation round: `.local/wp03-t33/shots/after` (51 screens: every role's phone screens at 390px EN/AR light and 360px dark, landing at 320/360/390/768/1280/1440, EN/AR, light/dark) against `before`: no horizontal overflow anywhere, identical header heights and Chat reading heights (390px 561/543 EN/AR local demo, 360px 357, 320px 416, unchanged from before), every end state identical to the approved composition except the intended phone step rows.
 
-**Review:** independent review by the `independent-reviewer` sub-agent on the uncommitted candidate: request changes (2 major: reveal hidden for ever when the bundle never hydrates; wrapper div without `min-width: 0` on the sample workspace; 3 minor: stagger test not scrolling both lists, pill 8% undocumented, tap flash removed from prose links). All five fixed; the delta awaits re-review.
+**Review:** independent review by the `independent-reviewer` sub-agent on the uncommitted candidate: request changes (2 major, 3 minor, all fixed); re-review of the delta at `7fd0a68`: approve. Self-review: `git diff --check` clean, full diff read, no secrets, presentation plus DESIGN.md, runbook, task record and one test only.
 
-**Approved commit:** PENDING
+**Approved commit:** PENDING: candidate `7fd0a68` presented to Ahmed on 2026-10-19 (material: motion layer and the phone step rows).
 
-**Remaining:** main e2e result; after-capture at every width (confirmation round); re-review of the fix delta; approval; PR.
+**Remaining:** Ahmed's approval of `7fd0a68`; then one PR with required CI (`finalize`).
 
 ## Next action
 
-When the main e2e suite finishes, run the after-capture on the demo server, re-review the delta, commit, and open the PR.
+Record `Approved commit:` once Ahmed approves `7fd0a68`, then run `finalize`: push, one PR, required CI, squash-merge, close.
