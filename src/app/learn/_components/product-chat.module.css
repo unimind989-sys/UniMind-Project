@@ -9,11 +9,14 @@
   min-height: 28rem;
 }
 .conversation {
-  /* The conversation uses the available width (WP03-T13 revision); reading
-     lines stay capped inside the answer. */
+  /* The conversation uses the available width on phones and laptops; on
+     wide screens it is a centred reading column, so the answer sheet and
+     the composer stay a comfortable measure (DESIGN.md Chat). */
   width: 100%;
+  max-width: 68rem;
   min-width: 0;
   min-height: 0;
+  margin-inline: auto;
   display: flex;
   flex-direction: column;
 }
@@ -210,13 +213,18 @@
   font-weight: 600;
   opacity: 0.88;
 }
+/* The answer is a marked page: a sheet with a Cobalt margin rule. */
 .reply {
   display: grid;
   gap: 12px;
   padding: 22px 26px 18px;
-  border-radius: var(--radius-card);
+  border-inline-start: 4px solid var(--cobalt);
+  border-start-start-radius: 6px;
+  border-end-start-radius: 6px;
+  border-start-end-radius: var(--radius-card);
+  border-end-end-radius: var(--radius-card);
   background: var(--surface);
-  box-shadow: inset 0 0 0 1px var(--line);
+  box-shadow: var(--sheet);
 }
 .replyHeading {
   display: flex;

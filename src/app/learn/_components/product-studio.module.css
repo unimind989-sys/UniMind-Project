@@ -24,9 +24,9 @@
   display: grid;
   gap: 12px;
   padding: 20px;
-  border: 1px solid var(--line);
   border-radius: var(--radius-card);
   background: var(--surface);
+  box-shadow: var(--sheet);
 }
 .studioControls > h2 {
   margin: 0 0 2px;
@@ -127,9 +127,9 @@
   min-width: 0;
   min-height: 26rem;
   padding: 24px 40px 28px;
-  border: 1px solid var(--line);
   border-radius: var(--radius-card);
   background: var(--surface);
+  box-shadow: var(--sheet);
 }
 /* The area's own heading is for structure only; the output names itself. */
 .artifactHeader {

@@ -6,15 +6,15 @@
 
 **Status:** [~]
 
-**Outcome:** Every phone screen and the landing page keep their approved Cobalt composition and gain one disciplined motion layer (press and state feedback, content-delivery rises, overlay entrances, a once-per-view landing reveal) plus detail polish; reduced motion shows identical end states.
+**Outcome:** Every screen of every flow (student, Batch Leader, admin, access, landing), desktop and phone, is visibly refined inside the Cobalt planes and the fixed fingerprint: the motion layer of the first candidate plus a felt visual pass over every element, with DESIGN.md recording each changed rule.
 
 **Acceptance:** [runbook WP03-T33](../../docs/runbooks/poc-execution-runbook.md#wp03-t33--polish-the-phone-screens-and-the-landing-page-with-a-motion-layer)
 
-**Owner:** Claude Code (overseeing session); selected speaker Ahmed. Ahmed's 19 October 2026 request: "further improve the frontend platform wide, focus on all the phone screens and the landing page for all devices, add your signature refinements like the animations and polish."
+**Owner:** Claude Code (overseeing session); selected speaker Ahmed. Ahmed's 19 October 2026 request: "further improve the frontend platform wide, focus on all the phone screens and the landing page for all devices, add your signature refinements like the animations and polish." His follow-up after candidate `7fd0a68`: "there is a lot of room for improvement; you didn't do the other screens in the main view; student/admin/leader flows; the landing page you just added some animations; make a change so the difference can be felt; don't be scared to change anything; treat the frontend as a whole; don't leave any element/screen without checking for improvements."
 
 **Branch:** claude/wp03-t33-phone-landing-polish
 
-**Updated (UTC):** 2026-10-19T14:30Z
+**Updated (UTC):** 2026-10-19T16:00Z
 
 ## Contract
 
@@ -37,31 +37,33 @@
 ## Steps
 
 - [x] Audit the rendered phone screens and the landing page; list the changes.
-- [x] Motion layer: tokens and shared feedback; content delivery; overlays; landing reveal; `DESIGN.md`.
-- [x] Landing polish at every width, both languages and themes.
-- [x] Phone screen polish across every role.
-- [~] Checks, rendered inspection (one round plus one confirmation), independent review, approval, PR.
+- [x] Motion layer: tokens and shared feedback; content delivery; overlays; landing reveal; `DESIGN.md` (candidate `7fd0a68`, presented; superseded by the felt pass below).
+- [x] Capture every screen and state (desktop and phone, EN/AR, light/dark; `.local/wp03-t33/shots/journeys`) and write the per-screen improvement list (Decisions).
+- [x] Shell and primitives: `--sheet`, the folio edge under page bands.
+- [x] Student flow: book covers and rows, Subjects search in the band, Materials sheet grid and document tabs, Chat column and marked-page answer, Studio sheets, quiz marked pages and side rail, Settings and onboarding sheets.
+- [x] Batch Leader and admin flows: sheets for campaign, requests, history, intake and files; admin list sheet, selected row on tint, sticky detail, resource and work sheets.
+- [x] Access pages (form sheet) and the landing (sticky masthead with a stuck hairline, bilingual section, footer links).
+- [~] Checks, e2e (landing spec: nine reveals), after-capture, independent review, approval, PR.
 
 ## Decisions
 
-- Motion stays inside the DESIGN.md budget (120ms controls, 280ms/≤7px delivery, 300ms/≤10px evidence, 180ms dialog, 420ms/≤10px landing rise, shared easing). The landing reveal and the first-paint delivery on the Shelf are recorded in DESIGN.md as the "Motion layer" bullet (four kinds: press, delivery, overlays, landing), amending "Direction B adds no motion of its own"; everything is once per view, transform and opacity only, never looping, never scroll-driven.
-- Navigation palettes still change at once (no colour interpolation on the bottom bar or segmented control); only transform feedback is added there.
-- Every entrance fills `backwards` at most and every delivery animation fills nothing, so a settled element has no animation in effect (`getAnimations()` empty): the existing landing, admin and shell motion assertions keep passing.
-- Keyframes are declared per CSS Module (CSS Modules scope animation names); `globals.css` holds only the tokens and the tap rule.
-- Audit result (before shots in `.local/wp03-t33/shots/before`, 51 screens, no horizontal overflow): every composition from WP03-T19 to T32 is sound, so this task adds motion and detail polish only; the one layout change is How it works on phones (number beside the title).
+- Motion stays inside the DESIGN.md budget; the first candidate's motion layer (press, delivery, overlays, landing reveal) is kept as the base.
+- Keyframes are declared per CSS Module; every entrance fills `backwards` at most, so settled elements have no animation in effect.
+- **The felt pass, one concept: "on the desk".** The bound Night folio, paper sheets and the Cobalt highlighter. (1) Every content surface is a *sheet*: white with a Night-tinted lift (`--sheet`), replacing flat 1px rings; lists become stacks of sheets. (2) Every page band (Shelf, Subjects, Settings, Batch Leader, admin) ends in the folio's curved edge (`bandEdge`), so the band reads as the folio's top page; unit bands stay flat because the workspace measures its chrome. (3) Subject covers are books: a Cobalt spine at the inline start, the title along it, count and freshness at the foot; the current subject keeps the Night folio page. (4) Reading surfaces carry a Cobalt margin rule like a marked page: the Chat answer and each quiz question. (5) Desktop layouts use the width: Chat's conversation and composer centred at 68rem, Materials as a two-column sheet grid, the quiz with a sticky side rail (progress, timing, submit), the admin detail sticky beside the list, Settings and Account under a Night band with the name, role and Sign out, Subjects with its search inside the band. (6) Landing: a masthead that stays as a compact Night bar on scroll, a bilingual section (the same answer in Arabic and English), hero stage tuned, a footer with the product links. Rules recorded in DESIGN.md (elevation, folio curve, bands, covers, reading surfaces, landing).
+- Not changed: fingerprint, Cobalt planes, every seam, guard and copy that tests assert; selectors and accessible names stay stable, so specs change only where a structure moved (Subjects search into the band, Settings band).
 
 ## Current state
 
-**Changed:** `globals.css` (motion tokens, `--press`, tap rule on controls); press feedback in `button`, `segmented-control`, `app-shell` (bottom-bar pills 8%, admin menu), `frontend-system` (back, title menu), `product-chat` (citation, chips, history), `product` (quiz checks, source rows), `student-account` (choices, section tabs), `study-shelf` (covers, rows); delivery rises for Chat exchanges and the streaming placeholder, live notices, the Shelf's resume page and covers (staggered, `--order` on each cover); menu entrances for the unit and admin panels and a backdrop fade; landing: `landing-reveal.tsx` (`Reveal`, IntersectionObserver plus a passed-section scroll fallback, 2.5s unhide if hydration never comes), hero line-by-line entrance, section reveals with staggered evidence cards and steps, flashcard face turn, press and hover transitions, phone step rows; `DESIGN.md` motion layer and landing Reveal bullets; `tests/e2e/landing-experience.spec.ts` reveal test.
+**Changed:** candidate 1 (`7fd0a68`, motion layer) plus the felt pass: `globals.css` (`--sheet`, `--band-edge`), `app-shell` (folio edge under page bands), `study-shelf` (book covers and rows, band search), `product-chat` (68rem column, marked-page answer), `product` (sheet grid of materials, document tabs, marked-page question, panels), `quiz` (side rail from 1100px), `product-studio`, `student-account`, `collection`, `admin` (list sheet, sticky detail), `auth`, landing (`landing.tsx` bilingual section and footer nav, sticky masthead), `DESIGN.md` (elevation, folio edge, books and marked pages, layouts, landing), the landing spec.
 
-**Proof:** `corepack pnpm check` passed on the candidate (format, boundaries, sql, typecheck, secrets, lint; unit 1027/1027). Demo e2e `PW_WORKERS=2` on 3102: 209/209 (25.4 min). Main e2e on 3330: 44/45, the moment test counting a hover-out transition on the landing Replay button; after removing that transition the landing and shell contract suites passed 20/20 (the other 25 main tests are untouched by that CSS). Rendered round one in the browser pane at 375px and 1440px (hero entrance, section reveals, Shelf arrival, Chat rise, unit menu entrance; every state settles with zero animations and no overflow). Confirmation round: `.local/wp03-t33/shots/after` (51 screens: every role's phone screens at 390px EN/AR light and 360px dark, landing at 320/360/390/768/1280/1440, EN/AR, light/dark) against `before`: no horizontal overflow anywhere, identical header heights and Chat reading heights (390px 561/543 EN/AR local demo, 360px 357, 320px 416, unchanged from before), every end state identical to the approved composition except the intended phone step rows.
+**Proof:** candidate 1: check, demo 209/209, main e2e green after the Replay fix, review approve. Felt pass: `corepack pnpm check` RUNNING; after-capture (desktop and phone EN) RUNNING; browser pane: landing sticky masthead, nine reveals, bilingual section and footer render with no overflow. Demo and main e2e NOT RUN yet on the felt pass.
 
 **Review:** independent review by the `independent-reviewer` sub-agent on the uncommitted candidate: request changes (2 major, 3 minor, all fixed); re-review of the delta at `7fd0a68`: approve. Self-review: `git diff --check` clean, full diff read, no secrets, presentation plus DESIGN.md, runbook, task record and one test only.
 
-**Approved commit:** PENDING: candidate `7fd0a68` presented to Ahmed on 2026-10-19 (material: motion layer and the phone step rows).
+**Approved commit:** PENDING: candidate `7fd0a68` was presented and Ahmed asked for a felt pass on every screen; the new candidate is presented after the proof below.
 
-**Remaining:** Ahmed's approval of `7fd0a68`; then one PR with required CI (`finalize`).
+**Remaining:** felt-pass proof (check, demo and main e2e, after-capture review, independent review), Ahmed's approval, then one PR with required CI (`finalize`).
 
 ## Next action
 
-Record `Approved commit:` once Ahmed approves `7fd0a68`, then run `finalize`: push, one PR, required CI, squash-merge, close.
+Finish the felt-pass proof, present the candidate to Ahmed, record `Approved commit:`, then run `finalize`.

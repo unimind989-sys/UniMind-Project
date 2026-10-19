@@ -183,6 +183,63 @@ export function Landing({ locale }: { locale: Locale }) {
           </Reveal>
         </section>
         <section
+          className={sections.bilingual}
+          aria-labelledby="bilingual-title"
+        >
+          <Reveal className={sections.bilingualCopy}>
+            <h2 id="bilingual-title">
+              {t(
+                "Ask in your words. Read in either language.",
+                "اسأل بكلماتك. اقرأ بأي لغة.",
+              )}
+            </h2>
+            <p>
+              {t(
+                "Type the question the way you would ask a colleague, in Egyptian Arabic or in English. UniMind answers in the language you choose, from the same page of your material.",
+                "اكتب السؤال كما تسأله لزميلك، بالعامية المصرية أو بالإنجليزية. يجيب UniMind باللغة التي تختارها، من نفس الصفحة في موادك.",
+              )}
+            </p>
+          </Reveal>
+          <Reveal as="figure" className={sections.bilingualCards} stagger>
+            <div
+              className={sections.answerCard}
+              lang="ar"
+              dir="rtl"
+              style={{ "--order": 0 } as CSSProperties}
+            >
+              <p className={sections.answerLanguage}>العربية</p>
+              <p className={sections.answerText}>
+                شلل إرب: يتأثر الجذران <bdi>C5</bdi> و<bdi>C6</bdi>، فيتدلى
+                الذراع مقرّبًا ومدوّرًا للداخل في وضع «بقشيش النادل».
+              </p>
+              <p className={sections.answerSource}>
+                <b>١</b>محاضرة 6، صفحة 14
+              </p>
+            </div>
+            <div
+              className={sections.answerCard}
+              lang="en"
+              dir="ltr"
+              style={{ "--order": 1 } as CSSProperties}
+            >
+              <p className={sections.answerLanguage}>English</p>
+              <p className={sections.answerText}>
+                Erb’s palsy: the C5 and C6 roots are affected, so the arm hangs
+                adducted and medially rotated, the waiter’s tip position.
+              </p>
+              <p className={sections.answerSource}>
+                <b>1</b>Lecture 6 handout, page 14
+              </p>
+            </div>
+            <figcaption style={{ "--order": 2 } as CSSProperties}>
+              {t(
+                "The same answer, from the same page, in both languages",
+                "الإجابة نفسها، من الصفحة نفسها، باللغتين",
+              )}
+            </figcaption>
+          </Reveal>
+        </section>
+        <section
           className={sections.how}
           id="how-it-works"
           aria-labelledby="how-title"
@@ -261,6 +318,15 @@ export function Landing({ locale }: { locale: Locale }) {
       </main>
       <footer className={styles.footer}>
         <Brand href="/" locale={locale} />
+        <nav
+          className={styles.footerNav}
+          aria-label={t("Site links", "روابط الموقع")}
+        >
+          <a href="#workspace">{t("Try a sample", "جرّب نموذجًا")}</a>
+          <a href="#how-it-works">{t("How it works", "كيف تعمل")}</a>
+          <Link href={login}>{t("Sign in", "تسجيل الدخول")}</Link>
+          <Link href={register}>{t("Create your account", "أنشئ حسابك")}</Link>
+        </nav>
         <p>
           {t(
             "For learning from your course materials. Educational support does not replace professional advice.",

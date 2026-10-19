@@ -107,8 +107,13 @@
   align-items: start;
   gap: 28px;
 }
+/* The list is one sheet: search at its head, decisions ruled below. */
 .queuePane {
   min-width: 0;
+  padding: 16px 12px 12px;
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  box-shadow: var(--sheet);
   container-type: inline-size;
 }
 .queueSearch {
@@ -172,7 +177,7 @@
   background: var(--surface-2);
 }
 .decisionButton[data-selected="true"] {
-  background: var(--surface);
+  background: var(--tint);
   box-shadow: inset 0 0 0 2px var(--action);
 }
 .decisionButton:disabled {
@@ -237,6 +242,13 @@
 .selectedDetail:focus {
   outline: none;
 }
+/* Beside the list, the detail stays in view while the list scrolls. */
+@media (min-width: 1200px) {
+  .selectedDetail {
+    position: sticky;
+    inset-block-start: 80px;
+  }
+}
 .detailBack {
   display: none;
 }
@@ -249,6 +261,7 @@
   padding: 36px;
   border-radius: var(--radius-card);
   background: var(--surface);
+  box-shadow: var(--sheet);
 }
 .decisionEmpty > svg {
   color: var(--action);
@@ -272,6 +285,7 @@
   padding: 30px 36px 28px;
   border-radius: var(--radius-card);
   background: var(--surface);
+  box-shadow: var(--sheet);
 }
 .detailHeading {
   display: grid;
@@ -680,6 +694,7 @@
   list-style: none;
   border-radius: var(--radius-card);
   background: var(--surface);
+  box-shadow: var(--sheet);
 }
 .resourceList > li {
   display: grid;
@@ -750,6 +765,7 @@
   padding: 24px 28px;
   border-radius: var(--radius-card);
   background: var(--surface);
+  box-shadow: var(--sheet);
 }
 .workPanel h2,
 .workPanel h3 {

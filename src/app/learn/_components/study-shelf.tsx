@@ -196,6 +196,34 @@ export function StudyShelf({
             {t("Academic settings", "الإعدادات الدراسية")}
           </Link>
         ) : null}
+        {subjects ? (
+          <div className={styles.bandSearch}>
+            <search className={styles.searchLandmark}>
+              <label className={styles.search}>
+                <span>
+                  {t(
+                    `Search ${collectionLabel.toLocaleLowerCase(locale)}`,
+                    `البحث في ${collectionLabel}`,
+                  )}
+                </span>
+                <input
+                  type="search"
+                  name="q"
+                  value={search}
+                  placeholder={t(
+                    `Find a ${singularLabel.toLocaleLowerCase(locale)}…`,
+                    `ابحث عن ${singularLabel}…`,
+                  )}
+                  autoComplete="off"
+                  spellCheck={false}
+                  enterKeyHint="search"
+                  aria-describedby="subjects-shown"
+                  onChange={(event) => setSearch(event.target.value)}
+                />
+              </label>
+            </search>
+          </div>
+        ) : null}
       </div>
       {ready && !subjects ? (
         <section className={styles.resume} data-plane="cobalt">
@@ -396,30 +424,6 @@ export function StudyShelf({
                   structure for assistive technology (MD-15). */}
               <h2 className="visually-hidden">{collectionLabel}</h2>
               {/* A search landmark with a filter field (IX-12). */}
-              <search className={styles.searchLandmark}>
-                <label className={styles.search}>
-                  <span>
-                    {t(
-                      `Search ${collectionLabel.toLocaleLowerCase(locale)}`,
-                      `البحث في ${collectionLabel}`,
-                    )}
-                  </span>
-                  <input
-                    type="search"
-                    name="q"
-                    value={search}
-                    placeholder={t(
-                      `Find a ${singularLabel.toLocaleLowerCase(locale)}…`,
-                      `ابحث عن ${singularLabel}…`,
-                    )}
-                    autoComplete="off"
-                    spellCheck={false}
-                    enterKeyHint="search"
-                    aria-describedby="subjects-shown"
-                    onChange={(event) => setSearch(event.target.value)}
-                  />
-                </label>
-              </search>
               {/* The count is live, so typing announces what the filter
                   leaves; it only exists in the Subjects view. */}
               <p id="subjects-shown" className="visually-hidden" role="status">

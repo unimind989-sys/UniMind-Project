@@ -164,10 +164,32 @@
   flex-direction: column;
   padding: 0;
 }
+/* The band paints above its folio edge, so a page that overlaps the edge
+   (the Shelf's resume page) stays in front of it. */
+.content[data-band] > :first-child {
+  position: relative;
+  z-index: 1;
+}
+/* The folio edge: an 18px Night strip whose lower edge curves down toward
+   the spine (the inline end), so the band reads as the folio's top page. */
+.bandEdge {
+  flex: none;
+  height: 18px;
+  background: var(--night);
+  mask-image: var(--band-edge);
+  mask-size: 100% 100%;
+}
+:global([dir="rtl"]) .bandEdge,
+.shell[dir="rtl"] .bandEdge {
+  mask-image: var(--band-edge-rtl);
+}
 .body {
   flex: 1;
   min-width: 0;
   padding: 40px var(--shell-inset) 56px;
+}
+.bandEdge + .body {
+  padding-block-start: 28px;
 }
 .content :where(h1) {
   overflow-wrap: break-word;

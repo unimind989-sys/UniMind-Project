@@ -47,15 +47,35 @@
   transform: none;
 }
 
-/* Masthead: the shell's Night bar, on the hero stage. */
+/* Masthead: the shell's Night bar, on the hero stage. It stays at the top
+   while the page scrolls, and draws its hairline only once it is stuck. */
 .header {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 10;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 8px 28px;
-  padding: 20px var(--landing-gutter) 8px;
+  padding: 14px var(--landing-gutter) 8px;
   background: var(--night);
   color: var(--on-night);
+  container-type: scroll-state;
+}
+.header::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  height: 1px;
+  background: var(--night-line);
+  opacity: 0;
+  transition: opacity var(--motion-control) ease;
+}
+@container scroll-state(stuck: top) {
+  .header::after {
+    opacity: 1;
+  }
 }
 /* The landing keeps its approved logo spacing (the shell brand is 44px). */
 .header > a:first-child {
@@ -365,18 +385,40 @@
 }
 
 .footer {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  gap: 12px 32px;
-  padding: 28px var(--landing-gutter) 40px;
+  gap: 16px 40px;
+  padding: 32px var(--landing-gutter) 44px;
   border-block-start: 1px solid var(--line);
 }
 .footer p {
+  grid-column: 1 / -1;
   max-width: 44em;
   font-size: 0.875rem;
   line-height: 1.55;
   color: var(--secondary);
+}
+.footerNav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: end;
+  gap: 4px 8px;
+}
+.footerNav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: var(--radius-control);
+  color: var(--ink);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+.footerNav a:hover {
+  background: var(--surface);
+  color: var(--action);
 }
 
 @media (max-width: 719px) {
@@ -388,8 +430,15 @@
     margin-inline-start: auto;
   }
   .header {
-    padding-block-start: 12px;
+    padding-block-start: 10px;
     gap: 8px 12px;
+  }
+  .footer {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .footerNav {
+    justify-content: start;
+    margin-inline-start: -12px;
   }
   .header > a:first-child {
     width: 120px;
