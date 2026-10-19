@@ -488,25 +488,20 @@
   min-width: 0;
   margin-block-end: 4px;
 }
-/* The format reads as the tab on a document: Night on a small square tab. */
+/* The format reads as the tab on a document: a small square tab on the
+   tint, in the same ink as the title (it is text, not a status). */
 .sourceFormat {
   display: inline-flex;
   align-items: center;
   min-height: 24px;
   padding: 0 9px;
   border-radius: 6px;
-  background: var(--night);
-  color: var(--on-night);
+  background: var(--tint);
+  color: var(--ink);
   font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.02em;
   line-height: 1.5;
-}
-/* In the dark theme Night sits too close to the sheet, so the tab uses the
-   tint instead. */
-:global([data-theme="dark"]) .sourceFormat {
-  background: var(--tint);
-  color: var(--ink);
 }
 .sourceRow h3 {
   min-width: 0;
