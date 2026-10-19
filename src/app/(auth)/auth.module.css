@@ -98,9 +98,10 @@
   min-width: 0;
   margin: 0;
   padding: clamp(24px, 3.4vw, 48px);
-  /* A flat panel: only what floats casts a shadow (DESIGN.md elevation). */
+  /* The form page is a sheet beside the Night page (DESIGN.md elevation). */
   border-radius: var(--radius-card);
   background: var(--surface);
+  box-shadow: var(--sheet);
 }
 .steps {
   margin-block-end: 24px;

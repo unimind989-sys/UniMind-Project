@@ -45,10 +45,16 @@
   font-weight: 650;
   color: var(--on-night-2);
   text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform var(--motion-control) ease;
 }
 .back:hover {
   background: var(--night-2);
   color: var(--on-night);
+}
+.back:active,
+.unitSummary:active {
+  transform: var(--press);
 }
 
 /* The menu's summary: a --night-2 pill naming the current session (Chat) or
@@ -72,6 +78,7 @@
   font-weight: 600;
   list-style: none;
   cursor: pointer;
+  transition: transform var(--motion-control) ease;
 }
 .unitSummary::-webkit-details-marker {
   display: none;
@@ -98,8 +105,20 @@
 .summaryLine > svg {
   color: var(--on-night-2);
 }
+.summaryLine > svg:last-child {
+  transition: transform var(--motion-control) ease;
+}
 .unitMenu[open] .summaryLine > svg:last-child {
   transform: rotate(180deg);
+}
+.unitMenu[open] > .menuPanel {
+  animation: menu-enter var(--motion-dialog) var(--ease-settle);
+}
+@keyframes menu-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
 }
 .menuPanel {
   position: absolute;

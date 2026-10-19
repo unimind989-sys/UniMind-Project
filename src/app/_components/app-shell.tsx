@@ -405,6 +405,12 @@ export function AppShell({
           {band ? (
             <>
               {band}
+              {/* A page band ends in the folio's curved edge (DESIGN.md);
+                  a unit workspace keeps a flat band, since it measures
+                  its chrome. */}
+              {workspace ? null : (
+                <div className={styles.bandEdge} aria-hidden="true" />
+              )}
               <div className={styles.body}>{children}</div>
             </>
           ) : (

@@ -1611,6 +1611,18 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 **Pass:** the demo admin has no header Sign out and every admin journey still passes; the decisions and later checks are recorded; required CI green; production carries the change.
 
+#### WP03-T33 — Polish the phone screens and the landing page with a motion layer
+
+**Dependencies:** WP03-T32. Ahmed's 19 October 2026 request: refine the frontend platform-wide, with the phone screens of every flow and the landing page on every device as the focus, and add the agent's own animation and polish refinements ([task record](../../planning/tasks/wp03-t33-phone-landing-polish.md)). His follow-up the same day, after the first candidate (`7fd0a68`, motion only): the difference must be felt on every screen of the student, Batch Leader and admin flows and on the landing, desktop included; treat the frontend as a whole, look at every element, and change anything that earns it. The fixed fingerprint (name, Open Folio logo, slogan, blue family) and the Cobalt planes stay; every other visual decision may change within them.
+
+- [x] Audit the rendered phone screens (landing, access, Shelf, Subjects, Materials, Chat, Studio, Quiz, Settings, Batch Leader, admin) and the landing page at phone, tablet and desktop widths; list what to change.
+- [x] One motion layer in the Cobalt contract: shared tokens, press and state feedback on every control, content-delivery rises for answers, results, notices and lists, overlay entrances for the unit and admin menus, a once-per-view landing reveal; reduced motion renders every end state instantly; `DESIGN.md` records the amended motion rules.
+- [x] A felt visual refinement of every screen and state, desktop and phone, English and Arabic, light and dark: the shell and primitives, the student flow (onboarding, Shelf, Subjects, Materials, Chat, Studio, Quiz, Settings), the Batch Leader flow (intake, campaign, history, account), the admin flow (queue, every resource, account), the access pages and the landing; `DESIGN.md` records every changed rule.
+- [x] `corepack pnpm check`, the demo and main e2e suites (specs updated where structure intentionally changed), before and after captures of every screen, a rendered inspection round plus one confirmation round, independent review of the candidate, `Approved commit:`, one PR with required CI. Approved at `6c3316a` by Ahmed on 19 October 2026; delivered in [#100](https://github.com/unimind989-sys/UniMind-Project/pull/100). These closure markers become authoritative only when that PR merges with green required CI.
+
+**Pass:** every screen of every flow is visibly refined against its before capture while keeping the fingerprint, the Cobalt planes, every real seam and guard, and every accessibility, isolation and measurement test (updated only where structure intentionally changed); reduced motion shows identical end states; required CI green.
+
+
 ### 6.1 Routes
 
 Implement at minimum:

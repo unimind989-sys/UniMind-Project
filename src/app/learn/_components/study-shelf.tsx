@@ -5,7 +5,13 @@ import { Button } from "@/app/_components/product-ui";
 import { ProductNavigationLink as Link } from "@/app/_components/product-navigation";
 import type { Route } from "next";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
 import { FrontendIcon } from "@/app/_components/frontend-controls";
 import { AppShell } from "@/app/_components/app-shell";
 import type {
@@ -190,6 +196,34 @@ export function StudyShelf({
             {t("Academic settings", "الإعدادات الدراسية")}
           </Link>
         ) : null}
+        {subjects ? (
+          <div className={styles.bandSearch}>
+            <search className={styles.searchLandmark}>
+              <label className={styles.search}>
+                <span>
+                  {t(
+                    `Search ${collectionLabel.toLocaleLowerCase(locale)}`,
+                    `البحث في ${collectionLabel}`,
+                  )}
+                </span>
+                <input
+                  type="search"
+                  name="q"
+                  value={search}
+                  placeholder={t(
+                    `Find a ${singularLabel.toLocaleLowerCase(locale)}…`,
+                    `ابحث عن ${singularLabel}…`,
+                  )}
+                  autoComplete="off"
+                  spellCheck={false}
+                  enterKeyHint="search"
+                  aria-describedby="subjects-shown"
+                  onChange={(event) => setSearch(event.target.value)}
+                />
+              </label>
+            </search>
+          </div>
+        ) : null}
       </div>
       {ready && !subjects ? (
         <section className={styles.resume} data-plane="cobalt">
@@ -336,7 +370,7 @@ export function StudyShelf({
               ) : null}
             </div>
             <ul className={styles.coverGrid}>
-              {journey.units.map((unit) => {
+              {journey.units.map((unit, order) => {
                 const href = unitHref(unit.id);
                 const name = locale === "ar" ? unit.nameAr : unit.nameEn;
                 const other = locale === "ar" ? unit.nameEn : unit.nameAr;
@@ -364,6 +398,8 @@ export function StudyShelf({
                     key={unit.id}
                     data-cover-unit-id={unit.id}
                     data-current={unit === featured ? true : undefined}
+                    // First-paint order for the covers' staggered arrival.
+                    style={{ "--order": Math.min(order, 6) } as CSSProperties}
                   >
                     {href ? (
                       <Link
@@ -388,30 +424,6 @@ export function StudyShelf({
                   structure for assistive technology (MD-15). */}
               <h2 className="visually-hidden">{collectionLabel}</h2>
               {/* A search landmark with a filter field (IX-12). */}
-              <search className={styles.searchLandmark}>
-                <label className={styles.search}>
-                  <span>
-                    {t(
-                      `Search ${collectionLabel.toLocaleLowerCase(locale)}`,
-                      `البحث في ${collectionLabel}`,
-                    )}
-                  </span>
-                  <input
-                    type="search"
-                    name="q"
-                    value={search}
-                    placeholder={t(
-                      `Find a ${singularLabel.toLocaleLowerCase(locale)}…`,
-                      `ابحث عن ${singularLabel}…`,
-                    )}
-                    autoComplete="off"
-                    spellCheck={false}
-                    enterKeyHint="search"
-                    aria-describedby="subjects-shown"
-                    onChange={(event) => setSearch(event.target.value)}
-                  />
-                </label>
-              </search>
               {/* The count is live, so typing announces what the filter
                   leaves; it only exists in the Subjects view. */}
               <p id="subjects-shown" className="visually-hidden" role="status">

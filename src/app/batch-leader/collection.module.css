@@ -294,6 +294,7 @@
   padding-inline: 20px;
   border-radius: var(--radius-card);
   background: var(--surface);
+  box-shadow: var(--sheet);
 }
 .requestList > li {
   display: grid;
@@ -362,6 +363,7 @@
   padding: 24px 28px 28px;
   border-radius: var(--radius-card);
   background: var(--surface);
+  box-shadow: var(--sheet);
 }
 .intake[hidden] {
   display: none;
@@ -439,7 +441,7 @@
   padding: 18px 20px;
   border-radius: var(--radius-card);
   background: var(--surface);
-  box-shadow: inset 0 0 0 1px var(--line);
+  box-shadow: var(--sheet);
 }
 .fileHeading {
   display: flex;
@@ -743,6 +745,7 @@
   padding: 24px 28px;
   border-radius: var(--radius-card);
   background: var(--surface);
+  box-shadow: var(--sheet);
 }
 .campaignMain {
   display: grid;

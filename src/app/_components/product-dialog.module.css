@@ -15,6 +15,14 @@
 .dialog::backdrop {
   background: rgb(12 24 35 / 0.48);
 }
+.dialog[open]::backdrop {
+  animation: backdrop-in var(--motion-dialog) ease;
+}
+@keyframes backdrop-in {
+  from {
+    opacity: 0;
+  }
+}
 /* The title and Close stay in view while a long excerpt list scrolls. */
 .dialog > header {
   position: sticky;
@@ -101,6 +109,7 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .dialog[open],
+  .dialog[open]::backdrop,
   .dialog[data-presentation="sheet"][open] {
     animation: none;
   }

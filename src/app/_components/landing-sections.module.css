@@ -95,6 +95,89 @@
   font-size: 0.8125rem;
   color: var(--secondary);
 }
+/* Bilingual: the same answer in Arabic and English, two sheets side by side. */
+.bilingual {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 36px 72px;
+  align-items: center;
+  padding: 24px var(--landing-gutter) 104px;
+}
+.bilingualCopy {
+  display: grid;
+  gap: 18px;
+  max-width: 34rem;
+}
+.bilingualCopy p {
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--secondary);
+}
+.bilingualCards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  gap: 14px;
+  min-width: 0;
+}
+.bilingualCards figcaption {
+  grid-column: 1 / -1;
+  font-size: 0.8125rem;
+  color: var(--secondary);
+}
+/* The answer sheet: a marked page with its language at the head and the
+   location pill at the foot. */
+.answerCard {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  padding: 20px 22px;
+  border-inline-start: 4px solid var(--cobalt);
+  border-start-start-radius: 6px;
+  border-end-start-radius: 6px;
+  border-start-end-radius: var(--radius-card);
+  border-end-end-radius: var(--radius-card);
+  background: var(--surface);
+  box-shadow: var(--sheet);
+}
+.answerCard p {
+  margin: 0;
+}
+.answerLanguage {
+  font-size: 0.8125rem;
+  font-weight: 800;
+  color: var(--secondary);
+}
+.answerText {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--ink);
+}
+.answerText bdi {
+  font-family: var(--font-unimind-latin), sans-serif;
+}
+.answerSource {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  justify-self: start;
+  min-height: 34px;
+  padding-inline: 6px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--tint);
+  font-size: 0.84375rem;
+  font-weight: 700;
+}
+.answerSource b {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.375rem;
+  height: 1.375rem;
+  border-radius: 50%;
+  background: var(--action);
+  color: var(--on-action);
+  font-size: 0.75rem;
+  font-weight: 800;
+}
 .how {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -151,6 +234,9 @@
   .evidence {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
   }
+  .bilingual {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  }
   .how {
     grid-template-columns: minmax(0, 0.8fr) minmax(0, 2fr);
     gap: 64px;
@@ -160,13 +246,36 @@
   .evidence {
     padding-block-end: 72px;
   }
+  .bilingual {
+    padding-block-end: 72px;
+  }
   .how {
     padding-block: 64px;
+  }
+  /* Phones read each step as one row: the number beside its title, the
+     explanation under the title. */
+  .steps {
+    gap: 24px;
+  }
+  .steps li {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 6px 16px;
+  }
+  .stepNumber {
+    grid-row: span 2;
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+  .steps h3 {
+    align-self: center;
+    font-size: 1.25rem;
   }
 }
 @media (forced-colors: active) {
   .sourceCard,
-  .gapCard {
+  .gapCard,
+  .answerCard {
     border: 1px solid CanvasText;
   }
 }

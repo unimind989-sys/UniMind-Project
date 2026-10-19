@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import type { Route } from "next";
 import { Source_Serif_4 } from "next/font/google";
 import type { Locale } from "@/lib/i18n/locale";
@@ -9,6 +10,7 @@ import styles from "./landing.module.css";
 import { WorkspacePreview } from "./landing-experience";
 import { LandingIcon } from "./landing-icons";
 import { AnswerMoment } from "./landing-moment";
+import { Reveal } from "./landing-reveal";
 import sections from "./landing-sections.module.css";
 import workspace from "./landing-workspace.module.css";
 
@@ -106,7 +108,7 @@ export function Landing({ locale }: { locale: Locale }) {
           id="workspace"
           aria-labelledby="experience-title"
         >
-          <div className={styles.sectionHead}>
+          <Reveal className={styles.sectionHead}>
             <h2 id="experience-title">
               {t("Try it on a real subject.", "جرّبه على مادة حقيقية.")}
             </h2>
@@ -116,11 +118,13 @@ export function Landing({ locale }: { locale: Locale }) {
                 "يستخدم هذا النموذج مواد تشريح مُتخيَّلة. افتح الدليل أو اقلب بطاقة مذاكرة أو أجب عن سؤال اختبار.",
               )}
             </p>
-          </div>
-          <WorkspacePreview locale={locale} />
+          </Reveal>
+          <Reveal>
+            <WorkspacePreview locale={locale} />
+          </Reveal>
         </section>
         <section className={sections.evidence} aria-labelledby="evidence-title">
-          <div className={sections.evidenceCopy}>
+          <Reveal className={sections.evidenceCopy}>
             <h2 id="evidence-title">
               {t(
                 "Check every answer against your material.",
@@ -136,9 +140,12 @@ export function Landing({ locale }: { locale: Locale }) {
             <a className={styles.textLink} href="#workspace">
               {t("Try the sample answer", "جرّب الإجابة التجريبية")}
             </a>
-          </div>
-          <figure className={sections.evidenceCards}>
-            <div className={sections.sourceCard}>
+          </Reveal>
+          <Reveal as="figure" className={sections.evidenceCards} stagger>
+            <div
+              className={sections.sourceCard}
+              style={{ "--order": 0 } as CSSProperties}
+            >
               <div className={sections.sourceHead}>
                 <p>
                   <strong lang="en" dir="ltr">
@@ -153,7 +160,10 @@ export function Landing({ locale }: { locale: Locale }) {
                 palm facing backwards. That’s the waiter’s tip.
               </blockquote>
             </div>
-            <div className={sections.gapCard}>
+            <div
+              className={sections.gapCard}
+              style={{ "--order": 1 } as CSSProperties}
+            >
               <p className={sections.gapQuestion}>
                 {t("How is Erb’s palsy treated?", "إزاي بيتعالج شلل إرب؟")}
               </p>
@@ -164,20 +174,77 @@ export function Landing({ locale }: { locale: Locale }) {
                 )}
               </p>
             </div>
-            <figcaption>
+            <figcaption style={{ "--order": 2 } as CSSProperties}>
               {t(
                 "Sample evidence from invented material",
                 "أدلة تجريبية من مواد مُتخيَّلة",
               )}
             </figcaption>
-          </figure>
+          </Reveal>
+        </section>
+        <section
+          className={sections.bilingual}
+          aria-labelledby="bilingual-title"
+        >
+          <Reveal className={sections.bilingualCopy}>
+            <h2 id="bilingual-title">
+              {t(
+                "Ask in your words. Read in either language.",
+                "اسأل بكلماتك. اقرأ بأي لغة.",
+              )}
+            </h2>
+            <p>
+              {t(
+                "Type the question the way you would ask a colleague, in Egyptian Arabic or in English. UniMind answers in the language you choose, from the same page of your material.",
+                "اكتب السؤال كما تسأله لزميلك، بالعامية المصرية أو بالإنجليزية. يجيب UniMind باللغة التي تختارها، من نفس الصفحة في موادك.",
+              )}
+            </p>
+          </Reveal>
+          <Reveal as="figure" className={sections.bilingualCards} stagger>
+            <div
+              className={sections.answerCard}
+              lang="ar"
+              dir="rtl"
+              style={{ "--order": 0 } as CSSProperties}
+            >
+              <p className={sections.answerLanguage}>العربية</p>
+              <p className={sections.answerText}>
+                شلل إرب: يتأثر الجذران <bdi>C5</bdi> و<bdi>C6</bdi>، فيتدلى
+                الذراع مقرّبًا ومدوّرًا للداخل في وضع «بقشيش النادل».
+              </p>
+              <p className={sections.answerSource}>
+                <b>١</b>محاضرة 6، صفحة 14
+              </p>
+            </div>
+            <div
+              className={sections.answerCard}
+              lang="en"
+              dir="ltr"
+              style={{ "--order": 1 } as CSSProperties}
+            >
+              <p className={sections.answerLanguage}>English</p>
+              <p className={sections.answerText}>
+                Erb’s palsy: the C5 and C6 roots are affected, so the arm hangs
+                adducted and medially rotated, the waiter’s tip position.
+              </p>
+              <p className={sections.answerSource}>
+                <b>1</b>Lecture 6 handout, page 14
+              </p>
+            </div>
+            <figcaption style={{ "--order": 2 } as CSSProperties}>
+              {t(
+                "The same answer, from the same page, in both languages",
+                "الإجابة نفسها، من الصفحة نفسها، باللغتين",
+              )}
+            </figcaption>
+          </Reveal>
         </section>
         <section
           className={sections.how}
           id="how-it-works"
           aria-labelledby="how-title"
         >
-          <div className={sections.howHead}>
+          <Reveal className={sections.howHead}>
             <h2 id="how-title">{t("How it works", "كيف تعمل")}</h2>
             <p>
               {t(
@@ -188,8 +255,8 @@ export function Landing({ locale }: { locale: Locale }) {
             <Link className={styles.textLink} href={register}>
               {t("Create your account", "أنشئ حسابك")}
             </Link>
-          </div>
-          <ol className={sections.steps}>
+          </Reveal>
+          <Reveal as="ol" className={sections.steps} stagger>
             {[
               [
                 t("Choose your program", "اختر برنامجك الدراسي"),
@@ -213,7 +280,7 @@ export function Landing({ locale }: { locale: Locale }) {
                 ),
               ],
             ].map(([title, description], index) => (
-              <li key={title}>
+              <li key={title} style={{ "--order": index } as CSSProperties}>
                 <span className={sections.stepNumber} aria-hidden="true">
                   {new Intl.NumberFormat(locale).format(index + 1)}
                 </span>
@@ -221,9 +288,13 @@ export function Landing({ locale }: { locale: Locale }) {
                 <p>{description}</p>
               </li>
             ))}
-          </ol>
+          </Reveal>
         </section>
-        <section className={styles.closing} aria-labelledby="closing-title">
+        <Reveal
+          as="section"
+          className={styles.closing}
+          aria-labelledby="closing-title"
+        >
           <h2 id="closing-title">
             {t("Open your next subject.", "افتح مادتك القادمة.")}
           </h2>
@@ -243,10 +314,19 @@ export function Landing({ locale }: { locale: Locale }) {
               </Link>
             </div>
           </div>
-        </section>
+        </Reveal>
       </main>
       <footer className={styles.footer}>
         <Brand href="/" locale={locale} />
+        <nav
+          className={styles.footerNav}
+          aria-label={t("Site links", "روابط الموقع")}
+        >
+          <a href="#workspace">{t("Try a sample", "جرّب نموذجًا")}</a>
+          <a href="#how-it-works">{t("How it works", "كيف تعمل")}</a>
+          <Link href={login}>{t("Sign in", "تسجيل الدخول")}</Link>
+          <Link href={register}>{t("Create your account", "أنشئ حسابك")}</Link>
+        </nav>
         <p>
           {t(
             "For learning from your course materials. Educational support does not replace professional advice.",

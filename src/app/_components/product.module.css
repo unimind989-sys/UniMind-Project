@@ -29,6 +29,7 @@
   padding: 24px 28px;
   border-radius: var(--radius-card);
   background: var(--surface);
+  box-shadow: var(--sheet);
 }
 .panel > * {
   max-width: 100%;
@@ -258,14 +259,20 @@
   }
 }
 /* One quiz question: a white card with the counter above a large prompt. */
+/* A question is a marked page: a sheet with a Cobalt margin rule. */
 .question {
   min-width: 0;
   max-width: 48rem;
   margin: 0 0 16px;
   padding: 22px 24px 24px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-card);
+  border: 0;
+  border-inline-start: 4px solid var(--cobalt);
+  border-start-start-radius: 6px;
+  border-end-start-radius: 6px;
+  border-start-end-radius: var(--radius-card);
+  border-end-end-radius: var(--radius-card);
   background: var(--surface);
+  box-shadow: var(--sheet);
 }
 .question legend {
   /* Floated so the card's padding sits above it like any other content. */
@@ -314,7 +321,11 @@
   transition:
     background-color var(--motion-control) ease,
     border-color var(--motion-control) ease,
-    box-shadow var(--motion-control) ease;
+    box-shadow var(--motion-control) ease,
+    transform var(--motion-control) ease;
+}
+.question:not(:disabled) .check:active {
+  transform: var(--press);
 }
 .question .check input {
   accent-color: var(--action);
@@ -433,10 +444,15 @@
   line-height: 1.5;
   color: var(--secondary);
 }
+/* Materials: sheets on the desk, two across when the width allows. */
 .materialLibrary {
   display: grid;
-  gap: 10px;
-  max-width: 64rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 26rem), 1fr));
+  gap: 14px;
+  max-width: 72rem;
+}
+.materialLibrary > .materialsLimit {
+  grid-column: 1 / -1;
 }
 .materialsLimit {
   max-width: 68ch;
@@ -448,12 +464,13 @@
 .sourceRow {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
+  align-content: start;
   align-items: start;
   gap: 8px 24px;
-  padding: 16px 22px;
-  border: 1px solid var(--line);
+  padding: 18px 22px;
   border-radius: var(--radius-card);
   background: var(--surface);
+  box-shadow: var(--sheet);
 }
 .sourceIdentity {
   display: flex;
@@ -471,16 +488,19 @@
   min-width: 0;
   margin-block-end: 4px;
 }
+/* The format reads as the tab on a document: a small square tab on the
+   tint, in the same ink as the title (it is text, not a status). */
 .sourceFormat {
   display: inline-flex;
   align-items: center;
   min-height: 24px;
-  padding: 0 10px;
-  border-radius: var(--radius-pill);
+  padding: 0 9px;
+  border-radius: 6px;
   background: var(--tint);
   color: var(--ink);
-  font-size: 0.8125rem;
-  font-weight: 700;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
   line-height: 1.5;
 }
 .sourceRow h3 {
@@ -532,7 +552,11 @@
   overflow-wrap: anywhere;
   transition:
     background-color var(--motion-control) ease,
-    border-color var(--motion-control) ease;
+    border-color var(--motion-control) ease,
+    transform var(--motion-control) ease;
+}
+.sourceRow summary:active {
+  transform: var(--press);
 }
 .sourceRow summary::-webkit-details-marker {
   display: none;

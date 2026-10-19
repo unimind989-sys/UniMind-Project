@@ -206,6 +206,11 @@
   font-size: 0.8125rem;
   font-weight: 700;
   box-shadow: inset 0 0 0 1px var(--night-control);
+  /* No transitions here: the stage must show no running animation while it
+     is paused offscreen, and a hover-out transition on Replay would count. */
+}
+.replay:active {
+  transform: var(--press);
 }
 .replay:hover {
   background: var(--night-2);

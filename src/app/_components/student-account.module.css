@@ -184,8 +184,9 @@
   min-height: 56px;
   padding: 12px 18px;
   background: var(--surface);
-  border: 1.5px solid var(--line);
+  border: 1.5px solid transparent;
   border-radius: var(--radius-card);
+  box-shadow: var(--sheet);
   color: var(--ink);
   font-size: 1rem;
   font-weight: 600;
@@ -194,7 +195,11 @@
   transition:
     background-color var(--motion-control) ease,
     border-color var(--motion-control) ease,
-    box-shadow var(--motion-control) ease;
+    box-shadow var(--motion-control) ease,
+    transform var(--motion-control) ease;
+}
+.choice:active {
+  transform: var(--press);
 }
 .choice:hover {
   border-color: var(--control);
@@ -202,7 +207,9 @@
 .choice:has(input:checked) {
   background: var(--tint);
   border-color: var(--action);
-  box-shadow: inset 0 0 0 1px var(--action);
+  box-shadow:
+    var(--sheet),
+    inset 0 0 0 1px var(--action);
   font-weight: 750;
 }
 .choice:has(input:focus-visible) {
@@ -254,9 +261,9 @@
 }
 .setupReview {
   margin: 0;
-  border: 1px solid var(--line);
   border-radius: var(--radius-card);
   background: var(--surface);
+  box-shadow: var(--sheet);
 }
 .setupReview > div {
   display: grid;
@@ -333,9 +340,9 @@
   margin-block-end: 20px;
   padding-block: 14px;
   padding-inline: 20px 12px;
-  border: 1px solid var(--line);
   border-radius: var(--radius-card);
   background: var(--surface);
+  box-shadow: var(--sheet);
 }
 .accountSummary p {
   display: grid;
@@ -380,9 +387,9 @@
   position: sticky;
   inset-block-start: 24px;
   padding: 6px;
-  border: 1px solid var(--line);
   border-radius: var(--radius-card);
   background: var(--surface);
+  box-shadow: var(--sheet);
 }
 .sectionNav button {
   width: 100%;
@@ -404,7 +411,11 @@
   overflow-wrap: anywhere;
   transition:
     background-color var(--motion-control) ease,
-    color var(--motion-control) ease;
+    color var(--motion-control) ease,
+    transform var(--motion-control) ease;
+}
+.sectionNav button:active {
+  transform: var(--press);
 }
 .sectionNav button:hover {
   background: var(--surface-2);
@@ -425,9 +436,10 @@
   max-width: 46rem;
   margin-block-end: 16px;
   padding: 24px 28px 28px;
-  border: 1px solid var(--line);
+  border: 0;
   border-radius: var(--radius-card);
   background: var(--surface);
+  box-shadow: var(--sheet);
 }
 .settingsBody .compactSection {
   max-width: 640px;

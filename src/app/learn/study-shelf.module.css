@@ -94,6 +94,19 @@
   mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M0 7C35 2.6 70 .5 96.5 0Q100 0 100 3.5V92Q100 95.5 96.5 95.6C70 96 35 97.2 0 100Z'/%3E%3C/svg%3E");
   mask-size: 100% 100%;
   filter: drop-shadow(0 26px 30px rgb(12 24 35 / 0.28));
+  animation: shelf-arrive var(--motion-result) var(--ease-settle) backwards;
+}
+/* First paint delivers the one next action, then the covers in reading
+   order (40ms apart, at most six steps); nothing else on the page moves. */
+.coverGrid > li {
+  animation: shelf-arrive var(--motion-result) var(--ease-settle) backwards;
+  animation-delay: calc(80ms + var(--order, 0) * 40ms);
+}
+@keyframes shelf-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
 }
 :global([data-theme="dark"]) .resume {
   --plane: var(--cobalt);
@@ -197,24 +210,52 @@
 .coverGrid li[data-current] {
   grid-column: span 2;
 }
+/* A cover is a book: a Cobalt spine at the inline start, square spine
+   corners, the title along the page and the count at the foot. The
+   current subject keeps the Night folio page. */
 .cover {
   position: relative;
   display: grid;
   grid-template-rows: auto 1fr auto;
   gap: 12px;
-  min-height: 15rem;
+  min-height: 13.5rem;
   height: 100%;
-  padding: 22px 22px 24px;
-  border-radius: var(--radius-cover);
+  padding: 20px 22px 22px 30px;
+  border-start-start-radius: 6px;
+  border-end-start-radius: 6px;
+  border-start-end-radius: var(--radius-cover);
+  border-end-end-radius: var(--radius-cover);
   background: var(--surface);
   color: var(--ink);
   text-decoration: none;
-  box-shadow: inset 0 0 0 1px var(--line);
-  transition: box-shadow var(--motion-control);
+  box-shadow: var(--sheet);
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    box-shadow var(--motion-control),
+    transform var(--motion-control) ease;
 }
-/* Covers do not float: hover strengthens the ring only (DESIGN elevation). */
+:global([dir="rtl"]) .cover {
+  padding: 20px 30px 22px 22px;
+}
+.cover::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 10px;
+  border-start-start-radius: 6px;
+  border-end-start-radius: 6px;
+  background: var(--action);
+}
+/* A press settles the cover 2%; hover lifts the sheet a little. */
 a.cover:hover {
-  box-shadow: inset 0 0 0 1.5px var(--control);
+  box-shadow:
+    var(--sheet),
+    0 18px 36px -24px rgb(12 24 35 / 0.4);
+}
+a.cover:active,
+a.unit:active {
+  transform: var(--press);
 }
 /* The other-language name names its own language, so the global lang rule
    gives it that script's brand face. */
@@ -244,7 +285,10 @@ li[data-current] .cover {
   border-radius: var(--radius-cover) 0 0 var(--radius-cover);
   mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M100 9C65 3.4 30 .6 6 0Q0 0 0 6V88Q0 94 6 94.2C30 95 65 96.8 100 100Z'/%3E%3C/svg%3E");
   mask-size: 100% 100%;
-  padding-block: 28px 30px;
+  padding: 28px 22px 30px;
+}
+li[data-current] .cover::before {
+  display: none;
 }
 :global([dir="rtl"]) li[data-current] .cover {
   border-radius: 0 var(--radius-cover) var(--radius-cover) 0;
@@ -314,23 +358,43 @@ li[data-current] a.cover:hover {
   padding: 0;
   list-style: none;
 }
+/* A subject row is a book seen from the shelf: spine, title, count, Open. */
 .unit {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 16px;
   min-height: 76px;
   padding-block: 14px;
-  padding-inline: 20px;
-  border-radius: var(--radius-card);
+  padding-inline: 26px 20px;
+  border-start-start-radius: 6px;
+  border-end-start-radius: 6px;
+  border-start-end-radius: var(--radius-card);
+  border-end-end-radius: var(--radius-card);
   background: var(--surface);
   color: var(--ink);
   text-decoration: none;
-  box-shadow: inset 0 0 0 1px var(--line);
-  transition: box-shadow var(--motion-control);
+  box-shadow: var(--sheet);
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    box-shadow var(--motion-control),
+    transform var(--motion-control) ease;
+}
+.unit::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 8px;
+  border-start-start-radius: 6px;
+  border-end-start-radius: 6px;
+  background: var(--action);
 }
 a.unit:hover {
-  box-shadow: inset 0 0 0 1.5px var(--control);
+  box-shadow:
+    var(--sheet),
+    0 18px 36px -24px rgb(12 24 35 / 0.4);
 }
 .unitCopy {
   display: grid;
@@ -371,7 +435,30 @@ a.unit:hover {
   padding: 28px 30px;
   border-radius: var(--radius-card);
   background: var(--surface);
-  box-shadow: inset 0 0 0 1px var(--line);
+  box-shadow: var(--sheet);
+}
+/* Subjects: the search lives in the Night band, like a catalogue desk. */
+.bandSearch {
+  justify-self: start;
+  width: min(100%, 28rem);
+  margin-block-start: 8px;
+}
+.bandSearch .search {
+  color: var(--on-night-2);
+}
+.bandSearch .search input {
+  min-height: 52px;
+  border-color: var(--night-control);
+  background: var(--night-2);
+  color: var(--on-night);
+  box-shadow: none;
+}
+.bandSearch .search input::placeholder {
+  color: var(--on-night-2);
+}
+.bandSearch .search input:focus-visible {
+  border-color: var(--cobalt);
+  outline-color: var(--on-night);
 }
 .emptyState h2,
 .emptyState h3 {
@@ -439,8 +526,18 @@ a.unit:hover {
   }
   .cover {
     min-height: 9.5rem;
-    padding: 16px;
-    border-radius: 20px;
+    padding: 16px 16px 16px 22px;
+    border-start-end-radius: 20px;
+    border-end-end-radius: 20px;
+  }
+  :global([dir="rtl"]) .cover {
+    padding: 16px 22px 16px 16px;
+  }
+  .cover::before {
+    width: 8px;
+  }
+  li[data-current] .cover {
+    padding: 28px 16px 30px;
   }
   li[data-current] .coverTitle {
     font-size: 2.125rem;
@@ -452,7 +549,10 @@ a.unit:hover {
     gap: 12px;
     min-height: 64px;
     padding-block: 10px;
-    padding-inline: 16px 14px;
+    padding-inline: 20px 14px;
+  }
+  .unit::before {
+    width: 6px;
   }
   .unitTitle {
     font-size: 1.0625rem;

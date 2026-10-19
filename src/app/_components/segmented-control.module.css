@@ -42,6 +42,12 @@
   text-decoration: none;
   overflow-wrap: anywhere;
   cursor: pointer;
+  /* The palette changes at once (DESIGN.md navigation rule); only the press
+     has motion. */
+  transition: transform var(--motion-control) ease;
+}
+.segment:active {
+  transform: var(--press);
 }
 .chip {
   display: inline-flex;
@@ -138,6 +144,9 @@ ol.track .segment {
   padding: 4px 12px;
   font-size: 0.8125rem;
   cursor: default;
+}
+ol.track .segment:active {
+  transform: none;
 }
 .track[data-tone="paper"] .segment[data-state="current"] {
   background: var(--night);
