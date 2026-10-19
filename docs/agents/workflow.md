@@ -10,7 +10,7 @@ Run `pnpm agent:status`. It lists in-progress and blocked tasks, the next runboo
 
 1. Run `git status --short` and preserve every unrelated change.
 2. Continue the earliest executable `[~]` task; otherwise take the earliest executable `[ ]` task in runbook dependency order (runbook §0.1). A user-named outcome still maps to exactly one runbook task. If none fits, add the task to the runbook first.
-3. Work in your own worktree on a branch named `<agent>/<task-id>-<slug>`, for example `claude/wp03-t14-quiz-review` or `codex/wp04-t02-pdf-ingest`.
+3. Work in your own worktree on a branch named `<agent>/<task-id>-<slug>`, for example `claude/wp07-t04-quiz-lifecycle` or `codex/wp04-t04-pdf-extraction`.
 4. Read only the selected runbook task, its direct dependencies and the docs for the area you change: backend → `docs/agents/module-boundaries.md`; frontend → `docs/agents/frontend.md`; auth or storage → the `trust-boundaries` skill; migrations → `docs/runbooks/database-migration-checklist.md`; delivery → the `finalize` skill.
 
 **Done when:** one task is claimed (`[~]` in the runbook) and you know its acceptance.

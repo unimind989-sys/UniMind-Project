@@ -10,7 +10,7 @@
 
 **Last reviewed:** 2026-10-18
 
-**Blocks:** NONE yet. A future runbook task builds the link flow after approval. Until then, the current account-based Batch Leader screens stay as built and are not extended.
+**Blocks:** WP03-T38, which builds the approved access path, and WP04-T21 (real collection). Until approval, the current account-based Batch Leader screens stay as built and are not extended.
 
 ## Context
 

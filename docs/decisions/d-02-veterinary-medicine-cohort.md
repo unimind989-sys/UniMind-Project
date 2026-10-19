@@ -10,7 +10,7 @@
 
 **Last reviewed:** NOT RECORDED
 
-**Blocks:** WP00-T03, WP00-T05, WP00-T08, WP10-T01, WP10-T02, WP11-T01
+**Blocks:** WP00-T03 (Veterinary rows), WP10-T01, WP10-T02, WP11-T01
 
 ## Context
 

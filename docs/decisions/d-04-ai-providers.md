@@ -10,7 +10,7 @@
 
 **Last reviewed:** NOT RECORDED
 
-**Blocks:** WP04-T05 (real OCR), WP04-T06 (real transcription), WP04-T10 (real embeddings), WP06-T05 (real generation), WP07-T03 (real generation), WP11-T01
+**Blocks:** WP04-T05 (real OCR), WP04-T06 (real transcription), WP04-T10 (real embeddings), WP04-T20, WP04-T21, WP06-T05 (real generation), WP07-T03 (real generation), WP11-T01 (resolution path: WP04-T19)
 
 ## Context
 
@@ -33,7 +33,7 @@ OCR, transcription, embedding, chat, and Studio generation need provider adapter
 
 ## Decision
 
-OPEN — no real provider/model/config is proposed or approved. Mock adapters remain the only enabled providers until WP09-T01 produces a reviewed benchmark and D-05 supplies approved nonzero budgets.
+OPEN — no real provider/model/config is proposed or approved. Mock adapters remain the only enabled providers until WP04-T19 produces a reviewed benchmark and D-05 supplies approved nonzero budgets.
 
 ## Consequences
 

@@ -38,7 +38,7 @@
 - [~] Define reservation, settlement, thresholds, kill-switch, and zero-cost smoke behavior; ready for review.
 - [~] Record Ahmed's partial cost direction: minimize cost, but do not treat zero spend as a hard requirement; exact caps remain open.
 - [?] Receive canonical currency, every nonzero cap, approvers/reviewer, alert channels, and live confirmation profile.
-- [?] Benchmark rights-approved provider candidates against frozen evaluation data.
+- [?] Benchmark rights-approved provider candidates against frozen evaluation data (now runbook task WP04-T19).
 - [?] Approve D-04/D-05 and create candidate-SHA evidence with separate Ahmed/Ziad budget confirmations.
 
 ## Handoff

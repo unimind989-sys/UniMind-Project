@@ -12,7 +12,7 @@
 
 **Owner constraint recorded:** Ahmed, 2026-08-23 — founder computers are development workstations only and are not hosting options.
 
-**Blocks:** WP08-T03; WP08-T08; WP11-T01
+**Blocks:** WP04-T18; WP04-T19; WP04-T21; WP08-T01; WP08-T03; WP08-T08; WP11-T01 (resolution path: WP04-T22; WP04-T14 deploys the approved host)
 
 ## Context
 

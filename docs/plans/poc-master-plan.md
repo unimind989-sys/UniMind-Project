@@ -4,7 +4,7 @@
 
 **Status:** Updated implementation plan
 
-**Last updated:** 27 August 2026
+**Last updated:** 20 October 2026
 
 ## 1. Purpose and authority
 
@@ -649,6 +649,10 @@ Video adds a processor behind the existing pipeline; it must not create a separa
 | D-22 | Founder authorization and autonomous finalization | Shared service accounts; selected runbook tasks complete their non-financial lifecycle by default; `$finalize` is a manual/recovery entry; real-money actions require fresh confirmation (revised 2026-09-16) | Ahmed + Ziad — shared founder authority | Approved direction |
 | D-23 | Program progression mode | Human Medicine and Veterinary Medicine begin as `TERM_BASED`; future credit-hour programs use configuration-driven `FLEXIBLE_CREDIT` course selection without a rigid semester list | Ahmed | Approved direction |
 | D-24 | Batch Leader access by one-time upload link | Batch Leaders need no account; an admin issues a one-time, expiring, revocable upload link for one campaign; D-11 scope and the rights gate unchanged ([record](../decisions/d-24-batch-leader-one-time-upload-links.md)) | Ahmed + Ziad | Proposed |
+| D-25 | Student cohort membership | How a student obtains, keeps and loses an active cohort membership (for example admin allow-list, approved request or enrollment code); until approved, no real student holds a membership; memberships exist only in synthetic test fixtures | Ahmed + Ziad | Open |
+| D-26 | Transactional email delivery | Sender for Auth emails and Batch Leader links in Beta; until approved, the Supabase built-in sender serves synthetic Preview only | Ahmed + Ziad | Open |
+| D-27 | Backup host, restore target, key custody and restricted data store | Where the Beta backup runs and is stored, where restricted evaluation data lives, the restore-rehearsal target that may hold real data, and who holds the encryption key; until approved, no real data enters Beta | Ahmed + Ziad | Open |
+| D-28 | Data-protection compliance route | How UniMind meets Egypt's Personal Data Protection Law (Law 151 of 2020) and its executive regulations for student and professor data and foreign processors; until approved, no real personal data and no cross-border transfer of real material | Ahmed + Ziad | Open |
 
 ## 16. Immediate actions
 

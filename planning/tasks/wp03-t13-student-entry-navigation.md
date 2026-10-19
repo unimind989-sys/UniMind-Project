@@ -2,7 +2,7 @@
 
 **Task ID:** WP03-T13
 
-**Status:** [~]
+**Status:** [?]
 
 **Outcome:** Progressive student entry, distinct Study/Subjects, a named profile, independent settings views, spacious product layouts, scoped unit switching, persistent chat preferences and configurable fixture quizzes.
 

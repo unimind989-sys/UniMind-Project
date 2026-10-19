@@ -10,7 +10,7 @@
 
 **Last reviewed:** NOT RECORDED
 
-**Blocks:** WP04-T09 (real data), WP06-T07 (real data), WP11-T01
+**Blocks:** WP04-T09 (real data), WP04-T11 (real takedown), WP04-T18, WP06-T07 (real data), WP11-T01 (resolution path: WP04-T22, approved together with D-18)
 
 ## Context
 
@@ -50,7 +50,7 @@ OPEN — the real-data profile, security/data owner, reviewers, deadlines, hold 
 
 - Configuration keys: named lifecycle profile with durations and starting events; production startup rejects the synthetic profile.
 - Adapter/interface: injectable clock, retention calculator, hold authority, deletion verifier, incident sink, and provider-specific absence semantics.
-- Affected migrations/files: WP04-T08/T09/T12, WP06-T07, and release validation.
+- Affected migrations/files: WP04-T08/T09/T11/T12/T15, WP06-T07, and release validation.
 - Tests/evaluation required: deadline boundaries, hold placement/removal, failed conversion, uncertain absence, overdue incident, takedown, replay, and production-profile rejection.
 - Observability required: calculated deadline, profile, attempts, last absence result, hold state, overdue age, and incident correlation ID without private content.
 - Rollback/disable action: disable real upload/provider/storage paths and continue with synthetic fixtures.
