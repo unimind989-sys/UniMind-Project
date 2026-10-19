@@ -60,10 +60,10 @@
 
 **Review:** candidate 1: independent review (sub-agent), request changes then approve at `7fd0a68`. Felt pass: independent review of `7fd0a68..95a3356`: request changes (3 major: the demo layout matrix asserted the full-width chat column; the band stacking rule reached unit bands and put the quiz rail over the open menu; the sticky admin detail had no height cap; 2 minor: landing anchors under the stuck masthead; a record line claiming a Settings band). All fixed in `752652c`; re-review: one major (the centring check must measure against the chat layout, not main, because of the scroller's stable gutter) and one minor (the sticky detail clips its sheet shadow); both fixed in `23703db`; re-review of that delta: approve.
 
-**Approved commit:** PENDING: candidate `6c3316a` presented to Ahmed on 2026-10-19 (material: the motion layer plus the desk pass on every screen).
+**Approved commit:** `6c3316a`, approved by Ahmed on 2026-10-19 in chat ("I approve commit 6c3316a as the WP03-T33 candidate"), after the rendered demo review; the later commits change only the task record.
 
-**Remaining:** Ahmed's approval of `6c3316a`; then one PR with required CI (`finalize`).
+**Remaining:** delivery through `finalize`: push, one PR, required CI, squash-merge, close.
 
 ## Next action
 
-Record `Approved commit:` once Ahmed approves `6c3316a`, then run `finalize`: push, one PR, required CI, squash-merge, close.
+Run `finalize`: push, one PR, required CI, squash-merge, close the task.
