@@ -502,6 +502,12 @@
   letter-spacing: 0.02em;
   line-height: 1.5;
 }
+/* In the dark theme Night sits too close to the sheet, so the tab uses the
+   tint instead. */
+:global([data-theme="dark"]) .sourceFormat {
+  background: var(--tint);
+  color: var(--ink);
+}
 .sourceRow h3 {
   min-width: 0;
   margin: 0;
