@@ -94,7 +94,13 @@
   color: var(--on-night-2);
   font-size: 0.9375rem;
   font-weight: 600;
-  /* Navigation changes palette at once (DESIGN.md): no colour transition. */
+  /* Navigation changes palette at once (DESIGN.md): no colour transition;
+     the press itself settles 2%. */
+  -webkit-tap-highlight-color: transparent;
+  transition: transform var(--motion-control) ease;
+}
+.globalNav a:active {
+  transform: var(--press);
 }
 .topbar > .globalNav a svg {
   display: none;
@@ -310,12 +316,21 @@
     font-size: var(--type-mobile-nav-size);
     overflow-wrap: anywhere;
   }
-  /* 24px icons in a 56x30 pill that takes --tint when current. */
+  /* 24px icons in a 56x30 pill that takes --tint when current. On the
+     bottom bar the pill, not the whole target, answers the press, and the
+     small pill settles 8% so the press is visible (DESIGN.md). */
   .topbar > .globalNav a svg {
     display: block;
     box-sizing: content-box;
     padding: 3px 16px;
     border-radius: var(--radius-pill);
+    transition: transform var(--motion-control) ease;
+  }
+  .topbar > .globalNav a:active {
+    transform: none;
+  }
+  .topbar > .globalNav a:active :is(svg, .profileMarker) {
+    transform: scale(0.92);
   }
   .topbar > .globalNav a[aria-current] {
     background: var(--surface);
@@ -387,9 +402,22 @@
   color: var(--on-night);
   font-weight: 700;
   list-style: none;
+  transition: transform var(--motion-control) ease;
+}
+.adminMenu > summary:active {
+  transform: var(--press);
 }
 .adminMenu > summary::-webkit-details-marker {
   display: none;
+}
+.adminMenu[open] > .adminMenuPanel {
+  animation: menu-enter var(--motion-dialog) var(--ease-settle);
+}
+@keyframes menu-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
 }
 .adminMenuPanel {
   position: absolute;
@@ -472,6 +500,7 @@
   align-items: center;
   gap: 3px;
   flex: none;
+  transition: transform var(--motion-control) ease;
 }
 /* The visually hidden "Settings" description (global utility). */
 .profileDestination {

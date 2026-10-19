@@ -314,7 +314,11 @@
   transition:
     background-color var(--motion-control) ease,
     border-color var(--motion-control) ease,
-    box-shadow var(--motion-control) ease;
+    box-shadow var(--motion-control) ease,
+    transform var(--motion-control) ease;
+}
+.question:not(:disabled) .check:active {
+  transform: var(--press);
 }
 .question .check input {
   accent-color: var(--action);
@@ -532,7 +536,11 @@
   overflow-wrap: anywhere;
   transition:
     background-color var(--motion-control) ease,
-    border-color var(--motion-control) ease;
+    border-color var(--motion-control) ease,
+    transform var(--motion-control) ease;
+}
+.sourceRow summary:active {
+  transform: var(--press);
 }
 .sourceRow summary::-webkit-details-marker {
   display: none;

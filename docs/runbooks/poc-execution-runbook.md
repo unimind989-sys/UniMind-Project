@@ -1611,6 +1611,18 @@ External component catalogs and MCPs are optional implementation aids, never des
 
 **Pass:** the demo admin has no header Sign out and every admin journey still passes; the decisions and later checks are recorded; required CI green; production carries the change.
 
+#### WP03-T33 — Polish the phone screens and the landing page with a motion layer
+
+**Dependencies:** WP03-T32. Ahmed's 19 October 2026 request: refine the frontend platform-wide, with the phone screens of every flow and the landing page on every device as the focus, and add the agent's own animation and polish refinements ([task record](../../planning/tasks/wp03-t33-phone-landing-polish.md)). The Cobalt direction, variant L1 and the fixed fingerprint are not reopened.
+
+- [~] Audit the rendered phone screens (landing, access, Shelf, Subjects, Materials, Chat, Studio, Quiz, Settings, Batch Leader, admin) and the landing page at phone, tablet and desktop widths; list what to change.
+- [ ] One motion layer in the Cobalt contract: shared tokens, press and state feedback on every control, content-delivery rises for answers, results, notices and lists, overlay entrances for the unit and admin menus, a once-per-view landing reveal; reduced motion renders every end state instantly; `DESIGN.md` records the amended motion rules.
+- [ ] Landing: hero, moment, sample workspace, evidence, How it works, closing and footer polished at 320 to 1440px in English and Arabic, light and dark.
+- [ ] Phone screens: spacing, type, touch targets, sticky chrome and detail polish across every role; no horizontal overflow at 320px; 200% text reflows.
+- [ ] `corepack pnpm check`, the demo and main e2e suites, a rendered inspection round plus one confirmation round, independent review of the candidate, `Approved commit:`, one PR with required CI.
+
+**Pass:** every phone screen and the landing page keep their approved composition and gain consistent feedback, delivery and overlay motion; no measurement, isolation or accessibility test regresses; reduced motion shows identical end states; required CI green.
+
 ### 6.1 Routes
 
 Implement at minimum:

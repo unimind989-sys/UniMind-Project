@@ -154,6 +154,66 @@ test("evidence moment plays once on view, replays, ignores the pointer and pause
   ).toBe(0);
 });
 
+test("landing sections reveal once on first view and rest; reduced motion shows the final layout at once", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/?lang=en");
+  const reveals = page.locator("[data-reveal]");
+  await expect(reveals).toHaveCount(7);
+  // Before hydration marks the first view, sections below the hero wait.
+  await expect(page.locator('[data-reveal="out"]').last()).toHaveAttribute(
+    "data-reveal",
+    "out",
+  );
+  const closing = page.getByRole("heading", {
+    name: "Open your next subject.",
+  });
+  await closing.scrollIntoViewIfNeeded();
+  await expect(reveals.last()).toHaveAttribute("data-reveal", "in");
+  // Once seen, a section settles in its natural state with no animation left
+  // in effect, and it never goes back to waiting.
+  await expect
+    .poll(() =>
+      reveals
+        .last()
+        .evaluate(
+          (element) =>
+            element.getAnimations({ subtree: true }).length === 0 &&
+            getComputedStyle(element).opacity === "1",
+        ),
+    )
+    .toBe(true);
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await expect(reveals.last()).toHaveAttribute("data-reveal", "in");
+  // The staggered lists arrive in reading order (each is scrolled into view
+  // first, since a clamped scroll position may not have shown both).
+  for (const list of await page.locator("[data-reveal][data-stagger]").all()) {
+    await list.scrollIntoViewIfNeeded();
+    await expect(list).toHaveAttribute("data-reveal", "in");
+  }
+  expect(
+    await page
+      .locator("[data-reveal][data-stagger] > *")
+      .evaluateAll((nodes) =>
+        nodes.map((node) => getComputedStyle(node).animationDelay),
+      ),
+  ).toEqual(["0s", "0.07s", "0.14s", "0s", "0.07s", "0.14s"]);
+
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.reload();
+  // Every section is in place without scrolling and nothing animates.
+  await expect(reveals).toHaveCount(7);
+  for (const section of await reveals.all())
+    await expect(section).toHaveAttribute("data-reveal", "done");
+  expect(
+    await reveals.evaluateAll((nodes) =>
+      nodes.every((node) => getComputedStyle(node).opacity === "1"),
+    ),
+  ).toBe(true);
+  expect(await page.evaluate(() => document.getAnimations().length)).toBe(0);
+});
+
 for (const locale of ["en", "ar"] as const) {
   for (const theme of ["light", "dark"] as const) {
     test(

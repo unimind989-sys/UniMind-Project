@@ -5,7 +5,13 @@ import { Button } from "@/app/_components/product-ui";
 import { ProductNavigationLink as Link } from "@/app/_components/product-navigation";
 import type { Route } from "next";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
 import { FrontendIcon } from "@/app/_components/frontend-controls";
 import { AppShell } from "@/app/_components/app-shell";
 import type {
@@ -336,7 +342,7 @@ export function StudyShelf({
               ) : null}
             </div>
             <ul className={styles.coverGrid}>
-              {journey.units.map((unit) => {
+              {journey.units.map((unit, order) => {
                 const href = unitHref(unit.id);
                 const name = locale === "ar" ? unit.nameAr : unit.nameEn;
                 const other = locale === "ar" ? unit.nameEn : unit.nameAr;
@@ -364,6 +370,8 @@ export function StudyShelf({
                     key={unit.id}
                     data-cover-unit-id={unit.id}
                     data-current={unit === featured ? true : undefined}
+                    // First-paint order for the covers' staggered arrival.
+                    style={{ "--order": Math.min(order, 6) } as CSSProperties}
                   >
                     {href ? (
                       <Link

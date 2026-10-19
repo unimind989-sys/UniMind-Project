@@ -23,10 +23,12 @@
   overflow-wrap: anywhere;
   cursor: pointer;
   touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   transition:
     background-color var(--motion-control) ease,
     box-shadow var(--motion-control) ease,
-    color var(--motion-control) ease;
+    color var(--motion-control) ease,
+    transform var(--motion-control) ease;
 }
 .button[data-size="large"] {
   min-height: 48px;
@@ -39,8 +41,9 @@
 .button > svg {
   flex: none;
 }
+/* Press feedback: the whole control settles 2% under the finger. */
 .button:active:not(:disabled, [aria-disabled="true"]) {
-  transform: translateY(1px);
+  transform: var(--press);
 }
 
 /* Paper (default tone). */

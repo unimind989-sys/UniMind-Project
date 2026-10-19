@@ -163,6 +163,25 @@
   .how {
     padding-block: 64px;
   }
+  /* Phones read each step as one row: the number beside its title, the
+     explanation under the title. */
+  .steps {
+    gap: 24px;
+  }
+  .steps li {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 6px 16px;
+  }
+  .stepNumber {
+    grid-row: span 2;
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+  .steps h3 {
+    align-self: center;
+    font-size: 1.25rem;
+  }
 }
 @media (forced-colors: active) {
   .sourceCard,

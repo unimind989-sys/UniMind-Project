@@ -183,26 +183,33 @@ export function WorkspacePreview({ locale }: { locale: Locale }) {
                   data-flipped={flipped || undefined}
                   onClick={() => setFlipped(!flipped)}
                 >
-                  <span className={workspace.flashcardLabel}>
-                    {flipped
-                      ? t("Sample answer", "إجابة تجريبية")
-                      : t("Sample flashcard", "بطاقة تجريبية")}
-                  </span>
-                  <strong>
-                    {flipped
-                      ? t(
-                          "C5 and C6. An upper trunk injury gives Erb’s palsy.",
-                          "C5 وC6. إصابة الجذع العلوي تسبب شلل إرب.",
-                        )
-                      : t(
-                          "Which roots form the upper trunk?",
-                          "ما الجذور التي تكوّن الجذع العلوي؟",
-                        )}
-                  </strong>
-                  <span className={workspace.flashcardAction}>
-                    {flipped
-                      ? t("Show question", "عرض السؤال")
-                      : t("Reveal answer", "عرض الإجابة")}
+                  {/* The face remounts on each turn, so it arrives with the
+                      240ms card turn while the button keeps focus. */}
+                  <span
+                    className={workspace.flashcardFace}
+                    key={String(flipped)}
+                  >
+                    <span className={workspace.flashcardLabel}>
+                      {flipped
+                        ? t("Sample answer", "إجابة تجريبية")
+                        : t("Sample flashcard", "بطاقة تجريبية")}
+                    </span>
+                    <strong>
+                      {flipped
+                        ? t(
+                            "C5 and C6. An upper trunk injury gives Erb’s palsy.",
+                            "C5 وC6. إصابة الجذع العلوي تسبب شلل إرب.",
+                          )
+                        : t(
+                            "Which roots form the upper trunk?",
+                            "ما الجذور التي تكوّن الجذع العلوي؟",
+                          )}
+                    </strong>
+                    <span className={workspace.flashcardAction}>
+                      {flipped
+                        ? t("Show question", "عرض السؤال")
+                        : t("Reveal answer", "عرض الإجابة")}
+                    </span>
                   </span>
                 </button>
               </>

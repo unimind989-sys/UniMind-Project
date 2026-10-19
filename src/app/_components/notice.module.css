@@ -15,6 +15,16 @@
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
+/* A notice that answers an action arrives like other delivered content. */
+.notice[role] {
+  animation: notice-arrive var(--motion-result) var(--ease-settle);
+}
+@keyframes notice-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+}
 .notice > svg {
   position: absolute;
   inset-block-start: 15px;

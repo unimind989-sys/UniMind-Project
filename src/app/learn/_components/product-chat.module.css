@@ -70,6 +70,10 @@
 .historyList :is(button, a):hover {
   background: var(--surface-2);
 }
+.historyList :is(button, a),
+.evidenceTip button {
+  transition: transform var(--motion-control) ease;
+}
 .historyList :is(button, a) span {
   display: block;
   font-size: 0.8125rem;
@@ -162,10 +166,18 @@
     margin-block: 8px 0;
   }
 }
+/* An exchange arrives as delivered content: a 7px rise in 280ms. */
 .exchange {
   display: grid;
   gap: 14px;
   padding-block: 12px 28px;
+  animation: result-settle var(--motion-result) var(--ease-settle);
+}
+@keyframes result-settle {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
 }
 .questionBubble {
   --bubble: var(--action);
@@ -266,6 +278,7 @@
   border-radius: var(--radius-card);
   background: var(--tint);
   color: var(--secondary);
+  animation: result-settle var(--motion-result) var(--ease-settle);
 }
 .streaming strong {
   font-size: 0.875rem;
@@ -451,9 +464,19 @@
   background: var(--tint);
   color: var(--action);
   cursor: pointer;
+  transition:
+    background-color var(--motion-control) ease,
+    transform var(--motion-control) ease;
 }
 .citation:hover {
   background: var(--mark);
+}
+.citation:active,
+.followUps button:active:not(:disabled),
+.suggestions button:active:not(:disabled),
+.evidenceTip button:active,
+.historyList :is(button, a):active {
+  transform: var(--press);
 }
 /* Covered questions as chips that fill Message (IX-22). */
 .followUps {
@@ -478,6 +501,9 @@
   cursor: pointer;
   max-width: 100%;
   overflow-wrap: anywhere;
+  transition:
+    box-shadow var(--motion-control) ease,
+    transform var(--motion-control) ease;
 }
 .followUps button:hover:not(:disabled),
 .suggestions button:hover:not(:disabled) {

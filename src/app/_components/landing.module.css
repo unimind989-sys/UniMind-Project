@@ -92,9 +92,19 @@
   color: var(--on-night);
   font-weight: 700;
   box-shadow: inset 0 0 0 1.5px var(--night-control);
+  transition:
+    background-color var(--motion-control) ease,
+    transform var(--motion-control) ease;
 }
 .signIn:hover {
   background: var(--night-2);
+}
+/* Every landing control answers a press by settling 2% (DESIGN.md). */
+.signIn:active,
+.start:active,
+.quiet:active,
+.textLink:active {
+  transform: var(--press);
 }
 
 /* Hero: copy column and the evidence stage. */
@@ -155,6 +165,9 @@
   letter-spacing: -0.01em;
   text-align: center;
   text-decoration: none;
+  transition:
+    background-color var(--motion-control) ease,
+    transform var(--motion-control) ease;
 }
 .page[dir="rtl"] .start {
   letter-spacing: 0;
@@ -173,6 +186,9 @@
   text-decoration: underline;
   text-decoration-color: var(--night-control);
   text-underline-offset: 6px;
+  transition:
+    text-decoration-color var(--motion-control) ease,
+    transform var(--motion-control) ease;
 }
 .quiet:hover {
   text-decoration-color: currentColor;
@@ -238,9 +254,69 @@
   text-decoration: underline;
   text-decoration-thickness: 1.5px;
   text-underline-offset: 5px;
+  transition:
+    color var(--motion-control) ease,
+    transform var(--motion-control) ease;
 }
 .textLink:hover {
   color: var(--action-strong);
+}
+
+/* Motion (DESIGN.md "Public landing"): on load the hero copy rises line by
+   line (≤10px, 420ms, 90ms apart); below it each section rises once the
+   first time it is seen (`Reveal`), staggered children 70ms apart. The
+   animations fill backwards only, so a settled element rests in its natural
+   state and `getAnimations()` is empty again. Reduced motion renders the
+   final layout at once, and so does a page without scripts. */
+@keyframes landing-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+@keyframes landing-unhide {
+  to {
+    opacity: 1;
+  }
+}
+/* A reveal wrapper is a grid item like the element it wraps. */
+.page [data-reveal] {
+  min-width: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero h1 span,
+  .heroCopy > :not(h1) {
+    animation: landing-rise var(--motion-reveal) var(--ease-settle) backwards;
+  }
+  .hero h1 span:nth-child(2) {
+    animation-delay: 90ms;
+  }
+  .heroCopy > .lede {
+    animation-delay: 180ms;
+  }
+  .heroCopy > .actions {
+    animation-delay: 270ms;
+  }
+  .heroCopy > .proof {
+    animation-delay: 360ms;
+  }
+  /* Hidden only while scripts run (the pre-paint theme script sets
+     data-theme). If hydration never comes, the section shows itself after
+     2.5s without a rise, so a blocked bundle never leaves the page blank. */
+  :global(:root[data-theme]) .page [data-reveal="out"] {
+    opacity: 0;
+    animation: landing-unhide 0s linear 2.5s both;
+  }
+  .page [data-reveal="in"] {
+    animation: landing-rise var(--motion-reveal) var(--ease-settle) backwards;
+  }
+  .page [data-reveal="in"][data-stagger] {
+    animation: none;
+  }
+  .page [data-reveal="in"][data-stagger] > * {
+    animation: landing-rise var(--motion-reveal) var(--ease-settle) backwards;
+    animation-delay: calc(var(--order, 0) * 70ms);
+  }
 }
 
 /* Closing: a Night page with the folio's curved top edge. */

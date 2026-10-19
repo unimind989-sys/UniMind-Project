@@ -194,7 +194,11 @@
   transition:
     background-color var(--motion-control) ease,
     border-color var(--motion-control) ease,
-    box-shadow var(--motion-control) ease;
+    box-shadow var(--motion-control) ease,
+    transform var(--motion-control) ease;
+}
+.choice:active {
+  transform: var(--press);
 }
 .choice:hover {
   border-color: var(--control);
@@ -404,7 +408,11 @@
   overflow-wrap: anywhere;
   transition:
     background-color var(--motion-control) ease,
-    color var(--motion-control) ease;
+    color var(--motion-control) ease,
+    transform var(--motion-control) ease;
+}
+.sectionNav button:active {
+  transform: var(--press);
 }
 .sectionNav button:hover {
   background: var(--surface-2);
