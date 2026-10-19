@@ -10,6 +10,7 @@ export type RunbookTask = {
   id: string;
   title: string;
   state: RunbookTaskState;
+  dependsOn: string[];
 };
 
 const runbookPath = "docs/runbooks/poc-execution-runbook.md";
@@ -25,13 +26,38 @@ export function deriveState(marks: string[]): RunbookTaskState | undefined {
   return "IN_PROGRESS";
 }
 
+// Reads the task IDs in a `**Depends on:**` line, expanding ranges such as
+// "WP04-T04 to WP04-T07" within one package. Text after "**Decision gates:**"
+// is not a dependency.
+export function parseDependsOn(line: string): string[] {
+  const match = /^\*\*Depends on:\*\*(.*)$/u.exec(line.trim());
+  if (!match) return [];
+  const text = match[1]!.split("**Decision gates:**")[0]!;
+  const ids: string[] = [];
+  const pattern = /(WP\d{2})-T(\d{2})(?:\s+to\s+\1-T(\d{2}))?/gu;
+  for (const [, pack, first, last] of text.matchAll(pattern)) {
+    const start = Number(first);
+    const end = last ? Number(last) : start;
+    for (let number = start; number <= end; number += 1)
+      ids.push(`${pack}-T${String(number).padStart(2, "0")}`);
+  }
+  return [...new Set(ids)];
+}
+
 export function parseRunbookTasks(markdown: string): RunbookTask[] {
   const tasks: RunbookTask[] = [];
-  let current: { id: string; title: string; marks: string[] } | undefined;
+  let current:
+    | { id: string; title: string; marks: string[]; dependsOn: string[] }
+    | undefined;
   const flush = () => {
     const state = current && deriveState(current.marks);
     if (current && state)
-      tasks.push({ id: current.id, title: current.title, state });
+      tasks.push({
+        id: current.id,
+        title: current.title,
+        state,
+        dependsOn: current.dependsOn,
+      });
   };
   for (const line of markdown.split(/\r?\n/u)) {
     const heading = /^#{1,6}\s/u.test(line);
@@ -39,15 +65,30 @@ export function parseRunbookTasks(markdown: string): RunbookTask[] {
     if (heading) {
       flush();
       current = task
-        ? { id: task[1]!, title: task[2]!.trim(), marks: [] }
+        ? { id: task[1]!, title: task[2]!.trim(), marks: [], dependsOn: [] }
         : undefined;
       continue;
     }
+    if (current && current.dependsOn.length === 0)
+      current.dependsOn = parseDependsOn(line);
     const mark = /^\s*-\s+\[([ x~?!])\]/u.exec(line);
     if (current && mark) current.marks.push(mark[1]!);
   }
   flush();
   return tasks;
+}
+
+// The earliest not-started task, in document order, whose every dependency is
+// done. A dependency that is missing from the runbook counts as not done.
+export function nextExecutableTask(
+  tasks: RunbookTask[],
+): RunbookTask | undefined {
+  const state = new Map(tasks.map((task) => [task.id, task.state]));
+  return tasks.find(
+    (task) =>
+      task.state === "NOT_STARTED" &&
+      task.dependsOn.every((id) => state.get(id) === "DONE"),
+  );
 }
 
 export type TaskRecord = { file: string; status: string; lines: number };
@@ -86,7 +127,7 @@ function main(): void {
     inProgress: tasks.filter((task) => task.state === "IN_PROGRESS"),
     blocked: tasks.filter((task) => task.state === "BLOCKED"),
     failed: tasks.filter((task) => task.state === "FAILED"),
-    nextNotStarted: tasks.find((task) => task.state === "NOT_STARTED"),
+    nextExecutable: nextExecutableTask(tasks),
     activeRecords: records,
   };
   if (process.argv.includes("--json")) {
@@ -104,9 +145,9 @@ function main(): void {
   console.log(`Failed:\n${list(summary.failed)}`);
   console.log(`Blocked:\n${list(summary.blocked)}`);
   console.log(
-    `Next not started (check its dependencies in the runbook): ${
-      summary.nextNotStarted
-        ? `${summary.nextNotStarted.id} — ${summary.nextNotStarted.title}`
+    `Next executable (not started, every Depends on task done): ${
+      summary.nextExecutable
+        ? `${summary.nextExecutable.id} — ${summary.nextExecutable.title}`
         : "none"
     }`,
   );

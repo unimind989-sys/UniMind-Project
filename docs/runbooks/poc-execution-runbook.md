@@ -4,9 +4,9 @@
 
 **Owners:** Ahmed and Ziad
 
-**Last updated:** 19 October 2026
+**Last updated:** 20 October 2026
 
-**Runbook revision:** 3.0 — every master-plan deliverable has an ordered, executable task ([revision findings](../reviews/runbook-revision-2026-10/findings.md))
+**Runbook revision:** 3.1 — every master-plan deliverable has an ordered, executable task ([first review](../reviews/runbook-revision-2026-10/findings.md), [second review](../reviews/runbook-revision-2026-10/second-review.md))
 
 **Rule:** Complete work in document order, respect each task's dependencies and decision gates, and attach the listed proof before marking a task or package complete.
 
@@ -30,12 +30,12 @@ A task that cannot start until a decision owned elsewhere is approved carries th
 
 **Selecting a task** (used by the workflow's Pick step):
 
-1. Continue the earliest `[~]` task whose owner is available.
-2. Otherwise take the earliest `[ ]` task in document order whose `Depends on` tasks are all `[x]` and which has no `[?]` line. Document order is the execution order. Task IDs are stable labels: they are never renumbered, and a new task takes the next free number in its package.
+1. Continue the earliest task whose state is in progress (some steps done or a `[~]` step, none blocked) and whose owner is available.
+2. Otherwise take the earliest `[ ]` task in document order whose `Depends on` tasks are all `[x]` and which has no `[?]` line. Document order is the execution order. Task IDs are stable labels: they are never renumbered, and a new task takes the next free number in its package. `pnpm agent:status` applies this rule and prints the result as "Next executable".
 3. Never cross a blocked task. A task that depends on a `[?]` task is not executable either. Advance an executable prerequisite instead, or pick the earliest task that does not depend on the blocker.
 4. A user-named outcome maps to exactly one task. If none fits, add the task to this runbook first.
 
-**Bridges for open decisions:** WP01 onward use synthetic fixtures and deterministic mocks, so the open WP00 decision tasks do not block them. Each open decision blocks only the consumers named in the [decision register](../../planning/decision-register.md), and only for the real choice (real data, a real provider, real money).
+**Bridges for open decisions:** WP01 onward use synthetic fixtures and deterministic mocks, so the open WP00 decision tasks do not block them. Each open decision blocks only the consumers named in the [decision register](../../planning/decision-register.md), and only for the real choice (real data, a real provider, real money). A decision record may still name a mock-only task it blocks, as D-10 does for WP04-T01; that block holds until the founders lift it.
 
 ### 0.2 Agent execution and human checkpoints
 
@@ -62,7 +62,7 @@ Every open task uses this shape. Completed tasks keep their heading, one checked
 **Pass:** the observable result, with the master plan's numbers where it has them.
 ```
 
-- **Protected** means a protected path from `AGENTS.md` (auth and authorization, RLS and migrations, storage, CI workflows, production configuration). It needs a written plan before editing, an independent review of the exact diff before merge and a recorded rollback (workflow §2 and §5). D-22 protected actions (rights, raw deletion, release/unlock, beta) proceed only after their technical gate passes.
+- **Protected** means a protected path from `AGENTS.md` (auth and authorization, RLS and migrations, storage, CI workflows, production configuration). It needs a written plan before editing, an independent review of the exact diff before merge and a recorded rollback (workflow §2 and §5). D-22 lists the protected gates: RLS, raw deletion, rights, budget controls, release/unlock and beta go-live. They proceed under D-22's standing authorization once their technical gate passes; the agent does not request a second approval, and real money still needs fresh confirmation.
 - **Material UI** means a visible presentation or interaction change to an approved surface. The founder approves the rendered candidate, recorded as `Approved commit:` in the task record.
 - **Real money** means the D-22 stop applies: fresh two-founder confirmation immediately before the financial mutation.
 - Values a step needs but this runbook cannot fix yet are listed in §2.3 with the task or decision that sets them.
@@ -95,20 +95,9 @@ A task may be marked complete only when all applicable statements are true:
 
 ### 0.6 Evidence storage and naming
 
-Store durable proof in the repository when it contains no secret or private data. Store sensitive exports in the approved restricted evidence store and commit only a redacted index. Evidence folders: `evidence/wp00-pilot/`, `wp01-foundation/`, `wp02-database/`, `wp03-product-shell/`, `wp04-ingestion/`, `wp05-retrieval/`, `wp06-chat/`, `wp07-studio/`, `wp08-operations/`, `wp09-load-cost/`, `wp10-veterinary/`, `wp11-beta/` and `wp12-extensions/`.
+[evidence/README.md](../../evidence/README.md) and the [gate-report template](../templates/gate-report.md) own the evidence rules. In short: the PR and its exact-head CI run are the evidence unless a task needs external or production proof (workflow §6); then a short evidence bundle goes under `evidence/<work-package>/`, named `YYYY-MM-DD_<gate>_<environment>_<short-sha>.md`. New package folders follow the existing pattern: `wp04-ingestion`, `wp05-retrieval`, `wp06-chat`, `wp07-studio`, `wp08-operations`, `wp09-load-cost`, `wp10-veterinary`, `wp11-beta`, `wp12-extensions`.
 
-Name a bundle `YYYY-MM-DD_<gate>_<environment>_<short-sha>.md`. Each bundle contains:
-
-1. Scope and exact acceptance criteria.
-2. Commit SHA and migration list.
-3. Environment and non-secret configuration fingerprint.
-4. Commands executed and their exit codes.
-5. Summary metrics and links to raw machine-readable reports.
-6. Failures, deviations and linked defects.
-7. Agent executor, selected speaker/checkpoint, review provenance and D-22 standing authorization.
-8. Rollback/disable instruction.
-
-Never commit `.env*`, access tokens, private raw files, student exports, full chat transcripts, provider request payloads containing source content or unredacted production logs.
+Sensitive exports go to the approved restricted store with only a redacted index in Git. Never commit secrets, `.env` files, private sources, student data, ordinary chat content, signed URLs, provider payloads with source text or unredacted logs (`AGENTS.md`).
 
 ### 0.7 Approved baseline and open decisions
 
@@ -130,39 +119,44 @@ The baseline below is approved by the master plan:
 
 Open decisions keep a safe placeholder until approved. Status lives in the [master-plan decision log](../plans/poc-master-plan.md#15-decision-log); the [decision register](../../planning/decision-register.md) names owners and every blocked task.
 
-| Decision | Placeholder until approved | Resolved in | First task it blocks |
-| --- | --- | --- | --- |
-| D-02 Veterinary cohort | Synthetic Veterinary catalog fixtures | WP00-T02 | WP10-T01 |
-| D-04 AI providers | Deterministic mocks; `vector(3)` embedding placeholder | WP04-T14 | WP04-T15 |
-| D-05 Maximum spend | Every paid flag false; zero caps | WP00-T06 | WP04-T14 |
-| D-08 Chat retention and misuse review | Short synthetic retention values; misuse detection disabled | WP06-T07 (record proposed; founders approve) | WP06-T07 |
-| D-10 Processed format | Proposed contract used only in documents | WP00-T04 | WP04-T01 |
-| D-17 Queue and worker host | Database job table plus in-process test dispatcher | WP04-T17 | WP04-T19 |
-| D-18 Object storage provider | Filesystem/in-memory adapter, synthetic data only | WP04-T16 | WP04-T19 |
-| D-19 Retention periods and deadlines | Short synthetic-test values | WP00-T04 | WP04-T16 |
-| D-20 Notification and incident channels | In-process deterministic test sink | WP08-T05 | WP08-T07 |
-| D-24 Batch Leader one-time upload links | Account-based Batch Leader screens stay as built and are not extended | Ziad's confirmation | WP03-T36 |
-| D-25 Student cohort membership | Memberships exist only in synthetic seed data; no real student gains access | WP03-T35 | WP11-T02 |
-| D-26 Transactional email delivery | Supabase built-in sender for synthetic Preview only | WP08-T05 | WP11-T01 |
+| Decision | Placeholder until approved | Resolved in |
+| --- | --- | --- |
+| D-02 Veterinary cohort | Synthetic Veterinary catalog fixtures | WP00-T02 |
+| D-04 AI providers | Deterministic mocks; the synthetic 3-dimension embedding configuration | WP04-T19 |
+| D-05 Maximum spend | Every paid flag false; zero caps | WP00-T06 |
+| D-08 Chat retention and misuse review | Short synthetic retention values; misuse detection disabled | WP06-T07 |
+| D-10 Processed format | The proposal in the [raw-data policy](../policies/raw-data-lifecycle.md), used with synthetic data only | WP00-T04 |
+| D-17 Queue and worker host | Database job table plus in-process test dispatcher | WP04-T14 |
+| D-18 Object storage provider | Mock storage adapter, synthetic data only | WP04-T15 |
+| D-19 Retention periods and deadlines | Short synthetic-test values | WP04-T15 (with D-18) |
+| D-20 Notification and incident channels | In-process deterministic test sink; budget alerts by email from WP04-T17 | WP08-T05 |
+| D-21 revision: real sources in locked, student-free Beta before go-live | Beta stays empty until go-live, as D-21 says | WP04-T15 |
+| D-24 Batch Leader one-time upload links | Account-based Batch Leader screens stay as built and are not extended | Ziad's confirmation; WP03-T38 implements it |
+| D-25 Student cohort membership | No real student gains a membership | WP03-T35 |
+| D-26 Transactional email delivery | Supabase built-in sender for synthetic Preview only | WP04-T17 |
+| D-27 Backup host, restore target and key custody | No real data may enter Beta | WP04-T16 |
+| D-28 Data-protection compliance route | No real personal data and no cross-border transfer of real material | WP00-T21 |
 
 Do not hide one of these choices inside source code. Close it with `docs/templates/decision-record.md`, update the master-plan decision log and the register, and record the configuration key the adapter reads.
 
 ### 0.8 Platform facts to recheck
 
-Recheck these on the day a task depends on them; record what you found in the task's evidence.
+Recheck these on the day a task depends on them and record what you found in the task's evidence. The provider facts were read from the linked pages on 20 October 2026; providers change them.
 
 - Node.js 24 LTS is pinned in `.nvmrc` and `package.json#engines`; pnpm is pinned in `packageManager`.
 - The Supabase CLI is a pinned development dependency invoked as `pnpm supabase`. D-21 prohibits workstation database infrastructure; the disposable stack runs only on a standard GitHub-hosted Ubuntu runner.
 - New `public` tables are not always exposed to the Data API automatically. RLS and SQL `GRANT` are separate requirements; test both.
 - Do not pin a version in `CREATE EXTENSION`; record the installed version in evidence instead.
 - Use `@supabase/ssr` for cookie sessions. A publishable key may be public; secret and service-role keys are server-only.
-- Prefer HNSW for the first pgvector index, benchmark it against exact search, and match the operator class to the query distance operator.
-- Supabase database backups do not include Storage objects. Processed objects need their own durability and restore proof.
-- Supabase Free projects have no automatic backups, pause after a period of inactivity, and have fixed database size, storage, egress and monthly-active-user allowances. Read the current numbers on the Supabase pricing page before WP04-T15 and WP09-T02.
-- Supabase's built-in Auth email sender is meant for testing and has a low hourly limit. Real student onboarding needs a custom SMTP sender (D-26).
-- Vercel Hobby use is conditional (D-21): revenue, payments, advertising, paid contributors or another commercial scope change triggers review before further deployment.
+- pgvector indexes (HNSW, IVFFlat) cover `vector` up to 2,000 dimensions and `halfvec` up to 4,000. With a filter, an approximate index scan can return fewer rows than asked unless iterative scans (pgvector 0.8 or later) are enabled; check the installed version, match the operator class to the distance operator and benchmark against exact search.
+- PostgreSQL full-text search in the current migrations uses the `simple` configuration: no stemming, stopwords kept, no folding of Arabic letter variants or diacritics. PostgreSQL's `arabic` stemmer targets Modern Standard Arabic, not Egyptian dialect.
+- Supabase database backups do not include Storage objects; processed objects need their own durability and restore proof.
+- Supabase Free: no automatic backups; projects pause after inactivity; fixed database size, egress and monthly-active-user allowances; 1 GB of file storage with a 50 MB per-file upload limit; logs kept for about a day; direct database connections are IPv6-only and the transaction pooler does not keep session-level advisory locks; Edge Functions have tight CPU and wall-time limits.
+- Supabase's built-in Auth email sender is meant for testing and has a low hourly limit; custom SMTP has its own default limit (D-26, WP04-T17).
+- Vercel Hobby: monthly allowances for active CPU, invocations and memory; going over one can pause the account until usage over the rolling 30-day window falls back under the limit, and usage is metered per account (check whether a pause would stop Preview and Beta together); functions have a maximum duration and accept request bodies of about 4.5 MB; cron jobs run at most once a day with up to an hour of drift; runtime logs are kept only briefly. Use stays conditional on D-21: revenue, payments, advertising, donations, paid contributors, customer work or another commercial scope change triggers review.
+- Egypt's Personal Data Protection Law (Law 151 of 2020) and its executive regulations (Ministerial Decree 816 of 2025) were reported to give data handlers until about 1 November 2026 to comply, including licensing and cross-border transfer rules. This is not legal advice; WP00-T21 records the founders' route.
 
-References: [Node.js releases](https://nodejs.org/en/about/previous-releases), [Supabase CLI](https://supabase.com/docs/reference/cli/introduction), [Supabase migrations](https://supabase.com/docs/guides/deployment/database-migrations), [Supabase RLS](https://supabase.com/docs/guides/database/postgres/row-level-security), [Supabase server packages](https://supabase.com/docs/guides/auth/choosing-a-server-package), [Supabase vector indexes](https://supabase.com/docs/guides/ai/vector-indexes), [Supabase custom SMTP](https://supabase.com/docs/guides/auth/auth-smtp), [Supabase pricing](https://supabase.com/pricing), [Supabase breaking changes](https://supabase.com/changelog?types=breaking-change).
+References: [Node.js releases](https://nodejs.org/en/about/previous-releases), [Supabase CLI](https://supabase.com/docs/reference/cli/introduction), [Supabase migrations](https://supabase.com/docs/guides/deployment/database-migrations), [Supabase RLS](https://supabase.com/docs/guides/database/postgres/row-level-security), [Supabase server packages](https://supabase.com/docs/guides/auth/choosing-a-server-package), [Supabase vector indexes](https://supabase.com/docs/guides/ai/vector-indexes), [Supabase connections](https://supabase.com/docs/guides/database/connecting-to-postgres), [Supabase Edge Function limits](https://supabase.com/docs/guides/functions/limits), [Supabase custom SMTP](https://supabase.com/docs/guides/auth/auth-smtp), [Supabase pricing](https://supabase.com/pricing), [Supabase breaking changes](https://supabase.com/changelog?types=breaking-change), [pgvector](https://github.com/pgvector/pgvector), [Vercel Hobby](https://vercel.com/docs/plans/hobby), [Vercel function limits](https://vercel.com/docs/functions/limitations), [Vercel cron usage](https://vercel.com/docs/cron-jobs/usage-and-pricing), [Egypt PDPL regulations (CMS)](https://cms.law/en/are/legal-updates/egypt-s-pdpl-executive-regulations-issued-one-year-compliance-countdown-begins).
 
 ### 0.9 Workstation preflight (Windows/PowerShell)
 
@@ -178,7 +172,7 @@ git status --short
 
 Node must match `.nvmrc` and pnpm must match `packageManager`. `git status --short` is empty or every existing change has a known owner outside the intended work. Install dependencies with `corepack pnpm install --frozen-lockfile`; never run `npm install`.
 
-Workstations need no database, Docker, WSL2 or other local infrastructure. Database and Auth behaviour is proven by the CI `database-ci` job; for earlier feedback push the branch and dispatch CI with `database_feedback=true`. The retired hosted commands (`pnpm db:reset`, `db:migrations`, `db:push:dry-run`, `db:types`, `test:integration:hosted`) have no approved target; do not run them.
+Workstations need no database, Docker, WSL2 or other local infrastructure. Database and Auth behaviour is proven by the CI `database-ci` job; for earlier feedback push the branch and dispatch CI with `database_feedback=true`. The retired hosted commands (`pnpm db:reset`, `db:migrations`, `db:push:dry-run`, `db:types`, `db:metadata`, `test:integration:hosted`) have no approved target; do not run them.
 
 ### 0.10 Delivery loop, task records and package gates
 
@@ -192,7 +186,7 @@ Follow the [agent workflow](../agents/workflow.md) for branches, slices, checks,
 At the end of every package, run its gate:
 
 1. Freeze the candidate commit SHA.
-2. Deploy or reset the package's target environment from version control.
+2. Reset only the disposable CI stack; deploy Preview or Beta from version control through environment promotion, never reset them.
 3. Run the package gate from a clean state.
 4. Run at least one forbidden path and one retry/recovery path.
 5. Compare measured results with the numeric thresholds; "looks good" is not a result.
@@ -200,19 +194,23 @@ At the end of every package, run its gate:
 7. Record `PASS`, `FAIL` or `CONDITIONAL PASS`. A genuine product or academic judgment names the deciding founder. A protected non-financial gate records D-22; a real-money mutation requires fresh decisions from Ahmed and Ziad.
 8. Mark the gate task `[x]` only after `PASS`. A conditional pass never unlocks a later task that needs the missing behaviour.
 
+Write a gate evidence bundle only when the gate needed external or production proof; otherwise the PR and its CI run are the evidence (workflow §6).
+
 ### 0.11 Real-data and money boundaries
 
 These first-time events are the riskiest steps of the PoC. Each happens once, in the named task, and only when every listed condition holds.
 
 | First event | Required before it happens | Task |
 | --- | --- | --- |
-| First paid provider call | D-05 caps approved; WP04-T13 budget guard live; fresh two-founder confirmation naming the maximum spend | WP04-T14 |
-| First paid plan, add-on or billable resource (database tier, storage, worker host, email sender) | Fresh two-founder confirmation naming the plan and monthly exposure | WP04-T15 to WP04-T18, WP08-T05 |
-| First real private source in any environment | WP04-T19 real-data readiness gate passed | WP04-T20 |
-| First real raw deletion | WP04-T09 proven on synthetic data; D-19 values approved; WP04-T19 passed | WP04-T20 |
+| First real personal data, or first transfer of real material outside Egypt | D-28 route approved (WP00-T21) | WP04-T18 |
+| First real private source in any environment, including benchmark samples | WP04-T18 real-data readiness gate passed, including the approved D-21 revision | WP04-T19 (samples), WP04-T21 (corpus) |
+| First real sample sent to an external provider | WP04-T18 passed; the sample is marked in WP00-T03 with `provider_processing` granted and no personal data (or recorded consent); the provider's data terms recorded; the D-05 benchmark exception approved; run from an approved non-founder host | WP04-T19 |
+| First paid provider call | D-05 caps approved; WP04-T13 budget guard live; budget alerts delivered (WP04-T17); fresh two-founder confirmation naming the maximum spend | WP04-T19 |
+| First paid plan, add-on, payment card or billable resource | Fresh two-founder confirmation naming the plan and monthly exposure | WP04-T14 to WP04-T17, WP04-T20, WP08-T02, WP08-T05 |
+| First real raw deletion | WP04-T09 proven on synthetic data; D-19 values approved; WP04-T18 passed | WP04-T21 |
 | First real student account with cohort access | WP11-T01 go decision | WP11-T03 |
 
-Preview never holds real data. Beta holds real sources only after WP04-T19 and real students only after WP11-T01.
+Preview never holds real data and uses mock providers only (D-21). Beta holds real sources only after WP04-T18 and the approved D-21 revision, and real students only after WP11-T01. Workstations and the public repository's CI never hold real material.
 
 ### 0.12 Global rollback hierarchy
 
@@ -235,9 +233,9 @@ Never delete audit, provenance, job-attempt, raw-deletion, provider-cost or usag
 5. Keep service-role keys, provider keys, storage credentials, webhook secrets and private source objects on the server or worker only.
 6. Make accepted work durable before returning success. Long processing is a durable job and never depends on a browser tab or a short web request.
 7. Make every worker step idempotent. Retries must not duplicate source versions, processed documents, segments, embeddings, artifacts, usage entries or provider charges.
-8. Use one unified source pool per authorized cohort and curriculum unit. Source format and professor-hint status are metadata, not separate knowledge modes.
+8. Use one unified knowledge pool per authorized cohort and curriculum unit. Source format and professor-insight status are metadata, not separate knowledge modes.
 9. Generate factual content only from the evidence packet retrieved from uploaded approved material. Do not implement web search or any outside-answer fallback.
-10. When evidence is missing, return the unavailable-information contract. When it conflicts, show each supported position.
+10. When evidence is missing, return the unavailable-information response. When it conflicts, show each supported position.
 11. Preserve internal evidence provenance for every accepted chat answer and Studio artifact. Page/timestamp display is optional when a reliable locator exists.
 12. Treat academic medical and veterinary cases as normal educational questions. Apply the real-patient boundary only when context indicates an actual patient or an urgent personal care request.
 13. Delete raw PDF/audio files only after verified durable processed output exists. Verify deletion and append an audit event.
@@ -257,34 +255,36 @@ Never delete audit, provenance, job-attempt, raw-deletion, provider-cost or usag
 | 0 | Pilot decision pack | None | Cohorts, rights, sources, budgets, load profile and evaluation sets, or explicit blockers | Workflow tasks done; decision tasks wait for founders |
 | 1 | Repository and environments | WP00 mock-only constraints | Repeatable app, migrations, CI, Preview, Beta and mock providers | Done |
 | 2 | Database and authorization | Package 1 | Generic catalog, access, content, RAG, Studio, usage and RLS foundation | Done |
-| 3 | Product shell and governance controls | Package 2 | Role journeys on synthetic services; catalog, membership and campaign governance | Shell done; governance tasks T34–T36 open |
-| 4 | Automated source pipeline and real-data readiness | Packages 1–3 | Synthetic pipeline proven; providers, storage, worker host and backup chosen; Cohort A corpus READY | Open |
+| 3 | Product shell and governance controls | Package 2 | Role journeys on synthetic services; catalog, membership, campaign, rights and Batch Leader governance | Shell done (WP03-T08 gate); WP03-T34 to WP03-T38 open; WP03-T13 waits on Ahmed |
+| 4 | Automated source pipeline and real-data readiness | Packages 1–3 and the WP00 inputs its tasks name | Synthetic pipeline proven; budget guard, worker host, storage, backup and email in place; real-data gate passed; providers chosen; Cohort A corpus READY | Open |
 | 5 | Retrieval evaluation | Package 4 | Authorized hybrid retrieval meets leakage and evidence targets before chat | Open |
 | 6 | Strict-RAG subject chat | Package 5 | Grounded, partial, unavailable, conflict, hint and educational-case behaviour in the real Chat screen | Open |
 | 7 | Studio and quiz | Package 6 | Grounded artifacts and the quiz loop in the real Studio and Quiz screens | Open |
-| 8 | Operations and automation | Packages 4–7 | Topology, metrics, reconciliation, dashboards, alerts, restore, incidents, security review, success signals | Open |
+| 8 | Operations and automation | Packages 4–7 | Topology, metrics, reconciliation, dashboards, alerts, restore, incidents, security review, success signals, data-subject controls | Open |
 | 9 | Cost and 100-student validation | Packages 1–8 | The minimum-cost configuration passes the defined workload | Open |
 | 10 | Veterinary validation | Packages 4–9 | The second program passes the same gates through configuration only | Open |
 | 11 | Private beta | Packages 0–10 | Up to 100 verified students in reviewed waves | Open |
 | 12 | Post-PoC preparation | PoC acceptance (WP11-T05) | Payments and video stay extensions behind existing contracts | Open |
 
-Do not start Studio generation before retrieval and strict-RAG contracts pass. Do not invite students before fault recovery, quotas, kill switches, restore and the security review pass.
+A package in the `Depends on` column means that package's gate task (WP01-T11, WP02-T09, WP03-T08, WP04-T21 and so on); each task's own `Depends on` line is authoritative and may also name earlier tasks. Do not start Studio generation before retrieval and strict-RAG contracts pass. Do not invite students before fault recovery, quotas, kill switches, restore and the security review pass.
 
 ### 2.2 Critical path
 
-The shortest honest route from today to the beta, with what each step needs from the founders (see §17):
+The shortest honest route from today to the beta, with what each step needs from the founders (§17 lists them in order):
 
-1. **Governance loop** — WP03-T34 (catalog), WP03-T35 (membership, needs D-25), WP03-T36 (campaigns and Batch Leader access, needs D-24).
-2. **Synthetic pipeline** — WP04-T01 to WP04-T12 (needs D-10 approved).
-3. **Real-data readiness** — WP04-T13 to WP04-T19 (needs D-05, D-04, D-18, D-19, D-17, a restore target, rights-cleared samples).
-4. **Cohort A corpus READY** — WP04-T20 (needs WP00-T03 sources and a Batch Leader).
-5. **Retrieval baseline** — WP05 (needs the WP00-T20 academic suite).
-6. **Grounded chat** — WP06 (needs D-08).
-7. **Studio and quiz** — WP07.
-8. **Unattended operation** — WP08 (needs D-20, D-26).
-9. **Load and cost** — WP09.
-10. **Veterinary** — WP10 (needs D-02).
-11. **Beta** — WP11.
+1. **Governance loop** — WP03-T34 (catalog), WP03-T35 (membership; D-25), WP03-T36 (campaigns), WP03-T37 (rights decisions), WP03-T38 (Batch Leader access; D-24).
+2. **Synthetic pipeline** — WP04-T01 to WP04-T12 (D-10 approved, or the founders allow building on the proposal with synthetic data).
+3. **Real-data controls** — WP04-T13 (budget guard), WP04-T14 (worker host; D-17), WP04-T15 (storage and retention; D-18, D-19, D-21 revision), WP04-T16 (backup; D-27), WP04-T17 (email; D-26), and WP00-T21 (data protection; D-28) in parallel.
+4. **Real-data readiness gate** — WP04-T18 (also needs the WP00-T01 roles, WP00-T02 catalog codes, WP00-T03 source rows and WP00-T04).
+5. **Providers** — WP04-T19 benchmark (D-05 cap and benchmark exception; the signed WP00-T20 suite), then WP04-T20 embedding configuration.
+6. **Cohort A corpus READY** — WP04-T21.
+7. **Retrieval baseline** — WP05 (the WP00-T20 suite, sealed test part).
+8. **Grounded chat** — WP06 (D-08).
+9. **Studio and quiz** — WP07.
+10. **Unattended operation, security review, signals and data-subject controls** — WP08 (D-20).
+11. **Load and cost** — WP09 (load spend).
+12. **Veterinary** — WP10 (D-02).
+13. **Beta** — WP11.
 
 ### 2.3 Values to set
 
@@ -292,20 +292,20 @@ These values appear in later tasks but cannot be fixed by this runbook. Until th
 
 | Value | Used by | Set by | Synthetic default until then |
 | --- | --- | --- | --- |
-| Raw retention period, `delete_after` start event, retry interval, overdue severity | WP04-T09, WP04-T11 | D-19 through WP00-T04 | [Raw-data policy](../policies/raw-data-lifecycle.md) synthetic values |
-| Processed-output acceptance: page/audio coverage, non-empty threshold, duplicate ratio, terminology sample rule | WP04-T08 | D-10 through WP00-T04 | Fixture-exact values from WP04-T01 |
-| Audio duration accounting tolerance | WP04-T06, WP04-T08 | D-10 | Fixture-exact |
+| Raw retention period, `delete_after` start event, retry interval, overdue severity | WP04-T09, WP04-T11 | D-19 in WP04-T15 | [Raw-data policy](../policies/raw-data-lifecycle.md) synthetic values |
+| Processed-output acceptance: page/audio coverage, OCR confidence, non-empty threshold, duplicate ratio, terminology sample rule | WP04-T08 | D-10 through WP00-T04 | The D-10 proposal in the [raw-data policy](../policies/raw-data-lifecycle.md): page and locator coverage 1.00; OCR mean confidence at least 0.90 with no page below 0.75; the audio rules there |
+| Audio duration accounting tolerance | WP04-T06, WP04-T08 | D-10 | The raw-data policy's audio proposal |
 | OCR page triggers (text density, replacement characters, layout anomalies) | WP04-T05 | WP04-T05 measurement, recorded in config | Fixture-derived |
-| Per-source limits: bytes, pages, audio duration | WP04-T03, WP03-T36 | WP00-T04 and WP00-T06 | Environment-schema bounds from WP01-T03 |
+| Accepted formats and per-source limits: formats, bytes, pages, audio duration | WP04-T01, WP04-T03, WP03-T36 | WP04-T01 proposal (founder-confirmed) and WP00-T06 cost limits | PDF, WAV and PNG up to 10 MiB (current intake) |
 | Maximum preflight cost per source and per action | WP04-T13 | D-05 | Zero |
-| Budget caps: total, weekly, per provider/action, per source; alert recipients | WP04-T13, WP08-T05 | D-05 through WP00-T06 | Zero; in-process sink |
+| Budget caps: total, weekly, provider/action, source preflight, per-user daily, single request; alert recipients | WP04-T13, WP04-T17, WP08-T05 | D-05 through WP00-T06 | Zero; in-process sink |
 | Lease length, heartbeat interval, maximum attempts, backoff base and cap | WP04-T02 | WP04-T02 engineering choice, recorded in config | Short test values |
 | Chunk size range and overlap | WP04-T10 | WP04-T10 initial, WP05-T06 tuned | Fixture values |
-| Embedding model, dimensions, distance operator | WP04-T15 | D-04 through WP04-T14 | `vector(3)` mock |
+| Embedding model, dimensions, distance operator | WP04-T20 | D-04 through WP04-T19 | The synthetic 3-dimension cosine configuration |
 | Retrieval `k`, fusion weights, per-source diversity cap | WP05-T03 | WP05-T06 baseline | Versioned default config |
 | Retrieval quality targets (recall@k, MRR) and latency budget | WP05-T06 | WP05-T06 reviewer approval; latency derived from the chat first-token target | No gate claimed |
 | Conflict-detection method and threshold | WP05-T04 | WP05-T04 (ADR) | Annotated conflicts only |
-| Evidence packet limits (segments, tokens) | WP06-T04 | WP06-T04 with WP04-T14 cost data | Mock values |
+| Evidence packet limits (segments, tokens) | WP06-T04 | WP06-T04 with WP04-T19 cost data | Mock values |
 | Message length, output tokens, request timeout | WP06-T02, WP07-T02 | WP00-T06 | Environment-schema bounds |
 | Per-student daily allowance, rate and concurrency limits | WP06-T02, WP07-T02 | WP00-T06 with D-05 | Synthetic values |
 | Claim-validator acceptance rule | WP06-T06 | WP06-T01 ADR measurement | None; no grounding gate claimed |
@@ -313,13 +313,16 @@ These values appear in later tasks but cannot be fixed by this runbook. Until th
 | Misuse-detection categories and thresholds | WP06-T07 | D-08 | Disabled |
 | Quiz options per MCQ, timer rules, attempt expiry, item counts and difficulty levels | WP07-T01, WP07-T04 | WP07-T01 contract; founder confirms visible behaviour | Current fixture behaviour |
 | Artifact size limits (items, depth) | WP07-T02 | WP00-T06 cost and WP07-T01 | Fixture values |
-| Academic review sample size and rubric | WP04-T20, WP06-T08, WP07-T06 | WP00-T20 with the academic reviewer | None |
+| Academic review sample size, rubric and second rater | WP04-T21, WP06-T08, WP07-T06 | WP00-T20 with the academic reviewer and the founders | None |
 | Reconciliation intervals | WP08-T03 | §11.2 defaults, tuned in WP09 | §11.2 |
 | Alert thresholds: queue age, error rate, database/storage capacity | WP08-T05 | WP08-T05, revised from WP09 measurements | Test values |
 | Unattended observation window | WP08-T08 | WP08-T08, founder-approved | None |
 | Success-signal definitions ("meaningful session", trust rating) | WP08-T10, WP11-T05 | WP08-T10 with the founders | None |
 | Load profile, success and abort thresholds | WP09 | WP00-T07 ([load profile](../../planning/load-profile-100-students.yaml)) | Profile values |
 | Beta wave sizes, observation windows, abort thresholds | WP11-T03 | WP11-T01 | §14.1 sizes |
+| Day and week boundaries for allowances, budgets and deadlines | WP04-T13, WP06-T02, WP07-T02, WP08-T03 | WP04-T13 (midnight Africa/Cairo proposed), tested across the daylight-saving change | Midnight Africa/Cairo |
+| Gate case counts and how a percentage gate is read | §3.4, §16 | WP00-T20 founder choice | Current minimums, read as no miss on N |
+| Language matrix: query language × source language, including Franco-Arabic | WP00-T05, WP00-T20, WP05-T06 | WP00-T20 from the inventory | Synthetic cells |
 
 ## 3. Work package 0: Pilot decision pack
 
@@ -337,14 +340,18 @@ These values appear in later tasks but cannot be fixed by this runbook. Until th
 
 **Needs from founders:** owner deadlines for every open decision, and the names of the review roles below. Everything else is staged.
 
+**Depends on:** none. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
+
 - [~] Create `docs/decisions`, `docs/policies`, `planning/tasks`, `evals/datasets/tutor`, `evals/datasets/studio` and `evidence/wp00-pilot` with scoped `README.md` files where Git needs a durable directory entry.
-- [~] Stage the controlled inputs: cohort candidates (WP00-T02), source-rights inventory (WP00-T03), raw-data policy (WP00-T04), provider benchmark (WP00-T06, WP04-T14), load profile (WP00-T07), decision records and the gate report, each copied from `docs/templates/` with placeholders kept until the owning task supplies reviewed values.
-- [~] Create `planning/decision-register.md` with `ID`, `decision`, `owner`, `due`, `status`, `record`, `resolution path`, `blocks` and `last reviewed`. A decision's resolution task may proceed and is never in its own blocked list.
+- [~] Stage the controlled inputs: cohort candidates (WP00-T02), source-rights inventory (WP00-T03), raw-data policy (WP00-T04), provider benchmark (WP00-T06, WP04-T19), load profile (WP00-T07), decision records and the gate report, each copied from `docs/templates/` with placeholders kept until the owning task supplies reviewed values.
+- [~] Create `planning/decision-register.md` with `ID`, `decision`, `owner`, `due`, `record`, `resolution path`, `blocks` and `last reviewed`; status lives only in the master-plan log. A decision's resolution task may proceed and is never in its own blocked list.
 - [~] Copy D-01 to D-16 from the master plan; keep approved directions approved.
 - [~] Add the unresolved choices from §0.7 as D-17 onward and keep the master-plan decision log in sync.
 - [~] Verify every `Open` or `Proposed` decision names the exact tasks it blocks, including when only the real-data or paid-adapter portion is blocked.
 - [?] Obtain owner deadlines and a founder checkpoint; unresolved due dates stay explicit rather than invented. OWNER INPUT REQUIRED.
-- [?] Name, from Ahmed and Ziad, the holder of each review role: security/data, academic reviewer per cohort, cost and operations. D-10, D-18 and D-19 cannot be approved until the security/data role is named. OWNER INPUT REQUIRED.
+- [?] Name the holder of each remaining review role: security/data, cost, operations and the Veterinary academic reviewer (D-01 already names Ahmed for Human Medicine). D-10, D-18 and D-19 cannot be approved until the security/data role is named. OWNER INPUT REQUIRED.
+
+**Verify:** `pnpm lint:agents` (register links resolve); register rows match the master-plan decision log.
 
 **Pass:** one register shows every open decision, its owner, deadline, role holder and blocked work.
 
@@ -352,7 +359,9 @@ These values appear in later tasks but cannot be fixed by this runbook. Until th
 
 #### WP00-T02 — Select cohorts using evidence, not preference
 
-**Needs from founders:** candidate facts for each Veterinary cohort (D-02), independent scores, Batch Leader and academic reviewer per cohort.
+**Needs from founders:** candidate facts for each Veterinary cohort (D-02), independent scores, the Batch Leader per cohort and the Veterinary academic reviewer.
+
+**Depends on:** none. **Decision gates:** none; this task resolves D-02. **Protected:** none. **Material UI:** no. **Real money:** no.
 
 - [~] Create `planning/cohort-candidates.csv` (UTF-8, stable candidate IDs such as `HM-C01` and `VM-C01`); the header and ID contract are ready for review.
 - [?] Enter every candidate cohort before scoring; the decision owners have not supplied candidate facts.
@@ -361,29 +370,38 @@ These values appear in later tasks but cannot be fixed by this runbook. Until th
 - [?] Have Ahmed and Ziad score independently, then reconcile differences of two or more points in a recorded review.
 - [?] Reject a cohort regardless of score if provider-processing or student-use rights are denied, no accountable academic reviewer exists, or complete-enough source material is unavailable.
 - [~] Keep `docs/decisions/d-01-human-medicine-cohort.md`, `d-02-veterinary-medicine-cohort.md` and `d-03-pilot-institutions.md` current. D-01 and D-03 are approved directions; D-02 stays open.
-- [?] Assign stable catalog codes for institution, program, level, term, cohort, curriculum edition and every unit after selection: ASCII `lower_snake_case`; labels may be Arabic or English. WP03-T34 enters them through admin actions.
+- [?] Assign stable catalog codes for institution, program, level, term, cohort, curriculum edition and every unit after selection, in the schema's upper snake case (`^[A-Z][A-Z0-9_]*$`, §5.5); labels may be Arabic or English. WP03-T34 enters them through admin actions.
 - [?] Obtain owner and review sign-off.
+
+**Verify:** the candidates file matches its header and ID contract; scores reconcile per `planning/cohort-selection-review.md`.
 
 **Pass:** each selected cohort has a reproducible score, the §3.1 fields, an ordered unit list, a named Batch Leader, a named academic reviewer and no blocking right. Record: [wp00-t02](../../planning/tasks/wp00-t02-select-pilot-cohorts.md).
 
 #### WP00-T03 — Inventory sources and prove rights
 
-**Needs from founders:** the real expected source list for Cohort A (and later Cohort B), permission evidence for each source, and a security/data review.
+**Needs from founders:** the real expected source list for Cohort A (and later Cohort B), rights holders and permission evidence for each source, and a security/data review.
+
+**Depends on:** WP00-T01. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
 
 - [~] `planning/source-rights-inventory.csv` is staged from the template (WP00-T01); one row is one expected source, not a folder or an informal collection.
 - [?] Enter every expected source with an opaque ID such as `SRC-HM-0001` and the §3.2 fields; keep personal names out of IDs and filenames. OWNER INPUT REQUIRED.
-- [?] Record rights as separate fields `temporary_storage`, `provider_processing`, `processed_retention`, `student_derivatives` and `future_commercial_use`, each `GRANTED`, `DENIED`, `UNKNOWN` or `NOT_APPLICABLE`, with linked permission evidence, who verified it and when. A chat message or verbal statement is never summarized as broader permission than it contains.
+- [?] Record rights as separate fields `temporary_storage`, `provider_processing`, `processed_retention`, `student_derivatives` and `future_commercial_use`, each `GRANTED`, `DENIED`, `UNKNOWN` or `NOT_APPLICABLE`, with linked permission evidence, who verified it and when. Record the rights holder and the grantor's authority to grant: a professor can license their own slides, but not third-party figures inside them. A chat message or verbal statement is never summarized as broader permission than it contains.
 - [?] Flag patient/personal data, third-party copyright, original exams, duplicate editions, password protection, scan quality, handwriting, tables/diagrams and mixed-language audio.
-- [?] Estimate pages, duration and bytes per source; calculate the maximum preflight provider cost once WP04-T14 has prices.
-- [?] Mark benchmark candidates (native PDF, scanned PDF, mixed-language audio, professor voice note) whose `provider_processing` right is `GRANTED`, for WP04-T14 (master plan §16 item 8).
+- [?] Estimate pages, duration and bytes per source; WP04-T19 turns them into preflight costs.
+- [?] Mark benchmark candidates (native PDF, scanned PDF, mixed-language audio, professor voice note) whose `provider_processing` right is `GRANTED` and that hold no personal data (or have recorded consent), for WP04-T19 (master plan §16 item 8).
+- [ ] Add the §3.2 columns missing from the template (`rights_holder`, `grantor_authority_evidence`, `source_language`, `benchmark_candidate`).
 - [ ] Add a validation script that sets `processing_eligible = false` whenever a required right is not `GRANTED` and fails on a missing field, duplicate ID or unreachable evidence link.
 - [?] Have the security/data role review every real row before any upload.
+
+**Verify:** the inventory validation script and its negative tests.
 
 **Pass:** the row count matches the expected source manifest; no eligible row has a required `UNKNOWN` or `DENIED` right; evidence links are reachable by the designated reviewers; the benchmark set is marked.
 
 #### WP00-T04 — Approve raw and processed data policy
 
-**Needs from founders:** approval of D-10 and the D-19 real values, after the security/data role is named.
+**Needs from founders:** approval of D-10 after the security/data role is named. The D-19 real values are approved together with D-18 in WP04-T15, because they depend on the storage provider's absence semantics.
+
+**Depends on:** WP00-T01. **Decision gates:** none; this task resolves D-10. **Protected:** none. **Material UI:** no. **Real money:** no.
 
 - [~] Create `docs/policies/raw-data-lifecycle.md` from the controlled template; the executable draft is ready for review.
 - [~] Define exact synthetic-test durations and starting events; real values wait for D-19.
@@ -392,8 +410,9 @@ These values appear in later tasks but cannot be fixed by this runbook. Until th
 - [~] Define temporary normalized audio/OCR storage and deletion behaviour.
 - [~] State that database backup does not back up object storage and define processed-object durability independently.
 - [~] Add a data-flow diagram naming every logical storage location and the mock/real adapter boundary.
-- [?] Review every real provider and storage path against a completed rights inventory (WP00-T03) and the selected providers (WP04-T14, WP04-T16).
-- [?] Approve the D-10 processed contract with its §2.3 acceptance thresholds, and the D-19 real retention and deletion values, including what happens to processed text and embeddings after a rights takedown. OWNER INPUT REQUIRED.
+- [?] Approve the D-10 processed contract with its §2.3 acceptance thresholds. OWNER INPUT REQUIRED.
+
+**Verify:** the policy's decision table covers every raw-object state listed in §5.5.
 
 **Pass:** given any source state, the executor can tell whether raw data must be retained, deleted, retried, quarantined or held, what happens to processed content after a takedown, and who can authorize the exceptional state. Record: [wp00-t04](../../planning/tasks/wp00-t04-approve-data-lifecycle.md).
 
@@ -401,15 +420,15 @@ These values appear in later tasks but cannot be fixed by this runbook. Until th
 
 This task builds the dataset machinery and the synthetic suite. Real academic cases are authored in WP00-T20.
 
-**Depends on:** WP00-T01. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
+**Depends on:** none (the dataset directories already exist). **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
 
 **Outputs:** `evals/datasets/tutor/v1/`, `evals/datasets/studio/v1/`, JSON Schemas, a manifest generator and validator wired into `pnpm test:eval`.
 
 - [ ] Create version directories `evals/datasets/tutor/v1` and `evals/datasets/studio/v1`.
 - [ ] Add JSON Schemas for tutor cases, Studio cases, labeled claims (for the WP06-T01 validator measurement) and the dataset manifest, using the §3.4 fields.
-- [ ] Add a manifest with dataset version, creation date, source-scope fingerprint, authors, reviewer, case counts by category and language mode, and the SHA-256 of each JSONL file.
+- [ ] Add a manifest with dataset version, creation date, source-scope fingerprint, authors, reviewer, case counts by category, language mode and source language, and the SHA-256 of each JSONL file.
 - [ ] Use stable case IDs; never renumber a case, supersede it with a new version.
-- [ ] Create synthetic cases for every tutor category, every Studio artifact type and every language mode (English, Arabic, mixed), each tied to synthetic fixture segments and canaries.
+- [ ] Create synthetic cases for every tutor category, every Studio artifact type and every language mode (English, Arabic, mixed and Franco-Arabic) with a source-language label on every case, each tied to synthetic fixture segments and canaries.
 - [ ] Validate schema, duplicate IDs, category and language counts, required/forbidden claims and hashes; a changed file without a new version fails.
 - [ ] Keep any case that reproduces private source text out of Git; it belongs in the restricted store with a redacted index.
 
@@ -421,6 +440,8 @@ This task builds the dataset machinery and the synthetic suite. Real academic ca
 
 **Needs from founders:** nonzero caps (D-05), the canonical currency and rate source, and alert recipients.
 
+**Depends on:** WP00-T01. **Decision gates:** none; this task resolves D-05. **Protected:** none. **Material UI:** no. **Real money:** no.
+
 - [~] Stage the provider benchmark and create truthful open D-04/D-05 records; implementation is ready for review.
 - [~] Define the currency/conversion evidence rule; the canonical real currency and rate source remain owner inputs.
 - [?] Approve nonzero total, weekly, provider/action, per-source, per-student daily and per-request caps (§2.3). OWNER INPUT REQUIRED.
@@ -429,11 +450,15 @@ This task builds the dataset machinery and the synthetic suite. Real academic ca
 - [~] Make the zero-cost profile authoritative: every real adapter flag is false and deterministic mocks are the only enabled providers.
 - [~] Define the zero-cost smoke story that proves coherent behaviour and a zero-valued cost ledger without provider network calls.
 
+**Verify:** a recorded trace, per threshold, from reservation to ledger in the task record.
+
 **Pass:** a reviewer can trace a request from reservation through provider call to cost ledger and name the automatic action at every threshold. WP04-T13 implements this. Record: [wp00-t06](../../planning/tasks/wp00-t06-freeze-provider-budgets.md).
 
 #### WP00-T07 — Make the 100-student workload reproducible
 
-**Needs from founders:** a checkpoint on the profile once WP09 runs it.
+**Needs from founders:** a human checkpoint on the synthetic profile.
+
+**Depends on:** WP00-T01. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
 
 - [~] Populate `planning/load-profile-100-students.yaml` as an exact synthetic mock contract.
 - [~] Define warm-up, realistic ramp, peak academic burst, background-ingestion overlap, provider slowdown, worker death, cooldown and reconciliation as separate phases.
@@ -442,7 +467,9 @@ This task builds the dataset machinery and the synthetic suite. Real academic ca
 - [~] Define success thresholds for HTTP success, first token, full response, queue age, job completion, database connections, reservations, duplicates, leakage and cost.
 - [~] Define immediate abort thresholds for leakage, duplicate settlement, lost accepted work, cost, errors, queue age, database pressure and environment health.
 - [~] Freeze the random seed and the synthetic dataset/fixture contract version.
-- [?] Implement the load runner and execute this profile on an approved target in WP09, then obtain an Ahmed-or-Ziad checkpoint.
+- [?] Ahmed-or-Ziad human checkpoint on the synthetic profile. WP09-T02 builds the executor and versions the profile for its approved target. OWNER INPUT REQUIRED.
+
+**Verify:** `pnpm test:load` validates the profile and writes its `NOT_EXECUTED` report.
 
 **Pass:** another executor can reproduce the scenario without asking what "100 concurrent students" means. Record: [wp00-t07](../../planning/tasks/wp00-t07-freeze-load-profile.md).
 
@@ -494,34 +521,54 @@ This task builds the dataset machinery and the synthetic suite. Real academic ca
 
 **Depends on:** WP00-T18. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
 
-**Outputs:** this runbook (revision 3.0), [revision findings](../reviews/runbook-revision-2026-10/findings.md), the decision register and master-plan decision log in sync.
+**Outputs:** this runbook (revision 3.1), the [first](../reviews/runbook-revision-2026-10/findings.md) and [second](../reviews/runbook-revision-2026-10/second-review.md) review reports, the decision register and master-plan decision log in sync, and `pnpm agent:status` reading each task's `Depends on` line.
 
 - [x] Audit the runbook against the master plan, the decision register, the status parser and the code at `74bd340`; publish the findings.
-- [x] Fix the dependency order (provider benchmark, real-data readiness, worker host, budget guard and video contract move ahead of their first consumer); add the missing governance, corpus, wiring, email, security-review and success-signal tasks; give every open task dependencies, gates, flags, proof and a pass line; list the values still to set; remove stale and duplicated content.
-- [x] Record the product questions found as open decisions D-25 and D-26 without answering them.
+- [x] Fix the dependency order, add the missing governance, corpus, wiring, email, security-review and success-signal tasks, give every open task dependencies, gates, flags, proof and a pass line, and list the values still to set.
+- [x] Run a second, independent review in five dimensions (master-plan traceability, code and schema reality, cross-document consistency, executability, platform and legal risk); verify every finding against its source; fix the runbook, the register and the status tool; publish the second report.
+- [x] Record the product questions found as open decisions (D-25 to D-28 and the D-21 revision) without answering them.
 - [ ] Founder review of the revised order, then deliver through one PR with required CI.
 
-**Verify:** `pnpm lint:agents`; `pnpm agent:status` lists no lost task and recommends an executable one; every pre-revision task heading is still present with the same text.
+**Verify:** `pnpm lint:agents`; `pnpm agent:status`; the `agent-status` unit tests; every pre-revision task heading is still present with the same text.
 
-**Pass:** every master-plan deliverable maps to a task (findings §F); no open decision appears approved; no completed task is reopened. Record: [wp00-t19](../../planning/tasks/wp00-t19-runbook-revision.md).
+**Pass:** every master-plan deliverable maps to a task; no open decision appears approved; no completed task is reopened; `pnpm agent:status` recommends a task whose dependencies are all done. Record: [wp00-t19](../../planning/tasks/wp00-t19-runbook-revision.md).
 
 #### WP00-T20 — Author and sign the Human Medicine evaluation suite
 
-**Depends on:** WP00-T05, WP00-T03. **Decision gates:** academic reviewer named (WP00-T01); source rows and rights (WP00-T03). **Protected:** none. **Material UI:** no. **Real money:** no.
+**Depends on:** WP00-T05, WP00-T03. **Decision gates:** none beyond the WP00-T03 source rows; D-01 names Ahmed as the Human Medicine academic reviewer. **Protected:** none. **Material UI:** no. **Real money:** no.
 
-**Outputs:** `evals/datasets/tutor/v2/` and `evals/datasets/studio/v2/` (or restricted-store equivalents with a redacted index), a signed manifest, the academic review rubric.
+**Outputs:** `evals/datasets/tutor/v2/` and `evals/datasets/studio/v2/` (or restricted-store equivalents with a redacted index), a signed manifest, the academic review rubric, the case-count and second-rater decisions.
 
-- [?] Academic reviewer for Human Medicine named and source rows approved. OWNER INPUT REQUIRED.
-- [ ] Author at least 100 distinct tutor cases (target 100–150) against the inventoried Cohort A sources, meeting every §3.4 category minimum; every category includes English, Arabic and mixed-language cases and the manifest reports the split.
+- [?] Cohort A source rows and rights approved in WP00-T03. OWNER INPUT REQUIRED.
+- [ ] Ask the founders to choose how strong the percentage gates are (§3.4): with 15 unavailable cases, "at least 95%" means 15 of 15, and 15 of 15 only shows the true rate is above about 82% (one-sided 95% confidence); showing 95% with no miss needs about 59 cases per gated category. Either raise the gated-category minimums or record each gate as "no miss on N" with its bound. Record the choice in §2.3.
+- [ ] Ask the founders whether an independent second rater grades at least 20% of every academic review sample, blind to the validator's verdict, with Cohen's kappa reported; Ahmed both authors the cases and is the reviewer under D-01. If not, record the single-rater risk.
+- [ ] Author at least 100 distinct tutor cases (target 100–150) against the inventoried Cohort A sources, meeting every §3.4 category minimum (or the raised minimums); cover every query-language × source-language pair that occurs in the inventory, including Franco-Arabic questions over English sources, and report the counts per pair.
 - [ ] Author at least 30 Studio/MCQ cases covering every artifact type (target 30–50).
-- [ ] Label a claim-support set (claims marked supported or unsupported against named segments) for the WP06-T01 validator measurement.
-- [ ] Write the academic review rubric and sample sizes used by WP04-T20, WP06-T08 and WP07-T06 (§2.3).
+- [ ] Label a claim-support set for the WP06-T01 validator measurement, including unsupported variants with altered doses, numbers, negation and laterality, in English, Arabic, mixed and Franco-Arabic text.
+- [ ] Split the suite into a calibration part (tuning allowed) and a sealed test part used only for gate runs.
+- [ ] Write the academic review rubric and sample sizes used by WP04-T21, WP06-T08 and WP07-T06 (§2.3).
 - [ ] Freeze cases that reproduce private source text in the restricted store; commit only IDs, hashes and redacted metadata.
-- [?] Academic reviewer signs the manifest before WP05-T06 uses it.
+- [ ] The academic reviewer signs the manifest before WP04-T19 benchmarks providers on it.
 
 **Verify:** `pnpm test:eval` validator on the new version; manifest hash check.
 
-**Pass:** the signed suite meets every minimum, validates automatically and cannot change without a new version.
+**Pass:** the signed suite meets every chosen minimum, has a sealed test part, validates automatically and cannot change without a new version.
+
+#### WP00-T21 — Establish the data-protection route for real data
+
+Egypt's Personal Data Protection Law and its executive regulations apply to the student and professor data UniMind will hold, and every planned processor is outside Egypt ([second review](../reviews/runbook-revision-2026-10/second-review.md) A1). This task records the founders' route; it is not legal advice.
+
+**Depends on:** WP00-T18. **Decision gates:** none; this task resolves D-28. **Protected:** none. **Material UI:** no. **Real money:** yes if a licence, permit or legal counsel is paid.
+
+**Outputs:** an approved D-28 record, a record of processing activities, a subprocessor list with regions and transfer basis, consent and notice requirements for WP11-T02, data-subject request requirements for WP08-T11.
+
+- [ ] Prepare D-28 with the founders and, if they choose, legal counsel: whether and how Law 151 of 2020 and Ministerial Decree 816 of 2025 apply (the compliance period was reported to end around 1 November 2026); licence or permit from the Personal Data Protection Centre; cross-border transfer to foreign processors (Vercel, Supabase, AI providers, email sender, backup host); consent wording and how consent is recorded; sensitive data such as health details in chats; minimum age and minors; breach-notification duties and deadlines; access, correction and deletion requests; professors' voice recordings as personal data.
+- [ ] Write the record of processing activities and the subprocessor list with regions; WP04-T14 to WP04-T19 add each processor they choose.
+- [ ] Obtain Ahmed's and Ziad's approval of D-28 (this step becomes `[?]` while it waits).
+
+**Verify:** the D-28 record, the processing record and the subprocessor list exist and link from the decision register.
+
+**Pass:** D-28 is approved; every planned processor appears with its region and transfer basis; WP04-T18, WP08-T07, WP08-T11 and WP11-T02 can cite concrete requirements.
 
 ### 3.1 Cohort decision fields
 
@@ -531,7 +578,7 @@ Score each candidate 0–5 on source completeness, permission clarity, Batch Lea
 
 ### 3.2 Source inventory fields
 
-One row per expected source (WP00-T03): proposed cohort and unit; title, source type, format, approximate pages/minutes/bytes and language; whether it holds professor explanation, exam hints, corrections or exclusions; owner/contributor and permission evidence; the five rights fields; patient/personal-data risk; duplicate/older-version risk; benchmark candidate flag.
+One row per expected source (WP00-T03): proposed cohort and unit; title, source type, format, approximate pages/minutes/bytes and language; whether it holds professor explanation, exam hints, corrections or exclusions; owner/contributor, rights holder, the grantor's authority to grant and permission evidence; source language; the five rights fields; patient/personal-data risk; duplicate/older-version risk; benchmark candidate flag.
 
 Block provider processing when the corresponding right is `UNKNOWN` or `DENIED`. Possession never equals processing or commercial permission.
 
@@ -543,7 +590,7 @@ The default is no permanent raw retention. Audio is fully transcribed before del
 
 ### 3.4 Evaluation dataset fields and minimums
 
-Tutor case fields: `case_id`; cohort and unit IDs/slugs; question and language mode; expected evidence source versions/segments or topic locator; expected result `SUPPORTED`, `PARTIAL`, `UNAVAILABLE` or `CONFLICT`; required and forbidden claims; professor-hint expectation; educational-case or explicit-real-patient classification; severity and reviewer notes.
+Tutor case fields: `case_id`; cohort and unit IDs/slugs; question, language mode (English, Arabic, mixed or Franco-Arabic) and expected source language; expected evidence source versions/segments or topic locator; expected evidence class `FULL`, `PARTIAL`, `UNAVAILABLE` or `CONFLICTING`; required and forbidden claims; professor-hint expectation; educational-case or explicit-real-patient classification; severity and reviewer notes.
 
 Studio case fields: artifact type, topic, language, depth, item count; required coverage; forbidden unsupported content; known conflict behaviour; expected professor-hint labels; MCQ answer/option constraints where applicable.
 
@@ -561,6 +608,8 @@ Minimum suite per cohort (WP00-T20 for Human Medicine, WP10-T02 for Veterinary).
 | Prompt-injection or malicious-source | 20 |
 | Distinct tutor cases in total | 100 (target 100–150) |
 | Studio/MCQ cases | 30 (target 30–50) |
+
+With these minimums a percentage gate is in effect "no miss": 15 of 15 shows a true rate above about 82% at one-sided 95% confidence, 10 of 10 about 74%, and 5 of 5 about 55%; about 59 cases with no miss are needed to show 95%. WP00-T20 records whether the founders raise the gated minimums or accept "no miss on N" with its bound.
 
 ### 3.5 Budgets and load profile contents
 
@@ -619,7 +668,7 @@ The load profile (WP00-T07) includes at minimum 100 logins/catalog journeys, 100
 
 #### WP01-T09 — Provision isolated zero-cost Preview and Beta
 
-- [x] Two Supabase Free projects repurposed as synthetic Preview and locked, empty Beta with separate Vercel Hobby scopes, secrets and callbacks; fail-closed health endpoints and `pnpm smoke:deployment`; promotion and rollback rehearsed with [environment promotion](environment-promotion.md). Beta real data stays blocked until WP04-T18 and WP04-T19. Record: [wp01-t09](../../planning/tasks/wp01-t09-provision-isolated-environments.md). Evidence: [Preview isolation](../../evidence/wp01-foundation/2026-08-29_environment-isolation_preview_4021457.md), [Beta isolation](../../evidence/wp01-foundation/2026-08-29_environment-isolation_beta_4021457.md).
+- [x] Two Supabase Free projects repurposed as synthetic Preview and locked, empty Beta with separate Vercel Hobby scopes, secrets and callbacks; fail-closed health endpoints and `pnpm smoke:deployment`; promotion and rollback rehearsed with [environment promotion](environment-promotion.md). Beta real data stays blocked until an approved encrypted backup/restore procedure passes and the later rights, security, release and go-live gates pass (D-21); WP04-T15 prepares a revision for sources before go-live. Record: [wp01-t09](../../planning/tasks/wp01-t09-provision-isolated-environments.md). Evidence: [Preview isolation](../../evidence/wp01-foundation/2026-08-29_environment-isolation_preview_4021457.md), [Beta isolation](../../evidence/wp01-foundation/2026-08-29_environment-isolation_beta_4021457.md).
 
 #### WP01-T10 — Write the repository operation tutorial
 
@@ -635,10 +684,10 @@ The load profile (WP00-T07) includes at minimum 100 logins/catalog journeys, 100
 | --- | --- | --- | --- |
 | Workstation | Next.js development process, browsers, tests | Synthetic fixtures | Deterministic in-process mocks |
 | CI | Disposable Supabase stack on a GitHub-hosted runner | Synthetic seed only | Mocks |
-| Preview | Supabase Free project + Vercel Hobby scope `unimind-preview` | Synthetic only, forever | Mocks; real adapters only for synthetic contract checks inside approved caps |
-| Beta | Supabase Free project + Vercel Hobby scope `unimind-beta` | Locked and empty until WP04-T19 (sources) and WP11-T01 (students) | Real adapters after WP04-T14, inside approved caps |
+| Preview | Supabase Free project + Vercel Hobby scope `unimind-preview` | Synthetic only, forever | Mocks only (D-21) |
+| Beta | Supabase Free project + Vercel Hobby scope `unimind-beta` | Empty until the backup, rights, security, release and go-live gates (D-21); the D-21 revision prepared in WP04-T15 may allow rights-cleared sources after WP04-T18, still with no students | Real adapters after WP04-T19, inside approved caps |
 
-Each environment has its own database, storage namespaces, secrets, callbacks, reset permissions, worker namespace and provider budget scope. Never point one environment at another's data, and never copy real chats or private sources into CI or Preview.
+The [environment matrix](../../planning/environment-matrix.md) owns the current environment facts; change it together with this table. Each environment has its own database, storage namespaces, secrets, callbacks, reset permissions, worker namespace and provider budget scope. Never point one environment at another's data, and never copy real chats or private sources into CI or Preview.
 
 ### 4.2 Environment variables
 
@@ -697,10 +746,10 @@ Interfaces live in `src/lib/ai/` (`AnswerGenerator`, `StructuredArtifactGenerato
 The schema is `supabase/migrations/` and its generated types in `src/types/database.generated.ts`. Every change is a new forward migration that follows the [migration checklist](database-migration-checklist.md). Standing rules for later packages:
 
 - No editable availability flag, balance or counter: availability is derived (§5.2) and usage is a ledger.
-- Source format is metadata on the source version, never a separate pool. Professor tags are `PROFESSOR_HINT`, `EXAM_EMPHASIS`, `EXCLUSION`, `CORRECTION` and `LIKELY_QUESTION` on segments.
+- Source format is metadata on the source version, never a separate pool. Professor-insight tags are `PROFESSOR_HINT`, `EXAM_EMPHASIS`, `EXCLUSION`, `CORRECTION` and `LIKELY_QUESTION` on segments.
 - Every processed document, locator, segment and embedding belongs to exactly one source version; every segment carries join-verifiable cohort, unit and edition scope.
 - Idempotency keys are unique per namespace (submissions, jobs, reservations, Studio requests, quiz submissions).
-- Every embedding column is currently a synthetic `vector(3)` placeholder. WP04-T15 replaces it after D-04.
+- The embedding column is an unsized `vector`; only the synthetic index and `retrieve_authorized_segments` assume 3 dimensions. WP04-T20 sets the real configuration after D-04 (§5.5).
 - The free PoC creates no payment-order or receipt table.
 
 ### 5.2 Derived availability and retrieval scope
@@ -719,13 +768,34 @@ A unit is available to a caller only when the caller is authenticated; has an ac
 
 Student A cannot read Student B's chat, artifact, attempt or usage rows; Cohort A cannot retrieve Cohort B segments; a member cannot see a locked cohort or an unpublished or empty unit; a Batch Leader cannot publish, unlock, assign roles or see chats; inactive membership removes availability immediately; replacing a source preserves historical answer evidence; a repeated idempotency key creates one submission, job, reservation or artifact; an update cannot move a row into another user's or cohort's scope; revoked rights remove active retrieval without deleting audit or provenance; service credentials never appear in client responses.
 
+### 5.5 Schema facts open tasks must respect
+
+Read from `supabase/migrations/` on 20 October 2026. When a task needs something different, it adds a forward migration; it never assumes a name that does not exist.
+
+| Area | What exists today |
+| --- | --- |
+| Catalog codes | Every catalog table checks `code ~ '^[A-Z][A-Z0-9_]*$'` (upper snake case). |
+| Memberships | States `PENDING` (default), `ACTIVE`, `SUSPENDED`, `EXPIRED`, `REVOKED`; no function creates a membership. |
+| Releases and publication | Cohort release `LOCKED` (default) or `UNLOCKED` in `cohort_releases`; unit publication `DRAFT`, `PUBLISHED` or `WITHDRAWN`. |
+| Source versions | `rights_status` `PENDING` (default), `VALID`, `BLOCKED`, `REVOKED`, `EXPIRED` — no action sets it; `processing_status` `RECEIVED`, `VALIDATING`, `PROCESSING`, `NEEDS_REVIEW`, `READY`, `FAILED`, `REJECTED`; `activation_status` `INACTIVE`, `ACTIVE`, `DEACTIVATED`. |
+| Raw objects | States `PENDING`, `STORED`, `DELETE_PENDING`, `DELETE_FAILED`, `HELD`, `DELETED`, `FAILED`; events `REQUESTED`, `SUCCEEDED`, `FAILED`, `VERIFIED_ABSENT`, one per attempt; a hold starts only from `STORED`. |
+| Uploads | `unimind_private.collection_uploads` allows only the mock storage provider, PDF/WAV/PNG and at most 10 MiB; finalize writes only a `RECEIVED` submission (`finalize_synthetic_source_submission_internal`). |
+| Jobs | Types `VALIDATE`, `EXTRACT`, `OCR`, `TRANSCRIBE`, `NORMALIZE`, `QUALITY`, `RAW_DELETE`, `CHUNK`, `EMBED`, `INDEX`, `RECONCILE`, `GENERATE`; states `QUEUED`, `RUNNING`, `RETRYING`, `SUCCEEDED`, `FAILED`, `CANCELLED`; `unimind_private.claim/heartbeat/succeed/retry/fail_processing_job` (service role, leases up to 15 minutes); no reclaim or cancel function. |
+| Usage and budgets | `unimind_private.reserve/settle/release/expire_usage` over `usage_reservations` (user required, units only); `budget_counters` scopes `SYSTEM`, `PROVIDER`, `ACTION`, `COHORT`, with no writer. |
+| Segments and embeddings | `source_segments.content` is required and immutable, unique per (source version, content hash); evidence tables reference segments `on delete restrict`; `segment_embeddings.embedding` is an unsized `vector` checked by `validate_embedding_dimensions`; the only index and `retrieve_authorized_segments` hard-code the synthetic 3-dimension cosine configuration; full-text search uses the `simple` configuration with reciprocal-rank fusion. |
+| Readiness | `unimind_private.assert_source_version_ready_prerequisites` checks processed document, quality report, active segments and embeddings, not rights, raw deletion or the current configuration. |
+| Chat | Retention modes `MINIMAL`, `HISTORY`, `DISABLED` (also on `profiles.chat_retention_mode`); `chat_answers.evidence_status` `FULL`, `PARTIAL`, `UNAVAILABLE`, `CONFLICTING`; students can insert sessions and messages directly. |
+| Studio and quiz | Artifacts are readable only through the requesting user's own request; `quiz_attempts` has mode `PRACTICE`/`REVIEW`, no state, snapshot or expiry columns, and students can insert attempts and update `submitted_at`; `feedback_reports` cannot target a quiz item. |
+| Governance actions | `unimind_private.admin_action_commands` via `public.submit_admin_governance_action`: twelve actions (publish/hide, unlock/lock, activate/deactivate/quarantine/retry source, place/remove raw hold, enable/disable flag); `ENABLE_FLAG` accepts only `mock.artifact.*`; `RETRY_SOURCE` changes no data. |
+| Provider flags | Real providers are environment variables (`GENERATION_`, `EMBEDDING_`, `TRANSCRIPTION_PROVIDER_ENABLED`); there is no OCR flag. |
+
 ## 6. Work package 3: Product shell and governance controls
 
 **Outcome:** each role completes its non-AI journey in the approved bilingual visual system; server-derived scope and database policy prevent URL or form manipulation; release state is safe and auditable; and admins can configure the catalog, grant membership and run campaigns without SQL.
 
 **Package gate (shell):** [product-shell gate](../../evidence/wp03-product-shell/2026-09-29_product-shell-gate_local_fda875f.md). The governance tasks WP03-T34 to WP03-T36 carry their own proof.
 
-Every WP03 frontend task follows [the frontend guide](../agents/frontend.md): the quality floor, the material-change rule and the skill and browser map. Playwright Test is the repeatable E2E gate. External component catalogs and MCPs are optional aids, never design directors or delivery dependencies; `pnpm verify` and a clean-clone build must not need a catalog account, key, network call or paid credit.
+Every WP03 frontend task follows [the frontend guide](../agents/frontend.md): the quality floor, the material-change rule and the skill and browser map. Playwright Test is the repeatable E2E gate. Component sources and catalogs follow the frontend guide: a new source needs a founder decision, and `pnpm verify` and a clean-clone build never need a catalog account, key, network call or paid credit.
 
 ### 6.0 Tasks
 
@@ -794,7 +864,7 @@ Every WP03 frontend task follows [the frontend guide](../agents/frontend.md): th
 
 #### WP03-T17 — Render the same student screens in real and synthetic modes
 
-- [x] One adapter seam feeds the shared study workspace, Study Shelf and Settings; tools without a real backend render disabled in real mode (PR #80). WP06-T05, WP07-T03 and WP07-T04 enable them. Record: [wp03-t17](../../planning/tasks/wp03-t17-shared-student-screens.md).
+- [x] One adapter seam feeds the shared study workspace, Study Shelf and Settings; tools without a real backend (Chat, Studio, Quiz, evidence, report and the Settings privacy controls) render disabled in real mode (PR #80). WP06-T05, WP06-T07, WP07-T03 and WP07-T04 enable them. Record: [wp03-t17](../../planning/tasks/wp03-t17-shared-student-screens.md).
 
 #### WP03-T18 — Choose the premium overhaul direction and rewrite the design contract
 
@@ -862,22 +932,22 @@ Every WP03 frontend task follows [the frontend guide](../agents/frontend.md): th
 
 #### WP03-T34 — Configure the catalog through audited admin actions
 
-Master plan §7.2 step 1. Today catalog rows exist only through migrations and seed data.
+Master plan §7.2 step 1. No function or server action creates catalog rows today, and in real mode every `/admin/[resource]` page (catalog, cohorts, campaigns, sources, jobs, quality, usage, incidents) shows a "not available yet" notice; catalog rows exist only in database tests, browser-test fixtures and the synthetic runtime.
 
 **Depends on:** WP03-T06. **Decision gates:** none (D-12 and D-23 are approved). **Protected:** RLS and migrations. **Material UI:** yes, the admin catalog resource screens. **Real money:** no.
 
-**Outputs:** audited server/database functions for the catalog; admin catalog screens on the Cobalt primitives; pgTAP and E2E tests.
+**Outputs:** catalog governance actions in the existing admin command pipeline; the real admin catalog screens; pgTAP and E2E tests; an updated [RLS matrix](../security/rls-matrix.csv).
 
-- [ ] Inventory what `/admin/[resource]` shows for the catalog today, which database functions exist, and which actions are missing; record the gap in the task record.
-- [ ] Add audited actions to create, edit and deactivate education stages, institutions, programs (type, progression mode, default unit type, English/Arabic singular and plural unit labels), academic levels, terms, cohorts with curriculum editions, and curriculum units (order, optional parent). Every action takes the actor, expected prior version, reason and correlation ID.
-- [ ] Enforce at the database: codes are ASCII `lower_snake_case`, unique within their parent and immutable once referenced; a unit cannot cross cohorts; a referenced node is deactivated, never deleted; a program cannot activate without complete English and Arabic labels.
-- [ ] Terminology and progression come from program data only; no faculty-name branch. `FLEXIBLE_CREDIT` is stored as configuration within the D-23 scope.
-- [ ] Build the admin catalog screens: tree view, create/edit/deactivate forms, a preview of the student-facing labels, stale-version and validation errors, EN/AR, phone and desktop. Keep the synthetic admin journey on the same screens.
+- [ ] Extend the existing pipeline (`unimind_private.admin_action_commands` through `public.submit_admin_governance_action`) instead of building a new one. Its action check lists only the twelve WP03-T06 actions and `target_id` is required, so design how create actions name their target; add `governance_version` to the catalog tables that lack it and `append_governance_audit` triggers to every catalog table.
+- [ ] Add actions to create, edit and deactivate education stages, institutions, programs (type, progression mode, default unit type, English/Arabic singular and plural unit labels), academic levels, terms, cohorts with curriculum editions, and curriculum units (order, optional parent). Every action takes the actor, expected prior version, reason and correlation ID. Creating a cohort also inserts its `LOCKED` `cohort_releases` row, which `UNLOCK_COHORT` later updates.
+- [ ] Respect the schema: codes match `^[A-Z][A-Z0-9_]*$`; uniqueness within the parent and the same-cohort parent rule already hold. Add only what is missing: codes immutable once referenced, deactivation instead of delete for referenced nodes, and no program activation without complete English and Arabic labels.
+- [ ] Terminology and progression come from program data only; no faculty-name branch. `FLEXIBLE_CREDIT` stays configuration within the D-23 scope.
+- [ ] Build the real admin catalog screens: tree view, create/edit/deactivate forms, a preview of the student-facing labels, stale-version and validation errors, EN/AR, phone and desktop; keep the synthetic admin journey on the same screens.
 - [ ] Test: non-admin denied; stale version rejected; duplicate code rejected; deactivating a unit removes it from student availability without breaking history; a Veterinary program configured only through these actions renders `Subjects`.
 
-**Verify:** `pnpm check`; `database-ci` (pgTAP); `pnpm test:e2e` and `pnpm test:e2e:demo`; independent review of the migration and functions.
+**Verify:** `pnpm check`; `database-ci` (pgTAP and `pnpm test:e2e:database`); `pnpm test:e2e:demo`; independent review of the migration and functions.
 
-**Pass:** an admin builds a complete program hierarchy down to ordered units in both languages without SQL; every change is audited; the student catalog changes only through derived availability.
+**Pass:** an admin builds a complete program hierarchy down to ordered units in both languages without SQL; every change is audited; the student catalog changes only through derived availability; `Approved commit:` recorded.
 
 #### WP03-T35 — Grant cohort membership to students
 
@@ -885,59 +955,92 @@ Availability needs an active membership (§5.2), but no document says how a stud
 
 **Depends on:** WP03-T34. **Decision gates:** none; this task resolves D-25. **Protected:** auth and authorization, RLS and migrations. **Material UI:** yes, the student no-membership/pending states and the admin membership screens. **Real money:** no.
 
-**Outputs:** the approved membership path as audited functions and screens; tests.
+**Outputs:** the approved membership path as governance actions and screens; tests; an updated RLS matrix.
 
-- [ ] Prepare D-25: write `docs/decisions/d-25-student-cohort-membership.md` with the options (for example an admin allow-list of verified emails per cohort, admin approval of a student request, or a cohort enrollment code), their abuse and privacy risks, who may revoke, and the effect on WP11 wave provisioning.
+- [ ] Prepare D-25: write `docs/decisions/d-25-student-cohort-membership.md` with the options (for example an admin allow-list of verified emails per cohort, admin approval of a student request, or a cohort enrollment code), their abuse and privacy risks, who may revoke, whether registration stays open or becomes invite-only, and the effect on WP11 wave provisioning.
 - [ ] Obtain Ahmed's and Ziad's approval of D-25 and update the master-plan log and the register (this step becomes `[?]` while it waits).
-- [ ] Implement only the approved path through audited server/database functions; membership states `ACTIVE`, `SUSPENDED`, `EXPIRED` and `REVOKED` with `starts_at`/`ends_at`; the browser never asserts a cohort.
+- [ ] Implement only the approved path through the admin command pipeline. Membership states are `PENDING` (the default), `ACTIVE`, `SUSPENDED`, `EXPIRED` and `REVOKED`, with a partial unique index over `PENDING/ACTIVE/SUSPENDED`; add the missing revoke columns and a membership transition kind, and keep `starts_at`/`ends_at`. The browser never asserts a cohort.
 - [ ] If D-25 allows admin provisioning, add idempotent wave provisioning for WP11 (a list of verified emails per cohort with a dry-run report and no duplicate memberships).
-- [ ] Student-facing states: no membership, pending (if requests exist), active, expired and revoked, with honest copy that never reveals another cohort's configuration.
+- [ ] Student-facing states: no membership, pending, active, expired and revoked, with honest copy that never reveals another cohort's configuration.
 - [ ] Admin screens to grant, suspend and revoke with a reason; revocation follows the [session revocation policy](../policies/auth-session-revocation.md).
-- [ ] Test: forged cohort, duplicate grant, expired and revoked mid-session (next server operation fails safely), cross-cohort request, Batch Leader or anonymous caller denied.
+- [ ] Test: forged cohort, duplicate grant, expired and revoked mid-session (the next server operation fails safely), cross-cohort request, Batch Leader or anonymous caller denied.
 
-**Verify:** `pnpm check`; `database-ci`; E2E for each state; independent review.
+**Verify:** `pnpm check`; `database-ci`; `pnpm test:e2e:database` for each state; independent review.
 
-**Pass:** a verified student gains access to exactly the approved cohort only through the approved path; revocation removes availability on the next server operation; every grant and revoke is audited.
+**Pass:** a verified student gains access to exactly the approved cohort only through the approved path; revocation removes availability on the next server operation; every grant and revoke is audited; `Approved commit:` recorded.
 
-#### WP03-T36 — Create campaigns and give Batch Leaders scoped access
+#### WP03-T36 — Create campaigns and requested materials
 
-Master plan §7.2 steps 2–3 and §7.3. Campaigns and assignments exist only in seed data today.
+Master plan §7.2 step 2 and §3.4 step 1. No function or action creates campaigns, requested items or assignments today.
 
-**Depends on:** WP03-T34. **Decision gates:** D-24 (one-time links or accounts); D-26 only if links are delivered by email. **Protected:** auth and authorization, RLS and migrations, storage (upload route). **Material UI:** yes, admin campaign screens and the Batch Leader entry. **Real money:** no.
+**Depends on:** WP03-T34. **Decision gates:** none. **Protected:** RLS and migrations. **Material UI:** yes, the admin campaign screens and the Batch Leader request view. **Real money:** no.
 
-**Outputs:** campaign management actions and screens; the approved Batch Leader access path; the needs-information loop; a security review of the access design.
+**Outputs:** campaign governance actions and screens, the needs-information loop, tests, an updated RLS matrix.
 
-- [?] D-24 decided by Ahmed and Ziad. OWNER INPUT REQUIRED.
-- [ ] Admins create a campaign for an exact cohort and unit scope with open/close dates and requested-material items (type, required/optional, naming guidance); edit and close it with a reason.
-- [ ] Batch Leader access as decided. One-time links: unguessable, stored as a hash, expiring, single-use or explicitly bounded, revocable, audited on issue/use/expiry/revocation, never logged, never in analytics, and never exposed to a referrer (`Referrer-Policy: no-referrer`). Accounts: admin assignment of a verified account with an expiry. Retire the path not chosen.
-- [ ] Needs-information loop: an admin marks a submission `NEEDS_INFORMATION` with a reason; the Batch Leader sees it and answers; the states match master plan §7.3.
+- [ ] Add campaign actions to the admin command pipeline: create a campaign for an exact cohort and unit scope with open/close dates; add, edit and remove requested-material items (type, required/optional, naming guidance — `requested_material_items` has no guidance column today); close a campaign with a reason; audit triggers on every campaign table.
+- [ ] Add the needs-information loop: an admin marks a submission `NEEDS_INFORMATION` with a reason and the Batch Leader answers it; store both (no column holds them today); the submission states match master plan §7.3.
 - [ ] A closed or expired campaign accepts no new submission; accepted submissions keep processing.
+- [ ] Keep today's account-based Batch Leader assignment working until WP03-T38 replaces or confirms it.
+- [ ] Prove the governance loop end to end on synthetic storage: configure catalog → create campaign → assign the Batch Leader → submit → request information → answer → publish and unlock → a student with a membership (the WP03-T35 path, or a database-test fixture until it exists) sees the unit once a synthetic source is `READY`.
+
+**Verify:** `pnpm check`; `database-ci`; `pnpm test:e2e:database` for the loop; independent review.
+
+**Pass:** master plan admin steps 2 and the needs-information part of the Batch Leader journey run through product screens without SQL; `Approved commit:` recorded.
+
+#### WP03-T37 — Record source rights and source decisions
+
+Every availability and retrieval rule requires `source_versions.rights_status = 'VALID'`, but rights default to `PENDING` and no action sets them, so no real source could ever become available ([second review](../reviews/runbook-revision-2026-10/second-review.md) B1). Master plan §3.3 makes rights a founder governance control.
+
+**Depends on:** WP03-T34. **Decision gates:** none; rights changes are a D-22 protected gate and use the existing two-founder confirmation pattern. **Protected:** RLS and migrations. **Material UI:** yes, the admin source screens. **Real money:** no.
+
+**Outputs:** rights and source-decision actions in the admin command pipeline, screens and tests.
+
+- [ ] Add actions to record a source version's rights from its WP00-T03 inventory row (evidence link, `rights_valid_from`, `rights_valid_until`) and to block, revoke or expire them, each with a reason; rights states are `PENDING`, `VALID`, `BLOCKED`, `REVOKED` and `EXPIRED`.
+- [ ] Add an action to reject a source version with a reason (master plan §7.2 step 9; `REJECTED` exists as a processing status but no action sets it).
+- [ ] A Batch Leader's declaration never sets `VALID`; only these actions do, with the second founder confirmation the WP03-T06 pattern already models.
+- [ ] Revocation or expiry removes the source from retrieval at once and starts the WP04-T11 takedown path.
+- [ ] Test: declaration alone stays `PENDING`; one-founder confirmation stays pending; expiry by date; revocation during an active chat; non-admin denied.
+
+**Verify:** `pnpm check`; `database-ci`; `pnpm test:e2e:database`; independent review.
+
+**Pass:** a source becomes eligible for `READY` only after an audited rights decision linked to its inventory row; revocation removes it from retrieval on the next query; `Approved commit:` recorded.
+
+#### WP03-T38 — Give Batch Leaders scoped access
+
+Master plan §7.2 step 3 and §7.3.
+
+**Depends on:** WP03-T36. **Decision gates:** D-24 (Ziad's confirmation is pending). **Protected:** auth and authorization, RLS and migrations, storage (upload route). **Material UI:** yes, the Batch Leader entry and status views. **Real money:** no.
+
+**Outputs:** the approved Batch Leader access path, its security review, tests.
+
+- [?] D-24 approved: one-time upload links ([D-24 record](../decisions/d-24-batch-leader-one-time-upload-links.md)) or the current account-based access. OWNER INPUT REQUIRED.
+- [ ] Implement the approved path and meet every non-negotiable requirement in the D-24 record, including the audit of issue, use, expiry and revocation with the issuing admin. For links, change the schema that assumes an account today: `source_submissions.submitted_by`, `collection_uploads.uploaded_by` and `batch_leader_assignments.user_id` reference profiles, and `has_campaign_assignment` uses `auth.uid()`. Retire the path not chosen.
+- [ ] Define how a link-based Batch Leader sees submission status and answers a needs-information request (for example a reusable, revocable status link) and how the link reaches them: an admin may hand it over out of band; email delivery needs D-26 (WP04-T17).
 - [ ] Test: replayed, expired and revoked links; wrong campaign; a scan proving no link token appears in logs, analytics payloads or referrers; the Batch Leader cannot publish, unlock, see chats or reach another campaign; idempotent finalize unchanged.
-- [ ] Prove the governance loop end to end on synthetic storage: configure catalog → create campaign → give access → submit → request information → answer → grant a student membership (when WP03-T35 is done) → publish and unlock → the student sees the unit once a synthetic source is `READY`.
 
-**Verify:** `pnpm check`; `database-ci`; E2E for the loop; independent security review of the access design recorded in the task record.
+**Verify:** `pnpm check`; `database-ci`; `pnpm test:e2e:database`; independent security review of the access design recorded in the task record.
 
-**Pass:** master plan admin steps 1–3 and the Batch Leader journey run through product screens without SQL; the access design passed independent review.
+**Pass:** a Batch Leader submits and tracks sources for exactly one campaign through the approved path; the access design passed independent review; `Approved commit:` recorded.
 
 ### 6.1 Routes
 
-Current routes: `/(auth)/login`, `/register`, `/verify-email`, `/forgot-password`, `/reset-password`, `/consent`, `/welcome`; `/auth/callback`; `/learn`; `/learn/[cohortId]/[unitId]` with `chat`, `studio`, `quiz`, `sources`, `evidence` and `report`; `/settings`; `/batch-leader` and `/batch-leader/campaigns/[campaignId]` with the upload Route Handler; `/admin` and `/admin/[resource]`; `/api/health/live` and `/api/health/ready`. The synthetic runtime path is loopback-only and returns 404 in production. WP03-T36 may add a link-entry route for Batch Leaders if D-24 is approved.
+Current routes: `/` (landing); `/(auth)/login`, `/register`, `/verify-email`, `/forgot-password`, `/reset-password`, `/consent`, `/welcome`; `/auth/callback`; `/learn`; `/learn/[cohortId]/[unitId]` with `chat`, `studio`, `quiz`, `sources`, `evidence` and `report`; `/settings`; `/batch-leader` and `/batch-leader/campaigns/[campaignId]`, with uploads at `/api/batch-leader/campaigns/[campaignId]/uploads`; `/admin` and `/admin/[resource]`; `/api/health/live` and `/api/health/ready`. The synthetic runtime path is loopback-only and returns 404 in production. WP03-T38 may add a link-entry route for Batch Leaders if D-24 is approved.
 
 ### 6.2 Filter behaviour
 
 Dependent server-authorized filters in this order: education stage; institution/system; program/faculty; academic level; semester/term for `TERM_BASED` programs (for `FLEXIBLE_CREDIT`, the configured course-plan period without a rigid semester list); released cohort when more than one matches; available Modules or Subjects. Changing an upstream filter clears invalid downstream choices. Empty states distinguish no configured catalog, no membership, locked cohort, unpublished unit and no READY sources without exposing private details. A flexible-credit program lists only the caller's eligible course-plan units and never takes browser-selected units as authorization.
 
-### 6.3 Subject workspace
+### 6.3 Curriculum unit workspace
 
 The workspace shows the institution/program/level/term/cohort breadcrumb, the dynamic Module/Subject title, Chat, Studio and Quiz navigation, source-pool status and last material update, the source list (title and format) when allowed, usage and allowance state, language mode, and a scope switcher that starts or selects the right session. Every chat and Studio call derives scope from the authenticated server record and verifies it again.
 
 ### 6.4 Admin governance controls
 
-Separate audited actions exist for: publish/hide a unit; unlock/lock a cohort; activate/deactivate a source version; quarantine/retry a failed source; place/remove a raw-data hold; enable/disable a provider or artifact type (WP03-T06). WP03-T34 adds catalog configuration, WP03-T35 membership, WP03-T36 campaigns and Batch Leader access. Show the exact failed availability predicate before unlock or publish; a unit with zero active READY sources never appears.
+Separate audited actions exist for: publish/hide a unit; unlock/lock a cohort; activate/deactivate a source version; quarantine/retry a failed source; place/remove a raw-data hold; enable/disable a provider or artifact type (WP03-T06). WP03-T34 adds catalog configuration, WP03-T35 membership, WP03-T36 campaigns, WP03-T37 rights and source decisions (record, block, revoke, expire, reject) and WP03-T38 Batch Leader access. Show the exact failed availability predicate before unlock or publish; a unit with zero active READY sources never appears.
 
 ### 6.5 Batch Leader submission
 
-The submission requires campaign, requested item or unit, title, format, rights declaration, professor/source description and file or approved reference. The client creates the idempotency key before upload; upload uses a short-lived exact-object target where the storage provider supports it; finalize runs through a server mutation after checksum and metadata confirmation. The access model follows D-24 (WP03-T36).
+The submission requires campaign, requested item or unit, title, format, rights declaration, professor/source description and file or approved reference. The client creates the idempotency key before upload; upload goes directly to storage through a short-lived exact-object target (WP04-T03); finalize runs through a server mutation after checksum and metadata confirmation. The access model follows D-24 (WP03-T38).
 
 ### 6.6 UI rules every later screen keeps
 
@@ -945,9 +1048,9 @@ Human Medicine renders Modules and Veterinary renders Subjects from data; Arabic
 
 ## 7. Work package 4: Automated source pipeline and real-data readiness
 
-**Outcome:** a finalized submission moves to `READY` or a precise terminal exception without manual database work; raw data is deleted only after verified processed output; replay creates no duplicate state or cost. The package proves this first on synthetic fixtures with mocks (WP04-T01 to WP04-T12), then makes the real choices the pipeline needs (WP04-T13 to WP04-T19), then processes the real Cohort A corpus (WP04-T20).
+**Outcome:** a finalized submission moves to `READY` or a precise terminal exception without manual database work; raw data is deleted only after verified processed output; replay creates no duplicate state or cost. The package proves this first on synthetic fixtures with mocks (WP04-T01 to WP04-T12), then puts every real-data control in place and passes the real-data gate (WP04-T13 to WP04-T18), then selects providers on real samples and processes the real Cohort A corpus (WP04-T19 to WP04-T21).
 
-**Primary artifacts:** `src/lib/ingestion/`, `src/lib/jobs/`, `src/lib/storage/`, `src/lib/usage/`, `src/lib/observability/`, `workers/ingestion/`, `workers/reconciliation/`, `supabase/migrations/`, `tests/fixtures/ingestion/` and `evidence/wp04-ingestion/`. The detailed processing rules are §7.1 to §7.9; tasks reference them instead of repeating them.
+**Primary artifacts:** `src/lib/ingestion/`, `src/lib/jobs/`, `src/lib/storage/`, `src/lib/usage/`, `src/lib/observability/`, `workers/ingestion/`, `workers/reconciliation/`, `supabase/migrations/`, `tests/fixtures/ingestion/` and `evidence/wp04-ingestion/`. The processing rules are §7.1 to §7.9 and the existing schema facts are §5.5; tasks reference them instead of repeating them.
 
 ### 7.0 Tasks
 
@@ -955,54 +1058,57 @@ Human Medicine renders Modules and Veterinary renders Subjects from data; Arabic
 
 **Depends on:** WP03-T08. **Decision gates:** D-10. **Protected:** none. **Material UI:** no. **Real money:** no.
 
-**Outputs:** versioned Zod schemas in `src/lib/ingestion/`, synthetic fixtures with expected outputs in `tests/fixtures/ingestion/`, an ADR for duplicate and replacement rules.
+**Outputs:** versioned Zod schemas in `src/lib/ingestion/`, synthetic fixtures with expected outputs in `tests/fixtures/ingestion/`, an ADR for duplicate and replacement rules, a proposed accepted-format list.
 
-- [?] D-10 approved by Ahmed and Ziad with the security/data role named (WP00-T01). OWNER INPUT REQUIRED.
+- [?] D-10 approved by Ahmed and Ziad with the security/data role named (WP00-T01). The D-10 record lists this task as blocked; the founders may instead allow WP04-T01 to WP04-T13 to build on the proposed contract with synthetic data only. OWNER INPUT REQUIRED.
 - [ ] Define versioned schemas for `InspectedSource`, `ProcessedDocument`, `Locator`, `Segment`, `SegmentTag`, `QualityReport` and every job input/output in §7.1. Each carries schema version, source-version ID, checksum, content hash, language profile, coverage map, warnings and correlation ID.
 - [ ] Keep large payloads in processed object storage and checksums plus workflow state in PostgreSQL; no unique state lives only in an object or a queue message.
-- [ ] Write the duplicate and replacement rules as an ADR: identical checksum resubmitted, the same content in another unit or campaign, a newer edition, and an explicit replacement that creates a new source version needing admin activation. Ask the founders where a rule changes what a Batch Leader or student sees.
-- [ ] Prove the video-ready contract (master plan §5.1 and §14): a contract test shows a `VIDEO` source kind reuses the processed-document, time-range locator, segment, tag and job contracts with no new table, pool or answer path. No video processor is built.
-- [ ] Generate synthetic fixtures with expected outputs: tiny native PDF, scanned PDF, corrupt PDF, password-protected PDF, Arabic/English audio, silent audio, boundary-chunk audio and malicious-instruction text. No third-party content.
+- [ ] Propose the accepted format list for founder confirmation: documents (PDF; whether DOCX and PPTX are converted or rejected), scanned slides and images, and audio containers students and professors actually use (for example MP3, M4A, Opus, WAV), each with "process", "convert first" or "reject". Record it in §2.3. Today intake accepts only PDF, WAV and PNG up to 10 MiB (§5.5).
+- [ ] Write the duplicate and replacement rules as an ADR: identical checksum resubmitted, the same content in another unit or campaign, a newer edition, and an explicit replacement that creates a new source version needing admin activation. Note that `source_segments` forbids the same content hash twice within one version. Ask the founders where a rule changes what a Batch Leader or student sees.
+- [ ] Prove the video-ready contract (master plan §5.1 and §14) with a contract test: a future `VIDEO` source kind reuses the processed-document, time-range locator, segment, tag and job contracts. The only schema change it would need is adding `VIDEO` to `source_assets_kind_check`; record that and build no video processor.
+- [ ] Generate synthetic fixtures with expected outputs: tiny native PDF, scanned PDF, corrupt PDF, password-protected PDF, one fixture per approved audio container, Arabic/English audio, silent audio, boundary-chunk audio and malicious-instruction text. No third-party content.
 
 **Verify:** contract unit tests (one valid and one invalid fixture per schema); the video contract test; `pnpm check`.
 
-**Pass:** every job step has a versioned input and output schema with a valid and an invalid fixture; the video contract test passes; no real file is used.
+**Pass:** every job step has a versioned input and output schema with a valid and an invalid fixture; the video contract test passes; the format list is founder-confirmed; no real file is used.
 
 #### WP04-T02 — Implement the workflow state machine
 
-**Depends on:** WP04-T01. **Decision gates:** none (the in-process dispatcher stands in for D-17). **Protected:** RLS and migrations if job functions change. **Material UI:** no. **Real money:** no.
+**Depends on:** WP04-T01. **Decision gates:** none (the in-process dispatcher stands in for D-17). **Protected:** RLS and migrations. **Material UI:** no. **Real money:** no.
 
-**Outputs:** workflow application and domain modules in `src/lib/jobs/`, an in-process dispatcher, a structured logger in `src/lib/observability/`.
+**Outputs:** workflow application and domain modules in `src/lib/jobs/`, an in-process dispatcher, a structured logger in `src/lib/observability/`, forward migrations for the missing job functions.
 
-- [ ] Create the structured JSON logger and correlation-ID propagation from request to job to provider call, with tested redaction of secrets, authorization headers, signed URLs, source text and chat content. WP08-T02 adds metrics on top.
-- [ ] Create one job per §7.1 graph step, with its dependencies, in the same transaction that finalizes the submission into a source version.
+- [ ] Create the structured JSON logger and correlation-ID propagation from request to job to provider call, with tested redaction of secrets, authorization headers, signed URLs, source text and chat content. WP08-T02 adds metrics and a durable sink.
+- [ ] Extend `finalize_synthetic_source_submission_internal` (today it writes only a `RECEIVED` `source_submissions` row) so finalizing creates the `source_assets`, `source_versions` and `raw_objects` rows with `source_kind`, `curriculum_edition` and `language_profile`, and the workflow jobs, in one transaction.
+- [ ] Map the §7.1 graph onto the existing job types (`VALIDATE`, `EXTRACT`, `OCR`, `TRANSCRIBE`, `NORMALIZE`, `QUALITY`, `RAW_DELETE`, `CHUNK`, `EMBED`, `INDEX`, `RECONCILE`); widen `processing_jobs_type_check` by migration only for a step that cannot fit.
 - [ ] Derive idempotency keys from source version, step, processor/config version and content hash.
-- [ ] Claim atomically with a lease and an attempt record (WP02-T07 functions); heartbeat long work; reject completion by a non-owner or expired lease; reclaim safely (§7.2).
-- [ ] Classify failures as retryable, terminal, needs review or uncertain provider acceptance.
-- [ ] Back off exponentially with jitter, persist `available_at`, and record lease, heartbeat, attempt and backoff values in configuration (§2.3).
-- [ ] Make cancellation and deactivation stop new dependent jobs while keeping history.
-- [ ] Add an in-process dispatcher that runs the graph in tests and CI until WP04-T17 deploys the real worker host.
+- [ ] Use the existing `unimind_private.claim_processing_job`, `heartbeat_processing_job`, `succeed_processing_job`, `retry_processing_job` and `fail_processing_job` (service role only; leases capped at 15 minutes).
+- [ ] Add `reclaim_expired_processing_jobs` and `cancel_processing_job` with their transitions and job-event types: today a `RUNNING` job whose lease expired can never be reclaimed or failed, and no job can be cancelled.
+- [ ] Classify failures as retryable, terminal, needs review or uncertain provider acceptance; back off exponentially with jitter and persist `available_at`; record lease, heartbeat, attempt and backoff values in configuration (§2.3).
+- [ ] Wire the existing `RETRY_SOURCE` admin action, which changes no data today, to requeue the failed jobs of that source version.
+- [ ] Add an in-process dispatcher that runs the graph in tests and CI until WP04-T14 deploys the real worker host.
 
-**Verify:** unit tests; `database-ci` race tests with two sessions claiming one job; log-redaction tests.
+**Verify:** unit tests; `database-ci` with two sessions claiming one job, an expired lease reclaimed, a cancellation and a replayed finalize; log-redaction tests; independent review of the migrations.
 
-**Pass:** a synthetic source runs the graph under the in-process dispatcher; replaying finalize creates no second workflow; two racing workers produce one success; every log line has a correlation ID and no content.
+**Pass:** a synthetic submission becomes a source version and runs the graph under the in-process dispatcher; replaying finalize creates no second workflow; two racing workers produce one success; an expired lease is reclaimed; every log line has a correlation ID and no content.
 
 #### WP04-T03 — Implement secure temporary storage
 
-**Depends on:** WP04-T01. **Decision gates:** none for the adapter; the real provider is chosen in WP04-T16 (D-18). **Protected:** storage. **Material UI:** no. **Real money:** no.
+**Depends on:** WP04-T01. **Decision gates:** none for the adapter; the real provider is chosen in WP04-T15 (D-18). **Protected:** storage; RLS and migrations. **Material UI:** no. **Real money:** no.
 
-**Outputs:** storage application layer over `ObjectStorageProvider`, namespace configuration, orphan reconciliation job, the WP03-T05 upload route connected.
+**Outputs:** storage application layer over a widened `ObjectStorageProvider`, namespace configuration, orphan reconciliation job, a migrated upload path.
 
-- [ ] Separate temporary raw, temporary derived and durable processed namespaces.
-- [ ] Deny public listing and reads; issue short-lived exact-object operations only after server authorization; keep object keys server-side and log only key fingerprints.
+- [ ] Widen `ObjectStorageProvider` (today `putObject`, `getObject`, `deleteObject` over `raw`, `temporary`, `processed`) with a head/absence check and short-lived exact-object signed upload and read operations; keep the mock in step.
+- [ ] Deny public listing and reads; issue signed operations only after server authorization; keep object keys server-side and log only key fingerprints.
+- [ ] Replace the in-request upload with direct signed upload to storage: today the Route Handler reads the whole file through `request.formData()`, and a Vercel function request body is limited to about 4.5 MB (§0.8). Finalize stays a server mutation.
+- [ ] Migrate `unimind_private.collection_uploads`, which today allows only the mock provider, PDF/WAV/PNG and at most 10 MiB, to the WP04-T01 format list and size limits; make `MAX_UPLOAD_BYTES` the single limit used by intake.
 - [ ] Reconcile signed uploads that are never finalized.
-- [ ] Inspect magic bytes and type before processing; record the malware-scanning approach the real host needs (WP04-T16 chooses the scanner).
+- [ ] Inspect magic bytes and type before processing; record the malware-scanning approach the real host needs (WP04-T15 chooses the scanner).
 - [ ] Enforce byte, page and duration limits (§2.3) and rights before any provider cost.
-- [ ] Connect the WP03-T05 upload route and finalize action to this layer without weakening their checks.
 
-**Verify:** storage contract tests on the synthetic adapter; forbidden read, list and cross-campaign tests; independent review.
+**Verify:** storage contract tests on the synthetic adapter; forbidden read, list and cross-campaign tests; `database-ci` for the migration; independent review.
 
-**Pass:** forbidden reads, lists and cross-campaign uploads are denied; orphans are reconciled; limits and rights stop work before any (mock) provider call.
+**Pass:** forbidden reads, lists and cross-campaign uploads are denied; a file larger than the function body limit uploads directly; orphans are reconciled; limits and rights stop work before any (mock) provider call.
 
 #### WP04-T04 — Build native PDF extraction incrementally
 
@@ -1015,6 +1121,7 @@ Human Medicine renders Modules and Veterinary renders Subjects from data; Arabic
 - [ ] Normalize headers, footers, hyphenation, lists, headings, tables, formulas, captions and diagrams conservatively; never delete meaning to save bytes.
 - [ ] Write temporary output incrementally, then finalize atomically only when every page is represented, explicitly blank or rejected.
 - [ ] Map normalized character ranges to original pages with confidence and validate bounds and non-overlap.
+- [ ] Convert or reject DOCX and PPTX as the WP04-T01 format list says.
 
 **Verify:** fixture tests against expected Markdown and locator sidecars.
 
@@ -1022,7 +1129,7 @@ Human Medicine renders Modules and Veterinary renders Subjects from data; Arabic
 
 #### WP04-T05 — Add selective OCR
 
-**Depends on:** WP04-T04. **Decision gates:** none for the mock path; a real OCR adapter needs D-04 (WP04-T14). **Protected:** none. **Material UI:** no. **Real money:** only through WP04-T13 once a real adapter exists.
+**Depends on:** WP04-T04. **Decision gates:** none for the mock path; a real OCR adapter needs D-04 (WP04-T19). **Protected:** none. **Material UI:** no. **Real money:** only through WP04-T13 once a real adapter exists.
 
 - [ ] Define per-page OCR triggers from text density, replacement characters, layout anomalies and fixture results; record them in configuration (§2.3).
 - [ ] Send only selected page ranges to the OCR adapter and reserve the maximum cost first (WP04-T13 once real).
@@ -1036,41 +1143,41 @@ Human Medicine renders Modules and Veterinary renders Subjects from data; Arabic
 
 #### WP04-T06 — Build complete audio transcription
 
-**Depends on:** WP04-T02, WP04-T03. **Decision gates:** none for the mock path; a real transcription adapter needs D-04 (WP04-T14). **Protected:** none. **Material UI:** no. **Real money:** only through WP04-T13 once a real adapter exists.
+**Depends on:** WP04-T02, WP04-T03. **Decision gates:** none for the mock path; a real transcription adapter needs D-04 (WP04-T19). **Protected:** storage (temporary chunk deletion). **Material UI:** no. **Real money:** only through WP04-T13 once a real adapter exists.
 
-- [ ] Inspect codec/container, duration, channels, sample rate, corruption and the cost ceiling; reject over-limit duration before any cost (§7.4).
+- [ ] Inspect container, codec, duration, channels, sample rate, corruption and the cost ceiling; reject over-limit duration before any cost (§7.4).
 - [ ] When chunking is needed, compute deterministic overlapping chunks and keep their exact time ranges.
 - [ ] Merge with boundary de-duplication and prove accounted duration within the §2.3 tolerance.
 - [ ] Preserve Arabic/English code-switching and technical terms; never translate unless a separate approved step asks for it.
 - [ ] Persist confidence and timestamp locators; flag long silence and low-confidence spans.
 - [ ] Delete temporary normalized audio and chunks after the transcript passes verification, and verify their absence separately from raw deletion.
 
-**Verify:** fixture tests with the mock transcription adapter.
+**Verify:** fixture tests with the mock transcription adapter, one per approved container.
 
 **Pass:** synthetic audio fixtures account for their full duration within tolerance; silence and low confidence are flagged; temporary chunks are verified absent.
 
 #### WP04-T07 — Tag professor evidence safely
 
-**Depends on:** WP04-T06. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no (mock tagger until WP04-T14 chooses a model, if any).
+**Depends on:** WP04-T06. **Decision gates:** none. **Protected:** RLS and migrations if `segment_tags` gains columns. **Material UI:** no. **Real money:** no (mock tagger until WP04-T19 chooses a model, if any).
 
-- [ ] Tag only spans with evidence; keep tag type, label, confidence, details, locator and tagger version.
+- [ ] Tag only spans with evidence; keep tag type, label, confidence, details, locator and tagger version. `segment_tags` has no locator or tagger-version column today: store them in `details_json` or add columns by migration.
 - [ ] Distinguish `PROFESSOR_HINT`, `EXAM_EMPHASIS`, `EXCLUSION`, `CORRECTION` and `LIKELY_QUESTION`.
 - [ ] Never rewrite possibility or emphasis into certainty or an exam guarantee.
 - [ ] Create positive and negative Arabic, English and mixed fixtures; record precision and recall on them.
 
 **Verify:** tagger fixture tests.
 
-**Pass:** fixture precision and recall are recorded; no fixture hint becomes a certainty; WP04-T20 adds the academic sample on real audio.
+**Pass:** fixture precision and recall are recorded; no fixture hint becomes a certainty; WP04-T21 adds the academic sample on real audio.
 
 #### WP04-T08 — Verify processed output before deleting raw data
 
-**Depends on:** WP04-T04 to WP04-T07. **Decision gates:** D-10 thresholds (synthetic defaults until approved). **Protected:** none. **Material UI:** no. **Real money:** no.
+**Depends on:** WP04-T04 to WP04-T07. **Decision gates:** D-10 thresholds (synthetic defaults until approved). **Protected:** RLS and migrations (transactional enqueue). **Material UI:** no. **Real money:** no.
 
 - [ ] Reopen the finalized processed object from durable storage instead of trusting the write response.
 - [ ] Recompute the checksum and validate the schema.
 - [ ] Check page/duration coverage, the non-empty threshold, locator bounds, the terminology sample, the duplicate ratio and unresolved blocker warnings (§7.5).
 - [ ] Persist the immutable quality report with the accepted policy version.
-- [ ] Enqueue deletion only from the passing or policy-approved state, in one transaction.
+- [ ] Enqueue the `RAW_DELETE` job only from the passing or policy-approved state, in one transaction.
 - [ ] Inject failures before and after finalization and prove deletion was never enqueued early.
 
 **Verify:** fault-injection tests; `database-ci` for the transactional enqueue.
@@ -1079,60 +1186,61 @@ Human Medicine renders Modules and Veterinary renders Subjects from data; Arabic
 
 #### WP04-T09 — Delete and independently verify raw absence
 
-**Depends on:** WP04-T08. **Decision gates:** none on synthetic data; real deletion needs D-19 and WP04-T19. **Protected:** storage; raw deletion is a D-22 protected action. **Material UI:** no. **Real money:** no.
+**Depends on:** WP04-T08. **Decision gates:** none on synthetic data; real deletion needs D-19 and WP04-T18. **Protected:** storage; RLS and migrations; raw deletion is a D-22 protected gate. **Material UI:** no. **Real money:** no.
 
-- [ ] Lock the raw row, re-check accepted processed state and any legal/rights hold, and use the exact stored provider key (§7.6).
-- [ ] Record the deletion result, then check absence independently through the provider's metadata, head or list call.
-- [ ] Treat a timeout or ambiguous response as unresolved; retry verification before reissuing a delete.
-- [ ] Append attempts; never overwrite deletion history.
-- [ ] Clear reusable access URLs and keep only approved audit metadata.
+- [ ] Add by migration what verified deletion needs: a rule that a raw object reaches `DELETED` only with a `VERIFIED_ABSENT` event; more than one event per attempt (today `unique (raw_object_id, attempt_number)` allows one); and key-fingerprint, checksum and size columns so the full `object_key` can be cleared after deletion.
+- [ ] Lock the raw row, re-check accepted processed state and any hold, and use the exact stored provider key (§7.6).
+- [ ] Record the deletion result, then check absence independently through the provider's head, metadata or list call and append `VERIFIED_ABSENT`.
+- [ ] Treat a timeout or ambiguous response as unresolved (`DELETE_FAILED`); retry verification before reissuing a delete.
+- [ ] Append events; never overwrite deletion history; clear reusable access URLs and keep only approved audit metadata.
 - [ ] Open an incident automatically when `delete_after` passes.
-- [ ] Test already-absent objects, access-denied deletion, delayed consistency, provider outage, a hold placed during processing and deletion replay.
+- [ ] Test already-absent objects, access-denied deletion, delayed consistency, provider outage, a hold placed before deletion is enqueued (holds start only from `STORED`) and deletion replay.
 
-**Verify:** deletion tests on the synthetic adapter; independent review.
+**Verify:** deletion tests on the synthetic adapter; `database-ci` for the migration; independent review.
 
-**Pass:** zero premature deletions and 100% verified deletion of accepted synthetic sources, including replays and outages.
+**Pass:** zero premature deletions; 100% of accepted synthetic sources end `DELETED` with a `VERIFIED_ABSENT` event, including replays and outages.
 
 #### WP04-T10 — Chunk, embed, and mark READY
 
-**Depends on:** WP04-T08. **Decision gates:** none for mock embeddings; real embeddings follow WP04-T15. **Protected:** RLS and migrations if retrieval or readiness functions change. **Material UI:** no. **Real money:** no until WP04-T15.
+**Depends on:** WP04-T08. **Decision gates:** none for mock embeddings; real embeddings follow WP04-T20. **Protected:** RLS and migrations. **Material UI:** no. **Real money:** no until WP04-T20.
 
 - [ ] Chunk by structure and semantic boundaries with a versioned chunking configuration; keep tables, definitions, question/answer blocks and professor statements coherent; record token counts (§7.7).
-- [ ] Hash normalized content and de-duplicate without losing legitimate repeated context or provenance.
+- [ ] Hash normalized content and de-duplicate without losing legitimate repeated context or provenance, within the one-hash-per-version rule.
 - [ ] Reserve embedding budget, batch by provider limit and reuse vectors by content hash plus embedding configuration.
-- [ ] Validate vector count, dimensions, finite values, normalization and model identity before insert.
-- [ ] Run the ingestion checks of master plan §8.5 step 16: empty segments, duplicates, leakage canaries, retrieval smoke, and prompt-injection-like text flagged as a segment tag (kept as untrusted data, never removed or obeyed).
-- [ ] Mark `READY` only through a protected transition that recomputes every §7.8 predicate.
+- [ ] Validate vector count, dimensions, finite values, normalization and model identity before insert (the `validate_embedding_dimensions` trigger checks dimensions against `embedding_configs`).
+- [ ] Run the ingestion checks of master plan §8.5 step 16: empty segments, duplicates, leakage canaries, retrieval smoke, and prompt-injection-like text flagged as a segment tag (kept as untrusted data, never removed or obeyed); add the tag type by migration if `segment_tags` cannot hold it.
+- [ ] Extend `unimind_private.assert_source_version_ready_prerequisites`, which already checks the processed document, a passing quality report, active segments and embeddings, so it also checks valid rights, verified raw deletion or an approved hold, and embeddings under the current active configuration (§7.8).
 
-**Verify:** fixture tests with mock embeddings at the placeholder dimension; `database-ci` readiness tests.
+**Verify:** fixture tests with mock embeddings on the synthetic configuration; `database-ci` readiness tests.
 
 **Pass:** a valid synthetic source reaches `READY` with stable segment and vector counts; a source failing any §7.8 predicate never does.
 
 #### WP04-T11 — Reconcile every incomplete state
 
-**Depends on:** WP04-T09, WP04-T10. **Decision gates:** D-19 for real takedown values. **Protected:** storage. **Material UI:** no. **Real money:** no.
+**Depends on:** WP04-T09, WP04-T10. **Decision gates:** D-19 for real takedown values. **Protected:** storage; RLS and migrations. **Material UI:** no. **Real money:** no.
 
-- [ ] Reclaim expired leases; resume workflows with a succeeded parent and a missing child.
+- [ ] Reclaim expired leases (WP04-T02 function); resume workflows with a succeeded parent and a missing child.
 - [ ] Verify uncertain provider timeouts by provider request ID where supported.
 - [ ] Find accepted output without a deletion job, verified deletion without chunks, missing or outdated embeddings, READY inconsistencies, orphan temporary objects and unsettled reservations.
-- [ ] Rights takedown: deactivate the source version, remove it from retrieval at once, invalidate dependent artifacts (WP07-T05), and purge processed text and embeddings when the approved policy requires it, keeping only audit metadata.
+- [ ] Rights takedown: set the source version's rights to `REVOKED` (WP03-T37), remove it from retrieval at once and invalidate dependent artifacts (WP07-T05). Segment content is immutable and evidence rows reference segments with `on delete restrict`, so add a redaction (tombstone) migration that removes text and embeddings while keeping IDs and audit, and use it when the approved policy requires a purge.
 - [ ] Keep reconciliation idempotent; emit metrics and incidents instead of editing history.
 
-**Verify:** reconciliation tests per incomplete state; takedown test.
+**Verify:** reconciliation tests per incomplete state; takedown and redaction tests; `database-ci`.
 
-**Pass:** each seeded incomplete state is moved forward or isolated automatically; a takedown removes the source from retrieval immediately and follows the policy for processed content.
+**Pass:** each seeded incomplete state is moved forward or isolated automatically; a takedown removes the source from retrieval immediately and, when the policy requires it, leaves no source text or vector while evidence links stay intact.
 
 #### WP04-T12 — Run the fault matrix and package gate
 
-This is the synthetic half of the WP04 gate. WP04-T20 is the real half.
+This is the synthetic half of the WP04 gate. WP04-T21 is the real half.
 
 **Depends on:** WP04-T01 to WP04-T11. **Decision gates:** D-10 for the final thresholds. **Protected:** none. **Material UI:** no. **Real money:** no.
 
 - [ ] Inject a crash immediately before and after every external call and every database transition.
 - [ ] Race two workers on one job and expire a lease during a slow call.
 - [ ] Replay the whole workflow with identical submission and step keys; compare counts, checksums, provider-call records and usage before and after.
-- [ ] Exercise native PDF, scanned PDF, mixed audio, duplicate, corrupt, timeout, malformed output, rights revocation, hold, deletion failure, and one terminal source next to a valid one.
-- [ ] Write the gate report `evidence/wp04-ingestion/<date>_pipeline-synthetic_ci_<sha>.md`.
+- [ ] Exercise native PDF, scanned PDF, every approved audio container, duplicate, corrupt, timeout, malformed output, rights revocation, hold, deletion failure, and one terminal source next to a valid one.
+- [ ] Freeze this fixture suite as the processing regression suite that rule 18 requires before any processing configuration change reaches Beta.
+- [ ] Map every §7.9 property to its proof in the PR body; the PR and its exact-head CI run are the evidence (workflow §6), so no separate evidence file is needed.
 
 **Verify:** the fault matrix suite; `pnpm verify`; `database-ci`.
 
@@ -1142,33 +1250,133 @@ This is the synthetic half of the WP04 gate. WP04-T20 is the real half.
 
 Master plan §13 and WP00-T06 define the rules; nothing enforces them yet.
 
-**Depends on:** WP04-T02. **Decision gates:** none to build and test at zero caps; D-05 before any nonzero cap. **Protected:** RLS and migrations (budget functions); production configuration (flags). **Material UI:** no (WP03-T06 already has the admin kill-switch actions). **Real money:** no; this task makes later spending safe.
+**Depends on:** WP04-T02. **Decision gates:** none to build and test at zero caps; D-05 before any nonzero cap. **Protected:** RLS and migrations; production configuration (flags). **Material UI:** no. **Real money:** no; this task makes later spending safe.
 
-**Outputs:** a budget guard in `src/lib/usage/` that every real adapter call passes through; budget functions; tests.
+**Outputs:** a budget guard in `src/lib/usage/`, cost reservation functions, database-backed provider flags, tests.
 
-- [ ] Route every real adapter call through one guard: the provider flag and a nonzero approved budget must both hold (WP01-T03 rule); the guard reserves the maximum cost before the call and settles or releases it exactly once after (WP02-T07 functions).
-- [ ] Enforce caps at system total, weekly, provider/action and per source (§2.3); record 50/75/90% events (delivered once D-20 lands in WP08-T05); block new optional paid work atomically at 100%.
-- [ ] Add a kill switch per provider and per action that takes effect immediately for new reservations and claims; accepted jobs finish or park without corrupt state.
+- [ ] Add cost reservation and settlement functions over `budget_counters`: today `usage_reservations` needs a user and counts units only, nothing writes `budget_counters`, and its scopes are `SYSTEM`, `PROVIDER`, `ACTION` and `COHORT`. One atomic reservation must fit every D-05 scope: total PoC, weekly, provider/action, source preflight, per-user daily and single request. Add the missing scopes; weekly and daily periods start at midnight Africa/Cairo time (§2.3).
+- [ ] Route every real adapter call through one guard: the provider flag and a nonzero approved budget must both hold (WP01-T03 rule); the guard reserves the maximum cost before the call and settles or releases it exactly once after.
+- [ ] Move provider enablement to database-backed flags read at call time (today real providers are environment variables, and there is no OCR flag); extend `ENABLE_FLAG`, which today accepts only `mock.artifact.*` flags, to real providers with the two-founder confirmation; keep `DISABLE_FLAG` immediate.
+- [ ] Enforce per-provider and per-action concurrency, timeout and retry limits (master plan §13); 50/75/90% events are recorded here and delivered from WP04-T17; block new optional paid work atomically at 100%.
 - [ ] Preflight the maximum cost per source from duration and pages before the first paid step.
-- [ ] Record every call in `provider_calls`: provider, model/version, units, latency, attempts, result and cost in the WP00-T06 currency rule.
-- [ ] Test a cap exceeded mid-batch, concurrent reservations at the boundary, a kill switch during a long job, and an uncertain settlement.
+- [ ] Record every call in `provider_calls`; map the adapter status `OUTCOME_UNKNOWN` to the table's `TIMEOUT_UNKNOWN` and record `model_version` and cost in the WP00-T06 currency rule.
+- [ ] Test a cap exceeded mid-batch, concurrent reservations at the boundary, a kill switch during a long job, concurrency and timeout limits, and an uncertain settlement.
 
 **Verify:** unit and `database-ci` tests; `pnpm verify` still makes zero paid calls.
 
-**Pass:** with zero caps no real adapter can make a call; with a synthetic nonzero cap, concurrent reservations never exceed it; every call has exactly one settlement.
+**Pass:** with zero caps no real adapter can make a call; with a synthetic nonzero cap, concurrent reservations never exceed it; every call has exactly one settlement; disabling a flag stops new calls at once.
 
-#### WP04-T14 — Benchmark and select the AI providers
+#### WP04-T14 — Select and deploy the worker host
 
-Moved here from WP09 because real OCR, transcription and embeddings need D-04 before WP04-T20 (findings A1).
+D-15 forbids running workers on a founder computer, and real processing needs an always-on host.
 
-**Depends on:** WP04-T13, WP04-T12, WP00-T03 (benchmark samples), WP00-T05. **Decision gates:** D-05 (benchmark cap); this task resolves D-04. **Protected:** production configuration (provider secrets). **Material UI:** no. **Real money:** yes — stop for fresh two-founder confirmation naming the maximum benchmark spend.
+**Depends on:** WP04-T12, WP03-T34, WP03-T36. **Decision gates:** none; this task resolves D-17. **Protected:** production configuration. **Material UI:** no. **Real money:** yes if the host is paid or needs a payment card.
+
+**Outputs:** an approved D-17 record; deployed ingestion worker and scheduler in Preview and Beta.
+
+- [ ] Update the [D-17 record](../decisions/d-17-queue-worker-host.md) from the [hosting options discussion](../../planning/d-17-hosting-options-discussion.html) with measured job durations from WP04-T12. Reject hosts that sleep when idle, reclaim idle machines or disable themselves after inactivity; a Vercel Hobby cron runs at most once a day and a Supabase Free Edge Function has tight CPU and wall-time limits (§0.8), so neither alone meets §11.2. A host that needs a payment card or auto-billing account is a D-22 money stop.
+- [ ] Obtain Ahmed's and Ziad's approval of D-17 (this step becomes `[?]` while it waits).
+- [ ] Prove the database path from the host: Supabase direct connections are IPv6-only, and the transaction pooler does not keep session-level advisory locks, so claims use `FOR UPDATE SKIP LOCKED` or transaction-level locks.
+- [ ] Deploy the ingestion worker and the reconciliation scheduler as always-on components in Preview and in locked Beta with separate secrets; the generation worker follows in WP06.
+- [ ] Workers claim from the PostgreSQL job table, heartbeat, shut down gracefully, expose a health check and keep no business state outside PostgreSQL.
+- [ ] Create a synthetic Preview catalog, campaign and embedding configuration through the WP03-T34 and WP03-T36 actions (Preview has none today), then run a seven-day soak with both founder computers off: synthetic sources reach `READY` on mocks and no scheduled run is missed.
+
+**Verify:** the soak report with missed-run count; a worker killed mid-job recovers through its lease.
+
+**Pass:** the Preview pipeline ran unattended for seven days on external infrastructure with zero missed scheduled runs; a killed worker's job was reclaimed; D-15 holds.
+
+#### WP04-T15 — Select object storage and approve retention values
+
+**Depends on:** WP04-T03, WP04-T12. **Decision gates:** none; this task resolves D-18, D-19 (whose deletion rules depend on the provider's absence semantics) and the D-21 revision. **Protected:** storage; production configuration. **Material UI:** no. **Real money:** yes if the provider or plan is paid.
+
+**Outputs:** approved D-18 and D-19 records; an approved D-21 revision; the real storage adapter; per-environment namespaces; updated [raw-data](../policies/raw-data-lifecycle.md) and [session-revocation](../policies/auth-session-revocation.md) policies.
+
+- [ ] Prepare D-18: write `docs/decisions/d-18-object-storage-provider.md` comparing candidates on private access, direct resumable upload at least as large as the biggest file in the WP00-T03 inventory, signed operations, deletion verification, durability and versioning, region (a data-protection subprocessor, WP00-T21), scanning support, Free-tier limits (Supabase Free: 50 MB per file and 1 GB in total, §0.8) and cost.
+- [ ] Prepare the D-19 real retention and deletion values from the WP00-T04 synthetic policy and the chosen provider's absence semantics, including what happens to processed text and embeddings after a rights takedown.
+- [ ] Prepare a D-21 revision for Ahmed (D-21's owner) and Ziad. D-21 keeps Beta empty of real pilot data until the rights, backup/restore, security, release and go-live gates pass, but the master plan needs the real Cohort A corpus processed before chat (Phase 2). The revision proposes: real adapters may be exercised with synthetic objects in locked Beta; rights-cleared sources may enter locked, student-free Beta after WP04-T18, including a security review of the real-data paths; students still wait for WP11-T01. Preview stays synthetic and mock-only.
+- [ ] Obtain Ahmed's and Ziad's approval of D-18, D-19 and the D-21 revision, with the security/data role named (this step becomes `[?]` while it waits).
+- [ ] Implement the real adapter and namespaces per environment with public access denied and short-lived exact-object operations; run its contract tests only where the approved D-21 revision allows (never in Preview), with synthetic objects deleted after the run.
+- [ ] Prove the provider's deletion verification method (head, list or metadata) and its consistency behaviour (§7.6).
+- [ ] Choose and wire the malware/content scanner suitable for this provider.
+- [ ] Configure processed-object durability (versioning or backup) per policy; exclude raw objects beyond their window; size peak raw storage (files waiting to be processed at once) against the plan's limit.
+- [ ] Replace the synthetic values in the raw-data policy with the approved D-19 values; update the D-18 note in the session-revocation policy, the [environment matrix](../../planning/environment-matrix.md), [environment promotion](environment-promotion.md) and `CONTRIBUTING.md` to the approved D-21 revision.
+
+**Verify:** the storage contract tests against the real provider with synthetic objects; deletion-verification tests; independent review.
+
+**Pass:** D-18, D-19 and the D-21 revision are approved; the contract tests pass against the real provider; deletion is verified independently; the largest inventoried file uploads; no public access path exists.
+
+#### WP04-T16 — Back up and restore Beta before it holds real data
+
+D-21 keeps Beta empty until an encrypted backup and restore passes; Supabase Free has no automatic backups.
+
+**Depends on:** WP04-T15. **Decision gates:** none; this task resolves D-27 (restore target and backup custody). **Protected:** production configuration. **Material UI:** no. **Real money:** yes if the backup store or target is paid.
+
+**Outputs:** an approved D-27 record; a backup and restore procedure under `docs/runbooks/`; a timed rehearsal report.
+
+- [ ] Prepare D-27: name where the backup job runs, where backups are stored and in which region (a data-protection subprocessor, WP00-T21), the restore-rehearsal target that may hold real data, and the key custody. Preview (synthetic only) and the public repository's Actions are not acceptable: workflow artifacts in a public repository can be downloaded by any signed-in user, and scheduled workflows stop after 60 days without repository activity. A paid option is a money stop.
+- [ ] Obtain Ahmed's and Ziad's approval of D-27 (this step becomes `[?]` while it waits).
+- [ ] Schedule an encrypted logical backup of Beta, including the Auth data that memberships reference, through the IPv4 session pooler, with retention as approved.
+- [ ] Keep the encryption key apart from the backups, held so that both founders can retrieve it; rehearse retrieving the key from that custody as part of the restore.
+- [ ] Back up or version processed objects per WP04-T15.
+- [ ] Handle Free-plan pausing with a keep-alive or a documented resume step (D-21).
+- [ ] Rehearse: restore database and processed objects into the D-27 target, verify row counts and referential checks for catalog, access, sources, documents, segments, evidence, artifacts, usage, jobs and audit, rebuild embeddings if they are not backed up, and confirm no expired raw object returns.
+
+**Verify:** the rehearsal report with timings and counts.
+
+**Pass:** a timed restore of a synthetic-populated Beta, with the key retrieved from custody, succeeds with verified counts; the procedure is committed; D-21's real-data condition for Beta is met.
+
+#### WP04-T17 — Set up the Beta email sender
+
+Real Batch Leader access, admin accounts in Beta and budget alerts need a sender before any real data or spending ([second review](../reviews/runbook-revision-2026-10/second-review.md) E1).
+
+**Depends on:** WP04-T13. **Decision gates:** none; this task resolves D-26 and the interim budget-alert part of D-20. **Protected:** auth; production configuration. **Material UI:** no. **Real money:** yes if the sender is paid.
+
+**Outputs:** an approved D-26 record; custom SMTP for Beta Auth; budget alerts delivered by email to both founders.
+
+- [ ] Prepare D-26: the sender for Auth emails, Batch Leader links (if D-24 uses email) and budget alerts, with sending limits, deliverability, data handling and region (a data-protection subprocessor, WP00-T21) and cost.
+- [ ] Obtain Ahmed's and Ziad's approval of D-26 (this step becomes `[?]` while it waits).
+- [ ] Configure custom SMTP for Beta Auth on a sending domain with SPF and DKIM; keep the built-in sender for synthetic Preview only; size the Auth email rate limit to the largest planned wave.
+- [ ] Deliver the WP04-T13 budget events (50/75/90/100%) to both founders by email as the interim alert channel until WP08-T05 completes D-20.
+- [ ] Record the hosted Beta Auth settings (sign-up mode, confirmations, password length, rate limits, CAPTCHA once WP08-T09 adds it) as versioned evidence and check them for drift on every promotion.
+
+**Verify:** a verification email and a recovery email received through the Beta sender; a synthetic budget event delivered; the Auth settings record.
+
+**Pass:** Beta Auth emails and budget alerts reach their recipients through the approved sender; the Beta Auth settings are versioned.
+
+#### WP04-T18 — Pass the real-data readiness gate
+
+**Depends on:** WP04-T12 to WP04-T17, WP00-T01, WP00-T02, WP00-T03, WP00-T04, WP00-T21, WP03-T37. **Decision gates:** D-10 and D-28 approved (through WP00-T04 and WP00-T21); D-17, D-18, D-19, the D-21 revision, D-26 and D-27 approved in WP04-T14 to WP04-T17. **Protected:** none (no code change); the first real material passes the D-22 protected gates for rights and raw deletion. **Material UI:** no. **Real money:** no new spend.
+
+**Outputs:** `evidence/wp04-ingestion/<date>_real-data-readiness_beta_<sha>.md`.
+
+- [ ] Confirm, with a link for each, every listed decision approved and every listed task done.
+- [ ] Review every real storage, worker, backup and email path against the rights inventory and the approved D-19 values.
+- [ ] Run an independent security review of the real-data paths (storage policies, signed operations, rights actions, raw deletion, backup custody, admin access) and resolve every finding; this is the D-21 security condition for real sources, and WP08-T09 later reviews the whole beta.
+- [ ] Confirm the data-protection route from WP00-T21 covers storage, workers, backups, email and the providers that WP04-T19 will benchmark.
+- [ ] Confirm minimum incident runbooks exist before real data: deletion failure, leakage suspicion, rights takedown, leaked secret and personal-data breach with its notification clock (WP08-T07 completes the set).
+- [ ] Configure the Cohort A catalog in Beta through WP03-T34 actions with the WP00-T02 codes; keep Beta closed to students (no memberships).
+- [ ] Record the security/data role's sign-off and D-22 authorization for the first real material.
+
+**Verify:** the gate report checklist, every line linked to its evidence.
+
+**Pass:** every checklist line in the gate report links to approved or passing evidence; no line is open.
+
+#### WP04-T19 — Benchmark and select the AI providers
+
+Moved ahead of real processing because real OCR, transcription and embeddings need D-04; placed after WP04-T18 because the benchmark sends real samples to external providers.
+
+**Depends on:** WP04-T18, WP00-T20. **Decision gates:** D-05 (benchmark cap and benchmark profile); this task resolves D-04. **Protected:** production configuration (provider secrets). **Material UI:** no. **Real money:** yes — stop for fresh two-founder confirmation naming the maximum benchmark spend.
 
 **Outputs:** `planning/provider-benchmark.csv` with results; an approved D-04 record; real adapters behind flags.
 
-- [?] D-05 benchmark cap approved and rights-cleared benchmark samples marked in WP00-T03. OWNER INPUT REQUIRED.
-- [ ] List candidates per capability: OCR, transcription with Arabic/English code-switching, embeddings for Arabic and English medical terms, generation for chat and Studio, and a model for the WP06-T01 validator if that ADR needs one. Record each candidate's data handling (retention, training use, region).
-- [ ] Run the same samples, prompts and settings; record quality (academic scoring for OCR and transcription samples), units, p50/p95, errors and retries, rate limits and cost in one currency and date; separate cold/warm and success/retry cost.
-- [ ] Treat quality, rights/data handling and reliability as gates before price; never select on advertised price.
+- [?] D-05 benchmark cap approved (WP00-T06), plus a benchmark live profile approved as an exception to the D-05 live-enablement gate, because benchmark candidates are not yet approved D-04 providers. Record the exception in the D-05 record and the raw-data policy. OWNER INPUT REQUIRED.
+- [ ] Run the benchmark through a separately named guarded command (for example `test:eval:live-approved`) and only from the WP04-T14 worker host or another approved non-founder host, never from public-repository CI or a founder computer; use only rights-cleared samples marked in WP00-T03 without personal data (or with recorded consent, for example a professor's voice); delete samples and outputs from candidates that are not selected.
+- [ ] List candidates per capability: OCR, transcription with Arabic/English code-switching, embeddings, generation for chat and Studio, and a model for the WP06-T01 validator if that ADR needs one. Record each candidate's data handling (input retention, abuse-monitoring retention, training use, region, minimum user age and acceptable use for medical content).
+- [ ] Treat index compatibility as an embedding criterion: pgvector HNSW and IVFFlat index `vector` up to 2,000 dimensions and `halfvec` up to 4,000 (§0.8); test shortened or half-precision variants where offered.
+- [ ] Score embeddings on Arabic, mixed and Franco-Arabic questions over English passages as well as same-language pairs, using the signed WP00-T20 suite.
+- [ ] Run the same samples, prompts and settings; record quality (academic scoring for OCR and transcription samples), units, p50/p95, errors and retries, rate limits and cost in one currency and date; separate cold/warm and success/retry cost; pin dated model snapshots, not moving aliases.
+- [ ] Calculate each WP00-T03 source's maximum preflight cost from the measured prices.
+- [ ] Treat quality, data handling and reliability as gates before price; never select on advertised price.
 - [ ] Implement the selected real adapters behind their flags; they pass the WP01-T06 contract tests; credentials stay server/worker-only.
 - [ ] Write the D-04 record with fallback and disable strategy; update the master-plan log only after both founders approve.
 
@@ -1176,123 +1384,53 @@ Moved here from WP09 because real OCR, transcription and embeddings need D-04 be
 
 **Pass:** D-04 is approved on numeric evidence; every selected adapter passes the shared contract tests; benchmark spend stayed inside the approved cap; `pnpm verify` still makes zero paid calls.
 
-#### WP04-T15 — Set the production embedding configuration and check capacity
+#### WP04-T20 — Set the production embedding configuration and check capacity
 
-**Depends on:** WP04-T14, WP04-T10. **Decision gates:** D-04 (approved in WP04-T14). **Protected:** RLS and migrations. **Material UI:** no. **Real money:** stop if the capacity check shows a paid database tier is needed.
+**Depends on:** WP04-T19, WP04-T10. **Decision gates:** D-04 (approved in WP04-T19). **Protected:** RLS and migrations. **Material UI:** no. **Real money:** stop if the capacity check shows a paid database tier is needed.
 
-**Outputs:** a forward migration for the real vector dimension and index, an `embedding_configs` version, a capacity report.
+**Outputs:** the real `embedding_configs` row, a matching partial index, a generalized retrieval function, a capacity report.
 
-- [ ] Replace the `vector(3)` placeholder columns and index through a forward migration with the chosen dimensions and distance operator; match the HNSW operator class; version the configuration; re-embed the synthetic fixtures.
-- [ ] Compare exact search with HNSW on the fixtures.
-- [ ] Estimate database size (segments per page and per audio minute from fixtures × the master plan §4.2 corpus for both cohorts × vector, index and text bytes) and processed-object storage; compare with the current Supabase Free allowances (§0.8), including monthly active users and pausing.
-- [ ] If any estimate exceeds an allowance, stop: a paid tier is a real-money decision (D-05, D-21 revisit) before WP04-T20.
+- [ ] Insert the real `embedding_configs` row and enforce one active configuration. The `segment_embeddings.embedding` column is already an unsized `vector` checked by a trigger; the 3-dimension index and the hard-coded synthetic configuration, dimension and cosine operator live only in `segment_embeddings_synthetic_v1_cosine_hnsw_idx` and `retrieve_authorized_segments`.
+- [ ] Add a partial HNSW expression index cast to the chosen dimension (or `halfvec`) for the real configuration, with the operator class matching the distance operator; remove the hard-coded configuration from `retrieve_authorized_segments`.
+- [ ] Compare exact search with HNSW on the fixtures; re-embed the synthetic fixtures under the real configuration in Preview.
+- [ ] Estimate database size (segments per page and per audio minute from fixtures × the master plan §4.2 corpus for both cohorts × vector, index and text bytes), processed-object storage and the memory an index build needs; compare with the current Supabase Free allowances (§0.8), including monthly active users and pausing.
+- [ ] If any estimate exceeds an allowance, stop: a paid tier is a real-money decision (D-05, D-21 revisit) before WP04-T21.
 
 **Verify:** `database-ci` with the new migration; zero generated-type diff after regeneration; retrieval tests at the real dimension.
 
 **Pass:** retrieval tests pass at the real dimension; the capacity report states the headroom or names the money decision that must come first.
 
-#### WP04-T16 — Select object storage and approve retention values
+#### WP04-T21 — Collect and process the Cohort A corpus
 
-**Depends on:** WP04-T03, WP04-T15. **Decision gates:** D-19 (resolved through WP00-T04); this task resolves D-18. **Protected:** storage; production configuration. **Material UI:** no. **Real money:** yes if the provider or plan is paid.
+The Human Medicine corpus had no collection task. This is the real half of the WP04 gate (master plan Phase 2) and closes the master plan Phase 0 exit for Cohort A.
 
-**Outputs:** an approved D-18 record; the real storage adapter; per-environment namespaces; an updated [raw-data policy](../policies/raw-data-lifecycle.md).
-
-- [?] D-19 real retention and deletion values approved through WP00-T04. OWNER INPUT REQUIRED.
-- [ ] Prepare D-18: write `docs/decisions/d-18-object-storage-provider.md` comparing candidates on private access, signed operations, deletion verification, durability/versioning, region, scanning support, Free-tier limits and cost.
-- [ ] Obtain Ahmed's and Ziad's approval of D-18 with the security/data role named (this step becomes `[?]` while it waits).
-- [ ] Implement the real adapter and namespaces per environment (Preview synthetic, Beta real) with public access denied and short-lived exact-object operations.
-- [ ] Prove the provider's deletion verification method (head, list or metadata) and its consistency behaviour (§7.6).
-- [ ] Choose and wire the malware/content scanner suitable for this provider.
-- [ ] Configure processed-object durability (versioning or backup) per policy; exclude raw objects beyond their window.
-- [ ] Replace the synthetic values in the raw-data policy with the approved D-19 values.
-
-**Verify:** the storage contract tests against the real provider in Preview with synthetic objects; deletion-verification tests; independent review.
-
-**Pass:** the contract tests pass against the real provider; deletion is verified independently; no public access path exists.
-
-#### WP04-T17 — Select and deploy the worker host
-
-D-15 forbids running workers on a founder computer, and real processing needs an always-on host (findings A3).
-
-**Depends on:** WP04-T12. **Decision gates:** none; this task resolves D-17. **Protected:** production configuration. **Material UI:** no. **Real money:** yes if the host is paid.
-
-**Outputs:** an approved D-17 record; deployed ingestion worker and scheduler in Preview and Beta.
-
-- [ ] Update the [D-17 record](../decisions/d-17-queue-worker-host.md) from the [hosting options discussion](../../planning/d-17-hosting-options-discussion.html) with measured job durations from WP04-T12: queue transport and worker host candidates, founder computers excluded, each with a zero-cost path or a named monthly exposure.
-- [ ] Obtain Ahmed's and Ziad's approval of D-17 (this step becomes `[?]` while it waits).
-- [ ] Deploy the ingestion worker and the reconciliation scheduler as always-on components in Preview and in locked Beta with separate secrets; the generation worker follows in WP06.
-- [ ] Workers claim from the PostgreSQL job table, heartbeat, shut down gracefully, expose a health check, and keep no business state outside PostgreSQL.
-- [ ] Prove operation with both founder computers off: a synthetic source submitted in Preview reaches `READY` on mocks.
-
-**Verify:** Preview run timeline; a worker killed mid-job recovers through its lease.
-
-**Pass:** the Preview pipeline runs unattended on external infrastructure; a killed worker's job is reclaimed; D-15 holds.
-
-#### WP04-T18 — Back up and restore Beta before it holds real data
-
-D-21 keeps Beta empty until an encrypted backup and restore passes; Supabase Free has no automatic backups.
-
-**Depends on:** WP04-T16. **Decision gates:** a restore target that may hold real data. **Protected:** production configuration. **Material UI:** no. **Real money:** yes if the backup store or target is paid.
-
-**Outputs:** a backup and restore procedure under `docs/runbooks/`; a timed rehearsal report.
-
-- [ ] Propose the restore-rehearsal target allowed to hold real data. Preview (synthetic only) and the public repository's CI runner are not acceptable. If no free target exists, prepare a D-21 revisit; a paid option is a money stop.
-- [ ] Obtain Ahmed's and Ziad's approval of the target (this step becomes `[?]` while it waits).
-- [ ] Schedule an encrypted logical database backup of Beta from external infrastructure, with key management and retention.
-- [ ] Back up or version processed objects per WP04-T16.
-- [ ] Handle Free-plan pausing with a keep-alive or a documented resume step (D-21).
-- [ ] Rehearse: restore database and processed objects into the named target, verify row counts and referential checks for catalog, access, sources, documents, segments, evidence, artifacts, usage, jobs and audit, rebuild embeddings if they are not backed up, and confirm no expired raw object returns.
-
-**Verify:** the rehearsal report with timings and counts.
-
-**Pass:** a timed restore of a synthetic-populated Beta succeeds with verified counts; the procedure is committed; D-21's real-data condition for Beta is met.
-
-#### WP04-T19 — Pass the real-data readiness gate
-
-**Depends on:** WP04-T12 to WP04-T18, WP03-T34, WP03-T36. **Decision gates:** D-01 catalog codes, D-04, D-05, D-10, D-17, D-18, D-19 approved; eligible WP00-T03 rows. **Protected:** yes — rights and raw deletion are D-22 protected actions. **Material UI:** no. **Real money:** no new spend.
-
-**Outputs:** `evidence/wp04-ingestion/<date>_real-data-readiness_beta_<sha>.md`.
-
-- [ ] Confirm every listed decision is approved and linked; every Cohort A row to be uploaded is eligible.
-- [ ] Confirm the Beta backup rehearsal (WP04-T18), the worker host (WP04-T17), the budget guard with approved caps and tested kill switches (WP04-T13), and the storage provider (WP04-T16).
-- [ ] Write minimum incident runbooks before real data: deletion failure, leakage suspicion, rights takedown and leaked secret (WP08-T07 completes the set).
-- [ ] Configure the Cohort A catalog in Beta through WP03-T34 actions; keep Beta closed to students (no memberships).
-- [ ] Record the security/data role's sign-off and D-22 authorization for the first real upload.
-
-**Verify:** the gate report checklist against linked evidence.
-
-**Pass:** a reviewer can confirm from the report alone that the first real upload is allowed, contained and reversible.
-
-#### WP04-T20 — Collect and process the Cohort A corpus
-
-The Human Medicine corpus had no collection task (findings B4). This is the real half of the WP04 gate (master plan Phase 2).
-
-**Depends on:** WP04-T19, WP03-T36. **Decision gates:** none beyond WP04-T19. **Protected:** storage; raw deletion. **Material UI:** no. **Real money:** yes, inside the approved caps through the budget guard; a cap increase needs fresh two-founder confirmation.
+**Depends on:** WP04-T20, WP03-T36, WP03-T38, WP00-T20. **Decision gates:** none beyond WP04-T18. **Protected:** storage; raw deletion. **Material UI:** no. **Real money:** yes, inside the approved caps through the budget guard; a cap increase needs fresh two-founder confirmation.
 
 **Outputs:** READY Cohort A sources in Beta; `evidence/wp04-ingestion/<date>_cohort-a-corpus_beta_<sha>.md`.
 
-- [ ] An admin creates the Cohort A campaigns; the Batch Leader submits the inventoried sources; target 8–12 units, 15–25 documents and 3–5 hours of audio (master plan §4.2).
+- [ ] An admin creates the Cohort A campaigns and gives the Batch Leader access; the Batch Leader submits the inventoried sources for every D-01 Module (Child Health / Pediatrics, GIT, Nutrition, Professional Practice), aiming at the master plan §4.2 targets of 15–25 documents and 3–5 hours of audio; a shortfall against §4.2 (including its 8–12 units) is a founder decision recorded in the evidence.
+- [ ] An admin records each source version's rights from its WP00-T03 row through WP03-T37; a Batch Leader declaration alone never makes rights valid.
 - [ ] The pipeline runs on the real providers with no manual database step; every source reaches `READY` or isolation with a machine-readable reason.
 - [ ] The academic reviewer spot-checks processed text, transcripts and hint tags per unit using the WP00-T20 rubric and sample size.
 - [ ] Report storage reduction, cost per source and verified raw deletions.
 
 **Verify:** job event timelines per source; the quality, deletion and cost reports.
 
-**Pass:** at least 95% of valid sources reach `READY` without exceptional intervention and the rest are isolated with reasons; 100% of required pages and audio are accounted for or rejected; 100% of accepted raw objects are deleted and verified, with zero premature deletions; spend stays inside the cap.
+**Pass:** at least 95% of valid sources reach `READY` without exceptional intervention and the rest are isolated with reasons; 100% of required pages and audio are accounted for or rejected; 100% of accepted raw objects end `DELETED` with a `VERIFIED_ABSENT` event, with zero premature deletions; spend stays inside the cap.
 
 ### 7.1 Job graph
 
-One workflow per source version:
+One workflow per source version, on the existing job types:
 
-`VALIDATE -> STORE/CONFIRM_RAW -> INSPECT -> EXTRACT_OR_TRANSCRIBE -> NORMALIZE -> VERIFY_PROCESSED -> DELETE_RAW -> CHUNK -> EMBED -> INDEX_CHECK -> MARK_READY`
+`VALIDATE (validate, confirm raw, inspect) -> EXTRACT | TRANSCRIBE (+ OCR page ranges) -> NORMALIZE (+ professor tagging) -> QUALITY -> RAW_DELETE -> CHUNK -> EMBED -> INDEX (index check, then the protected READY transition)`
 
-Optional branches: `OCR_PAGE_RANGE` from extraction for low-text pages; `TAG_PROFESSOR_INSIGHTS` after normalization; `NEEDS_REVIEW` as a terminal exceptional state when automatic thresholds fail. Job states are `PENDING`, `RUNNING`, `RETRY_WAIT`, `SUCCEEDED`, `FAILED` and `CANCELLED`, validated in one shared database function.
+A source failing automatic thresholds ends `NEEDS_REVIEW` on its source version. Job states are `QUEUED`, `RUNNING`, `RETRYING`, `SUCCEEDED`, `FAILED` and `CANCELLED`, validated by `unimind_private.is_valid_transition('job', …)`. `RECONCILE` jobs run the §11.2 schedules.
 
 ### 7.2 Claiming and retry rules
 
-- Claim atomically with `FOR UPDATE SKIP LOCKED` or the selected queue's equivalent; set `lease_owner`, `lease_expires_at` and the attempt record before work.
-- Heartbeat long OCR and transcription jobs; reclaim expired leases automatically.
-- Retry network errors, timeouts and rate limits with bounded exponential backoff and jitter.
+- Claim atomically with `FOR UPDATE SKIP LOCKED` (the existing claim function) or the selected queue's equivalent; the lease owner, lease expiry and attempt record are set before work.
+- Heartbeat long OCR and transcription jobs; reclaim expired leases automatically (WP04-T02).
+- Retry network errors, timeouts and rate limits with bounded exponential backoff and jitter (`RETRYING`).
 - Treat unsupported or corrupt files, denied rights and impossible quality checks as terminal until a source or admin correction.
 - Check for an existing successful output by idempotency key and content hash before every provider call.
 - Store provider request IDs and reconcile an uncertain timeout before paying for a repeat call where the provider allows it.
@@ -1313,7 +1451,7 @@ Never drop diagrams or tables to save bytes. When their meaning cannot be conver
 
 ### 7.4 Audio and professor voice notes
 
-1. Inspect codec, duration, channels, sample rate and corruption; reject over-limit duration before cost.
+1. Inspect container, codec, duration, channels, sample rate and corruption; reject over-limit duration before cost.
 2. Normalize audio temporarily only when the transcription provider needs it.
 3. Transcribe the entire duration, in overlapping chunks if needed, and merge without duplicate or missing boundary text.
 4. Keep timestamp ranges and confidence; detect English/Arabic mixing and keep technical terms.
@@ -1324,25 +1462,26 @@ Never drop diagrams or tables to save bytes. When their meaning cannot be conver
 
 ### 7.5 Processed-output verification
 
-All applicable checks pass before raw deletion can be enqueued: the processed object exists and is readable; its checksum matches; page/audio coverage meets policy; the non-empty threshold passes; locator ranges are within bounds; the terminology sample passes or is flagged; no secret or patient identifier appears in diagnostics; no duplicate final processed document exists; the quality report is persisted.
+All applicable checks pass before the `RAW_DELETE` job can be enqueued: the processed object exists and is readable; its checksum matches; page/audio coverage meets policy; the non-empty threshold passes; locator ranges are within bounds; the terminology sample passes or is flagged; no secret or patient identifier appears in diagnostics; no duplicate final processed document exists; the quality report is persisted.
 
 ### 7.6 Raw deletion
 
+Raw-object states are `PENDING`, `STORED`, `DELETE_PENDING`, `DELETE_FAILED`, `HELD`, `DELETED` and `FAILED`; deletion events are `REQUESTED`, `SUCCEEDED`, `FAILED` and `VERIFIED_ABSENT`.
+
 1. Lock the raw-object row and re-verify processed acceptance and the absence of a hold.
-2. Request deletion with the exact stored provider key.
-3. Verify absence through provider metadata or listing.
-4. Append the attempt, result and verification event.
-5. Clear unusable access URL fields; keep provider, former key fingerprint, checksum, size and timestamps.
-6. Mark `DELETED_VERIFIED` only after absence is confirmed; retry automatically when deletion or verification is uncertain.
-7. Open a high-priority incident when the deadline passes. Never report a source as fully optimized while raw status is unresolved.
+2. Request deletion with the exact stored provider key (`REQUESTED`).
+3. Verify absence through provider metadata or listing and append `VERIFIED_ABSENT`.
+4. Clear the object key and unusable access URLs; keep provider, key fingerprint, checksum, size and timestamps.
+5. Set `DELETED` only together with a `VERIFIED_ABSENT` event; on an uncertain result set `DELETE_FAILED` and retry automatically.
+6. Open a high-priority incident when the deadline passes. Never report a source as fully optimized while raw status is unresolved.
 
 ### 7.7 Chunking and embeddings
 
-Chunk by headings and semantic units with controlled overlap only where context needs it; keep chunks within the configured token range; keep tables, definitions, question/answer blocks and professor statements coherent; de-duplicate within the source and unit without erasing legitimate repetition; embed in batches; record configuration, version and dimensions; never compare vectors from incompatible models; re-embed only when content or configuration changes; index source-format and professor-hint metadata alongside the unified pool.
+Chunk by headings and semantic units with controlled overlap only where context needs it; keep chunks within the configured token range; keep tables, definitions, question/answer blocks and professor statements coherent; de-duplicate within the source and unit without erasing legitimate repetition; embed in batches; record configuration, version and dimensions; never compare vectors from incompatible models; re-embed only when content or configuration changes; index source-format and professor-hint metadata alongside the unified knowledge pool.
 
 ### 7.8 Readiness decision
 
-Mark `READY` only if: rights permit student use; processed verification passed; raw deletion is verified or an approved hold exists; required segments exist; every active segment has the current embedding configuration; the retrieval smoke test returns the expected known terms; and no blocker-level quality issue exists. Publishing and cohort unlock stay separate governance actions.
+Mark `READY` only if: rights are `VALID` for student use; processed verification passed; raw deletion is verified or an approved hold exists; required segments exist; every active segment has an embedding under the current active configuration; the retrieval smoke test returns the expected known terms; and no blocker-level quality issue exists. Publishing and cohort unlock stay separate governance actions.
 
 ### 7.9 Fault and idempotency properties
 
@@ -1360,11 +1499,12 @@ After a failure at any step and a rerun: one source version and one finalized pr
 
 **Depends on:** WP00-T05, WP04-T12. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
 
-- [ ] Load the frozen manifest and JSONL, validate hashes, schema and counts, and refuse an unreviewed or modified dataset.
+- [ ] Extend the existing runner `evals/runners/foundation-evaluation.ts` (run by `pnpm test:eval`) instead of starting a new one.
+- [ ] Load the frozen manifest and JSONL, validate hashes, schema and counts, and refuse an unreviewed or modified dataset; refuse to report a gate result from the calibration part.
 - [ ] Reset and seed the exact source scope the suite references; record the active source, embedding and chunking versions.
 - [ ] Run cases deterministically where possible; store case-level JSONL plus aggregate Markdown and JSON.
 - [ ] Record returned IDs, component scores, classification reasons, authorization scope, latency, provider units, configuration and correlation ID per case (§8.4).
-- [ ] Calculate recall@k, MRR, the class confusion matrix, conflict and hint metrics, leakage count, p50/p95 and cost.
+- [ ] Calculate recall@k, MRR, the class confusion matrix, conflict and hint metrics, leakage count, p50/p95 and cost, broken down by query language × source language.
 
 **Verify:** `pnpm test:eval` on the synthetic suite; a modified dataset is refused.
 
@@ -1372,46 +1512,49 @@ After a failure at any step and a rerun: one source version and one finalized pr
 
 #### WP05-T02 — Implement query normalization as an auditable step
 
-**Depends on:** WP05-T01. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
+**Depends on:** WP05-T01. **Decision gates:** none. **Protected:** RLS and migrations (a stored search column). **Material UI:** no. **Real money:** no.
 
 - [ ] Keep the original query and create a separate normalized search form.
-- [ ] Normalize Unicode, Arabic letter and diacritic variants, whitespace and configured spelling aliases conservatively.
-- [ ] Preserve English medical/veterinary terms and numbers.
-- [ ] Test that normalization never changes intended entities or broadens scope.
+- [ ] Write one versioned normalization function and apply it identically to stored segment text (a generated search column) and to the query; normalizing only the query breaks matching against the `simple` configuration used today (§5.5).
+- [ ] Fold Arabic letter variants (alef forms, ta marbuta and ha, alef maqsura and ya), remove tatweel and diacritics, map Arabic-Indic digits to ASCII, and apply configured spelling aliases conservatively.
+- [ ] Remove Arabic (including common Egyptian) and English stopwords from the search form only.
+- [ ] Preserve English medical/veterinary terms and numbers; never translate.
+- [ ] Test that normalization never changes intended entities or broadens scope, in Arabic, English, mixed and Franco-Arabic text.
 
-**Verify:** normalization unit tests in Arabic, English and mixed text.
+**Verify:** normalization unit tests; `database-ci` for the stored column.
 
-**Pass:** every normalization fixture keeps its entities and numbers; the original query is always retained.
+**Pass:** every normalization fixture keeps its entities and numbers; stored text and queries normalize identically; the original query is always retained.
 
 #### WP05-T03 — Implement filtered hybrid retrieval
 
-**Depends on:** WP05-T02, WP04-T10. **Decision gates:** none. **Protected:** RLS and migrations (retrieval function changes). **Material UI:** no. **Real money:** query embeddings through the budget guard once real (WP04-T15).
+**Depends on:** WP05-T02, WP04-T10. **Decision gates:** none. **Protected:** RLS and migrations. **Material UI:** no. **Real money:** query embeddings through the budget guard once real (WP04-T20).
 
+- [ ] Extend `unimind_private.retrieve_authorized_segments`, which already fuses full-text and vector ranks (reciprocal-rank fusion, k = 60, at most 50 results), instead of writing a second function: return source title, format, verified locator and tags; accept a topic filter and a correlation ID.
 - [ ] Revalidate user, session, cohort and unit before embedding or querying (§8.1).
-- [ ] Run full-text and vector branches concurrently with identical active-scope filters applied inside each branch before the limit (§8.2).
-- [ ] Order the vector branch by its distance expression so the index is used.
+- [ ] Replace all-terms matching (`websearch_to_tsquery` over the `simple` configuration requires every word) with ranked or any-term matching over the WP05-T02 search column; evaluate an optional trigram fallback for misspellings.
+- [ ] Keep identical active-scope filters inside both branches before the limit. Prove the vector branch never returns fewer results than asked under a filter: compare exact search per unit, iterative index scans (pgvector 0.8 or later; check the installed version) and plain HNSW (§0.8).
 - [ ] Merge by segment ID with a versioned fusion formula; keep raw component scores for evaluation.
 - [ ] Remove near-duplicates, diversify sources, keep adjacent context only when justified, and boost tagged evidence only for a matching intent.
 - [ ] Enforce maximum results and evidence tokens; keep internal diagnostics out of student responses.
 
 **Verify:** `database-ci` retrieval and plan tests; runner on the synthetic suite; independent review.
 
-**Pass:** retrieval returns only active authorized segments with the intended query plan; component scores are recorded for every case.
+**Pass:** retrieval returns only active authorized segments, never short results under a filter, with the intended query plan; component scores are recorded for every case.
 
 #### WP05-T04 — Calibrate evidence classification without generation
 
 **Depends on:** WP05-T03. **Decision gates:** none; a model-based conflict check needs D-04 and the budget guard. **Protected:** none. **Material UI:** no. **Real money:** only if the chosen conflict method calls a model.
 
-- [ ] Implement supported, partial, unavailable and conflict signals with reason codes as versioned code and configuration (§8.3).
+- [ ] Implement the evidence classes `FULL`, `PARTIAL`, `UNAVAILABLE` and `CONFLICTING` (the `chat_answers.evidence_status` names) with reason codes as versioned code and configuration (§8.3).
 - [ ] Decide and record in an ADR how conflicts are found at query time: annotated conflict pairs, contradiction signals between retrieved segments, a model check, or a combination; include cost per query and failure behaviour.
-- [ ] Tune thresholds only on a calibration split; report final numbers on a held-out split.
+- [ ] Tune thresholds only on the calibration part; report final numbers on the sealed test part.
 - [ ] Require coverage of each requested part, not one high vector score.
 - [ ] Return both evidence groups for a detected conflict.
 - [ ] Prohibit any later generator from upgrading `UNAVAILABLE` or filling missing `PARTIAL` points.
 
-**Verify:** runner on calibration and held-out splits.
+**Verify:** runner on the calibration and sealed test parts.
 
-**Pass:** classification metrics on the held-out split are reported; the conflict method and its cost are recorded.
+**Pass:** classification metrics on the sealed test part are reported; the conflict method and its cost are recorded.
 
 #### WP05-T05 — Prove isolation before ranking quality
 
@@ -1427,18 +1570,18 @@ After a failure at any step and a rerun: one source version and one finalized pr
 
 #### WP05-T06 — Establish and approve the baseline
 
-**Depends on:** WP05-T04, WP05-T05, WP04-T20, WP00-T20. **Decision gates:** none beyond the signed suite. **Protected:** none. **Material UI:** no. **Real money:** yes, query embeddings inside the approved caps.
+**Depends on:** WP05-T04, WP05-T05, WP04-T21, WP00-T20. **Decision gates:** none beyond the signed suite. **Protected:** none. **Material UI:** no. **Real money:** yes, query embeddings inside the approved caps.
 
-- [ ] Run exact vector search and candidate HNSW settings on the real Cohort A suite.
-- [ ] Inspect false negatives, false positives, Arabic/English misses, hint misses, conflict misses and slow queries case by case.
-- [ ] Change one retrieval variable at a time and record before/after numbers.
-- [ ] Freeze the accepted configuration with its version and the dataset hash.
+- [ ] Run exact vector search and candidate index settings on the calibration part of the real Cohort A suite; inspect false negatives, false positives, cross-language and Franco-Arabic misses, hint misses, conflict misses and slow queries case by case.
+- [ ] Change one retrieval variable at a time and record before/after numbers on the calibration part.
+- [ ] Freeze the accepted configuration with its version and the dataset hash, then run it once on the sealed test part for the gate.
+- [ ] Report what the full-text branch adds per query language; a branch that adds nothing for Arabic questions is a recorded finding.
 - [ ] The reviewer approves numeric targets for recall@k and MRR and the retrieval latency budget (derived from the chat first-token target); "reasonable results" is not a target.
 - [ ] Make this suite a required step before any retrieval, chunking or embedding change is promoted to Beta (implementation rule 18).
 
 **Verify:** the runner report `evidence/wp05-retrieval/<date>_retrieval-baseline_beta_<sha>.md`.
 
-**Pass:** zero unauthorized retrieval; at least 95% correct unavailable classification; 100% of known conflicts return both positions' evidence; at least 95% of direct professor-hint cases retrieve the tagged evidence; the approved recall, MRR and latency targets are met; cost fits the 100-student plan.
+**Pass:** on the sealed test part: zero unauthorized retrieval; unavailable classification, known-conflict and direct professor-hint retrieval meet the §16 gates as chosen in WP00-T20; the approved recall, MRR and latency targets are met; query cost fits the D-05 per-request cap.
 
 ### 8.1 Authorized retrieval interface
 
@@ -1456,7 +1599,7 @@ One server-only interface takes the authenticated user ID, cohort ID, unit ID, n
 
 ### 8.3 Evidence classification signals
 
-Direct topic/heading match; required-term coverage; multi-part coverage; number of independent non-duplicate segments; score threshold and gap; known or detected contradiction; missing requested entity or topic. The result is `SUPPORTED`, `PARTIAL`, `UNAVAILABLE` or `CONFLICT` with reasons. The generator may never upgrade `UNAVAILABLE`.
+Direct topic/heading match; required-term coverage; multi-part coverage; number of independent non-duplicate segments; score threshold and gap; known or detected contradiction; missing requested entity or topic. The result is the evidence class `FULL`, `PARTIAL`, `UNAVAILABLE` or `CONFLICTING` with reasons. The generator may never upgrade `UNAVAILABLE`.
 
 ### 8.4 Evaluation record per case
 
@@ -1472,34 +1615,36 @@ Authorized scope and active source versions; returned segment and source IDs wit
 
 #### WP06-T01 — Freeze contracts and policy versions
 
-**Depends on:** WP05-T06. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** yes if the validator measurement calls a model, inside caps.
+**Depends on:** WP05-T06. **Decision gates:** none beyond WP04-T19 (providers). **Protected:** RLS and migrations if the result field is added. **Material UI:** no. **Real money:** yes if the validator measurement calls a model, inside caps.
 
 **Outputs:** Zod schemas; versioned policy files; the claim-validator ADR with its measurement.
 
-- [ ] Define Zod schemas for the request, retrieval packet, generator draft, validated answer, stream events, persisted message and error response (§9.4).
-- [ ] Version the tutor policy, safety classifier, evidence classifier, prompt template, claim validator and model configuration independently.
+- [ ] Define Zod schemas for the request, retrieval packet, generator draft, validated answer, stream events, persisted message and error response (§9.4). Map the evidence classes to `chat_answers.evidence_status` (`FULL`, `PARTIAL`, `UNAVAILABLE`, `CONFLICTING`) and add a separate result field by migration for `SAFETY_BOUNDARY` and `ERROR`, which that column cannot hold.
+- [ ] Version the tutor policy, safety classifier, evidence classifier, prompt template, claim validator and model configuration independently; pin dated model snapshots, never moving aliases.
 - [ ] Write standard Arabic/English copy for unavailable, partial, conflict, allowance/capacity, provider outage and real-patient boundary states.
-- [ ] Choose the claim-validation method in an ADR (deterministic overlap, an entailment model, a model judge, or a combination) and measure it on the WP00-T20 labeled claim set: report how often it accepts an unsupported claim and rejects a supported one, and its cost and latency per answer. The target is zero accepted unsupported claims on the labeled set; any miss is a recorded risk that the WP06-T08 academic review must cover.
+- [ ] Choose the claim-validation method in an ADR (deterministic overlap, an entailment model, a model judge, or a combination) and measure it on the WP00-T20 labeled claim set, sized so the false-accept bound is meaningful; report false accepts, false rejects, cost and latency per answer; include injection text aimed at the validator itself; re-measure whenever a provider changes or retires a model. The target is zero accepted unsupported claims on the labeled set.
+- [ ] Normalize Arabic-Indic digits before the validator compares numbers.
 - [ ] Add contract fixtures for every result type and for malformed model output.
 
 **Verify:** contract tests; the validator measurement report.
 
-**Pass:** every result type has a schema and fixture; the validator's false-accept and false-reject rates, cost and latency are recorded in the ADR, with any false accept named as a risk for WP06-T08.
+**Pass:** every result type has a schema and fixture; the validator's false-accept and false-reject rates, cost and latency are recorded in the ADR.
 
 #### WP06-T02 — Implement the transactional request envelope
 
-**Depends on:** WP06-T01, WP04-T13. **Decision gates:** per-student allowance values (WP00-T06). **Protected:** RLS and migrations. **Material UI:** no (the allowance display is wired in WP06-T05). **Real money:** no.
+**Depends on:** WP06-T01, WP04-T13. **Decision gates:** per-student allowance values (WP00-T06; synthetic defaults until approved). **Protected:** RLS and migrations. **Material UI:** no (the allowance display is wired in WP06-T05). **Real money:** no.
 
 - [ ] Accept only session ID, message, language and client request ID; derive user, cohort and unit from authenticated session rows (§9.1).
-- [ ] Validate size, session state, membership, availability, rate and concurrency limits, and budget.
-- [ ] Enforce the per-student daily allowance and expose a safe allowance/capacity state the UI can show (master plan §7.1 step 11).
+- [ ] Revoke direct student inserts into `chat_sessions` and `chat_messages`; every write goes through this envelope.
+- [ ] Validate size, session state, membership, availability, rate and concurrency limits, output-token and timeout limits, and budget.
+- [ ] Enforce the per-student daily allowance (day boundaries in Africa/Cairo time) and expose a safe allowance/capacity state the UI can show (master plan §7.1 step 11).
 - [ ] Reserve usage atomically before paid work with a unique action idempotency key.
 - [ ] Return or continue the canonical prior request on replay instead of creating another message, call or reservation.
 - [ ] Settle actual usage exactly once, or release/expire it on every failure and cancellation path.
 
-**Verify:** unit and `database-ci` tests including concurrent duplicate submissions.
+**Verify:** unit and `database-ci` tests including concurrent duplicate submissions and a direct-insert attempt.
 
-**Pass:** a replayed request creates nothing new; every path ends with exactly one settlement or release; allowance and rate limits hold under concurrency.
+**Pass:** a replayed request creates nothing new; a direct insert is denied; every path ends with exactly one settlement or release; allowance and rate limits hold under concurrency.
 
 #### WP06-T03 — Classify context and protect private content
 
@@ -1508,7 +1653,7 @@ Authorized scope and active source versions; returned segment and source IDs wit
 - [ ] Distinguish educational cases from explicit real-patient or personal-care requests with frozen fixtures and a versioned policy (§9.7).
 - [ ] Detect personal identifiers, warn the student not to share them, and apply retention and logging rules before any diagnostic log.
 - [ ] Keep question and source content out of infrastructure logs; log IDs, categories, sizes, hashes and safe reason codes.
-- [ ] Test Arabic, English, mixed language, adversarial wording and prompt injection inside retrieved sources.
+- [ ] Test Arabic, English, mixed and Franco-Arabic language, adversarial wording and prompt injection inside retrieved sources.
 
 **Verify:** classifier fixture suite.
 
@@ -1529,19 +1674,21 @@ Authorized scope and active source versions; returned segment and source IDs wit
 
 #### WP06-T05 — Stream without leaking an invalid final answer
 
-**Depends on:** WP06-T02 to WP06-T04, WP04-T17. **Decision gates:** none. **Protected:** none. **Material UI:** yes — the real Chat screen, its streaming, evidence, report and allowance states, and the Materials source list. **Real money:** yes, generation inside caps.
+**Depends on:** WP06-T02 to WP06-T04, WP04-T14. **Decision gates:** none. **Protected:** RLS and migrations (source-list function); production configuration (generation runtime, security headers). **Material UI:** yes — the real Chat screen, its streaming, evidence, report and allowance states, and the Materials source list. **Real money:** yes, generation inside caps.
 
-**Outputs:** the chat Route Handler and generation worker; the real Chat and Materials screens through the WP03-T17 adapter seam.
+**Outputs:** the chat Route Handler and generation runtime; the real Chat and Materials screens through the WP03-T17 adapter seam.
 
-- [ ] Separate draft stream state from accepted answer state; persist no evidence and mark no message complete until structured output and claims pass validation.
-- [ ] Choose and record one safe display strategy: buffer factual sentences until validated, stream clearly provisional text that can be replaced, or release validated structured sections. Measure first-token p50/p95 with validation in place on the Cohort A corpus against the 5 s / 12 s targets before building the rest.
+- [ ] Decide where generation runs: inside the Vercel function (within the Hobby duration and active-CPU allowances, §0.8) or in the WP04-T14 worker with a stream relay. Measure active CPU per chat and project it to the WP00-T07 profile before building the rest.
+- [ ] Separate draft stream state from accepted answer state; persist no evidence and mark no message complete until the WP06-T01 validator contract accepts it (a fixture validator until WP06-T06 lands).
+- [ ] Choose and record one safe display strategy: buffer factual sentences until validated, stream clearly provisional text that can be replaced, or release validated structured sections.
+- [ ] Render model output without raw HTML or remote images and with allow-listed links only; add a Content-Security-Policy (`img-src`, `connect-src`) so injected markup cannot send chat context elsewhere.
 - [ ] On client disconnect, continue or cancel according to policy and settle exactly once; on provider error, emit a controlled terminal event without raw provider diagnostics.
 - [ ] Connect the shared Chat screen to the real backend through the WP03-T17 seam: remove the disabled notice in real mode, show source titles, formats and verified locators, the report action and the allowance state. Keep the synthetic runtime on the same screen.
-- [ ] Add the authorized source-list function so Materials shows title and format (not only count and freshness) when allowed.
+- [ ] Add the authorized source-list function so Materials shows title and format, not only count, edition and freshness.
 
-**Verify:** stream fault tests; `pnpm test:e2e` and `pnpm test:e2e:demo`; latency measurement report; frontend floor; founder review of the rendered candidate.
+**Verify:** stream fault tests; `pnpm test:e2e:database` and `pnpm test:e2e:demo`; CSP and rendering tests; frontend floor; founder review of the rendered candidate.
 
-**Pass:** an invalid draft is never displayed as accepted; measured first-token latency is reported against the target; the real and synthetic Chat render the same components; `Approved commit:` recorded.
+**Pass:** an invalid draft is never displayed as accepted; injected markup renders inert; the real and synthetic Chat render the same components; projected generation CPU fits the plan; `Approved commit:` recorded.
 
 #### WP06-T06 — Validate every accepted factual component
 
@@ -1552,41 +1699,43 @@ Authorized scope and active source versions; returned segment and source IDs wit
 - [ ] Require every professor label to map to a tagged span.
 - [ ] Return a grounded fallback or unavailable result on failure; never only strip citations from unsupported text.
 - [ ] Persist the final answer and its evidence links in one transaction.
+- [ ] Measure first-token p50/p95 with the real validator in place on the Cohort A corpus against the 5 s / 12 s targets.
 
-**Verify:** validator fixtures including invented locators and cross-scope IDs.
+**Verify:** validator fixtures including invented locators and cross-scope IDs; the latency report.
 
-**Pass:** every invalid fixture is rejected or replaced by a fallback; accepted answers always have evidence links.
+**Pass:** every invalid fixture is rejected or replaced by a fallback; accepted answers always have evidence links; measured first-token latency is reported against the target.
 
 #### WP06-T07 — Implement retention and reporting lifecycle
 
-**Depends on:** WP06-T06. **Decision gates:** D-08 (and D-19 for real values). **Protected:** RLS and migrations. **Material UI:** yes — the private/no-sharing control in Settings and the report flow. **Real money:** no.
+**Depends on:** WP06-T06. **Decision gates:** none; this task brings the proposed D-08 to approval (D-19 values come from WP04-T15). **Protected:** RLS and migrations. **Material UI:** yes — the chat sharing mode control in Settings and the report flow. **Real money:** no.
 
-- [?] D-08 approved, including the misuse-detection categories and thresholds and the review window. OWNER INPUT REQUIRED.
-- [ ] `NO_SAVE`: delete content after the approved technical window, keeping only minimal non-content security and usage data.
-- [ ] Saved sessions: owner list, read and delete; default audited founder visibility with clear student disclosure; a time-effective private/no-sharing preference in Settings.
-- [ ] Reports, consent or an approved automated misuse flag snapshot only the permitted exchange with policy, model and source versions, evidence, reason and review expiry.
-- [ ] Under private mode, admin review reaches only reported, consented or qualifying flagged cases; every access to chat content is audited in every mode.
+- [ ] Bring the proposed [D-08 record](../decisions/d-08-chat-retention.md) to a decision: retention modes, the chat sharing mode, misuse-detection categories and thresholds, and the review window.
+- [ ] Obtain Ahmed's and Ziad's approval of D-08 (this step becomes `[?]` while it waits).
+- [ ] Map the approved modes onto the existing `MINIMAL`, `HISTORY` and `DISABLED` values on `chat_sessions` and `profiles.chat_retention_mode`, or rename them by migration; add a content-redaction migration, because `chat_messages.content` is required and answers reference messages `on delete restrict`.
+- [ ] No-save mode: remove content after the approved technical window, keeping only minimal non-content security and usage data.
+- [ ] Saved sessions: owner list, read and delete; default audited founder visibility with clear student disclosure; a time-effective chat sharing mode in Settings.
+- [ ] Reports, consent or an approved automated misuse flag snapshot only the permitted exchange with policy, model and source versions, evidence, reason and review expiry; under a private sharing mode, admin review reaches only reported, consented or qualifying flagged cases; every access to chat content is audited.
 - [ ] Implement automated misuse detection only with the approved versioned categories and thresholds.
-- [ ] Test deletion, expiry, report-before-expiry, consent withdrawal and what backups keep.
+- [ ] Test deletion, expiry, report-before-expiry, consent withdrawal and what backups keep (WP04-T16).
 
-**Verify:** `database-ci` retention and access tests; E2E for the Settings control and report flow; founder review of the rendered candidate.
+**Verify:** `database-ci` retention and access tests; `pnpm test:e2e:database` for the Settings control and report flow; founder review of the rendered candidate.
 
-**Pass:** every retention mode behaves as D-08 says; every founder access to chat content leaves an audit row.
+**Pass:** every retention mode behaves as D-08 says; every founder access to chat content leaves an audit row; `Approved commit:` recorded.
 
 #### WP06-T08 — Run frozen, fault, and browser gates
 
 **Depends on:** WP06-T07. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** yes, inside caps.
 
-- [ ] Run every supported, partial, unavailable, conflict, hint, safety and injection case of the signed suite.
+- [ ] Run every case of the sealed test part at least three times (generation is not deterministic) and report the worst run.
 - [ ] Kill the client stream, the generation worker and the provider response at defined points; replay the client request ID and verify one answer and one settlement.
 - [ ] Revoke membership or a source during a request and verify the final commit rechecks scope.
-- [ ] Have the academic reviewer grade a sample of accepted answers for unsupported claims with the WP00-T20 rubric.
+- [ ] Academic review: if the WP06-T01 validator measured any false accept, the reviewer checks every accepted frozen answer against its evidence; otherwise a sample with the WP00-T20 rubric is enough. Apply the WP00-T20 second-rater decision.
 - [ ] Make this suite a required step before any prompt, policy, model or validator change is promoted to Beta (implementation rule 18).
 - [ ] Write `evidence/wp06-chat/<date>_chat-gate_beta_<sha>.md`.
 
 **Verify:** the frozen suite report; fault tests; academic review record.
 
-**Pass:** zero unsupported factual claims in accepted answers (validator and academic review agree); 100% evidence-link coverage; at least 95% correct unavailable cases; 100% of known conflicts show both positions; professor hints labeled and at least 95% retrievable; at least 95% of educational cases answered without false refusal when evidence exists; 100% of explicit real-patient cases apply the boundary; failed and timed-out requests settle or release exactly once; zero outside-answer or web-search calls.
+**Pass:** zero unsupported factual claims in accepted answers; 100% evidence-link coverage; at least 95% correct unavailable cases; 100% of known conflicts show both positions; professor hints labelled and at least 95% retrievable; at least 95% of educational cases answered without false refusal when evidence exists; 100% of explicit real-patient cases apply the boundary — each as chosen in WP00-T20 (§16); failed and timed-out requests settle or release exactly once; zero outside-answer or web-search calls.
 
 ### 9.1 Chat request contract
 
@@ -1599,7 +1748,7 @@ The client sends session ID, message, language preference and client request ID.
 3. Reserve usage atomically with the request idempotency key; apply rate and concurrency limits.
 4. Classify educational case, explicit real-patient request, personal-data risk and language.
 5. Run authorized retrieval and classify the evidence.
-6. `UNAVAILABLE`: persist and stream the standard unavailable answer and skip generation. `PARTIAL`: build a packet with supported evidence and explicit missing parts. `CONFLICT`: build separately labeled position packets. Otherwise build the supported packet.
+6. `UNAVAILABLE`: persist and stream the standard unavailable answer and skip generation. `PARTIAL`: build a packet with supported evidence and explicit missing parts. `CONFLICTING`: build separately labeled position packets. `FULL`: build the supported packet.
 7. Generate structured metadata and streamed text, buffering enough to stop an invalid answer from being committed as valid.
 8. Validate evidence IDs, claim support, scope, conflict disclosure and invented locators or quotes; on failure return a grounded fallback or unavailable response.
 9. Persist under the retention policy with evidence links; settle usage or release the reservation; record latency, provider usage, validation and result without private evidence diagnostics.
@@ -1610,7 +1759,7 @@ Use only supplied evidence from approved uploaded material; never use outside fa
 
 ### 9.4 Response contract
 
-Structured server-side output: `result_type` (`SUPPORTED | PARTIAL | UNAVAILABLE | CONFLICT | SAFETY_BOUNDARY | ERROR`); `answer_text`; `used_evidence_ids`; `missing_points`; `conflict_positions` with evidence IDs; `professor_hint_labels` with evidence IDs; `student_source_labels` with title, format and a reliable locator when available; `validation_state`, set by the server, never the model. The UI never requires an exact page or timestamp for a valid answer and never shows an unverified locator.
+Structured server-side output: `evidence_status` (`FULL | PARTIAL | UNAVAILABLE | CONFLICTING`) plus a result field for `SAFETY_BOUNDARY` and `ERROR` (WP06-T01); `answer_text`; `used_evidence_ids`; `missing_points`; `conflict_positions` with evidence IDs; `professor_hint_labels` with evidence IDs; `student_source_labels` with title, format and a reliable locator when available; `validation_state`, set by the server, never the model. The UI never requires an exact page or timestamp for a valid answer and never shows an unverified locator.
 
 ### 9.5 Claim and provenance validation
 
@@ -1637,7 +1786,7 @@ Educational prompts with diagnosis, differentials, medications, dose calculation
 **Depends on:** WP06-T08. **Decision gates:** none; visible quiz behaviour (option count, timing, difficulty) is confirmed by a founder. **Protected:** none. **Material UI:** no. **Real money:** no.
 
 - [ ] Create a common envelope with artifact and request IDs, type, language, normalized parameters, scope hash, policy/model/validator versions, status, evidence map and validation issues.
-- [ ] Create versioned schemas for summary, study guide, practice questions, flashcards, MCQs and the topic-focused revision pack (§10.2 to §10.5).
+- [ ] Create versioned schemas for summary, study guide, practice questions, flashcards, MCQs and the topic-focused revision pack (§10.2 to §10.5), with stable option keys that never depend on display order or script direction.
 - [ ] Fix the quiz parameters the founders already asked for in WP03-T13 (configurable item count, difficulty and timing) and the MCQ option count within §10.5; record them in §2.3.
 - [ ] Reject unknown fields and invalid structures at the worker boundary; keep a malformed draft only in restricted diagnostics if policy allows.
 
@@ -1650,12 +1799,12 @@ Educational prompts with diagnosis, differentials, medications, dose calculation
 **Depends on:** WP07-T01. **Decision gates:** none. **Protected:** RLS and migrations. **Material UI:** no. **Real money:** no.
 
 - [ ] Canonicalize parameters and compute the cache key from authorized active source versions, policy/model/validator, type, language and parameters.
-- [ ] Revalidate the requester's current access to every cached evidence segment before reuse.
-- [ ] Enforce the per-student Studio allowance and artifact size limits (§2.3); reserve usage and create the durable request in one transaction.
+- [ ] Give the cache a database mechanism: today an artifact is readable only through the requesting user's own request, so one artifact cannot serve a second student. Add a per-request link to a shared artifact with matching policies, and revalidate the requester's current access to every cached evidence segment before reuse.
+- [ ] Revoke direct student inserts into `studio_requests`; enforce the per-student Studio allowance and artifact size limits (§2.3); reserve usage and create the durable request in one transaction.
 - [ ] Return the canonical artifact or request on a duplicate idempotency key.
 - [ ] Run generation in the worker; the browser never controls completion.
 
-**Verify:** `database-ci` cache-authorization and idempotency tests.
+**Verify:** `database-ci` cache-authorization, direct-insert and idempotency tests.
 
 **Pass:** a cached artifact is never served to a caller who lacks access to any of its evidence; duplicates create nothing new.
 
@@ -1668,9 +1817,10 @@ Educational prompts with diagnosis, differentials, medications, dose calculation
 - [ ] Map every factual section, item, answer and rationale to evidence; validate with the WP06-T01 method.
 - [ ] Reject duplicate or near-duplicate questions and cards and ambiguous wording; for MCQs require the §10.5 rules.
 - [ ] Keep original-exam content disabled unless the individual source permission explicitly allows it.
+- [ ] Render artifacts under the WP06-T05 output policy (no raw HTML or remote images); isolate the direction of mixed Arabic/English runs.
 - [ ] Connect the shared Studio screen to the real backend through the WP03-T17 seam: request, progress, completed, failed, partial and stale states; keep the synthetic runtime on the same screen.
 
-**Verify:** artifact fixture suite; E2E real and demo; frontend floor; founder review of the rendered candidate.
+**Verify:** artifact fixture suite; `pnpm test:e2e:database` and `pnpm test:e2e:demo`; frontend floor; founder review of the rendered candidate.
 
 **Pass:** every artifact type completes inside the subject Studio with evidence links; unsupported content is rejected; `Approved commit:` recorded.
 
@@ -1678,41 +1828,42 @@ Educational prompts with diagnosis, differentials, medications, dose calculation
 
 **Depends on:** WP07-T03. **Decision gates:** none. **Protected:** RLS and migrations. **Material UI:** yes — the real Quiz and review screens. **Real money:** no.
 
-- [ ] Start attempts from an authorized current artifact; store item order and options for stable review (§10.6).
-- [ ] Keep answer keys server-side before submission.
+- [ ] Migrate `quiz_attempts`: today it has no state, item/option snapshot or expiry columns, it forbids a submitted-but-unscored row, and students can insert attempts and update `submitted_at`. Add the §10.6 states, the snapshot and expiry; revoke the student insert and update grants; move every write to server functions.
+- [ ] Start attempts from an authorized current artifact; keep answer keys server-side before submission.
 - [ ] Save responses idempotently, enforce server timestamps and timer rules, and score on the server.
 - [ ] Make final submission idempotent and immutable except through a separately audited correction policy.
 - [ ] Keep historical attempts when the source or artifact later goes stale, with the current availability labelled.
 - [ ] Derive weak-topic signals from scored attempts by topic tag and show them in review (master plan Phase 4).
 - [ ] Connect the shared Quiz and review screens to the real backend through the WP03-T17 seam.
 
-**Verify:** `database-ci` attempt and scoring tests; E2E for timed and untimed attempts; founder review.
+**Verify:** `database-ci` attempt, grant and scoring tests; `pnpm test:e2e:database` for timed and untimed attempts; founder review.
 
-**Pass:** one score per submission, answer keys never reach the client before submission, weak topics appear in review, `Approved commit:` recorded.
+**Pass:** one score per submission, answer keys never reach the client before submission, a student cannot write an attempt directly, weak topics appear in review; `Approved commit:` recorded.
 
 #### WP07-T05 — Invalidate safely on scope change
 
-**Depends on:** WP07-T04. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
+**Depends on:** WP07-T04. **Decision gates:** none. **Protected:** RLS and migrations. **Material UI:** yes — the report action on artifacts and quiz items. **Real money:** no.
 
 - [ ] Recompute scope hashes on source activation, deactivation or replacement, rights revocation, embedding or policy change, and corrected evidence (§10.7).
 - [ ] Hide or mark stale artifacts in current study views without deleting historical evidence or attempts.
 - [ ] Cancel queued requests whose authorization or scope is no longer valid and release their reservations.
-- [ ] Let students report an artifact or a quiz item (wrong, unsupported, unclear) through the same reporting lifecycle as chat (WP06-T07).
+- [ ] Let students report an artifact or a quiz item (wrong, unsupported, unclear) through the same reporting lifecycle as chat (WP06-T07); migrate `feedback_reports`, which today cannot target a quiz item (its `entity_id` is a UUID while items use text keys, and it has no "unclear" category).
 - [ ] Test a change during generation, during a quiz and after submission.
 
-**Verify:** invalidation and reporting tests.
+**Verify:** invalidation and reporting tests; `database-ci`; founder review of the report action.
 
-**Pass:** no stale artifact is shown as current; reports reach the admin queue with their evidence snapshot.
+**Pass:** no stale artifact is shown as current; reports on artifacts and quiz items reach the admin queue with their evidence snapshot; `Approved commit:` recorded.
 
 #### WP07-T06 — Run artifact and quiz gates
 
 **Depends on:** WP07-T05. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** yes, inside caps.
 
-- [ ] Run every frozen artifact case in supported and insufficient scope.
-- [ ] Validate claim and item provenance coverage; have the academic reviewer grade a sample with the WP00-T20 rubric.
+- [ ] Run every case of the sealed Studio test part, in supported and insufficient scope, at least three times; report the worst run.
+- [ ] Validate claim and item provenance coverage; academic review as in WP06-T08 (every accepted claim when the validator had any false accept, otherwise a sample) with the WP00-T20 second-rater decision.
 - [ ] Race duplicate requests and duplicate final quiz submissions.
 - [ ] Attempt cache access from another user, cohort or unit and after membership or source revocation.
 - [ ] Verify timed and untimed scoring, answer-key secrecy, grounded review, settlement, retry and invalidation.
+- [ ] Make this suite a required step before any Studio prompt, policy, model or validator change is promoted to Beta (implementation rule 18).
 - [ ] Write `evidence/wp07-studio/<date>_studio-gate_beta_<sha>.md`.
 
 **Verify:** the frozen artifact suite report.
@@ -1724,7 +1875,7 @@ Educational prompts with diagnosis, differentials, medications, dose calculation
 1. The student opens Studio inside an authorized unit and picks type, topic or all material, language, depth and size.
 2. The server revalidates scope, computes the active source-scope hash and checks the safe cache.
 3. With no authorized valid artifact, it reserves usage and creates a durable request.
-4. The worker retrieves from the same strict unit pool, returns an unavailable or partial state or generates the structured artifact.
+4. The worker retrieves from the same unified knowledge pool, returns an unavailable or partial state or generates the structured artifact.
 5. The validator checks every factual claim, answer, explanation and conflict; accepted artifacts store evidence links; rejected ones retry within the limit or fail explicitly.
 6. Usage settles exactly once and the UI receives the completed or failed state.
 
@@ -1762,37 +1913,39 @@ When a source version is deactivated or replaced: recompute active scope hashes;
 
 #### WP08-T01 — Write deployment topology and ownership
 
-**Depends on:** WP04-T17, WP06-T05. **Decision gates:** none (D-17 approved in WP04-T17). **Protected:** none. **Material UI:** no. **Real money:** no.
+**Depends on:** WP04-T14, WP06-T05. **Decision gates:** none (D-17 approved in WP04-T14). **Protected:** none. **Material UI:** no. **Real money:** no.
 
-- [ ] Create `docs/operations/topology.md` naming web, ingestion worker, generation worker, reconciliation scheduler, database, queue, raw/processed storage, monitoring, email and notification boundaries.
-- [ ] Record for each component: deployment artifact, region, runtime/size, concurrency, health endpoint, scaling control, secret scope, log destination, owner and monthly cost.
+- [ ] Create `docs/operations/topology.md` naming web, ingestion worker, generation runtime, reconciliation scheduler, database, queue, raw/processed storage, backup, monitoring, email and notification boundaries.
+- [ ] Record for each component: deployment artifact, region, runtime/size, concurrency, health endpoint, scaling control, secret scope, log destination, owner, monthly cost and its data-protection subprocessor entry (WP00-T21).
 - [ ] Prove the full Preview and Beta topology keeps running with Ahmed's and Ziad's computers off.
 - [ ] Keep PostgreSQL the workflow authority even with an external queue or orchestrator.
 
 **Verify:** topology review against deployed state.
 
-**Pass:** every running component is listed with its owner and cost; none depends on a founder computer.
+**Pass:** every running component is listed with its owner, region and cost; none depends on a founder computer.
 
 #### WP08-T02 — Deploy health, metrics, logs, and traces
 
-**Depends on:** WP08-T01. **Decision gates:** none; a paid error-reporting service is a money stop. **Protected:** production configuration. **Material UI:** no. **Real money:** only if a paid service is chosen.
+**Depends on:** WP08-T01. **Decision gates:** none; a paid service is a money stop. **Protected:** production configuration. **Material UI:** no. **Real money:** only if a paid service is chosen.
 
 - [ ] Extend the WP04-T02 structured logs with timestamp, environment, release, component, correlation/request/job/provider IDs, safe event, duration, outcome and error code.
+- [ ] Ship redacted logs to a durable sink: Vercel Hobby keeps runtime logs for about an hour and Supabase Free for about a day (§0.8), too short for incident evidence. The sink is a subprocessor (WP00-T21).
 - [ ] Separate liveness from readiness; readiness checks dependencies with timeouts.
-- [ ] Track request rate, errors and duration, first-token time, queue age and depth, job outcomes and retries, lease expiry, provider latency, errors and cost, raw-deletion age, retrieval quality, validation failures, reservations, budgets, database and storage capacity, and reconciliation outcomes.
+- [ ] Track request rate, errors and duration, first-token time, queue age and depth, job outcomes and retries, lease expiry, provider latency, errors and cost, raw-deletion age, retrieval quality, validation failures, reservations, budgets, database and storage capacity, Vercel usage meters and reconciliation outcomes.
 - [ ] Choose an error-reporting destination at zero cost or stop for a money decision; test redaction of secrets, authorization headers, signed URLs, source content and chat content.
+- [ ] List every secret with its location and rotation owner, and rehearse one rotation end to end.
 
-**Verify:** metric and redaction tests; a dashboard screenshot as supplemental evidence.
+**Verify:** metric and redaction tests; the rotation rehearsal record.
 
-**Pass:** every listed signal is visible per environment; redaction tests pass.
+**Pass:** every listed signal is visible per environment and logs survive beyond the platform retention; redaction tests pass; one secret rotation is rehearsed.
 
 #### WP08-T03 — Implement schedules as idempotent jobs
 
-**Depends on:** WP08-T01, WP04-T11. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
+**Depends on:** WP08-T01, WP04-T11. **Decision gates:** none. **Protected:** production configuration. **Material UI:** no. **Real money:** no.
 
-- [ ] Create one named job per §11.2 schedule with its query, batch limit, timeout, lock, retry, metric and incident threshold.
-- [ ] Prevent overlapping runs with an advisory lock or a durable scheduler claim; paginate large scans.
-- [ ] Test a skipped run, duplicate invocation, partial failure, long run and clock or time-zone boundaries.
+- [ ] Create one named `RECONCILE` job per §11.2 schedule with its query, batch limit, timeout, lock, retry, metric and incident threshold; run them from the WP04-T14 scheduler (a Vercel Hobby cron runs at most once a day).
+- [ ] Prevent overlapping runs with `FOR UPDATE SKIP LOCKED`, a transaction-level advisory lock or a durable scheduler claim (the transaction pooler does not keep session-level advisory locks); paginate large scans.
+- [ ] Test a skipped run, duplicate invocation, partial failure, long run and the Africa/Cairo daylight-saving change.
 
 **Verify:** schedule tests; job history in Preview.
 
@@ -1800,62 +1953,64 @@ When a source version is deactivated or replaced: recompute active scope hashes;
 
 #### WP08-T04 — Build least-privilege admin operations
 
-**Depends on:** WP08-T02. **Decision gates:** none. **Protected:** RLS. **Material UI:** yes — the admin resource screens connected to real data. **Real money:** no.
+**Depends on:** WP08-T02. **Decision gates:** none. **Protected:** RLS. **Material UI:** yes — the admin resource screens with real data and real-mode admin preview. **Real money:** no.
 
-- [ ] Connect the §11.3 dashboards to safe summary views and services, replacing synthetic fixtures in real mode.
+- [ ] Connect the §11.3 dashboards to safe summary views and services; in real mode every admin resource page shows a "not available yet" notice today.
+- [ ] Add real-mode admin preview (master plan §7.2 step 5): an admin previews the catalog, Chat, Studio and Quiz of an unpublished unit through the `admin_preview` path, which real mode currently hard-codes to off; the preview is visibly marked, audited, creates no membership and denies non-admins.
 - [ ] Replace arbitrary edit or replay controls with audited typed actions and precondition checks.
 - [ ] Require a reason and confirmation for source deactivation, cohort lock, raw hold, replay after terminal correction and provider or feature enablement.
 - [ ] Show operator-safe details; keep sensitive provider, raw and chat evidence behind stricter access and audit.
 
-**Verify:** E2E for each dashboard and action; forbidden-role tests; founder review.
+**Verify:** `pnpm test:e2e:database` for each dashboard, action and the preview parity with the student render; forbidden-role tests; founder review.
 
-**Pass:** an admin can follow any source from receipt to `READY` or failure, and act on it, without SQL; `Approved commit:` recorded.
+**Pass:** an admin can follow any source from receipt to `READY` or failure, inspect conflicts, storage reduction, latency and cost, preview the student experience and act, without SQL; `Approved commit:` recorded.
 
 #### WP08-T05 — Implement alert routing and automatic controls
 
-**Depends on:** WP08-T02, WP04-T13. **Decision gates:** none; this task resolves D-20 (alert channels) and D-26 (transactional email). **Protected:** production configuration. **Material UI:** no. **Real money:** yes if a paid sender or channel is chosen.
+**Depends on:** WP08-T02, WP04-T17. **Decision gates:** none; this task completes D-20 (WP04-T17 already delivers budget alerts by email). **Protected:** production configuration. **Material UI:** no. **Real money:** yes if a paid channel is chosen.
 
-- [ ] Prepare D-20 and D-26: decision records for the alert and incident channels, and for the sender of Auth emails and Batch Leader links (if D-24 uses email), with sending limits, deliverability, data handling and cost.
-- [ ] Obtain Ahmed's and Ziad's approval of D-20 and D-26 (this step becomes `[?]` while it waits).
+- [ ] Prepare the rest of D-20: alert and incident channels, recipients and escalation.
+- [ ] Obtain Ahmed's and Ziad's approval of D-20 (this step becomes `[?]` while it waits).
 - [ ] Create `docs/operations/alert-catalog.md` with signal, query, severity, threshold and window, dedup key, recipients, automatic action, acknowledgment, escalation and runbook link.
-- [ ] Deliver budget events at 50/75/90/100% and every §11.4 alert through the approved channel; test each with synthetic events, including delivery failure.
-- [ ] Configure custom SMTP for Beta Auth emails on a sending domain with SPF and DKIM; test verification, recovery and link delivery; keep the built-in sender for synthetic Preview only.
+- [ ] Deliver every §11.4 alert through the approved channel, including Vercel and Supabase usage meters; test each with synthetic events, including delivery failure.
 - [ ] Make budget and provider circuit controls atomic and immediate for new reservations and claims, without corrupting accepted jobs.
 - [ ] Group, de-duplicate and send recovery notices without hiding continued failure.
 
-**Verify:** alert delivery tests; a real verification email received through the Beta sender.
+**Verify:** alert delivery tests.
 
-**Pass:** every catalogued alert reaches its recipient; Auth emails deliver reliably at the beta's expected volume.
+**Pass:** every catalogued alert reaches its recipient through the approved channel.
 
 #### WP08-T06 — Back up and restore the complete durable system
 
-**Depends on:** WP04-T18, WP07-T06. **Decision gates:** none. **Protected:** production configuration. **Material UI:** no. **Real money:** no new spend.
+**Depends on:** WP04-T16, WP07-T06. **Decision gates:** none. **Protected:** production configuration. **Material UI:** no. **Real money:** no new spend.
 
-- [ ] Extend the WP04-T18 procedure to the complete system: database, processed objects, artifacts, chat retention, usage and audit.
+- [ ] Extend the WP04-T16 procedure to the complete system: database including Auth data, processed objects, artifacts, chat retention, usage and audit.
 - [ ] Reconnect or rebuild embeddings as the documented strategy says.
 - [ ] Verify row counts and referential checks for catalog, access, sources, documents, segments, evidence, artifacts, usage, jobs and audit.
-- [ ] Verify no expired raw object or deleted no-save content returns from backup.
+- [ ] Verify no expired raw object, redacted segment or deleted no-save content returns from backup.
 
-**Verify:** a timed full restore rehearsal report.
+**Verify:** a timed full restore rehearsal report with the key retrieved from custody.
 
 **Pass:** the full restore succeeds with verified counts and nothing resurrected that policy deleted.
 
 #### WP08-T07 — Write and exercise incident runbooks
 
-**Depends on:** WP08-T05. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
+**Depends on:** WP08-T05, WP00-T21. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
 
-- [ ] Copy [the incident template](../templates/incident-runbook.md) for every §11.6 incident, extending the four written in WP04-T19.
+- [ ] Copy [the incident template](../templates/incident-runbook.md) for every §11.6 incident, extending the minimum set written in WP04-T18.
+- [ ] Write the personal-data breach runbook with the notification duties and deadlines recorded in D-28.
+- [ ] Open a public takedown channel for rights holders with a response target, wired to the WP03-T37 revoke action and the WP04-T11 takedown path.
 - [ ] Fill detection, severity, containment, evidence preservation, owner and escalation, communications, diagnosis, repair, replay, validation, recovery and follow-up.
-- [ ] Run a tabletop for every runbook and hands-on drills for leakage, bad source, deletion failure, provider outage, stuck job, budget exhaustion, leaked secret, rights takedown and restore/re-index.
+- [ ] Run a tabletop for every runbook and hands-on drills for leakage, bad source, deletion failure, provider outage, stuck job, budget exhaustion, leaked secret, rights takedown, personal-data breach and restore/re-index.
 - [ ] Time detection, containment and recovery; record gaps as defects.
 
 **Verify:** drill records with timings.
 
-**Pass:** every §11.6 runbook exists and has been exercised.
+**Pass:** every §11.6 runbook exists and has been exercised; the breach drill meets the D-28 deadlines.
 
 #### WP08-T08 — Run the unattended proof
 
-**Depends on:** WP08-T03 to WP08-T07. **Decision gates:** the observation window (§2.3) approved by a founder. **Protected:** none. **Material UI:** no. **Real money:** yes, small, inside caps.
+**Depends on:** WP08-T03 to WP08-T07. **Decision gates:** the observation window (§2.3), set with a founder; no proof is claimed until it is. **Protected:** none. **Material UI:** no. **Real money:** yes, small, inside caps.
 
 - [ ] Start from a recorded candidate SHA and configuration fingerprint.
 - [ ] Submit valid synthetic PDF, audio and Studio work; inject a transient provider failure, expire a lease, fail a deletion, fail a chat generation and kill one worker.
@@ -1869,10 +2024,11 @@ When a source version is deactivated or replaced: recompute active scope hashes;
 
 #### WP08-T09 — Threat-model the beta and run the pre-beta security review
 
-**Depends on:** WP08-T08, WP03-T35, WP03-T36. **Decision gates:** none. **Protected:** review only; any fix it triggers follows its own protected-path rules. **Material UI:** no. **Real money:** no.
+**Depends on:** WP08-T08, WP03-T35, WP03-T38. **Decision gates:** none. **Protected:** auth (CAPTCHA); production configuration (headers, Auth settings). **Material UI:** yes if CAPTCHA changes the access pages. **Real money:** no.
 
-- [ ] Write a threat model for the beta: assets, actors and trust boundaries for students, Batch Leaders (links or accounts), admins, workers, providers and storage.
-- [ ] Review registration and recovery abuse, upload abuse (size, type, malware, storage exhaustion), prompt injection through sources, link-token leakage, RLS and grants, privileged module use, secrets handling, dependency audit and rate limits.
+- [ ] Write a threat model for the beta: assets, actors and trust boundaries for students, Batch Leaders (links or accounts), admins, workers, providers, storage, backups and email.
+- [ ] Add CAPTCHA to sign-up, sign-in and recovery (it is configured nowhere today); confirm the sign-up mode chosen with D-25 and the Auth rate limits sized to the waves; check the versioned Beta Auth settings (WP04-T17) for drift.
+- [ ] Review registration and recovery abuse, upload abuse (size, type, malware, storage exhaustion), cost-exhaustion attacks on chat and Studio (including Vercel usage meters), prompt injection through sources and into the validator, link-token leakage, the Content-Security-Policy, RLS and grants, privileged module use, secrets handling and the dependency audit.
 - [ ] Run `/security-review` or an equivalent independent review on the release candidate and fix or record every finding.
 
 **Verify:** threat model document; review findings with dispositions.
@@ -1881,9 +2037,9 @@ When a source version is deactivated or replaced: recompute active scope hashes;
 
 #### WP08-T10 — Instrument the success signals
 
-The master plan §12 signals had no measurement task (findings B7).
+The master plan §12 signals had no measurement task.
 
-**Depends on:** WP06-T08, WP07-T06. **Decision gates:** D-08 privacy rules apply. **Protected:** RLS and migrations if new tables. **Material UI:** yes — an answer usefulness/trust rating. **Real money:** no.
+**Depends on:** WP06-T08, WP07-T06. **Decision gates:** none; the measurement must conform to D-08. **Protected:** RLS and migrations if new tables. **Material UI:** yes — an answer usefulness/trust rating. **Real money:** no.
 
 - [ ] Define with the founders: activation (a useful chat, Studio artifact or quiz), 7-day return, "meaningful session", repeated value and the trust rating question.
 - [ ] Derive activation, return and repeated value from existing records (sessions, answers, artifacts, attempts) without a third-party analytics service unless one is approved.
@@ -1891,9 +2047,24 @@ The master plan §12 signals had no measurement task (findings B7).
 - [ ] Report automation (share of valid sources READY without intervention) and cost per action, source and cohort from the job and usage ledgers.
 - [ ] Show the signals in an admin report with per-cohort breakdown.
 
-**Verify:** metric tests on synthetic activity; E2E for the rating; founder review.
+**Verify:** metric tests on synthetic activity; `pnpm test:e2e:database` for the rating; founder review.
 
 **Pass:** every master plan §12 signal is computed from recorded data for a synthetic week of activity; `Approved commit:` recorded.
+
+#### WP08-T11 — Build account and data-subject controls
+
+The [session revocation policy](../policies/auth-session-revocation.md) defers deleting real accounts to a later task, and D-28 may require access, correction and deletion requests.
+
+**Depends on:** WP06-T07, WP07-T06, WP00-T21. **Decision gates:** none beyond D-28. **Protected:** auth and authorization; RLS and migrations. **Material UI:** yes — account controls in Settings. **Real money:** no.
+
+- [ ] Let a student see and export their own data (profile, memberships, saved chats, artifacts, attempts, reports) in a readable format.
+- [ ] Let a student delete saved chats (WP06-T07) and delete their account: revoke sessions, remove or redact personal data, keep only the audit and usage metadata the approved policies allow, and record what remains in backups until they expire.
+- [ ] Handle correction requests for profile data and record every request and its outcome.
+- [ ] Test deletion with active sessions, memberships, reports under review and a pending quiz.
+
+**Verify:** `database-ci`; `pnpm test:e2e:database`; independent review.
+
+**Pass:** each D-28 data-subject request type can be completed from the product or a documented admin action without SQL; `Approved commit:` recorded.
 
 ### 11.1 Always-on runtime
 
@@ -1907,11 +2078,11 @@ Deploy the stateless web application, the database job dispatcher or queue, the 
 - Daily: verify budget counters, provider-cost totals, storage totals, deletion-deadline compliance, inactive memberships and failed notifications.
 - Weekly: run the frozen retrieval, chat and Studio regressions inside the approved cost window and publish a report.
 
-Intervals may change after measurement; the jobs and their owners stay explicit.
+Intervals may change after measurement; the jobs and their owners stay explicit. They run on the WP04-T14 scheduler, not on a once-a-day platform cron.
 
 ### 11.3 Admin dashboards
 
-In order: cohort and unit readiness and release; campaign and Batch Leader submission status; source workflow timeline and quality report; raw storage and deletion compliance; job queue, retries, dead letters and replay; retrieval, chat and Studio evaluation results; usage, provider cost, budgets and rate-limit state; reported answers, artifacts and quiz items with controlled access; success signals (WP08-T10); incident timeline and audit trail. Every mutation is audited and calls a tested server or database operation.
+In order: cohort and unit readiness and release; campaign and Batch Leader submission status; source workflow timeline, quality report and detected conflicts; raw storage and deletion compliance; job queue, retries, dead letters and replay; retrieval, chat and Studio evaluation results; usage, provider cost, budgets, rate-limit state, storage reduction and latency; reported answers, artifacts and quiz items with controlled access; success signals (WP08-T10); incident timeline and audit trail. Every mutation is audited and calls a tested server or database operation.
 
 ### 11.4 Alerts and automatic controls
 
@@ -1923,7 +2094,7 @@ Database backups suit beta risk; durable processed objects are backed up or vers
 
 ### 11.6 Incident runbooks
 
-Unsupported or high-risk answer; cross-cohort or cross-user leakage suspicion; bad source publication; source rights takedown; incomplete processed text after raw deletion; premature raw deletion; raw deletion failure; provider outage or rate limit; stuck or duplicate job; usage reservation inconsistency; budget exhaustion; leaked secret or link token; email delivery outage; database restore and re-index. Each states the first action, what to disable, evidence to keep, owner, communications decision, repair, replay and regression test.
+Unsupported or high-risk answer; cross-cohort or cross-user leakage suspicion; bad source publication; source rights takedown; incomplete processed text after raw deletion; premature raw deletion; raw deletion failure; provider outage or rate limit; stuck or duplicate job; usage reservation inconsistency; budget exhaustion; leaked secret or link token; email delivery outage; personal-data breach (D-28 notification duties); rights-holder takedown request; database restore and re-index. Each states the first action, what to disable, evidence to keep, owner, communications decision, repair, replay and regression test.
 
 ## 12. Work package 9: Cost and 100-student validation
 
@@ -1935,12 +2106,12 @@ Unsupported or high-risk answer; cross-cohort or cross-user leakage suspicion; b
 
 #### WP09-T01 — Benchmark providers with a controlled matrix
 
-Provider selection moved to WP04-T14. This task re-checks the selected providers at load scale.
+Provider selection moved to WP04-T19. This task re-checks the selected providers at load scale.
 
 **Depends on:** WP08-T08. **Decision gates:** D-05 caps for the load window. **Protected:** none. **Material UI:** no. **Real money:** yes — stop for fresh two-founder confirmation naming the load-test spend.
 
 - [?] Load-test spend approved by Ahmed and Ziad. OWNER INPUT REQUIRED.
-- [ ] Re-measure the selected providers' rate limits, concurrency, p50/p95 and cost at the load profile's peak rates, with the same fixtures and settings as WP04-T14.
+- [ ] Re-measure the selected providers' rate limits, concurrency, p50/p95 and cost at the load profile's peak rates, with the same fixtures and settings as WP04-T19.
 - [ ] Confirm the fallback and disable strategy from the D-04 record works under load; update the D-04 record if a limit changes the plan.
 
 **Verify:** provider load report.
@@ -1953,7 +2124,10 @@ Provider selection moved to WP04-T14. This task re-checks the selected providers
 
 - [ ] Record the exact web, worker, database, queue and storage plans, regions, pooling, concurrency, limits, cache, provider quotas, flags and release SHA (§12.1); recheck the Free-plan allowances against the profile (§0.8).
 - [ ] Provision only synthetic test users and content with canaries and a dedicated test prefix and scope.
+- [ ] Build the load executor: `scripts/run-load-suite.ts` only validates the profile today and runs no workload.
+- [ ] Version the load profile for the approved target, providers and cap; today it is `local-mock` with `maximum_cost: 0`.
 - [ ] Make the load runner refuse Beta or production unless an explicit two-step opt-in and the approved abort thresholds are present.
+- [ ] Record the Vercel and Supabase usage meters before and after each run and abort at an agreed share of any meter, so a load test cannot pause the Hobby account before the beta (§0.8).
 - [ ] Reconcile baseline counts and budgets before starting.
 
 **Verify:** the runner's refusal tests; the frozen configuration record.
@@ -1962,7 +2136,7 @@ Provider selection moved to WP04-T14. This task re-checks the selected providers
 
 #### WP09-T03 — Execute reproducibly
 
-**Depends on:** WP09-T02. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** yes, inside the approved load spend.
+**Depends on:** WP09-T02. **Decision gates:** the WP09-T01 load spend. **Protected:** none. **Material UI:** no. **Real money:** yes, inside the approved load spend.
 
 - [ ] Run the warm-up and report it separately.
 - [ ] Run the frozen realistic arrival-rate scenario, then the separate peak burst (§12.2).
@@ -2005,12 +2179,12 @@ Provider selection moved to WP04-T14. This task re-checks the selected providers
 **Depends on:** WP09-T05. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
 
 - [ ] Publish `evidence/wp09-load-cost/<date>_load-gate_beta_<sha>.md` with the scenario, versions, pass/fail per threshold, cost totals and p95 action cost, limitations and the next capacity trigger.
-- [ ] Ahmed and Ziad separately confirm the leakage/accounting and budget results, with the security/data and cost roles named.
+- [ ] The security/data and cost role holders record their review of the leakage, accounting and budget results; D-22 covers the protected gate, so no extra approval is requested.
 - [ ] Never average away a single release-blocking leakage or duplicate-charge event.
 
 **Verify:** the gate report.
 
-**Pass:** zero leakage, lost accepted work or uncontrolled backlog; at least 99% successful interactive requests excluding quota rejection; chat first-token p50 under 5 s and p95 under 12 s (a revised target needs both founders' recorded approval); no duplicate job, artifact, message or usage event; total and p95 action cost inside the cap; documented scale-up switches that need no rewrite.
+**Pass:** zero leakage, lost accepted work or uncontrolled backlog; at least 99% successful interactive requests excluding quota rejection; chat first-token p50 under 5 s and p95 under 12 s (a revised target changes master plan §11 first); no duplicate job, artifact, message or usage event; total and p95 action cost inside the cap; documented scale-up switches that need no rewrite.
 
 ### 12.1 Minimum-resource baseline
 
@@ -2068,11 +2242,11 @@ Repeat the identical test after each material change.
 
 **Depends on:** WP10-T02. **Decision gates:** none. **Protected:** storage; raw deletion. **Material UI:** no. **Real money:** yes, inside caps.
 
-- [ ] Create the Veterinary campaigns and give the Batch Leader access through WP03-T36; process PDF, audio and professor material through the existing job types and adapters, exactly as WP04-T20.
+- [ ] Create the Veterinary campaigns through WP03-T36, give the Batch Leader access through WP03-T38 and record rights through WP03-T37; process PDF, audio and professor material through the existing job types and adapters, exactly as WP04-T21.
 
 **Verify:** job timelines, quality, deletion and cost reports.
 
-**Pass:** the WP04-T20 pass line holds for the Veterinary corpus with no new job type or adapter.
+**Pass:** the WP04-T21 pass line holds for the Veterinary corpus with no new job type or adapter.
 
 #### WP10-T04 — Prove bidirectional isolation
 
@@ -2113,7 +2287,7 @@ Repeat the identical test after each material change.
 
 **Verify:** the gate reports.
 
-**Pass:** Veterinary meets every threshold Human Medicine met (master plan Phase 6 exit).
+**Pass:** Veterinary meets every master plan §11 threshold (master plan Phase 6 exit).
 
 #### WP10-T08 — Review architectural reuse
 
@@ -2135,35 +2309,36 @@ Repeat the identical test after each material change.
 
 #### WP11-T01 — Freeze release candidate and go/no-go packet
 
-**Depends on:** WP08-T09, WP08-T10, WP09-T06, WP10-T08. **Decision gates:** D-08, D-20, D-25 and D-26 approved. **Protected:** yes — Beta unlock for students is a D-22 protected action. **Material UI:** no. **Real money:** no new spend.
+**Depends on:** WP08-T09, WP08-T10, WP08-T11, WP09-T06, WP10-T08. **Decision gates:** D-08, D-20, D-25, D-26 and D-28 approved. **Protected:** beta go-live is a D-22 protected gate. **Material UI:** no. **Real money:** yes if the gates are rerun with paid providers; reuse exact-candidate evidence where the candidate is unchanged.
 
 - [ ] Tag the exact commit, migrations, configuration, evaluation datasets and provider models.
 - [ ] Run the security, retrieval, chat, Studio, automation, restore and load gates on the candidate.
 - [ ] Confirm the rights inventory, source activation, raw-deletion compliance, Terms/Privacy/boundary versions, retention, support, incident owners, alert and email delivery, quotas and hard budgets.
 - [ ] Create `evidence/wp11-beta/<date>_go-no-go_beta_<sha>.md` listing every blocker and open risk.
-- [ ] Obtain two-founder go approval. One founder cannot waive a leakage, grounding, rights, deletion or budget blocker.
+- [ ] Re-check Vercel Hobby eligibility against the D-21 triggers and keep the founders' written confirmation as redacted evidence.
+- [ ] Record the go decision: D-22 authorizes go-live once every technical gate passes, with no extra approval requested; a release blocker can only be fixed or contained, and any other accepted risk is a named founder decision.
 
 **Verify:** the go/no-go packet against linked evidence.
 
-**Pass:** both founders approve the exact candidate with no open release blocker.
+**Pass:** the exact candidate passes every gate with no open release blocker, and the go decision is recorded.
 
 #### WP11-T02 — Prepare onboarding and support
 
-**Depends on:** WP11-T01, WP03-T35. **Decision gates:** none beyond WP11-T01. **Protected:** auth (membership provisioning). **Material UI:** yes — onboarding copy and help pages. **Real money:** no.
+**Depends on:** WP11-T01, WP03-T35, WP08-T11. **Decision gates:** none beyond WP11-T01. **Protected:** auth (membership provisioning). **Material UI:** yes — onboarding copy and help pages. **Real money:** no.
 
-- [ ] Ahmed and Ziad approve the final Terms of Use, Privacy Notice and educational-boundary texts (including any legal review they choose) and publish them as new consent versions.
+- [ ] Ahmed and Ziad approve the final Terms of Use, Privacy Notice and educational-boundary texts, meeting the D-28 consent and notice requirements (including any legal review they choose), publish them as new consent versions and add the age check D-28 requires.
 - [ ] Provision wave memberships only through the WP03-T35 path, to verified addresses, with expiry.
 - [ ] Publish concise bilingual onboarding: the source boundary, the educational boundary, privacy and retention, feedback and reporting, and support.
-- [ ] Test account creation, verification email, consent, first unit, first chat, first artifact, first quiz, feedback, logout, account and data controls, and support escalation on phone and desktop.
+- [ ] Test account creation, verification email, consent, first unit, first chat, first artifact, first quiz, feedback, logout, the WP08-T11 data controls, and support escalation on phone and desktop.
 - [ ] Set support response targets and issue categories without exposing ordinary chats.
 
 **Verify:** E2E onboarding journeys in Beta with founder accounts; founder review.
 
-**Pass:** a new student completes the onboarding journey unaided; `Approved commit:` recorded.
+**Pass:** a founder-run test account completes every onboarding step in Beta on phone and desktop without help; `Approved commit:` recorded.
 
 #### WP11-T03 — Release one wave at a time
 
-**Depends on:** WP11-T02. **Decision gates:** none. **Protected:** D-22 release actions. **Material UI:** no. **Real money:** usage inside caps.
+**Depends on:** WP11-T02. **Decision gates:** none. **Protected:** D-22 release actions. **Material UI:** no. **Real money:** usage inside caps; the load rerun needs fresh two-founder confirmation of its spend.
 
 - [ ] Record planned users, start and end, owner, monitoring window, success and abort thresholds, and the prior-wave review.
 - [ ] Invite only the current wave (§14.1 order).
@@ -2208,7 +2383,7 @@ In order: Ahmed's and Ziad's accounts; 5–10 close testers; 20–30 Human Medic
 
 ## 15. Work package 12: Post-PoC extension preparation
 
-**Outcome:** payments and video have approved extension designs and threat and test plans, without entering the free PoC.
+**Outcome:** payments and video have approved extension designs and threat and test plans, without entering the free PoC. Master plan Phase 8 implementation (webhook fulfillment, commercial policies, resource plan increases, the next program) starts only after PoC acceptance (WP11-T05); its tasks are added to this runbook then.
 
 ### 15.0 Tasks
 
@@ -2218,6 +2393,8 @@ In order: Ahmed's and Ziad's accounts; 5–10 close testers; 20–30 Human Medic
 
 - [ ] Re-run the WP04-T01 video-ready contract test against the final PoC schema and confirm provider interfaces, source kinds, the job graph, the processed-document contract, catalog, retrieval, chat and Studio still accept a future video processor without duplication.
 
+**Verify:** the video contract test.
+
 **Pass:** the contract test passes on the final schema.
 
 #### WP12-T02 — Design video ingestion
@@ -2225,6 +2402,8 @@ In order: Ahmed's and Ziad's accounts; 5–10 close testers; 20–30 Human Medic
 **Depends on:** WP12-T01. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
 
 - [ ] Write a video design record covering rights, size/duration/cost preflight, temporary video and audio, timestamps and visual extraction, completeness, quality, deletion of raw and derived temporary objects, and replay (§15.2).
+
+**Verify:** the design record and its threat list.
 
 **Pass:** the design record is approved by both founders.
 
@@ -2234,6 +2413,8 @@ In order: Ahmed's and Ziad's accounts; 5–10 close testers; 20–30 Human Medic
 
 - [ ] Write an automated-payment design record covering provider selection criteria, signed webhook verification, event uniqueness, the order and entitlement state machine, an append-only money ledger, reconciliation, refunds and disputes, currency and amount verification, replay and incident handling (§15.1).
 
+**Verify:** the design record and its threat list.
+
 **Pass:** the design record is approved by both founders.
 
 #### WP12-T04 — Enforce PoC exclusions
@@ -2241,6 +2422,8 @@ In order: Ahmed's and Ziad's accounts; 5–10 close testers; 20–30 Human Medic
 **Depends on:** WP12-T03. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
 
 - [ ] Add a check that fails on receipt uploads, founder approval queues or editable balances in migrations and routes.
+
+**Verify:** `pnpm verify` with the new check and a negative fixture.
 
 **Pass:** the check runs in `pnpm verify` and passes.
 
@@ -2250,6 +2433,8 @@ In order: Ahmed's and Ziad's accounts; 5–10 close testers; 20–30 Human Medic
 
 - [ ] Add contract tests for the video processor and payment provider using mocks only; provision no payment or video provider until a post-PoC decision is approved.
 
+**Verify:** the mock contract tests.
+
 **Pass:** the mock contract tests pass with no provider account.
 
 #### WP12-T06 — Review additive architecture
@@ -2257,6 +2442,8 @@ In order: Ahmed's and Ziad's accounts; 5–10 close testers; 20–30 Human Medic
 **Depends on:** WP12-T04, WP12-T05. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
 
 - [ ] A reviewer confirms these are additive adapters and workflows, not a second knowledge or entitlement architecture.
+
+**Verify:** the review record.
 
 **Pass:** the review is recorded (master plan Phase 8 exit).
 
@@ -2266,31 +2453,31 @@ Never build payment receipt upload or founder approval. After PoC acceptance, se
 
 ### 15.2 Video processor contract
 
-Video becomes another `source_kind` and processor behind the existing workflow: validate rights, type, size, duration, checksum and cost; store raw video temporarily; extract complete audio in an isolated worker; transcribe with timestamps; optionally extract essential slide or visual text when approved; produce the same processed Markdown/JSON/locator contract; run the same hint, conflict, quality, chunk, embedding and retrieval checks; delete raw video and extracted audio after verified output; index transcript segments into the same unit pool.
+Video becomes another `source_kind` and processor behind the existing workflow: validate rights, type, size, duration, checksum and cost; store raw video temporarily; extract complete audio in an isolated worker; transcribe with timestamps; optionally extract essential slide or visual text when approved; produce the same processed Markdown/JSON/locator contract; run the same hint, conflict, quality, chunk, embedding and retrieval checks; delete raw video and extracted audio after verified output; index transcript segments into the same unified knowledge pool.
 
 ## 16. PoC acceptance checklist
 
-These are the master plan §11 gates, copied with their thresholds, and the task whose evidence proves each. Tick a line only when that evidence exists for both cohorts where the gate applies.
+These are the master plan §11 gates as of 19 October 2026, with the task whose evidence proves each; if the master plan changes, it wins and this table follows. Tick a line only when that evidence exists for both cohorts where the gate applies. A percentage gate is read as WP00-T20 decides: either the raised case minimums, or "no miss on N" with the confidence bound recorded (15 of 15 shows only about 82% at one-sided 95% confidence).
 
 | Gate | Threshold (master plan §11) | Proved by |
 | --- | --- | --- |
 | Cross-user/cohort/unit leakage | 0 cases | WP02-T09, WP05-T05, WP09-T04, WP10-T04 |
-| Unsupported factual claims | 0 in accepted frozen evaluation answers | WP06-T08 (validator and academic review) |
-| Evidence provenance coverage | 100% of accepted answers and artifacts | WP06-T08, WP07-T06 |
-| Missing-information behaviour | At least 95% correct; no hidden-knowledge completion | WP05-T06, WP06-T08 |
-| Conflict behaviour | 100% of known frozen conflicts show both positions | WP05-T06, WP06-T08 |
-| Professor-hint retrieval | At least 95% for direct relevant questions | WP05-T06, WP06-T08 |
-| Educational case behaviour | At least 95% answered without false refusal when evidence exists | WP06-T08 |
-| Real-patient boundary | 100% of explicit high-risk cases | WP06-T08 |
-| Conversion completeness | 100% of required pages/audio accounted for or rejected | WP04-T20, WP10-T03 |
-| Raw deletion correctness | 100% of accepted sources deleted; 0 premature | WP04-T20, WP10-T03 |
-| Availability correctness | 0 unauthorized or premature units | WP02-T05, WP03-T08, WP03-T35 |
-| Artifact grounding | 0 unsupported accepted claims, answers or explanations | WP07-T06 |
+| Unsupported factual claims | 0 in accepted frozen evaluation answers | WP06-T08, WP10-T07 |
+| Evidence provenance coverage | 100% of accepted answers and artifacts | WP06-T08, WP07-T06, WP10-T07 |
+| Missing-information behaviour | At least 95% correct; no hidden-knowledge completion | WP05-T06, WP06-T08, WP10-T07 |
+| Conflict behaviour | 100% of known frozen conflicts show both positions | WP05-T06, WP06-T08, WP10-T07 |
+| Professor-hint retrieval | At least 95% for direct relevant questions | WP05-T06, WP06-T08, WP10-T07 |
+| Educational case behaviour | At least 95% answered without false refusal when evidence exists | WP06-T08, WP10-T07 |
+| Real-patient boundary | 100% of explicit high-risk cases | WP06-T08, WP10-T07 |
+| Conversion completeness | 100% of required pages/audio accounted for or rejected | WP04-T21, WP10-T03 |
+| Raw deletion correctness | 100% of accepted sources deleted; 0 premature | WP04-T21, WP10-T03 |
+| Availability correctness | 0 unauthorized or premature units | WP02-T05, WP03-T08, WP03-T35, WP03-T37 |
+| Artifact grounding | 0 unsupported accepted claims, answers or explanations | WP07-T06, WP10-T07 |
 | Retry idempotency | 0 duplicated source, segment, embedding, artifact, usage or charge | WP04-T12, WP06-T08, WP07-T06, WP09-T04 |
-| Routine automation | 0 manual processing steps in the accepted path | WP08-T08 |
+| Routine automation | 0 manual processing steps in the accepted path | WP08-T08, WP10-T07 |
 | 100-student workload | No leakage, lost accepted work or uncontrolled backlog | WP09-T06 |
 | Interactive availability | At least 99% successful requests under load, excluding quota rejection | WP09-T06 |
-| Chat latency | Target p50 under 5 s and p95 under 12 s to first token | WP06-T05, WP09-T06 |
+| Chat latency | Target p50 under 5 s and p95 under 12 s to first token | WP06-T06, WP09-T06 |
 | Cost | p95 action and total workload inside the approved cap | WP09-T06, WP11-T05 |
 
 Release blockers (master plan §11): any scope leakage, unsupported clinical claim sent as grounded fact, hidden external knowledge, concealed conflict, premature deletion, unauthorized exposure or repeatable duplicate provider charge.
@@ -2303,14 +2490,14 @@ Release blockers (master plan §11): any scope leakage, unsupported clinical cla
 
 The work below cannot move until Ahmed and Ziad decide or supply something. In the order the critical path (§2.2) needs it; the [decision register](../../planning/decision-register.md) holds owners and dates.
 
-1. Name the security/data, academic, cost and operations role holders (WP00-T01).
-2. Approve D-10, the processed format (unblocks WP04-T01 and the whole pipeline).
-3. Decide D-25, how students get cohort membership (WP03-T35), and D-24, Batch Leader links or accounts (WP03-T36).
-4. Supply the Cohort A source rows and rights evidence and name the academic reviewer (WP00-T03, WP00-T20).
-5. Approve nonzero D-05 caps for the provider benchmark (WP04-T14, the first real-money step).
-6. Decide D-18 and D-19 (WP04-T16), D-17 (WP04-T17) and the restore target (WP04-T18) before the first real source.
-7. Decide D-08 before the real chat retention work (WP06-T07).
-8. Decide D-20 and D-26 before alerts and real email (WP08-T05).
+1. **Data protection, now:** decide how UniMind meets Egypt's Personal Data Protection Law before any real personal data or foreign processing, with counsel if you choose (WP00-T21, D-28). The compliance period was reported to end around 1 November 2026.
+2. Name the security/data, cost and operations role holders and the Veterinary academic reviewer (WP00-T01; D-01 already names Ahmed for Human Medicine).
+3. Approve D-10, the processed format, or allow WP04-T01 to WP04-T13 to build on the proposal with synthetic data (unblocks the whole pipeline).
+4. Decide D-25 (how students get cohort membership, WP03-T35) and confirm D-24 (Batch Leader links or accounts, WP03-T38).
+5. Supply the Cohort A source rows, rights holders and permission evidence (WP00-T03), and choose the case-count and second-rater rules for the academic suite (WP00-T20).
+6. Decide D-17 (worker host), D-18 with the D-19 values, the D-21 revision for real sources in locked Beta, D-27 (backup and key custody) and D-26 (email sender) as WP04-T14 to WP04-T17 bring them.
+7. Approve nonzero D-05 caps and the benchmark exception (WP04-T19, the first real-money step).
+8. Decide D-08 before the real chat retention work (WP06-T07) and D-20 before full alert routing (WP08-T05).
 9. Decide D-02 before the Veterinary package (WP10-T01).
 10. Record or withdraw the WP03-T13 hands-on review.
 
@@ -2328,13 +2515,15 @@ The work below cannot move until Ahmed and Ziad decide or supply something. In t
 | `pnpm lint`, `pnpm typecheck`, `pnpm format:check` | Static checks | None | Exit 0 |
 | `pnpm check:boundaries`, `pnpm check:sql`, `pnpm scan:secrets` | Module boundaries, SQL conventions, secret scan | None | Exit 0 |
 | `pnpm test:unit`, `test:integration`, `test:security` | Vitest layers | None | Exit 0 |
-| `pnpm test:e2e`, `pnpm test:e2e:demo` | Real-mode and synthetic browser suites | Local app and mocks only | Exit 0 |
+| `pnpm test:e2e`, `pnpm test:e2e:demo` | Credential-free real-mode and synthetic browser suites | Local app and mocks only | Exit 0 |
+| `pnpm test:e2e:database`, `pnpm test:integration:database` | Authenticated browser and Auth suites against the disposable stack | GitHub-hosted runner only (`database-ci`) | Exit 0 |
+| `pnpm test:node`, `pnpm typecheck:fresh`, `pnpm verify:ci-workflow` | Parts of `verify:ci`: all Vitest layers, a fresh-checkout type check, the CI workflow policy | None | Exit 0 |
 | `pnpm test:eval` | Dataset validation and the evaluation runner | Mock-only by default; a live profile needs its own guarded command | Hashes valid; reports name the exact scope |
 | `pnpm test:load` | Guarded load profile | Rejects Beta/production, real providers and nonzero cost by default | `NOT_EXECUTED` report until WP09 |
-| `pnpm smoke:deployment` | Redacted public deployment smoke | Target deployment only | Six checks pass |
+| `pnpm smoke:deployment` | Redacted deployment smoke for local or Preview targets | Target deployment only | Seven checks pass |
 | `pnpm db:ci:*` | Disposable Supabase lifecycle (`start`, `reset`, `upgrade`, `migrations`, `test`, `advisors`, `types`, `stop`) | GitHub-hosted runner containers only | Each step exits 0; `stop` runs under `if: always()` |
 | `pnpm db:types:check` | Committed types are current | None | No Git diff |
-| `pnpm db:reset`, `db:migrations`, `db:push:dry-run`, `db:types`, `test:integration:hosted` | Retired hosted seams | None | Do not run |
+| `pnpm db:reset`, `db:migrations`, `db:push:dry-run`, `db:types`, `db:metadata`, `test:integration:hosted` | Retired hosted seams | None | Do not run |
 
 A command that needs secrets or a paid provider says so in its name (for example `test:eval:live-approved`) and requires an explicit environment profile, a budget preflight and a confirmation guard. `pnpm verify` never spends money.
 
@@ -2399,13 +2588,13 @@ A command that needs secrets or a paid provider says so in its name (for example
 2. Keep the correlation ID, policy/model/source/configuration versions and minimal authorized evidence.
 3. Decide whether the failure is RLS, server authorization, retrieval filtering, cache authorization, generation or validation.
 4. Add the failing case to the frozen regression set without exposing private content.
-5. Fix, run the full security and evaluation suites, and obtain the protected-gate confirmations from Ahmed and Ziad before re-enabling.
+5. Fix, run the full security and evaluation suites, and re-enable under D-22 once they pass; any accepted residual risk is a named founder decision.
 
 ### 19.9 A Free-plan limit is reached
 
 1. Identify the limit (database size, storage, egress, monthly active users, pausing) from the provider dashboard or the WP08-T02 capacity metrics.
 2. Contain: pause new ingestion or new invitations; do not delete evidence to make room.
-3. Measure what grew and compare with the WP04-T15 capacity estimate.
+3. Measure what grew and compare with the WP04-T20 capacity estimate.
 4. A paid tier is a real-money decision: present the exact plan and monthly exposure to Ahmed and Ziad and wait for both.
 
 ## 20. Final release truth test

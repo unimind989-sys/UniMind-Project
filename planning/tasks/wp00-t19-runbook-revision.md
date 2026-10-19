@@ -14,7 +14,7 @@
 
 **Branch:** claude/wp00-t19-runbook-revision
 
-**Updated (UTC):** 2026-10-19
+**Updated (UTC):** 2026-10-20
 
 ## Contract
 
@@ -22,11 +22,11 @@
 
 **Inputs:** `docs/plans/poc-master-plan.md`, the runbook at `74bd340`, `planning/decision-register.md`, decision records, `scripts/agent/status.ts` (heading and checkbox format), the code tree at `74bd340`.
 
-**Files:** `docs/runbooks/poc-execution-runbook.md`, `docs/reviews/runbook-revision-2026-10/findings.md`, `planning/decision-register.md`, `docs/plans/poc-master-plan.md` (decision log rows only), decision records whose resolution path moved (D-04, D-17, D-18 register row), this record.
+**Files:** `docs/runbooks/poc-execution-runbook.md`; `docs/reviews/runbook-revision-2026-10/` (findings, second review); `planning/decision-register.md`; `docs/plans/poc-master-plan.md` (decision log rows only); the D-02, D-04, D-05, D-10, D-17, D-19 and D-24 records and the raw-data policy (`Blocks` lines); `scripts/agent/status.ts` and `tests/unit/agent-status.test.ts`; small stale-reference fixes in `docs/README.md`, `docs/agents/workflow.md`, `docs/templates/task-record.md`, `docs/runbooks/environment-promotion.md`, `planning/decision-workshop.html` and two task records; this record.
 
-**Protected paths:** none. Documentation only; no code, migration, workflow or configuration change.
+**Protected paths:** none. Documentation plus the read-only `agent:status` tool; no migration, workflow, auth, storage or production configuration change.
 
-**Verify:** `corepack pnpm lint:agents`; `corepack pnpm agent:status` (task parsing, no lost task, sensible next task); `corepack pnpm format:check`; `git diff --check`; full diff review; every existing `#### WPxx-Tyy — title` heading still present with the same text.
+**Verify:** `corepack pnpm lint:agents`; `corepack pnpm agent:status`; `tests/unit/agent-status.test.ts`; `corepack pnpm check`; `git diff --check`; full diff review; every `#### WPxx-Tyy — title` heading on `main` still present with the same text; a dependency audit with no unknown or forward dependency.
 
 **Pass:** no task heading lost or renamed; every master-plan deliverable maps to a task (findings §F); no open decision is shown as approved; no completed task is shown as incomplete or the reverse, except the two corrections the findings name; agent lint passes.
 
@@ -42,27 +42,29 @@
 - [x] Rewrite the runbook as revision 3.0.
 - [x] Sync the decision register, the master-plan decision log (new open D-25, D-26) and the moved resolution paths.
 - [x] Run agent lint, status, format check and the diff review.
+- [x] Second review in five independent passes; every finding verified against its source; revision 3.1, `agent:status` dependency awareness, register and record sync, second review report.
 - [ ] Founder review of the revised runbook, then PR, required CI and merge.
 
 ## Decisions
 
 - Existing task IDs and heading texts stay unchanged (decision records, reviews and task records link to them). New tasks get new IDs; document order is the execution order.
 - Completed tasks keep their heading, one checked line and their record/evidence links. Their delivery history stays in task records, evidence and git, as WP00-T18 already required for authority documents.
-- Product questions found during the audit become open decisions (D-25 student membership, D-26 transactional email) or decision-gate items. None is answered here.
+- Product questions found during the audits become open decisions (D-25 student membership, D-26 transactional email, D-27 backup and key custody, D-28 data protection, and a D-21 revision for real sources in locked Beta) or decision-gate items. None is answered here.
+- New WP04 tasks from revision 3.0 were renumbered in 3.1 (they never reached `main`): host T14, storage T15, backup T16, email T17, gate T18, benchmark T19, embeddings T20, corpus T21.
 - WP03-T13's last item becomes `[?]` (waiting on Ahmed's hands-on review) instead of `[~]`; WP00-T03 and WP00-T05 items that need founder input become `[?]`. These are status corrections, not completions.
 
 ## Current state
 
-**Changed:** runbook revision 3.0 (3046 → 2429 lines); findings report; decision register (D-25, D-26 added; resolution paths and blocked tasks updated); master-plan decision log (D-25, D-26 as Open); `Blocks` lines in the D-02, D-04, D-05, D-17, D-19 records and the raw-data policy; WP03-T13 record status `[?]`.
+**Changed:** runbook revision 3.1; first findings corrected and second review published; decision register (D-25 to D-28, moved resolution paths); master-plan decision log (D-25 to D-28 as Open); `Blocks` lines in decision records and the raw-data policy; `agent:status` reads `Depends on`; stale references fixed.
 
-**Proof:** heading comparison against `74bd340` → 0 lost or renamed, 15 added. State comparison with the status parser → 63 done unchanged; only intended changes (decision gates now `[?]`, WP03-T13 `[~]`→`[?]`). `pnpm lint:agents` → pass (65 documents, every link resolves). `pnpm agent:status` → next WP00-T05. `git diff --check` → clean. `pnpm check` → format, boundaries, SQL, typecheck, lint, agent lint and secret scan pass; `test:unit` failed once inside the parallel run and passed 1046/1046 when rerun alone (no test reads the changed documents' content). `pnpm verify` not run: documentation-only change; required CI on the PR is the gate.
+**Proof:** headings vs `main` → 0 lost, 20 added; status parser → 63 done unchanged, only intended state changes; dependency audit → no unknown or forward dependency; `pnpm agent:status` → next executable WP00-T05; other results in the PR body.
 
-**Review:** self-review. Documentation-only change; no protected path.
+**Review:** five independent read-only review agents on revision 3.0; findings verified by the executor against code, migrations, decision records and provider documentation. Revision 3.1 itself is self-reviewed.
 
 **Approved commit:** NOT REQUIRED: no UI change.
 
-**Remaining:** Ahmed's review of the revised task order and the two new open decisions; PR and merge.
+**Remaining:** Ahmed's review of the revised order and the new open decisions (urgent: D-28); PR and merge.
 
 ## Next action
 
-Present the findings and the revised runbook to Ahmed; on his go-ahead, open the PR, wait for required CI and merge.
+Present the second review to Ahmed; on his go-ahead, open the PR, wait for required CI and merge.

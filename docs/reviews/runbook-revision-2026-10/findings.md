@@ -2,6 +2,8 @@
 
 **Task:** [WP00-T19](../../runbooks/poc-execution-runbook.md#wp00-t19--revise-the-execution-runbook-against-the-master-plan). **Base:** `main` at `74bd340` (19 October 2026). **Authority:** the [master plan](../../plans/poc-master-plan.md) for product scope; the code at `74bd340` for what exists.
 
+> **Superseded in part by the [second review](second-review.md) (20 October 2026).** The second review found errors in this report and in revision 3.0: the A7 evidence below was misread, D3 and D5 were worded wrongly, and several schema names were wrong. It also renumbered the new WP04 tasks: worker host WP04-T14, storage WP04-T15, backup WP04-T16, email WP04-T17, readiness gate WP04-T18, provider benchmark WP04-T19, embedding configuration WP04-T20, Cohort A corpus WP04-T21. Task IDs in the tables below are the revision 3.0 numbers.
+
 Ahmed asked for an in-depth revision of the execution runbook because it read as thin and missing steps. This report lists what was wrong, with the evidence, and where revision 3.0 fixes each item. Product questions found on the way are recorded as open decisions; none is answered here.
 
 ## Summary
@@ -23,7 +25,7 @@ The runbook was strong where work already happened (WP01–WP03 carry detailed, 
 | A4 | Budget enforcement (caps, reservation before a provider call, 100% block, kill switch) is defined in WP00-T06 and alerted in WP08-T05, but nothing builds it before the first paid call. No `src/lib/usage` exists. | Code tree; master §13 | WP04-T13 builds the guard before any paid benchmark or processing. |
 | A5 | The video-ready contract is PoC scope (master §5.1) and §15.2 says to prove it "before PoC completion", yet WP12 starts only after PoC acceptance. | Master §5.1; runbook §2, §15.2 | WP04-T01 proves the contract; WP12-T01 re-checks it. |
 | A6 | Implementation rule 16 needs correlation IDs and structured logs from the first job, but the logger arrives in WP08-T02. No `src/lib/observability` exists. | Code tree | WP04-T02 creates the structured logger and correlation propagation; WP08-T02 adds metrics and dashboards. |
-| A7 | Every embedding column is `vector(3)`, a synthetic placeholder. No task replaces it after D-04, and nobody checks whether a full corpus fits the Supabase Free database. | 9 × `vector(3)` in `supabase/migrations` | WP04-T15 sets the real configuration through a forward migration and estimates database and storage size against current Free limits; a paid tier is a money stop. |
+| A7 | The only embedding index and `retrieve_authorized_segments` hard-code a synthetic 3-dimension configuration (the column itself is an unsized `vector`; corrected in the second review). No task replaces it after D-04, and nobody checks whether a full corpus fits the Supabase Free database. | `vector(3)` casts in the synthetic index and retrieval function | WP04-T15 sets the real configuration through a forward migration and estimates database and storage size against current Free limits; a paid tier is a money stop. |
 
 ## B. Missing steps
 
@@ -62,9 +64,9 @@ The runbook was strong where work already happened (WP01–WP03 carry detailed, 
 
 - **D1.** §0.6 and §0.8 still described hosted development/CI databases; §19.2 step 4 waited for WP01-T08; §17 described the August foundation session. All rewritten to the D-21 topology or removed.
 - **D2.** §4.5 said migrations need review approval, but `main` no longer requires an approving GitHub review (WP00-T18). Independent review follows the workflow instead.
-- **D3.** §6.1 listed routes that no longer match the app (`/admin/[resource]`, `/welcome`, `/consent`, `sources`, `evidence`, `report`, `/quiz` without an attempt ID).
+- **D3.** §6.1 did not list routes the app has (`/admin/[resource]`, `/welcome`, `/consent`, `sources`, `evidence`, `report`) and listed `/quiz/[attemptId]`, which the app does not have.
 - **D4.** The open-decision table omitted D-10 and D-24 and listed approved D-09 as open.
-- **D5.** WP03-T13 stayed `[~]` and WP00-T03/T05 stayed `[ ]` although only founder input can move them, so the selector pointed at work an agent cannot do. Those items are now `[?]` with the input named.
+- **D5.** WP03-T13 stayed `[~]` and WP00-T03 stayed `[ ]` although only founder input can move them, so the selector pointed at work an agent cannot do. Those items are now `[?]` with the input named; WP00-T05 was split so its synthetic part is executable and the academic part moved to WP00-T20.
 - **D6.** Each package restated its tasks a second time in reference sections (raw deletion appeared three times). Contracts that later tasks rely on stay; restatements are gone.
 - **D7.** About 900 lines of delivery history (PR numbers, run IDs, SHAs) sat inside completed tasks, against WP00-T18's rule to keep progress logs out of authority documents. Completed tasks keep one line plus their record and evidence links.
 - **D8.** The header said 30 September and revision 2.0. WP03-T14 was never assigned; the gap is noted, not filled.

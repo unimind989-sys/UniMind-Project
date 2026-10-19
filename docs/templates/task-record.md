@@ -8,7 +8,7 @@
 
 **Outcome:** <one observable result>
 
-**Acceptance:** <link to the runbook task heading, e.g. docs/runbooks/poc-execution-runbook.md#wp03-t14>
+**Acceptance:** <link to the runbook task heading, e.g. docs/runbooks/poc-execution-runbook.md#wp04-t02--implement-the-workflow-state-machine>
 
 **Owner:** <agent and selected Ahmed-or-Ziad checkpoint>
 

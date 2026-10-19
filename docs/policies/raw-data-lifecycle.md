@@ -8,7 +8,7 @@
 
 **Version/effective date:** NOT EFFECTIVE FOR REAL DATA
 
-**Blocks:** WP04-T09 (real data); WP04-T11 (real takedown); WP04-T16; WP04-T19; WP06-T07 (real data); WP11-T01
+**Blocks:** WP04-T09 (real data); WP04-T11 (real takedown); WP04-T18; WP06-T07 (real data); WP11-T01
 
 This draft makes synthetic implementation deterministic. It does not authorize real source upload, real provider processing, or production retention. D-09 in the master plan supplies the approved direction; D-10 and D-19 must be approved before the real-data profile exists.
 

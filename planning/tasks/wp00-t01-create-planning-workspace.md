@@ -18,7 +18,7 @@
 
 **Dependencies:** None. WP00-T00 controls are implemented and awaiting review; WP00-T01 does not depend on that review result.
 
-**Inputs:** Master-plan decision log; runbook sections 0.6 and 3.0; controlled templates under `docs/templates/`.
+**Inputs:** Master-plan decision log; runbook sections 0.7 and 3.0; controlled templates under `docs/templates/`.
 
 **Files:** `docs/decisions/README.md`, `docs/policies/README.md`, `docs/policies/raw-data-lifecycle.md`, `evals/`, `evidence/wp00-pilot/README.md`, the controlled files under `planning/`, `planning/decision-register.md`, `planning/agent-operability-audit.md`, `planning/decision-workshop.html`, `planning/d-17-hosting-options-discussion.html`, this task record, the synchronized master-plan/runbook entries, and the readiness verifier.
 

@@ -9,7 +9,7 @@ This directory separates authoritative plans, executable procedures, and reusabl
 
 ## Runbooks
 
-- [PoC execution runbook](runbooks/poc-execution-runbook.md) — dependency-ordered build tutorial, atomic task list, verification gates, rollback guidance, troubleshooting, and final release checks.
+- [PoC execution runbook](runbooks/poc-execution-runbook.md) — dependency-ordered task list with each task's gates, proof and pass line, the values still to set, real-data and money boundaries, troubleshooting and the PoC acceptance checklist.
 - [Environment promotion](runbooks/environment-promotion.md) — guarded Preview smoke, exact-commit locked Beta candidate, and forward-only rollback procedure.
 
 ## Agent guidance
@@ -36,6 +36,7 @@ The always-on rules for coding agents (Codex, Claude Code) are in [`AGENTS.md`](
 - [Canonical design contract](../DESIGN.md) — current visual and interaction rules. Dated approvals are in the [design approval history](../evidence/wp03-product-shell/design-approval-history.md).
 - [Frontend overhaul audit](reviews/wp03-frontend-overhaul.md) — role flows, preserved capabilities, concrete findings and design checkpoints.
 - [WP03 refinement](reviews/wp03-refinement/README.md) — October 2026 platform audit, plan, CI and testing report and final verification (WP03-T24 to T30).
+- [Runbook revision](reviews/runbook-revision-2026-10/second-review.md) — October 2026 first and second reviews of the execution runbook against the master plan, the code and the platform (WP00-T19).
 - [Planning workspace](../planning/README.md) — in-progress task records, the decision register, and controlled planning inputs. Approved direction moves to its owning document under `docs/`.
 
 ## Placement rules

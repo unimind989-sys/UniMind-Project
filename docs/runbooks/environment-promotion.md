@@ -1,6 +1,6 @@
 # Preview and Beta environment promotion
 
-Use this procedure only for WP01-T09 after WP01-T08 proves ephemeral database/Auth CI and the environment matrix names the two repurposed Supabase Free projects plus separate Vercel Hobby project scopes. It does not authorize spend, real data, Beta unlock, or paid-provider enablement.
+Use this procedure for WP01-T09 and every later Preview or Beta promotion, after WP01-T08 proves ephemeral database/Auth CI and the environment matrix names the two repurposed Supabase Free projects plus separate Vercel Hobby project scopes. It does not authorize spend, real data, Beta unlock, or paid-provider enablement.
 
 ## Preconditions
 

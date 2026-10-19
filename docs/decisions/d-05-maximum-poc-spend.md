@@ -12,7 +12,7 @@
 
 **Owner guidance recorded:** Ahmed, 2026-08-23 — minimize total PoC cost, but do not treat zero spend as a hard requirement.
 
-**Blocks:** WP04-T13 (nonzero caps), WP04-T14, WP04-T05 (paid), WP04-T06 (paid), WP04-T10 (paid), WP04-T20, WP06-T05 (paid), WP07-T03 (paid), WP09-T01, WP09-T03, WP11-T01
+**Blocks:** WP04-T13 (nonzero caps), WP04-T19 (benchmark cap and benchmark exception), WP04-T05 (paid), WP04-T06 (paid), WP04-T10 (paid), WP04-T21, WP06-T05 (paid), WP07-T03 (paid), WP09-T01, WP09-T03, WP11-T01
 
 ## Context
 
