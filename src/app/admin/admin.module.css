@@ -247,6 +247,10 @@
   .selectedDetail {
     position: sticky;
     inset-block-start: 80px;
+    /* A detail taller than the window scrolls inside itself, so the reason
+       field and the recording action never wait below the fold. */
+    max-height: calc(100dvh - 96px);
+    overflow-y: auto;
   }
 }
 .detailBack {

@@ -77,6 +77,10 @@
     opacity: 1;
   }
 }
+/* In-page targets land below the stuck masthead. */
+.page :where(#workspace, #how-it-works, #landing-main) {
+  scroll-margin-block-start: 72px;
+}
 /* The landing keeps its approved logo spacing (the shell brand is 44px). */
 .header > a:first-child {
   padding-block: 4px;

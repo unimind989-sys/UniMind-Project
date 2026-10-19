@@ -164,9 +164,10 @@
   flex-direction: column;
   padding: 0;
 }
-/* The band paints above its folio edge, so a page that overlaps the edge
-   (the Shelf's resume page) stays in front of it. */
-.content[data-band] > :first-child {
+/* A page band paints above its folio edge, so a page that overlaps the edge
+   (the Shelf's resume page) stays in front of it. Unit bands have no edge
+   and keep their own stacking (their menu panel floats over the body). */
+.content[data-band] > :first-child:has(+ .bandEdge) {
   position: relative;
   z-index: 1;
 }

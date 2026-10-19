@@ -167,7 +167,13 @@ const chatStates: readonly ScreenState[] = [
           .toBeGreaterThan(1200);
         const main = await boxOf(page.getByRole("main"));
         const region = await boxOf(conversation);
-        expect(region.width).toBeGreaterThan(main.width - 110);
+        // WP03-T33: on wide screens the conversation is a centred reading
+        // column of at most 68rem (1088px), never narrower than 1000px here.
+        expect(region.width).toBeGreaterThan(1000);
+        expect(region.width).toBeLessThanOrEqual(1090);
+        const startGap = region.x - main.x;
+        const endGap = main.x + main.width - region.x - region.width;
+        expect(Math.abs(startGap - endGap)).toBeLessThanOrEqual(2);
         expect(region.height).toBeGreaterThan(125);
         // The conversation absorbs any overflow: the study body around it
         // never scrolls too, not even by the Arabic privacy line's few px.
