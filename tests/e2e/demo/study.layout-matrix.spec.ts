@@ -165,14 +165,16 @@ const chatStates: readonly ScreenState[] = [
               (await page.getByRole("main").boundingBox())?.width ?? 0,
           )
           .toBeGreaterThan(1200);
-        const main = await boxOf(page.getByRole("main"));
         const region = await boxOf(conversation);
         // WP03-T33: on wide screens the conversation is a centred reading
         // column of at most 68rem (1088px), never narrower than 1000px here.
+        // Centred within the chat layout, whose scroller keeps a stable
+        // scrollbar gutter at the inline end that main's box would count.
         expect(region.width).toBeGreaterThan(1000);
         expect(region.width).toBeLessThanOrEqual(1090);
-        const startGap = region.x - main.x;
-        const endGap = main.x + main.width - region.x - region.width;
+        const layout = await boxOf(conversation.locator("..").locator(".."));
+        const startGap = region.x - layout.x;
+        const endGap = layout.x + layout.width - region.x - region.width;
         expect(Math.abs(startGap - endGap)).toBeLessThanOrEqual(2);
         expect(region.height).toBeGreaterThan(125);
         // The conversation absorbs any overflow: the study body around it

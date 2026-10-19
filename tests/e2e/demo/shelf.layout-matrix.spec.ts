@@ -230,7 +230,9 @@ const setupStates: readonly ScreenState[] = [
         };
       });
       expect(geometry.pills).toBe(0);
-      expect(geometry.inset).toBeLessThanOrEqual(24);
+      // WP03-T33: the row is a book with an 8px spine, so the title starts
+      // within 32px of the row's edge (26px on desktop, 20px on phones).
+      expect(geometry.inset).toBeLessThanOrEqual(32);
       if (width <= 390) expect(geometry.height).toBeLessThan(100);
       // The h1 names the list; its h2 stays for structure only (MD-15).
       const listHeading = page.locator("[class*='shelfHeading'] h2");

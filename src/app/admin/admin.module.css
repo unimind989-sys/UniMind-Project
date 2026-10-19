@@ -251,6 +251,9 @@
        field and the recording action never wait below the fold. */
     max-height: calc(100dvh - 96px);
     overflow-y: auto;
+    /* Room inside the scroller for the detail sheet's ring and lift. */
+    margin: -4px -4px 0;
+    padding: 4px 4px 32px;
   }
 }
 .detailBack {

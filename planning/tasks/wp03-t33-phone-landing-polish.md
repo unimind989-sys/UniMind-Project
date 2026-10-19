@@ -58,7 +58,7 @@
 
 **Proof:** candidate 1: check, demo 209/209, main e2e green after the Replay fix, review approve. Felt pass: `corepack pnpm check` RUNNING; after-capture (desktop and phone EN) RUNNING; browser pane: landing sticky masthead, nine reveals, bilingual section and footer render with no overflow. Demo and main e2e NOT RUN yet on the felt pass.
 
-**Review:** independent review by the `independent-reviewer` sub-agent on the uncommitted candidate: request changes (2 major, 3 minor, all fixed); re-review of the delta at `7fd0a68`: approve. Self-review: `git diff --check` clean, full diff read, no secrets, presentation plus DESIGN.md, runbook, task record and one test only.
+**Review:** candidate 1: independent review (sub-agent), request changes then approve at `7fd0a68`. Felt pass: independent review of `7fd0a68..95a3356`: request changes (3 major: the demo layout matrix asserted the full-width chat column; the band stacking rule reached unit bands and put the quiz rail over the open menu; the sticky admin detail had no height cap; 2 minor: landing anchors under the stuck masthead; a record line claiming a Settings band). All fixed in `752652c`; re-review: one major (the centring check must measure against the chat layout, not main, because of the scroller's stable gutter) and one minor (the sticky detail clips its sheet shadow); the spec fix is in the working tree, the shadow fix follows the demo run.
 
 **Approved commit:** PENDING: candidate `7fd0a68` was presented and Ahmed asked for a felt pass on every screen; the new candidate is presented after the proof below.
 
