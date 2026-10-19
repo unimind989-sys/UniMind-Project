@@ -4,7 +4,7 @@
 
 **Task ID:** WP00-T19
 
-**Status:** [~]
+**Status:** [x]
 
 **Outcome:** The runbook covers every master-plan deliverable with an executable, correctly ordered task, and every open task states its dependencies, decision gates, protected-path and material-UI flags, proof and pass condition.
 
@@ -44,7 +44,7 @@
 - [x] Run agent lint, status, format check and the diff review.
 - [x] Second review in five independent passes; every finding verified against its source; revision 3.1, `agent:status` dependency awareness, register and record sync, second review report.
 - [x] Third review in six passes (fact-check, two fresh-agent dry runs, delivery realism, product/UX, master-plan critique); revision 3.2; proposed master-plan amendments; third review report.
-- [ ] Founder review of the revised runbook and the master-plan amendments, then PR, required CI and merge.
+- [x] Ahmed asked to deliver (20 October 2026): PR #102, required CI, squash merge. The master-plan amendments stay unapplied until the founders approve them.
 
 ## Decisions
 
@@ -64,8 +64,8 @@
 
 **Approved commit:** NOT REQUIRED: no UI change.
 
-**Remaining:** Ahmed's review of the revised order, the open decisions (urgent: D-28) and the master-plan amendments A1–A16; PR and merge.
+**Remaining:** NONE for this task. Founder follow-ups live in runbook §17 (D-28 first) and in the proposed master-plan amendments A1–A16.
 
 ## Next action
 
-Present the second review to Ahmed; on his go-ahead, open the PR, wait for required CI and merge.
+None for WP00-T19. The next executable runbook task is WP00-T05 (`pnpm agent:status`).

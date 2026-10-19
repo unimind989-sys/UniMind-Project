@@ -569,7 +569,7 @@ WP00-T06 asks the founders for six nonzero caps, but nothing estimates what the 
 - [x] Fix the dependency order, add the missing governance, corpus, wiring, email, security-review and success-signal tasks, give every open task dependencies, gates, flags, proof and a pass line, and list the values still to set.
 - [x] Run a second, independent review in five dimensions (master-plan traceability, code and schema reality, cross-document consistency, executability, platform and legal risk); verify every finding against its source; fix the runbook, the register and the status tool; publish the second report.
 - [x] Record the product questions found as open decisions (D-25 to D-28 and the D-21 revision) without answering them.
-- [ ] Founder review of the revised order, then deliver through one PR with required CI.
+- [x] Ahmed asked to deliver on 20 October 2026; delivered through [#102](https://github.com/unimind989-sys/UniMind-Project/pull/102) with required CI. The master-plan amendments stay unapplied until the founders approve them. These closure markers become authoritative only when that PR merges with green required CI.
 
 **Verify:** `pnpm lint:agents`; `pnpm agent:status`; the `agent-status` unit tests; every pre-revision task heading is still present with the same text.
 
