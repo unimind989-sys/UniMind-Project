@@ -4,3043 +4,2426 @@
 
 **Owners:** Ahmed and Ziad
 
-**Last updated:** 30 September 2026
+**Last updated:** 19 October 2026
 
-**Rule:** Complete work in dependency order and attach the listed exit evidence before marking a package complete.
+**Runbook revision:** 3.0 — every master-plan deliverable has an ordered, executable task ([revision findings](../reviews/runbook-revision-2026-10/findings.md))
 
-**Runbook revision:** 2.0 — executable tutorial edition
+**Rule:** Complete work in document order, respect each task's dependencies and decision gates, and attach the listed proof before marking a task or package complete.
 
 ## 0. How to execute this runbook
 
-This document is both the build tutorial and the release checklist. Read the short control sections below once, then execute the numbered work packages in order. A work package is not complete because code exists or a screen looks correct. It is complete only when every required task is checked, every automated gate passes, and its evidence bundle is reviewed.
+This document is the build plan and the release checklist. The master plan says what UniMind must be; this runbook says in which order to build it and how each step is accepted. The [agent workflow](../agents/workflow.md) says how one task is executed and delivered. A task record under `planning/tasks/` holds the working state of one task. When these sources disagree, the higher authority in `AGENTS.md` wins; say so instead of choosing silently.
+
+A package is complete only when every task in it is `[x]`, its gate passed on an exact commit, and the gate evidence is linked. Code that exists or a screen that looks right is not completion.
 
 ### 0.1 Status legend
 
-Use these markers in the working copy or project tracker:
-
 - `[ ]` not started.
-- `[~]` in progress; add the owner and branch/PR beside it.
-- `[?]` blocked by a named decision or external dependency; link the blocking record.
-- `[x]` complete and linked to evidence.
-- `[!]` failed gate or release blocker; link the incident or defect.
-- `N/A` only when the master plan explicitly excludes the item and the gate reviewer records why.
+- `[~]` in progress; the task record names the owner and branch.
+- `[?]` blocked; the same line names the decision or founder input that unblocks it.
+- `[x]` done and proven.
+- `[!]` failed gate or release blocker; link the defect.
 
-The runbook checkbox is the only task status; the task record holds working state. Never turn `[ ]` directly into `[x]`: mark `[~]` when claiming the task and `[x]` only after the delivery boundary is proven.
+`pnpm agent:status` derives a task's state from its checkboxes: any `[!]` means failed, any `[?]` means blocked, all `[x]` means done, all `[ ]` means not started, anything else means in progress. Never turn `[ ]` directly into `[x]`: mark `[~]` when claiming a task and `[x]` only after its delivery boundary is proven.
 
-Derive task status from its checklist: all `[ ]` means not started; any `[~]`, or a mixture of completed and incomplete items, means in progress; all applicable items `[x]` plus linked reviewed evidence means complete. `[?]` and `[!]` take precedence over those derived states.
+A task that cannot start until a decision owned elsewhere is approved carries that gate as a `[?]` line at the top, so it reads as blocked instead of executable; when the decision is approved, the line becomes `[x]` with the decision link. A task that is itself a decision's resolution path (see the [decision register](../../planning/decision-register.md)) is not blocked by that decision: the agent prepares the options and evidence as ordinary steps and turns the approval step into `[?]` only when it reaches it.
 
-When a request does not name a task, select exactly one using this order:
+**Selecting a task** (used by the workflow's Pick step):
 
-1. Continue the earliest `[~]` task whose dependencies remain valid and whose current owner is available.
-2. Otherwise select the earliest `[ ]` task in the delivery order whose dependencies have reviewed `PASS` evidence and whose definition of ready is satisfied.
-3. If that task is blocked, mark the blocking item `[?]` and link the decision or dependency. Advance an executable prerequisite when one exists; for a human-only blocker, record the tasks it blocks and select the earliest task that does not depend on it. Never cross an actual dependency merely because later work is easier.
-4. Before editing, create or update the task record (section 0.10). Selection is complete when one task ID, owner, expected files, verification and hard stops are explicit.
+1. Continue the earliest `[~]` task whose owner is available.
+2. Otherwise take the earliest `[ ]` task in document order whose `Depends on` tasks are all `[x]` and which has no `[?]` line. Document order is the execution order. Task IDs are stable labels: they are never renumbered, and a new task takes the next free number in its package.
+3. Never cross a blocked task. A task that depends on a `[?]` task is not executable either. Advance an executable prerequisite instead, or pick the earliest task that does not depend on the blocker.
+4. A user-named outcome maps to exactly one task. If none fits, add the task to this runbook first.
 
-**WP00 mock bridge:** a reviewed `PASS` for WP00-T08 may route selection to WP01 while unresolved real-choice tasks remain `[?]`, because WP01 uses their documented synthetic/mock interfaces. This bridge unlocks WP01 only and never marks an open decision complete or enables a real adapter.
-
-**WP01 foundation bridge:** after every WP01 task is complete and WP01-T11 has reviewed `PASS` evidence, selection may route to the earliest eligible WP02 task because the delivery table makes Package 1 its dependency. Open real-choice decisions retain their exact consumer blocks. D-22 supplies standing two-founder authorization for selected-task non-financial rights, RLS, raw-deletion, budget-control, release, and live-provider actions after their technical gates pass; real-money exposure still requires fresh confirmation.
+**Bridges for open decisions:** WP01 onward use synthetic fixtures and deterministic mocks, so the open WP00 decision tasks do not block them. Each open decision blocks only the consumers named in the [decision register](../../planning/decision-register.md), and only for the real choice (real data, a real provider, real money).
 
 ### 0.2 Agent execution and human checkpoints
 
-Coding agents execute tasks end to end through the lifecycle in [the agent workflow](../agents/workflow.md). The selected Ahmed-or-Ziad speaker is the ordinary checkpoint; routine technical completion does not wait for a second message. Founders resolve product, academic, security/data and rights decisions that repository authority cannot decide, and perform unavoidable signed-in actions; record such a human operator separately.
+Coding agents execute tasks end to end through the [agent workflow](../agents/workflow.md). The selected Ahmed-or-Ziad speaker is the ordinary checkpoint; routine technical completion does not wait for a second message. Founders resolve product, academic, security/data and rights decisions that repository authority cannot decide, and perform unavoidable signed-in actions; record such a human operator separately.
 
-Ahmed and Ziad share service identities (Ahmed's separate GitHub account is the current exception), so never infer the acting founder from a provider account; record the explicitly selected speaker. D-22 is both founders' standing authorization for every selected-task action that cannot spend money or create a financial liability. Paid calls, billable resources, paid or auto-billing trials, and nonzero cap increases or re-enablement require fresh explicit Ahmed-and-Ziad confirmation immediately before the financial mutation.
+Ahmed and Ziad share service identities (Ahmed's separate GitHub account is the current exception), so never infer the acting founder from a provider account; record the explicitly selected speaker. D-22 is both founders' standing authorization for every selected-task action that cannot spend money or create a financial liability. Paid calls, billable resources, paid or auto-billing trials, and nonzero cap increases or re-enablement require fresh explicit Ahmed-and-Ziad confirmation immediately before the financial mutation, naming the exact exposure.
 
-### 0.3 Definition of ready for any task
+### 0.3 Task format
+
+Every open task uses this shape. Completed tasks keep their heading, one checked line and links to their record and evidence; their delivery history lives in the task record, the evidence file and git.
+
+```text
+#### WPNN-TNN — Imperative outcome title
+
+**Depends on:** task IDs. **Decision gates:** D-xx or none. **Protected:** none, or the protected paths. **Material UI:** no, or the surfaces. **Real money:** no, or the exposure.
+
+**Outputs:** files, migrations, routes, reports or decisions.
+
+- [?] Decision gate line, one per gate (removed or checked when approved).
+- [ ] Ordered steps; each is one reviewable slice.
+
+**Verify:** commands or test suites.
+
+**Pass:** the observable result, with the master plan's numbers where it has them.
+```
+
+- **Protected** means a protected path from `AGENTS.md` (auth and authorization, RLS and migrations, storage, CI workflows, production configuration). It needs a written plan before editing, an independent review of the exact diff before merge and a recorded rollback (workflow §2 and §5). D-22 protected actions (rights, raw deletion, release/unlock, beta) proceed only after their technical gate passes.
+- **Material UI** means a visible presentation or interaction change to an approved surface. The founder approves the rendered candidate, recorded as `Approved commit:` in the task record.
+- **Real money** means the D-22 stop applies: fresh two-founder confirmation immediately before the financial mutation.
+- Values a step needs but this runbook cannot fix yet are listed in §2.3 with the task or decision that sets them.
+
+### 0.4 Definition of ready
 
 Do not start a task until all applicable statements are true:
 
-- [ ] Its dependencies in the delivery-order table are complete.
-- [ ] The expected output is named as a file, migration, route, report, deployment, or decision record.
-- [ ] Required inputs and test fixtures exist and contain no unapproved private data.
-- [ ] Open decisions that change the implementation are resolved, or the task uses a documented mock/interface that does not prejudge them.
-- [ ] The executor knows which paid calls, destructive actions, migrations, or external releases are prohibited.
+- [ ] Its `Depends on` tasks are complete and it has no open `[?]` gate.
+- [ ] The expected output is named as a file, migration, route, report, deployment or decision record.
+- [ ] Required inputs and fixtures exist and contain no unapproved private data.
+- [ ] Every §2.3 value the task needs is set, or the task uses its documented synthetic default and does not claim the real gate.
+- [ ] The executor knows which paid calls, destructive actions, migrations or external releases are prohibited.
 - [ ] The verification command and passing result are known.
 - [ ] The rollback or disable action is known for any shared-environment change.
 
-### 0.4 Definition of done for any task
+### 0.5 Definition of done
 
 A task may be marked complete only when all applicable statements are true:
 
 - [ ] The implementation is committed on a reviewable branch with no unrelated changes.
-- [ ] Lint, type checking, relevant unit/integration/security tests, and the production build pass.
-- [ ] When database behavior is affected, migrations reset a disposable CI Supabase stack from empty and upgrade a populated synthetic fixture target; Preview/Beta are never destructive-test targets.
+- [ ] Lint, type checking, relevant unit/integration/security tests and the production build pass (`pnpm verify`).
+- [ ] When database behaviour is affected, migrations reset the disposable CI Supabase stack from empty and upgrade a populated synthetic fixture; Preview and Beta are never destructive-test targets.
 - [ ] Authorization was tested as an allowed role and at least one forbidden role.
 - [ ] Retryable work was replayed with the same idempotency key and created no duplicate state or charge.
-- [ ] Logs contain the correlation ID and safe diagnostics, but no secret, raw private content, or ordinary chat content.
-- [ ] Documentation, environment schema, fixtures, and generated database types were updated where affected.
+- [ ] Logs contain the correlation ID and safe diagnostics, but no secret, raw private content or ordinary chat content.
+- [ ] Documentation, environment schema, fixtures and generated database types were updated where affected.
 - [ ] The PR maps each acceptance criterion to its proof; a gate report exists in `evidence/` when external or production proof was required.
-- [ ] Required CI is green on the exact head, and any genuine product/academic judgment has its named founder decision.
+- [ ] Required CI is green on the exact head, and any genuine product or academic judgment has its named founder decision.
 
-### 0.5 Evidence storage and naming
+### 0.6 Evidence storage and naming
 
-Store durable proof in the repository when it contains no secret or private data. Store sensitive exports in the approved restricted evidence store and commit only a redacted index.
+Store durable proof in the repository when it contains no secret or private data. Store sensitive exports in the approved restricted evidence store and commit only a redacted index. Evidence folders: `evidence/wp00-pilot/`, `wp01-foundation/`, `wp02-database/`, `wp03-product-shell/`, `wp04-ingestion/`, `wp05-retrieval/`, `wp06-chat/`, `wp07-studio/`, `wp08-operations/`, `wp09-load-cost/`, `wp10-veterinary/`, `wp11-beta/` and `wp12-extensions/`.
 
-Use this repository structure:
-
-```text
-docs/
-  adr/                         # Architecture decision records.
-  decisions/                   # Product/provider/policy decisions.
-  policies/                    # Rights, retention, deletion, privacy, safety.
-  runbooks/                    # Exercised incident and recovery procedures.
-  templates/                   # Copy-first forms referenced by this runbook.
-evidence/
-  README.md                    # Rules and links to restricted evidence.
-  wp00-pilot/
-  wp01-foundation/
-  wp02-database/
-  wp03-product-shell/
-  wp04-ingestion/
-  wp05-retrieval/
-  wp06-chat/
-  wp07-studio/
-  wp08-operations/
-  wp09-load-cost/
-  wp10-veterinary/
-  wp11-beta/
-  wp12-extensions/
-```
-
-Name an evidence bundle `YYYY-MM-DD_<gate>_<environment>_<short-sha>.md`. Each bundle must contain:
+Name a bundle `YYYY-MM-DD_<gate>_<environment>_<short-sha>.md`. Each bundle contains:
 
 1. Scope and exact acceptance criteria.
 2. Commit SHA and migration list.
 3. Environment and non-secret configuration fingerprint.
 4. Commands executed and their exit codes.
 5. Summary metrics and links to raw machine-readable reports.
-6. Failures, deviations, and linked defects.
-7. Agent executor, selected speaker/checkpoint, review provenance, and D-22 standing authorization.
+6. Failures, deviations and linked defects.
+7. Agent executor, selected speaker/checkpoint, review provenance and D-22 standing authorization.
 8. Rollback/disable instruction.
 
-Never commit `.env*`, access tokens, private raw files, student exports, full chat transcripts, provider request payloads containing source content, or unredacted production logs.
+Never commit `.env*`, access tokens, private raw files, student exports, full chat transcripts, provider request payloads containing source content or unredacted production logs.
 
-### 0.6 Approved architecture baseline versus open decisions
+### 0.7 Approved baseline and open decisions
 
-The following baseline is authoritative because it is already approved by the master plan:
+The baseline below is approved by the master plan:
 
 | Area | Locked direction |
 | --- | --- |
-| Web | Next.js App Router, TypeScript, React Server Components by default. |
-| Mutations | Server Actions for ordinary authenticated mutations; Route Handlers for streaming, uploads, provider callbacks, and webhooks. |
-| Runtime | Node.js, not Edge, for provider SDKs, streaming, and processing unless a measured route proves Edge-compatible. |
-| Database/auth | Supabase Auth and PostgreSQL with RLS and explicit grants. |
-| Retrieval | PostgreSQL full-text search plus pgvector behind one server-authorized retrieval function/adapter. |
-| Business state | PostgreSQL is authoritative for jobs, reservations, budgets, release state, provenance, and audit. |
+| Web | Next.js App Router, TypeScript, React Server Components by default. Read `node_modules/next/dist/docs/` before using a Next.js API; this version differs from older tutorials. |
+| Mutations | Server Actions for ordinary authenticated mutations; Route Handlers for streaming, uploads, provider callbacks and webhooks. |
+| Runtime | Node.js, not Edge, for provider SDKs, streaming and processing unless a measured route proves Edge-compatible. |
+| Database/Auth | Supabase Auth and PostgreSQL with RLS and explicit grants. |
+| Retrieval | PostgreSQL full-text search plus pgvector behind one server-authorized retrieval function and adapter. |
+| Business state | PostgreSQL is authoritative for jobs, reservations, budgets, release state, provenance and audit. |
 | Storage | Private temporary-raw and durable-processed namespaces behind an adapter. |
-| Processing | Independently deployable durable workers with leases, heartbeats, retries, and reconciliation. |
-| Environment hosting | Workstations run development processes and deterministic mocks only; database/Auth for development and CI is hosted and isolated; preview/beta is externally hosted. |
+| Processing | Independently deployable durable workers with leases, heartbeats, retries and reconciliation. |
+| Environments (D-21) | Workstations run the Next.js development process and deterministic mocks only. Database/Auth tests run on a disposable Supabase stack in GitHub Actions. Two persistent Supabase Free projects host synthetic Preview and locked Beta, each with its own Vercel Hobby project scope. No shared component runs on a founder computer. |
 | AI boundary | Approved uploaded material only; no web-search or outside-answer branch. |
 | Beta | Free controlled beta; no payment receipt or manual payment workflow. |
 
-These are deliberately unresolved and must be closed in work package 0 before their real adapters are enabled:
+Open decisions keep a safe placeholder until approved. Status lives in the [master-plan decision log](../plans/poc-master-plan.md#15-decision-log); the [decision register](../../planning/decision-register.md) names owners and every blocked task.
 
-| Decision | Placeholder behavior until approved | Blocking effect |
-| --- | --- | --- |
-| D-01/D-02/D-03 — Exact Human and Veterinary cohorts/institutions | Synthetic catalog fixtures. | Blocks real source processing and invitation. |
-| D-04 — Generation, embedding, OCR, and transcription providers/models | Deterministic mocks. | Blocks paid calls and final embedding schema dimensions. |
-| D-17 — Queue transport and worker host | Database job table plus in-process test dispatcher; founder computers are excluded as worker hosts. | Blocks always-on deployment, not domain implementation. |
-| D-18 — Raw and processed object-storage provider | Filesystem/in-memory test adapter using synthetic data only. | Blocks private source upload. |
-| D-05 — Total/weekly/action budgets | Zero-paid-work feature flags. | Blocks paid provider enablement. |
-| D-08/D-09/D-19 — Retention periods and deletion deadlines | Short synthetic-test values only. | Blocks real user/source data. |
-| D-20 — Notification and incident channels | In-process deterministic test sink. | Blocks beta go-live. |
+| Decision | Placeholder until approved | Resolved in | First task it blocks |
+| --- | --- | --- | --- |
+| D-02 Veterinary cohort | Synthetic Veterinary catalog fixtures | WP00-T02 | WP10-T01 |
+| D-04 AI providers | Deterministic mocks; `vector(3)` embedding placeholder | WP04-T14 | WP04-T15 |
+| D-05 Maximum spend | Every paid flag false; zero caps | WP00-T06 | WP04-T14 |
+| D-08 Chat retention and misuse review | Short synthetic retention values; misuse detection disabled | WP06-T07 (record proposed; founders approve) | WP06-T07 |
+| D-10 Processed format | Proposed contract used only in documents | WP00-T04 | WP04-T01 |
+| D-17 Queue and worker host | Database job table plus in-process test dispatcher | WP04-T17 | WP04-T19 |
+| D-18 Object storage provider | Filesystem/in-memory adapter, synthetic data only | WP04-T16 | WP04-T19 |
+| D-19 Retention periods and deadlines | Short synthetic-test values | WP00-T04 | WP04-T16 |
+| D-20 Notification and incident channels | In-process deterministic test sink | WP08-T05 | WP08-T07 |
+| D-24 Batch Leader one-time upload links | Account-based Batch Leader screens stay as built and are not extended | Ziad's confirmation | WP03-T36 |
+| D-25 Student cohort membership | Memberships exist only in synthetic seed data; no real student gains access | WP03-T35 | WP11-T02 |
+| D-26 Transactional email delivery | Supabase built-in sender for synthetic Preview only | WP08-T05 | WP11-T01 |
 
-Do not hide one of these choices inside source code. Close it using `docs/templates/decision-record.md`, update the master-plan decision log, and record the configuration key used by the adapter.
+Do not hide one of these choices inside source code. Close it with `docs/templates/decision-record.md`, update the master-plan decision log and the register, and record the configuration key the adapter reads.
 
-### 0.7 Current platform facts that affect this implementation
+### 0.8 Platform facts to recheck
 
-Verify these again on the day the foundation is created or upgraded:
+Recheck these on the day a task depends on them; record what you found in the task's evidence.
 
-- Use Node.js 24 LTS for the initial baseline and pin an exact supported patch in `.nvmrc` and `package.json#engines`. Node.js 20 is end-of-life; do not copy older Next.js tutorials that still select it.
-- Next.js currently requires Node.js 20.9 or newer. Use App Router and the project-local package manager lockfile.
-- Install the Supabase CLI as a pinned development dependency and invoke it as `pnpm supabase`; do not assume a globally installed CLI. D-21 prohibits workstation database infrastructure but requires the CLI's complete disposable stack on a standard GitHub-hosted Ubuntu CI runner.
-- New Supabase projects may not expose newly created `public` tables to the Data API automatically. RLS and SQL `GRANT` are separate requirements; test both.
-- Do not pin a version in `CREATE EXTENSION`; Supabase ignores/deprecates explicit extension versions. Record the installed version in evidence instead.
-- Use `@supabase/ssr` for Next.js cookie-based sessions. A publishable key may be public; secret/service-role keys are server-only.
-- Prefer HNSW for the first pgvector index, but benchmark it against exact search on the frozen dataset. The operator class must match the query distance operator.
-- Supabase database backups do not include Storage objects. Processed objects need their own durability/restore proof.
+- Node.js 24 LTS is pinned in `.nvmrc` and `package.json#engines`; pnpm is pinned in `packageManager`.
+- The Supabase CLI is a pinned development dependency invoked as `pnpm supabase`. D-21 prohibits workstation database infrastructure; the disposable stack runs only on a standard GitHub-hosted Ubuntu runner.
+- New `public` tables are not always exposed to the Data API automatically. RLS and SQL `GRANT` are separate requirements; test both.
+- Do not pin a version in `CREATE EXTENSION`; record the installed version in evidence instead.
+- Use `@supabase/ssr` for cookie sessions. A publishable key may be public; secret and service-role keys are server-only.
+- Prefer HNSW for the first pgvector index, benchmark it against exact search, and match the operator class to the query distance operator.
+- Supabase database backups do not include Storage objects. Processed objects need their own durability and restore proof.
+- Supabase Free projects have no automatic backups, pause after a period of inactivity, and have fixed database size, storage, egress and monthly-active-user allowances. Read the current numbers on the Supabase pricing page before WP04-T15 and WP09-T02.
+- Supabase's built-in Auth email sender is meant for testing and has a low hourly limit. Real student onboarding needs a custom SMTP sender (D-26).
+- Vercel Hobby use is conditional (D-21): revenue, payments, advertising, paid contributors or another commercial scope change triggers review before further deployment.
 
-Authoritative references:
+References: [Node.js releases](https://nodejs.org/en/about/previous-releases), [Supabase CLI](https://supabase.com/docs/reference/cli/introduction), [Supabase migrations](https://supabase.com/docs/guides/deployment/database-migrations), [Supabase RLS](https://supabase.com/docs/guides/database/postgres/row-level-security), [Supabase server packages](https://supabase.com/docs/guides/auth/choosing-a-server-package), [Supabase vector indexes](https://supabase.com/docs/guides/ai/vector-indexes), [Supabase custom SMTP](https://supabase.com/docs/guides/auth/auth-smtp), [Supabase pricing](https://supabase.com/pricing), [Supabase breaking changes](https://supabase.com/changelog?types=breaking-change).
 
-- [Node.js release status](https://nodejs.org/en/about/previous-releases)
-- [Next.js installation and system requirements](https://nextjs.org/docs/app/getting-started/installation)
-- [Supabase CLI reference](https://supabase.com/docs/reference/cli/introduction)
-- [Supabase deployment and database migrations](https://supabase.com/docs/guides/deployment/database-migrations)
-- [Supabase RLS guidance](https://supabase.com/docs/guides/database/postgres/row-level-security)
-- [Supabase server package selection](https://supabase.com/docs/guides/auth/choosing-a-server-package)
-- [Supabase vector indexes](https://supabase.com/docs/guides/ai/vector-indexes)
-- [Supabase breaking-change feed](https://supabase.com/changelog?types=breaking-change)
+### 0.9 Workstation preflight (Windows/PowerShell)
 
-### 0.8 Workstation preflight (Windows/PowerShell)
-
-Run these commands from the repository root. Do not continue until every check is green:
+Run from the repository root:
 
 ```powershell
 git --version
 node --version
 corepack --version
-corepack pnpm supabase --version
+corepack pnpm --version
 git status --short
 ```
 
-Expected result:
+Node must match `.nvmrc` and pnpm must match `packageManager`. `git status --short` is empty or every existing change has a known owner outside the intended work. Install dependencies with `corepack pnpm install --frozen-lockfile`; never run `npm install`.
 
-- Git is installed.
-- Node begins with `v24.` and is the exact patch recorded in `.nvmrc` once that file exists.
-- Corepack is available.
-- The pinned Supabase CLI is available. Database-backed work additionally requires an approved hosted `development` or `ci` target, network access, and scoped credentials supplied outside version control.
-- `git status --short` is empty or every existing change has a known owner and is outside the intended work.
+Workstations need no database, Docker, WSL2 or other local infrastructure. Database and Auth behaviour is proven by the CI `database-ci` job; for earlier feedback push the branch and dispatch CI with `database_feedback=true`. The retired hosted commands (`pnpm db:reset`, `db:migrations`, `db:push:dry-run`, `db:types`, `test:integration:hosted`) have no approved target; do not run them.
 
-If Node is missing or wrong, install the approved Node 24 LTS patch using the team's chosen Windows version manager, reopen PowerShell, and repeat the check. Do not install Docker, WSL2, or another local database runtime for UniMind. If an approved hosted synthetic database target or its scoped credentials are unavailable, database migrations, Auth integration, and RLS tasks remain blocked while credential-free unit/UI/mock work may continue.
+### 0.10 Delivery loop, task records and package gates
 
-Then prepare the pinned package manager after `package.json` exists:
-
-```powershell
-corepack enable
-corepack install
-pnpm --version
-```
-
-Do not run `npm install` in a pnpm repository. If an accidental `package-lock.json` appears, stop, identify why it was created, and remove it only after confirming it is not an intentional user change.
-
-### 0.9 Delivery loop
-
-Follow [the agent workflow](../agents/workflow.md) for branch naming, slices, checks, review and delivery. This section adds only runbook-specific requirements:
+Follow the [agent workflow](../agents/workflow.md) for branches, slices, checks, review and delivery. Runbook-specific additions:
 
 - `pnpm verify` stays credential-free, mock-only and zero paid-provider cost, and matches CI. Reuse exact-commit CI evidence instead of rerunning overlapping proof.
-- Database and Auth changes are proven by the CI `database-ci` job on a disposable Supabase stack. The hosted development/CI commands (`pnpm db:reset`, `pnpm db:migrations`, `pnpm db:types`, `pnpm test:integration:hosted`) are retired with that profile (D-21); do not run them (see `CONTRIBUTING.md`).
-- Merge only when required checks are green. Never repair Preview or Beta manually after merge; add a migration or configuration change and redeploy.
+- Never repair Preview or Beta by hand after merge; add a migration or configuration change and redeploy through [environment promotion](environment-promotion.md).
+- Every task uses [the task-record template](../templates/task-record.md) at `planning/tasks/wpNN-tyy-short-outcome.md`, at or under 120 lines, holding current state only.
+- An issue titled only "set up database", "build RAG" or "finish admin" is not executable; decompose it into tasks first.
 
-### 0.10 Task records
-
-Every task uses [the task-record template](../templates/task-record.md), stored at `planning/tasks/wpNN-tyy-short-outcome.md` and kept at or under 120 lines. The committed record holds the current state; commits and the PR hold history. A fresh agent must be able to continue from the record, the branch and the runbook without chat history.
-
-An issue titled only “set up database,” “build RAG,” or “finish admin” is not executable and must be decomposed before work begins.
-
-### 0.11 Gate review procedure
-
-At the end of every package:
+At the end of every package, run its gate:
 
 1. Freeze the candidate commit SHA.
 2. Deploy or reset the package's target environment from version control.
 3. Run the package gate from a clean state.
-4. Run at least one negative/forbidden path and one retry/recovery path.
-5. Compare measured results with numeric thresholds; do not substitute “looks good.”
-6. Record every deviation as a defect, risk acceptance, or decision. Release blockers cannot be waived informally.
-7. Record `PASS`, `FAIL`, or `CONDITIONAL PASS` from the required evidence. A genuine product/academic judgment names the deciding founder. A protected non-financial gate records D-22 standing authorization; a real-money mutation requires fresh decisions from Ahmed and Ziad.
-8. Mark package tasks `[x]` only after `PASS`. A conditional pass never permits a later dependent package that needs the missing behavior.
+4. Run at least one forbidden path and one retry/recovery path.
+5. Compare measured results with the numeric thresholds; "looks good" is not a result.
+6. Record every deviation as a defect, risk acceptance or decision. Release blockers cannot be waived informally.
+7. Record `PASS`, `FAIL` or `CONDITIONAL PASS`. A genuine product or academic judgment names the deciding founder. A protected non-financial gate records D-22; a real-money mutation requires fresh decisions from Ahmed and Ziad.
+8. Mark the gate task `[x]` only after `PASS`. A conditional pass never unlocks a later task that needs the missing behaviour.
+
+### 0.11 Real-data and money boundaries
+
+These first-time events are the riskiest steps of the PoC. Each happens once, in the named task, and only when every listed condition holds.
+
+| First event | Required before it happens | Task |
+| --- | --- | --- |
+| First paid provider call | D-05 caps approved; WP04-T13 budget guard live; fresh two-founder confirmation naming the maximum spend | WP04-T14 |
+| First paid plan, add-on or billable resource (database tier, storage, worker host, email sender) | Fresh two-founder confirmation naming the plan and monthly exposure | WP04-T15 to WP04-T18, WP08-T05 |
+| First real private source in any environment | WP04-T19 real-data readiness gate passed | WP04-T20 |
+| First real raw deletion | WP04-T09 proven on synthetic data; D-19 values approved; WP04-T19 passed | WP04-T20 |
+| First real student account with cohort access | WP11-T01 go decision | WP11-T03 |
+
+Preview never holds real data. Beta holds real sources only after WP04-T19 and real students only after WP11-T01.
 
 ### 0.12 Global rollback hierarchy
 
 Use the least destructive safe control first:
 
-1. Disable the affected provider, artifact type, source version, cohort release, or feature flag.
+1. Disable the affected provider, artifact type, source version, cohort release or feature flag.
 2. Stop new job claims while preserving queued records.
 3. Roll back the stateless web/worker deployment to the last known-good build.
 4. Apply a forward database repair migration. Do not use destructive rollback on a shared database without an exercised plan.
 5. Restore into an isolated environment, verify, and only then perform a production restore when required.
 
-Never delete audit, provenance, job-attempt, raw-deletion, provider-cost, or usage-ledger evidence to make a retry “clean.” Corrections are new append-only events.
+Never delete audit, provenance, job-attempt, raw-deletion, provider-cost or usage-ledger evidence to make a retry "clean". Corrections are new append-only events.
 
 ## 1. Implementation rules
 
-1. Treat the PoC as the first production release. Do not create disposable architecture, local-only business processes, or data models that must be replaced to scale.
-2. Use versioned migrations for every database, policy, function, trigger, index, and seed change. Never repair shared environments manually without adding the equivalent migration.
+1. Treat the PoC as the first production release. Do not create disposable architecture, local-only business processes or data models that must be replaced to scale.
+2. Use versioned migrations for every database, policy, function, trigger, index and seed change. Never repair shared environments manually without adding the equivalent migration.
 3. Enforce authorization in PostgreSQL Row Level Security and server-side services. Hiding a button is not authorization.
 4. Add RLS to every exposed table. Write policies to explicit roles such as `TO authenticated`, include ownership/membership predicates, and use both `USING` and `WITH CHECK` for updates.
-5. Keep service-role keys, provider keys, storage credentials, webhook secrets, and private source objects on the server or worker only.
-6. Make accepted work durable before returning success. Long processing must be represented by a durable job and must not depend on a browser tab or a short web request.
-7. Make every worker step idempotent. Retries must not duplicate source versions, processed documents, segments, embeddings, artifacts, usage entries, or provider charges.
-8. Use one unified source pool per authorized cohort/curriculum unit. Source format and professor-hint status are metadata, not separate knowledge modes.
+5. Keep service-role keys, provider keys, storage credentials, webhook secrets and private source objects on the server or worker only.
+6. Make accepted work durable before returning success. Long processing is a durable job and never depends on a browser tab or a short web request.
+7. Make every worker step idempotent. Retries must not duplicate source versions, processed documents, segments, embeddings, artifacts, usage entries or provider charges.
+8. Use one unified source pool per authorized cohort and curriculum unit. Source format and professor-hint status are metadata, not separate knowledge modes.
 9. Generate factual content only from the evidence packet retrieved from uploaded approved material. Do not implement web search or any outside-answer fallback.
 10. When evidence is missing, return the unavailable-information contract. When it conflicts, show each supported position.
 11. Preserve internal evidence provenance for every accepted chat answer and Studio artifact. Page/timestamp display is optional when a reliable locator exists.
-12. Treat academic medical and veterinary cases as normal educational questions. Apply the real-patient boundary only when context indicates an actual patient or urgent personal care request.
+12. Treat academic medical and veterinary cases as normal educational questions. Apply the real-patient boundary only when context indicates an actual patient or an urgent personal care request.
 13. Delete raw PDF/audio files only after verified durable processed output exists. Verify deletion and append an audit event.
-14. Run routine processing, retries, reconciliation, metering, and alerts automatically. Ahmed and Ziad perform governance and exception decisions, not routine pipeline steps.
-15. Use mocks and fixtures during normal development. Turn on paid providers only for approved benchmarks, ingestion, and end-to-end evaluation.
-16. Attach a correlation ID to each request, job, provider call, answer, and artifact. Record provider/model version, units, latency, attempt count, result, and cost.
-17. Do not mark a package complete from screenshots alone. Required tests, reports, migrations, and job/audit evidence must exist.
+14. Run routine processing, retries, reconciliation, metering and alerts automatically. Ahmed and Ziad make governance and exception decisions, not routine pipeline steps.
+15. Use mocks and fixtures during normal development. Turn on paid providers only for approved benchmarks, ingestion and end-to-end evaluation, through the WP04-T13 budget guard.
+16. Attach a correlation ID to each request, job, provider call, answer and artifact. Record provider/model version, units, latency, attempt count, result and cost.
+17. Do not mark a package complete from screenshots alone. Required tests, reports, migrations and job/audit evidence must exist.
+18. Change control: a change to retrieval, chunking, embedding, prompt, policy, model, validator or processing configuration reaches Beta only after the frozen regression suites for the affected stage pass on the exact commit (master plan §7.2 step 10).
+19. Product questions found during a task become an open decision or a founder question in the task record. Never answer them inside code.
 
-## 2. Exact delivery order
+## 2. Delivery order
 
-| Order | Work package | Dependency | Completion result |
+### 2.1 Packages
+
+| Order | Package | Depends on | Completion result | State |
+| --- | --- | --- | --- | --- |
+| 0 | Pilot decision pack | None | Cohorts, rights, sources, budgets, load profile and evaluation sets, or explicit blockers | Workflow tasks done; decision tasks wait for founders |
+| 1 | Repository and environments | WP00 mock-only constraints | Repeatable app, migrations, CI, Preview, Beta and mock providers | Done |
+| 2 | Database and authorization | Package 1 | Generic catalog, access, content, RAG, Studio, usage and RLS foundation | Done |
+| 3 | Product shell and governance controls | Package 2 | Role journeys on synthetic services; catalog, membership and campaign governance | Shell done; governance tasks T34–T36 open |
+| 4 | Automated source pipeline and real-data readiness | Packages 1–3 | Synthetic pipeline proven; providers, storage, worker host and backup chosen; Cohort A corpus READY | Open |
+| 5 | Retrieval evaluation | Package 4 | Authorized hybrid retrieval meets leakage and evidence targets before chat | Open |
+| 6 | Strict-RAG subject chat | Package 5 | Grounded, partial, unavailable, conflict, hint and educational-case behaviour in the real Chat screen | Open |
+| 7 | Studio and quiz | Package 6 | Grounded artifacts and the quiz loop in the real Studio and Quiz screens | Open |
+| 8 | Operations and automation | Packages 4–7 | Topology, metrics, reconciliation, dashboards, alerts, restore, incidents, security review, success signals | Open |
+| 9 | Cost and 100-student validation | Packages 1–8 | The minimum-cost configuration passes the defined workload | Open |
+| 10 | Veterinary validation | Packages 4–9 | The second program passes the same gates through configuration only | Open |
+| 11 | Private beta | Packages 0–10 | Up to 100 verified students in reviewed waves | Open |
+| 12 | Post-PoC preparation | PoC acceptance (WP11-T05) | Payments and video stay extensions behind existing contracts | Open |
+
+Do not start Studio generation before retrieval and strict-RAG contracts pass. Do not invite students before fault recovery, quotas, kill switches, restore and the security review pass.
+
+### 2.2 Critical path
+
+The shortest honest route from today to the beta, with what each step needs from the founders (see §17):
+
+1. **Governance loop** — WP03-T34 (catalog), WP03-T35 (membership, needs D-25), WP03-T36 (campaigns and Batch Leader access, needs D-24).
+2. **Synthetic pipeline** — WP04-T01 to WP04-T12 (needs D-10 approved).
+3. **Real-data readiness** — WP04-T13 to WP04-T19 (needs D-05, D-04, D-18, D-19, D-17, a restore target, rights-cleared samples).
+4. **Cohort A corpus READY** — WP04-T20 (needs WP00-T03 sources and a Batch Leader).
+5. **Retrieval baseline** — WP05 (needs the WP00-T20 academic suite).
+6. **Grounded chat** — WP06 (needs D-08).
+7. **Studio and quiz** — WP07.
+8. **Unattended operation** — WP08 (needs D-20, D-26).
+9. **Load and cost** — WP09.
+10. **Veterinary** — WP10 (needs D-02).
+11. **Beta** — WP11.
+
+### 2.3 Values to set
+
+These values appear in later tasks but cannot be fixed by this runbook. Until the setter approves a value, tests use the synthetic default and no task claims the real gate.
+
+| Value | Used by | Set by | Synthetic default until then |
 | --- | --- | --- | --- |
-| 0 | Pilot decision pack | None | Exact cohorts, rights, sources, budgets, load profile, and evaluation sets. |
-| 1 | Repository and environments | Reviewed WP00 mock-only constraints; open real choices retain their exact downstream blocks | Repeatable app, migrations, CI, preview, beta, and mock providers. |
-| 2 | Database and authorization | Package 1 | Generic catalog, access, content, RAG, Studio, usage, and RLS foundation. |
-| 3 | Product shell and release controls | Package 2 | Role-specific routes, filters, Module/Subject workspace, admin release controls. |
-| 4 | Automated source pipeline | Packages 1-3 | PDF/audio to verified compact text, unified pool, raw deletion, no routine intervention. |
-| 5 | Retrieval evaluation | Package 4 | Authorized hybrid retrieval meets leakage and evidence targets before chat. |
-| 6 | Strict-RAG subject chat | Package 5 | Grounded, unavailable, conflict, professor-hint, and educational-case behavior. |
-| 7 | Studio and quiz | Package 6 | Grounded summaries, guides, questions, flashcards, MCQs, and quiz loop. |
-| 8 | Operations and automation | Packages 4-7 | Always-on workers, reconciliation, dashboards, alerts, backups, runbooks. |
-| 9 | Cost and 100-student validation | Packages 1-8 | Minimum-cost configuration passes the defined workload. |
-| 10 | Veterinary validation | Packages 4-9 | Second program proves configuration and isolation without parallel architecture. |
-| 11 | Private beta | Packages 0-10 | Controlled release to up to 100 verified students with weekly evidence review. |
-| 12 | Post-PoC preparation | PoC acceptance | Automated payments and video remain extensions behind existing contracts. |
-
-Do not start Studio generation before retrieval and strict-RAG answer contracts pass. Do not begin the 100-student beta before fault recovery, quotas, and cost kill switches pass.
+| Raw retention period, `delete_after` start event, retry interval, overdue severity | WP04-T09, WP04-T11 | D-19 through WP00-T04 | [Raw-data policy](../policies/raw-data-lifecycle.md) synthetic values |
+| Processed-output acceptance: page/audio coverage, non-empty threshold, duplicate ratio, terminology sample rule | WP04-T08 | D-10 through WP00-T04 | Fixture-exact values from WP04-T01 |
+| Audio duration accounting tolerance | WP04-T06, WP04-T08 | D-10 | Fixture-exact |
+| OCR page triggers (text density, replacement characters, layout anomalies) | WP04-T05 | WP04-T05 measurement, recorded in config | Fixture-derived |
+| Per-source limits: bytes, pages, audio duration | WP04-T03, WP03-T36 | WP00-T04 and WP00-T06 | Environment-schema bounds from WP01-T03 |
+| Maximum preflight cost per source and per action | WP04-T13 | D-05 | Zero |
+| Budget caps: total, weekly, per provider/action, per source; alert recipients | WP04-T13, WP08-T05 | D-05 through WP00-T06 | Zero; in-process sink |
+| Lease length, heartbeat interval, maximum attempts, backoff base and cap | WP04-T02 | WP04-T02 engineering choice, recorded in config | Short test values |
+| Chunk size range and overlap | WP04-T10 | WP04-T10 initial, WP05-T06 tuned | Fixture values |
+| Embedding model, dimensions, distance operator | WP04-T15 | D-04 through WP04-T14 | `vector(3)` mock |
+| Retrieval `k`, fusion weights, per-source diversity cap | WP05-T03 | WP05-T06 baseline | Versioned default config |
+| Retrieval quality targets (recall@k, MRR) and latency budget | WP05-T06 | WP05-T06 reviewer approval; latency derived from the chat first-token target | No gate claimed |
+| Conflict-detection method and threshold | WP05-T04 | WP05-T04 (ADR) | Annotated conflicts only |
+| Evidence packet limits (segments, tokens) | WP06-T04 | WP06-T04 with WP04-T14 cost data | Mock values |
+| Message length, output tokens, request timeout | WP06-T02, WP07-T02 | WP00-T06 | Environment-schema bounds |
+| Per-student daily allowance, rate and concurrency limits | WP06-T02, WP07-T02 | WP00-T06 with D-05 | Synthetic values |
+| Claim-validator acceptance rule | WP06-T06 | WP06-T01 ADR measurement | None; no grounding gate claimed |
+| No-save technical window, saved-chat retention, reported-content review window | WP06-T07 | D-08 and D-19 | Short synthetic values |
+| Misuse-detection categories and thresholds | WP06-T07 | D-08 | Disabled |
+| Quiz options per MCQ, timer rules, attempt expiry, item counts and difficulty levels | WP07-T01, WP07-T04 | WP07-T01 contract; founder confirms visible behaviour | Current fixture behaviour |
+| Artifact size limits (items, depth) | WP07-T02 | WP00-T06 cost and WP07-T01 | Fixture values |
+| Academic review sample size and rubric | WP04-T20, WP06-T08, WP07-T06 | WP00-T20 with the academic reviewer | None |
+| Reconciliation intervals | WP08-T03 | §11.2 defaults, tuned in WP09 | §11.2 |
+| Alert thresholds: queue age, error rate, database/storage capacity | WP08-T05 | WP08-T05, revised from WP09 measurements | Test values |
+| Unattended observation window | WP08-T08 | WP08-T08, founder-approved | None |
+| Success-signal definitions ("meaningful session", trust rating) | WP08-T10, WP11-T05 | WP08-T10 with the founders | None |
+| Load profile, success and abort thresholds | WP09 | WP00-T07 ([load profile](../../planning/load-profile-100-students.yaml)) | Profile values |
+| Beta wave sizes, observation windows, abort thresholds | WP11-T03 | WP11-T01 | §14.1 sizes |
 
 ## 3. Work package 0: Pilot decision pack
 
-**Outcome:** every real-data, provider, budget, retention, academic, and load assumption required by later packages is either approved or explicitly blocked. This package produces decisions and fixtures; it does not call a paid provider or process real private content.
+**Outcome:** every real-data, provider, budget, retention, academic and load assumption that later packages need is either approved or explicitly blocked. This package produces decisions, policies and evaluation data; it calls no paid provider and processes no real private content.
 
-**Primary artifacts:** `docs/decisions/`, `docs/policies/`, `planning/`, `evals/datasets/`, and `evidence/wp00-pilot/`.
+**Primary artifacts:** `docs/decisions/`, `docs/policies/`, `planning/`, `evals/datasets/` and `evidence/wp00-pilot/`.
 
-### 3.0 Tutorial procedure
+### 3.0 Tasks
 
 #### WP00-T00 — Establish agent-first delivery controls
 
-- [x] Define one short workflow from repository orientation through task selection, execution, verification, and handoff.
-- [x] Make coding agents the default executors while preserving human governance decisions, ordinary human checkpoints, and protected two-person review.
-- [x] Add a controlled task-record template and a predictable `planning/tasks/` handoff location.
-- [x] Resolve documentation naming exceptions and give decision files one lowercase convention.
-- [x] Add and run a zero-cost check for required entry points, local links, names, task IDs, acceptance items, and task-record fields.
-- [x] Add a read-only work-state command that derives task status, separates decision resolution paths from blocked tasks, and recommends only an eligible task.
-- [x] Rehearse discovery, selection, readiness checks, and durable handoff from a clean isolated committed snapshot without copying chat state.
-- [x] Obtain a founder human checkpoint and commit-specific evidence; Ahmed approved through `$finalize` on 2026-09-15.
-
-**Pass:** a fresh agent can select and claim the next valid task, find every governing authority, identify human-only gates, run the readiness check successfully, and resume this task from repository state without prior chat.
-
-**Evidence:** `evidence/wp00-pilot/2026-09-16_agent-readiness_local_5fd79cc.md`.
+- [x] Agent-first workflow, task-record template, naming rules, readiness check and work-state command established and rehearsed from a clean snapshot; Ahmed approved on 2026-09-15. Record: [wp00-t00](../../planning/tasks/wp00-t00-agent-first-delivery-controls.md). Evidence: [agent readiness](../../evidence/wp00-pilot/2026-09-16_agent-readiness_local_5fd79cc.md). The workflow itself was later replaced by WP00-T18.
 
 #### WP00-T01 — Create the planning workspace
 
-- [~] Create `docs/decisions`, `docs/policies`, `planning/tasks`, `evals/datasets/tutor`, `evals/datasets/studio`, and `evidence/wp00-pilot` with scoped `README.md` files where Git needs a durable directory entry.
-- [~] Stage controlled inputs using this exact routing; preserve placeholders until the owning task supplies reviewed values:
+**Needs from founders:** owner deadlines for every open decision, and the names of the review roles below. Everything else is staged.
 
-| Template source | Working destination | Owning task |
-| --- | --- | --- |
-| `docs/templates/cohort-candidates.csv` | `planning/cohort-candidates.csv` | WP00-T02 |
-| `docs/templates/source-rights-inventory.csv` | `planning/source-rights-inventory.csv` | WP00-T03 |
-| `docs/templates/raw-data-policy.md` | `docs/policies/raw-data-lifecycle.md` | WP00-T04 |
-| `docs/templates/provider-benchmark.csv` | `planning/provider-benchmark.csv` | WP00-T06/WP09-T01 |
-| `docs/templates/load-profile-100-students.yaml` | `planning/load-profile-100-students.yaml` | WP00-T07 |
-| `docs/templates/decision-record.md` | `docs/decisions/d-NN-short-subject.md` when a decision task starts | Decision-owning task |
-| `docs/templates/gate-report.md` | Required evidence filename after a candidate SHA exists | WP00-T08 |
+- [~] Create `docs/decisions`, `docs/policies`, `planning/tasks`, `evals/datasets/tutor`, `evals/datasets/studio` and `evidence/wp00-pilot` with scoped `README.md` files where Git needs a durable directory entry.
+- [~] Stage the controlled inputs: cohort candidates (WP00-T02), source-rights inventory (WP00-T03), raw-data policy (WP00-T04), provider benchmark (WP00-T06, WP04-T14), load profile (WP00-T07), decision records and the gate report, each copied from `docs/templates/` with placeholders kept until the owning task supplies reviewed values.
+- [~] Create `planning/decision-register.md` with `ID`, `decision`, `owner`, `due`, `status`, `record`, `resolution path`, `blocks` and `last reviewed`. A decision's resolution task may proceed and is never in its own blocked list.
+- [~] Copy D-01 to D-16 from the master plan; keep approved directions approved.
+- [~] Add the unresolved choices from §0.7 as D-17 onward and keep the master-plan decision log in sync.
+- [~] Verify every `Open` or `Proposed` decision names the exact tasks it blocks, including when only the real-data or paid-adapter portion is blocked.
+- [?] Obtain owner deadlines and a founder checkpoint; unresolved due dates stay explicit rather than invented. OWNER INPUT REQUIRED.
+- [?] Name, from Ahmed and Ziad, the holder of each review role: security/data, academic reviewer per cohort, cost and operations. D-10, D-18 and D-19 cannot be approved until the security/data role is named. OWNER INPUT REQUIRED.
 
-Dataset schemas and manifests are implementation outputs of WP00-T05, not copies of a generic template.
+**Pass:** one register shows every open decision, its owner, deadline, role holder and blocked work.
 
-- [~] Create `planning/decision-register.md` with columns `ID`, `decision`, `owner`, `due`, `status`, `record`, `resolution path`, `blocks`, and `last reviewed`. A decision's resolution task is allowed to proceed and must not also appear in its blocked-task list.
-- [~] Copy D-01 through D-16 from the master plan. Keep approved directions approved; do not silently reopen them.
-- [~] Add the unresolved choices already documented in section 0.6 as D-17 onward and synchronize the master-plan decision log.
-- [~] Verify every `Open` or `Proposed` decision names the exact work-package tasks it blocks, including when only the real-data or paid-adapter portion is blocked.
-- [?] Obtain owner deadlines and a founder human checkpoint; unresolved due dates remain explicit rather than invented.
-
-**Pass:** a reviewer can open one register and identify all open decisions, owners, deadlines, and blocked work.
-
-**Evidence:** `evidence/wp00-pilot/<date>_decision-register_local_<sha>.md`.
+**Evidence:** `evidence/wp00-pilot/<date>_decision-register_local_<sha>.md`. Record: [wp00-t01](../../planning/tasks/wp00-t01-create-planning-workspace.md).
 
 #### WP00-T02 — Select cohorts using evidence, not preference
 
-- [~] Create `planning/cohort-candidates.csv` using UTF-8 and stable candidate IDs such as `HM-C01` and `VM-C01`; the controlled header and ID contract are ready for review.
-- [?] Enter every candidate cohort before scoring; candidate facts have not been supplied by the decision owners.
-- [~] Score each dimension 0-5 using the written anchors in `planning/cohort-selection-review.md`; the scoring contract is ready for review.
-- [?] Add a `score_evidence` link for every score of 4 or 5 and a `remediation` field for every 0-2; no candidate rows exist yet.
-- [?] Have Ahmed and Ziad score independently, then reconcile differences of two or more points in a recorded review.
-- [?] Reject a cohort regardless of total score if rights to provider processing/student use are denied, no accountable academic reviewer exists, or complete-enough source material is unavailable.
-- [~] Create OPEN records at `docs/decisions/d-01-human-medicine-cohort.md`, `d-02-veterinary-medicine-cohort.md`, and `d-03-pilot-institutions.md`; no option is proposed or approved.
-- [?] Assign stable catalog codes for institution, program, level, term, cohort, curriculum edition, and every unit after selection. Codes are ASCII `lower_snake_case`; labels may be Arabic/English.
-- [?] Obtain owner and human-review sign-off; deadlines and the applicable Ahmed/Ziad review-role assignments remain open.
+**Needs from founders:** candidate facts for each Veterinary cohort (D-02), independent scores, Batch Leader and academic reviewer per cohort.
 
-**Pass:** each selected cohort has a reproducible score, mandatory fields, ordered unit list, named Batch Leader, named academic reviewer, and no blocking right.
+- [~] Create `planning/cohort-candidates.csv` (UTF-8, stable candidate IDs such as `HM-C01` and `VM-C01`); the header and ID contract are ready for review.
+- [?] Enter every candidate cohort before scoring; the decision owners have not supplied candidate facts.
+- [~] Score each dimension 0–5 using the anchors in `planning/cohort-selection-review.md`; the scoring contract is ready for review.
+- [?] Add a `score_evidence` link for every 4 or 5 and a `remediation` note for every 0–2; no candidate rows exist yet.
+- [?] Have Ahmed and Ziad score independently, then reconcile differences of two or more points in a recorded review.
+- [?] Reject a cohort regardless of score if provider-processing or student-use rights are denied, no accountable academic reviewer exists, or complete-enough source material is unavailable.
+- [~] Keep `docs/decisions/d-01-human-medicine-cohort.md`, `d-02-veterinary-medicine-cohort.md` and `d-03-pilot-institutions.md` current. D-01 and D-03 are approved directions; D-02 stays open.
+- [?] Assign stable catalog codes for institution, program, level, term, cohort, curriculum edition and every unit after selection: ASCII `lower_snake_case`; labels may be Arabic or English. WP03-T34 enters them through admin actions.
+- [?] Obtain owner and review sign-off.
+
+**Pass:** each selected cohort has a reproducible score, the §3.1 fields, an ordered unit list, a named Batch Leader, a named academic reviewer and no blocking right. Record: [wp00-t02](../../planning/tasks/wp00-t02-select-pilot-cohorts.md).
 
 #### WP00-T03 — Inventory sources and prove rights
 
-- [ ] Create `planning/source-rights-inventory.csv` from the template; one row represents one expected source, not a folder or informal collection.
-- [ ] Assign an opaque source candidate ID such as `SRC-HM-0001`; do not place personal names in filenames when a contributor label is sufficient.
-- [ ] Record rights as separate enumerated fields: `temporary_storage`, `provider_processing`, `processed_retention`, `student_derivatives`, and `future_commercial_use` with values `GRANTED`, `DENIED`, `UNKNOWN`, or `NOT_APPLICABLE`.
-- [ ] Link permission evidence and record who verified it and when. A chat message or verbal statement is not summarized as broader permission than it contains.
-- [ ] Flag patient/personal data, third-party copyrighted material, original exams, duplicate editions, password protection, scan quality, handwritten pages, tables/diagrams, and mixed-language audio.
-- [ ] Estimate pages, duration, and bytes, then calculate the maximum preflight provider cost using the benchmark worksheet once pricing is known.
-- [ ] Set `processing_eligible = false` whenever a required right is not `GRANTED`.
-- [ ] Have the security/data owner review every real candidate before any upload.
+**Needs from founders:** the real expected source list for Cohort A (and later Cohort B), permission evidence for each source, and a security/data review.
 
-**Pass:** row count matches the expected source manifest; no eligible row contains a required `UNKNOWN`/`DENIED` right; evidence links are reachable by the designated reviewers.
+- [~] `planning/source-rights-inventory.csv` is staged from the template (WP00-T01); one row is one expected source, not a folder or an informal collection.
+- [?] Enter every expected source with an opaque ID such as `SRC-HM-0001` and the §3.2 fields; keep personal names out of IDs and filenames. OWNER INPUT REQUIRED.
+- [?] Record rights as separate fields `temporary_storage`, `provider_processing`, `processed_retention`, `student_derivatives` and `future_commercial_use`, each `GRANTED`, `DENIED`, `UNKNOWN` or `NOT_APPLICABLE`, with linked permission evidence, who verified it and when. A chat message or verbal statement is never summarized as broader permission than it contains.
+- [?] Flag patient/personal data, third-party copyright, original exams, duplicate editions, password protection, scan quality, handwriting, tables/diagrams and mixed-language audio.
+- [?] Estimate pages, duration and bytes per source; calculate the maximum preflight provider cost once WP04-T14 has prices.
+- [?] Mark benchmark candidates (native PDF, scanned PDF, mixed-language audio, professor voice note) whose `provider_processing` right is `GRANTED`, for WP04-T14 (master plan §16 item 8).
+- [ ] Add a validation script that sets `processing_eligible = false` whenever a required right is not `GRANTED` and fails on a missing field, duplicate ID or unreachable evidence link.
+- [?] Have the security/data role review every real row before any upload.
+
+**Pass:** the row count matches the expected source manifest; no eligible row has a required `UNKNOWN` or `DENIED` right; evidence links are reachable by the designated reviewers; the benchmark set is marked.
 
 #### WP00-T04 — Approve raw and processed data policy
 
+**Needs from founders:** approval of D-10 and the D-19 real values, after the security/data role is named.
+
 - [~] Create `docs/policies/raw-data-lifecycle.md` from the controlled template; the executable draft is ready for review.
-- [~] Define exact synthetic-test durations and starting events; real-data values remain blocked on D-19 owner input.
-- [~] Define `delete_after` calculation, hold behavior, failed conversion, deletion verification, retry intervals, overdue severity, retained metadata, and takedown behavior for deterministic tests.
-- [~] Define proposed minimum accepted output separately for native PDF, scanned PDF, and audio; D-10 approval remains open.
-- [~] Define temporary normalized audio/OCR storage and deletion behavior.
+- [~] Define exact synthetic-test durations and starting events; real values wait for D-19.
+- [~] Define `delete_after`, hold behaviour, failed conversion, deletion verification, retry intervals, overdue severity, retained metadata and takedown behaviour for deterministic tests.
+- [~] Define the proposed minimum accepted output separately for native PDF, scanned PDF and audio; D-10 approval remains open.
+- [~] Define temporary normalized audio/OCR storage and deletion behaviour.
 - [~] State that database backup does not back up object storage and define processed-object durability independently.
 - [~] Add a data-flow diagram naming every logical storage location and the mock/real adapter boundary.
-- [?] Review every real provider/storage path against a completed rights inventory; no real source rows or provider decisions exist.
-- [?] Approve the D-10 processed contract and D-19 real retention/deletion values; D-09 remains the approved direction in the master plan.
+- [?] Review every real provider and storage path against a completed rights inventory (WP00-T03) and the selected providers (WP04-T14, WP04-T16).
+- [?] Approve the D-10 processed contract with its §2.3 acceptance thresholds, and the D-19 real retention and deletion values, including what happens to processed text and embeddings after a rights takedown. OWNER INPUT REQUIRED.
 
-**Pass:** given any source state, the executor can determine whether raw data must be retained, deleted, retried, quarantined, or held, and who can authorize the exceptional state.
+**Pass:** given any source state, the executor can tell whether raw data must be retained, deleted, retried, quarantined or held, what happens to processed content after a takedown, and who can authorize the exceptional state. Record: [wp00-t04](../../planning/tasks/wp00-t04-approve-data-lifecycle.md).
 
 #### WP00-T05 — Freeze evaluation data before provider selection
 
-- [ ] Create version directories `evals/datasets/tutor/v1` and `evals/datasets/studio/v1`.
-- [ ] Add JSON Schema files for tutor cases, Studio cases, and dataset manifests.
-- [ ] Add a manifest containing dataset version, creation date, source-scope fingerprint, authors, reviewer, case counts by category, and SHA-256 of each JSONL file.
-- [ ] Use stable case IDs and never renumber an existing case; supersede it with a new version.
-- [ ] Create synthetic fixtures first so runners can be built without rights-approved material.
-- [ ] Add real evaluation cases only in the approved restricted repository/store if they reproduce private source text.
-- [ ] Run schema validation, duplicate-ID detection, category-count validation, and required/forbidden-claim validation.
-- [ ] Have the academic reviewer sign the manifest before a real provider benchmark.
+This task builds the dataset machinery and the synthetic suite. Real academic cases are authored in WP00-T20.
 
-**Pass:** the frozen suite meets every minimum count, validates automatically, has no duplicate IDs, and cannot be changed without a version/hash change.
+**Depends on:** WP00-T01. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
+
+**Outputs:** `evals/datasets/tutor/v1/`, `evals/datasets/studio/v1/`, JSON Schemas, a manifest generator and validator wired into `pnpm test:eval`.
+
+- [ ] Create version directories `evals/datasets/tutor/v1` and `evals/datasets/studio/v1`.
+- [ ] Add JSON Schemas for tutor cases, Studio cases, labeled claims (for the WP06-T01 validator measurement) and the dataset manifest, using the §3.4 fields.
+- [ ] Add a manifest with dataset version, creation date, source-scope fingerprint, authors, reviewer, case counts by category and language mode, and the SHA-256 of each JSONL file.
+- [ ] Use stable case IDs; never renumber a case, supersede it with a new version.
+- [ ] Create synthetic cases for every tutor category, every Studio artifact type and every language mode (English, Arabic, mixed), each tied to synthetic fixture segments and canaries.
+- [ ] Validate schema, duplicate IDs, category and language counts, required/forbidden claims and hashes; a changed file without a new version fails.
+- [ ] Keep any case that reproduces private source text out of Git; it belongs in the restricted store with a redacted index.
+
+**Verify:** `pnpm test:eval`; the validator's negative tests (malformed case, duplicate ID, edited file with the old hash, missing category).
+
+**Pass:** the synthetic suite covers every category and language mode, validates automatically, has no duplicate IDs and cannot change without a version and hash change.
 
 #### WP00-T06 — Freeze budget and provider enablement rules
 
-- [~] Stage the provider benchmark and create truthful OPEN D-04/D-05 records; implementation is ready for review.
-- [~] Define the currency/conversion evidence rule; canonical real currency and rate source remain owner inputs.
-- [?] Approve nonzero total, weekly, provider/action, source, per-user daily, and request caps.
-- [?] Name alert recipients and obtain separate Ahmed and Ziad confirmations before raising a cap.
-- [~] Define reservation, 50/75/90% alerts, 100% hard block, uncertain settlement, accepted-job treatment, and kill-switch behavior.
-- [~] Make the zero-cost profile authoritative: every real adapter flag is false and deterministic mocks are the only enabled providers.
-- [~] Define the zero-cost smoke story that must prove coherent behavior and a zero-valued cost ledger without provider network calls.
+**Needs from founders:** nonzero caps (D-05), the canonical currency and rate source, and alert recipients.
 
-**Pass:** a reviewer can trace a request from reservation through provider call to cost ledger and determine the exact automatic action at every threshold.
+- [~] Stage the provider benchmark and create truthful open D-04/D-05 records; implementation is ready for review.
+- [~] Define the currency/conversion evidence rule; the canonical real currency and rate source remain owner inputs.
+- [?] Approve nonzero total, weekly, provider/action, per-source, per-student daily and per-request caps (§2.3). OWNER INPUT REQUIRED.
+- [?] Name alert recipients and obtain separate Ahmed and Ziad confirmations before raising a cap.
+- [~] Define reservation, 50/75/90% alerts, the 100% hard block, uncertain settlement, accepted-job treatment and kill-switch behaviour.
+- [~] Make the zero-cost profile authoritative: every real adapter flag is false and deterministic mocks are the only enabled providers.
+- [~] Define the zero-cost smoke story that proves coherent behaviour and a zero-valued cost ledger without provider network calls.
+
+**Pass:** a reviewer can trace a request from reservation through provider call to cost ledger and name the automatic action at every threshold. WP04-T13 implements this. Record: [wp00-t06](../../planning/tasks/wp00-t06-freeze-provider-budgets.md).
 
 #### WP00-T07 — Make the 100-student workload reproducible
 
-- [~] Populate `planning/load-profile-100-students.yaml` as an exact synthetic local-mock contract; ready for runner implementation and review.
-- [~] Define warm-up, realistic ramp, peak academic burst, background-ingestion overlap, provider slowdown, worker death, cooldown, and reconciliation as separate phases.
-- [~] Specify duration, virtual users, arrival rate, think time, request counts, payload sizes, and concurrency for every phase.
-- [~] Give each synthetic cohort/unit a unique canary phrase for leakage detection.
-- [~] Define success thresholds for HTTP success, first token, full response, queue age, job completion, database connections, reservations, duplicates, leakage, and zero cost.
-- [~] Define immediate abort thresholds for leakage, duplicate settlement, lost accepted work, cost, errors, queue age, database pressure, and environment health.
-- [~] Freeze the random seed and synthetic dataset/fixture contract version.
-- [?] Implement the WP09 load runner, execute this profile on an approved target, and obtain an Ahmed-or-Ziad human checkpoint.
+**Needs from founders:** a checkpoint on the profile once WP09 runs it.
 
-**Pass:** another executor can reproduce the same scenario without asking what “100 concurrent students” means.
+- [~] Populate `planning/load-profile-100-students.yaml` as an exact synthetic mock contract.
+- [~] Define warm-up, realistic ramp, peak academic burst, background-ingestion overlap, provider slowdown, worker death, cooldown and reconciliation as separate phases.
+- [~] Specify duration, virtual users, arrival rate, think time, request counts, payload sizes and concurrency for every phase.
+- [~] Give each synthetic cohort/unit a unique canary phrase for leakage detection.
+- [~] Define success thresholds for HTTP success, first token, full response, queue age, job completion, database connections, reservations, duplicates, leakage and cost.
+- [~] Define immediate abort thresholds for leakage, duplicate settlement, lost accepted work, cost, errors, queue age, database pressure and environment health.
+- [~] Freeze the random seed and the synthetic dataset/fixture contract version.
+- [?] Implement the load runner and execute this profile on an approved target in WP09, then obtain an Ahmed-or-Ziad checkpoint.
+
+**Pass:** another executor can reproduce the scenario without asking what "100 concurrent students" means. Record: [wp00-t07](../../planning/tasks/wp00-t07-freeze-load-profile.md).
 
 #### WP00-T08 — Run the package gate
 
-- [x] Prepare the WP00 gate task and create the evidence report after the candidate SHA exists.
-- [x] Check every artifact for owner, reviewer, status, version, link integrity, and explicit downstream blockers.
-- [x] Confirm no paid provider call, private source upload, raw deletion, or student invitation occurred.
-- [x] Keep the master-plan decision log and runbook synchronized; no open decision is represented as approved.
-- [x] Ahmed independently reviewed the constraints-only packet and authorized mock-only WP01 progression on 2026-08-20.
+- [x] Constraints-only WP00 gate: every artifact has owner, status and explicit downstream blockers; no paid call, private upload, raw deletion or invitation occurred; no open decision shown as approved. Ahmed reviewed and authorized mock-only WP01 progression on 2026-08-20. Record: [wp00-t08](../../planning/tasks/wp00-t08-run-package-gate.md). Evidence: [agent readiness](../../evidence/wp00-pilot/2026-08-20_agent-readiness_local_da9f07f.md).
 
 #### WP00-T09 — Consolidate autonomous lean agent execution
 
-This post-foundation workflow-maintenance task was introduced after the reviewed WP00-WP02 packages and WP03-T01 through WP03-T03. It does not invalidate or reopen that completed work and does not implement WP03-T04.
-
-- [x] Register the task and derive one versioned execution policy beneath the existing master-plan, runbook, task-record, code/test, and evidence authority hierarchy. Owner: Codex `/root`; requester and standing checkpoint: Ahmed; branch: `wp00/autonomous-agent-execution`; task record: `planning/tasks/wp00-t09-autonomous-agent-execution.md`.
-- [x] Implement and validate deterministic intent/actual-diff routing, protected risk floors, model floors, worker limits, capability activation, focused verification selection, and conservative evidence invalidation without adding an agent supervisor or parallel tracker.
-- [x] Replay representative completed WP02/WP03 cases, keep broad CI unchanged, and promote only the proven core rules from shadow to enforced state; conditional CI remains shadow.
-- [x] Add the compact trust-boundaries capability, repair the evidenced skill conflicts, and preserve pinned provenance, licenses, adaptations, evaluations, and validation.
-- [x] Integrate compact routing metadata with new/active task records and work-state output while leaving historical completed records valid.
-- [x] Deduplicate always-on and workflow guidance only after the replacement policy passes focused regression checks.
-- [x] Make full non-financial terminal delivery the default for selected runbook tasks unless the request narrows scope; retain `$finalize` as a manual/recovery entry point and preserve fresh two-founder confirmation for real-money exposure.
-- [x] Run the focused policy, skill, agent-readiness, and handoff checks plus the broad zero-cost local gate; correct the external-audit gaps in actual-diff fallback, conditional-CI shadow evidence, model-runtime disclosure, and GitHub confirmation reporting; then prepare one final protected closure, clean task-created state, and prove that normal selection returns WP03-T04. The closure markers become authoritative only when the exact reviewed candidate reaches protected `main`.
-
-**Pass:** the core router, model/worker/context, verification, evidence-reuse, and terminal-delivery rules are enforced from one compact policy; malformed or uncertain state falls back conservatively; broad CI remains unchanged; the merged repository is clean and selects WP03-T04 next.
+- [x] Autonomous execution policy and terminal delivery by default; superseded by WP00-T18. Record: [wp00-t09](../../planning/tasks/wp00-t09-autonomous-agent-execution.md). Evidence: [execution](../../evidence/wp00-pilot/2026-09-21_autonomous-agent-execution_local_ff15002.md).
 
 #### WP00-T10 — Revalidate actual Codex tooling and authentication stack
 
-This post-foundation tooling-maintenance task revalidates the current local, GitHub, Supabase, Vercel, browser, Playwright, and CI access paths against the WP00-T09 baseline. It does not reopen WP00-T09, add an MCP for completeness, or implement WP03-T04.
-
-- [x] Register one task record and derive the bounded docs/tooling execution envelope before external checks. Owner: Codex `/root`; selected checkpoint: Ahmed; branch: `wp00/tooling-auth-stack`; task record: `planning/tasks/wp00-t10-tooling-authentication-stack.md`.
-- [x] Revalidate the local repository, Git transport, GitHub connector/CLI, pinned Supabase CLI, pinned Vercel CLI, and the minimum CI/tooling evidence paths with read-only checks; use the side browser only if structured state cannot answer the question.
-- [x] Classify each requested system as `WORKING`, `WORKING_WITH_LIMITATION`, `AUTH_REQUIRED`, `PERMISSION_REQUIRED`, `MISSING_CAPABILITY`, `REDUNDANT`, or `NOT_NEEDED` using current evidence rather than the historical audit.
-- [x] Repair only demonstrated repository guidance or safe local configuration gaps; do not create credentials, broaden permissions, authorize a new integration, or install a duplicate MCP/browser stack.
-- [x] Handle any unavoidable human checkpoint one service at a time, recording only the minimum account, screen/action, scope, and success signal; verify any completed checkpoint once with a read-only operation.
-- [x] Persist the sanitized current matrix, trust map, limitations, and verification receipts in the task record/evidence and update the baseline audit only where current evidence supersedes it.
-- [x] Run the selected repository proof, complete protected delivery under the existing finalization workflow, clean task-created state, and confirm ordinary selection returns to WP03-T04.
-
-**Pass:** current access and scope are accurately classified; the retained stack is the smallest reliable set; no secret, private payload, new external authorization, paid resource, or unnecessary browser/test operation was introduced; the merged clean repository selects WP03-T04 next.
+- [x] Local, GitHub, Supabase, Vercel, browser and CI access paths classified from current evidence; no new authorization or paid resource. Record: [wp00-t10](../../planning/tasks/wp00-t10-tooling-authentication-stack.md). Evidence: [tooling](../../evidence/wp00-pilot/2026-09-21_tooling-authentication-stack_local_5ad335d.md).
 
 #### WP00-T11 — Correct benchmarked execution workflow defects
 
-This bounded self-correction task applies the first real WP03 benchmark to the existing WP00-T09/T10 execution architecture. It preserves the completed WP03-T04 record and does not open WP03-T05. It adds no supervisor, worker, connector, browser stack, telemetry, or alternate evidence store.
-
-- [x] Extend the existing frontend/design route and `humanVisualDecision` semantics so material subjective product-surface changes require `HUMAN_DESIGN_ACCEPTANCE_REQUIRED`, while approved-intent and objective fixes do not create redundant founder gates.
-- [x] Add one bounded proof-completeness preflight before stable broad verification, with conservative handling for unknown or high-risk obligations and evidence-aware reuse/invalidation.
-- [x] Add bounded context-retrieval guidance, a deterministic fresh-checkout type proof, task-owned Playwright server cleanup, pre-promotion release-fingerprint validation, and coarse CI wait guidance without weakening exact-head CI.
-- [x] Add focused policy, evidence, context, process, deployment, and release regression coverage for the benchmarked defects and named acceptance cases.
-- [x] Run affected verification, exact-head CI/review, protected merge, synchronized-main proof, cleanup, and confirm normal selection returns WP03-T05 without implementing it. PR #42 reviewed exact head `f86b197`, merged as `b6aceac`; merged-main run `35729451733` passed; evidence: `evidence/wp00-pilot/2026-09-22_benchmark-workflow-corrections_github_b6aceac.md`.
-
-**Pass:** the benchmarked defects are corrected through the existing central policy/router, receipt, task, and verification seams; mandatory security, accessibility, responsive, RTL/LTR, release, and exact-head proof remains required; the merged clean repository recommends WP03-T05 and leaves WP03-T04 unchanged.
+- [x] Workflow defects found by the first WP03 benchmark corrected (PR #42, `b6aceac`). Record: [wp00-t11](../../planning/tasks/wp00-t11-benchmark-workflow-corrections.md). Evidence: [corrections](../../evidence/wp00-pilot/2026-09-22_benchmark-workflow-corrections_github_b6aceac.md).
 
 #### WP00-T12 — Correct proof reuse and review semantics
 
-This final bounded WP00-T11 audit repair removes the duplicate proof taxonomy, corrects design-evidence invalidation, and records review provenance accurately. It does not reopen WP03-T04 or start WP03-T05 and adds no worker, connector, orchestration layer, telemetry, or verification architecture.
-
-- [x] Derive proof-completeness obligations directly from the authoritative selected verification requirements, retaining explicit human design acceptance and conservative unknown handling.
-- [x] Represent semantic invalidating inputs in the existing receipt fingerprint so known nonvisual frontend, backend, and docs-only changes preserve design acceptance, material visual changes invalidate it, and unknown visual impact fails conservatively.
-- [x] Prove those rules through the normal receipt-generation and assessment path rather than manually idealized receipts.
-- [x] Distinguish executor-controlled distinct-account approval from genuinely independent review in policy, finalization, evidence, and regressions without adding a mandatory reviewer where the runbook does not require one.
-- [x] Run focused proof first, one stable broad gate, exact-head CI, protected delivery, synchronized-main proof, evidence closure, cleanup, and confirm WP03-T05 remains next without implementing it. These closure markers become authoritative only when the exact reviewed PR #44 head reaches protected `main`.
-
-**Pass:** selected verification additions/removals flow into proof completeness automatically; generated evidence has correct semantic invalidation; uncertain visual impact cannot reuse acceptance; account separation is recorded without a false independence claim; the merged clean repository recommends WP03-T05.
+- [x] Proof-completeness derivation, design-evidence invalidation and honest review provenance corrected (PR #44). Record: [wp00-t12](../../planning/tasks/wp00-t12-proof-reuse-review-semantics.md). Evidence: [semantics](../../evidence/wp00-pilot/2026-09-22_proof-reuse-review-semantics_local_ba7f01c.md).
 
 #### WP00-T13 — Correct Sol/Luna execution workflow
 
-This narrowly scoped correction follows the approved Sol/Luna workflow correction plan. It changes execution architecture only and stops before another product task.
-
-- [x] Implement explicit design disposition, traceable founder receipts, task preparation state, fingerprint freshness, and guarded stable verification.
-- [x] Make application and database CI independent and return all safe database diagnostics from one candidate.
-- [x] Recover bounded task facts through the existing record and reconcile Impeccable with the central worker policy.
-- [x] Run the focused and final test matrix; record sanitized evidence and stop. This closure marker becomes authoritative only when PR #48's final head passes required CI and reaches protected `main`.
-
-**Pass:** all P1, P2, and P3 completion criteria in the approved correction plan are met without weakening existing proof, safety, or worker boundaries.
+- [x] Design disposition, founder receipts and independent application/database CI (PR #48); later superseded by WP00-T18. Record: [wp00-t13](../../planning/tasks/wp00-t13-sol-luna-workflow-correction.md). Evidence: [correction](../../evidence/wp00-pilot/2026-09-23_sol-luna-workflow-correction_github_a181d9b.md).
 
 #### WP00-T14 — Replace automatic model routing with manual work blocks
 
-This workflow-maintenance task supersedes WP00-T09's model-floor mechanism while preserving its risk, verification, evidence, worker, and delivery rules. Historical completed task records remain evidence of their original runs.
-
-- [x] Remove model floors, sticky escalation, active-model/runtime switch claims, and worker default-model routing from executable policy, CLI, tests, and current instructions.
-- [x] Make Sol High plan every new task in the fewest useful ordered blocks, with durable model assignments and independently specified acceptance checks; assign substantial bounded implementation to Luna Max when all four guide conditions hold.
-- [x] Make each fresh chat execute contiguous assigned blocks, persist proof and remaining work, and name the next manual model; hand an unresolved Luna block to Sol without silently changing its requirements.
-- [x] Prove policy/CLI outputs no longer claim control of Codex Desktop and preserve risk classification, verification, approval, protected delivery, and unrelated work. Closure is conditional on exact-head CI and protected merge.
-
-**Pass:** the router has no model-selection output or switch claim; the task template and workflow support reproducible Sol/Luna handoffs; risk and proof remain independent of model choice; the final candidate passes required checks and protected delivery.
+- [x] Model floors and automatic routing removed; superseded by WP00-T18. Record: [wp00-t14](../../planning/tasks/wp00-t14-manual-model-work-blocks.md). Evidence: [work blocks](../../evidence/wp00-pilot/2026-09-24_manual-sol-luna-work-blocks_github_cbfc83c.md).
 
 #### WP00-T15 — Reject stale broad proof and enable early database feedback
 
-This workflow-maintenance task follows the T04–T06 execution audit. It changes verification mechanics without selecting a product feature or relaxing required PR checks.
-
-- [x] Reject a local `pnpm verify` result when the candidate fingerprint at completion differs from its starting fingerprint, even when every command exits successfully.
-- [x] Make the standalone proof preflight include the active task record's `Verify` checks and fail when that record is absent.
-- [x] Offer a manual branch dispatch that runs the existing guarded disposable database job before a PR; ordinary PR, push, and default manual runs retain their full required jobs.
-- [x] Prove the positive and rejecting cases, keep the guarded local and exact-head CI gates, document the feedback command, and deliver the reviewed change through protected `main`.
-
-**Pass:** a candidate that differs at completion cannot receive a green local broad result; preflight and the local guard use the same task checks; database feedback uses only the existing GitHub-hosted synthetic runner; no manual feedback result substitutes for exact-head PR CI; required PR and push jobs remain unchanged.
+- [x] Stale local proof rejected; manual `database_feedback` dispatch added without weakening required PR checks. Record: [wp00-t15](../../planning/tasks/wp00-t15-verification-feedback.md). Evidence: [feedback](../../evidence/wp00-pilot/2026-09-25_verification-feedback_local_d5f8923.md).
 
 #### WP00-T16 — Promote conditional CI from observed evidence
 
-This workflow-maintenance task follows WP00-T15. Preserve required PR check names, protected delivery, and fail-closed behavior while avoiding broad jobs for demonstrably safe documentation changes.
-
-- [x] Reassess the current selector against exact-head broad CI outcomes for a dependency change, database change, workflow change, and documentation-only change; record candidates, paths, predictions, and outcomes without relabeling history as newly executed tests.
-- [x] Classify documentation that feeds tests, unknown paths, missing or malformed diffs, and selector errors conservatively; test both skip and run decisions.
-- [x] Activate conditional CI with a guarded workflow selection job, preserve manual database feedback and main push coverage, and keep existing required PR check names and branch protection.
-- [x] Prove exact-head PR outcomes for one safe documentation case and one change that requires application/database checks before protected delivery and closure.
-
-**Pass:** current-policy evidence supports every selected run and would-skip job without contradiction; the exact candidate controls a fail-closed selector; safe documentation omits heavyweight application/database work while required PR checks still report; code, database, dependency, unknown, and selector-error paths cannot silently skip required proof; main push and explicit manual feedback remain covered.
+- [x] Fail-closed conditional CI selector active with unchanged required check names. Record: [wp00-t16](../../planning/tasks/wp00-t16-conditional-ci-promotion.md). Evidence: [promotion](../../evidence/wp00-pilot/2026-09-26_conditional-ci-promotion_local_2d4bc5d.md).
 
 #### WP00-T17 — Add manual logo design skill
 
-This bounded tooling task installs a pinned third-party logo-design skill for deliberate UniMind brand exploration. It does not select a new logo or alter product UI.
-
-- [x] Copy and attribute the pinned skill, its scripts, references, templates, and reference library; preserve the MIT license and the separate trademark notice.
-- [x] Make `$logo-design` explicitly invoked only in Codex, and route UniMind work through confirmed product and design context.
-- [x] Document the command, validate skill metadata and supporting scripts, and prove ordinary logo-adjacent requests do not implicitly invoke it.
-- [x] Deliver the reviewed tooling change through protected `main` and return ordinary task selection to the existing runbook order. PR #62 merged as `41892f5`; merged-main run `36630701424` passed. Evidence: `evidence/wp00-pilot/2026-09-29_manual-logo-design-skill_github_41892f5.md`. These closure markers become authoritative only when this evidence update reaches protected `main`.
-
-**Pass:** `$logo-design` is available by explicit invocation, the upstream tools work from the pinned local copy, protected UniMind decisions remain human selected, and the added skill does not activate implicitly.
+- [x] Pinned logo-design skill added for explicit invocation only (PR #62, `41892f5`). Record: [wp00-t17](../../planning/tasks/wp00-t17-add-manual-logo-design-skill.md). Evidence: [skill](../../evidence/wp00-pilot/2026-09-29_manual-logo-design-skill_github_41892f5.md).
 
 #### WP00-T18 — Simplify the agent workflow for Codex and Claude Code
 
-This workflow-maintenance task supersedes the execution-policy router, proof preflight, fingerprints, founder receipt JSON and Sol/Luna model blocks introduced by WP00-T09 through WP00-T16. Historical records stay as evidence of their runs.
+- [x] One `AGENTS.md`, one lifecycle in `docs/agents/workflow.md`, the 120-line task record, `pnpm agent:status`/`lint:agents`/`check`/`verify`, and `main` protection requiring a PR and green checks without an approving review (PR #76, approved by Ahmed 2026-10-16). Record: [wp00-t18](../../planning/tasks/wp00-t18-agent-workflow-v2.md).
 
-- [x] Replace the always-on instructions with one tool-neutral `AGENTS.md`, a `CLAUDE.md` that imports it, and one lifecycle in `docs/agents/workflow.md`; merge the frontend and communication guidance; remove Sol/Luna, worker-budget, envelope and side-browser rules.
-- [x] Replace the task-record template with a 120-line current-state record and make the runbook checkbox the only task status.
-- [x] Keep one shared skill source in `.agents/skills/`, generate Claude Code copies with `pnpm skills:sync`, reduce 23 skills to 16, add the pinned Anthropic `frontend-design` skill, and validate skills for both agents.
-- [x] Replace the PowerShell router, readiness, work-state and handoff scripts with `pnpm agent:status`, `pnpm lint:agents` and `pnpm check`; make `pnpm verify` the CI suite; keep the conditional CI selector with a standalone path config.
-- [x] Remove duplicated rules and contradictions across README, CONTRIBUTING, DESIGN, the runbook and the decision register; move progress logs out of authority documents.
-- [x] Deliver through PR #76 with required CI and squash auto-merge; `main` protection now requires a PR and green required checks with no approving review (approved by Ahmed, 2026-10-16). These closure markers become authoritative only when PR #76 merges.
+#### WP00-T19 — Revise the execution runbook against the master plan
 
-**Pass:** both agents load the same rules and skills; a task can be selected, built, verified and delivered with no pasted routing fields; `pnpm lint:agents` and required CI pass; no hard rule (D-22, money stop, no false PASS, data safety, architecture) is weakened.
+**Depends on:** WP00-T18. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
 
-### 3.1 Select exact pilot cohorts
+**Outputs:** this runbook (revision 3.0), [revision findings](../reviews/runbook-revision-2026-10/findings.md), the decision register and master-plan decision log in sync.
 
-Create one decision record for Human Medicine and one for Veterinary Medicine containing:
+- [x] Audit the runbook against the master plan, the decision register, the status parser and the code at `74bd340`; publish the findings.
+- [x] Fix the dependency order (provider benchmark, real-data readiness, worker host, budget guard and video contract move ahead of their first consumer); add the missing governance, corpus, wiring, email, security-review and success-signal tasks; give every open task dependencies, gates, flags, proof and a pass line; list the values still to set; remove stale and duplicated content.
+- [x] Record the product questions found as open decisions D-25 and D-26 without answering them.
+- [ ] Founder review of the revised order, then deliver through one PR with required CI.
 
-- Education stage.
-- Institution.
-- Program/faculty.
-- Academic level.
-- Term.
-- Cohort/batch name and curriculum-edition identifier.
-- Curriculum-unit type and English/Arabic singular/plural labels.
-- Ordered Module/Subject list.
-- Batch Leader name and contact route.
-- Academic reviewer owner.
-- Expected tester count.
+**Verify:** `pnpm lint:agents`; `pnpm agent:status` lists no lost task and recommends an executable one; every pre-revision task heading is still present with the same text.
 
-Score each candidate from 0-5 on source completeness, permission clarity, Batch Leader reliability, reviewer availability, exam material, audio quality, student demand, and availability of 50+ relevant evaluation questions. Record the totals and selection reason.
+**Pass:** every master-plan deliverable maps to a task (findings §F); no open decision appears approved; no completed task is reopened. Record: [wp00-t19](../../planning/tasks/wp00-t19-runbook-revision.md).
 
-### 3.2 Build a source and rights inventory
+#### WP00-T20 — Author and sign the Human Medicine evaluation suite
 
-Create a row per expected source with:
+**Depends on:** WP00-T05, WP00-T03. **Decision gates:** academic reviewer named (WP00-T01); source rows and rights (WP00-T03). **Protected:** none. **Material UI:** no. **Real money:** no.
 
-- Proposed cohort and curriculum unit.
-- Title, source type, format, approximate pages/minutes/bytes, and language.
-- Whether it contains professor explanation, exam hints, corrections, or exclusions.
-- Owner/contributor and permission evidence.
-- Permission for temporary private storage.
-- Permission for third-party extraction/transcription/embedding.
-- Permission to retain processed text and internal locators after raw deletion.
-- Permission to expose generated answers/artifacts to enrolled students.
-- Future commercial-use status.
-- Patient/personal-data risk.
-- Duplicate/older-version risk.
+**Outputs:** `evals/datasets/tutor/v2/` and `evals/datasets/studio/v2/` (or restricted-store equivalents with a redacted index), a signed manifest, the academic review rubric.
 
-Block provider processing when the corresponding right is `UNKNOWN` or `DENIED`. Do not assume that possession equals processing or commercial permission.
+- [?] Academic reviewer for Human Medicine named and source rows approved. OWNER INPUT REQUIRED.
+- [ ] Author at least 100 distinct tutor cases (target 100–150) against the inventoried Cohort A sources, meeting every §3.4 category minimum; every category includes English, Arabic and mixed-language cases and the manifest reports the split.
+- [ ] Author at least 30 Studio/MCQ cases covering every artifact type (target 30–50).
+- [ ] Label a claim-support set (claims marked supported or unsupported against named segments) for the WP06-T01 validator measurement.
+- [ ] Write the academic review rubric and sample sizes used by WP04-T20, WP06-T08 and WP07-T06 (§2.3).
+- [ ] Freeze cases that reproduce private source text in the restricted store; commit only IDs, hashes and redacted metadata.
+- [?] Academic reviewer signs the manifest before WP05-T06 uses it.
 
-### 3.3 Approve raw-data policy
+**Verify:** `pnpm test:eval` validator on the new version; manifest hash check.
 
-Write and approve:
+**Pass:** the signed suite meets every minimum, validates automatically and cannot change without a new version.
 
-- Maximum temporary retention period.
-- Conditions required before deletion: complete output, readable processed object, checksum, coverage, locator/metadata integrity, and quality status.
-- Behavior when conversion fails.
-- Behavior when raw deletion fails.
-- Legal/rights hold process and who can authorize it.
-- Deletion verification method for each storage provider.
-- Metadata retained after deletion.
-- Takedown/deactivation process for processed material.
+### 3.1 Cohort decision fields
 
-The default is no permanent raw retention. Audio must be fully transcribed before deletion. PDFs/books must have meaning-preserving compact processed output before deletion.
+Each cohort decision record (WP00-T02) contains: education stage; institution; program/faculty; academic level; term; cohort/batch name and curriculum-edition identifier; curriculum-unit type with English/Arabic singular/plural labels; ordered Module/Subject list; Batch Leader name and contact route; academic reviewer; expected tester count.
 
-### 3.4 Freeze evaluation datasets
+Score each candidate 0–5 on source completeness, permission clarity, Batch Leader reliability, reviewer availability, exam material, audio quality, student demand and the availability of 50+ relevant evaluation questions. Record totals and the selection reason.
 
-Create versioned JSONL datasets before choosing final providers.
+### 3.2 Source inventory fields
 
-Tutor dataset fields:
+One row per expected source (WP00-T03): proposed cohort and unit; title, source type, format, approximate pages/minutes/bytes and language; whether it holds professor explanation, exam hints, corrections or exclusions; owner/contributor and permission evidence; the five rights fields; patient/personal-data risk; duplicate/older-version risk; benchmark candidate flag.
 
-- `case_id`.
-- cohort and curriculum-unit IDs/slugs.
-- question and language mode.
-- expected evidence source versions/segments or expected topic locator.
-- expected result: `SUPPORTED`, `PARTIAL`, `UNAVAILABLE`, or `CONFLICT`.
-- required claims and forbidden claims.
-- professor-hint expectation.
-- educational-case or explicit-real-patient classification.
-- severity and reviewer notes.
+Block provider processing when the corresponding right is `UNKNOWN` or `DENIED`. Possession never equals processing or commercial permission.
 
-Studio dataset fields:
+### 3.3 Raw-data policy contents
 
-- artifact type, topic, language, depth, item count.
-- required coverage.
-- forbidden unsupported content.
-- known conflict behavior.
-- expected professor-hint labels.
-- MCQ answer/option constraints where applicable.
+The policy (WP00-T04) states: maximum temporary retention; conditions before deletion (complete output, readable processed object, checksum, coverage, locator/metadata integrity, quality status); behaviour when conversion fails; behaviour when deletion fails; legal/rights hold and who may authorize it; deletion verification per storage provider; metadata retained after deletion; takedown/deactivation of processed material, including whether processed text and embeddings are purged.
 
-Minimum initial Human Medicine suite:
+The default is no permanent raw retention. Audio is fully transcribed before deletion. PDFs and books have meaning-preserving compact processed output before deletion.
 
-- 50 directly supported questions.
-- 15 partially supported questions.
-- 15 unavailable questions.
-- 10 known conflicts.
-- 10 professor-hint questions.
-- 15 educational medical case scenarios.
-- 5 explicit real-patient boundary cases.
-- 20 prompt-injection or malicious-source cases.
-- At least 30 Studio/MCQ cases.
+### 3.4 Evaluation dataset fields and minimums
 
-Cases may overlap categories, but every category count must be reported.
+Tutor case fields: `case_id`; cohort and unit IDs/slugs; question and language mode; expected evidence source versions/segments or topic locator; expected result `SUPPORTED`, `PARTIAL`, `UNAVAILABLE` or `CONFLICT`; required and forbidden claims; professor-hint expectation; educational-case or explicit-real-patient classification; severity and reviewer notes.
 
-### 3.5 Define budgets and load profile
+Studio case fields: artifact type, topic, language, depth, item count; required coverage; forbidden unsupported content; known conflict behaviour; expected professor-hint labels; MCQ answer/option constraints where applicable.
 
-Record:
+Minimum suite per cohort (WP00-T20 for Human Medicine, WP10-T02 for Veterinary). A case may carry more than one label, but the distinct total must reach the master plan's 100:
 
-- Total PoC spend cap and weekly cap.
-- Owners allowed to enable paid providers.
-- Alert recipients at 50%, 75%, and 90%.
-- Automatic action at 100%.
-- Maximum transcription cost per source.
-- Maximum chat and Studio tokens/cost per request.
-- Daily free usage per student.
-- Provider concurrency and retry limits.
+| Category | Minimum |
+| --- | --- |
+| Directly supported | 50 |
+| Partially supported | 15 |
+| Unavailable | 15 |
+| Known conflicts | 10 |
+| Professor-hint questions | 10 |
+| Educational medical/veterinary cases | 15 |
+| Explicit real-patient boundary | 5 |
+| Prompt-injection or malicious-source | 20 |
+| Distinct tutor cases in total | 100 (target 100–150) |
+| Studio/MCQ cases | 30 (target 30–50) |
 
-Define the reproducible 100-student scenario with exact durations and arrival rates. At minimum include 100 logins/catalog journeys, 100 subject opens, 300 chat submissions, 50 Studio artifact requests, 100 quiz attempts, 50 feedback events, one concurrent PDF ingestion, and one concurrent audio ingestion. Distribute interactive work across realistic bursts instead of sending everything at one instant, then add a separate burst test for the selected concurrency ceiling.
+### 3.5 Budgets and load profile contents
+
+The budget record (WP00-T06) holds: total and weekly caps; owners allowed to enable paid providers; alert recipients at 50%, 75% and 90%; the automatic action at 100%; maximum transcription cost per source; maximum chat and Studio tokens/cost per request; daily free usage per student; provider concurrency and retry limits.
+
+The load profile (WP00-T07) includes at minimum 100 logins/catalog journeys, 100 subject opens, 300 chat submissions, 50 Studio requests, 100 quiz attempts, 50 feedback events, one concurrent PDF ingestion and one concurrent audio ingestion, spread over realistic bursts, plus a separate burst test at the selected concurrency ceiling.
 
 ### 3.6 Exit evidence
 
-- Signed/approved cohort decision records.
+- Approved cohort decision records (D-01 done; D-02 open).
 - Source inventory and rights matrix.
-- Raw deletion policy.
-- Versioned tutor and Studio datasets.
-- Budget record and provider kill-switch ownership.
-- Load-test specification with success thresholds.
+- Approved raw-data policy with D-10 and D-19 values.
+- Versioned synthetic (WP00-T05) and signed academic (WP00-T20) evaluation suites.
+- Budget record and kill-switch ownership.
+- Load-test specification with thresholds.
 
 ## 4. Work package 1: Repository, environments, and delivery controls
 
-**Outcome:** any developer can clone the repository onto a supported workstation, run deterministic local application/mocks, and pass credential-free verification; a standard GitHub-hosted runner reproduces disposable database/Auth checks; separate synthetic Preview and locked Beta targets deploy from version control without paid infrastructure or founder-computer dependency.
+**Outcome (done):** any developer clones the repository onto a supported workstation, runs the deterministic mock application and passes credential-free verification; a standard GitHub-hosted runner reproduces disposable database/Auth checks; separate synthetic Preview and locked Beta deploy from version control without paid infrastructure or a founder-computer dependency.
 
-**Primary artifacts:** root configuration, `src/`, `workers/`, `supabase/`, `.github/workflows/`, `.env.example`, `docs/adr/`, and `evidence/wp01-foundation/`.
+**Package gate:** [foundation gate](../../evidence/wp01-foundation/2026-08-30_foundation-gate_preview_d7997eb.md).
 
-### 4.0 Tutorial procedure
+### 4.0 Tasks
 
 #### WP01-T01 — Pin the runtime and initialize the root application
 
-The repository already contains planning documents, so do not run a scaffold command that expects an empty directory. Initialize the application in place.
-
-- [x] Confirm work package 0 passed and the working tree contains no unknown edits; reviewed in WP01-T01 evidence.
-- [x] Record the latest supported Node 24 LTS patch from the official release page in `.nvmrc` and `package.json#engines.node`; pinned to 24.19.0.
-- [x] Initialize `package.json` only if it does not exist; initialized in place:
-
-```powershell
-pnpm init
-```
-
-- [x] Pin the package manager using Corepack, then confirm `packageManager` contains an exact version rather than a range; pinned to pnpm 10.34.5:
-
-```powershell
-corepack use pnpm@latest-10
-pnpm --version
-```
-
-- [x] Install the application runtime dependencies and commit the lockfile; exact compatible versions installed:
-
-```powershell
-pnpm add next@latest react@latest react-dom@latest zod @supabase/supabase-js @supabase/ssr
-pnpm add -D typescript @types/node @types/react @types/react-dom eslint eslint-config-next prettier prettier-plugin-tailwindcss vitest @vitest/coverage-v8 playwright tsx supabase
-```
-
-- [x] After installation, replace `latest` resolution with the exact versions written to `package.json`; every direct dependency is exact.
-- [x] Add `dev`, `build`, `start`, `lint`, `typecheck`, `format`, `format:check`, `test:unit`, `test:integration`, `test:security`, `test:e2e`, `test:eval`, `test:load`, guarded `db:reset`, `db:migrations`, `db:push:dry-run`, `db:types`, `db:types:check`, and `verify` scripts.
-- [x] Create strict `tsconfig.json`, `next.config.ts`, `eslint.config.mjs`, `.prettierrc.json`, `.prettierignore`, and `next-env.d.ts` using current framework conventions.
-- [x] Set `typescript.strict = true`; build and lint errors remain fatal.
-- [x] Add a minimal `src/app/layout.tsx`, `src/app/page.tsx`, `src/app/loading.tsx`, `src/app/not-found.tsx`, `src/app/global-error.tsx`, and `src/app/globals.css`.
-- [x] Default pages/layouts to Server Components. Add `'use client'` only at an interaction boundary and keep serializable props across that boundary.
-- [x] Make `error.tsx`/`global-error.tsx` Client Components; both boundaries are Client Components and the global boundary owns `<html>` and `<body>`.
-- [x] Treat dynamic `params`, `searchParams`, `cookies()`, and `headers()` as asynchronous under current Next.js conventions and await them; no dynamic consumer exists yet.
-- [x] Keep API `route.ts` files under distinct API segments; no route handler exists yet.
-- [x] Call `redirect`, `notFound`, `forbidden`, and `unauthorized` outside ordinary `try/catch`, or rethrow Next.js navigation errors correctly; no navigation call exists yet.
-- [x] Use the Node.js runtime for route handlers unless a task contains an explicit Edge compatibility test; no Edge runtime is configured.
-
-**Verify:**
-
-```powershell
-pnpm lint
-pnpm typecheck
-pnpm build
-```
-
-**Pass:** all commands exit 0, `.next` is ignored, and a clean install from `pnpm-lock.yaml` produces the same dependency graph.
+- [x] Node 24.19.0 and pnpm 10.34.5 pinned; strict Next.js App Router application initialized in place with exact dependency versions and the lint, typecheck, format, test-layer and guarded database scripts. Record: [wp01-t01](../../planning/tasks/wp01-t01-initialize-root-application.md). Evidence: [runtime foundation](../../evidence/wp01-foundation/2026-08-20_runtime-foundation_local_3c98584.md).
 
 #### WP01-T02 — Create boundaries and dependency rules
 
-- [x] Create every directory listed in section 4.2 plus `src/lib/config`, `src/lib/db`, `src/lib/http`, `src/lib/validation`, `src/lib/feature-flags`, `src/lib/testing`, `workers/shared`, and `tests/fixtures`.
-- [x] Add a short `README.md` inside each top-level domain directory stating its public interface, allowed dependencies, prohibited dependencies, and owner.
-- [x] Enforce these directions: UI -> application service -> domain/adapter interface; provider adapters may depend on SDKs; domain modules may not import React, Next.js request objects, or provider SDKs.
-- [x] Keep server-only modules under a `server` filename/folder convention and import `server-only` where accidental client bundling would expose credentials or privileged behavior; the convention and client-import check are active, and implementation tasks add the marker when privileged modules appear.
-- [x] Add an architectural lint/test that fails if a Client Component imports a server-only module or service-role client.
-- [x] Place shared Zod request/response schemas next to domain contracts, not duplicated across UI and route handlers; locality is documented and no request/response schema exists yet.
-
-**Pass:** a dependency-boundary test demonstrates that business rules can be executed in Vitest without booting Next.js.
+- [x] UI → application → domain/adapter direction enforced by `pnpm check:boundaries`; server-only convention and client-import check active; business rules run in Vitest without Next.js. Record: [wp01-t02](../../planning/tasks/wp01-t02-create-module-boundaries.md). Evidence: [module boundaries](../../evidence/wp01-foundation/2026-08-20_module-boundaries_local_0e1b0c8.md).
 
 #### WP01-T03 — Create and validate the environment contract
 
-- [x] Create `.env.example` with names and safe comments only; values are blank or clearly fake.
-- [x] Create `src/lib/config/env.server.ts` and `env.client.ts`. Parse once with Zod and fail fast with variable names but never values.
-- [x] Only the Supabase URL, publishable key, safe public release identifier, and public telemetry toggle may use `NEXT_PUBLIC_`.
-- [x] Use server-only names for database secret/service-role key, raw/processed storage credentials, queue signing secrets, and provider keys.
-- [x] Define `PROVIDER_MODE=mock` as the default and require both a provider-specific enable flag and a nonzero approved budget before a real adapter initializes.
-- [x] Add maximum message length, upload bytes, audio duration, output tokens, request timeout, provider concurrency, retry count, and quota variables with numeric bounds.
-- [x] Add a test that builds with safe CI placeholders and a test that fails on missing, malformed, or accidentally public secret variables.
-- [x] Create `.env.local` manually for workstation application credentials and confirm it is ignored before entering any value. Supply hosted database CLI credentials through the current terminal or approved CI secret store because standalone scripts do not load `.env.local`.
-
-**Pass:** `pnpm test:unit -- env` proves valid, missing, malformed, and forbidden-public cases; `pnpm build` succeeds with safe CI placeholders.
+- [x] Zod-validated server/client environment with fail-fast names, `PROVIDER_MODE=mock` default, a real adapter requiring both its flag and a nonzero approved budget, and numeric bounds for sizes, tokens, timeouts, concurrency, retries and quotas. Record: [wp01-t03](../../planning/tasks/wp01-t03-validate-environment-contract.md). Evidence: [environment contract](../../evidence/wp01-foundation/2026-08-20_environment-contract_local_3d1228e.md).
 
 #### WP01-T04 — Provision versioned hosted Supabase development and CI (historical topology)
 
-- [x] Obtain explicit provisioning authority for two separate, synthetic-only, zero-charge hosted Supabase development and CI projects in the nearest available region to Cairo. Ahmed authorized this scope on 2026-08-25; D-21 removes Docker/WSL2/virtualization from the dependency chain.
-- [x] Complete the recorded manual signed-in setup journey and keep all captured credentials under the ignored `.local/supabase/` directory; see `planning/tasks/wp01-t04-provision-hosted-supabase.md`.
-
-```powershell
-pnpm supabase --version
-pnpm supabase --help
-pnpm supabase init
-pnpm db:push:dry-run
-```
-
-- [x] Commit `supabase/config.toml`; keep linked-project state, credentials, connection strings, and generated CLI state ignored.
-- [x] Record safe project fingerprints and owners in the environment matrix without committing credentials. Development and CI contain synthetic data only and cannot share a target with preview or beta.
-- [x] Create migrations using `pnpm supabase migration new <descriptive_name>`; do not invent timestamp filenames.
-- [x] Enable required extensions without an explicit version clause. Begin with `vector`, `pgcrypto`, and only the text-search helper extensions actually used by the selected design.
-- [x] Keep custom tables/functions out of `auth`, `storage`, and `realtime` schemas.
-- [x] Add `supabase/seed.sql` containing only synthetic catalog/users/source text and leakage canaries.
-- [x] Use the guarded hosted command wrapper. It accepts only `development` or `ci`, rejects preview/beta, and requires `reset:<environment>:<project-ref>` before a destructive reset.
-- [x] Create reset automation that applies migrations/seed to the selected isolated hosted target, runs database tests, generates types, and reports failure without printing credentials or connection strings.
-- [x] Record hosted PostgreSQL and extension versions plus the safe target fingerprint in foundation evidence.
-- [x] Ahmed independently reviewed the migration grant revocations, target isolation, credential hygiene, reset/type/metadata evidence, and development GitHub integration boundary and recorded PASS on 2026-08-25.
-
-**Verify:**
-
-```powershell
-pnpm db:reset
-pnpm db:migrations
-pnpm db:types
-git diff --exit-code -- src/types/database.generated.ts
-```
-
-**Pass:** an isolated hosted development/CI target resets twice in succession; generated types are stable; target guards reject local/preview/beta names; no dashboard-only schema change is required.
-
-**2026-08-27 revision:** this PASS remains historical proof for the recorded targets and commits. Revised D-21 retires persistent development/CI after WP01-T08 proves disposable CI. Do not repurpose either project early; WP01-T09 rotates and re-scopes them as Preview and locked Beta afterward.
+- [x] Versioned `supabase/` configuration, guarded commands and synthetic seed proven on hosted development/CI projects; this topology was retired by revised D-21 and both projects were repurposed in WP01-T09. Record: [wp01-t04](../../planning/tasks/wp01-t04-provision-hosted-supabase.md). Evidence: [hosted Supabase](../../evidence/wp01-foundation/2026-08-25_hosted-supabase_development-ci_b444a5d.md).
 
 #### WP01-T05 — Implement safe Supabase clients and auth refresh
 
-- [x] Create `src/lib/db/supabase/browser.ts` using the publishable key only; WP01-T04 has reviewed PASS evidence at `evidence/wp01-foundation/2026-08-25_hosted-supabase_development-ci_b444a5d.md`. Owner: Codex `/root`; candidate: `51be7f6`; branch: `main`.
-- [x] Create `src/lib/db/supabase/server.ts` using `@supabase/ssr` and the current Next.js cookie API; Auth cookie writes fail closed without a response-header propagation sink. Owner: Codex `/root`; candidate: `51be7f6`; branch: `main`.
-- [x] Create the server-only privileged client (renamed to `src/lib/db/supabase/admin.server.ts` by WP02-T08); the raw service client remains private and only marker-protected synthetic Auth fixture creation/deletion is exposed. Hosted synthetic create/delete and cleanup proof passed.
-- [x] Implement the current Supabase SSR session-refresh pattern in `src/proxy.ts`; the confirmation- and approved-fingerprint-guarded hosted test passed a real near-expiry proxy refresh with updated request/response cookies and private/no-store headers.
-- [x] Protect server mutations with `requireVerifiedIdentity()`, verified `getClaims()` identity, request-scoped clients, and database RLS; no business mutation exists yet in this foundation scope. Forged-state denial passed locally and against hosted development.
-- [x] Never authorize from user-editable `user_metadata`; the verified identity seam returns only the validated token subject and discards client-editable role/cohort claims.
-- [x] Inspect browser bundles and serialized output for secret/service-role canaries after every safe production build. The local scanner, its negative tests, and the production artifact scan pass.
-- [x] Ahmed independently reviewed candidate `51be7f6` and its commit-specific evidence and approved WP01-T05 on 2026-08-26.
-
-**Pass:** sign-in state reaches Server Components and authenticated mutations, a forged cookie/role fails, and no privileged key is present in client output.
+- [x] Browser, server and marker-protected privileged clients; proxy session refresh; `requireVerifiedIdentity()`; no authorization from `user_metadata`; bundle scan for secret canaries. Record: [wp01-t05](../../planning/tasks/wp01-t05-implement-safe-supabase-clients.md). Evidence: [Supabase Auth](../../evidence/wp01-foundation/2026-08-26_supabase-auth_development_51be7f6.md).
 
 #### WP01-T06 — Implement provider interfaces and deterministic mocks
 
-- [x] Create one file per interface listed in section 4.6 and a shared normalized `ProviderResult`, `ProviderUsage`, and typed error taxonomy.
-- [x] Define errors at minimum as `INVALID_INPUT`, `UNAUTHORIZED`, `RIGHTS_BLOCKED`, `RATE_LIMITED`, `TIMEOUT_UNKNOWN`, `PROVIDER_UNAVAILABLE`, `CONTENT_REJECTED`, `MALFORMED_OUTPUT`, and `BUDGET_BLOCKED`.
-- [x] Every call accepts correlation ID, idempotency key, timeout, and abort signal where supported.
-- [x] Every result records provider, model/config version, request ID when present, input/output units, duration, attempt, status, and calculated cost.
-- [x] Create deterministic mock adapters keyed by fixture/case ID. They must simulate success, latency, rate limit, timeout-before-accept, timeout-after-accept, malformed output, and terminal rejection.
-- [x] Add contract tests that run against every mock and later against every real adapter.
-- [x] Ensure importing a real adapter while its flag is false cannot make a network call during tests/build.
-
-**Pass:** the full product can exercise accepted, retryable, terminal, and uncertain provider paths with network disabled.
+- [x] One interface per provider kind (§4.3) with normalized results, usage and the typed error taxonomy; deterministic mocks for success, latency, rate limit, timeout before/after acceptance, malformed output and terminal rejection; real adapters cannot call the network while their flag is false. Record: [wp01-t06](../../planning/tasks/wp01-t06-implement-provider-mocks.md). Evidence: [provider mocks](../../evidence/wp01-foundation/2026-08-20_provider-mocks_local_61622df.md).
 
 #### WP01-T07 — Create the test layers
 
-- [x] Unit tests cover pure business rules and validators. Candidate `1783d7e`; Ahmed approved 2026-08-26.
-- [x] Integration tests run against an isolated reset hosted Supabase development/CI target and mock providers. Local mock plus explicit hosted development Auth checks passed against the reviewed WP01-T04/T05 seams; Ahmed approved 2026-08-26. See `planning/tasks/wp01-t07-create-test-layers.md`.
-- [x] Security tests assume multiple users, cohorts, roles, and source states and assert allowed plus forbidden operations. WP01 identity/availability coverage passed while WP02 RLS remains an explicit non-claim; Ahmed approved 2026-08-26.
-- [x] End-to-end tests use Playwright with isolated synthetic accounts and deterministic data. The local synthetic/mock Chromium seam passed; Ahmed approved 2026-08-26.
-- [x] Evaluation tests consume versioned JSONL and emit machine-readable plus Markdown reports. The synthetic foundation runner passed without claiming WP00 academic evaluation; Ahmed approved 2026-08-26.
-- [x] Load tests use a dedicated tool/script and never point at beta by default. The guarded profile report is explicitly `NOT_EXECUTED`; Ahmed approved 2026-08-26.
-- [x] Name slow/paid suites explicitly; `pnpm verify` must remain zero-paid-call. Hosted Auth is explicit and no paid suite exists; Ahmed approved 2026-08-26.
-- [x] Configure test timeouts to reveal hanging code, not hide it with very large defaults. Bounded 2–30 second Vitest and 15-second Playwright tests passed; Ahmed approved 2026-08-26.
-
-**Pass:** intentionally breaking one boundary causes the correct layer to fail with an actionable message.
+- [x] Unit, integration, security, E2E, evaluation and guarded load layers with bounded timeouts; `pnpm verify` makes no paid call. Record: [wp01-t07](../../planning/tasks/wp01-t07-create-test-layers.md). Evidence: [test layers](../../evidence/wp01-foundation/2026-08-26_test-layers_local_1783d7e.md).
 
 #### WP01-T08 — Create zero-cost CI with a disposable database security gate
 
-- [x] Preserve the reviewed least-privilege application, dependency-audit, immutable-pin, frozen-install, sanitized-artifact, secret-scan, and branch-protection controls proven by the 2026-08-27 CI evidence.
-- [x] Replace the credentialed persistent hosted-CI workflow job with a candidate complete disposable Supabase stack on `ubuntu-24.04`. The earlier hosted job remains historical evidence, not completion evidence for revised D-21.
-- [x] Pin and record the runner image and Supabase CLI in version control; external run `33122706939` captured Docker 28.0.4, PostgreSQL 17.6, PostgREST 16.1, and installed extension versions in sanitized artifact `9667211781`.
-- [x] Start the stack from version control, reset twice, apply synthetic seed data, run Auth/database/security tests, generate types, fail on a type diff, and remove the stack/volumes under `if: always()`. PR run `33122706939` passed the complete lifecycle and cleanup.
-- [x] Remove workflow references to persistent hosted-CI secrets and the protected environment. After the disposable job and final documentation run passed, Ahmed explicitly approved adding `database-ci` to the protected `main` checks and permanently deleting the obsolete GitHub `ci` environment with its six secrets and two protection rules; both changes were verified on 2026-08-28. The two Supabase projects remained unchanged.
-- [x] Re-run the complete clean CI path and preserve sanitized evidence. See `evidence/wp01-foundation/2026-08-28_ci-disposable-database_github_c1428f2.md`. WP02-T04 later adds the deliberate leaking-RLS-policy regression after the RLS matrix exists.
-
-**Pass:** a fresh standard GitHub-hosted runner reproduces install, credential-free application checks, and a complete disposable Supabase database/Auth gate without persistent database credentials, manual dashboard state, paid calls, secret leakage, Preview/Beta access, or a founder-computer dependency.
+- [x] Disposable Supabase stack on `ubuntu-24.04` resets twice, runs Auth/database/security tests, checks generated types and cleans up under `if: always()`; `database-ci` is a required check. Record: [wp01-t08](../../planning/tasks/wp01-t08-create-ci.md). Evidence: [disposable database CI](../../evidence/wp01-foundation/2026-08-28_ci-disposable-database_github_c1428f2.md).
 
 #### WP01-T09 — Provision isolated zero-cost Preview and Beta
 
-- [x] Record the approved target and transition matrix: mock-only workstations, disposable Supabase CI, and the two existing Supabase Free projects reserved for separate Preview and locked Beta after WP01-T08 passes.
-- [x] After WP01-T08 passes, retire hosted development/CI automation, remove obsolete CI secrets, rotate both projects' credentials, clean/verify state, and repurpose the current development project as Preview and current CI project as locked Beta.
-- [x] Prove every Preview/Beta runtime component is externally hosted and remains operable when Ahmed's and Ziad's computers are off. The optional PC-hosted Telegram bot remains noncritical synthetic development/test tooling only.
-- [x] Keep Preview synthetic/mock-only and Beta locked and empty. Beta real data remains blocked until an approved encrypted backup/restore procedure passes and the later rights/security/release gates pass.
-- [x] Configure separate Vercel Hobby project scopes, Supabase projects, callbacks, secrets, storage, jobs, and future provider budget scopes. Ahmed reports provider confirmation for current Hobby use; recheck the eligibility triggers recorded in D-21 before deployment.
-- [x] Make Preview deployment automatic from pull requests without Beta secrets and Beta deployment an approved promotion/rebuild of an already-tested exact commit.
-- [x] Keep `/api/health/live`, `/api/health/ready`, and `pnpm smoke:deployment` redacted and fail-closed. Local and protected external six-check proof pass.
-- [x] Rehearse Preview smoke, locked-Beta promotion, and exact-commit rebuild rollback using `docs/runbooks/environment-promotion.md`.
-
-**Pass:** the disposable CI gate cannot access Preview/Beta; Preview and Beta have separate data, keys, callbacks, jobs, deployment scopes, and reset permissions; the same tested commit and forward migrations reproduce the hosted targets; Beta is locked/empty with its backup gate explicit; no component depends on a founder computer; no paid plan or billable resource was enabled.
+- [x] Two Supabase Free projects repurposed as synthetic Preview and locked, empty Beta with separate Vercel Hobby scopes, secrets and callbacks; fail-closed health endpoints and `pnpm smoke:deployment`; promotion and rollback rehearsed with [environment promotion](environment-promotion.md). Beta real data stays blocked until WP04-T18 and WP04-T19. Record: [wp01-t09](../../planning/tasks/wp01-t09-provision-isolated-environments.md). Evidence: [Preview isolation](../../evidence/wp01-foundation/2026-08-29_environment-isolation_preview_4021457.md), [Beta isolation](../../evidence/wp01-foundation/2026-08-29_environment-isolation_beta_4021457.md).
 
 #### WP01-T10 — Write the repository operation tutorial
 
-- [x] Update `CONTRIBUTING.md` from the historical hosted development/CI workflow to mock-only workstation development, disposable Supabase CI, and guarded Preview/Beta operations after WP01-T08/T09 implementation.
-- [x] Add a command table with purpose, paid-call behavior, required services, and expected duration class.
-- [x] Include the normal daily loop:
-
-```powershell
-pnpm install --frozen-lockfile
-pnpm dev
-```
-
-- [x] Include the end-of-session loop:
-
-```powershell
-pnpm verify
-git diff --check
-git status --short
-```
-
-- [x] Include recovery for unavailable hosted targets, rejected reset guards, network failure, stale generated types, migration drift, invalid env, and a leaked workstation/CI token.
-- [x] Have a fresh agent follow `CONTRIBUTING.md` on a clean clone without chat history or verbal help; have the reviewer record every ambiguity. The final journey includes the reviewed disposable database/Auth CI evidence, synthetic Preview smoke, and locked-Beta boundaries from WP01-T08/T09.
-
-**Pass:** the clean-clone rehearsal reaches the mock application, tests, build, disposable database/Auth CI contract, and approved Preview/Beta operating boundaries using repository instructions alone, and the fresh agent produces a complete task handoff.
+- [x] `CONTRIBUTING.md` covers mock-only development, disposable CI, guarded Preview/Beta operation, the command table and recovery; a fresh agent followed it from a clean clone. Record: [wp01-t10](../../planning/tasks/wp01-t10-write-operation-tutorial.md). Evidence: [tutorial](../../evidence/wp01-foundation/2026-08-30_repository-tutorial_local_c9543ad.md).
 
 #### WP01-T11 — Run the package gate
 
-- [x] Confirm historical WP01-T04/T05 evidence remains valid and revised WP01-T08/T09/T10 have passed before the package gate starts. See `planning/tasks/wp01-t11-run-package-gate.md`; copy the gate template only after claiming WP01-T11 against updated `main`.
-- [x] Run `pnpm verify` from a clean clone with network access blocked for provider endpoints.
-- [x] Reset the disposable CI database twice and compare generated types; do not reset Preview or Beta.
-- [x] Deploy preview from the candidate SHA and run smoke tests.
-- [x] Search the repository, build output, logs, and evidence for secret patterns.
-- [x] Confirm the Supabase breaking-change feed was reviewed and relevant items recorded.
-- [x] Reviewer records the exact Node, pnpm, Next.js, Supabase CLI, PostgreSQL, and extension versions.
+- [x] Clean-clone `pnpm verify` with provider network blocked, two disposable resets with stable types, Preview smoke, secret search and recorded versions. Record: [wp01-t11](../../planning/tasks/wp01-t11-run-package-gate.md). Evidence: [foundation gate](../../evidence/wp01-foundation/2026-08-30_foundation-gate_preview_d7997eb.md).
 
-### 4.1 Create the codebase
+### 4.1 Environments
 
-Use one TypeScript repository unless measured deployment needs justify a monorepo later. Configure:
+| Environment | Hosts | Data | Providers |
+| --- | --- | --- | --- |
+| Workstation | Next.js development process, browsers, tests | Synthetic fixtures | Deterministic in-process mocks |
+| CI | Disposable Supabase stack on a GitHub-hosted runner | Synthetic seed only | Mocks |
+| Preview | Supabase Free project + Vercel Hobby scope `unimind-preview` | Synthetic only, forever | Mocks; real adapters only for synthetic contract checks inside approved caps |
+| Beta | Supabase Free project + Vercel Hobby scope `unimind-beta` | Locked and empty until WP04-T19 (sources) and WP11-T01 (students) | Real adapters after WP04-T14, inside approved caps |
 
-- Supported Node.js version pinned in repository metadata.
-- Package-manager version and lockfile.
-- Next.js App Router.
-- Strict TypeScript.
-- ESLint and formatting.
-- Unit, integration, end-to-end, evaluation, and load-test commands.
-- Environment-variable schema validation at startup/build time.
+Each environment has its own database, storage namespaces, secrets, callbacks, reset permissions, worker namespace and provider budget scope. Never point one environment at another's data, and never copy real chats or private sources into CI or Preview.
 
-### 4.2 Create the directory boundaries
+### 4.2 Environment variables
 
-These are the planned module boundaries. Create each directory with its first real module; README-only placeholders were removed in WP03-T15. Planned:
+Validated placeholders exist or must be added, server-only unless stated: public Supabase URL and publishable key (public); canonical application origin for Auth callbacks; service-role key; generation, embedding, transcription and OCR credentials; raw/processed storage credentials and namespace names; queue or worker connection settings and worker signing secrets; SMTP host, port, user and sender (D-26); error-reporting and telemetry endpoints; per-provider flags, models, limits and budget thresholds; chat/Studio quotas; maximum source sizes and durations. Never define a web-search provider variable or a payment secret during the free PoC.
 
-- `src/app` for routes/layouts.
-- `src/components` for UI.
-- `src/lib/auth` for session and authorization helpers.
-- `src/lib/catalog` for hierarchy and terminology.
-- `src/lib/availability` for derived release rules.
-- `src/lib/storage` for raw/processed provider adapters.
-- `src/lib/jobs` for job contracts and enqueue helpers.
-- `src/lib/ingestion` for processing contracts.
-- `src/lib/rag` for retrieval, evidence, and groundedness.
-- `src/lib/ai` for generation/transcription/embedding adapters.
-- `src/lib/studio` for artifact contracts and validators.
-- `src/lib/usage` for reservations, limits, and cost.
-- `src/lib/safety` for academic-case/real-patient classification.
-- `src/lib/observability` for correlation, logs, and metrics.
-- `src/types` for shared schema types.
-- `workers/ingestion`, `workers/generation`, and `workers/reconciliation`.
-- `supabase/migrations` and seed fixtures.
-- `evals/datasets`, `evals/runners`, and `evals/reports`.
-- `tests/unit`, `tests/integration`, `tests/e2e`, `tests/security`, and `tests/load`.
-- `docs/adr` and `docs/runbooks`.
+### 4.3 Provider interfaces
 
-Business rules must live in testable modules, not React components, visual workflow nodes, or route handlers.
-
-### 4.3 Create environments
-
-Create separate:
-
-- Workstation application development with deterministic in-process mocks and no local infrastructure service.
-- Disposable database/Auth CI using a complete Supabase stack on a standard GitHub-hosted Ubuntu runner and synthetic data only.
-- Externally hosted Preview using one persistent Supabase Free project and a separate Vercel Hobby project scope; synthetic data and mock providers only.
-- Externally hosted locked Beta using the other persistent Supabase Free project and a separate Vercel Hobby project scope; no real data until backup, rights, security, release, and go-live gates pass.
-
-Use different database projects/branches, storage namespaces, secrets, webhook endpoints, reset permissions, and provider budget scopes. Never point development or CI automation at preview/beta, and never copy real student chats or private raw sources into development, CI, or preview.
-
-### 4.4 Environment variables
-
-Define validated placeholders for:
-
-- Public Supabase URL and publishable key.
-- Server-only canonical application origin for Auth callback and redirect URLs.
-- Server-only Supabase service-role key.
-- Generation, embedding, transcription, and OCR provider credentials.
-- Raw/processed storage credentials and namespace names.
-- Queue credentials or connection settings.
-- Worker callback/signing secrets.
-- Error-monitoring and telemetry endpoints.
-- Per-provider flags, models, limits, and budget thresholds.
-- Chat/Studio quotas and maximum source sizes/durations.
-
-Do not define a web-search provider variable. Do not add payment secrets during the free PoC.
-
-### 4.5 Continuous integration
-
-On every pull request run:
-
-1. Dependency install from lockfile.
-2. Environment-schema test with safe placeholders.
-3. Lint.
-4. Type check.
-5. Unit tests.
-6. Migration reset against a clean database.
-7. Database/RLS integration tests.
-8. App build.
-9. Selected end-to-end smoke tests.
-10. Check that generated database types are current.
-
-Protect the main branch. Require review for migrations, RLS, provider policy, raw deletion, and usage-accounting changes.
-
-### 4.6 Provider adapters and mocks
-
-Define interfaces before using a provider:
-
-- `AnswerGenerator`.
-- `StructuredArtifactGenerator`.
-- `EmbeddingProvider`.
-- `TranscriptionProvider`.
-- `OcrProvider`.
-- `ObjectStorageProvider`.
-- `JobQueueProvider`.
-
-Every adapter returns normalized identifiers, units, latency, retries, cost, and typed errors. Implement deterministic mock adapters for development and tests.
-
-### 4.7 Exit evidence
-
-- Clean clone installs, migrates, tests, and builds from documented commands.
-- Preview deployment passes health and auth smoke tests.
-- Paid provider calls are disabled by default.
-- No secret is present in browser bundles, repository history, or logs.
-- A documented capacity increase does not require source-code restructuring.
+Interfaces live in `src/lib/ai/` (`AnswerGenerator`, `StructuredArtifactGenerator`, `EmbeddingProvider`, `TranscriptionProvider`, `OcrProvider`), `src/lib/storage/` (`ObjectStorageProvider`) and `src/lib/jobs/` (`JobQueueProvider`), each with deterministic mocks. Every adapter returns normalized identifiers, units, latency, retries, cost and typed errors, and passes the shared contract tests before a flag can enable it.
 
 ## 5. Work package 2: Database schema and authorization
 
-**Outcome:** a clean database can be recreated from version control; every exposed object has intentional grants and RLS; authorization, availability, provenance, jobs, and usage invariants are enforced below the UI.
+**Outcome (done):** a clean database is recreated from version control; every exposed object has intentional grants and RLS; authorization, availability, provenance, jobs and usage invariants are enforced below the UI.
 
-### 5.0 Tutorial procedure
+**Package gate:** [database gate](../../evidence/wp02-database/2026-09-09_database-gate_github_dd9ece4.md).
+
+### 5.0 Tasks
 
 #### WP02-T01 — Establish database conventions
 
-- [x] Add `docs/adr/0002-database-boundaries.md` covering exposed `public`, private internal schemas, RLS, stable IDs, timestamps, enums/checks, soft deactivation, append-only evidence, and forward migrations.
-- [x] Use `uuid` primary keys for externally referenced/domain entities and identity/sequence keys only for internal append-only rows where ordering/size benefits are measured.
-- [x] Use `timestamptz`, UTC storage, `created_at not null default now()`, and explicit actor/reason fields on governed transitions.
-- [x] Add `not null`, foreign keys, unique constraints, and transition checks at the database layer; TypeScript validation is additional, not a substitute.
-- [x] Index every foreign key used for joins/deletes and benchmarked authorization/filter columns. Do not add speculative indexes without a query.
-- [x] Revoke broad defaults first, then explicitly grant only required tables/functions to `anon`, `authenticated`, or worker roles. Remember that a grant exposes an object to a role while RLS controls rows; both must be correct.
-- [x] Create SQL lint/convention checks and a migration checklist.
+- [x] ADR 0002 database boundaries, `uuid`/`timestamptz` conventions, database-level constraints, revoke-then-grant rule, `pnpm check:sql` and the [migration checklist](database-migration-checklist.md). Record: [wp02-t01](../../planning/tasks/wp02-t01-establish-database-conventions.md). Evidence: [conventions](../../evidence/wp02-database/2026-08-31_database-conventions_local_de4ad49.md).
 
 #### WP02-T02 — Create migrations in reviewable dependency order
 
-Run `pnpm supabase migration new <name>` once for each row; put only that slice in the generated file:
-
-| Order | Migration description | Must prove before next migration |
-| --- | --- | --- |
-| 01 | `extensions_and_schemas` | Required extensions install with no version clause; internal schemas are not Data API exposed. |
-| 02 | `common_enums_and_functions` | Invalid status transitions fail; functions use a safe search path. |
-| 03 | `profiles_roles_terms` | New synthetic auth user receives a profile safely; user metadata cannot grant a role. |
-| 04 | `catalog_hierarchy` | Parent codes are unique and a unit cannot cross cohorts. |
-| 05 | `memberships_releases_publication` | Inactive/expired membership and locked/unpublished state are queryable deterministically. |
-| 06 | `collection_campaigns_submissions` | Campaign assignment and client idempotency constraints hold. |
-| 07 | `source_rights_raw_lifecycle` | Rights gate and raw state transition reject prohibited moves. |
-| 08 | `processing_jobs_attempts_calls` | Atomic claim/lease constraints and append-only attempts exist. |
-| 09 | `processed_documents_segments_vectors` | Dimension matches the approved embedding config; content/config uniqueness holds. |
-| 10 | `tutor_sessions_answers_evidence` | Answer evidence references immutable source segments and authorized scope. |
-| 11 | `studio_artifacts_quizzes` | Request/cache/submission idempotency and answer-key separation hold. |
-| 12 | `usage_budget_rate_limits` | Reservation/settlement is transactional and append-only. |
-| 13 | `audit_incidents` | Governed mutations append actor, before/after, correlation, and reason. |
-| 14 | `availability_retrieval_functions` | Caller-scoped availability and worker retrieval reject forged scope. |
-| 15 | `rls_grants_indexes` | Full allow/deny matrix passes and query plans use intended indexes. |
-
-For each migration:
-
-- [x] Write an accompanying SQL or integration test before moving to the next row.
-- [x] Run a clean reset.
-- [x] Upgrade a populated fixture database and verify retained rows/evidence.
-- [x] Generate TypeScript types and inspect the diff.
-- [x] Run database advisors supported by the pinned CLI and record unresolved warnings.
-- [x] Document a forward repair plan; do not assume a shared database can safely migrate backward.
+- [x] Fifteen ordered migration slices from extensions to RLS/grants/indexes, each with its own test, clean reset, populated upgrade, type diff and advisor review. Record: [wp02-t02](../../planning/tasks/wp02-t02-create-reviewable-migrations.md). Evidence: [migrations](../../evidence/wp02-database/2026-08-31_reviewable-migrations_github_fe7b6e6.md).
 
 #### WP02-T03 — Implement reusable authorization predicates
 
-- [x] Create small stable helper functions only where they improve one source of truth: `is_admin`, `has_active_membership`, `has_campaign_assignment`, and `can_access_unit`. Exact implementation commit `f7e0f3d8c7920e987ddffa9bd1f44c1edaec716f` received both founders' separate protected confirmations, merged through approved PR #15 as `5334fcaf6b99e93235a31a6edd8015f688f069f1`, passed main CI, and was promoted and validated across Supabase Preview and Vercel Production. Evidence: `evidence/wp02-database/2026-09-01_authorization-predicates_github_f7e0f3d.md`.
-- [x] Prefer `security invoker`. All four helpers use invoker rights, an empty `search_path`, caller-scoped `auth.uid()`, revoked default/anonymous execution, and authenticated-only grants.
-- [x] Use `(select auth.uid())` inside RLS predicates where appropriate to avoid repeated function evaluation.
-- [x] Do not use `auth.role()` or `TO authenticated` alone as authorization. Tests prove authoritative row checks and immediate revocation despite stale mutable claims.
-- [x] Add both `USING` and `WITH CHECK` for update policies and add the SELECT policy required for update visibility. Database meta-tests enforce this contract.
-- [x] Test JWT/app-metadata staleness or avoid relying on mutable claims for immediate revocation. The 34-assertion authorization suite covers stale claims and post-revocation denial.
+- [x] `is_admin`, `has_active_membership`, `has_campaign_assignment` and `can_access_unit` as security-invoker helpers with an empty `search_path`, stale-claim and revocation tests. Record: [wp02-t03](../../planning/tasks/wp02-t03-implement-authorization-predicates.md). Evidence: [predicates](../../evidence/wp02-database/2026-09-01_authorization-predicates_github_f7e0f3d.md).
 
 #### WP02-T04 — Build the actor/action/resource matrix first
 
-- [x] Copy `docs/templates/rls-matrix.csv` to `docs/security/rls-matrix.csv`. Owner: Codex `/root`; task record: `planning/tasks/wp02-t04-build-rls-matrix.md`.
-- [x] Add every table/view/function as a resource and every `anon`, student, Batch Leader, admin, worker, and service action as rows.
-- [x] Mark each cell `ALLOW`, `DENY`, or `SERVER_ONLY`; include the predicate and test ID.
-- [x] For every `ALLOW`, add a positive test. For every high-risk boundary, add a negative test using a different user, cohort, unit, role, state, and expired/revoked access where applicable. The 121-assertion matrix suite passed in GitHub run `33514355193` at implementation candidate `6133a54c6a9b54bea954ea7f5947e26f9e240250`.
-- [x] Query `pg_class`, `pg_policies`, and grants in a meta-test so a newly exposed table without RLS/policy review fails CI. Evidence: `evidence/wp02-database/2026-09-01_actor-action-resource-matrix_github_6133a54.md`.
-- [x] Prove the disposable CI database/security gate fails when a test-only candidate policy deliberately leaks a cross-user or cross-cohort row; preserve the protected RLS confirmations from both founders and remove/revert the unsafe policy fixture after the negative run. After Ziad confirmed exact candidate `6133a54c6a9b54bea954ea7f5947e26f9e240250` and separately relayed Ahmed's named confirmation as permitted by D-22, test-only SHA `5aaaf515f6fefeeaa4244aad8b5ce0f23287cd92` failed database CI in run `33540422972`. Revert SHA `4d3f1720a6dfaf7d94e38020ea757a5294bed166` removed the fixture and passed full run `33541122562`.
-
-- [x] Close the 2026-09-07 review finding with a forward-only release-visibility repair, disposable database proof, and new exact-candidate Ahmed + Ziad confirmations before merge or promotion. Candidate `12b50cd` passed GitHub run `34158635066`; evidence: `evidence/wp02-database/2026-09-07_server-only-retrieval-scope_github_12b50cd.md`.
+- [x] [RLS matrix](../security/rls-matrix.csv) with a positive and negative test per boundary, a catalog meta-test that fails on an unreviewed exposed table, and a proven failing run for a deliberately leaking policy. Record: [wp02-t04](../../planning/tasks/wp02-t04-build-rls-matrix.md). Evidence: [matrix](../../evidence/wp02-database/2026-09-01_actor-action-resource-matrix_github_6133a54.md).
 
 #### WP02-T05 — Implement availability as a derived contract
 
-- [x] Create one caller-scoped security-invoker view/function for student catalog availability; do not store an editable `available` boolean. Owner: Codex `/root`; requester/reviewer: Ziad; branch: `wp02/derived-catalog-availability`; task record: `planning/tasks/wp02-t05-derived-catalog-availability.md`. Technical gates passed and Ziad accepted the ordinary checkpoint on 2026-09-07.
-- [x] Implement every predicate from section 5.8 with explicit tests for each single failed predicate and combinations. The 36-assertion T05 suite passes at `59ce324` in full green CI run `33591109224`.
-- [x] Return a safe reason code to authorized admin diagnostics, but only a generic empty/locked state to students when detail could expose private configuration. Student denial and diagnostic non-disclosure tests pass independently and in combination.
-- [x] Add indexes only after capturing `EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON)` on representative seeded data. Invocation and installed-body plans on 512 generated synthetic units use existing source indexes; no new index is justified or added.
-- [x] Store the plan report in `evidence/wp02-database/query-plans/` and assert reasonable plan shape in integration tests without overfitting volatile cost numbers. Evidence: `evidence/wp02-database/2026-09-02_catalog-availability_github_59ce324.md`; six credential-free shape tests plus live CI validation pass.
+- [x] Caller-scoped availability with every §5.2 predicate tested singly and in combination, safe admin reason codes, and recorded query plans. Record: [wp02-t05](../../planning/tasks/wp02-t05-derived-catalog-availability.md). Evidence: [availability](../../evidence/wp02-database/2026-09-02_catalog-availability_github_59ce324.md).
 
 #### WP02-T06 — Implement server-only retrieval scope
 
-Owner: Codex `/root`; requester/reviewer: Ahmed; branch: `wp02/server-only-retrieval-scope`; task record: `planning/tasks/wp02-t06-server-only-retrieval-scope.md`.
-
-- [x] Put the unrestricted segment/vector tables outside direct student grants.
-- [x] Expose a narrow server/worker function accepting user, cohort, unit, active embedding config, query vector/text, and limit.
-- [x] Recompute access and active source scope inside the function; never trust a client-supplied filter.
-- [x] Filter by authorization/source state before ordering/limiting similarity results.
-- [x] Match HNSW operator class to the chosen distance operator and order by the distance expression directly.
-- [x] Add cross-cohort/program canary tests and revoked-source tests.
-- [x] Pass disposable database CI, freeze exact-candidate evidence, and close the protected Ahmed + Ziad checkpoint for the included RLS repair. Green run `34158635066`; exact protected implementation candidate `12b50cd`; evidence: `evidence/wp02-database/2026-09-07_server-only-retrieval-scope_github_12b50cd.md`.
+- [x] Segment and vector tables outside student grants; one server/worker function that recomputes access and filters before ordering; canary and revoked-source tests. Record: [wp02-t06](../../planning/tasks/wp02-t06-server-only-retrieval-scope.md). Evidence: [retrieval scope](../../evidence/wp02-database/2026-09-07_server-only-retrieval-scope_github_12b50cd.md).
 
 #### WP02-T07 — Make jobs and usage state machines transactional
 
-- [x] Create private, service-role-only transition functions for job claim/heartbeat/success/retry/fail and usage reserve/settle/release/expire. Owner: Codex `/root`; requester/reviewer: Ahmed; implementation PR `#20`; exact candidate `576f1d6`; task record: `planning/tasks/wp02-t07-transactional-jobs-usage.md`.
-- [x] Lock the relevant row and idempotency namespace, check prior state and caller input, write immutable ledger/events in the same transaction, and return the canonical existing result only for an identical replay.
-- [x] Reject negative or excessive settled units, double and cross-transition settlement, terminal job transitions by a stale/wrong lease owner, and READY sources with missing or later-invalidated prerequisites.
-- [x] Prove race behavior with two independent PostgreSQL sessions competing to claim one job, reserve one usage key, and settle one reservation; final PR run `34192310589` and merged-main run `34193197926` passed the complete disposable database/Auth gate.
-- [x] Merge, promote the guarded forward migration chain to synthetic Preview, deploy the exact reviewed build to Vercel Production, run rollback-only hosted state-machine smoke checks and the six-check public deployment smoke, and clean the task branch/PR state. Evidence: `evidence/wp02-database/2026-09-08_transactional-jobs-usage_github_576f1d6.md`.
+- [x] Private transition functions for job claim/heartbeat/success/retry/fail and usage reserve/settle/release/expire, with two-session race proof. Record: [wp02-t07](../../planning/tasks/wp02-t07-transactional-jobs-usage.md). Evidence: [jobs and usage](../../evidence/wp02-database/2026-09-08_transactional-jobs-usage_github_576f1d6.md).
 
 #### WP02-T08 — Prove RLS is not bypassed by application architecture
 
-- [x] Run student-path database queries with the user's authenticated client, not the service role; caller-scoped profile/catalog seams and cross-user denials passed.
-- [x] Restrict admin/service clients to narrow server-only modules and log audited privileged actions; exact candidate `b624426` uses one marker-protected module and immutable STARTED/terminal audit events.
-- [x] Test views for `security_invoker = true` or keep them in an unexposed schema; exhaustive pgTAP and hosted metadata checks passed.
-- [x] Test Storage object policies separately from table policies, including signed upload finalization and storage upsert's INSERT/SELECT/UPDATE requirements if upsert is allowed; D-18 remains fail-closed with zero buckets/policies and both API paths denied.
-- [x] Test that deleting/revoking a user/session follows the approved token-expiry/revocation policy; immediate database/refresh denial and one-hour JWT ceiling passed. Evidence: `evidence/wp02-database/2026-09-08_rls-application-boundaries_github_b624426.md`.
+- [x] Student paths use the caller's client; privileged access is one audited server-only module; views are security-invoker; Storage stays fail-closed with zero buckets until D-18; revocation follows the [session revocation policy](../policies/auth-session-revocation.md). Record: [wp02-t08](../../planning/tasks/wp02-t08-rls-application-boundaries.md). Evidence: [application boundaries](../../evidence/wp02-database/2026-09-08_rls-application-boundaries_github_b624426.md).
 
 #### WP02-T09 — Run the database gate
 
-- [x] Reset from empty twice. Exact candidate `dd9ece4` passed both clean resets in GitHub run `34308323932`.
-- [x] Upgrade the previous tagged schema with populated fixtures. The tagged WP01 fixture upgraded through all 22 migrations without loss.
-- [x] Run the complete RLS/grant matrix. All 24 pgTAP files plus 22 security tests passed.
-- [x] Run race/idempotency tests. Two-session job claim, usage reserve, and usage settle/release races each produced one canonical result.
-- [x] Generate types and require zero diff. The generated database type artifact matched `src/types/database.generated.ts` byte-for-byte.
-- [x] Run database advisors and review every warning. Disposable lint passed; Supabase Preview reported zero security, performance, or health issues.
-- [x] Capture representative availability and retrieval plans. Sanitized exact-candidate plans are committed under `evidence/wp02-database/query-plans/`.
-- [x] Reviewer inspected all 22 migrations and the exhaustive catalog tests for unsafe definer functions, broad grants, missing `WITH CHECK`, unindexed foreign keys, destructive statements, and accidental Data API exposure; no unresolved finding remained. Evidence: `evidence/wp02-database/2026-09-09_database-gate_github_dd9ece4.md`.
+- [x] Two clean resets, populated upgrade, full RLS/grant matrix, races, zero type diff, advisors and plans reviewed. Record: [wp02-t09](../../planning/tasks/wp02-t09-run-database-gate.md). Evidence: [database gate](../../evidence/wp02-database/2026-09-09_database-gate_github_dd9ece4.md).
 
-### 5.1 Migration order
+### 5.1 Schema source of truth
 
-Create small reviewable migrations in this order:
+The schema is `supabase/migrations/` and its generated types in `src/types/database.generated.ts`. Every change is a new forward migration that follows the [migration checklist](database-migration-checklist.md). Standing rules for later packages:
 
-1. Extensions and common functions.
-2. Enums and status-transition validation helpers.
-3. Profiles, roles, consent, and terms acceptance.
-4. Catalog hierarchy and localized terminology.
-5. Cohort membership, release, and unit publication.
-6. Batch Leader assignments, campaigns, requests, and submissions.
-7. Source assets, versions, rights, and raw lifecycle.
-8. Jobs, attempts, dependencies, provider calls, and quality reports.
-9. Processed documents, locators, segment tags, segments, embeddings, and embedding configurations.
-10. Tutor sessions, messages, answers, answer evidence, and feedback.
-11. Studio requests, artifacts, artifact evidence, validation, quizzes, and attempts.
-12. Usage reservations, ledger entries, provider cost events, limits, and flags.
-13. Audit and incident events.
-14. Derived availability/retrieval views and protected functions.
-15. RLS policies, grants, indexes, and database tests.
+- No editable availability flag, balance or counter: availability is derived (§5.2) and usage is a ledger.
+- Source format is metadata on the source version, never a separate pool. Professor tags are `PROFESSOR_HINT`, `EXAM_EMPHASIS`, `EXCLUSION`, `CORRECTION` and `LIKELY_QUESTION` on segments.
+- Every processed document, locator, segment and embedding belongs to exactly one source version; every segment carries join-verifiable cohort, unit and edition scope.
+- Idempotency keys are unique per namespace (submissions, jobs, reservations, Studio requests, quiz submissions).
+- Every embedding column is currently a synthetic `vector(3)` placeholder. WP04-T15 replaces it after D-04.
+- The free PoC creates no payment-order or receipt table.
 
-### 5.2 Catalog tables
+### 5.2 Derived availability and retrieval scope
 
-Implement:
+A unit is available to a caller only when the caller is authenticated; has an active cohort membership (or is an authorized admin previewing); the cohort release is `UNLOCKED`; the unit is `PUBLISHED`; at least one active source version is `READY`; source rights remain valid; and source and unit match the current curriculum edition. The worker-only retrieval function takes trusted server scope, revalidates the requesting user's access and never accepts a client-supplied cohort or unit filter without server validation.
 
-- `education_stages(id, code, name_en, name_ar, status, sort_order)`.
-- `institutions(id, education_stage_id, code, name_en, name_ar, status)`.
-- `programs(id, institution_id, code, program_type, progression_mode, name_en, name_ar, default_unit_type, unit_label_singular_en, unit_label_plural_en, unit_label_singular_ar, unit_label_plural_ar, status)`; `progression_mode` is `TERM_BASED` or `FLEXIBLE_CREDIT`.
-- `academic_levels(id, program_id, code, name_en, name_ar, sort_order, status)`.
-- `terms(id, academic_level_id, code, name_en, name_ar, sort_order, status)`; this stores a semester for `TERM_BASED` programs or a non-semester course-plan period for `FLEXIBLE_CREDIT` programs.
-- `cohorts(id, term_id, code, name, curriculum_edition, starts_at, ends_at, status)`.
-- `curriculum_units(id, cohort_id, parent_unit_id, code, unit_type, title_en, title_ar, sort_order, publication_status, published_at, published_by)`.
+### 5.3 RLS and grant rules
 
-Use unique constraints on stable codes within their parent. Prevent parent curriculum units from crossing cohorts. Index all foreign keys and common filter/order columns.
-
-### 5.3 Identity, access, and release tables
-
-Implement:
-
-- `profiles(user_id, display_name, preferred_language, account_status, chat_retention_mode, created_at)`.
-- `user_roles(user_id, role, granted_by, granted_at, revoked_at)`.
-- `terms_acceptances(user_id, terms_version, privacy_version, educational_boundary_version, accepted_at)`.
-- `cohort_memberships(id, user_id, cohort_id, status, starts_at, ends_at, granted_by)`.
-- `cohort_releases(cohort_id, release_status, changed_by, changed_at, reason)`.
-- `curriculum_unit_publication_events(id, curriculum_unit_id, prior_status, new_status, changed_by, changed_at, reason)`.
-
-Do not place an editable balance or editable availability flag on profiles or units.
-
-### 5.4 Collection and source tables
-
-Implement:
-
-- `collection_campaigns(id, cohort_id, name, status, opens_at, closes_at, created_by)`.
-- `campaign_curriculum_units(campaign_id, curriculum_unit_id)`.
-- `batch_leader_assignments(id, campaign_id, user_id, status, expires_at, invited_by)`.
-- `requested_material_items(id, campaign_id, curriculum_unit_id, title, expected_type, required, status)`.
-- `source_submissions(id, campaign_id, submitted_by, client_idempotency_key, source_name, declared_format, declared_rights, status, created_at)`.
-- `source_assets(id, cohort_id, curriculum_unit_id, canonical_title, source_kind, contributor_label, created_at)`.
-- `source_versions(id, source_asset_id, version_number, submission_id, checksum, mime_type, byte_size, duration_ms, page_count, language_profile, rights_status, processing_status, activation_status, created_at)`.
-- `raw_objects(id, source_version_id, provider, object_key, status, received_at, delete_after, hold_reason, deleted_at, last_error)`.
-- `raw_deletion_events(id, raw_object_id, event_type, attempt_number, provider_result, verified_absent, occurred_at, correlation_id)`.
-
-Enforce one source version per submission unless an explicit replacement action creates another. Put unique constraints on `(campaign_id, submitted_by, client_idempotency_key)` and on checksum rules selected by the source policy.
-
-### 5.5 Processing and knowledge-pool tables
-
-Implement:
-
-- `processing_jobs(id, source_version_id, job_type, state, idempotency_key, priority, available_at, lease_owner, lease_expires_at, attempt_count, max_attempts, last_error_code, created_at, finished_at)`.
-- `job_dependencies(job_id, depends_on_job_id)`.
-- `job_attempts(id, job_id, attempt_number, started_at, heartbeat_at, finished_at, outcome, error_code, error_detail)`.
-- `provider_calls(id, correlation_id, job_id, action_type, provider, model_version, provider_request_id, input_units, output_units, duration_ms, attempt_number, status, calculated_cost, created_at)`.
-- `processing_quality_reports(id, source_version_id, coverage_ratio, locator_coverage_ratio, low_confidence_count, terminology_sample_result, duplicate_ratio, raw_deletion_state, overall_result, report_json, created_at)`.
-- `processed_documents(id, source_version_id, format, object_key, checksum, compressed_bytes, schema_version, created_at)`.
-- `source_locators(id, processed_document_id, locator_type, original_page, start_ms, end_ms, processed_start, processed_end, confidence)`.
-- `source_segments(id, source_version_id, curriculum_unit_id, sequence_number, heading_path, content, content_hash, token_count, locator_id, language, active, created_at)`.
-- `segment_tags(id, source_segment_id, tag_type, label, confidence, details_json)`.
-- `embedding_configs(id, provider, model, dimensions, normalization, version, active)`.
-- `segment_embeddings(source_segment_id, embedding_config_id, embedding, created_at)`.
-- `source_conflict_annotations(id, curriculum_unit_id, segment_a_id, segment_b_id, status, description, created_by, created_at)`.
-
-Allowed professor tags include `PROFESSOR_HINT`, `EXAM_EMPHASIS`, `EXCLUSION`, `CORRECTION`, and `LIKELY_QUESTION`. Store source format on the source version, not as a separate pool.
-
-### 5.6 Tutor and Studio tables
-
-Implement:
-
-- `chat_sessions(id, user_id, cohort_id, curriculum_unit_id, language_mode, retention_mode, created_at, closed_at)`.
-- `chat_messages(id, session_id, role, content, created_at, retained_until)`.
-- `chat_answers(id, assistant_message_id, evidence_status, validation_status, policy_version, model_version, conflict_detected, created_at)`.
-- `answer_evidence(answer_id, source_segment_id, rank, usage_type)`.
-- `feedback_reports(id, reporter_id, entity_type, entity_id, category, description, status, created_at)`.
-- `studio_requests(id, user_id, cohort_id, curriculum_unit_id, artifact_type, language, parameters_json, source_scope_hash, state, idempotency_key, created_at)`.
-- `studio_artifacts(id, studio_request_id, artifact_type, content_json, validation_status, policy_version, model_version, artifact_hash, created_at, invalidated_at)`.
-- `artifact_evidence(artifact_id, source_segment_id, usage_type)`.
-- `artifact_validation_results(id, artifact_id, validator_version, result, issues_json, created_at)`.
-- `quiz_attempts(id, user_id, artifact_id, mode, started_at, submitted_at, score, result_json)`.
-- `quiz_responses(id, attempt_id, item_key, selected_option, correct, answered_at)`.
-
-Use a unique idempotency constraint for Studio requests. Cache reuse must verify the user still has access to every source version used.
-
-### 5.7 Usage, cost, and automation tables
-
-Implement:
-
-- `usage_ledger(id, user_id, event_type, units, related_entity_type, related_entity_id, idempotency_key, created_at)`.
-- `usage_reservations(id, user_id, action_type, reserved_units, settled_units, state, expires_at, idempotency_key, created_at)`.
-- `rate_limit_buckets(subject_key, action_type, window_start, used, limit_value, updated_at)`.
-- `system_feature_flags(key, enabled, config_json, changed_by, changed_at)`.
-- `budget_counters(scope_type, scope_id, period_start, amount, hard_limit, updated_at)`.
-- `audit_events(id, actor_id, action, entity_type, entity_id, before_json, after_json, correlation_id, created_at)`.
-- `incident_events(id, severity, category, state, correlation_id, details_json, opened_at, resolved_at)`.
-
-The free PoC still uses reservations and ledger entries to prove reliable usage accounting. It does not create payment-order or receipt tables.
-
-### 5.8 Derived availability and retrieval scope
-
-Create a security-invoker view or caller-scoped SQL function that returns a unit only when:
-
-1. Caller is authenticated.
-2. Caller has active cohort membership, unless caller is an authorized admin previewing.
-3. Cohort release is `UNLOCKED`.
-4. Unit publication is `PUBLISHED`.
-5. At least one active source version is `READY`.
-6. Source rights remain valid.
-7. Source and unit match the current curriculum edition.
-
-Create a separate worker-only retrieval function that requires trusted server scope arguments and revalidates the requesting user's access before querying segments. Never accept cohort/unit filters from the client without server validation.
-
-### 5.9 RLS and grant matrix
-
-Implement and test:
-
-- Students read their own profile, membership, sessions, messages, artifacts, attempts, ledger, and authorized published catalog/source metadata.
-- Students cannot read raw objects, provider calls, job errors, other users, inactive sources, or unpublished units.
-- Batch Leaders read assigned campaigns, requested items, and their submissions; they cannot publish, unlock, retrieve student chats, or view another campaign.
-- Admins use explicit admin policies/actions; destructive or security-sensitive actions require server-side audited functions.
+- Students read their own profile, membership, sessions, messages, artifacts, attempts and ledger, plus authorized published catalog and source metadata. They never read raw objects, provider calls, job errors, other users, inactive sources or unpublished units.
+- Batch Leaders reach only their assigned campaign, its requested items and their own submissions; they cannot publish, unlock, see chats, assign roles or see another campaign.
+- Admins act through explicit audited server/database functions for destructive or security-sensitive actions.
 - Workers use private schemas or service-role access only from trusted runtimes.
+- An unavoidable `SECURITY DEFINER` function sits outside exposed schemas, sets a safe `search_path`, authorizes the caller inside, revokes `PUBLIC` execute and has an unauthorized-execution test.
 
-If a `SECURITY DEFINER` function is unavoidable, place it outside exposed schemas, set a safe `search_path`, authorize the caller inside it, revoke `PUBLIC` execute, grant only the required role, and test unauthorized execution.
+### 5.4 Database tests every later migration keeps green
 
-### 5.10 Required database tests
+Student A cannot read Student B's chat, artifact, attempt or usage rows; Cohort A cannot retrieve Cohort B segments; a member cannot see a locked cohort or an unpublished or empty unit; a Batch Leader cannot publish, unlock, assign roles or see chats; inactive membership removes availability immediately; replacing a source preserves historical answer evidence; a repeated idempotency key creates one submission, job, reservation or artifact; an update cannot move a row into another user's or cohort's scope; revoked rights remove active retrieval without deleting audit or provenance; service credentials never appear in client responses.
 
-- Student A cannot read Student B's chat, artifact, attempt, or usage rows.
-- Cohort A cannot retrieve Cohort B segments.
-- A member cannot see a locked cohort or unpublished/empty unit.
-- A Batch Leader cannot publish, unlock, assign roles, or see chats.
-- An inactive membership immediately removes availability.
-- Replacing a source preserves historical answer evidence.
-- Repeating an idempotency key creates one submission/job/reservation/artifact.
-- Updating an RLS-protected row cannot move it into another user's or cohort's scope.
-- Revoked rights remove active retrieval without deleting audit/provenance.
-- Service credentials never appear in client responses.
+## 6. Work package 3: Product shell and governance controls
 
-### 5.11 Exit evidence
+**Outcome:** each role completes its non-AI journey in the approved bilingual visual system; server-derived scope and database policy prevent URL or form manipulation; release state is safe and auditable; and admins can configure the catalog, grant membership and run campaigns without SQL.
 
-- Clean migration reset succeeds.
-- Generated schema types are committed and current.
-- RLS/grant matrix is documented.
-- Security test suite passes with zero scope leakage.
-- Query plans for catalog availability and filtered retrieval use intended indexes.
+**Package gate (shell):** [product-shell gate](../../evidence/wp03-product-shell/2026-09-29_product-shell-gate_local_fda875f.md). The governance tasks WP03-T34 to WP03-T36 carry their own proof.
 
-## 6. Work package 3: Product shell, catalog, and release controls
+Every WP03 frontend task follows [the frontend guide](../agents/frontend.md): the quality floor, the material-change rule and the skill and browser map. Playwright Test is the repeatable E2E gate. External component catalogs and MCPs are optional aids, never design directors or delivery dependencies; `pnpm verify` and a clean-clone build must not need a catalog account, key, network call or paid credit.
 
-**Outcome:** each role can complete its non-AI journey against mocked providers in a confirmed bilingual visual system; server-derived scope and database policy prevent URL/form manipulation; release state is safe and auditable.
-
-### 6.0 Tutorial procedure
-
-Every WP03 frontend task follows [the frontend guide](../agents/frontend.md): the quality floor, the material-change rule, and the skill and browser map. Skills refine execution but do not replace the task contract, product authority, security tests, or evidence. Playwright Test remains the repeatable E2E gate.
-
-External component catalogs and MCPs are optional implementation aids, never design directors or delivery dependencies. Do not send private source material, student data, secrets, or proprietary prompts/code to them. `pnpm verify` and a clean-clone build must not require a catalog account, API key, network call, paid credit, or mutable remote content. New component sources follow the rule in the frontend guide.
+### 6.0 Tasks
 
 #### WP03-T01 — Choose and build the bilingual design and terminology foundation
 
-- [x] Confirm the visual-authority state before UI code. No approved `DESIGN.md`, surface brief, visual implementation, or external brand assets exist. Task record: `planning/tasks/wp03-t01-bilingual-design-terminology-foundation.md`.
-- [x] Treat student, Batch Leader, and admin application surfaces as **Operate** mode. Impeccable `shape` discovery and new-world direction selection are complete; Ahmed explicitly confirmed the compact Study Shelf brief and approved the Focused Rail composition on 2026-09-12 Cairo time. Do not reduce the choice to arbitrary adjectives, CSS values, or a generic dashboard template.
-- [x] Present materially distinct visual directions or the documented category-standard exit through the Impeccable decision flow. The attended board included paired desktop/mobile evidence for the strongest grounded directions plus Batch Leader/admin structure; Ahmed selected **The Study Shelf** on 2026-09-12 Cairo time with the comp-led path unchanged. No product UI implementation began before this ordinary named checkpoint.
-- [x] Record only the confirmed direction in root `DESIGN.md`: visual thesis and rationale; palette and contrast intent; Arabic/English typography and fallbacks; spacing, density, layout, surfaces, borders/elevation, iconography and imagery; motion and reduced-motion behavior; responsive and touch behavior; component/state language; LTR/RTL and mixed-text rules; themes if approved; and explicit anti-patterns. Keep unsettled choices in the relevant surface brief instead of inventing tokens. After the implementation is visually verified, refresh `DESIGN.md` from the shipped system so it records ground truth rather than abandoned intent.
-- [x] Decide and document the component strategy before adding UI dependencies: native semantic elements and local components are sufficient for this foundation; no new UI dependency or external catalog was added. Accessibility, localization/RTL, client-JavaScript scope, maintenance, provenance, design-system fit, and deletion rollback are recorded in the task and asset manifests.
-- [x] Create `src/lib/catalog/terminology.ts` that derives Module/Subject labels from program data; no faculty-name conditional is allowed. Typed Arabic and English dictionaries cover required UI, validation, empty/loading/error/success, safety, status, and accessible-name copy; tests fail on missing, empty, or same-language fallback values.
-- [x] Set validated locale, `lang`, and `dir` at the root layout; isolate mixed-direction technical and medical terms; use CSS logical properties so RTL does not fork components; and define locale-aware count formatting.
-- [x] Implement the approved tokens and the smallest local primitives needed by this WP03 foundation, including default, hover, active, focus-visible, selected, disabled, ready/success, unavailable, pending, empty, warning, error, and loading language. Semantic HTML remains the base and the interactive shelf is the only new Client Component boundary.
-- [x] Automated contrast, accessible-role, keyboard, direction, reduced-motion, touch-target, and responsive desktop/mobile checks pass; bounded production-mode Playwright inspection and independent Impeccable finish review returned `ship`. After the requested single-active-language, RTL search-spacing, and mobile-tab-centering corrections passed the full zero-cost gate, Ahmed recorded the ordinary `PASS` completion checkpoint on 2026-09-12 Cairo time.
+- [x] Founder-selected visual direction recorded in `DESIGN.md`, program-driven Module/Subject terminology, validated locale with `lang`/`dir`, logical CSS and the first local primitives (2026-09-12). Record: [wp03-t01](../../planning/tasks/wp03-t01-bilingual-design-terminology-foundation.md). Evidence: [design foundation](../../evidence/wp03-product-shell/2026-09-12_bilingual-design-foundation_local_7957a10.md).
 
 #### WP03-T02 — Implement auth and consent as complete flows
 
-- [x] Build login, registration, email verification/resend, forgot/reset password, logout, expired/replayed-link, suspended-account, and rate-limited states without requiring an admin workaround. Task record: `planning/tasks/wp03-t02-auth-consent-flows.md`; release evidence: `evidence/wp03-product-shell/2026-09-14_auth-consent-release_production_fd3b093.md`.
-- [x] Require current terms/privacy/educational-boundary acceptance before learning routes.
-- [x] Use generic authentication errors where account discovery would leak membership.
-- [x] Redirect only to validated internal destinations; reject open redirects.
-- [x] Implement localized accessible form labels, descriptions, field/summary errors, pending/success states, password-manager/autocomplete behavior, duplicate-submit protection, focus restoration, and mobile/RTL layouts from `DESIGN.md`.
-- [x] Test new, verified, unverified, suspended, revoked-session, stale-cookie, expired/replayed recovery link, outdated-consent, and forged-return-path users; inspect browser payloads so auth secrets and private membership state never reach the client. PR `#29`, merged commit `fd3b093`, guarded Supabase Preview promotion, and production deployment `dpl_2JoV9xgDnxWoPpCVf6XrkfyHPSCN` completed the protected release with named Ahmed and Ziad confirmations.
+- [x] Login, registration, verification/resend, recovery, logout, expired/replayed links, suspended and rate-limited states; current consent before learning routes; generic errors; validated internal redirects. Record: [wp03-t02](../../planning/tasks/wp03-t02-auth-consent-flows.md). Evidence: [auth release](../../evidence/wp03-product-shell/2026-09-14_auth-consent-release_production_fd3b093.md).
 
 #### WP03-T03 — Implement the catalog journey server-first
 
-- [x] Load allowed options in Server Components/services using caller-scoped database functions. Task record: `planning/tasks/wp03-t03-catalog-journey-server-first.md`; protected release evidence: `evidence/wp03-product-shell/2026-09-15_catalog-journey-release_production_1ee9593.md`.
-- [x] Treat query parameters as selection hints only; validate every value against the returned authorized option set.
-- [x] Clear all downstream selections when an upstream value changes.
-- [x] Encode a stable authorized selection in the URL so refresh/back works without broadening access.
-- [x] Implement the approved catalog surface brief and distinct safe loading, no-result, error, and empty states from section 6.2. Move focus and announce results appropriately after a filter change; analytics may record safe reason codes, never private labels or hidden options.
-- [x] Render the cascade as education level -> university/system -> faculty/program/track -> academic year/level -> semester/term when required. Keep Human Medicine and Veterinary Medicine as the first university pilots and derive labels plus progression behavior from configuration.
-- [x] Exercise minimum, typical, and maximum synthetic option counts plus long Arabic/English/mixed labels at the supported mobile and desktop layouts; preserve touch, keyboard, screen-reader, refresh, and back/forward behavior without a client-side authorization cache becoming authoritative. PR #32 merged as `1ee9593`; Supabase Preview migration `20260914112000` and Vercel production deployment `dpl_3tLLtfqMwoLt1zzJqfc6t7pLysWo` passed hosted postflight.
-- [x] Add Playwright cases for refresh, back/forward, interrupted navigation, direct deep link, forged IDs, expired membership, and release changing while the page is open. The focused catalog suite passed 10/10 locally and again inside the 19-case full E2E gate.
+- [x] Caller-scoped catalog cascade with URL-stable authorized selection, dependent resets and forged-ID, expired-membership and live release-change tests. Record: [wp03-t03](../../planning/tasks/wp03-t03-catalog-journey-server-first.md). Evidence: [catalog release](../../evidence/wp03-product-shell/2026-09-15_catalog-journey-release_production_1ee9593.md).
 
 #### WP03-T04 — Build the unit workspace shell
 
-- [x] Create layout, overview, chat placeholder, Studio placeholder, and quiz routes under one authorized cohort/unit segment. Task record: `planning/tasks/wp03-t04-unit-workspace-shell.md`.
-- [x] Resolve and authorize the workspace in the server layout so every child inherits canonical scope.
-- [x] Display breadcrumb, dynamic terminology, safe source status, material update, quota, language, and navigation.
-- [x] Use `loading.tsx`, `error.tsx`, and `not-found.tsx` deliberately; do not reveal whether an unauthorized private ID exists.
-- [x] Mark chat, Studio, quiz, evidence, and reporting placeholders truthfully; a polished placeholder must not imply that an unimplemented or unavailable action works.
-- [x] Starting/switching the mocked chat seam creates or selects a session whose scope is persisted server-side; every child route rechecks canonical scope instead of trusting layout state.
-- [x] Test long source/status content, unavailable quota, narrow/zoomed layouts, RTL/LTR switching, keyboard navigation, forged child routes, unit deactivation, and a release change during an active workspace session. PR #39 merged as `e85d5a2`; Supabase Preview migration `20260921190508` and Vercel production deployment `dpl_k6YpGerq6sT7JzbGacfrpQmYYGp9` passed hosted postflight. Protected release evidence: `evidence/wp03-product-shell/2026-09-22_unit-workspace-shell-release_production_e85d5a2.md`.
+- [x] Authorized cohort/unit workspace with server-scoped sessions and truthful placeholders for chat, Studio, quiz, evidence and reporting. Record: [wp03-t04](../../planning/tasks/wp03-t04-unit-workspace-shell.md). Evidence: [workspace release](../../evidence/wp03-product-shell/2026-09-22_unit-workspace-shell-release_production_e85d5a2.md).
 
 #### WP03-T05 — Build Batch Leader collection flow
 
-- [x] Show only active assigned campaigns and requested items.
-- [x] Generate the client idempotency key before upload and preserve it across UI retry.
-- [x] Keep D-18 and per-source rights fail-closed: WP03 uses synthetic files and the deterministic storage/upload adapter only. Do not issue a real signed upload target or accept private source material until the exact storage and rights gates pass.
-- [x] Validate file signature/type/size before requesting an upload target; treat client MIME as advisory.
-- [x] Finalize through an authenticated server mutation that verifies campaign assignment, object metadata/checksum, rights declaration, and idempotency.
-- [x] Provide accessible drag/drop and file-input paths, progress, cancel, recoverable retry, duplicate/replacement guidance, validation summaries, and safe submitted/processing/needs-information/accepted/rejected/completed states without job/provider/internal diagnostics.
-- [x] Test keyboard-only and mobile/RTL submission, wrong campaign, expired assignment, duplicate selection, replayed finalize, cancelled/abandoned upload, checksum mismatch, oversized/forbidden type, offline/interrupted retry, and revoked or unknown rights. PR #45 merged as `00084ed`; release correction PR #46 merged as `63d8e6a`; Supabase Preview migration `20260922143605` and Vercel production deployment `dpl_F5kXv2WUEifs1nWC8RRh5d3uEpWt` passed hosted postflight. Protected release evidence: `evidence/wp03-product-shell/2026-09-23_batch-leader-collection-release_production_63d8e6a.md`.
+- [x] Assigned-campaign upload flow with client idempotency keys, signature/type/size checks, authenticated finalize and every submission state, on the deterministic storage adapter only (D-18 fail-closed). Record: [wp03-t05](../../planning/tasks/wp03-t05-batch-leader-collection-flow.md). Evidence: [collection release](../../evidence/wp03-product-shell/2026-09-23_batch-leader-collection-release_production_63d8e6a.md).
 
 #### WP03-T06 — Build audited admin actions, not table editors (complete)
 
-- [x] Implement a typed server action/service for every action in section 6.4.
-- [x] Require actor, target, expected prior version/state, reason, and correlation ID.
-- [x] Use optimistic concurrency so a stale admin page cannot overwrite a newer decision.
-- [x] Show the exact failed readiness predicate before publication/unlock. Model protected rights, release/unlock, raw-deletion, and budget-kill-switch transitions with the required separate Ahmed and Ziad confirmations; a shared service identity or one browser session never counts as both people. Keep enablement actions unavailable while their provider, rights, budget, or environment decision is open.
-- [x] Design high-impact confirmations around exact scope, current/next state, consequences, reason, pending second confirmation where applicable, cancel, success, and recoverable failure. Do not rely on color alone or generic `Are you sure?` dialogs.
-- [x] Append audit events in the same transaction as the governed change.
-- [x] Make emergency disable/lock actions fast and reversible without deleting data; distinguish containment from later protected re-enable/unlock approval.
-- [x] Test a second admin race, stale version, non-admin invocation, one-founder-only protected approval, duplicate confirmation, source with invalid rights, unit with zero READY sources, preview without membership creation, and failure after the UI optimistically began a transition. PR #50 merged as `8110ab0`; guarded Preview migration `20260924134026` and Vercel Production deployment `dpl_41HGBsNRN5tM2MMoRdozeRRjLgpa` passed affected proof. Evidence: `evidence/wp03-product-shell/2026-09-24_audited-admin-actions-release_production_8110ab0.md`.
+- [x] Typed audited actions for every §6.4 release control with optimistic concurrency, readiness predicates shown before publish/unlock, two-founder protected transitions and fast reversible containment. Record: [wp03-t06](../../planning/tasks/wp03-t06-audited-admin-actions.md). Evidence: [admin actions release](../../evidence/wp03-product-shell/2026-09-24_audited-admin-actions-release_production_8110ab0.md).
 
 #### WP03-T07 — Add UI and API contract tests (complete)
 
-- [x] Use mocked providers only.
-- [x] Test each role's allowed navigation and forbidden direct URL/API access.
-- [x] Verify no browser request or React payload contains a service key, worker diagnostics, raw object key, private source text, or another user's state.
-- [x] Run automated accessibility checks plus keyboard/focus, zoom/reflow, reduced-motion, touch-target, and screen-reader smoke checks on auth, catalog, workspace, submission, and admin critical screens in English and Arabic. Ahmed reported EN/AR spoken-smoke PASS on 2026-09-29 for unchanged candidate `1ee02de`; reader/version were not supplied and no executor-observed speech is claimed.
-- [x] Use Playwright Test for repeatable behavior and the Codex in-app side browser for one bounded internal desktop/mobile rendered inspection. Compare the implementation with the approved surface briefs, selected comp/wireframe, and `DESIGN.md`; inspect console and network output, overflow, long content, loading/error/empty states, and LTR/RTL direction changes. Use the project-pinned Playwright CLI only when explicitly invoked for its specialist trace or test-debugging workflow.
-- [x] Run the Impeccable detector once after the changed UI is complete, then run one integrated Impeccable audit and resolve or explicitly record every material finding. Do not use a skill verdict, screenshot, or visual polish as proof of authorization, accessibility, privacy, or behavior. Final detector exit 1 had 34 inherited advisories, explicitly dispositioned in the local evidence; no green detector verdict is claimed.
-- [x] Record the origin, exact version/commit, license, copied files, added dependencies, and local modifications for every imported component or asset; scan for hidden telemetry, remote fonts/assets, mutable CDN dependencies, incompatible licenses, and code that broadens Client Component or browser-data boundaries.
-- [x] Capture sanitized screenshots or traces only as supplemental UI evidence; passing security, contract, accessibility, build, and E2E tests remain mandatory. All 51 browser journeys and required exact-head CI passed; PR #58 merged as `ced163e`. Vercel production deployment `dpl_GWCQ2YxfubZxVsdeRigw4QXUQ5Kw` passed affected release, routing, render and error-signal proof. Evidence: `evidence/wp03-product-shell/2026-09-29_ui-api-contract-tests-release_production_ced163e.md`.
+- [x] Role navigation and forbidden direct URL/API tests, payload secrecy checks, accessibility and EN/AR screen-reader smoke, component provenance. Record: [wp03-t07](../../planning/tasks/wp03-t07-ui-api-contract-tests.md). Evidence: [contract tests release](../../evidence/wp03-product-shell/2026-09-29_ui-api-contract-tests-release_production_ced163e.md).
 
 #### WP03-T08 — Run the product-shell gate
 
-- [x] Reset/seed an isolated disposable CI Supabase stack through the guarded command.
-- [x] Run the full role matrix in Playwright.
-- [x] Demonstrate Human `Modules` and Veterinary `Subjects` from configuration.
-- [x] Lock/deactivate/revoke access during an active browser session and confirm the next server operation fails safely.
-- [x] Replay upload finalization and every admin action idempotently; prove one-founder-only protected transitions remain pending or denied and that emergency containment does not erase evidence.
-- [x] Review audit rows, React/browser payloads, console/network output, external component provenance, and dependency/license changes; prove the gate used only synthetic data, mocked providers/storage, and zero paid UI services.
-- [x] Review representative mobile and desktop English/Arabic flows against the approved visual direction, surface briefs, and final `DESIGN.md`; record the named founder checkpoint and keep screenshots supplemental to behavioral evidence.
-- [x] Run `pnpm verify`, the Impeccable detector/audit disposition, `git diff --check`, `git diff --stat`, a full diff and secret/scope scan, and create the commit-specific WP03 evidence report before marking the package complete.
+- [x] Full role matrix, Modules and Subjects from configuration, live revocation, idempotent replays, payload and provenance review, EN/AR desktop/mobile founder checkpoint. Record: [wp03-t08](../../planning/tasks/wp03-t08-product-shell-gate.md). Evidence: [gate](../../evidence/wp03-product-shell/2026-09-29_product-shell-gate_local_fda875f.md), [gate release](../../evidence/wp03-product-shell/2026-09-29_product-shell-gate-release_production_76e92c0.md).
 
 #### WP03-T09 — Complete the product frontend with isolated synthetic services
 
-**Dependencies:** WP03-T01–T08 retain their completed history. Ahmed's 2026-09-30 full-product mock request authorizes this follow-up before any further WP04 implementation. Product behavior comes from master-plan sections 6–8 and the relevant WP06/WP07/WP08 contracts; this task previews those journeys without implementing their backend packages.
-
-- [x] Independently inspect routes, source, rendered flows and the supplied audit; record additional gaps and the screen/state ownership matrix in `planning/tasks/wp03-t09-complete-synthetic-frontend.md`.
-- [x] Compose an explicit isolated development runtime on the normal product URLs, using the shared AuthForm, StudyShelf, WorkspaceFrame, CollectionFlow and AdminDecisionQueue. Ahmed rejected the separate review interface and approved this replacement on 2026-09-30. It has normal forms/navigation and automatic responses/progress, with a small simulation label; no role bar, scenario selector or manual completion control. Configuration must fail closed outside the entirely synthetic loopback runtime. Real WP03 guards/actions keep their default behavior.
-- [x] After the isolation boundary, connect normal registration, verification-email callback, sign-in, consent and recovery forms with supplied invented credentials/links. Cover new/unverified/verified/suspended accounts, current/outdated consent, expiry and replay. No simulated role or consent grants real access.
-- [x] After access, connect normal catalog selection and unit/session navigation to overview, eight named source rows, supported/partial/unavailable/conflicting answers, evidence/report, all six Studio types and timed/untimed quiz attempt/score/review. Preserve scope, sharing and records across product navigation; reload starts a fresh demo. Capacity/allowance states invent no product limits. Fixed fixture output is clearly simulated.
-- [x] After shared state, connect normal campaign list/invitation/assignment and submission forms, supplied synthetic PDF/WAV/PNG and fixed approved-reference choice, validation/progress/cancel/retry and consistent tracking. Connect eight admin resources, approved draft concepts and twelve governed-action examples with readiness/pending/stale/error outcomes. A second synthetic admin uses normal sign-out/sign-in; no real authority or provider is enabled. Undefined management/report/storage policies remain decisions, not invented editors or policies.
-- [x] Cover language, account and privacy Settings only where behavior is approved. Name open D-08/D-18/provider/policy decisions; exclude Calendar, global Progress, personal uploads and other unapproved destinations from the mock journey. Do not invent product behavior to fill a screen.
-- [x] Supply the complete reusable synthetic test pack and Chrome walkthrough: every account/password, callback/invitation link, unit selection, prompt in both languages, artifact option, quiz answer, upload file/reference/metadata, admin reason, prepared failure fixture and expected result. Reviewer setup belongs in the guide; product interaction stays inside the normal product frontend. Unknown file names/sizes are rejected before reading content; matching metadata requires an exact local synthetic-byte comparison.
-- [x] Execute focused behavior/isolation/accessibility/responsive proof, candidate review, full diff/secret/scope inspection and required verification. Preserve working Study Shelf behavior and follow the superseding canonical DESIGN; record required material interaction checkpoints before protected delivery.
-
-**Frontend overhaul continuation — 30 September 2026:** Ahmed accepted the native synthetic approach, overall concept and palette, and requested comprehensive execution correction. Earlier completed implementation/verification steps remain historical; they do not accept the rejected presentation. Execute the following order against [the overhaul audit, flow map and punch list](../reviews/wp03-frontend-overhaul.md):
-
-**Superseding two-phase brief:** Ahmed now requests an independent whole-platform audit, reconciled canonical DESIGN, neutral Light/Dark themes and exact role navigation, followed by a separate rendered shell/student proposal. Stop for explicit Phase 1 approval before product implementation. Then require student, Batch Leader, Admin and final consistency rendered checkpoints. The active task record and current audit contain this sequence; the older palette-fixed shell steps below remain historical implementation lineage, not approval of the new system. Integrate only the separately supplied Open Folio kit after its guides/assets are available. Keep the native mock flows, real guards, useful tests, branch work and PR #64 draft; no WP00, Telegram, speculative capability, dependency, infrastructure or worker work.
-
-- [x] Independently audit every approved role/route/journey and relevant state in EN/AR/RTL at desktop, tablet and 390/320px; distinguish measured defects, navigation/interaction failures and unapproved product decisions. Record rendered coverage and gaps honestly.
-- [x] Build and technically inspect a concrete interactive native sample of the shared shell, Chat and Studio with the current palette/logo and isolated services. Present it to Ahmed or Ziad and record the exact candidate/scope acceptance before extending the direction.
-- [x] After that checkpoint, roll the accepted shared navigation/layout/type/spacing/button/icon/form/language/feedback system through access, shelf, Settings, quiz/sources/report, campaign/collection and admin. Remove duplicate or misleading controls; preserve functional WP03 default services and authorization.
-- [x] Verify complete and failed journeys, populated states, focus/accessibility, overflow, responsive/locale transitions, recovery and synthetic isolation; regress affected real seams. Update the reusable pack/walkthrough and explicit mock-versus-functional coverage.
-- [x] Prepare final founder review and current design receipt, guarded stable verification and exact-head delivery gates. Keep PR #64 draft/unmerged until the concrete revised candidate is accepted and the delivery gates pass. Keep WP04 on hold. Integrate the supplied approved Open Folio production subset; preserve extra exports and rejected exploration outside application main.
-
-**Delivered 3 October 2026:** All two-phase and role/final design checkpoints are accepted. PR #64 merged reviewed head `890f00f` as `f107e41`; local/CI, the reviewed hosted profile migration and production `dpl_76AWj26YVWDQpBRXx8v9BLz68VyN` pass. [Release evidence](../../evidence/wp03-product-shell/2026-10-03_frontend-overhaul_production_f107e41.md) records source-bound proof, retained failures, limits and rollback. Historical shell checklist lineage below/above is superseded by the delivered canonical DESIGN. T10 remains the next task before WP04.
-
-**Verify:** `corepack pnpm test:e2e:demo`; focused demo-gate and real Auth proxy unit tests; `corepack pnpm lint`; `corepack pnpm typecheck:fresh`; `corepack pnpm check:boundaries`; `corepack pnpm scan:secrets`; existing affected WP03 E2E contracts with demo mode absent; bounded in-app desktop/mobile inspection; guarded `corepack pnpm verify`; exact-head CI and affected release proof. Historical harness proof remains historical and cannot prove the replacement.
-
-**Pass:** Every approved frontend journey uses normal product routes, forms and shared views without real information. Every visible control has a truthful synthetic outcome or a named decision boundary. Cross-document/reload isolation and zero Auth/provider/protected mutation are proven. The complete test pack reproduces the experience. Completed WP03 history and functional protected behavior are preserved.
+- [x] Every approved journey on normal product routes with isolated synthetic services and a reusable test pack (PR #64, `f107e41`). Record: [wp03-t09](../../planning/tasks/wp03-t09-complete-synthetic-frontend.md). Evidence: [overhaul release](../../evidence/wp03-product-shell/2026-10-03_frontend-overhaul_production_f107e41.md).
 
 #### WP03-T10 — Run the complete frontend mock review gate
 
-**New authorized cycle, 5 October 2026:** Ahmed approved the [Open Folio reference and frontend roadmap](../../planning/design/open-folio/approval.md). Historical checked delivery below remains valid for its original candidate. The [controlled task record](../../planning/tasks/wp03-t10-complete-frontend-mock-review.md) now tracks the new cycle separately; WP04 is not started by this request.
-
-- [x] Implement the approved Open Folio foundations, role/context shell and shared controls while preserving service contracts.
-- [x] Complete study, ordinary, leader and admin compositions; retain original audit acceptance and truthful capability limits.
-- [x] Verify reference fidelity, all role journeys, responsive/Arabic/themes/motion and required technical proof; protected runtime PR [#71](https://github.com/unimind989-sys/UniMind-Project/pull/71) and [Open Folio production evidence](../../evidence/wp03-product-shell/2026-10-05_open-folio_production_1013cd5.md) complete this cycle; historical evidence remains separate.
-
-**Dependencies:** WP03-T09 reviewed/delivered candidate; WP03-T01–T08 evidence remains valid for unchanged functional seams. This gate precedes continuing WP04, including WP04-T02; a backend package cannot substitute for it.
-
-- [x] Select the delivered exact candidate and map every approved role/route/journey/state to executed synthetic proof; record coverage and exclusions without claiming live functionality. Ahmed accepted landing `569c467` and remaining-screen/final consistency candidate `f0a237f`. Both pushed recovery tags and the saved landing branch remain intact.
-- [x] Traverse access → catalog → scope/session → chat/evidence/report → Studio → quiz/review → Settings, campaign/invitation → submission/tracking, and admin resources → draft/campaign → governed decision → student preview in English and Arabic, with mixed study text, keyboard and desktop/tablet/320px mobile reflow.
-- [x] Exercise loading, empty, error, offline/interruption, stale, forbidden/expired, disabled, pending and success states through the supplied prepared cases and normal product recovery controls. Prove separate documents/reload cannot share/retain synthetic records, demo cannot unlock real protected routes, and no interaction requests real Auth, storage, APIs, paid providers or protected mutations. Regress the working real WP03 flows with demo mode absent.
-- [x] Review the complete rendered candidate against DESIGN.md and the frontend floor; record the named founder interaction/design checkpoint, remaining product decisions, automated test results, direct review URL and exact division between simulation and functional WP03 services.
-- [x] Deliver any gate corrections through normal preparation, exact-head CI/protected merge and affected production proof, then close evidence and leave clean synchronized main. Only after this reviewed PASS may the selector continue WP04.
-
-**Delivered proof:** Protected runtime PR [#67](https://github.com/unimind989-sys/UniMind-Project/pull/67), source `a74abe56e854010ff96e0bc0024da52444975b32`; guarded local proof, exact-head CI, complete 49/49 synthetic and 64/64 real-mode browser suites PASS. [Production evidence](../../evidence/wp03-product-shell/2026-10-04_premium-product_production_a74abe5.md) binds the verified public deployment and preserves failure history, protected-review provenance and simulation limits. The [task record](../../planning/tasks/wp03-t10-complete-frontend-mock-review.md) owns terminal delivery state. Open product decisions remain open.
-
-**Verify:** Full mock review suite plus existing WP03 regression/isolation suites; bounded rendered EN/AR desktop/mobile review; applicable guarded `pnpm verify`, exact-head CI and affected production smoke.
-
-**Pass:** Complete experience independently reviewable with synthetic fixtures and no dead ends, misleading controls, missing approved journeys or false backend claims. Open decisions remain explicit and never become implementation approval.
+- [x] Complete mock review of every role journey and state in EN/AR, then the Open Folio cycle (PR #67, PR #71). Record: [wp03-t10](../../planning/tasks/wp03-t10-complete-frontend-mock-review.md). Evidence: [premium product](../../evidence/wp03-product-shell/2026-10-04_premium-product_production_a74abe5.md), [Open Folio](../../evidence/wp03-product-shell/2026-10-05_open-folio_production_1013cd5.md).
 
 #### WP03-T11 — Support credential-triggered synthetic flows on the live site
 
-**Dependencies:** WP03-T09 and WP03-T10 delivered. Ahmed's 4 October request supersedes local-only presentation restrictions for this scoped browser simulation.
-
-- [x] Recognize only the four approved synthetic login pairs on the normal login; other credentials retain real Auth behavior. Keep synthetic role/activity in document memory, with no backend identity, cookie, persistent storage or seeded records.
-- [x] Reuse shared product screens and navigation without new controls, banners, explanations or credential prefill. Preserve activity through navigation, locale and browser Back; discard it on sign-out, reload or a fresh document.
-- [x] Prove each role, wrong-password/forged-URL denial, zero synthetic service mutation, EN/AR/mobile presentation and affected real regression. Keep every server/database guard intact.
-- [x] Complete candidate review, guarded verification, protected exact-head delivery, affected production proof and cleanup.
-
-**Verify:** Focused hosted synthetic credential and browser isolation suites; affected real/demo regression; frontend floor; guarded `pnpm verify`; exact-head CI and production credential journeys.
-
-**Pass:** The same live site supports both normal accounts and the approved browser-only synthetic accounts through normal login/sign-out, with identical shared presentation and no real permission granted by fixture credentials.
+- [x] Four approved synthetic login pairs run browser-only synthetic journeys on the live site with no backend identity or real permission. Record: [wp03-t11](../../planning/tasks/wp03-t11-hosted-synthetic-login.md). Evidence: [hosted synthetic login](../../evidence/wp03-product-shell/2026-10-04_hosted-synthetic-login_production_9dbb2a3.md).
 
 #### WP03-T12 — Refine the landing page for local founder review
 
-**Dependencies:** Delivered WP03-T10/T11; Ahmed's 6 October 2026 request governs this local frontend follow-up. Earlier delivery and acceptance remain historical proof for unchanged surfaces.
-
-- [x] Audit all landing copy and remove formulaic wording while preserving product truth, the approved English slogan and necessary sample/safety disclosures.
-- [x] Replace pointer-driven folio motion and the layer button with passive motion; respect reduced motion and pause hidden/offscreen work.
-- [x] Polish The experience and How it works in the existing visual system; preserve account links, preview controls, EN/AR, paired themes, keyboard access and responsive reflow.
-- [x] Verify and present the local candidate with durable evidence, record Ahmed's review response, commit the approved snapshot locally and retain the delivery hold. Ahmed approved the landing refinement and instructed a local branch commit on 6 October 2026; the approved source is 6d16c82. Every continuing agent uses `codex/frontend-refinements`; push, PR creation, merge and deployment wait for Ahmed's explicit instruction.
-
-**Verify:** Focused landing Playwright coverage; lint, typecheck/fresh, module boundaries, secret scan, changed-file formatting, agent readiness, diff review and bounded rendered inspection.
-
-**Pass:** The approved local landing candidate satisfies the requested copy, passive motion and section polish, with truthful verification and no external delivery action. The [task record](../../planning/tasks/wp03-t12-landing-refinements.md) owns the approved snapshot and local commit handoff. This task closes at the explicitly requested local boundary; merge and production delivery are not claimed.
+- [x] Landing copy, passive motion and section polish approved locally by Ahmed (6 October 2026). Record: [wp03-t12](../../planning/tasks/wp03-t12-landing-refinements.md). Evidence: [landing](../../evidence/wp03-product-shell/2026-10-06_landing-refinements_local_b4cac79.md).
 
 #### WP03-T13 — Refine student entry and shared product navigation
 
-**Dependencies:** Delivered WP03-T10/T11; local WP03-T12 approval; Ahmed's 6 October 2026 follow-up governs this bounded slice.
+- [x] Progressive student entry, Study and Subjects split, named profile, settings and the requested revisions, merged as `45a8c8c` (PR #73) and served in production. Record: [wp03-t13](../../planning/tasks/wp03-t13-student-entry-navigation.md). Evidence: [refinements](../../evidence/wp03-product-shell/2026-10-16_frontend-refinements_production_45a8c8c.md).
+- [?] Ahmed's hands-on review of the corrected Chat, Studio, Quiz, Sources and Settings screens is still open. These screens have since been rebuilt in WP03-T19 to WP03-T33, so Ahmed either records that review against the current screens or withdraws this item. OWNER INPUT REQUIRED.
 
-- [x] Present student academic setup one question at a time using selectable choices, preserving Back/edit, dependent reset and authorized save.
-- [x] Give Study a start/resume purpose and Subjects the searchable catalog; merge Account and the separate Student identity into one Student settings destination.
-- [x] Replace the English/Arabic dropdown in the shared product shell for all roles; retain landing and login/access controls.
-- [x] Verify EN/AR, paired themes, keyboard, responsive/reflow, scope/draft preservation and affected recovery states; present the local candidate with durable evidence.
-- [x] Record Ahmed's requested revisions: reduce wasted space across product sections; named profile; independent settings; scoped subject switching; expanded Chat with persistent output language and first-visit citation help; configurable quiz count/difficulty/timing.
-- [x] Implement and verify the approved revision with fresh source-bound local evidence; present it for rendered acceptance.
-- [x] Reproduce and repair B01/M52 edited synthetic upload-description/finalization under Ahmed's 11 October start instruction and the task record's bounded collection/demo amendment.
-- [x] Verify and present that slice; preserve real collection safeguards and existing work. Other B01 issues and admin cases remain separately scoped.
-- [x] Reproduce and repair B01/M52 ordinary synthetic admin reasons and alternative illustrative hold dates under the bounded WP03-T13 amendment; retain draft fields and request keys.
-- [x] Verify exact pending reason/expiry and independent attestation through distinct-admin review (the necessary synthetic portion of M48), EN/AR and protected negative paths; present local proof while other B01/B05 work stays open.
-- [ ] Record Ahmed's acceptance of the revised material candidate. Continue on `codex/frontend-refinements`; commit, push, PR, merge and deployment each await his explicit instruction.
-
-**Verify:** The [task record](../../planning/tasks/wp03-t13-student-entry-navigation.md) owns focused tests, quality checks, source binding and material review.
-
-**Pass:** The requested UI slice works through existing authorized catalog, save and navigation seams, with truthful proof and no landing/access or protected semantic change. Completion is scoped to the requested local review boundary.
+(WP03-T14 was never assigned.)
 
 #### WP03-T15 — Consolidate tests, CI and the synthetic render paths
 
-**Dependencies:** WP00-T18 (agent workflow v2); WP03-T11 hosted synthetic login stays an intended production feature. Ahmed delegated execution and design choices for this task on 2026-10-16; product-visible behaviour must not change.
-
-- [x] Remove duplicated and low-value tests across unit, security, integration, eval and load layers; keep every forbidden-path and RLS proof or name its equivalent.
-- [x] Split the demo e2e suite into area specs with shared helpers; cut repeated locale, theme, width and axe loops into one layout matrix while keeping RTL, accessibility, denial and core-journey coverage.
-- [x] Run CI as parallel jobs with sharded browser tests while keeping the required check names and workflow hardening.
-- [x] Move synthetic demo logic from `src/app` into `src/lib/demo` so module-boundary checks cover it.
-- [x] Remove the `/preview` fixture routes and the separate loopback `/synthetic-runtime` path; serve synthetic mode through one client runtime and route table without weakening real-mode auth, the production 404 for synthetic routes, or hosted-mode isolation (no server requests, no cookies, reset on reload).
-- [x] Split source files over 800 lines and enforce a line limit.
-- [x] Repository hygiene: delete per-file evidence hash manifests, remove duplicate scripts, placeholder modules and duplicate demo copies, list large binaries for a founder decision, and normalize line endings once at the end.
-
-- [x] Deliver through one PR with required CI and squash auto-merge. These closure markers become authoritative only when that PR merges.
-
-**Pass:** the same product behaviour in real, hosted-synthetic and local demo modes; required CI green with a much shorter wall time; fewer tests with no lost forbidden-path, RLS, accessibility or RTL protection; no source file over the limit.
+- [x] Leaner tests, parallel sharded CI, synthetic logic moved to `src/lib/demo`, one synthetic runtime, an 800-line source limit. Record: [wp03-t15](../../planning/tasks/wp03-t15-consolidate-tests-render-paths.md). Evidence: [consolidation](../../evidence/wp03-product-shell/2026-10-17_wp03-t15-test-consolidation.md).
 
 #### WP03-T16 — Balance demo CI shards
 
-**Dependencies:** WP03-T15 (parallel CI with sharded demo browser tests). On WP03-T15's final run, one demo shard took about 14 minutes while the others took about 5, so that shard set the CI wall time.
-
-- [x] Find the cause of the slow demo shard from per-test durations of the last WP03-T15 run.
-- [x] Spread the heaviest demo tests so `--fully-parallel` sharding gives each shard a similar share, and set the shard count, without dropping or weakening a test (`--list` stays at 190).
-- [x] Deliver through one PR with required CI, an independent review of the workflow change, and squash merge; record per-shard and total wall time. These closure markers become authoritative only when that PR merges.
-
-**Pass:** demo shards on the PR's CI finish within about 2 minutes of each other; CI wall time drops from about 14.6 to about 7 minutes; the same 190 demo tests run.
+- [x] Demo shards balanced; CI wall time down from about 14.6 to about 7 minutes with the same tests. Record: [wp03-t16](../../planning/tasks/wp03-t16-balance-demo-shards.md).
 
 #### WP03-T17 — Render the same student screens in real and synthetic modes
 
-**Dependencies:** WP03-T15 delivered (two composition roots). Ahmed's 17 October 2026 decision: the synthetic flow must be identical to the real product so design review and testing use one UI. He chose the founder-reviewed synthetic screens as the canonical UI, real tools without a backend shown in the same layout but disabled, Materials limited to count and freshness until an authorized source-list function exists, and scope covering the study workspace, Study Shelf and student Settings.
-
-- [x] Inventory the real and synthetic student screens and record which already share leaf components.
-- [x] Feed the shared study workspace (Materials, Chat, Studio, Quiz, sources, evidence, report), Study Shelf and student Settings through one adapter seam: real routes pass authorized server data and Server Actions; the synthetic runtime passes `src/lib/demo` state. Tools without a real backend render their normal layout disabled with an honest notice and never fixture data in real mode.
-- [x] Keep every real-route auth guard, RLS and hosted-mode isolation; real modules never import `src/lib/demo`; only the root layout and the loopback document route mount the synthetic runtime.
-- [x] Assert each shared screen with one set of browser checks in synthetic mode (`tests/e2e/demo/**`) and against the real backend (`tests/e2e-database/**`); keep the layout matrix (accessibility, RTL, 200% text) green.
-- [x] Independent review of the auth and data changes; Ahmed approves the rendered candidate (`Approved commit:`); deliver through one PR ([#80](https://github.com/unimind989-sys/UniMind-Project/pull/80)) with required CI. These closure markers become authoritative only when that PR merges.
-
-**Pass:** each student screen renders the same components in real and synthetic modes, and only data and availability differ; required CI green; review findings resolved; founder approval recorded.
+- [x] One adapter seam feeds the shared study workspace, Study Shelf and Settings; tools without a real backend render disabled in real mode (PR #80). WP06-T05, WP07-T03 and WP07-T04 enable them. Record: [wp03-t17](../../planning/tasks/wp03-t17-shared-student-screens.md).
 
 #### WP03-T18 — Choose the premium overhaul direction and rewrite the design contract
 
-**Dependencies:** WP03-T17 delivered. Ahmed's 17 October 2026 request: every flow (landing, student, Batch Leader, admin) works but looks bland and unpolished; overhaul it with the same fingerprint, and he authorized editing `DESIGN.md` and related design files. His decisions the same day: the name, Open Folio logo, slogan and blue family stay fixed while fonts, surfaces, shell and the landing illustration may change; choose the direction from two static mockups before building; replace test-like fixture names with realistic invented content; rebuild the student flow first.
-
-- [x] Diagnose the current frontend from rendered captures of every role and record the findings in the [task record](../../planning/tasks/wp03-t18-premium-direction.md).
-- [x] Build two clickable static mockup directions for the landing hero, Study Shelf, Chat with evidence (desktop, phone and one Arabic phone screen) and the admin decision queue, with realistic invented content and both themes.
-- [x] Record Ahmed's choice of direction, or the mix he asks for. Product: Direction B; landing: variant L1 "The page answers" on its own (17 October 2026).
-- [x] Rewrite `DESIGN.md` (and `docs/agents/frontend.md` where needed) for the chosen direction; keep behaviour, safety, accessibility, RTL and theme rules, and retire the constraints that force the neutral look.
-- [x] Deliver through one PR with required CI. No product code changes in this task. Delivered in [#81](https://github.com/unimind989-sys/UniMind-Project/pull/81), squash-merged as `81c624b` with all 15 checks green.
-
-**Pass:** an approved direction with its mockups under `planning/design/premium-overhaul/`, a rewritten `DESIGN.md` that the rebuild tasks can implement without new founder questions, and required CI green.
+- [x] Direction B and landing variant L1 chosen by Ahmed; `DESIGN.md` rewritten (PR #81). Record: [wp03-t18](../../planning/tasks/wp03-t18-premium-direction.md).
 
 #### WP03-T19 — Rebuild the student flow in the approved direction
 
-**Dependencies:** WP03-T18 delivered. Ahmed delegated approval of the rendered candidates for WP03-T19 to T21 to the overseeing Claude Code session on 17 October 2026 ([task record](../../planning/tasks/wp03-t19-student-cobalt.md)).
-
-- [x] Shared tokens, shell and component kit; onboarding, Study Shelf, Subjects, unit, Materials, Chat, Studio, Quiz, evidence and Settings in the new direction, phone first, EN/AR and both themes, with realistic invented fixtures.
-- [x] Keep every real-route guard and the shared real/synthetic screens from WP03-T17; Ahmed approves the rendered candidate (`Approved commit:`); deliver through one PR with required CI. Approved at `2166c3d` by the overseeing session under Ahmed's delegation; delivered in [#82](https://github.com/unimind989-sys/UniMind-Project/pull/82), squash-merged as `4849cf0` with all 15 checks green, and promoted to production ([evidence](../../evidence/wp03-product-shell/2026-10-17_wp03-t19-student-cobalt_production_4849cf0.md)).
+- [x] Cobalt student flow, approved at `2166c3d` under Ahmed's delegation (PR #82). Record: [wp03-t19](../../planning/tasks/wp03-t19-student-cobalt.md). Evidence: [student Cobalt](../../evidence/wp03-product-shell/2026-10-17_wp03-t19-student-cobalt_production_4849cf0.md).
 
 #### WP03-T20 — Rebuild the landing and access pages in the approved direction
 
-**Dependencies:** WP03-T19 delivered. Approval of the rendered candidate is delegated to the overseeing Claude Code session ([task record](../../planning/tasks/wp03-t20-landing-access-cobalt.md)).
-
-- [x] Landing, sign-in, registration, consent and recovery pages in the new direction; Ahmed approves the rendered candidate; deliver through one PR with required CI. Approved at `d300d28` by the overseeing session under Ahmed's delegation, after independent review of the protected access routes. Delivered in [#83](https://github.com/unimind989-sys/UniMind-Project/pull/83), squash-merged as `b8f5647`, and promoted to production ([evidence](../../evidence/wp03-product-shell/2026-10-17_wp03-t20-landing-access-cobalt_production_b8f5647.md)).
+- [x] Cobalt landing and access pages, approved at `d300d28` under Ahmed's delegation (PR #83). Record: [wp03-t20](../../planning/tasks/wp03-t20-landing-access-cobalt.md). Evidence: [landing and access](../../evidence/wp03-product-shell/2026-10-17_wp03-t20-landing-access-cobalt_production_b8f5647.md).
 
 #### WP03-T21 — Rebuild the Batch Leader and admin flows in the approved direction
 
-**Dependencies:** WP03-T19 delivered.
-
-- [x] Leader intake and history, admin decision queue and resource pages as working tools in the new direction; keep every governed-action guard; Ahmed approves the rendered candidate; deliver through one PR with required CI ([task record](../../planning/tasks/wp03-t21-leader-admin-cobalt.md)). Approved at `c197682` by the overseeing session under Ahmed's delegation; delivered in [#84](https://github.com/unimind989-sys/UniMind-Project/pull/84), squash-merged as `d64c9e7` with all 15 checks green, and promoted to production ([evidence](../../evidence/wp03-product-shell/2026-10-17_wp03-t21-leader-admin-cobalt_production_d64c9e7.md)).
+- [x] Cobalt Batch Leader and admin flows, approved at `c197682` under Ahmed's delegation (PR #84). Record: [wp03-t21](../../planning/tasks/wp03-t21-leader-admin-cobalt.md). Evidence: [leader and admin](../../evidence/wp03-product-shell/2026-10-17_wp03-t21-leader-admin-cobalt_production_d64c9e7.md).
 
 #### WP03-T22 — Keep the loopback demo rewrite internal
 
-**Dependencies:** WP03-T15 (loopback demo gate in `src/proxy.ts`). Since the WP03-T19 merge, about one demo e2e test per CI run fails when the dev server logs `Failed to proxy http://localhost:3102/synthetic-runtime/... socket hang up`: Next sends the demo rewrite back to itself over HTTP, where a pooled connection the dev server has just closed resets, or a cold route compile hits the 30-second proxy timeout ([task record](../../planning/tasks/wp03-t22-internal-demo-rewrite.md)).
-
-- [x] Find why the rewrite becomes external and make it internal without weakening the demo gate (mutation 403, path allow-list 404 including raw `/_next/data/` URLs, `no-store` and `noindex` headers, production 404 for `/synthetic-runtime`); say whether WP03-T19 made renders slower.
-- [x] Independent review of the exact diff; deliver through one PR with required CI; two full demo e2e runs with no `Failed to proxy` line in the dev-server log. Reviewed by the `independent-reviewer` sub-agent (one blocker fixed, then no findings); delivered in [#85](https://github.com/unimind989-sys/UniMind-Project/pull/85), with demo runs 39065977093 and 39067911066 at 192 passed each and zero `Failed to proxy`. These closure markers become authoritative only when that PR merges.
-
-**Pass:** each demo request runs the proxy once and renders in the same server; no `Failed to proxy` lines across two full CI demo runs; the demo gate and real-mode behaviour unchanged.
+- [x] Demo rewrite made internal without weakening the demo gate (PR #85). Record: [wp03-t22](../../planning/tasks/wp03-t22-internal-demo-rewrite.md).
 
 #### WP03-T23 — Measure the compact Chat layout only after the shell settles
 
-**Dependencies:** WP03-T15 (the compact-context journey in `tests/e2e/demo/chat.spec.ts`). CI run 39071765080 (PR #85) failed that journey once at 320x720 with 133 px of reading space against the 160 px floor, while the same test passed on earlier runs and on main ([task record](../../planning/tasks/wp03-t23-settled-chat-layout.md)).
-
-- [x] Find the cause from the failure artifacts and a local reproduction, and make the measurement wait for the settled layout without weakening the 160 px floor, the single scroll owner or the no-overflow check; stop and report instead if the product layout itself is wrong. Cause: the shell picks its pane or page flow on the animation frame after a resize, and the journey measured inside that frame (133 px is the old pane at 320x720; the settled page flow gives 214 px). The journey now resizes through the shared `resize` helper; no product change.
-- [x] Show the fixed test stable over repeated local runs; deliver through one PR with required CI and the same demo test count. Local runs: 10/10 and 20/20 on 4 workers; 192 demo tests as before; delivered in [#87](https://github.com/unimind989-sys/UniMind-Project/pull/87). These closure markers become authoritative only when that PR merges with green required CI.
-
-**Pass:** the journey reads geometry only after the shell's flow decision; repeated local runs and required CI green; no assertion weakened and no product change.
+- [x] Compact-chat journey measures only the settled layout; no product change (PR #87). Record: [wp03-t23](../../planning/tasks/wp03-t23-settled-chat-layout.md).
 
 #### WP03-T24 — Audit the platform and plan the WP03 refinement
 
-**Dependencies:** WP03-T19 to T23 delivered. Ahmed's WP03 manager brief of 18 October 2026 asks for a platform-wide refinement in six connected areas (design-system consistency, phone space and clutter, journeys and onboarding with demo parity, interactions and inputs, verification and CI cost) and delegates every decision and delivery step to the overseeing Claude Code session ([task record](../../planning/tasks/wp03-t24-refinement-audit.md)).
-
-- [x] Audit the six areas against `bcab083` with evidence, measure the local `pnpm verify` and CI baselines, and capture a rendered baseline; publish the prioritized [findings](../reviews/wp03-refinement/findings.md), the [plan](../reviews/wp03-refinement/plan.md) with its decisions, and the area reports.
-- [x] Deliver through one PR with required CI. These closure markers become authoritative only when that PR merges with green required CI.
-
-**Pass:** every finding is classed, prioritized and either planned in WP03-T25 to T30 or recorded as not planned with a reason; decisions taken under the delegation are listed; required CI green.
+- [x] Six-area audit with prioritized [findings](../reviews/wp03-refinement/findings.md) and [plan](../reviews/wp03-refinement/plan.md). Record: [wp03-t24](../../planning/tasks/wp03-t24-refinement-audit.md).
 
 #### WP03-T25 — Consolidate the Cobalt design system and shared primitives
 
-**Dependencies:** WP03-T24. Findings DS-01 to DS-34 (except DS-17, DS-19, DS-20, DS-24), IX-02, IX-03, IX-07, IX-17, IX-30 ([plan](../reviews/wp03-refinement/plan.md#t25--consolidate-the-cobalt-design-system-and-shared-primitives)).
-
-- [x] One `LanguageSwitch` for shell, access pages and landing; rebuilt `Button` and action link; `SubmitButton`, `Field`, `Notice` with icon, `PageState`, `SegmentedControl` and `MetaList`; error pages on `retry()` with a safe exit.
-- [x] Open Folio alias tokens replaced and removed with a guard; avatar contrast, status colours, font stacks, icon sizes, focus and disabled styles fixed; Report, Evidence, Quiz states and the campaign invitation moved onto the primitives; dead code removed.
-- [x] Rendered review (EN/AR, light/dark, 320 to 1440px, 200% text) approved by the overseeing session under the delegation (`Approved commit:`); deliver through one PR with required CI. Approved at `d6dbd43` by the overseeing session under Ahmed's delegation ([task record](../../planning/tasks/wp03-t25-cobalt-primitives.md)). These closure markers become authoritative only when that PR merges with green required CI.
-
-**Pass:** one implementation per DESIGN component in use; no alias token or legacy button left; no behaviour change; required CI green.
+- [x] One implementation per DESIGN component; alias tokens and legacy buttons removed. Record: [wp03-t25](../../planning/tasks/wp03-t25-cobalt-primitives.md).
 
 #### WP03-T26 — Give content the screen on phones and declutter screens
 
-**Dependencies:** WP03-T25. Findings MD-01 to MD-29 (except MD-22), DS-17, DS-19, DS-20, DS-24, IX-06, IX-20 to IX-23, IX-33, IX-34, IX-36.
-
-- [x] Phone unit header with the session menu, desktop session switcher in the band, answer language in the composer, compact composer, keyboard-aware Chat, no bottom bar inside units on phones, document scroll for the other unit tools, a phone source sheet and a shared disclosure.
-- [x] Declutter Chat answers, Shelf, Subjects, Materials, Studio, Quiz, the Batch Leader band and the admin header; hosted demo shows no explanatory captions beyond safety labels; DESIGN.md updated for the changed rules.
-- [x] Rendered numbers meet the plan's targets; overseer approval recorded; deliver through one PR with required CI. Reviewed by the `independent-reviewer` sub-agent (request changes, all addressed); approved at `1e39968` by the overseeing session under Ahmed's delegation ([task record](../../planning/tasks/wp03-t26-phone-space-declutter.md)). These closure markers become authoritative only when that PR merges with green required CI.
-
-**Pass:** Chat keeps at least 400px of conversation at 360x640 and 400px at 1280x720; the compact-chat journey, layout matrices and RTL stay green; required CI green.
+- [x] Chat keeps at least 400px of conversation at 360x640 and 1280x720; screens decluttered. Record: [wp03-t26](../../planning/tasks/wp03-t26-phone-space-declutter.md).
 
 #### WP03-T27 — Add first-run profile onboarding and one shared access gate
 
-**Dependencies:** WP03-T25. Findings PJ-01 to PJ-06, PJ-10 to PJ-15, PJ-27 to PJ-29, IX-05, IX-10, IX-18, IX-19, MD-22, DS-30. Protected paths: auth gate, migration, Batch Leader upload authorization.
-
-- [x] One access-destination function and server guard for every authenticated page, including the Batch Leader pages, upload route and finalize action; a `PROFILE_REQUIRED` gate after consent derived from a non-empty name.
-- [x] `/welcome` for every role (name, interface language, appearance) and Settings → Profile on one seam; Settings declutter and recovery; sign-out on consent and welcome; an honest no-membership state; an additive change-only name-format trigger with pgTAP.
-- [x] Demo: a new-account login pair with an empty profile, no fixture-name fallback and returning-user behaviour; independent review of the exact diff; overseer approval; deliver through one PR with required CI including `database-ci`. Reviewed by the `independent-reviewer` sub-agent (request changes, all addressed); approved at `765dc5e` by the overseeing session under Ahmed's delegation ([task record](../../planning/tasks/wp03-t27-profile-onboarding.md)). These closure markers become authoritative only when that PR merges with green required CI.
-
-**Pass:** a new real or demo account is asked for its name once and never again; existing accounts stay valid; the leader gate rejects unverified, unconsented and suspended accounts; required CI green.
+- [x] One access-destination guard for every authenticated page including Batch Leader routes; `/welcome` profile onboarding; additive name-format trigger. Record: [wp03-t27](../../planning/tasks/wp03-t27-profile-onboarding.md).
 
 #### WP03-T28 — Remember the interface language and align demo journeys
 
-**Dependencies:** WP03-T27. Findings PJ-07 to PJ-09, PJ-18 to PJ-20, PJ-22 to PJ-24, PJ-26, PJ-30, IX-28. Protected paths: proxy and auth callback.
-
-- [x] Locale precedence `?lang=`, cookie, account language, English; `lang` kept through email links, callback, sign-out and guard redirects; `lang` and `dir` rendered on the server.
-- [x] Demo parity for register, password reset, privacy and admin resources; hosted registration of demo emails intercepted; copy fixes; independent review; deliver through one PR with required CI. Reviewed twice by the `independent-reviewer` sub-agent (request changes, all addressed); PJ-19 and PJ-21 remain open ([task record](../../planning/tasks/wp03-t28-locale-demo-parity.md)). These closure markers become authoritative only when that PR merges with green required CI.
-
-**Pass:** an Arabic user stays in Arabic across sign-out, email return and a new session; demo exits match the real flow; required CI green.
+- [x] Locale precedence `?lang=` → cookie → account → English, kept through email links and redirects; demo parity. PJ-19 and PJ-21 stay open. Record: [wp03-t28](../../planning/tasks/wp03-t28-locale-demo-parity.md).
 
 #### WP03-T29 — Repair interactions and input semantics
 
-**Dependencies:** WP03-T25 and WP03-T26. Findings IX-01, IX-04, IX-08, IX-09, IX-11 to IX-16, IX-24 to IX-27, IX-29, IX-31, IX-32, IX-35 and the input inventory.
-
-- [x] Failed auth keeps the email; pending states on New session and Sign out; Batch Leader intake explains its disabled actions and guards against losing the queue; live counts and state-only announcements; Arabic-Indic quiz numbers.
-- [x] Every input has the right type, keyboard hint, autocomplete and error wiring; deliver through one PR with required CI. Reviewed by the `independent-reviewer` sub-agent (approve with nits, fixed); approved at `f324d39` by the overseeing session under Ahmed's delegation; IX-35 partial ([task record](../../planning/tasks/wp03-t29-interactions-inputs.md)). These closure markers become authoritative only when that PR merges with green required CI.
-
-**Pass:** each repaired control has an observable outcome proven by a test; required CI green.
+- [x] Pending states, guarded queue, live counts, correct input types and error wiring. Record: [wp03-t29](../../planning/tasks/wp03-t29-interactions-inputs.md).
 
 #### WP03-T30 — Speed up local verification and CI without losing coverage
 
-**Dependencies:** WP03-T24. Findings TC-01 to TC-06, TC-08 to TC-12, TC-19 to TC-22. Protected path: CI workflow and selector.
-
-- [x] Fix the quiz fake-clock flake; two Playwright workers per demo shard, one main e2e shard, headless-shell Chromium, a selector that runs everything when only the base moved, and no duplicate plain typecheck in `verify:ci`.
-- [x] A local verify runner (no bare `pnpm`, parallel static checks, build first, timing table), CPU-based local workers, lint and format caches, telemetry off, corrected docs.
-- [x] Independent review, a `--repeat-each=2` demo run and two green PR CI runs; before and after measurements in the [CI and testing report](../reviews/wp03-refinement/ci-testing-report.md); deliver through one PR. Reviewed by the `independent-reviewer` sub-agent (nits fixed); demo `--repeat-each=2` 384/384; PR [#90](https://github.com/unimind989-sys/UniMind-Project/pull/90) runs 39083623872 and 39085439849 green. These closure markers become authoritative only when that PR merges with green required CI.
-
-**Pass:** the same tests and gates run; CI wall time and compute per run fall measurably; local verify is faster; required CI green.
+- [x] Faster local verify and CI with the same gates ([CI and testing report](../reviews/wp03-refinement/ci-testing-report.md)). Record: [wp03-t30](../../planning/tasks/wp03-t30-verification-speed.md).
 
 #### WP03-T31 — Verify the WP03 refinement end to end and publish the reports
 
-**Dependencies:** WP03-T25 to T30 merged. The WP03 manager brief's final area: integration, final verification and reports ([task record](../../planning/tasks/wp03-t31-final-verification.md)).
-
-- [x] On merged `main`: a full local `corepack pnpm verify` on a quiet machine, green `main` CI, a rendered review of every screen at phone, tablet and desktop sizes in English and Arabic, light and dark, and each new or corrected flow reproduced in the synthetic demo.
-- [x] Publish the [final verification](../reviews/wp03-refinement/final-verification.md) and the after-refinement section of the [CI and testing report](../reviews/wp03-refinement/ci-testing-report.md); ignore the per-machine `.claude/launch.json`; deliver through one PR with required CI. These closure markers become authoritative only when that PR merges with green required CI. Afterwards, at Ahmed's request, `680a507` was promoted to production ([evidence](../../evidence/wp03-product-shell/2026-10-18_wp03-refinement_production_680a507.md)); the hosted WP03-T27 migration awaits a founder's Supabase access.
-
-**Pass:** every WP03-T25 to T30 outcome is checked on merged `main` or listed as open with a reason; before and after numbers are recorded; required CI green.
+- [x] [Final verification](../reviews/wp03-refinement/final-verification.md) on merged `main`; promoted as `680a507`. Record: [wp03-t31](../../planning/tasks/wp03-t31-final-verification.md). Evidence: [refinement release](../../evidence/wp03-product-shell/2026-10-18_wp03-refinement_production_680a507.md).
 
 #### WP03-T32 — Close the WP03 refinement follow-ups
 
-**Dependencies:** WP03-T31. Ahmed's answers of 18 October 2026 to the final verification's open items ([task record](../../planning/tasks/wp03-t32-refinement-follow-ups.md)).
-
-- [x] Remove the synthetic admin's header Sign out (IX-35); the demo admin signs out from Account like the real admin.
-- [x] Record the answers: PJ-19 keeps the email flow, TC-07 unchanged, proposed D-24 (Batch Leaders upload through one-time links without accounts) supersedes PJ-16 and the D9 follow-up; list the later checks (two-device email, iPhone keyboard, hosted migration); deliver through one PR with required CI and promote. Delivered in [#98](https://github.com/unimind989-sys/UniMind-Project/pull/98) and promoted; the paused Supabase project was resumed and the WP03-T27 migration applied at Ahmed's request ([evidence](../../evidence/wp03-product-shell/2026-10-18_wp03-t32-follow-ups_production_09a8149.md)). These closure markers become authoritative only when this record's PR merges with green required CI.
-
-**Pass:** the demo admin has no header Sign out and every admin journey still passes; the decisions and later checks are recorded; required CI green; production carries the change.
+- [x] Synthetic admin header Sign out removed; PJ-19, TC-07 and proposed D-24 recorded; hosted WP03-T27 migration applied. Record: [wp03-t32](../../planning/tasks/wp03-t32-refinement-follow-ups.md). Evidence: [follow-ups](../../evidence/wp03-product-shell/2026-10-18_wp03-t32-follow-ups_production_09a8149.md).
 
 #### WP03-T33 — Polish the phone screens and the landing page with a motion layer
 
-**Dependencies:** WP03-T32. Ahmed's 19 October 2026 request: refine the frontend platform-wide, with the phone screens of every flow and the landing page on every device as the focus, and add the agent's own animation and polish refinements ([task record](../../planning/tasks/wp03-t33-phone-landing-polish.md)). His follow-up the same day, after the first candidate (`7fd0a68`, motion only): the difference must be felt on every screen of the student, Batch Leader and admin flows and on the landing, desktop included; treat the frontend as a whole, look at every element, and change anything that earns it. The fixed fingerprint (name, Open Folio logo, slogan, blue family) and the Cobalt planes stay; every other visual decision may change within them.
+- [x] One motion layer and a felt refinement of every screen, approved by Ahmed at `6c3316a` (PR #100, `606cace`). Record: [wp03-t33](../../planning/tasks/wp03-t33-phone-landing-polish.md). Evidence: [felt refinement](../../evidence/wp03-product-shell/2026-10-19_wp03-t33-felt-refinement_production_606cace.md).
 
-- [x] Audit the rendered phone screens (landing, access, Shelf, Subjects, Materials, Chat, Studio, Quiz, Settings, Batch Leader, admin) and the landing page at phone, tablet and desktop widths; list what to change.
-- [x] One motion layer in the Cobalt contract: shared tokens, press and state feedback on every control, content-delivery rises for answers, results, notices and lists, overlay entrances for the unit and admin menus, a once-per-view landing reveal; reduced motion renders every end state instantly; `DESIGN.md` records the amended motion rules.
-- [x] A felt visual refinement of every screen and state, desktop and phone, English and Arabic, light and dark: the shell and primitives, the student flow (onboarding, Shelf, Subjects, Materials, Chat, Studio, Quiz, Settings), the Batch Leader flow (intake, campaign, history, account), the admin flow (queue, every resource, account), the access pages and the landing; `DESIGN.md` records every changed rule.
-- [x] `corepack pnpm check`, the demo and main e2e suites (specs updated where structure intentionally changed), before and after captures of every screen, a rendered inspection round plus one confirmation round, independent review of the candidate, `Approved commit:`, one PR with required CI. Approved at `6c3316a` by Ahmed on 19 October 2026; delivered in [#100](https://github.com/unimind989-sys/UniMind-Project/pull/100), squash-merged as `606cace` with 13 of 13 checks green, and promoted to production at Ahmed's request ([evidence](../../evidence/wp03-product-shell/2026-10-19_wp03-t33-felt-refinement_production_606cace.md)).
+#### WP03-T34 — Configure the catalog through audited admin actions
 
-**Pass:** every screen of every flow is visibly refined against its before capture while keeping the fingerprint, the Cobalt planes, every real seam and guard, and every accessibility, isolation and measurement test (updated only where structure intentionally changed); reduced motion shows identical end states; required CI green.
+Master plan §7.2 step 1. Today catalog rows exist only through migrations and seed data.
 
+**Depends on:** WP03-T06. **Decision gates:** none (D-12 and D-23 are approved). **Protected:** RLS and migrations. **Material UI:** yes, the admin catalog resource screens. **Real money:** no.
+
+**Outputs:** audited server/database functions for the catalog; admin catalog screens on the Cobalt primitives; pgTAP and E2E tests.
+
+- [ ] Inventory what `/admin/[resource]` shows for the catalog today, which database functions exist, and which actions are missing; record the gap in the task record.
+- [ ] Add audited actions to create, edit and deactivate education stages, institutions, programs (type, progression mode, default unit type, English/Arabic singular and plural unit labels), academic levels, terms, cohorts with curriculum editions, and curriculum units (order, optional parent). Every action takes the actor, expected prior version, reason and correlation ID.
+- [ ] Enforce at the database: codes are ASCII `lower_snake_case`, unique within their parent and immutable once referenced; a unit cannot cross cohorts; a referenced node is deactivated, never deleted; a program cannot activate without complete English and Arabic labels.
+- [ ] Terminology and progression come from program data only; no faculty-name branch. `FLEXIBLE_CREDIT` is stored as configuration within the D-23 scope.
+- [ ] Build the admin catalog screens: tree view, create/edit/deactivate forms, a preview of the student-facing labels, stale-version and validation errors, EN/AR, phone and desktop. Keep the synthetic admin journey on the same screens.
+- [ ] Test: non-admin denied; stale version rejected; duplicate code rejected; deactivating a unit removes it from student availability without breaking history; a Veterinary program configured only through these actions renders `Subjects`.
+
+**Verify:** `pnpm check`; `database-ci` (pgTAP); `pnpm test:e2e` and `pnpm test:e2e:demo`; independent review of the migration and functions.
+
+**Pass:** an admin builds a complete program hierarchy down to ordered units in both languages without SQL; every change is audited; the student catalog changes only through derived availability.
+
+#### WP03-T35 — Grant cohort membership to students
+
+Availability needs an active membership (§5.2), but no document says how a student gets one and no code creates one.
+
+**Depends on:** WP03-T34. **Decision gates:** none; this task resolves D-25. **Protected:** auth and authorization, RLS and migrations. **Material UI:** yes, the student no-membership/pending states and the admin membership screens. **Real money:** no.
+
+**Outputs:** the approved membership path as audited functions and screens; tests.
+
+- [ ] Prepare D-25: write `docs/decisions/d-25-student-cohort-membership.md` with the options (for example an admin allow-list of verified emails per cohort, admin approval of a student request, or a cohort enrollment code), their abuse and privacy risks, who may revoke, and the effect on WP11 wave provisioning.
+- [ ] Obtain Ahmed's and Ziad's approval of D-25 and update the master-plan log and the register (this step becomes `[?]` while it waits).
+- [ ] Implement only the approved path through audited server/database functions; membership states `ACTIVE`, `SUSPENDED`, `EXPIRED` and `REVOKED` with `starts_at`/`ends_at`; the browser never asserts a cohort.
+- [ ] If D-25 allows admin provisioning, add idempotent wave provisioning for WP11 (a list of verified emails per cohort with a dry-run report and no duplicate memberships).
+- [ ] Student-facing states: no membership, pending (if requests exist), active, expired and revoked, with honest copy that never reveals another cohort's configuration.
+- [ ] Admin screens to grant, suspend and revoke with a reason; revocation follows the [session revocation policy](../policies/auth-session-revocation.md).
+- [ ] Test: forged cohort, duplicate grant, expired and revoked mid-session (next server operation fails safely), cross-cohort request, Batch Leader or anonymous caller denied.
+
+**Verify:** `pnpm check`; `database-ci`; E2E for each state; independent review.
+
+**Pass:** a verified student gains access to exactly the approved cohort only through the approved path; revocation removes availability on the next server operation; every grant and revoke is audited.
+
+#### WP03-T36 — Create campaigns and give Batch Leaders scoped access
+
+Master plan §7.2 steps 2–3 and §7.3. Campaigns and assignments exist only in seed data today.
+
+**Depends on:** WP03-T34. **Decision gates:** D-24 (one-time links or accounts); D-26 only if links are delivered by email. **Protected:** auth and authorization, RLS and migrations, storage (upload route). **Material UI:** yes, admin campaign screens and the Batch Leader entry. **Real money:** no.
+
+**Outputs:** campaign management actions and screens; the approved Batch Leader access path; the needs-information loop; a security review of the access design.
+
+- [?] D-24 decided by Ahmed and Ziad. OWNER INPUT REQUIRED.
+- [ ] Admins create a campaign for an exact cohort and unit scope with open/close dates and requested-material items (type, required/optional, naming guidance); edit and close it with a reason.
+- [ ] Batch Leader access as decided. One-time links: unguessable, stored as a hash, expiring, single-use or explicitly bounded, revocable, audited on issue/use/expiry/revocation, never logged, never in analytics, and never exposed to a referrer (`Referrer-Policy: no-referrer`). Accounts: admin assignment of a verified account with an expiry. Retire the path not chosen.
+- [ ] Needs-information loop: an admin marks a submission `NEEDS_INFORMATION` with a reason; the Batch Leader sees it and answers; the states match master plan §7.3.
+- [ ] A closed or expired campaign accepts no new submission; accepted submissions keep processing.
+- [ ] Test: replayed, expired and revoked links; wrong campaign; a scan proving no link token appears in logs, analytics payloads or referrers; the Batch Leader cannot publish, unlock, see chats or reach another campaign; idempotent finalize unchanged.
+- [ ] Prove the governance loop end to end on synthetic storage: configure catalog → create campaign → give access → submit → request information → answer → grant a student membership (when WP03-T35 is done) → publish and unlock → the student sees the unit once a synthetic source is `READY`.
+
+**Verify:** `pnpm check`; `database-ci`; E2E for the loop; independent security review of the access design recorded in the task record.
+
+**Pass:** master plan admin steps 1–3 and the Batch Leader journey run through product screens without SQL; the access design passed independent review.
 
 ### 6.1 Routes
 
-Implement at minimum:
+Current routes: `/(auth)/login`, `/register`, `/verify-email`, `/forgot-password`, `/reset-password`, `/consent`, `/welcome`; `/auth/callback`; `/learn`; `/learn/[cohortId]/[unitId]` with `chat`, `studio`, `quiz`, `sources`, `evidence` and `report`; `/settings`; `/batch-leader` and `/batch-leader/campaigns/[campaignId]` with the upload Route Handler; `/admin` and `/admin/[resource]`; `/api/health/live` and `/api/health/ready`. The synthetic runtime path is loopback-only and returns 404 in production. WP03-T36 may add a link-entry route for Batch Leaders if D-24 is approved.
 
-- `/login`, `/register`, `/verify-email`.
-- `/learn` for the filter journey.
-- `/learn/[cohortId]/[unitId]` as the subject workspace.
-- `/learn/[cohortId]/[unitId]/chat`.
-- `/learn/[cohortId]/[unitId]/studio`.
-- `/learn/[cohortId]/[unitId]/quiz/[attemptId]`.
-- `/settings` for language, retention, and account controls.
-- `/batch-leader/campaigns/[campaignId]`.
-- `/admin/catalog`, `/admin/cohorts`, `/admin/campaigns`, `/admin/sources`, `/admin/jobs`, `/admin/quality`, `/admin/usage`, and `/admin/incidents`.
+### 6.2 Filter behaviour
 
-### 6.2 Filter behavior
-
-Build dependent server-authorized filters in this order:
-
-1. Education stage.
-2. Institution/system.
-3. Program/faculty.
-4. Academic level.
-5. Semester/term for `TERM_BASED` programs; for `FLEXIBLE_CREDIT`, use the configured course-plan period without presenting a rigid semester list.
-6. Released cohort when more than one matches.
-7. Available Modules or Subjects.
-
-Changing an upstream filter clears invalid downstream choices. Empty states must distinguish no configured catalog, no membership, locked cohort, unpublished unit, and no READY sources without exposing private details.
-
-After the path resolves, a student selects an individual authorized Module or Subject. A flexible-credit program lists only the caller's eligible course-plan units; it never infers eligibility from a fixed semester or accepts browser-selected units as authorization.
+Dependent server-authorized filters in this order: education stage; institution/system; program/faculty; academic level; semester/term for `TERM_BASED` programs (for `FLEXIBLE_CREDIT`, the configured course-plan period without a rigid semester list); released cohort when more than one matches; available Modules or Subjects. Changing an upstream filter clears invalid downstream choices. Empty states distinguish no configured catalog, no membership, locked cohort, unpublished unit and no READY sources without exposing private details. A flexible-credit program lists only the caller's eligible course-plan units and never takes browser-selected units as authorization.
 
 ### 6.3 Subject workspace
 
-Display:
+The workspace shows the institution/program/level/term/cohort breadcrumb, the dynamic Module/Subject title, Chat, Studio and Quiz navigation, source-pool status and last material update, the source list (title and format) when allowed, usage and allowance state, language mode, and a scope switcher that starts or selects the right session. Every chat and Studio call derives scope from the authenticated server record and verifies it again.
 
-- Current institution/program/level/term/cohort breadcrumb.
-- Dynamic Module/Subject title.
-- Chat and Studio navigation.
-- Source-pool status and last material update.
-- Source list with title and format only when allowed.
-- Usage/quota state.
-- Language mode.
-- Clear scope switcher that starts or selects the correct subject session.
+### 6.4 Admin governance controls
 
-Every chat and Studio API call derives scope from the authenticated server record and verifies it again.
-
-### 6.4 Admin release controls
-
-Implement separate audited actions for:
-
-- Publish/hide a curriculum unit.
-- Unlock/lock a cohort.
-- Activate/deactivate a source version.
-- Quarantine/retry a failed source.
-- Place/remove a documented raw-data hold.
-- Enable/disable a provider or artifact type.
-
-Show the exact failed availability predicate before allowing unlock/publish. Do not allow a unit to appear if it has zero active READY sources.
+Separate audited actions exist for: publish/hide a unit; unlock/lock a cohort; activate/deactivate a source version; quarantine/retry a failed source; place/remove a raw-data hold; enable/disable a provider or artifact type (WP03-T06). WP03-T34 adds catalog configuration, WP03-T35 membership, WP03-T36 campaigns and Batch Leader access. Show the exact failed availability predicate before unlock or publish; a unit with zero active READY sources never appears.
 
 ### 6.5 Batch Leader submission
 
-The submission form requires campaign, requested item or curriculum unit, title, format, rights declaration, professor/source description, and file/reference. Generate a client idempotency key before upload. Use direct signed upload where supported; finalize submission through an authenticated server mutation after checksum/metadata confirmation.
+The submission requires campaign, requested item or unit, title, format, rights declaration, professor/source description and file or approved reference. The client creates the idempotency key before upload; upload uses a short-lived exact-object target where the storage provider supports it; finalize runs through a server mutation after checksum and metadata confirmation. The access model follows D-24 (WP03-T36).
 
-### 6.6 UI tests
+### 6.6 UI rules every later screen keeps
 
-- Human Medicine renders Modules; Veterinary renders Subjects from data.
-- Arabic layout is RTL while English medical terms remain readable.
-- Required copy has no missing-key or accidental-language fallback, and dates, numbers, counts, and long user-provided labels remain readable in both directions.
-- Browser navigation cannot change the authorized cohort/unit silently.
-- Locked/unpublished/empty units do not appear as available.
-- Batch Leader routes reject expired or wrong-campaign assignments.
-- Admin preview is visibly marked and does not create student membership.
-- Protected actions cannot complete from one founder confirmation, while emergency containment remains fast, audited, and reversible.
-- Chat and Studio remain scoped to the selected unit.
-- Critical flows reflow at the approved minimum mobile width and text zoom, support keyboard/touch/screen-reader use, respect reduced motion, and retain visible focus without clipping or horizontal overflow.
-- Loading, empty, error, offline/interrupted, success, disabled, and stale-state behavior matches the approved component language rather than using one generic fallback.
+Human Medicine renders Modules and Veterinary renders Subjects from data; Arabic is RTL while English medical terms stay readable; no missing-key or wrong-language fallback; browser navigation never changes the authorized scope silently; locked, unpublished or empty units never appear available; admin preview is visibly marked and creates no membership; protected actions never complete from one founder confirmation; critical flows reflow at the minimum mobile width and 200% text, support keyboard, touch and screen readers, respect reduced motion and keep visible focus; loading, empty, error, offline, success, disabled and stale states use the approved component language.
 
-### 6.7 Exit evidence
+## 7. Work package 4: Automated source pipeline and real-data readiness
 
-- Role-specific end-to-end test recordings/reports.
-- Availability states match database predicates.
-- Both Module and Subject configurations render without code branches based on faculty name.
-- Named founder approval of the selected visual direction, plus the final root `DESIGN.md` and surface briefs reconciled with the rendered implementation.
-- Impeccable detector/audit disposition, automated accessibility results, manual keyboard/screen-reader notes, and bounded desktop/mobile English/Arabic visual evidence.
-- Component/asset provenance and license report with exact pinned sources, dependency diff, and confirmation that no remote catalog or MCP is required by build, test, or runtime.
-- No paid provider call is required for UI completion.
+**Outcome:** a finalized submission moves to `READY` or a precise terminal exception without manual database work; raw data is deleted only after verified processed output; replay creates no duplicate state or cost. The package proves this first on synthetic fixtures with mocks (WP04-T01 to WP04-T12), then makes the real choices the pipeline needs (WP04-T13 to WP04-T19), then processes the real Cohort A corpus (WP04-T20).
 
-## 7. Work package 4: Automated source processing
+**Primary artifacts:** `src/lib/ingestion/`, `src/lib/jobs/`, `src/lib/storage/`, `src/lib/usage/`, `src/lib/observability/`, `workers/ingestion/`, `workers/reconciliation/`, `supabase/migrations/`, `tests/fixtures/ingestion/` and `evidence/wp04-ingestion/`. The detailed processing rules are §7.1 to §7.9; tasks reference them instead of repeating them.
 
-**Outcome:** representative rights-approved PDF/audio sources move from finalized submission to READY or a precise terminal exception without manual database work; raw data is deleted only after verified processed output, and replay creates no duplicate state or cost.
-
-### 7.0 Tutorial procedure
+### 7.0 Tasks
 
 #### WP04-T01 — Freeze processor contracts before real files
 
-- [ ] Define versioned schemas for `InspectedSource`, `ProcessedDocument`, `Locator`, `Segment`, `QualityReport`, and every job input/output.
-- [ ] Include schema version, source/version ID, checksum, content hash, language profile, coverage map, warnings, and correlation ID.
-- [ ] Store large processed payloads in durable object storage and transactional metadata/checksums in PostgreSQL; do not put unique workflow state only in an object or queue message.
-- [ ] Create synthetic tiny native PDF, scanned PDF, corrupt PDF, password-protected PDF, Arabic/English audio, silent audio, boundary-chunk audio, and malicious-instruction fixtures with known expected output.
-- [ ] Review fixture rights; generated fixtures should be the default test data.
+**Depends on:** WP03-T08. **Decision gates:** D-10. **Protected:** none. **Material UI:** no. **Real money:** no.
+
+**Outputs:** versioned Zod schemas in `src/lib/ingestion/`, synthetic fixtures with expected outputs in `tests/fixtures/ingestion/`, an ADR for duplicate and replacement rules.
+
+- [?] D-10 approved by Ahmed and Ziad with the security/data role named (WP00-T01). OWNER INPUT REQUIRED.
+- [ ] Define versioned schemas for `InspectedSource`, `ProcessedDocument`, `Locator`, `Segment`, `SegmentTag`, `QualityReport` and every job input/output in §7.1. Each carries schema version, source-version ID, checksum, content hash, language profile, coverage map, warnings and correlation ID.
+- [ ] Keep large payloads in processed object storage and checksums plus workflow state in PostgreSQL; no unique state lives only in an object or a queue message.
+- [ ] Write the duplicate and replacement rules as an ADR: identical checksum resubmitted, the same content in another unit or campaign, a newer edition, and an explicit replacement that creates a new source version needing admin activation. Ask the founders where a rule changes what a Batch Leader or student sees.
+- [ ] Prove the video-ready contract (master plan §5.1 and §14): a contract test shows a `VIDEO` source kind reuses the processed-document, time-range locator, segment, tag and job contracts with no new table, pool or answer path. No video processor is built.
+- [ ] Generate synthetic fixtures with expected outputs: tiny native PDF, scanned PDF, corrupt PDF, password-protected PDF, Arabic/English audio, silent audio, boundary-chunk audio and malicious-instruction text. No third-party content.
+
+**Verify:** contract unit tests (one valid and one invalid fixture per schema); the video contract test; `pnpm check`.
+
+**Pass:** every job step has a versioned input and output schema with a valid and an invalid fixture; the video contract test passes; no real file is used.
 
 #### WP04-T02 — Implement the workflow state machine
 
-- [ ] Create one job per explicit graph step and dependencies in the same transaction that accepts/finalizes the source version.
-- [ ] Generate deterministic idempotency keys from source version, step, processor/config version, and relevant content hash.
-- [ ] Implement atomic claim with lease owner/expiry and an attempt record before processing.
-- [ ] Heartbeat long work, reject completion by a non-owner/expired lease, and reclaim safely.
-- [ ] Classify typed failures as retryable, terminal, needs review, or uncertain provider acceptance.
-- [ ] Use capped exponential backoff with jitter and persist `available_at`; never busy-loop a failed provider.
-- [ ] Make cancellation/deactivation prevent new dependent jobs while preserving history.
+**Depends on:** WP04-T01. **Decision gates:** none (the in-process dispatcher stands in for D-17). **Protected:** RLS and migrations if job functions change. **Material UI:** no. **Real money:** no.
+
+**Outputs:** workflow application and domain modules in `src/lib/jobs/`, an in-process dispatcher, a structured logger in `src/lib/observability/`.
+
+- [ ] Create the structured JSON logger and correlation-ID propagation from request to job to provider call, with tested redaction of secrets, authorization headers, signed URLs, source text and chat content. WP08-T02 adds metrics on top.
+- [ ] Create one job per §7.1 graph step, with its dependencies, in the same transaction that finalizes the submission into a source version.
+- [ ] Derive idempotency keys from source version, step, processor/config version and content hash.
+- [ ] Claim atomically with a lease and an attempt record (WP02-T07 functions); heartbeat long work; reject completion by a non-owner or expired lease; reclaim safely (§7.2).
+- [ ] Classify failures as retryable, terminal, needs review or uncertain provider acceptance.
+- [ ] Back off exponentially with jitter, persist `available_at`, and record lease, heartbeat, attempt and backoff values in configuration (§2.3).
+- [ ] Make cancellation and deactivation stop new dependent jobs while keeping history.
+- [ ] Add an in-process dispatcher that runs the graph in tests and CI until WP04-T17 deploys the real worker host.
+
+**Verify:** unit tests; `database-ci` race tests with two sessions claiming one job; log-redaction tests.
+
+**Pass:** a synthetic source runs the graph under the in-process dispatcher; replaying finalize creates no second workflow; two racing workers produce one success; every log line has a correlation ID and no content.
 
 #### WP04-T03 — Implement secure temporary storage
 
-- [ ] Separate temporary raw, temporary derived, and durable processed namespaces/buckets.
-- [ ] Deny public listing/read; issue short-lived, exact-object signed operations only after server authorization.
-- [ ] Store provider/object key server-side and log only a fingerprint where full keys are unnecessary.
-- [ ] Add orphan-upload reconciliation for signed uploads never finalized.
-- [ ] Add malware/content-type inspection appropriate to the selected host before expensive processing.
-- [ ] Enforce bytes/pages/duration and rights before provider cost.
+**Depends on:** WP04-T01. **Decision gates:** none for the adapter; the real provider is chosen in WP04-T16 (D-18). **Protected:** storage. **Material UI:** no. **Real money:** no.
+
+**Outputs:** storage application layer over `ObjectStorageProvider`, namespace configuration, orphan reconciliation job, the WP03-T05 upload route connected.
+
+- [ ] Separate temporary raw, temporary derived and durable processed namespaces.
+- [ ] Deny public listing and reads; issue short-lived exact-object operations only after server authorization; keep object keys server-side and log only key fingerprints.
+- [ ] Reconcile signed uploads that are never finalized.
+- [ ] Inspect magic bytes and type before processing; record the malware-scanning approach the real host needs (WP04-T16 chooses the scanner).
+- [ ] Enforce byte, page and duration limits (§2.3) and rights before any provider cost.
+- [ ] Connect the WP03-T05 upload route and finalize action to this layer without weakening their checks.
+
+**Verify:** storage contract tests on the synthetic adapter; forbidden read, list and cross-campaign tests; independent review.
+
+**Pass:** forbidden reads, lists and cross-campaign uploads are denied; orphans are reconciled; limits and rights stop work before any (mock) provider call.
 
 #### WP04-T04 — Build native PDF extraction incrementally
 
-- [ ] Inspect magic bytes, encryption, page count, metadata, corruption, and checksum.
-- [ ] Extract page by page and record text density/anomalies before deciding OCR ranges.
-- [ ] Normalize headers, footers, hyphenation, lists, headings, tables, formulas, captions, and diagrams conservatively; never delete meaning merely to reduce bytes.
-- [ ] Write temporary output incrementally, then atomically finalize only after every page is represented, explicitly blank, or rejected.
-- [ ] Map normalized character ranges to original pages with confidence and validate non-overlap/bounds.
-- [ ] Compare representative extracted pages visually/textually with the source during processor qualification.
+**Depends on:** WP04-T02, WP04-T03. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
+
+**Outputs:** the PDF inspector and extractor in `src/lib/ingestion/` following §7.3.
+
+- [ ] Inspect magic bytes, encryption, page count, metadata, corruption and checksum.
+- [ ] Extract page by page and record text density and anomalies before deciding OCR ranges.
+- [ ] Normalize headers, footers, hyphenation, lists, headings, tables, formulas, captions and diagrams conservatively; never delete meaning to save bytes.
+- [ ] Write temporary output incrementally, then finalize atomically only when every page is represented, explicitly blank or rejected.
+- [ ] Map normalized character ranges to original pages with confidence and validate bounds and non-overlap.
+
+**Verify:** fixture tests against expected Markdown and locator sidecars.
+
+**Pass:** synthetic native PDFs produce the expected processed output and locators; every page is accounted for; corrupt and password-protected files are rejected with an actionable reason.
 
 #### WP04-T05 — Add selective OCR
 
-- [ ] Define measured per-page OCR triggers using text density, replacement characters, layout anomalies, and fixture results.
-- [ ] Route only selected page ranges to the OCR adapter and reserve maximum cost first.
-- [ ] Merge OCR/native output in original page order without duplicate text.
-- [ ] Validate Arabic/English terminology, tables, formulas, and page coverage.
-- [ ] Mark irrecoverable visual meaning as `NEEDS_REVIEW`; do not claim full processing.
+**Depends on:** WP04-T04. **Decision gates:** none for the mock path; a real OCR adapter needs D-04 (WP04-T14). **Protected:** none. **Material UI:** no. **Real money:** only through WP04-T13 once a real adapter exists.
+
+- [ ] Define per-page OCR triggers from text density, replacement characters, layout anomalies and fixture results; record them in configuration (§2.3).
+- [ ] Send only selected page ranges to the OCR adapter and reserve the maximum cost first (WP04-T13 once real).
+- [ ] Merge OCR and native output in original page order without duplicate text.
+- [ ] Validate Arabic/English terminology, tables, formulas and page coverage.
+- [ ] Mark irrecoverable visual meaning `NEEDS_REVIEW`; never claim full processing.
+
+**Verify:** fixture tests with the mock OCR adapter.
+
+**Pass:** only triggered pages reach OCR; merged output is ordered and free of duplicates; unrecoverable pages are isolated as `NEEDS_REVIEW`.
 
 #### WP04-T06 — Build complete audio transcription
 
-- [ ] Inspect codec/container, duration, channels, sample rate, corruption, and cost ceiling.
-- [ ] If chunking is required, calculate deterministic chunks with overlap and retain their exact time ranges.
-- [ ] Merge with boundary de-duplication and prove accounted duration within the approved tolerance.
-- [ ] Preserve Arabic/English code-switching and technical terms; do not translate unless a separate approved step requests it.
-- [ ] Persist confidence/timestamp locators and flag long silence or low-confidence spans.
-- [ ] Delete all temporary normalized audio/chunks after the finalized transcript passes verification; verify absence separately from raw-source deletion.
+**Depends on:** WP04-T02, WP04-T03. **Decision gates:** none for the mock path; a real transcription adapter needs D-04 (WP04-T14). **Protected:** none. **Material UI:** no. **Real money:** only through WP04-T13 once a real adapter exists.
+
+- [ ] Inspect codec/container, duration, channels, sample rate, corruption and the cost ceiling; reject over-limit duration before any cost (§7.4).
+- [ ] When chunking is needed, compute deterministic overlapping chunks and keep their exact time ranges.
+- [ ] Merge with boundary de-duplication and prove accounted duration within the §2.3 tolerance.
+- [ ] Preserve Arabic/English code-switching and technical terms; never translate unless a separate approved step asks for it.
+- [ ] Persist confidence and timestamp locators; flag long silence and low-confidence spans.
+- [ ] Delete temporary normalized audio and chunks after the transcript passes verification, and verify their absence separately from raw deletion.
+
+**Verify:** fixture tests with the mock transcription adapter.
+
+**Pass:** synthetic audio fixtures account for their full duration within tolerance; silence and low confidence are flagged; temporary chunks are verified absent.
 
 #### WP04-T07 — Tag professor evidence safely
 
-- [ ] Tag only spans with evidence and keep tag type, label, confidence, details, locator, and tagger version.
-- [ ] Distinguish `PROFESSOR_HINT`, `EXAM_EMPHASIS`, `EXCLUSION`, `CORRECTION`, and `LIKELY_QUESTION`.
-- [ ] Never rewrite possibility/emphasis into certainty or an exam guarantee.
-- [ ] Create positive/negative Arabic/English fixture cases and academic-review samples.
+**Depends on:** WP04-T06. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no (mock tagger until WP04-T14 chooses a model, if any).
+
+- [ ] Tag only spans with evidence; keep tag type, label, confidence, details, locator and tagger version.
+- [ ] Distinguish `PROFESSOR_HINT`, `EXAM_EMPHASIS`, `EXCLUSION`, `CORRECTION` and `LIKELY_QUESTION`.
+- [ ] Never rewrite possibility or emphasis into certainty or an exam guarantee.
+- [ ] Create positive and negative Arabic, English and mixed fixtures; record precision and recall on them.
+
+**Verify:** tagger fixture tests.
+
+**Pass:** fixture precision and recall are recorded; no fixture hint becomes a certainty; WP04-T20 adds the academic sample on real audio.
 
 #### WP04-T08 — Verify processed output before deleting raw data
 
-- [ ] Reopen the finalized processed object from durable storage rather than trusting the write response.
-- [ ] Recompute checksum and validate the schema.
-- [ ] Verify page/duration coverage, non-empty threshold, locator bounds, terminology sample, duplicate ratio, and absence of unresolved blocker warnings.
-- [ ] Persist the immutable quality report and accepted policy/version.
-- [ ] Enqueue deletion only from the passing/approved state in a transaction.
-- [ ] Inject failures before and after finalization and prove deletion was not enqueued early.
+**Depends on:** WP04-T04 to WP04-T07. **Decision gates:** D-10 thresholds (synthetic defaults until approved). **Protected:** none. **Material UI:** no. **Real money:** no.
+
+- [ ] Reopen the finalized processed object from durable storage instead of trusting the write response.
+- [ ] Recompute the checksum and validate the schema.
+- [ ] Check page/duration coverage, the non-empty threshold, locator bounds, the terminology sample, the duplicate ratio and unresolved blocker warnings (§7.5).
+- [ ] Persist the immutable quality report with the accepted policy version.
+- [ ] Enqueue deletion only from the passing or policy-approved state, in one transaction.
+- [ ] Inject failures before and after finalization and prove deletion was never enqueued early.
+
+**Verify:** fault-injection tests; `database-ci` for the transactional enqueue.
+
+**Pass:** no fixture can reach deletion without a passing persisted report.
 
 #### WP04-T09 — Delete and independently verify raw absence
 
-- [ ] Lock the raw row, re-evaluate accepted processed state and legal/rights hold, and use the exact stored provider key.
-- [ ] Record the deletion request result, then perform an independent metadata/head/list absence check supported by the provider.
-- [ ] Treat timeout or ambiguous response as unresolved, not success; retry verification before reissuing a potentially redundant delete.
+**Depends on:** WP04-T08. **Decision gates:** none on synthetic data; real deletion needs D-19 and WP04-T19. **Protected:** storage; raw deletion is a D-22 protected action. **Material UI:** no. **Real money:** no.
+
+- [ ] Lock the raw row, re-check accepted processed state and any legal/rights hold, and use the exact stored provider key (§7.6).
+- [ ] Record the deletion result, then check absence independently through the provider's metadata, head or list call.
+- [ ] Treat a timeout or ambiguous response as unresolved; retry verification before reissuing a delete.
 - [ ] Append attempts; never overwrite deletion history.
-- [ ] Clear reusable access URLs and retain only approved audit metadata.
-- [ ] Raise an incident automatically when `delete_after` is exceeded.
-- [ ] Test already-absent object, access-denied deletion, delayed consistency, provider outage, hold placed during processing, and deletion replay.
+- [ ] Clear reusable access URLs and keep only approved audit metadata.
+- [ ] Open an incident automatically when `delete_after` passes.
+- [ ] Test already-absent objects, access-denied deletion, delayed consistency, provider outage, a hold placed during processing and deletion replay.
+
+**Verify:** deletion tests on the synthetic adapter; independent review.
+
+**Pass:** zero premature deletions and 100% verified deletion of accepted synthetic sources, including replays and outages.
 
 #### WP04-T10 — Chunk, embed, and mark READY
 
-- [ ] Chunk by document structure/semantic boundaries and record a versioned chunking config.
-- [ ] Preserve coherent tables, definitions, questions/answers, and professor statements; keep limited documented overlap.
-- [ ] Hash normalized content and deduplicate without losing legitimate repeated context or provenance.
-- [ ] Reserve embedding budget, batch by provider limit, and reuse by content hash plus embedding config.
-- [ ] Validate returned vector count, dimensions, finite numeric values, normalization expectation, and model identity before insert.
-- [ ] Use one active compatible embedding config per retrieval comparison.
-- [ ] Build/benchmark exact and HNSW search; match index operator class and query distance.
-- [ ] Mark READY only through a protected transition that recomputes every readiness predicate.
+**Depends on:** WP04-T08. **Decision gates:** none for mock embeddings; real embeddings follow WP04-T15. **Protected:** RLS and migrations if retrieval or readiness functions change. **Material UI:** no. **Real money:** no until WP04-T15.
+
+- [ ] Chunk by structure and semantic boundaries with a versioned chunking configuration; keep tables, definitions, question/answer blocks and professor statements coherent; record token counts (§7.7).
+- [ ] Hash normalized content and de-duplicate without losing legitimate repeated context or provenance.
+- [ ] Reserve embedding budget, batch by provider limit and reuse vectors by content hash plus embedding configuration.
+- [ ] Validate vector count, dimensions, finite values, normalization and model identity before insert.
+- [ ] Run the ingestion checks of master plan §8.5 step 16: empty segments, duplicates, leakage canaries, retrieval smoke, and prompt-injection-like text flagged as a segment tag (kept as untrusted data, never removed or obeyed).
+- [ ] Mark `READY` only through a protected transition that recomputes every §7.8 predicate.
+
+**Verify:** fixture tests with mock embeddings at the placeholder dimension; `database-ci` readiness tests.
+
+**Pass:** a valid synthetic source reaches `READY` with stable segment and vector counts; a source failing any §7.8 predicate never does.
 
 #### WP04-T11 — Reconcile every incomplete state
 
-- [ ] Reclaim expired leases.
-- [ ] Resume workflows with a succeeded parent and missing child.
-- [ ] Verify uncertain provider timeouts using provider request ID where supported.
-- [ ] Find accepted processed output without deletion job, verified deletion without chunks, missing/outdated embeddings, READY inconsistency, orphan temporary objects, and unsettled cost reservations.
-- [ ] Make reconciliation idempotent and emit metrics/incidents rather than editing history.
+**Depends on:** WP04-T09, WP04-T10. **Decision gates:** D-19 for real takedown values. **Protected:** storage. **Material UI:** no. **Real money:** no.
+
+- [ ] Reclaim expired leases; resume workflows with a succeeded parent and a missing child.
+- [ ] Verify uncertain provider timeouts by provider request ID where supported.
+- [ ] Find accepted output without a deletion job, verified deletion without chunks, missing or outdated embeddings, READY inconsistencies, orphan temporary objects and unsettled reservations.
+- [ ] Rights takedown: deactivate the source version, remove it from retrieval at once, invalidate dependent artifacts (WP07-T05), and purge processed text and embeddings when the approved policy requires it, keeping only audit metadata.
+- [ ] Keep reconciliation idempotent; emit metrics and incidents instead of editing history.
+
+**Verify:** reconciliation tests per incomplete state; takedown test.
+
+**Pass:** each seeded incomplete state is moved forward or isolated automatically; a takedown removes the source from retrieval immediately and follows the policy for processed content.
 
 #### WP04-T12 — Run the fault matrix and package gate
 
-- [ ] Inject a crash immediately before and after every external call and every database state transition.
-- [ ] Run two workers racing the same job and a lease expiry during a slow call.
-- [ ] Replay the entire source workflow with identical submission and step keys.
-- [ ] Compare counts/checksums/provider-call records/usage before and after replay.
-- [ ] Exercise native PDF, scanned PDF, mixed audio, duplicate, corrupt, timeout, malformed provider output, rights revocation, hold, deletion failure, and one terminal source alongside a valid source.
-- [ ] Prove zero premature deletion, one final processed document, stable segment/vector counts, exactly-once settlement, and automatic progress/isolation.
+This is the synthetic half of the WP04 gate. WP04-T20 is the real half.
+
+**Depends on:** WP04-T01 to WP04-T11. **Decision gates:** D-10 for the final thresholds. **Protected:** none. **Material UI:** no. **Real money:** no.
+
+- [ ] Inject a crash immediately before and after every external call and every database transition.
+- [ ] Race two workers on one job and expire a lease during a slow call.
+- [ ] Replay the whole workflow with identical submission and step keys; compare counts, checksums, provider-call records and usage before and after.
+- [ ] Exercise native PDF, scanned PDF, mixed audio, duplicate, corrupt, timeout, malformed output, rights revocation, hold, deletion failure, and one terminal source next to a valid one.
+- [ ] Write the gate report `evidence/wp04-ingestion/<date>_pipeline-synthetic_ci_<sha>.md`.
+
+**Verify:** the fault matrix suite; `pnpm verify`; `database-ci`.
+
+**Pass:** every §7.9 property holds: zero premature deletion, one processed document, stable segment and vector counts, exactly-once settlement, and automatic progress or isolation.
+
+#### WP04-T13 — Enforce budgets and kill switches before any paid call
+
+Master plan §13 and WP00-T06 define the rules; nothing enforces them yet.
+
+**Depends on:** WP04-T02. **Decision gates:** none to build and test at zero caps; D-05 before any nonzero cap. **Protected:** RLS and migrations (budget functions); production configuration (flags). **Material UI:** no (WP03-T06 already has the admin kill-switch actions). **Real money:** no; this task makes later spending safe.
+
+**Outputs:** a budget guard in `src/lib/usage/` that every real adapter call passes through; budget functions; tests.
+
+- [ ] Route every real adapter call through one guard: the provider flag and a nonzero approved budget must both hold (WP01-T03 rule); the guard reserves the maximum cost before the call and settles or releases it exactly once after (WP02-T07 functions).
+- [ ] Enforce caps at system total, weekly, provider/action and per source (§2.3); record 50/75/90% events (delivered once D-20 lands in WP08-T05); block new optional paid work atomically at 100%.
+- [ ] Add a kill switch per provider and per action that takes effect immediately for new reservations and claims; accepted jobs finish or park without corrupt state.
+- [ ] Preflight the maximum cost per source from duration and pages before the first paid step.
+- [ ] Record every call in `provider_calls`: provider, model/version, units, latency, attempts, result and cost in the WP00-T06 currency rule.
+- [ ] Test a cap exceeded mid-batch, concurrent reservations at the boundary, a kill switch during a long job, and an uncertain settlement.
+
+**Verify:** unit and `database-ci` tests; `pnpm verify` still makes zero paid calls.
+
+**Pass:** with zero caps no real adapter can make a call; with a synthetic nonzero cap, concurrent reservations never exceed it; every call has exactly one settlement.
+
+#### WP04-T14 — Benchmark and select the AI providers
+
+Moved here from WP09 because real OCR, transcription and embeddings need D-04 before WP04-T20 (findings A1).
+
+**Depends on:** WP04-T13, WP04-T12, WP00-T03 (benchmark samples), WP00-T05. **Decision gates:** D-05 (benchmark cap); this task resolves D-04. **Protected:** production configuration (provider secrets). **Material UI:** no. **Real money:** yes — stop for fresh two-founder confirmation naming the maximum benchmark spend.
+
+**Outputs:** `planning/provider-benchmark.csv` with results; an approved D-04 record; real adapters behind flags.
+
+- [?] D-05 benchmark cap approved and rights-cleared benchmark samples marked in WP00-T03. OWNER INPUT REQUIRED.
+- [ ] List candidates per capability: OCR, transcription with Arabic/English code-switching, embeddings for Arabic and English medical terms, generation for chat and Studio, and a model for the WP06-T01 validator if that ADR needs one. Record each candidate's data handling (retention, training use, region).
+- [ ] Run the same samples, prompts and settings; record quality (academic scoring for OCR and transcription samples), units, p50/p95, errors and retries, rate limits and cost in one currency and date; separate cold/warm and success/retry cost.
+- [ ] Treat quality, rights/data handling and reliability as gates before price; never select on advertised price.
+- [ ] Implement the selected real adapters behind their flags; they pass the WP01-T06 contract tests; credentials stay server/worker-only.
+- [ ] Write the D-04 record with fallback and disable strategy; update the master-plan log only after both founders approve.
+
+**Verify:** adapter contract tests; benchmark report; spend reconciled against the cap.
+
+**Pass:** D-04 is approved on numeric evidence; every selected adapter passes the shared contract tests; benchmark spend stayed inside the approved cap; `pnpm verify` still makes zero paid calls.
+
+#### WP04-T15 — Set the production embedding configuration and check capacity
+
+**Depends on:** WP04-T14, WP04-T10. **Decision gates:** D-04 (approved in WP04-T14). **Protected:** RLS and migrations. **Material UI:** no. **Real money:** stop if the capacity check shows a paid database tier is needed.
+
+**Outputs:** a forward migration for the real vector dimension and index, an `embedding_configs` version, a capacity report.
+
+- [ ] Replace the `vector(3)` placeholder columns and index through a forward migration with the chosen dimensions and distance operator; match the HNSW operator class; version the configuration; re-embed the synthetic fixtures.
+- [ ] Compare exact search with HNSW on the fixtures.
+- [ ] Estimate database size (segments per page and per audio minute from fixtures × the master plan §4.2 corpus for both cohorts × vector, index and text bytes) and processed-object storage; compare with the current Supabase Free allowances (§0.8), including monthly active users and pausing.
+- [ ] If any estimate exceeds an allowance, stop: a paid tier is a real-money decision (D-05, D-21 revisit) before WP04-T20.
+
+**Verify:** `database-ci` with the new migration; zero generated-type diff after regeneration; retrieval tests at the real dimension.
+
+**Pass:** retrieval tests pass at the real dimension; the capacity report states the headroom or names the money decision that must come first.
+
+#### WP04-T16 — Select object storage and approve retention values
+
+**Depends on:** WP04-T03, WP04-T15. **Decision gates:** D-19 (resolved through WP00-T04); this task resolves D-18. **Protected:** storage; production configuration. **Material UI:** no. **Real money:** yes if the provider or plan is paid.
+
+**Outputs:** an approved D-18 record; the real storage adapter; per-environment namespaces; an updated [raw-data policy](../policies/raw-data-lifecycle.md).
+
+- [?] D-19 real retention and deletion values approved through WP00-T04. OWNER INPUT REQUIRED.
+- [ ] Prepare D-18: write `docs/decisions/d-18-object-storage-provider.md` comparing candidates on private access, signed operations, deletion verification, durability/versioning, region, scanning support, Free-tier limits and cost.
+- [ ] Obtain Ahmed's and Ziad's approval of D-18 with the security/data role named (this step becomes `[?]` while it waits).
+- [ ] Implement the real adapter and namespaces per environment (Preview synthetic, Beta real) with public access denied and short-lived exact-object operations.
+- [ ] Prove the provider's deletion verification method (head, list or metadata) and its consistency behaviour (§7.6).
+- [ ] Choose and wire the malware/content scanner suitable for this provider.
+- [ ] Configure processed-object durability (versioning or backup) per policy; exclude raw objects beyond their window.
+- [ ] Replace the synthetic values in the raw-data policy with the approved D-19 values.
+
+**Verify:** the storage contract tests against the real provider in Preview with synthetic objects; deletion-verification tests; independent review.
+
+**Pass:** the contract tests pass against the real provider; deletion is verified independently; no public access path exists.
+
+#### WP04-T17 — Select and deploy the worker host
+
+D-15 forbids running workers on a founder computer, and real processing needs an always-on host (findings A3).
+
+**Depends on:** WP04-T12. **Decision gates:** none; this task resolves D-17. **Protected:** production configuration. **Material UI:** no. **Real money:** yes if the host is paid.
+
+**Outputs:** an approved D-17 record; deployed ingestion worker and scheduler in Preview and Beta.
+
+- [ ] Update the [D-17 record](../decisions/d-17-queue-worker-host.md) from the [hosting options discussion](../../planning/d-17-hosting-options-discussion.html) with measured job durations from WP04-T12: queue transport and worker host candidates, founder computers excluded, each with a zero-cost path or a named monthly exposure.
+- [ ] Obtain Ahmed's and Ziad's approval of D-17 (this step becomes `[?]` while it waits).
+- [ ] Deploy the ingestion worker and the reconciliation scheduler as always-on components in Preview and in locked Beta with separate secrets; the generation worker follows in WP06.
+- [ ] Workers claim from the PostgreSQL job table, heartbeat, shut down gracefully, expose a health check, and keep no business state outside PostgreSQL.
+- [ ] Prove operation with both founder computers off: a synthetic source submitted in Preview reaches `READY` on mocks.
+
+**Verify:** Preview run timeline; a worker killed mid-job recovers through its lease.
+
+**Pass:** the Preview pipeline runs unattended on external infrastructure; a killed worker's job is reclaimed; D-15 holds.
+
+#### WP04-T18 — Back up and restore Beta before it holds real data
+
+D-21 keeps Beta empty until an encrypted backup and restore passes; Supabase Free has no automatic backups.
+
+**Depends on:** WP04-T16. **Decision gates:** a restore target that may hold real data. **Protected:** production configuration. **Material UI:** no. **Real money:** yes if the backup store or target is paid.
+
+**Outputs:** a backup and restore procedure under `docs/runbooks/`; a timed rehearsal report.
+
+- [ ] Propose the restore-rehearsal target allowed to hold real data. Preview (synthetic only) and the public repository's CI runner are not acceptable. If no free target exists, prepare a D-21 revisit; a paid option is a money stop.
+- [ ] Obtain Ahmed's and Ziad's approval of the target (this step becomes `[?]` while it waits).
+- [ ] Schedule an encrypted logical database backup of Beta from external infrastructure, with key management and retention.
+- [ ] Back up or version processed objects per WP04-T16.
+- [ ] Handle Free-plan pausing with a keep-alive or a documented resume step (D-21).
+- [ ] Rehearse: restore database and processed objects into the named target, verify row counts and referential checks for catalog, access, sources, documents, segments, evidence, artifacts, usage, jobs and audit, rebuild embeddings if they are not backed up, and confirm no expired raw object returns.
+
+**Verify:** the rehearsal report with timings and counts.
+
+**Pass:** a timed restore of a synthetic-populated Beta succeeds with verified counts; the procedure is committed; D-21's real-data condition for Beta is met.
+
+#### WP04-T19 — Pass the real-data readiness gate
+
+**Depends on:** WP04-T12 to WP04-T18, WP03-T34, WP03-T36. **Decision gates:** D-01 catalog codes, D-04, D-05, D-10, D-17, D-18, D-19 approved; eligible WP00-T03 rows. **Protected:** yes — rights and raw deletion are D-22 protected actions. **Material UI:** no. **Real money:** no new spend.
+
+**Outputs:** `evidence/wp04-ingestion/<date>_real-data-readiness_beta_<sha>.md`.
+
+- [ ] Confirm every listed decision is approved and linked; every Cohort A row to be uploaded is eligible.
+- [ ] Confirm the Beta backup rehearsal (WP04-T18), the worker host (WP04-T17), the budget guard with approved caps and tested kill switches (WP04-T13), and the storage provider (WP04-T16).
+- [ ] Write minimum incident runbooks before real data: deletion failure, leakage suspicion, rights takedown and leaked secret (WP08-T07 completes the set).
+- [ ] Configure the Cohort A catalog in Beta through WP03-T34 actions; keep Beta closed to students (no memberships).
+- [ ] Record the security/data role's sign-off and D-22 authorization for the first real upload.
+
+**Verify:** the gate report checklist against linked evidence.
+
+**Pass:** a reviewer can confirm from the report alone that the first real upload is allowed, contained and reversible.
+
+#### WP04-T20 — Collect and process the Cohort A corpus
+
+The Human Medicine corpus had no collection task (findings B4). This is the real half of the WP04 gate (master plan Phase 2).
+
+**Depends on:** WP04-T19, WP03-T36. **Decision gates:** none beyond WP04-T19. **Protected:** storage; raw deletion. **Material UI:** no. **Real money:** yes, inside the approved caps through the budget guard; a cap increase needs fresh two-founder confirmation.
+
+**Outputs:** READY Cohort A sources in Beta; `evidence/wp04-ingestion/<date>_cohort-a-corpus_beta_<sha>.md`.
+
+- [ ] An admin creates the Cohort A campaigns; the Batch Leader submits the inventoried sources; target 8–12 units, 15–25 documents and 3–5 hours of audio (master plan §4.2).
+- [ ] The pipeline runs on the real providers with no manual database step; every source reaches `READY` or isolation with a machine-readable reason.
+- [ ] The academic reviewer spot-checks processed text, transcripts and hint tags per unit using the WP00-T20 rubric and sample size.
+- [ ] Report storage reduction, cost per source and verified raw deletions.
+
+**Verify:** job event timelines per source; the quality, deletion and cost reports.
+
+**Pass:** at least 95% of valid sources reach `READY` without exceptional intervention and the rest are isolated with reasons; 100% of required pages and audio are accounted for or rejected; 100% of accepted raw objects are deleted and verified, with zero premature deletions; spend stays inside the cap.
 
 ### 7.1 Job graph
 
-Create one workflow per source version with explicit jobs:
+One workflow per source version:
 
 `VALIDATE -> STORE/CONFIRM_RAW -> INSPECT -> EXTRACT_OR_TRANSCRIBE -> NORMALIZE -> VERIFY_PROCESSED -> DELETE_RAW -> CHUNK -> EMBED -> INDEX_CHECK -> MARK_READY`
 
-Optional branches:
-
-- `OCR_PAGE_RANGE` from extraction for low-text pages.
-- `TAG_PROFESSOR_INSIGHTS` after normalization for audio/professor material.
-- `NEEDS_REVIEW` as a terminal exceptional state when automatic acceptance thresholds fail.
-
-Use states `PENDING`, `RUNNING`, `RETRY_WAIT`, `SUCCEEDED`, `FAILED`, and `CANCELLED`. Validate transitions in one shared service/database function.
+Optional branches: `OCR_PAGE_RANGE` from extraction for low-text pages; `TAG_PROFESSOR_INSIGHTS` after normalization; `NEEDS_REVIEW` as a terminal exceptional state when automatic thresholds fail. Job states are `PENDING`, `RUNNING`, `RETRY_WAIT`, `SUCCEEDED`, `FAILED` and `CANCELLED`, validated in one shared database function.
 
 ### 7.2 Claiming and retry rules
 
-- Claim jobs atomically using `FOR UPDATE SKIP LOCKED` or the selected durable queue's equivalent.
-- Set `lease_owner`, `lease_expires_at`, and attempt record before work.
-- Heartbeat long transcription/OCR jobs.
-- Reclaim expired leases automatically.
-- Retry network/timeouts/rate limits with bounded exponential backoff and jitter.
-- Treat unsupported/corrupt files, denied rights, and impossible quality checks as terminal until source/admin correction.
-- Check for an existing successful output by idempotency key/content hash before every provider call.
-- Store provider request IDs and reconcile uncertain timeouts before paying for a repeat call where the provider permits it.
+- Claim atomically with `FOR UPDATE SKIP LOCKED` or the selected queue's equivalent; set `lease_owner`, `lease_expires_at` and the attempt record before work.
+- Heartbeat long OCR and transcription jobs; reclaim expired leases automatically.
+- Retry network errors, timeouts and rate limits with bounded exponential backoff and jitter.
+- Treat unsupported or corrupt files, denied rights and impossible quality checks as terminal until a source or admin correction.
+- Check for an existing successful output by idempotency key and content hash before every provider call.
+- Store provider request IDs and reconcile an uncertain timeout before paying for a repeat call where the provider allows it.
 
-### 7.3 PDF/book processing
+### 7.3 PDF and book processing
 
-1. Validate MIME from file content, not filename alone.
-2. Reject encrypted/password-protected or unsupported files with an actionable status.
-3. Record page count and file checksum.
-4. Extract native text page by page.
-5. Calculate text density and extraction anomalies per page.
-6. Route only low-text/garbled pages to OCR.
-7. Preserve heading hierarchy, lists, table meaning, equations, captions, and diagram descriptions when recoverable.
-8. Normalize repeated headers/footers and broken hyphenation without changing meaning.
-9. Write Markdown/equivalent and locator sidecar incrementally to temporary processed output.
-10. Verify every page is represented, explicitly blank, or rejected with a reason.
-11. Finalize the processed object atomically and checksum it.
+1. Validate type from file content, not the filename.
+2. Reject encrypted or unsupported files with an actionable status.
+3. Record page count and checksum.
+4. Extract native text page by page and calculate text density and anomalies per page.
+5. Route only low-text or garbled pages to OCR.
+6. Preserve heading hierarchy, lists, table meaning, equations, captions and recoverable diagram descriptions.
+7. Normalize repeated headers/footers and broken hyphenation without changing meaning.
+8. Write Markdown (or the D-10 equivalent) and the locator sidecar incrementally to temporary processed output.
+9. Verify every page is represented, explicitly blank or rejected with a reason; finalize atomically and checksum.
 
-Do not delete diagrams/tables merely to reduce bytes. If their meaning cannot be converted automatically, mark the source or page for exception review instead of claiming complete processing.
+Never drop diagrams or tables to save bytes. When their meaning cannot be converted automatically, mark the page or source for exception review instead of claiming complete processing.
 
-### 7.4 Audio and professor voice-note processing
+### 7.4 Audio and professor voice notes
 
-1. Inspect codec, duration, channels, sample rate, and corruption.
-2. Reject over-limit duration before provider cost is incurred.
-3. Normalize audio temporarily only if required by the transcription provider.
-4. Transcribe the entire duration, using chunks with overlap if required.
-5. Merge chunks without duplicate or missing boundary text.
-6. Preserve timestamp ranges and confidence.
-7. Detect English/Arabic mixing and preserve technical terms.
-8. Run a terminology check against configured unit vocabulary.
-9. Tag professor hints, exam emphasis, corrections, exclusions, and likely questions with segment/time evidence.
-10. Do not transform a hint into a guarantee.
-11. Verify accounted audio duration against original duration within the approved tolerance.
-12. Persist transcript Markdown/JSON and delete every temporary normalized chunk after finalization.
+1. Inspect codec, duration, channels, sample rate and corruption; reject over-limit duration before cost.
+2. Normalize audio temporarily only when the transcription provider needs it.
+3. Transcribe the entire duration, in overlapping chunks if needed, and merge without duplicate or missing boundary text.
+4. Keep timestamp ranges and confidence; detect English/Arabic mixing and keep technical terms.
+5. Check terminology against the unit's configured vocabulary.
+6. Tag professor hints, exam emphasis, corrections, exclusions and likely questions with segment and time evidence; never turn a hint into a guarantee.
+7. Verify accounted duration against the original within the §2.3 tolerance.
+8. Persist the transcript and delete every temporary chunk after finalization.
 
 ### 7.5 Processed-output verification
 
-Require all applicable checks:
-
-- Processed object exists and is readable.
-- Checksum matches the finalized record.
-- Page/audio coverage meets policy.
-- Non-empty content threshold passes.
-- Locator ranges are valid and within content/page/duration bounds.
-- Representative terminology sample passes or is explicitly flagged.
-- No accidental secret/patient identifier is surfaced in diagnostics.
-- No duplicate final processed document exists.
-- Quality report is persisted.
-
-Only a passing or policy-approved report can enqueue raw deletion.
+All applicable checks pass before raw deletion can be enqueued: the processed object exists and is readable; its checksum matches; page/audio coverage meets policy; the non-empty threshold passes; locator ranges are within bounds; the terminology sample passes or is flagged; no secret or patient identifier appears in diagnostics; no duplicate final processed document exists; the quality report is persisted.
 
 ### 7.6 Raw deletion
 
-1. Lock the raw-object row and verify processed acceptance again.
-2. Verify no active legal/rights hold.
-3. Request deletion using the exact stored provider/object key.
-4. Query provider metadata/listing to verify absence.
-5. Append deletion attempt/result/verification event.
-6. Clear unusable access URL fields while retaining provider, former key fingerprint, checksum, size, and timestamps needed for audit.
-7. Mark `DELETED_VERIFIED` only after absence is confirmed.
-8. Retry automatically when deletion or verification is uncertain.
-9. Open a high-priority incident when the deletion deadline is exceeded.
-
-Never report a source as fully optimized while raw status is unresolved.
+1. Lock the raw-object row and re-verify processed acceptance and the absence of a hold.
+2. Request deletion with the exact stored provider key.
+3. Verify absence through provider metadata or listing.
+4. Append the attempt, result and verification event.
+5. Clear unusable access URL fields; keep provider, former key fingerprint, checksum, size and timestamps.
+6. Mark `DELETED_VERIFIED` only after absence is confirmed; retry automatically when deletion or verification is uncertain.
+7. Open a high-priority incident when the deadline passes. Never report a source as fully optimized while raw status is unresolved.
 
 ### 7.7 Chunking and embeddings
 
-- Chunk by headings and semantic units, with controlled overlap only where context requires it.
-- Keep chunks within the benchmarked token range; record token count.
-- Keep tables, definitions, question/answer blocks, and professor-hint statements coherent.
-- Hash normalized content and deduplicate within the source/unit without erasing legitimate repeated context.
-- Generate embeddings in batches.
-- Record embedding config/version and dimensions.
-- Never mix embeddings from incompatible models in one vector comparison.
-- Re-embed only when segment content or embedding configuration changes.
-- Index source-format and professor-hint metadata alongside the unified pool.
+Chunk by headings and semantic units with controlled overlap only where context needs it; keep chunks within the configured token range; keep tables, definitions, question/answer blocks and professor statements coherent; de-duplicate within the source and unit without erasing legitimate repetition; embed in batches; record configuration, version and dimensions; never compare vectors from incompatible models; re-embed only when content or configuration changes; index source-format and professor-hint metadata alongside the unified pool.
 
-### 7.8 Automatic readiness decision
+### 7.8 Readiness decision
 
-Mark `READY` only if:
+Mark `READY` only if: rights permit student use; processed verification passed; raw deletion is verified or an approved hold exists; required segments exist; every active segment has the current embedding configuration; the retrieval smoke test returns the expected known terms; and no blocker-level quality issue exists. Publishing and cohort unlock stay separate governance actions.
 
-- Rights permit student use.
-- Processed verification passes.
-- Raw deletion is verified or an explicitly approved hold exists.
-- Required segments exist.
-- All active segments have the current embedding configuration.
-- Retrieval smoke test returns expected known terms.
-- No blocker-level quality issue exists.
+### 7.9 Fault and idempotency properties
 
-Publishing and cohort unlock remain separate admin governance controls.
-
-### 7.9 Fault and idempotency tests
-
-Inject failure after each job step and rerun the workflow. Prove:
-
-- One source version and one finalized processed document exist.
-- Raw data is never deleted before processing verification.
-- Deletion retry does not affect processed data.
-- Segment/embedding counts remain stable after replay.
-- Provider calls are not repeated when a completed result is known.
-- Expired leases are recovered without parallel double finalization.
-- A terminal bad source does not stop other sources.
-- Reconciliation moves stale but recoverable work forward automatically.
-
-### 7.10 Exit evidence
-
-- End-to-end timelines for native PDF, scanned PDF, normal audio, mixed-language professor audio, duplicate upload, corrupt file, provider timeout, and deletion failure.
-- Per-source quality and storage-reduction report.
-- Verified raw deletion events.
-- Professor-hint tags linked to transcript segments.
-- Zero routine manual processing actions in the accepted path.
+After a failure at any step and a rerun: one source version and one finalized processed document exist; raw data is never deleted before verification; deletion retries never touch processed data; segment and embedding counts stay stable; no provider call repeats when a completed result is known; expired leases recover without double finalization; a terminal bad source does not stop other sources; reconciliation moves stale recoverable work forward.
 
 ## 8. Work package 5: Retrieval evaluation before chat
 
-**Outcome:** authorized hybrid retrieval and deterministic evidence classification meet frozen quality, leakage, latency, and cost gates before any generative chat is enabled.
+**Outcome:** authorized hybrid retrieval and deterministic evidence classification meet frozen quality, leakage, latency and cost gates on the real Cohort A corpus before any generative chat is enabled.
 
-### 8.0 Tutorial procedure
+**Primary artifacts:** `src/lib/rag/`, retrieval functions in `supabase/migrations/`, `evals/runners/`, `evals/reports/` and `evidence/wp05-retrieval/`.
+
+### 8.0 Tasks
 
 #### WP05-T01 — Build the evaluation runner first
 
-- [ ] Load the frozen manifest/JSONL, validate hashes/schema/counts, and refuse an unreviewed or modified dataset.
-- [ ] Reset/seed the exact source scope referenced by the suite and record active source/embedding/chunking versions.
-- [ ] Execute cases deterministically where possible and store case-level JSONL plus aggregate Markdown/JSON.
-- [ ] Record returned IDs, component scores, classification reasons, authorization scope, latency, provider units, config, and correlation ID.
-- [ ] Calculate recall@k, MRR, class confusion matrix, conflict/hint metrics, leakage count, p50/p95, and cost.
+**Depends on:** WP00-T05, WP04-T12. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
+
+- [ ] Load the frozen manifest and JSONL, validate hashes, schema and counts, and refuse an unreviewed or modified dataset.
+- [ ] Reset and seed the exact source scope the suite references; record the active source, embedding and chunking versions.
+- [ ] Run cases deterministically where possible; store case-level JSONL plus aggregate Markdown and JSON.
+- [ ] Record returned IDs, component scores, classification reasons, authorization scope, latency, provider units, configuration and correlation ID per case (§8.4).
+- [ ] Calculate recall@k, MRR, the class confusion matrix, conflict and hint metrics, leakage count, p50/p95 and cost.
+
+**Verify:** `pnpm test:eval` on the synthetic suite; a modified dataset is refused.
+
+**Pass:** the runner reproduces identical results on two runs of the synthetic suite and refuses tampered input.
 
 #### WP05-T02 — Implement query normalization as an auditable step
 
-- [ ] Preserve original query and create a separate normalized/search form.
-- [ ] Normalize Unicode, Arabic letter/diacritic variants, whitespace, and configured spelling aliases conservatively.
+**Depends on:** WP05-T01. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
+
+- [ ] Keep the original query and create a separate normalized search form.
+- [ ] Normalize Unicode, Arabic letter and diacritic variants, whitespace and configured spelling aliases conservatively.
 - [ ] Preserve English medical/veterinary terms and numbers.
-- [ ] Add tests proving normalization does not change intended entities or broaden scope.
+- [ ] Test that normalization never changes intended entities or broadens scope.
+
+**Verify:** normalization unit tests in Arabic, English and mixed text.
+
+**Pass:** every normalization fixture keeps its entities and numbers; the original query is always retained.
 
 #### WP05-T03 — Implement filtered hybrid retrieval
 
-- [ ] Revalidate user/session/cohort/unit before embedding or query execution.
-- [ ] Run keyword/full-text and vector branches concurrently with identical active-scope filters applied inside each branch before limit.
-- [ ] Order the vector branch by its distance expression so the chosen index can be used.
-- [ ] Merge by segment ID using a versioned fusion formula; retain raw component scores for evaluation.
-- [ ] Remove near-duplicates, diversify sources, preserve adjacent context only when justified, and boost tagged evidence only for a matching intent.
-- [ ] Enforce maximum results/evidence tokens and redact internal diagnostics from student responses.
+**Depends on:** WP05-T02, WP04-T10. **Decision gates:** none. **Protected:** RLS and migrations (retrieval function changes). **Material UI:** no. **Real money:** query embeddings through the budget guard once real (WP04-T15).
+
+- [ ] Revalidate user, session, cohort and unit before embedding or querying (§8.1).
+- [ ] Run full-text and vector branches concurrently with identical active-scope filters applied inside each branch before the limit (§8.2).
+- [ ] Order the vector branch by its distance expression so the index is used.
+- [ ] Merge by segment ID with a versioned fusion formula; keep raw component scores for evaluation.
+- [ ] Remove near-duplicates, diversify sources, keep adjacent context only when justified, and boost tagged evidence only for a matching intent.
+- [ ] Enforce maximum results and evidence tokens; keep internal diagnostics out of student responses.
+
+**Verify:** `database-ci` retrieval and plan tests; runner on the synthetic suite; independent review.
+
+**Pass:** retrieval returns only active authorized segments with the intended query plan; component scores are recorded for every case.
 
 #### WP05-T04 — Calibrate evidence classification without generation
 
-- [ ] Implement supported/partial/unavailable/conflict signals and reason codes as versioned code/config.
-- [ ] Tune thresholds only on a calibration split; report final metrics on a held-out split.
-- [ ] Require coverage of each requested part, not merely one high vector score.
-- [ ] Detect known annotated conflict and return both evidence groups.
+**Depends on:** WP05-T03. **Decision gates:** none; a model-based conflict check needs D-04 and the budget guard. **Protected:** none. **Material UI:** no. **Real money:** only if the chosen conflict method calls a model.
+
+- [ ] Implement supported, partial, unavailable and conflict signals with reason codes as versioned code and configuration (§8.3).
+- [ ] Decide and record in an ADR how conflicts are found at query time: annotated conflict pairs, contradiction signals between retrieved segments, a model check, or a combination; include cost per query and failure behaviour.
+- [ ] Tune thresholds only on a calibration split; report final numbers on a held-out split.
+- [ ] Require coverage of each requested part, not one high vector score.
+- [ ] Return both evidence groups for a detected conflict.
 - [ ] Prohibit any later generator from upgrading `UNAVAILABLE` or filling missing `PARTIAL` points.
+
+**Verify:** runner on calibration and held-out splits.
+
+**Pass:** classification metrics on the held-out split are reported; the conflict method and its cost are recorded.
 
 #### WP05-T05 — Prove isolation before ranking quality
 
-- [ ] Add canary segments to other user/cohort/unit/program, inactive source, old curriculum edition, and revoked-rights scope.
-- [ ] Run direct function, server service, and HTTP/API attempts with forged filters.
-- [ ] Fail the entire gate on one cross-scope result even if ranking metrics are excellent.
+**Depends on:** WP05-T03. **Decision gates:** none. **Protected:** RLS. **Material UI:** no. **Real money:** no.
+
+- [ ] Add canary segments to other users, cohorts, units and programs, inactive sources, an old curriculum edition and revoked-rights scope.
+- [ ] Attack through the database function, the server service and HTTP with forged filters.
+- [ ] Fail the whole gate on one cross-scope result, whatever the ranking metrics say.
+
+**Verify:** security suite and `database-ci`.
+
+**Pass:** zero cross-scope results across every path.
 
 #### WP05-T06 — Establish and approve the baseline
 
-- [ ] Run exact vector search and candidate HNSW settings on the same dataset.
-- [ ] Inspect false negatives, false positives, Arabic/English misses, hint misses, conflict misses, and slow queries case by case.
-- [ ] Change one retrieval variable at a time and record before/after metrics.
-- [ ] Freeze the accepted config with version and dataset hash.
-- [ ] Reviewer approves numeric gates; “reasonable results” is not a gate.
+**Depends on:** WP05-T04, WP05-T05, WP04-T20, WP00-T20. **Decision gates:** none beyond the signed suite. **Protected:** none. **Material UI:** no. **Real money:** yes, query embeddings inside the approved caps.
+
+- [ ] Run exact vector search and candidate HNSW settings on the real Cohort A suite.
+- [ ] Inspect false negatives, false positives, Arabic/English misses, hint misses, conflict misses and slow queries case by case.
+- [ ] Change one retrieval variable at a time and record before/after numbers.
+- [ ] Freeze the accepted configuration with its version and the dataset hash.
+- [ ] The reviewer approves numeric targets for recall@k and MRR and the retrieval latency budget (derived from the chat first-token target); "reasonable results" is not a target.
+- [ ] Make this suite a required step before any retrieval, chunking or embedding change is promoted to Beta (implementation rule 18).
+
+**Verify:** the runner report `evidence/wp05-retrieval/<date>_retrieval-baseline_beta_<sha>.md`.
+
+**Pass:** zero unauthorized retrieval; at least 95% correct unavailable classification; 100% of known conflicts return both positions' evidence; at least 95% of direct professor-hint cases retrieve the tagged evidence; the approved recall, MRR and latency targets are met; cost fits the 100-student plan.
 
 ### 8.1 Authorized retrieval interface
 
-Define one server-only interface accepting authenticated user ID, cohort ID, curriculum-unit ID, normalized query, optional topic filter, result limit, and correlation ID. It returns segment ID, source-version ID, source title/format, content, score components, heading path, reliable locator if present, and tags.
-
-It must revalidate availability and membership. Do not expose unrestricted vector or full-text queries to the client.
+One server-only interface takes the authenticated user ID, cohort ID, unit ID, normalized query, optional topic filter, result limit and correlation ID. It returns segment ID, source-version ID, source title and format, content, score components, heading path, a reliable locator when present, and tags. It revalidates availability and membership. No unrestricted vector or full-text query is exposed to the client.
 
 ### 8.2 Hybrid retrieval sequence
 
 1. Validate access and active source versions.
-2. Normalize Arabic/English spelling variants without replacing the original query.
-3. Create query embedding using the active configuration.
-4. Run vector and PostgreSQL full-text/keyword searches concurrently.
-5. Apply authorization and source-status filters inside each query before limiting results.
-6. Merge by segment ID and normalize scores.
-7. Remove near-duplicates.
-8. Rerank using semantic score, keyword match, heading match, source diversity, and direct professor-hint match when the question asks about professor/exam emphasis.
-9. Limit excessive evidence from one source while preserving necessary continuity.
-10. Return a compact evidence set and retrieval diagnostics.
+2. Normalize Arabic/English variants without replacing the original query.
+3. Embed the query with the active configuration.
+4. Run vector and full-text searches concurrently, each filtering by authorization and source status before its limit.
+5. Merge by segment ID and normalize scores; remove near-duplicates.
+6. Rerank by semantic score, keyword match, heading match, source diversity and a direct professor-hint match when the question asks about professor or exam emphasis.
+7. Cap evidence from one source while keeping needed continuity; return a compact evidence set and diagnostics.
 
-### 8.3 Evidence classification
+### 8.3 Evidence classification signals
 
-Implement deterministic signals for:
+Direct topic/heading match; required-term coverage; multi-part coverage; number of independent non-duplicate segments; score threshold and gap; known or detected contradiction; missing requested entity or topic. The result is `SUPPORTED`, `PARTIAL`, `UNAVAILABLE` or `CONFLICT` with reasons. The generator may never upgrade `UNAVAILABLE`.
 
-- Direct topic/heading match.
-- Required term coverage.
-- Multi-part question coverage.
-- Number of independent non-duplicate segments.
-- Score threshold and gap.
-- Known/semantic contradiction.
-- Missing requested entity/topic.
+### 8.4 Evaluation record per case
 
-Return `SUPPORTED`, `PARTIAL`, `UNAVAILABLE`, or `CONFLICT` plus reasons. The generator may not upgrade `UNAVAILABLE` to supported using its own knowledge.
-
-### 8.4 Retrieval evaluation runner
-
-For each frozen case record:
-
-- Authorized scope and active source versions.
-- Returned segment/source IDs and score components.
-- Expected evidence hit/miss.
-- Cross-scope result count.
-- Professor-hint tag hit when required.
-- Evidence classification result.
-- Latency and embedding/provider cost.
-
-Report recall@k, mean reciprocal rank, unavailable-classification accuracy, conflict detection, professor-hint retrieval, leakage count, p50/p95 latency, and cost.
-
-### 8.5 Exit evidence
-
-- Zero unauthorized segment retrieval.
-- Approved recall/ranking baseline on supported cases.
-- At least 95% correct unavailable behavior at the retrieval-contract level.
-- Known conflict cases return both positions' evidence.
-- At least 95% of direct professor-hint cases retrieve the tagged evidence.
-- Retrieval latency/cost fit the 100-student plan.
+Authorized scope and active source versions; returned segment and source IDs with score components; expected evidence hit or miss; cross-scope result count; professor-hint tag hit when required; classification result; latency and embedding/provider cost.
 
 ## 9. Work package 6: Strict-RAG subject chat
 
-**Outcome:** the student receives a streamed, source-grounded answer or an explicit partial/unavailable/conflict/safety result; an invalid factual draft is never committed or displayed as accepted.
+**Outcome:** in the real Chat screen, the student receives a streamed, source-grounded answer or an explicit partial, unavailable, conflict or safety result; an invalid factual draft is never committed or shown as accepted.
 
-### 9.0 Tutorial procedure
+**Primary artifacts:** `src/lib/rag/`, `src/lib/safety/`, `src/lib/usage/`, the chat Route Handler, `workers/generation/`, the shared Chat screen, and `evidence/wp06-chat/`.
+
+### 9.0 Tasks
 
 #### WP06-T01 — Freeze contracts and policy versions
 
-- [ ] Define Zod schemas for request, retrieval packet, generator draft, validated answer, stream events, persisted message, and error response.
-- [ ] Version tutor policy, safety classifier, evidence classifier, prompt template, claim validator, and model configuration independently.
-- [ ] Define standard Arabic/English copy for unavailable, partial, conflict, budget/quota, provider outage, and real-patient boundary states.
-- [ ] Add contract fixtures for every result type and malformed model output.
+**Depends on:** WP05-T06. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** yes if the validator measurement calls a model, inside caps.
+
+**Outputs:** Zod schemas; versioned policy files; the claim-validator ADR with its measurement.
+
+- [ ] Define Zod schemas for the request, retrieval packet, generator draft, validated answer, stream events, persisted message and error response (§9.4).
+- [ ] Version the tutor policy, safety classifier, evidence classifier, prompt template, claim validator and model configuration independently.
+- [ ] Write standard Arabic/English copy for unavailable, partial, conflict, allowance/capacity, provider outage and real-patient boundary states.
+- [ ] Choose the claim-validation method in an ADR (deterministic overlap, an entailment model, a model judge, or a combination) and measure it on the WP00-T20 labeled claim set: report how often it accepts an unsupported claim and rejects a supported one, and its cost and latency per answer. The target is zero accepted unsupported claims on the labeled set; any miss is a recorded risk that the WP06-T08 academic review must cover.
+- [ ] Add contract fixtures for every result type and for malformed model output.
+
+**Verify:** contract tests; the validator measurement report.
+
+**Pass:** every result type has a schema and fixture; the validator's false-accept and false-reject rates, cost and latency are recorded in the ADR, with any false accept named as a risk for WP06-T08.
 
 #### WP06-T02 — Implement the transactional request envelope
 
-- [ ] Accept session ID, message, language, and client request ID only; derive user/cohort/unit from authenticated session rows.
-- [ ] Validate size, session state, membership, availability, rate/concurrency limits, and budget.
-- [ ] Reserve usage atomically before paid work using a unique action idempotency key.
-- [ ] On a replay, return/continue the canonical prior request rather than creating another message/call/reservation.
-- [ ] Settle actual usage exactly once or release/expire it on every failure/cancellation path.
+**Depends on:** WP06-T01, WP04-T13. **Decision gates:** per-student allowance values (WP00-T06). **Protected:** RLS and migrations. **Material UI:** no (the allowance display is wired in WP06-T05). **Real money:** no.
+
+- [ ] Accept only session ID, message, language and client request ID; derive user, cohort and unit from authenticated session rows (§9.1).
+- [ ] Validate size, session state, membership, availability, rate and concurrency limits, and budget.
+- [ ] Enforce the per-student daily allowance and expose a safe allowance/capacity state the UI can show (master plan §7.1 step 11).
+- [ ] Reserve usage atomically before paid work with a unique action idempotency key.
+- [ ] Return or continue the canonical prior request on replay instead of creating another message, call or reservation.
+- [ ] Settle actual usage exactly once, or release/expire it on every failure and cancellation path.
+
+**Verify:** unit and `database-ci` tests including concurrent duplicate submissions.
+
+**Pass:** a replayed request creates nothing new; every path ends with exactly one settlement or release; allowance and rate limits hold under concurrency.
 
 #### WP06-T03 — Classify context and protect private content
 
-- [ ] Distinguish course/educational cases from explicit real-patient/personal-care requests using frozen fixtures and versioned policy.
-- [ ] Detect personal identifiers and apply retention/logging rules before diagnostic logging.
-- [ ] Keep ordinary question/source content out of infrastructure logs; use IDs, categories, sizes, hashes, and safe reason codes.
-- [ ] Test Arabic, English, mixed language, adversarial wording, and prompt injection embedded in retrieved sources.
+**Depends on:** WP06-T01. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** yes if classification calls a model, inside caps.
+
+- [ ] Distinguish educational cases from explicit real-patient or personal-care requests with frozen fixtures and a versioned policy (§9.7).
+- [ ] Detect personal identifiers, warn the student not to share them, and apply retention and logging rules before any diagnostic log.
+- [ ] Keep question and source content out of infrastructure logs; log IDs, categories, sizes, hashes and safe reason codes.
+- [ ] Test Arabic, English, mixed language, adversarial wording and prompt injection inside retrieved sources.
+
+**Verify:** classifier fixture suite.
+
+**Pass:** fixture results meet the WP06-T08 thresholds; no log contains question or source text.
 
 #### WP06-T04 — Build evidence packets, not free-form prompts
 
-- [ ] Include only authorized active segments, stable packet-local evidence IDs, source labels, locators when verified, tags, and explicit missing/conflict groups.
+**Depends on:** WP06-T01. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
+
+- [ ] Include only authorized active segments, stable packet-local evidence IDs, source labels, verified locators, tags, and explicit missing and conflict groups.
 - [ ] Delimit evidence as untrusted quoted data and state that instructions inside it are not commands.
-- [ ] Enforce packet token/segment limits while retaining coverage and conflict positions.
+- [ ] Enforce packet segment and token limits (§2.3) while keeping coverage and conflict positions.
 - [ ] Skip factual generation entirely for `UNAVAILABLE`.
+
+**Verify:** packet builder tests including injection fixtures.
+
+**Pass:** no packet holds an unauthorized or inactive segment; `UNAVAILABLE` never reaches the generator.
 
 #### WP06-T05 — Stream without leaking an invalid final answer
 
-- [ ] Separate draft stream state from accepted answer state.
-- [ ] Do not persist answer evidence or mark a message complete until structured output and claims pass validation.
-- [ ] Choose and document one safe UI strategy: buffer factual sentences until validated, stream clearly marked provisional text with the ability to replace it, or generate validated structured sections before release.
-- [ ] On client disconnect, continue/cancel according to policy and settle exactly once.
-- [ ] On model/provider error, emit a controlled terminal event without raw provider diagnostics.
+**Depends on:** WP06-T02 to WP06-T04, WP04-T17. **Decision gates:** none. **Protected:** none. **Material UI:** yes — the real Chat screen, its streaming, evidence, report and allowance states, and the Materials source list. **Real money:** yes, generation inside caps.
+
+**Outputs:** the chat Route Handler and generation worker; the real Chat and Materials screens through the WP03-T17 adapter seam.
+
+- [ ] Separate draft stream state from accepted answer state; persist no evidence and mark no message complete until structured output and claims pass validation.
+- [ ] Choose and record one safe display strategy: buffer factual sentences until validated, stream clearly provisional text that can be replaced, or release validated structured sections. Measure first-token p50/p95 with validation in place on the Cohort A corpus against the 5 s / 12 s targets before building the rest.
+- [ ] On client disconnect, continue or cancel according to policy and settle exactly once; on provider error, emit a controlled terminal event without raw provider diagnostics.
+- [ ] Connect the shared Chat screen to the real backend through the WP03-T17 seam: remove the disabled notice in real mode, show source titles, formats and verified locators, the report action and the allowance state. Keep the synthetic runtime on the same screen.
+- [ ] Add the authorized source-list function so Materials shows title and format (not only count and freshness) when allowed.
+
+**Verify:** stream fault tests; `pnpm test:e2e` and `pnpm test:e2e:demo`; latency measurement report; frontend floor; founder review of the rendered candidate.
+
+**Pass:** an invalid draft is never displayed as accepted; measured first-token latency is reported against the target; the real and synthetic Chat render the same components; `Approved commit:` recorded.
 
 #### WP06-T06 — Validate every accepted factual component
 
-- [ ] Reject packet-unknown evidence IDs, wrong scope/version/state, invented quotes/locators/titles, and unsupported sentences.
+**Depends on:** WP06-T05. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** yes if the validator calls a model, inside caps.
+
+- [ ] Reject packet-unknown evidence IDs, wrong scope, version or state, invented quotes, locators or titles, and unsupported sentences (§9.5).
 - [ ] Validate missing-point and conflict structures separately.
-- [ ] Require professor labels to map to tagged spans.
-- [ ] Return a grounded fallback or unavailable result on validation failure; never merely strip citations from unsupported text.
-- [ ] Persist final answer and evidence links in one transaction.
+- [ ] Require every professor label to map to a tagged span.
+- [ ] Return a grounded fallback or unavailable result on failure; never only strip citations from unsupported text.
+- [ ] Persist the final answer and its evidence links in one transaction.
+
+**Verify:** validator fixtures including invented locators and cross-scope IDs.
+
+**Pass:** every invalid fixture is rejected or replaced by a fallback; accepted answers always have evidence links.
 
 #### WP06-T07 — Implement retention and reporting lifecycle
 
-- [ ] For `NO_SAVE`, delete content after the approved technical window while retaining only minimal non-content security/usage data.
-- [ ] For saved sessions, implement owner list/read/delete/retention behavior, default audited founder visibility, and a time-effective student private/no-sharing preference.
-- [ ] For reporting, consent, or an approved automated misuse-policy flag, snapshot only the permitted exchange, policy/model/source versions, evidence, reason, and review expiry.
-- [ ] When private/no-sharing mode is active, restrict admin review to reported, consented, or qualifying automatically flagged cases; audit every access to chat content in all modes.
-- [ ] Test deletion, expiry, report-before-expiry, consent withdrawal behavior, and backup implications.
+**Depends on:** WP06-T06. **Decision gates:** D-08 (and D-19 for real values). **Protected:** RLS and migrations. **Material UI:** yes — the private/no-sharing control in Settings and the report flow. **Real money:** no.
+
+- [?] D-08 approved, including the misuse-detection categories and thresholds and the review window. OWNER INPUT REQUIRED.
+- [ ] `NO_SAVE`: delete content after the approved technical window, keeping only minimal non-content security and usage data.
+- [ ] Saved sessions: owner list, read and delete; default audited founder visibility with clear student disclosure; a time-effective private/no-sharing preference in Settings.
+- [ ] Reports, consent or an approved automated misuse flag snapshot only the permitted exchange with policy, model and source versions, evidence, reason and review expiry.
+- [ ] Under private mode, admin review reaches only reported, consented or qualifying flagged cases; every access to chat content is audited in every mode.
+- [ ] Implement automated misuse detection only with the approved versioned categories and thresholds.
+- [ ] Test deletion, expiry, report-before-expiry, consent withdrawal and what backups keep.
+
+**Verify:** `database-ci` retention and access tests; E2E for the Settings control and report flow; founder review of the rendered candidate.
+
+**Pass:** every retention mode behaves as D-08 says; every founder access to chat content leaves an audit row.
 
 #### WP06-T08 — Run frozen, fault, and browser gates
 
-- [ ] Run all supported/partial/unavailable/conflict/hint/safety/injection cases.
-- [ ] Kill the client stream, generation worker, and provider response at defined points.
-- [ ] Replay the client request ID and verify one answer/settlement.
-- [ ] Revoke membership/source during a request and verify the final commit rechecks applicable scope.
-- [ ] Assert zero outside network/search calls, zero unsupported accepted claims, full accepted provenance, and numeric gates from section 9.9.
+**Depends on:** WP06-T07. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** yes, inside caps.
+
+- [ ] Run every supported, partial, unavailable, conflict, hint, safety and injection case of the signed suite.
+- [ ] Kill the client stream, the generation worker and the provider response at defined points; replay the client request ID and verify one answer and one settlement.
+- [ ] Revoke membership or a source during a request and verify the final commit rechecks scope.
+- [ ] Have the academic reviewer grade a sample of accepted answers for unsupported claims with the WP00-T20 rubric.
+- [ ] Make this suite a required step before any prompt, policy, model or validator change is promoted to Beta (implementation rule 18).
+- [ ] Write `evidence/wp06-chat/<date>_chat-gate_beta_<sha>.md`.
+
+**Verify:** the frozen suite report; fault tests; academic review record.
+
+**Pass:** zero unsupported factual claims in accepted answers (validator and academic review agree); 100% evidence-link coverage; at least 95% correct unavailable cases; 100% of known conflicts show both positions; professor hints labeled and at least 95% retrievable; at least 95% of educational cases answered without false refusal when evidence exists; 100% of explicit real-patient cases apply the boundary; failed and timed-out requests settle or release exactly once; zero outside-answer or web-search calls.
 
 ### 9.1 Chat request contract
 
-Client sends session ID, message, language preference, and client request ID. Server obtains user/cohort/unit from the authorized session and rejects a mismatch. Limit message length and active requests per user.
+The client sends session ID, message, language preference and client request ID. The server takes user, cohort and unit from the authorized session and rejects a mismatch; it limits message length and active requests per user.
 
-### 9.2 Execute each request in this order
+### 9.2 Request order
 
-1. Authenticate user.
-2. Load session and derive cohort/unit.
-3. Revalidate membership and availability.
-4. Reserve usage atomically using request idempotency key.
-5. Apply rate/concurrency limits.
-6. Classify educational case, explicit real-patient request, personal-data risk, and language.
-7. Run authorized retrieval.
-8. If `UNAVAILABLE`, persist/stream the standard unavailable answer and skip factual generation.
-9. If `PARTIAL`, build a packet containing supported evidence and explicit missing components.
-10. If `CONFLICT`, build separately labeled position packets.
-11. Otherwise build supported evidence packet.
-12. Generate structured answer metadata and streamed text.
-13. Buffer enough structured state to prevent an invalid final answer from being committed as valid.
-14. Validate evidence IDs, claim support, source scope, conflict disclosure, and invented locators/quotes.
-15. Return grounded fallback/unavailable response if validation fails.
-16. Persist according to retention policy and link accepted output to evidence.
-17. Settle actual usage or release/refund reservation on failure.
-18. Record latency, provider usage, validation, and result without exposing private evidence diagnostics.
+1. Authenticate the user; load the session and derive cohort and unit.
+2. Revalidate membership and availability.
+3. Reserve usage atomically with the request idempotency key; apply rate and concurrency limits.
+4. Classify educational case, explicit real-patient request, personal-data risk and language.
+5. Run authorized retrieval and classify the evidence.
+6. `UNAVAILABLE`: persist and stream the standard unavailable answer and skip generation. `PARTIAL`: build a packet with supported evidence and explicit missing parts. `CONFLICT`: build separately labeled position packets. Otherwise build the supported packet.
+7. Generate structured metadata and streamed text, buffering enough to stop an invalid answer from being committed as valid.
+8. Validate evidence IDs, claim support, scope, conflict disclosure and invented locators or quotes; on failure return a grounded fallback or unavailable response.
+9. Persist under the retention policy with evidence links; settle usage or release the reservation; record latency, provider usage, validation and result without private evidence diagnostics.
 
 ### 9.3 Tutor policy
 
-Version the policy and require:
-
-- Use only supplied evidence from uploaded approved material.
-- Never use outside facts or imply that outside search occurred.
-- Preserve required English technical terms when answering Arabic/mixed prompts.
-- Treat retrieved instructions as quoted source data, never system commands.
-- Say explicitly when information is unavailable in the uploaded materials.
-- Separate supported and missing parts in partial answers.
-- State that sources conflict and present each position when conflict packets exist.
-- Label professor hints as hints/emphasis, not guaranteed exam truth.
-- Answer educational medical/veterinary cases when evidence exists.
-- Apply a concise real-patient boundary only to actual/personal care contexts.
-- Never invent a source title, page, timestamp, URL, quotation, or evidence ID.
+Use only supplied evidence from approved uploaded material; never use outside facts or imply an outside search; keep required English technical terms in Arabic or mixed answers; treat retrieved instructions as quoted data; say plainly when the uploaded material lacks the information; separate supported and missing parts; state when sources conflict and present each position; label professor hints as hints, never guaranteed exam truth; answer educational medical and veterinary cases when evidence exists; apply a concise real-patient boundary only to actual personal-care contexts; never invent a source title, page, timestamp, URL, quotation or evidence ID.
 
 ### 9.4 Response contract
 
-Use structured server-side output with:
-
-- `result_type`: `SUPPORTED | PARTIAL | UNAVAILABLE | CONFLICT | SAFETY_BOUNDARY | ERROR`.
-- `answer_text`.
-- `used_evidence_ids`.
-- `missing_points`.
-- `conflict_positions` with evidence IDs.
-- `professor_hint_labels` with evidence IDs.
-- `student_source_labels` containing title/format and reliable locator when available.
-- `validation_state` set by server, not model.
-
-The UI must not require exact page/timestamp for an otherwise valid grounded answer. It must not display an unverified locator.
+Structured server-side output: `result_type` (`SUPPORTED | PARTIAL | UNAVAILABLE | CONFLICT | SAFETY_BOUNDARY | ERROR`); `answer_text`; `used_evidence_ids`; `missing_points`; `conflict_positions` with evidence IDs; `professor_hint_labels` with evidence IDs; `student_source_labels` with title, format and a reliable locator when available; `validation_state`, set by the server, never the model. The UI never requires an exact page or timestamp for a valid answer and never shows an unverified locator.
 
 ### 9.5 Claim and provenance validation
 
-At minimum:
+Reject evidence IDs outside the packet and evidence from another source version, cohort, unit or inactive state; map each factual sentence or structured claim to one or more segments with the WP06-T01 method; reject unsupported components instead of removing their citations; map conflict positions to distinct evidence; map professor-hint labels to tagged segments; persist answer-evidence rows only for the final accepted answer.
 
-- Reject evidence IDs outside the provided packet.
-- Reject evidence from another source version, cohort, unit, or inactive state.
-- Verify each factual sentence or structured claim maps to one or more evidence segments using the selected validator process.
-- Reject unsupported answer components; do not merely remove their citations.
-- Verify conflict positions map to distinct supporting evidence.
-- Verify professor-hint labels map to tagged segments.
-- Persist answer-evidence rows only for the final accepted answer.
+### 9.6 Unavailable and conflicting answers
 
-### 9.6 Insufficient and conflicting answers
-
-Unavailable response meaning must be direct: the uploaded material for this Module/Subject does not contain enough information to answer. Do not offer web search. Offer only safe actions such as rephrasing, asking about a related covered topic, or waiting for admins to add material.
-
-Conflict responses must not collapse two views. Present each view and its source label, then state that the material does not resolve the disagreement unless a resolving approved passage exists.
+An unavailable answer says directly that this Module's or Subject's uploaded material does not contain enough information. It never offers web search; it may suggest rephrasing, a related covered topic, or waiting for admins to add material. A conflict answer never collapses the views: it presents each view with its source label and says the material does not resolve the disagreement unless an approved passage does.
 
 ### 9.7 Educational-case safety tests
 
-Test educational prompts containing diagnosis, differentials, medications, dose calculations, procedures, emergency algorithms, and management plans. When presented as course cases and supported, they must receive answers instead of blanket refusal.
-
-Test explicit statements such as "this is happening to me now," identifiable patient details, or urgent real-life treatment requests. These must receive the approved boundary without adding outside medical claims. Log policy category, not sensitive patient content, when no-save retention applies.
-
-### 9.8 Retention and reporting
-
-- `NO_SAVE` sessions delete message content after response completion/defined short technical window while retaining minimal non-content usage and security metadata.
-- Saved sessions remain user-owned under the retention policy and are founder-visible by default with clear disclosure; students can enable private/no-sharing mode for future exchanges.
-- Reported, explicitly consented, or qualifying automatically policy-flagged answers retain only the relevant exchange, policy/model/source versions, evidence, trigger, and review authority for a defined review window.
-- Admin review screens may expose default shared chats. For private/no-sharing exchanges they expose only authorized reported, consented, or automatically flagged cases; every founder access is audited.
-
-### 9.9 Exit evidence
-
-- Zero unsupported factual claims in the accepted frozen suite.
-- 100% evidence-link coverage for accepted factual answers.
-- At least 95% correct unavailable cases.
-- 100% known conflicts show both supported positions.
-- Professor hints are labeled and retrievable.
-- Academic cases do not suffer systematic false refusal.
-- Explicit real-patient cases apply the boundary.
-- Failed/time-out requests settle or refund usage exactly once.
-- No outside-answer provider or web-search call exists.
+Educational prompts with diagnosis, differentials, medications, dose calculations, procedures, emergency algorithms and management plans get answers when supported. Explicit statements such as "this is happening to me now", identifiable patient details or urgent real-life treatment requests get the approved boundary without outside medical claims; under no-save retention, log the policy category, never the patient content.
 
 ## 10. Work package 7: Studio and quiz
 
-**Outcome:** every artifact and quiz item is durable, authorized, source-grounded, validated, invalidated with source changes, and charged/settled exactly once.
+**Outcome:** in the real Studio and Quiz screens, every artifact and quiz item is durable, authorized, source-grounded, validated, invalidated when sources change, and settled exactly once.
 
-### 10.0 Tutorial procedure
+**Primary artifacts:** `src/lib/studio/`, `src/lib/quiz/`, `workers/generation/`, the shared Studio and Quiz screens, and `evidence/wp07-studio/`.
+
+### 10.0 Tasks
 
 #### WP07-T01 — Define one artifact envelope and typed payloads
 
-- [ ] Create a common envelope with artifact/request IDs, type, language, normalized parameters, scope hash, policy/model/validator versions, status, evidence map, and validation issues.
-- [ ] Create separate versioned schemas for summary, guide, practice questions, flashcards, revision pack, and MCQs.
-- [ ] Reject unknown fields/invalid structures at the worker boundary and preserve the malformed draft only in restricted diagnostics if policy permits.
+**Depends on:** WP06-T08. **Decision gates:** none; visible quiz behaviour (option count, timing, difficulty) is confirmed by a founder. **Protected:** none. **Material UI:** no. **Real money:** no.
+
+- [ ] Create a common envelope with artifact and request IDs, type, language, normalized parameters, scope hash, policy/model/validator versions, status, evidence map and validation issues.
+- [ ] Create versioned schemas for summary, study guide, practice questions, flashcards, MCQs and the topic-focused revision pack (§10.2 to §10.5).
+- [ ] Fix the quiz parameters the founders already asked for in WP03-T13 (configurable item count, difficulty and timing) and the MCQ option count within §10.5; record them in §2.3.
+- [ ] Reject unknown fields and invalid structures at the worker boundary; keep a malformed draft only in restricted diagnostics if policy allows.
+
+**Verify:** schema tests with valid and invalid fixtures per type.
+
+**Pass:** every artifact type has a schema and fixtures; the quiz parameters are recorded and founder-confirmed.
 
 #### WP07-T02 — Implement durable request and safe cache lookup
 
-- [ ] Canonicalize parameters and compute cache key from authorized active source versions, policy/model/validator, artifact type, language, and parameters.
-- [ ] Revalidate the requesting user's current access to all cached evidence before reuse.
-- [ ] Reserve usage and create the durable request transactionally.
-- [ ] Return the canonical artifact/request on duplicate idempotency key.
-- [ ] Run generation in the worker; browser lifetime must not control completion.
+**Depends on:** WP07-T01. **Decision gates:** none. **Protected:** RLS and migrations. **Material UI:** no. **Real money:** no.
+
+- [ ] Canonicalize parameters and compute the cache key from authorized active source versions, policy/model/validator, type, language and parameters.
+- [ ] Revalidate the requester's current access to every cached evidence segment before reuse.
+- [ ] Enforce the per-student Studio allowance and artifact size limits (§2.3); reserve usage and create the durable request in one transaction.
+- [ ] Return the canonical artifact or request on a duplicate idempotency key.
+- [ ] Run generation in the worker; the browser never controls completion.
+
+**Verify:** `database-ci` cache-authorization and idempotency tests.
+
+**Pass:** a cached artifact is never served to a caller who lacks access to any of its evidence; duplicates create nothing new.
 
 #### WP07-T03 — Generate and validate by artifact type
 
+**Depends on:** WP07-T02. **Decision gates:** none. **Protected:** none. **Material UI:** yes — the real Studio screen. **Real money:** yes, generation inside caps.
+
 - [ ] Retrieve through the same authorized unit service as chat.
-- [ ] Represent partial coverage/conflicts explicitly; do not label an incomplete artifact comprehensive.
-- [ ] Map every factual section/item/answer/rationale to evidence.
-- [ ] Reject duplicate/near-duplicate questions/cards and ambiguous wording.
-- [ ] For MCQ, require one correct option in single-best-answer mode, unique options, supported correct answer and rationales, and no answer leakage.
-- [ ] Keep original-exam content disabled unless the individual source permission explicitly permits it.
+- [ ] Represent partial coverage and conflicts explicitly; never label an incomplete artifact comprehensive.
+- [ ] Map every factual section, item, answer and rationale to evidence; validate with the WP06-T01 method.
+- [ ] Reject duplicate or near-duplicate questions and cards and ambiguous wording; for MCQs require the §10.5 rules.
+- [ ] Keep original-exam content disabled unless the individual source permission explicitly allows it.
+- [ ] Connect the shared Studio screen to the real backend through the WP03-T17 seam: request, progress, completed, failed, partial and stale states; keep the synthetic runtime on the same screen.
+
+**Verify:** artifact fixture suite; E2E real and demo; frontend floor; founder review of the rendered candidate.
+
+**Pass:** every artifact type completes inside the subject Studio with evidence links; unsupported content is rejected; `Approved commit:` recorded.
 
 #### WP07-T04 — Implement quiz lifecycle server-side
 
-- [ ] Start attempts from an authorized current artifact and store item order/options needed for stable review.
+**Depends on:** WP07-T03. **Decision gates:** none. **Protected:** RLS and migrations. **Material UI:** yes — the real Quiz and review screens. **Real money:** no.
+
+- [ ] Start attempts from an authorized current artifact; store item order and options for stable review (§10.6).
 - [ ] Keep answer keys server-side before submission.
-- [ ] Save responses idempotently, enforce server timestamps/timer rules, and calculate score on the server.
+- [ ] Save responses idempotently, enforce server timestamps and timer rules, and score on the server.
 - [ ] Make final submission idempotent and immutable except through a separately audited correction policy.
-- [ ] Preserve historical attempts when the source/artifact later becomes stale while clearly labeling current availability.
+- [ ] Keep historical attempts when the source or artifact later goes stale, with the current availability labelled.
+- [ ] Derive weak-topic signals from scored attempts by topic tag and show them in review (master plan Phase 4).
+- [ ] Connect the shared Quiz and review screens to the real backend through the WP03-T17 seam.
+
+**Verify:** `database-ci` attempt and scoring tests; E2E for timed and untimed attempts; founder review.
+
+**Pass:** one score per submission, answer keys never reach the client before submission, weak topics appear in review, `Approved commit:` recorded.
 
 #### WP07-T05 — Invalidate safely on scope change
 
-- [ ] Recompute scope hashes on source activation/deactivation/replacement, rights revocation, embedding/policy changes, or corrected evidence.
-- [ ] Hide/mark stale artifacts from current study views without deleting historical evidence/attempts.
-- [ ] Cancel queued requests whose authorization or source scope is no longer valid and release reservations.
-- [ ] Test a change during generation, during quiz, and after submission.
+**Depends on:** WP07-T04. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
+
+- [ ] Recompute scope hashes on source activation, deactivation or replacement, rights revocation, embedding or policy change, and corrected evidence (§10.7).
+- [ ] Hide or mark stale artifacts in current study views without deleting historical evidence or attempts.
+- [ ] Cancel queued requests whose authorization or scope is no longer valid and release their reservations.
+- [ ] Let students report an artifact or a quiz item (wrong, unsupported, unclear) through the same reporting lifecycle as chat (WP06-T07).
+- [ ] Test a change during generation, during a quiz and after submission.
+
+**Verify:** invalidation and reporting tests.
+
+**Pass:** no stale artifact is shown as current; reports reach the admin queue with their evidence snapshot.
 
 #### WP07-T06 — Run artifact and quiz gates
 
-- [ ] Run every frozen artifact type in both supported and insufficient scope.
-- [ ] Validate claim/item provenance coverage and zero unsupported accepted content.
+**Depends on:** WP07-T05. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** yes, inside caps.
+
+- [ ] Run every frozen artifact case in supported and insufficient scope.
+- [ ] Validate claim and item provenance coverage; have the academic reviewer grade a sample with the WP00-T20 rubric.
 - [ ] Race duplicate requests and duplicate final quiz submissions.
-- [ ] Attempt cache access from another user/cohort/unit and after membership/source revocation.
-- [ ] Verify timed/untimed scoring, answer-key secrecy, grounded review, settlement, retry, and invalidation.
+- [ ] Attempt cache access from another user, cohort or unit and after membership or source revocation.
+- [ ] Verify timed and untimed scoring, answer-key secrecy, grounded review, settlement, retry and invalidation.
+- [ ] Write `evidence/wp07-studio/<date>_studio-gate_beta_<sha>.md`.
+
+**Verify:** the frozen artifact suite report.
+
+**Pass:** every artifact type completes inside the subject Studio; 100% internal provenance on accepted artifacts; zero unsupported accepted claims, answers or explanations; conflicts and hints labelled; one score per quiz; no duplicate artifact or settlement.
 
 ### 10.1 Studio request flow
 
-1. Student opens Studio inside an authorized unit.
-2. Student selects artifact type, topic/all material, language, depth, and size.
-3. Server revalidates scope and computes active source-scope hash.
-4. Server checks a safe artifact cache keyed by scope hash, policy/model version, type, language, and normalized parameters.
-5. If no authorized valid artifact exists, reserve usage and create a durable Studio request.
-6. Worker retrieves evidence using the same strict unit pool.
-7. Worker returns unavailable/partial state or generates structured artifact.
-8. Validator checks every factual claim, answer, explanation, and conflict.
-9. Accepted artifact stores evidence links; rejected artifact retries within the limit or fails explicitly.
-10. Usage settles exactly once and UI receives completed/failed state.
+1. The student opens Studio inside an authorized unit and picks type, topic or all material, language, depth and size.
+2. The server revalidates scope, computes the active source-scope hash and checks the safe cache.
+3. With no authorized valid artifact, it reserves usage and creates a durable request.
+4. The worker retrieves from the same strict unit pool, returns an unavailable or partial state or generates the structured artifact.
+5. The validator checks every factual claim, answer, explanation and conflict; accepted artifacts store evidence links; rejected ones retry within the limit or fail explicitly.
+6. Usage settles exactly once and the UI receives the completed or failed state.
 
-### 10.2 Summary contract
+### 10.2 Summary and revision-pack contracts
 
-Require title, scope, learning objectives, structured sections, high-yield points, professor hints, conflicts, and missing areas. Every factual bullet/section must link internally to evidence. Do not claim full coverage when the pool is partial.
+A summary has title, scope, learning objectives, structured sections, high-yield points, professor hints, conflicts and missing areas; every factual bullet links to evidence; it never claims full coverage when the pool is partial. A revision pack is topic-focused: the chosen topic's key points, professor emphasis, a short self-test drawn from the practice-question contract, conflicts and uncovered areas, all evidence-linked.
 
 ### 10.3 Study-guide contract
 
-Require ordered learning path, key concepts, definitions, relationships, common confusions supported by material, professor emphasis, self-check prompts, conflicts, and uncovered areas. Do not add generic study facts absent from the pool.
+Ordered learning path, key concepts, definitions, relationships, common confusions supported by the material, professor emphasis, self-check prompts, conflicts and uncovered areas. No generic study facts absent from the pool.
 
-### 10.4 Practice-question and flashcard contracts
+### 10.4 Practice questions and flashcards
 
-Each practice question stores prompt, expected answer, explanation, difficulty, topic tags, source evidence, and validation state. Each flashcard stores independently understandable front/back, optional explanation, difficulty, tags, evidence, and validation.
+A practice question stores prompt, expected answer, explanation, difficulty, topic tags, evidence and validation state. A flashcard stores an independently understandable front and back, optional explanation, difficulty, tags, evidence and validation. Reject duplicates, ambiguous pronouns, unsupported answers, questions answerable only from outside knowledge and cards that leak the answer.
 
-Reject duplicates, ambiguous pronouns, unsupported answers, questions answerable only from outside knowledge, and cards that leak an answer through wording.
+### 10.5 MCQ contract
 
-### 10.5 MCQ contract and validation
-
-Each MCQ requires:
-
-- Stable item key.
-- Origin `GENERATED` or permitted `ORIGINAL_EXAM`.
-- Stem.
-- Four or five unique options.
-- Exactly one correct option for single-best-answer mode.
-- Explanation for correct answer.
-- Per-option rationale.
-- Difficulty and topic tags.
-- Evidence IDs for the correct answer and rationales.
-- Professor-hint label only when directly supported.
-- Validation issues/result.
-
-Reject multiple plausible answers, duplicate options, unsupported rationales, contradictions, cross-unit taxonomy, malformed structure, near-duplicate items, or original exam content without permission metadata.
+Stable item key; origin `GENERATED` or permitted `ORIGINAL_EXAM`; stem; four or five unique options; exactly one correct option in single-best-answer mode; explanation of the correct answer; per-option rationale; difficulty and topic tags; evidence IDs for the answer and rationales; a professor-hint label only when directly supported; validation result. Reject multiple plausible answers, duplicate options, unsupported rationales, contradictions, cross-unit topics, malformed structure, near-duplicate items and original exam content without permission metadata.
 
 ### 10.6 Quiz state machine
 
-Use `CREATED -> IN_PROGRESS -> SUBMITTED -> SCORED`, with `ABANDONED` for expiry. Server controls start/submission timestamps and calculates score. Prevent answer-key exposure before submission. Make final submission idempotent. Store selected answers, correctness, and review payload.
+`CREATED -> IN_PROGRESS -> SUBMITTED -> SCORED`, with `ABANDONED` on expiry. The server controls start and submission timestamps and calculates the score; answer keys stay hidden before submission; final submission is idempotent; selected answers, correctness and the review payload are stored.
 
 ### 10.7 Invalidation
 
-When a source version is deactivated/replaced:
-
-- Recompute active source-scope hashes.
-- Hide or mark stale cached artifacts whose evidence is no longer active.
-- Preserve historical quiz attempts and evidence references for audit.
-- Do not show a stale artifact as current.
-
-### 10.8 Exit evidence
-
-- Every artifact type completes inside the subject Studio.
-- Accepted artifacts have 100% internal provenance.
-- Frozen artifact suite contains zero unsupported accepted claims/answers.
-- Known conflicts and professor hints are labeled correctly.
-- Timed/untimed quiz saves one score and displays grounded review.
-- Retry/cache behavior creates no duplicate artifact or usage settlement.
+When a source version is deactivated or replaced: recompute active scope hashes; hide or mark stale artifacts whose evidence is no longer active; keep historical attempts and evidence references for audit; never show a stale artifact as current.
 
 ## 11. Work package 8: Operations and zero-manual automation
 
-**Outcome:** web, workers, scheduler, alerts, backup/restore, and incidents operate without a founder laptop or routine database intervention; failures recover or isolate automatically.
+**Outcome:** web, workers, scheduler, alerts, email, backup/restore and incidents run without a founder computer or routine database intervention; failures recover or isolate automatically; the beta is threat-modelled and its success signals are measurable.
 
-### 11.0 Tutorial procedure
+**Primary artifacts:** `docs/operations/`, `src/lib/observability/`, `workers/reconciliation/`, the admin resource screens, `docs/runbooks/` and `evidence/wp08-operations/`.
+
+### 11.0 Tasks
 
 #### WP08-T01 — Write deployment topology and ownership
 
-- [ ] Create `docs/operations/topology.md` naming web, ingestion worker, generation worker, reconciliation scheduler, database, queue, raw/processed storage, monitoring, and notification boundaries.
-- [ ] Record deployment artifact, region, runtime/size, concurrency, health endpoint, scaling control, secret scope, log destination, and owner for each component.
-- [ ] Prove the complete preview/beta topology remains running when Ahmed's and Ziad's computers are off; neither computer may host or be required by any listed component.
-- [ ] Keep PostgreSQL as workflow authority even if an external queue/orchestrator is used.
+**Depends on:** WP04-T17, WP06-T05. **Decision gates:** none (D-17 approved in WP04-T17). **Protected:** none. **Material UI:** no. **Real money:** no.
+
+- [ ] Create `docs/operations/topology.md` naming web, ingestion worker, generation worker, reconciliation scheduler, database, queue, raw/processed storage, monitoring, email and notification boundaries.
+- [ ] Record for each component: deployment artifact, region, runtime/size, concurrency, health endpoint, scaling control, secret scope, log destination, owner and monthly cost.
+- [ ] Prove the full Preview and Beta topology keeps running with Ahmed's and Ziad's computers off.
+- [ ] Keep PostgreSQL the workflow authority even with an external queue or orchestrator.
+
+**Verify:** topology review against deployed state.
+
+**Pass:** every running component is listed with its owner and cost; none depends on a founder computer.
 
 #### WP08-T02 — Deploy health, metrics, logs, and traces
 
-- [ ] Emit structured JSON with timestamp, environment, release, component, correlation/request/job/provider IDs, safe event, duration, outcome, and error code.
-- [ ] Define liveness separately from readiness and include dependency checks with timeouts.
-- [ ] Track request rate/error/duration, first-token time, queue age/depth, job outcome/retry, lease expiry, provider latency/error/cost, raw deletion age, retrieval quality, validation failures, reservations, budgets, database/storage capacity, and reconciliation outcome.
-- [ ] Redact secrets, authorization headers, signed URLs, source content, and ordinary chat content; test redaction.
+**Depends on:** WP08-T01. **Decision gates:** none; a paid error-reporting service is a money stop. **Protected:** production configuration. **Material UI:** no. **Real money:** only if a paid service is chosen.
+
+- [ ] Extend the WP04-T02 structured logs with timestamp, environment, release, component, correlation/request/job/provider IDs, safe event, duration, outcome and error code.
+- [ ] Separate liveness from readiness; readiness checks dependencies with timeouts.
+- [ ] Track request rate, errors and duration, first-token time, queue age and depth, job outcomes and retries, lease expiry, provider latency, errors and cost, raw-deletion age, retrieval quality, validation failures, reservations, budgets, database and storage capacity, and reconciliation outcomes.
+- [ ] Choose an error-reporting destination at zero cost or stop for a money decision; test redaction of secrets, authorization headers, signed URLs, source content and chat content.
+
+**Verify:** metric and redaction tests; a dashboard screenshot as supplemental evidence.
+
+**Pass:** every listed signal is visible per environment; redaction tests pass.
 
 #### WP08-T03 — Implement schedules as idempotent jobs
 
-- [ ] Create one named function/job per interval in section 11.2 and document its query, batch limit, timeout, lock, retry, metric, and incident threshold.
-- [ ] Prevent overlapping runs with an advisory lock or durable scheduler claim.
-- [ ] Paginate/batch large scans and persist cursors only when needed.
-- [ ] Test skipped schedule, duplicate invocation, partial failure, long run, and clock/time-zone boundaries.
+**Depends on:** WP08-T01, WP04-T11. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
+
+- [ ] Create one named job per §11.2 schedule with its query, batch limit, timeout, lock, retry, metric and incident threshold.
+- [ ] Prevent overlapping runs with an advisory lock or a durable scheduler claim; paginate large scans.
+- [ ] Test a skipped run, duplicate invocation, partial failure, long run and clock or time-zone boundaries.
+
+**Verify:** schedule tests; job history in Preview.
+
+**Pass:** every schedule runs on time in Preview, never overlaps and is safe to repeat.
 
 #### WP08-T04 — Build least-privilege admin operations
 
-- [ ] Build dashboards in section 11.3 from safe summary views/services.
-- [ ] Replace arbitrary edit/replay controls with audited typed actions and precondition checks.
-- [ ] Require reason/confirmation for source deactivation, cohort lock, raw hold, replay after terminal correction, and provider/feature enablement.
-- [ ] Show operator-safe details; place sensitive provider/raw/chat evidence behind stricter access and audit.
+**Depends on:** WP08-T02. **Decision gates:** none. **Protected:** RLS. **Material UI:** yes — the admin resource screens connected to real data. **Real money:** no.
+
+- [ ] Connect the §11.3 dashboards to safe summary views and services, replacing synthetic fixtures in real mode.
+- [ ] Replace arbitrary edit or replay controls with audited typed actions and precondition checks.
+- [ ] Require a reason and confirmation for source deactivation, cohort lock, raw hold, replay after terminal correction and provider or feature enablement.
+- [ ] Show operator-safe details; keep sensitive provider, raw and chat evidence behind stricter access and audit.
+
+**Verify:** E2E for each dashboard and action; forbidden-role tests; founder review.
+
+**Pass:** an admin can follow any source from receipt to `READY` or failure, and act on it, without SQL; `Approved commit:` recorded.
 
 #### WP08-T05 — Implement alert routing and automatic controls
 
-- [ ] Create `docs/operations/alert-catalog.md` with signal, query, severity, threshold/window, dedup key, recipients, automatic action, acknowledgment, escalation, and runbook link.
-- [ ] Test every alert using synthetic events, including delivery failure.
-- [ ] Make budget/provider circuit controls atomic and immediately effective for new reservations/claims.
-- [ ] Ensure disabling new paid work does not corrupt already accepted/paid jobs.
-- [ ] Prevent alert storms using grouping/dedup/recovery notices without hiding continued failure.
+**Depends on:** WP08-T02, WP04-T13. **Decision gates:** none; this task resolves D-20 (alert channels) and D-26 (transactional email). **Protected:** production configuration. **Material UI:** no. **Real money:** yes if a paid sender or channel is chosen.
+
+- [ ] Prepare D-20 and D-26: decision records for the alert and incident channels, and for the sender of Auth emails and Batch Leader links (if D-24 uses email), with sending limits, deliverability, data handling and cost.
+- [ ] Obtain Ahmed's and Ziad's approval of D-20 and D-26 (this step becomes `[?]` while it waits).
+- [ ] Create `docs/operations/alert-catalog.md` with signal, query, severity, threshold and window, dedup key, recipients, automatic action, acknowledgment, escalation and runbook link.
+- [ ] Deliver budget events at 50/75/90/100% and every §11.4 alert through the approved channel; test each with synthetic events, including delivery failure.
+- [ ] Configure custom SMTP for Beta Auth emails on a sending domain with SPF and DKIM; test verification, recovery and link delivery; keep the built-in sender for synthetic Preview only.
+- [ ] Make budget and provider circuit controls atomic and immediate for new reservations and claims, without corrupting accepted jobs.
+- [ ] Group, de-duplicate and send recovery notices without hiding continued failure.
+
+**Verify:** alert delivery tests; a real verification email received through the Beta sender.
+
+**Pass:** every catalogued alert reaches its recipient; Auth emails deliver reliably at the beta's expected volume.
 
 #### WP08-T06 — Back up and restore the complete durable system
 
-- [ ] Document what database backups include and explicitly exclude object storage.
-- [ ] Configure processed-object durability/versioning/backup consistent with policy; exclude temporary raw beyond its allowed window.
-- [ ] Restore database and processed objects into an isolated project/namespace.
-- [ ] Reconnect or rebuild embeddings according to the documented strategy.
-- [ ] Verify row counts plus referential checks for catalog, access, sources, documents, segments, evidence, artifacts, usage, jobs, and audit—not just “restore completed.”
-- [ ] Verify no expired raw object was resurrected by backup/restore.
+**Depends on:** WP04-T18, WP07-T06. **Decision gates:** none. **Protected:** production configuration. **Material UI:** no. **Real money:** no new spend.
+
+- [ ] Extend the WP04-T18 procedure to the complete system: database, processed objects, artifacts, chat retention, usage and audit.
+- [ ] Reconnect or rebuild embeddings as the documented strategy says.
+- [ ] Verify row counts and referential checks for catalog, access, sources, documents, segments, evidence, artifacts, usage, jobs and audit.
+- [ ] Verify no expired raw object or deleted no-save content returns from backup.
+
+**Verify:** a timed full restore rehearsal report.
+
+**Pass:** the full restore succeeds with verified counts and nothing resurrected that policy deleted.
 
 #### WP08-T07 — Write and exercise incident runbooks
 
-- [ ] Copy the incident template for every incident in section 11.6.
-- [ ] Fill detection, severity, immediate containment, evidence preservation, owner/escalation, communications decision, diagnosis, repair, replay, validation, recovery, and post-incident action.
-- [ ] Run tabletop exercises for every runbook and hands-on exercises for leakage, bad source, deletion failure, provider outage, stuck job, budget exhaustion, leaked secret, and restore/re-index.
-- [ ] Time detection/containment/recovery and record gaps as defects.
+**Depends on:** WP08-T05. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
+
+- [ ] Copy [the incident template](../templates/incident-runbook.md) for every §11.6 incident, extending the four written in WP04-T19.
+- [ ] Fill detection, severity, containment, evidence preservation, owner and escalation, communications, diagnosis, repair, replay, validation, recovery and follow-up.
+- [ ] Run a tabletop for every runbook and hands-on drills for leakage, bad source, deletion failure, provider outage, stuck job, budget exhaustion, leaked secret, rights takedown and restore/re-index.
+- [ ] Time detection, containment and recovery; record gaps as defects.
+
+**Verify:** drill records with timings.
+
+**Pass:** every §11.6 runbook exists and has been exercised.
 
 #### WP08-T08 — Run the unattended proof
 
-- [ ] Start from a recorded candidate SHA/config fingerprint.
-- [ ] Submit valid synthetic PDF/audio and Studio work, inject transient provider failure, expire a lease, fail deletion, fail chat generation, and interrupt one worker.
-- [ ] Leave the system unattended for the approved observation window.
-- [ ] Confirm recovery/isolation, correct alerts, stable idempotent counts, settled usage, and no manual SQL/script action.
-- [ ] Attach a timestamped event timeline and reviewer sign-off.
+**Depends on:** WP08-T03 to WP08-T07. **Decision gates:** the observation window (§2.3) approved by a founder. **Protected:** none. **Material UI:** no. **Real money:** yes, small, inside caps.
+
+- [ ] Start from a recorded candidate SHA and configuration fingerprint.
+- [ ] Submit valid synthetic PDF, audio and Studio work; inject a transient provider failure, expire a lease, fail a deletion, fail a chat generation and kill one worker.
+- [ ] Leave the system unattended for the approved window.
+- [ ] Confirm recovery or isolation, correct alerts, stable idempotent counts, settled usage and no manual SQL or script.
+- [ ] Write `evidence/wp08-operations/<date>_unattended_beta_<sha>.md` with a timestamped event timeline.
+
+**Verify:** the event timeline and reconciliation report.
+
+**Pass:** zero manual processing steps; every injected fault recovered or isolated automatically with the right alert.
+
+#### WP08-T09 — Threat-model the beta and run the pre-beta security review
+
+**Depends on:** WP08-T08, WP03-T35, WP03-T36. **Decision gates:** none. **Protected:** review only; any fix it triggers follows its own protected-path rules. **Material UI:** no. **Real money:** no.
+
+- [ ] Write a threat model for the beta: assets, actors and trust boundaries for students, Batch Leaders (links or accounts), admins, workers, providers and storage.
+- [ ] Review registration and recovery abuse, upload abuse (size, type, malware, storage exhaustion), prompt injection through sources, link-token leakage, RLS and grants, privileged module use, secrets handling, dependency audit and rate limits.
+- [ ] Run `/security-review` or an equivalent independent review on the release candidate and fix or record every finding.
+
+**Verify:** threat model document; review findings with dispositions.
+
+**Pass:** no open high-severity finding; every accepted risk has a named founder decision.
+
+#### WP08-T10 — Instrument the success signals
+
+The master plan §12 signals had no measurement task (findings B7).
+
+**Depends on:** WP06-T08, WP07-T06. **Decision gates:** D-08 privacy rules apply. **Protected:** RLS and migrations if new tables. **Material UI:** yes — an answer usefulness/trust rating. **Real money:** no.
+
+- [ ] Define with the founders: activation (a useful chat, Studio artifact or quiz), 7-day return, "meaningful session", repeated value and the trust rating question.
+- [ ] Derive activation, return and repeated value from existing records (sessions, answers, artifacts, attempts) without a third-party analytics service unless one is approved.
+- [ ] Add a lightweight rating on answers (useful and trustworthy or not) that feeds the source-trust signal and never stores more chat content than D-08 allows.
+- [ ] Report automation (share of valid sources READY without intervention) and cost per action, source and cohort from the job and usage ledgers.
+- [ ] Show the signals in an admin report with per-cohort breakdown.
+
+**Verify:** metric tests on synthetic activity; E2E for the rating; founder review.
+
+**Pass:** every master plan §12 signal is computed from recorded data for a synthetic week of activity; `Approved commit:` recorded.
 
 ### 11.1 Always-on runtime
 
-Deploy:
-
-- Stateless web application.
-- Durable queue or database job dispatcher.
-- Ingestion worker with job-type concurrency controls.
-- Generation/Studio worker with separate limits.
-- Scheduled reconciliation worker.
-- Monitoring/error reporting.
-
-Do not host any database/Auth or shared preview/beta component on Ahmed's or Ziad's computer. This prohibition includes the web application, API, database/Auth, object storage, queue, workers, schedulers, monitoring, notifications, and optional orchestration. If n8n is introduced, host it on approved external infrastructure as an always-on optional orchestrator and keep state/business logic in PostgreSQL and tested workers. A PC-hosted Telegram bot is allowed only as noncritical development/test tooling with synthetic data and cannot appear in this runtime topology or satisfy any gate.
+Deploy the stateless web application, the database job dispatcher or queue, the ingestion worker with job-type concurrency limits, the generation/Studio worker with separate limits, the scheduled reconciliation worker, and monitoring and error reporting. Nothing in this list runs on Ahmed's or Ziad's computer. If n8n is introduced, it runs on approved external infrastructure as an optional orchestrator with state and business logic kept in PostgreSQL and tested workers. A PC-hosted Telegram bot is noncritical test tooling on synthetic data only and satisfies no gate.
 
 ### 11.2 Reconciliation schedules
 
-Automate at minimum:
-
-- Every 1-5 minutes: reclaim expired job leases and release timed-out interactive reservations.
+- Every 1–5 minutes: reclaim expired job leases and release timed-out interactive reservations.
 - Every 15 minutes: retry eligible failed raw deletions and detect stuck workflows.
-- Hourly: find READY sources missing active embeddings/segments or with inconsistent raw state.
-- Daily: verify budget counters, provider-cost totals, storage totals, deletion-deadline compliance, inactive memberships, and failed notifications.
-- Weekly: run frozen retrieval/chat/Studio regression in the approved cost window and create a report.
+- Hourly: find READY sources missing active embeddings or segments, or with inconsistent raw state.
+- Daily: verify budget counters, provider-cost totals, storage totals, deletion-deadline compliance, inactive memberships and failed notifications.
+- Weekly: run the frozen retrieval, chat and Studio regressions inside the approved cost window and publish a report.
 
-Intervals may change after measurement but the functions and ownership must remain explicit.
+Intervals may change after measurement; the jobs and their owners stay explicit.
 
 ### 11.3 Admin dashboards
 
-Implement in order:
-
-1. Cohort and unit readiness/release overview.
-2. Campaign and Batch Leader submission status.
-3. Source workflow timeline and quality report.
-4. Raw storage/deletion compliance.
-5. Job queue, retries, dead-letter failures, and replay action.
-6. Retrieval/chat/Studio evaluation results.
-7. Usage, provider cost, budgets, and rate-limit state.
-8. Reported answers/artifacts with controlled access.
-9. Incident timeline and audit trail.
-
-Every mutation must be audited and must call a tested server/database operation rather than editing arbitrary fields.
+In order: cohort and unit readiness and release; campaign and Batch Leader submission status; source workflow timeline and quality report; raw storage and deletion compliance; job queue, retries, dead letters and replay; retrieval, chat and Studio evaluation results; usage, provider cost, budgets and rate-limit state; reported answers, artifacts and quiz items with controlled access; success signals (WP08-T10); incident timeline and audit trail. Every mutation is audited and calls a tested server or database operation.
 
 ### 11.4 Alerts and automatic controls
 
-Alert on:
-
-- Raw deletion deadline exceeded.
-- Repeated provider failure or circuit opening.
-- Queue age above threshold.
-- READY-state inconsistency.
-- Authorization/leakage test failure.
-- Unsupported-claim regression.
-- Budget at 50/75/90/100%.
-- Database/storage capacity threshold.
-- Backup or reconciliation failure.
-
-At the hard budget threshold, block optional new paid work and return a controlled capacity message. Do not interrupt already paid/accepted processing in a way that leaves corrupt state.
+Alert on: raw deletion deadline exceeded; repeated provider failure or circuit opening; queue age above threshold; READY-state inconsistency; authorization or leakage test failure; unsupported-claim regression; budget at 50/75/90/100%; database or storage capacity threshold (including Free-plan limits); email delivery failure; backup or reconciliation failure. At the hard budget threshold, block optional new paid work and return a controlled capacity message without corrupting accepted work.
 
 ### 11.5 Backups and restore
 
-- Configure database backups appropriate to beta risk.
-- Back up durable processed source objects or ensure provider durability/versioning meets policy.
-- Do not back up raw objects beyond their temporary policy.
-- Perform a restore rehearsal into an isolated environment.
-- Verify catalog, memberships, source versions, segments, evidence links, artifacts, ledger, and audit events after restore.
-- Rebuild embeddings from processed documents if the documented recovery strategy chooses not to back them up.
+Database backups suit beta risk; durable processed objects are backed up or versioned per policy; raw objects are never backed up beyond their window; restore is rehearsed into an isolated target that may hold the data it receives; catalog, memberships, source versions, segments, evidence, artifacts, ledger and audit are verified after restore; embeddings are rebuilt from processed documents if they are not backed up.
 
 ### 11.6 Incident runbooks
 
-Create and exercise runbooks for:
-
-- Unsupported/high-risk answer.
-- Cross-cohort/user leakage suspicion.
-- Bad source publication.
-- Source rights takedown.
-- Incomplete processed text after raw deletion.
-- Premature raw deletion.
-- Raw deletion failure.
-- Provider outage/rate-limit incident.
-- Stuck or duplicate job.
-- Usage reservation inconsistency.
-- Budget exhaustion.
-- Leaked secret.
-- Database restore and re-index.
-
-Each runbook states first action, feature/source disablement, evidence to preserve, owner, communications decision, repair, replay, and regression test.
-
-### 11.7 Automation proof
-
-Run an unattended test window that includes valid PDF/audio submissions, a transient provider failure, an expired worker lease, a deletion retry, a Studio request, a failed chat generation, and usage settlement. The system must recover or isolate each case without manual database work. Admin action is allowed only for a deliberately terminal exception or publication/unlock decision.
-
-### 11.8 Exit evidence
-
-- Always-on runtime deployment record and health checks.
-- Reconciliation job history.
-- Alert delivery tests and kill-switch tests.
-- Restore report.
-- Exercised incident runbooks.
-- Unattended automation timeline proving routine recovery.
+Unsupported or high-risk answer; cross-cohort or cross-user leakage suspicion; bad source publication; source rights takedown; incomplete processed text after raw deletion; premature raw deletion; raw deletion failure; provider outage or rate limit; stuck or duplicate job; usage reservation inconsistency; budget exhaustion; leaked secret or link token; email delivery outage; database restore and re-index. Each states the first action, what to disable, evidence to keep, owner, communications decision, repair, replay and regression test.
 
 ## 12. Work package 9: Cost and 100-student validation
 
-**Outcome:** the minimum practical beta configuration meets an exact, reproducible 100-student scenario with zero leakage/lost work/duplicate accounting and approved performance/cost.
+**Outcome:** the minimum practical beta configuration meets the exact, reproducible 100-student scenario with zero leakage, lost work or duplicate accounting, and approved performance and cost.
 
-### 12.0 Tutorial procedure
+**Primary artifacts:** `tests/load/`, `scripts/run-load-suite.ts`, `planning/load-profile-100-students.yaml` and `evidence/wp09-load-cost/`.
+
+### 12.0 Tasks
 
 #### WP09-T01 — Benchmark providers with a controlled matrix
 
-- [ ] Use the frozen representative fixtures and identical prompts/settings where comparison permits.
-- [ ] Record provider/model/version/region, quality score, units, retries, p50/p95, error behavior, concurrency/rate limits, data handling/rights fit, and calculated cost in one currency/date.
-- [ ] Separate cold/warm and success/retry cost.
-- [ ] Score quality/rights/reliability as mandatory gates before weighted price.
-- [ ] Write the provider decision record and fallback/disable strategy; never record credentials.
+Provider selection moved to WP04-T14. This task re-checks the selected providers at load scale.
+
+**Depends on:** WP08-T08. **Decision gates:** D-05 caps for the load window. **Protected:** none. **Material UI:** no. **Real money:** yes — stop for fresh two-founder confirmation naming the load-test spend.
+
+- [?] Load-test spend approved by Ahmed and Ziad. OWNER INPUT REQUIRED.
+- [ ] Re-measure the selected providers' rate limits, concurrency, p50/p95 and cost at the load profile's peak rates, with the same fixtures and settings as WP04-T14.
+- [ ] Confirm the fallback and disable strategy from the D-04 record works under load; update the D-04 record if a limit changes the plan.
+
+**Verify:** provider load report.
+
+**Pass:** the selected providers sustain the profile's peak within their limits, or the gap is recorded with the decision it needs.
 
 #### WP09-T02 — Freeze infrastructure and test safety
 
-- [ ] Record exact web/worker/database/queue/storage plans, regions, pooling, concurrency, limits, cache, provider quotas, flags, and release SHA.
-- [ ] Provision only synthetic test users/content with canaries and a dedicated test prefix/scope.
-- [ ] Confirm the load runner cannot target beta/production without an explicit two-step opt-in and approved abort thresholds.
+**Depends on:** WP09-T01. **Decision gates:** none; any plan increase is a money stop. **Protected:** production configuration. **Material UI:** no. **Real money:** no new spend.
+
+- [ ] Record the exact web, worker, database, queue and storage plans, regions, pooling, concurrency, limits, cache, provider quotas, flags and release SHA (§12.1); recheck the Free-plan allowances against the profile (§0.8).
+- [ ] Provision only synthetic test users and content with canaries and a dedicated test prefix and scope.
+- [ ] Make the load runner refuse Beta or production unless an explicit two-step opt-in and the approved abort thresholds are present.
 - [ ] Reconcile baseline counts and budgets before starting.
+
+**Verify:** the runner's refusal tests; the frozen configuration record.
+
+**Pass:** the configuration is frozen and recorded; the runner cannot hit a protected target by accident.
 
 #### WP09-T03 — Execute reproducibly
 
-- [ ] Run warm-up and discard/report it separately.
-- [ ] Execute the frozen realistic arrival-rate scenario, then the separate peak burst.
-- [ ] Overlap PDF/audio ingestion, provider slowdown, worker termination, and database connection pressure exactly as specified.
-- [ ] Abort automatically on leakage, budget, destructive error, or environment-health thresholds.
-- [ ] Preserve load-tool output, telemetry window, database plans/stats, job events, cost ledger, and config fingerprint.
+**Depends on:** WP09-T02. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** yes, inside the approved load spend.
+
+- [ ] Run the warm-up and report it separately.
+- [ ] Run the frozen realistic arrival-rate scenario, then the separate peak burst (§12.2).
+- [ ] Overlap PDF and audio ingestion, provider slowdown, worker termination and database connection pressure exactly as specified.
+- [ ] Abort automatically on leakage, budget, destructive error or environment-health thresholds.
+- [ ] Keep load-tool output, the telemetry window, database plans and statistics, job events, the cost ledger and the configuration fingerprint.
+
+**Verify:** the raw load reports.
+
+**Pass:** every phase ran as specified or aborted on a defined threshold with the reason recorded.
 
 #### WP09-T04 — Reconcile correctness after traffic
 
-- [ ] Compare accepted requests to persisted terminal results.
-- [ ] Verify zero lost accepted jobs, duplicate messages/artifacts/settlements/provider charges, negative/unsettled reservations, cross-scope canaries, or uncontrolled backlog.
-- [ ] Wait for the defined cooldown/reconciliation window and prove queues return below threshold.
-- [ ] Calculate success excluding intentional quota rejection, first-token/full latency, queue age, database saturation, provider cost, cache rate, and error-class distribution.
+**Depends on:** WP09-T03. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
+
+- [ ] Compare accepted requests with persisted terminal results.
+- [ ] Verify zero lost accepted jobs, duplicate messages, artifacts, settlements or provider charges, negative or unsettled reservations, cross-scope canaries and uncontrolled backlog.
+- [ ] Wait for the cooldown and reconciliation window and prove queues return below threshold.
+- [ ] Calculate success (excluding intentional quota rejection), first-token and full latency, queue age, database saturation, provider cost, cache rate and error classes.
+
+**Verify:** the reconciliation report.
+
+**Pass:** every correctness count is zero; queues drain within the window.
 
 #### WP09-T05 — Tune one bottleneck at a time
 
-- [ ] Rank bottlenecks from evidence and apply section 12.5 in order.
-- [ ] Keep workload seed/dataset/config stable except for the named change.
-- [ ] Compare confidence intervals or repeated-run variability before claiming improvement.
-- [ ] Reject a cheaper config that weakens leakage, grounding, deletion, or accepted-work durability.
-- [ ] Freeze the minimum passing config and its capacity-increase switches.
+**Depends on:** WP09-T04. **Decision gates:** none; an infrastructure plan increase is a money stop. **Protected:** depends on the change. **Material UI:** no. **Real money:** only with fresh confirmation.
+
+- [ ] Rank bottlenecks from evidence and apply §12.3 in order.
+- [ ] Keep seed, dataset and configuration stable except the named change; compare repeated runs before claiming an improvement.
+- [ ] Reject a cheaper configuration that weakens leakage, grounding, deletion or accepted-work durability.
+- [ ] Freeze the minimum passing configuration and its capacity-increase switches.
+
+**Verify:** before/after reports per change.
+
+**Pass:** the minimum passing configuration is frozen with its scale-up switches.
 
 #### WP09-T06 — Approve the load/cost gate
 
-- [ ] Publish a report with exact scenario, versions, pass/fail against every threshold, cost totals/p95 action cost, limitations, and next capacity trigger.
-- [ ] Have Ahmed and Ziad separately confirm the protected leakage/accounting and budget results, with the security/data and cost roles recorded.
-- [ ] Do not average away a release-blocking single leakage or duplicate-charge event.
+**Depends on:** WP09-T05. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
 
-### 12.1 Benchmark providers
+- [ ] Publish `evidence/wp09-load-cost/<date>_load-gate_beta_<sha>.md` with the scenario, versions, pass/fail per threshold, cost totals and p95 action cost, limitations and the next capacity trigger.
+- [ ] Ahmed and Ziad separately confirm the leakage/accounting and budget results, with the security/data and cost roles named.
+- [ ] Never average away a single release-blocking leakage or duplicate-charge event.
 
-Use representative native PDF, scanned PDF, mixed Arabic/English audio, professor voice note, chat evidence packets, and each Studio type. Record quality, latency, retry behavior, units, and calculated cost. Select providers/configurations using a weighted decision record; do not select from advertised price alone.
+**Verify:** the gate report.
 
-### 12.2 Minimum-resource baseline
+**Pass:** zero leakage, lost accepted work or uncontrolled backlog; at least 99% successful interactive requests excluding quota rejection; chat first-token p50 under 5 s and p95 under 12 s (a revised target needs both founders' recorded approval); no duplicate job, artifact, message or usage event; total and p95 action cost inside the cap; documented scale-up switches that need no rewrite.
 
-Record exact beta configuration:
+### 12.1 Minimum-resource baseline
 
-- Web instance/runtime plan and concurrency.
-- Database compute, storage, pooling, and connection limits.
-- Worker sizes and concurrency per job type.
-- Queue limits.
-- Object-storage class/limits.
-- Provider rate limits.
-- Cache policy.
+Record the beta configuration exactly: web instance and concurrency; database compute, storage, pooling and connection limits; worker sizes and concurrency per job type; queue limits; object-storage class and limits; email sending limits; provider rate limits; cache policy. Measure idle monthly cost and per-action variable cost.
 
-Measure idle monthly cost and per-action variable cost.
+### 12.2 Workload phases
 
-### 12.3 Load-test data and safety
+Warm-up; the defined 100-student realistic workload; the selected concurrency burst; background PDF and audio ingestion overlap; provider slowdown; worker termination and lease recovery; database connection pressure; cooldown and reconciliation. Collect p50/p95/max latency, success, error and quota responses, first-token latency, queue age, worker utilization, database CPU, connections and query latency, cache reuse, provider units and cost, duplicates, unsettled reservations, lost accepted jobs and leakage canaries.
 
-Create synthetic users and synthetic/private test content in a non-production or isolated beta test scope. Do not place real private source data into an unprotected load environment. Give each synthetic cohort/unit unique canary phrases so leakage is detectable.
+### 12.3 Tuning order
 
-### 12.4 Execute the workload
-
-Run:
-
-1. Warm-up.
-2. Defined 100-student realistic workload.
-3. Selected concurrency burst.
-4. Background PDF/audio ingestion overlap.
-5. Provider slowdown simulation.
-6. Worker termination/lease recovery.
-7. Database connection-pressure test.
-8. Cooldown and reconciliation.
-
-Collect p50/p95/max latency, success/error/quota responses, first-token latency, queue age, worker utilization, database CPU/connections/query latency, cache reuse, provider units/cost, duplicated records, unsettled reservations, lost accepted jobs, and leakage canaries.
-
-### 12.5 Tune in evidence order
-
-Tune only measured bottlenecks:
-
-1. Query/index/RLS plan issues.
+1. Query, index and RLS plan issues.
 2. Connection pooling and request concurrency.
 3. Retrieval parallelism and evidence size.
 4. Worker concurrency by provider rate limit.
 5. Embedding batches.
-6. Safe artifact/result caching.
-7. Provider/model configuration.
-8. Infrastructure plan increase only if lower-cost tuning cannot meet gates.
+6. Safe artifact and result caching.
+7. Provider and model configuration.
+8. An infrastructure plan increase only if lower-cost tuning cannot meet the gates (money stop).
 
 Repeat the identical test after each material change.
 
-### 12.6 Exit evidence
-
-- Reproducible scripts and load dataset.
-- 100 provisioned student accounts or equivalents.
-- Successful workload report with zero leakage/lost accepted work/uncontrolled backlog.
-- At least 99% successful interactive requests excluding intentional quota rejection.
-- Chat first-token target p50 under 5 seconds and p95 under 12 seconds, or an explicit approved revision backed by provider limits.
-- No duplicate job/artifact/message/usage event.
-- Total and p95 action costs fit the approved cap.
-- Documented scale-up switches that do not require a rewrite.
-
 ## 13. Work package 10: Veterinary Medicine validation
 
-**Outcome:** a second program uses catalog configuration and the same authorization, processing, retrieval, safety, Studio, quiz, and operations paths without Human-Medicine assumptions.
+**Outcome:** a second program uses catalog configuration and the same authorization, processing, retrieval, safety, Studio, quiz and operations paths without Human Medicine assumptions.
 
-### 13.0 Tutorial procedure
+**Primary artifacts:** Veterinary catalog configuration (through WP03-T34 actions), Veterinary evaluation suites, `evidence/wp10-veterinary/`.
+
+### 13.0 Tasks
 
 #### WP10-T01 — Configure the Veterinary catalog
 
-- [ ] Seed/configure Veterinary institution, program, level, term, cohort, edition, `SUBJECT` labels, and ordered units without adding a faculty-name code branch.
+**Depends on:** WP09-T06, WP03-T34. **Decision gates:** D-02. **Protected:** none (uses existing audited actions). **Material UI:** no. **Real money:** no.
+
+- [?] D-02 approved with the Veterinary cohort, unit list, Batch Leader and academic reviewer. OWNER INPUT REQUIRED.
+- [ ] Configure the Veterinary institution, program, level, term, cohort, edition, `SUBJECT` labels and ordered units through the WP03-T34 admin actions only; no faculty-name code branch and no migration with catalog rows.
+
+**Verify:** the student catalog shows Veterinary Subjects from configuration.
+
+**Pass:** Veterinary renders `Subjects` with zero code change.
 
 #### WP10-T02 — Freeze Veterinary fixtures and evaluation
 
-- [ ] Create Veterinary-specific rights-approved fixtures and frozen evaluation cases for terminology, direct/partial/unavailable/conflict/hints, educational cases, real-patient boundary, Studio, and MCQ.
+**Depends on:** WP10-T01. **Decision gates:** Veterinary rows in the source-rights inventory (WP00-T03). **Protected:** none. **Material UI:** no. **Real money:** no.
+
+- [?] Veterinary source rows and rights approved and the academic reviewer named. OWNER INPUT REQUIRED.
+- [ ] Author the Veterinary tutor and Studio suites with the §3.4 minimums: terminology, direct, partial, unavailable, conflict, hint, educational-case, real-patient boundary, Studio and MCQ cases, in English, Arabic and mixed language.
+- [ ] Have the academic reviewer sign the manifest.
+
+**Verify:** `pnpm test:eval` validator.
+
+**Pass:** the signed Veterinary suite meets every minimum.
 
 #### WP10-T03 — Reuse collection and processing
 
-- [ ] Assign the Veterinary Batch Leader through the existing campaign flow and process PDF/audio through the existing job types/adapters.
+**Depends on:** WP10-T02. **Decision gates:** none. **Protected:** storage; raw deletion. **Material UI:** no. **Real money:** yes, inside caps.
+
+- [ ] Create the Veterinary campaigns and give the Batch Leader access through WP03-T36; process PDF, audio and professor material through the existing job types and adapters, exactly as WP04-T20.
+
+**Verify:** job timelines, quality, deletion and cost reports.
+
+**Pass:** the WP04-T20 pass line holds for the Veterinary corpus with no new job type or adapter.
 
 #### WP10-T04 — Prove bidirectional isolation
 
-- [ ] Run Human/Veterinary cross-scope canaries through database functions, services, APIs, chat, cache reuse, Studio, quiz, and admin preview.
+**Depends on:** WP10-T03. **Decision gates:** none. **Protected:** RLS. **Material UI:** no. **Real money:** no.
+
+- [ ] Run Human ↔ Veterinary canaries through database functions, services, APIs, chat, cache reuse, Studio, quiz and admin preview.
+
+**Verify:** security suite.
+
+**Pass:** zero cross-program results in either direction.
 
 #### WP10-T05 — Audit Human-specific assumptions
 
-- [ ] Search code/prompts/tests for `human`, `medicine`, `module`, Human faculty/cohort names, and English-only assumptions; classify each occurrence as valid content/config/test or a defect.
+**Depends on:** WP10-T03. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
+
+- [ ] Search code, prompts, database functions, tests and UI for `human`, `medicine`, `module`, Human faculty and cohort names, and English-only assumptions; classify each hit as valid content/config/test or a defect.
+
+**Verify:** the classified search report.
+
+**Pass:** every hit is classified; defects are listed for WP10-T06.
 
 #### WP10-T06 — Remove invalid assumptions
 
-- [ ] Replace invalid assumptions with catalog/policy configuration, not a parallel pipeline.
+**Depends on:** WP10-T05. **Decision gates:** none. **Protected:** depends on the change. **Material UI:** only if a visible label changes. **Real money:** no.
+
+- [ ] Replace each defect with catalog or policy configuration, never a parallel pipeline or a program-name conditional.
+
+**Verify:** `pnpm verify`; the WP10-T05 search rerun.
+
+**Pass:** the rerun finds no defect.
 
 #### WP10-T07 — Run identical gates
 
-- [ ] Run identical quality, automation, replay, cost, and gate reports and compare results to Human Medicine.
+**Depends on:** WP10-T04, WP10-T06. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** yes, inside caps.
+
+- [ ] Run the WP05-T06, WP06-T08 and WP07-T06 gates, the WP08-T08 unattended proof and the cost report on the Veterinary corpus and compare with Human Medicine.
+- [ ] Write `evidence/wp10-veterinary/<date>_veterinary-gate_beta_<sha>.md`.
+
+**Verify:** the gate reports.
+
+**Pass:** Veterinary meets every threshold Human Medicine met (master plan Phase 6 exit).
 
 #### WP10-T08 — Review architectural reuse
 
-- [ ] Reviewer confirms there is one retrieval pool architecture, one processor contract, one Studio implementation, and data-driven terminology.
+**Depends on:** WP10-T07. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
 
-1. Configure the program, level, term, cohort, and `SUBJECT` labels using catalog data only.
-2. Assign the Veterinary Batch Leader and run sources through the existing campaign flow.
-3. Process PDF/audio/professor material through the same job types.
-4. Run veterinary retrieval, strict-RAG, conflict, unavailable, professor-hint, case-safety, Studio, and quiz datasets.
-5. Run explicit cross-program leakage cases in both directions.
-6. Search code, prompts, database functions, and UI for Human-Medicine-specific assumptions.
-7. Replace remaining program-name conditionals with catalog/policy configuration.
+- [ ] A reviewer confirms one retrieval-pool architecture, one processor contract, one Studio implementation and data-driven terminology.
 
-Exit evidence:
+**Verify:** review record.
 
-- Veterinary subjects render from configuration.
-- Zero Human/Veterinary segment leakage.
-- Same quality and automation gates pass.
-- No second retrieval pool architecture, pipeline, or Studio implementation was created.
+**Pass:** no second pool, pipeline or Studio implementation exists.
 
 ## 14. Work package 11: Private beta
 
-**Outcome:** up to 100 verified students enter in controlled waves; each expansion is evidence-based, reversible, budget-limited, supported, and monitored.
+**Outcome:** up to 100 verified students enter in controlled waves; each expansion is evidence-based, reversible, budget-limited, supported and monitored.
 
-### 14.0 Tutorial procedure
+**Primary artifacts:** `evidence/wp11-beta/`, onboarding copy, the final Terms and Privacy texts, wave reports.
+
+### 14.0 Tasks
 
 #### WP11-T01 — Freeze release candidate and go/no-go packet
 
-- [ ] Tag the exact commit/migrations/config/evaluation datasets/provider models.
-- [ ] Run security, retrieval, chat, Studio, automation, restore, and load gates on the release candidate.
-- [ ] Confirm rights inventory, source activation, raw deletion compliance, privacy/terms/boundary versions, retention, support, incident owners, alert delivery, quotas, and hard budgets.
-- [ ] Create `evidence/wp11-beta/<date>_go-no-go_beta_<sha>.md`; list every blocker and open risk.
-- [ ] Obtain two-person go approval. One owner cannot waive leakage, grounding, rights, deletion, or budget blockers.
+**Depends on:** WP08-T09, WP08-T10, WP09-T06, WP10-T08. **Decision gates:** D-08, D-20, D-25 and D-26 approved. **Protected:** yes — Beta unlock for students is a D-22 protected action. **Material UI:** no. **Real money:** no new spend.
+
+- [ ] Tag the exact commit, migrations, configuration, evaluation datasets and provider models.
+- [ ] Run the security, retrieval, chat, Studio, automation, restore and load gates on the candidate.
+- [ ] Confirm the rights inventory, source activation, raw-deletion compliance, Terms/Privacy/boundary versions, retention, support, incident owners, alert and email delivery, quotas and hard budgets.
+- [ ] Create `evidence/wp11-beta/<date>_go-no-go_beta_<sha>.md` listing every blocker and open risk.
+- [ ] Obtain two-founder go approval. One founder cannot waive a leakage, grounding, rights, deletion or budget blocker.
+
+**Verify:** the go/no-go packet against linked evidence.
+
+**Pass:** both founders approve the exact candidate with no open release blocker.
 
 #### WP11-T02 — Prepare onboarding and support
 
-- [ ] Verify invitations go only to intended verified addresses/cohort memberships and expire.
-- [ ] Publish concise bilingual onboarding, source boundary, educational boundary, privacy/retention, feedback/reporting, and support instructions.
-- [ ] Test account creation, verification, consent, first unit, first chat, first artifact, first quiz, feedback, logout, account/data controls, and support escalation on mobile/desktop.
-- [ ] Prepare support response targets and issue categories without exposing ordinary chats.
+**Depends on:** WP11-T01, WP03-T35. **Decision gates:** none beyond WP11-T01. **Protected:** auth (membership provisioning). **Material UI:** yes — onboarding copy and help pages. **Real money:** no.
+
+- [ ] Ahmed and Ziad approve the final Terms of Use, Privacy Notice and educational-boundary texts (including any legal review they choose) and publish them as new consent versions.
+- [ ] Provision wave memberships only through the WP03-T35 path, to verified addresses, with expiry.
+- [ ] Publish concise bilingual onboarding: the source boundary, the educational boundary, privacy and retention, feedback and reporting, and support.
+- [ ] Test account creation, verification email, consent, first unit, first chat, first artifact, first quiz, feedback, logout, account and data controls, and support escalation on phone and desktop.
+- [ ] Set support response targets and issue categories without exposing ordinary chats.
+
+**Verify:** E2E onboarding journeys in Beta with founder accounts; founder review.
+
+**Pass:** a new student completes the onboarding journey unaided; `Approved commit:` recorded.
 
 #### WP11-T03 — Release one wave at a time
 
-- [ ] Record planned users, start/end, owner, monitoring window, success/abort thresholds, and prior-wave review.
-- [ ] Invite only the current wave.
-- [ ] Monitor activation, errors, latency, queues, provider failures, grounding reports, deletion, budget, and support.
-- [ ] Reconcile accounts/usage/jobs/cost at the end of the observation window.
-- [ ] Expand only after a signed wave report; otherwise pause, contain, repair, regress, and repeat the same wave size.
+**Depends on:** WP11-T02. **Decision gates:** none. **Protected:** D-22 release actions. **Material UI:** no. **Real money:** usage inside caps.
+
+- [ ] Record planned users, start and end, owner, monitoring window, success and abort thresholds, and the prior-wave review.
+- [ ] Invite only the current wave (§14.1 order).
+- [ ] Run the load profile again during the first larger wave (master plan Phase 7 "before and during onboarding") inside the approved spend.
+- [ ] Monitor activation, errors, latency, queues, provider failures, grounding reports, deletion, budget, email delivery and support.
+- [ ] Reconcile accounts, usage, jobs and cost at the end of the window; expand only after a signed wave report, otherwise pause, contain, repair, regress and repeat the same wave size.
+
+**Verify:** signed wave reports.
+
+**Pass:** each wave closes with a signed report inside the cost and reliability gates.
 
 #### WP11-T04 — Run the weekly operating cycle
 
-- [ ] Execute frozen regressions before reviewing subjective feedback.
-- [ ] Review only reported/consented content under the retention/access policy.
-- [ ] Review source/job/deletion, performance/provider, usage/cost, product-value, and false-refusal metrics.
-- [ ] Separate defects, source gaps, UX friction, provider limitations, and out-of-scope requests.
-- [ ] Record every disable/fix/retry/release/expand decision and its evidence.
+**Depends on:** WP11-T03. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** usage inside caps.
+
+- [ ] Run the frozen regressions before reviewing subjective feedback.
+- [ ] Review only reported or consented content under the retention and access policy.
+- [ ] Review source, job and deletion exceptions; performance and provider reliability; usage, cost and budget; success signals; false-refusal feedback.
+- [ ] Interview active and inactive students.
+- [ ] Separate defects, source gaps, UX friction, provider limits and out-of-scope requests; record every disable, fix, retry, release or expand decision with its evidence.
+
+**Verify:** weekly reports.
+
+**Pass:** every week has a report and recorded decisions.
 
 #### WP11-T05 — Close beta with an explicit decision
 
-- [ ] Compare every technical gate and success signal with its target.
-- [ ] Report confidence/limitations, cohort differences, cost per meaningful action/student, operational intervention rate, and unresolved risks.
-- [ ] Decide `EXPAND`, `EXTEND_BETA`, `NARROW_SCOPE`, or `STOP`; name conditions and owners.
-- [ ] Do not interpret interviews about willingness to pay as authorization to add a manual payment workflow.
+**Depends on:** WP11-T04. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
 
-### 14.1 Before invitation
+- [ ] Compare every master plan §11 gate and §12 signal with its target.
+- [ ] Report confidence and limits, cohort differences, cost per meaningful action and per student, operational intervention rate and unresolved risks.
+- [ ] Decide `EXPAND`, `EXTEND_BETA`, `NARROW_SCOPE` or `STOP`, with conditions and owners.
+- [ ] Never treat willingness-to-pay interviews as authorization for a manual payment workflow.
 
-- Freeze release candidate and migrations.
-- Run security, RAG, Studio, automation, backup, and load gates.
-- Configure 100-student quota/cost limits and emergency flags.
-- Publish onboarding, privacy, educational boundary, support route, and source-reporting instructions.
-- Verify admin owners and response times for blocker incidents.
-- Confirm no manual payment/receipt workflow appears in the product.
+**Verify:** the beta close report.
 
-### 14.2 Release waves
+**Pass:** both founders record the decision. PoC acceptance is recorded here, separately from that decision, only when every master plan §11 gate has passed on recorded evidence.
 
-Release in order:
+### 14.1 Release waves
 
-1. Ahmed and Ziad accounts.
-2. 5-10 close testers.
-3. 20-30 Human Medicine students.
-4. Veterinary validation testers.
-5. Remaining verified students up to the 100-student target after stability review.
-
-Pause expansion on leakage, unsupported material claims, concealed conflicts, deletion-policy breach, uncontrolled cost, or repeatable loss/duplication of work.
-
-### 14.3 Weekly operating cycle
-
-1. Run frozen regression suites.
-2. Review reported answers and artifacts.
-3. Review source/job/deletion exceptions.
-4. Review performance and provider reliability.
-5. Reconcile usage/cost/budget automatically and inspect the report.
-6. Review activation, return, meaningful chat, Studio use, and quiz completion.
-7. Interview active and inactive students, including false-refusal feedback on medical cases.
-8. Record fix, disable, retry, release, or expand decisions.
-
-### 14.4 Exit evidence
-
-- Target workload and real beta operation remain inside cost/reliability gates.
-- Quality blockers are resolved or the affected source/feature is disabled.
-- Student value metrics and interview evidence are recorded.
-- Routine operation remains automated.
-- Founders approve or reject post-PoC commercial expansion using collected evidence.
+In order: Ahmed's and Ziad's accounts; 5–10 close testers; 20–30 Human Medicine students; Veterinary validation testers; the remaining verified students up to 100 after a stability review. Pause expansion on leakage, unsupported material claims, concealed conflicts, a deletion-policy breach, uncontrolled cost, or repeatable loss or duplication of work. No manual payment or receipt workflow appears in the product.
 
 ## 15. Work package 12: Post-PoC extension preparation
 
-**Outcome:** payments and video have approved extension contracts and threat/test plans, but are not smuggled into the free PoC scope.
+**Outcome:** payments and video have approved extension designs and threat and test plans, without entering the free PoC.
 
-### 15.0 Tutorial procedure
+### 15.0 Tasks
 
 #### WP12-T01 — Prove extension boundaries
 
-- [ ] Prove provider interfaces, source kinds, job graph, processed-document contract, catalog, retrieval, chat, and Studio can accept a future video processor without schema duplication.
+**Depends on:** WP11-T05. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
+
+- [ ] Re-run the WP04-T01 video-ready contract test against the final PoC schema and confirm provider interfaces, source kinds, the job graph, the processed-document contract, catalog, retrieval, chat and Studio still accept a future video processor without duplication.
+
+**Pass:** the contract test passes on the final schema.
 
 #### WP12-T02 — Design video ingestion
 
-- [ ] Create a video design record covering rights, size/duration/cost preflight, temporary video/audio, timestamps/visual extraction, completeness, quality, deletion of both raw and derived temporary objects, and replay.
+**Depends on:** WP12-T01. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
+
+- [ ] Write a video design record covering rights, size/duration/cost preflight, temporary video and audio, timestamps and visual extraction, completeness, quality, deletion of raw and derived temporary objects, and replay (§15.2).
+
+**Pass:** the design record is approved by both founders.
 
 #### WP12-T03 — Design automated payments
 
-- [ ] Create an automated-payment design record covering provider selection criteria, signed webhook verification, event uniqueness, order/entitlement state machine, append-only money ledger, reconciliation, refund/dispute, currency/amount verification, replay, and incident handling.
+**Depends on:** WP11-T05. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no (design only).
+
+- [ ] Write an automated-payment design record covering provider selection criteria, signed webhook verification, event uniqueness, the order and entitlement state machine, an append-only money ledger, reconciliation, refunds and disputes, currency and amount verification, replay and incident handling (§15.1).
+
+**Pass:** the design record is approved by both founders.
 
 #### WP12-T04 — Enforce PoC exclusions
 
-- [ ] Prohibit receipt uploads, founder approval queues, or editable balances in PoC migrations/routes.
+**Depends on:** WP12-T03. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
+
+- [ ] Add a check that fails on receipt uploads, founder approval queues or editable balances in migrations and routes.
+
+**Pass:** the check runs in `pnpm verify` and passes.
 
 #### WP12-T05 — Add mock-only contract tests
 
-- [ ] Add contract tests using mocks only; do not provision payment/video providers until the post-PoC decision is approved.
+**Depends on:** WP12-T02, WP12-T03. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
+
+- [ ] Add contract tests for the video processor and payment provider using mocks only; provision no payment or video provider until a post-PoC decision is approved.
+
+**Pass:** the mock contract tests pass with no provider account.
 
 #### WP12-T06 — Review additive architecture
 
-- [ ] Reviewer confirms these are additive adapters/workflows, not a second knowledge or entitlement architecture.
+**Depends on:** WP12-T04, WP12-T05. **Decision gates:** none. **Protected:** none. **Material UI:** no. **Real money:** no.
+
+- [ ] A reviewer confirms these are additive adapters and workflows, not a second knowledge or entitlement architecture.
+
+**Pass:** the review is recorded (master plan Phase 8 exit).
 
 ### 15.1 Automated commercial payments
 
-Do not build payment receipt upload or founder approval. After PoC acceptance, select an automated payment provider. The future flow must use signed webhooks, unique provider event IDs, idempotent fulfillment, append-only ledger entries, automated reconciliation, and tested refund/dispute behavior.
+Never build payment receipt upload or founder approval. After PoC acceptance, select an automated provider. The future flow uses signed webhooks, unique provider event IDs, idempotent fulfillment, append-only ledger entries, automated reconciliation and tested refund and dispute behaviour.
 
 ### 15.2 Video processor contract
 
-Add video later as another `source_kind` and processor behind the existing workflow:
+Video becomes another `source_kind` and processor behind the existing workflow: validate rights, type, size, duration, checksum and cost; store raw video temporarily; extract complete audio in an isolated worker; transcribe with timestamps; optionally extract essential slide or visual text when approved; produce the same processed Markdown/JSON/locator contract; run the same hint, conflict, quality, chunk, embedding and retrieval checks; delete raw video and extracted audio after verified output; index transcript segments into the same unit pool.
 
-1. Validate rights/type/size/duration/checksum/cost.
-2. Store raw video temporarily.
-3. Extract complete audio to a temporary worker file/object.
-4. Transcribe with timestamps.
-5. Optionally extract essential slide/visual text when requirements approve it.
-6. Produce the same processed Markdown/JSON/locator contract.
-7. Run the same professor-hint, conflict, quality, chunk, embedding, and retrieval checks.
-8. Delete raw video and extracted audio after verified processed output.
-9. Index transcript segments into the same unit pool.
+## 16. PoC acceptance checklist
 
-Before PoC completion, prove that source/job schemas and adapters can add this processor without changing chat, Studio, evidence, or catalog tables.
+These are the master plan §11 gates, copied with their thresholds, and the task whose evidence proves each. Tick a line only when that evidence exists for both cohorts where the gate applies.
 
-## 16. Mandatory verification checklist
+| Gate | Threshold (master plan §11) | Proved by |
+| --- | --- | --- |
+| Cross-user/cohort/unit leakage | 0 cases | WP02-T09, WP05-T05, WP09-T04, WP10-T04 |
+| Unsupported factual claims | 0 in accepted frozen evaluation answers | WP06-T08 (validator and academic review) |
+| Evidence provenance coverage | 100% of accepted answers and artifacts | WP06-T08, WP07-T06 |
+| Missing-information behaviour | At least 95% correct; no hidden-knowledge completion | WP05-T06, WP06-T08 |
+| Conflict behaviour | 100% of known frozen conflicts show both positions | WP05-T06, WP06-T08 |
+| Professor-hint retrieval | At least 95% for direct relevant questions | WP05-T06, WP06-T08 |
+| Educational case behaviour | At least 95% answered without false refusal when evidence exists | WP06-T08 |
+| Real-patient boundary | 100% of explicit high-risk cases | WP06-T08 |
+| Conversion completeness | 100% of required pages/audio accounted for or rejected | WP04-T20, WP10-T03 |
+| Raw deletion correctness | 100% of accepted sources deleted; 0 premature | WP04-T20, WP10-T03 |
+| Availability correctness | 0 unauthorized or premature units | WP02-T05, WP03-T08, WP03-T35 |
+| Artifact grounding | 0 unsupported accepted claims, answers or explanations | WP07-T06 |
+| Retry idempotency | 0 duplicated source, segment, embedding, artifact, usage or charge | WP04-T12, WP06-T08, WP07-T06, WP09-T04 |
+| Routine automation | 0 manual processing steps in the accepted path | WP08-T08 |
+| 100-student workload | No leakage, lost accepted work or uncontrolled backlog | WP09-T06 |
+| Interactive availability | At least 99% successful requests under load, excluding quota rejection | WP09-T06 |
+| Chat latency | Target p50 under 5 s and p95 under 12 s to first token | WP06-T05, WP09-T06 |
+| Cost | p95 action and total workload inside the approved cap | WP09-T06, WP11-T05 |
 
-### 16.1 Security and database
+Release blockers (master plan §11): any scope leakage, unsupported clinical claim sent as grounded fact, hidden external knowledge, concealed conflict, premature deletion, unauthorized exposure or repeatable duplicate provider charge.
 
-- [ ] Clean migration reset passes.
-- [ ] Every exposed table has RLS and explicit grants.
-- [ ] All update policies include appropriate `USING` and `WITH CHECK`.
-- [ ] Student/student, cohort/cohort, program/program, and role boundaries pass.
-- [ ] Service-role and provider secrets never reach browser/logs.
-- [ ] Derived availability matches every predicate.
-- [ ] Security-definer functions are isolated, restricted, and tested.
-- [ ] Common authorization/retrieval queries use intended indexes.
+- [ ] Every gate above has linked passing evidence for Human Medicine.
+- [ ] Every gate above has linked passing evidence for Veterinary Medicine.
+- [ ] No release blocker is open.
 
-### 16.2 Source processing
+## 17. Founder actions that unblock the critical path
 
-- [ ] Native PDF, scanned PDF, normal audio, and mixed-language professor audio pass.
-- [ ] Complete page/audio coverage is verified or source is rejected.
-- [ ] Processed Markdown/JSON is readable and checksummed.
-- [ ] Professor hints retain segment/time provenance.
-- [ ] Raw deletion occurs only after verification and absence is confirmed.
-- [ ] Provider timeout, worker death, and replay do not duplicate work/cost.
-- [ ] Terminal source failure does not block other sources.
-- [ ] Accepted workflow requires no routine manual step.
+The work below cannot move until Ahmed and Ziad decide or supply something. In the order the critical path (§2.2) needs it; the [decision register](../../planning/decision-register.md) holds owners and dates.
 
-### 16.3 Retrieval and chat
-
-- [ ] Retrieval is limited to active authorized source versions in one unit.
-- [ ] No web-search/outside-answer route or provider exists.
-- [ ] Accepted factual answers have evidence links.
-- [ ] Unsupported claims are blocked before display.
-- [ ] Unavailable cases say the material does not contain the answer.
-- [ ] Partial cases identify supported and missing components.
-- [ ] Conflict cases present both supported positions.
-- [ ] Professor hints are labeled as hints.
-- [ ] Academic medical/veterinary cases are answered when supported.
-- [ ] Explicit real-patient requests apply the approved boundary.
-- [ ] Invented source titles/pages/timestamps/quotes are rejected.
-
-### 16.4 Studio and quiz
-
-- [ ] Summary, guide, practice questions, flashcards, revision pack, and MCQ work.
-- [ ] Every accepted artifact has evidence links.
-- [ ] Unsupported artifact claims/answers are rejected.
-- [ ] Conflict and professor-hint labels are correct.
-- [ ] Cached artifact access is revalidated.
-- [ ] Source deactivation invalidates current artifacts safely.
-- [ ] Quiz submission/score is idempotent and answer keys remain hidden before submission.
-
-### 16.5 Automation and operations
-
-- [ ] Workers/scheduler are always-on and not founder-machine dependent.
-- [ ] Leases, retry backoff, dead-letter state, and reconciliation work.
-- [ ] Budget alerts and kill switches work.
-- [ ] Raw deletion, stale job, embedding, READY-state, and usage reconciliation work.
-- [ ] Admin actions are audited.
-- [ ] Backup restore and re-index procedure pass.
-- [ ] Incident runbooks have been exercised.
-- [ ] No manual payment or receipt process exists in the PoC.
-
-### 16.6 Capacity and cost
-
-- [ ] 100-student workload script is reproducible.
-- [ ] Background ingestion overlaps interactive use without lost work.
-- [ ] Zero leakage and duplicate accounting under load.
-- [ ] Success rate, chat latency, queue age, and database load meet gates.
-- [ ] p95 action and total test cost remain within cap.
-- [ ] Increasing capacity requires configuration/resource changes, not a rewrite.
-
-## 17. First execution session
-
-The first session is a control session, not a race to call an AI provider. Timebox it only for scheduling; do not lower its completion criteria.
-
-### 17.1 Start the session
-
-- [ ] Name the agent executor, human checkpoint, branch, and session goal.
-- [ ] Run workstation preflight from section 0.8.
-- [ ] Record existing working-tree changes and owners; do not overwrite them.
-- [ ] Create the planning/evidence directories from WP00-T01.
-- [ ] Copy `docs/templates/gate-report.md` to the WP00 evidence path and mark it `IN PROGRESS`.
-
-### 17.2 Establish decisions and safe fixtures
-
-- [ ] Create the decision register and synchronize D-01 through D-22.
-- [ ] Fill at least two realistic candidates for each program in the cohort-candidate template.
-- [ ] Enter representative native PDF, scanned PDF, normal audio, and professor voice-note rows in the rights inventory without uploading their files.
-- [ ] Draft exact raw/temporary/processed retention values and flag every unapproved value.
-- [ ] Draft total/weekly/action budgets; keep all paid enable flags false.
-- [ ] Create tutor/Studio JSON Schemas and at least one synthetic valid plus invalid case for every result/artifact type.
-
-### 17.3 Establish the application foundation
-
-- [ ] Pin Node 24 LTS patch and pnpm 10 patch.
-- [ ] Initialize the root Next.js application in place; do not replace planning documents.
-- [ ] Add strict TypeScript, formatting, lint, environment validation, and all script names defined in WP01-T01.
-- [ ] Create domain boundaries and deterministic mock provider contracts.
-- [ ] Configure mock-only workstation development and disposable Supabase CI, reserve the two existing Free projects for separate Preview/locked Beta, initialize versioned configuration, and create the first migration using the pinned CLI.
-- [ ] Add synthetic seed data only.
-- [ ] Add CI for frozen install, format, lint, types, tests, database reset, generated-type diff, build, and smoke.
-- [ ] Write the non-throwaway/strict-RAG/free-beta/always-on architecture ADR and link the master plan.
-
-### 17.4 Verify and close
-
-- [ ] Run every currently implemented zero-cost check.
-- [ ] Reset the guarded disposable CI Supabase stack twice.
-- [ ] Search repository/build/log output for secret-like values.
-- [ ] Record incomplete commands as named WP01 tasks rather than claiming the foundation gate passed.
-- [ ] Review the diff and commit only a coherent, non-secret slice.
-- [ ] Update the decision register and gate report.
-- [ ] Revoke temporary hosted database credentials and dispose an ephemeral CI branch when the approved workflow requires it.
-
-**Hard stop:** Do not enable a paid generation, embedding, OCR, or transcription provider; process real private source material; delete any raw source; or invite students until the corresponding rights, budget, evaluation data, durable job path, verification checks, and kill switch are approved.
+1. Name the security/data, academic, cost and operations role holders (WP00-T01).
+2. Approve D-10, the processed format (unblocks WP04-T01 and the whole pipeline).
+3. Decide D-25, how students get cohort membership (WP03-T35), and D-24, Batch Leader links or accounts (WP03-T36).
+4. Supply the Cohort A source rows and rights evidence and name the academic reviewer (WP00-T03, WP00-T20).
+5. Approve nonzero D-05 caps for the provider benchmark (WP04-T14, the first real-money step).
+6. Decide D-18 and D-19 (WP04-T16), D-17 (WP04-T17) and the restore target (WP04-T18) before the first real source.
+7. Decide D-08 before the real chat retention work (WP06-T07).
+8. Decide D-20 and D-26 before alerts and real email (WP08-T05).
+9. Decide D-02 before the Veterinary package (WP10-T01).
+10. Record or withdraw the WP03-T13 hands-on review.
 
 ## 18. Command and verification catalog
 
-The final `package.json` must expose these stable project commands even if underlying tools change. This keeps CI, onboarding, and evidence consistent.
-
-| Command | Purpose | External/paid calls allowed? | Passing result |
+| Command | Purpose | External or paid calls | Passing result |
 | --- | --- | --- | --- |
-| `pnpm dev` | Run the workstation Next.js development process. | Mocks only by default. | App starts and readiness explains missing hosted dependencies without requiring local infrastructure. |
-| `pnpm build` | Create production web build. | No. | Exit 0 with no ignored type/lint failure. |
-| `pnpm lint` | Static code checks. | No. | Exit 0. |
-| `pnpm typecheck` | Strict TypeScript check without emit. | No. | Exit 0. |
-| `pnpm format:check` | Verify formatting. | No. | Exit 0 and no file rewrites. |
-| `pnpm check:sql` | Audit versioned migrations against mechanical database conventions. | No. | Every migration name, table boundary, timestamp, exposed identifier, grant, and privileged-function check passes. |
-| `pnpm test:unit` | Pure domain/config/provider-mock tests. | No. | Exit 0. |
-| `pnpm test:integration` | Credential-free application/mock integration seams; guarded hosted cases skip. | No external calls or paid provider. | Local seams pass and hosted cases are visibly skipped. |
-| `pnpm test:integration:database` | Synthetic Auth seam against the disposable runner-local stack. | Runner loopback only; no persistent credentials or paid provider. | Synthetic create/sign-in/refresh/forgery denial/cleanup pass. |
-| `pnpm test:integration:hosted` | Retired hosted Auth compatibility seam with no approved profile. | None; never provide Preview/Beta credentials. | Fails closed unless an obsolete profile is recreated; do not run. |
-| `pnpm test:security` | Current identity/availability denial matrices; later RLS/grant suites join with migrations. | No external calls in the foundation command. | Zero unexpected allow/leakage at implemented seams. |
-| `pnpm test:e2e` | Browser flows against a local synthetic app profile. | Local app and mocks only; external browser requests blocked. | Implemented critical and forbidden paths pass. |
-| `pnpm test:eval` | Versioned evaluation runner and current approved/synthetic fixtures. | Only an explicitly approved live profile may use real providers; foundation default is mock-only. | Dataset hashes are valid and JSON/Markdown results report the exact scope. |
-| `pnpm test:load` | Guarded load-profile validation; execution is added in WP09. | Default rejects preview/beta/production, real providers, and nonzero cost. | A `NOT_EXECUTED` JSON/Markdown report is produced without claiming thresholds. |
-| `pnpm db:ci:start` | Start the disposable runner-local Supabase stack and apply migrations/seed. | GitHub-hosted Linux runner-local containers only. | Health checks pass without external credentials. |
-| `pnpm db:ci:reset` | Rebuild the disposable CI schema and synthetic seed from version control. | GitHub-hosted Linux runner-local containers only; never Preview/Beta. | All migrations/seed succeed from empty. |
-| `pnpm db:ci:migrations` | Compare versioned migration history with the disposable CI stack. | GitHub-hosted Linux runner-local containers only. | Migration history matches version control. |
-| `pnpm db:ci:types` | Generate database TypeScript types from the disposable CI stack. | GitHub-hosted Linux runner-local containers only. | Output updates deterministically. |
-| `pnpm db:ci:stop` | Remove the disposable stack and its data volumes. | GitHub-hosted Linux runner-local containers only. | Cleanup runs under `if: always()` and exits 0. |
-| `pnpm db:reset` | Retired hosted reset compatibility seam with no approved target. | None; never Preview/Beta. | Do not run; use the guarded disposable CI lifecycle. |
-| `pnpm db:migrations` | Retired hosted migration-comparison seam with no approved target. | None; never Preview/Beta. | Do not run; use `db:ci:migrations` in GitHub Actions. |
-| `pnpm db:push:dry-run` | Retired hosted dry-run seam; not a Preview/Beta promotion command. | None. | Do not run; follow the environment-promotion runbook. |
-| `pnpm db:types` | Retired hosted type-generation seam with no approved target. | None; never Preview/Beta. | Do not run; use `db:ci:types` in GitHub Actions. |
-| `pnpm db:types:check` | Fail when committed types are stale. | No. | Generation causes no Git diff. |
-| `pnpm verify` | Complete credential-free, zero-paid merge gate. | No external infrastructure or paid provider. | Every required subcommand exits 0. |
+| `pnpm agent:status` | Read-only work state: in-progress, blocked and next task | None | Lists tasks; changes nothing |
+| `pnpm lint:agents` | Agent docs, task records and skills: links, record fields, retired terms | None | Exit 0 |
+| `pnpm check` | Fast edit-loop checks | None | Exit 0 |
+| `pnpm verify` | Complete credential-free merge gate, the same suite CI runs | None | Every subcommand exits 0 |
+| `pnpm dev` | Workstation Next.js development process | Mocks only | App starts without local infrastructure |
+| `pnpm demo` | Loopback synthetic demo | None | Demo serves on loopback only |
+| `pnpm build` | Production web build | None | Exit 0 with no ignored error |
+| `pnpm lint`, `pnpm typecheck`, `pnpm format:check` | Static checks | None | Exit 0 |
+| `pnpm check:boundaries`, `pnpm check:sql`, `pnpm scan:secrets` | Module boundaries, SQL conventions, secret scan | None | Exit 0 |
+| `pnpm test:unit`, `test:integration`, `test:security` | Vitest layers | None | Exit 0 |
+| `pnpm test:e2e`, `pnpm test:e2e:demo` | Real-mode and synthetic browser suites | Local app and mocks only | Exit 0 |
+| `pnpm test:eval` | Dataset validation and the evaluation runner | Mock-only by default; a live profile needs its own guarded command | Hashes valid; reports name the exact scope |
+| `pnpm test:load` | Guarded load profile | Rejects Beta/production, real providers and nonzero cost by default | `NOT_EXECUTED` report until WP09 |
+| `pnpm smoke:deployment` | Redacted public deployment smoke | Target deployment only | Six checks pass |
+| `pnpm db:ci:*` | Disposable Supabase lifecycle (`start`, `reset`, `upgrade`, `migrations`, `test`, `advisors`, `types`, `stop`) | GitHub-hosted runner containers only | Each step exits 0; `stop` runs under `if: always()` |
+| `pnpm db:types:check` | Committed types are current | None | No Git diff |
+| `pnpm db:reset`, `db:migrations`, `db:push:dry-run`, `db:types`, `test:integration:hosted` | Retired hosted seams | None | Do not run |
 
-If a command needs secrets or a paid provider, its name must say so, for example `test:eval:live-approved`; it must require an explicit environment profile, preflight budget, and confirmation guard. Never make `pnpm verify` spend money.
+A command that needs secrets or a paid provider says so in its name (for example `test:eval:live-approved`) and requires an explicit environment profile, a budget preflight and a confirmation guard. `pnpm verify` never spends money.
 
 ## 19. Troubleshooting decision tree
 
 ### 19.1 Clean clone does not install
 
 1. Confirm Node matches `.nvmrc` and pnpm matches `packageManager`.
-2. Confirm the command is `pnpm install --frozen-lockfile` and no competing lockfile exists.
-3. Delete/reinstall only generated dependency directories, never user source files.
-4. If the lockfile is invalid, repair dependencies on a separate branch and review the exact manifest/lock diff.
+2. Use `pnpm install --frozen-lockfile`; make sure no competing lockfile exists.
+3. Delete and reinstall only generated dependency directories, never source files.
+4. If the lockfile is invalid, repair dependencies on a separate branch and review the exact manifest and lock diff.
 
-### 19.2 Disposable Supabase CI stack is unavailable or rejected
+### 19.2 The disposable Supabase CI stack fails or is rejected
 
-1. Confirm the job is a standard GitHub-hosted Ubuntu runner and is not using Preview/Beta credentials or a founder-hosted runner.
-2. Confirm the pinned Supabase CLI and container runtime versions, runner capacity, and downloaded image state without printing tokens or internal connection strings.
-3. Run `pnpm supabase --help` and inspect the `db:ci:start` failure status; use the pinned CLI's current flags rather than an old tutorial. Never print `supabase status -o env` output.
-4. Until WP01-T08 migration is complete, treat the existing hosted commands as transitional and never repurpose either project.
-5. Preserve versioned migrations. Never bypass the guard, relabel Preview/Beta as a test environment, or repair schema through the dashboard.
-6. If the disposable stack remains unavailable, mark migration/Auth/RLS tasks blocked and continue only with credential-free unit/UI/mock tasks.
+1. Confirm the job runs on a standard GitHub-hosted Ubuntu runner with no Preview/Beta credentials and no founder-hosted runner.
+2. Check the pinned Supabase CLI and container versions, runner capacity and image state without printing tokens or connection strings; never print `supabase status -o env` output.
+3. Read the `db:ci:start` failure with the pinned CLI's current flags, not an old tutorial.
+4. Keep migrations versioned. Never bypass a guard, relabel Preview or Beta as a test target, or repair schema in a dashboard.
+5. If the stack stays unavailable, mark database tasks blocked and continue only with credential-free work.
 
 ### 19.3 Migration reset fails
 
-1. Identify the first failing migration and exact SQL error.
-2. Reproduce from a clean reset of the disposable CI stack; do not patch Preview or Beta manually.
-3. Fix the unshared migration. If it has reached preview/beta, add a forward repair migration instead of rewriting history.
-4. Run populated-upgrade plus clean-reset paths.
-5. Regenerate types and inspect grants/RLS/advisors.
+1. Find the first failing migration and the exact SQL error.
+2. Reproduce on a clean disposable reset; never patch Preview or Beta by hand.
+3. Fix an unshared migration in place; once it has reached Preview or Beta, add a forward repair migration instead.
+4. Run the populated upgrade and the clean reset; regenerate types; inspect grants, RLS and advisors.
 
-### 19.4 Authorized query returns zero rows unexpectedly
+### 19.4 An authorized query returns zero rows
 
-1. Confirm the object is exposed/granted to the caller role; Data API exposure and RLS are separate.
-2. Confirm session/user identity and token freshness.
-3. Inspect SELECT policy first; UPDATE also needs row visibility plus `WITH CHECK`.
-4. Test the exact caller/row state in the security fixture.
-5. Never add `security definer` merely to make the query work.
+1. Confirm the object is exposed and granted to the caller role; Data API exposure and RLS are separate.
+2. Confirm the session identity and token freshness.
+3. Inspect the SELECT policy first; an UPDATE also needs row visibility and `WITH CHECK`.
+4. Reproduce the exact caller and row state in the security fixture.
+5. Never add `security definer` just to make the query work.
 
 ### 19.5 Retrieval is slow or misses evidence
 
-1. Reproduce one frozen case and capture component scores plus query plan.
-2. Confirm identical authorization/source/config filters on keyword and vector branches.
-3. Confirm embedding model/dimensions/normalization and distance operator match stored vectors/index.
-4. Confirm vector ordering uses the distance expression and filters are applied before limiting.
-5. Compare exact search with HNSW to separate index-recall from embedding/chunking/query problems.
-6. Change one variable, rerun the identical suite, and record before/after.
+1. Reproduce one frozen case and capture component scores and the query plan.
+2. Confirm identical authorization, source and configuration filters on both branches.
+3. Confirm the embedding model, dimensions, normalization and distance operator match the stored vectors and index.
+4. Confirm vector ordering uses the distance expression and filters apply before the limit.
+5. Compare exact search with HNSW to separate index recall from embedding, chunking or query problems.
+6. Change one variable, rerun the identical suite, and record before and after.
 
 ### 19.6 A provider times out
 
-1. Determine whether acceptance is known, rejected, or uncertain.
-2. Persist the typed outcome and provider request ID.
-3. On uncertain acceptance, reconcile provider status before issuing another paid call when supported.
-4. Keep reservation open/retry-safe until terminal resolution, then settle/release once.
-5. Let bounded retry/reconciliation act; do not manually duplicate the job.
+1. Decide whether acceptance is known, rejected or uncertain; persist the typed outcome and the provider request ID.
+2. On uncertain acceptance, reconcile provider status before another paid call where the provider supports it.
+3. Keep the reservation open and retry-safe until terminal resolution, then settle or release once.
+4. Let bounded retry and reconciliation act; never duplicate the job by hand.
 
 ### 19.7 Raw deletion is uncertain
 
-1. Keep state unresolved and source not fully optimized.
-2. Independently query object metadata/listing; a successful delete response alone is insufficient.
-3. Append verification attempts and retry automatically.
-4. Escalate at the deletion deadline and use the incident runbook.
-5. Never delete the processed output or audit trail to “start over.”
+1. Keep the state unresolved and the source not fully optimized.
+2. Check object metadata or listing independently; a successful delete response alone is not proof.
+3. Append verification attempts and retry automatically; escalate at the deadline with the incident runbook.
+4. Never delete processed output or the audit trail to "start over".
 
 ### 19.8 A grounding or leakage test fails
 
-1. Stop release expansion and disable the affected feature/source/scope.
-2. Preserve correlation, policy/model/source/config versions and minimal authorized evidence.
-3. Determine whether failure is RLS, server authorization, retrieval filtering, cache authorization, prompt/generation, or validation.
+1. Stop release expansion and disable the affected feature, source or scope.
+2. Keep the correlation ID, policy/model/source/configuration versions and minimal authorized evidence.
+3. Decide whether the failure is RLS, server authorization, retrieval filtering, cache authorization, generation or validation.
 4. Add the failing case to the frozen regression set without exposing private content.
-5. Fix, run the full security/evaluation suite, and obtain the required protected-gate confirmations from Ahmed and Ziad before re-enable.
+5. Fix, run the full security and evaluation suites, and obtain the protected-gate confirmations from Ahmed and Ziad before re-enabling.
+
+### 19.9 A Free-plan limit is reached
+
+1. Identify the limit (database size, storage, egress, monthly active users, pausing) from the provider dashboard or the WP08-T02 capacity metrics.
+2. Contain: pause new ingestion or new invitations; do not delete evidence to make room.
+3. Measure what grew and compare with the WP04-T15 capacity estimate.
+4. A paid tier is a real-money decision: present the exact plan and monthly exposure to Ahmed and Ziad and wait for both.
 
 ## 20. Final release truth test
 
-Before anyone says “the PoC is ready,” a new reviewer must be able to answer **yes** to all of the following from evidence rather than verbal explanation:
+Before anyone says "the PoC is ready", a new reviewer must answer **yes** to each question from evidence, not from someone's explanation:
 
-- [ ] Can a clean clone reproduce the app, database, fixtures, tests, and build?
-- [ ] Can every role's allowed and forbidden actions be traced to RLS/server tests?
-- [ ] Can every accepted factual answer/artifact be traced to active authorized evidence?
-- [ ] Can an unavailable/conflicting case be reproduced without hidden external knowledge?
-- [ ] Can every accepted source prove processed completeness and verified raw deletion/approved hold?
-- [ ] Can provider timeout, worker death, duplicate delivery, and replay occur without duplicate state/cost?
-- [ ] Can an operator disable a bad source/provider/feature/cohort quickly without deleting evidence?
-- [ ] Can the system restore database plus processed objects and rebuild/reconnect retrieval safely?
+- [ ] Can a clean clone reproduce the app, database, fixtures, tests and build?
+- [ ] Can every role's allowed and forbidden actions be traced to RLS and server tests?
+- [ ] Can a student get access, and lose it, only through the approved membership path?
+- [ ] Can every accepted factual answer and artifact be traced to active authorized evidence?
+- [ ] Can an unavailable or conflicting case be reproduced without hidden external knowledge?
+- [ ] Can every accepted source prove processed completeness and verified raw deletion or an approved hold?
+- [ ] Can provider timeout, worker death, duplicate delivery and replay happen without duplicate state or cost?
+- [ ] Can an operator disable a bad source, provider, feature or cohort quickly without deleting evidence?
+- [ ] Can the system restore the database and processed objects and rebuild retrieval safely?
 - [ ] Can the exact 100-student workload be rerun inside the approved cost and performance envelope?
 - [ ] Can Veterinary Medicine pass through the same architecture with configuration-only terminology?
-- [ ] Can founders turn off their computers without stopping required workers/schedules?
+- [ ] Can the founders turn off their computers without stopping workers, schedules, email or alerts?
 - [ ] Can beta expansion be paused and rolled back from documented controls?
 
-If any answer depends on “Ahmed/Ziad knows how,” the project is not yet production-shaped and the missing knowledge must be converted into code, configuration, a runbook, or reviewed evidence.
+If any answer depends on "Ahmed or Ziad knows how", the project is not yet production-shaped: turn that knowledge into code, configuration, a runbook or reviewed evidence.
