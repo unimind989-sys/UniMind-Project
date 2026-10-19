@@ -14,7 +14,7 @@
 
 **Branch:** claude/wp00-t19-runbook-revision
 
-**Updated (UTC):** 2026-10-20
+**Updated (UTC):** 2026-10-20 (third review)
 
 ## Contract
 
@@ -43,7 +43,8 @@
 - [x] Sync the decision register, the master-plan decision log (new open D-25, D-26) and the moved resolution paths.
 - [x] Run agent lint, status, format check and the diff review.
 - [x] Second review in five independent passes; every finding verified against its source; revision 3.1, `agent:status` dependency awareness, register and record sync, second review report.
-- [ ] Founder review of the revised runbook, then PR, required CI and merge.
+- [x] Third review in six passes (fact-check, two fresh-agent dry runs, delivery realism, product/UX, master-plan critique); revision 3.2; proposed master-plan amendments; third review report.
+- [ ] Founder review of the revised runbook and the master-plan amendments, then PR, required CI and merge.
 
 ## Decisions
 
@@ -55,7 +56,7 @@
 
 ## Current state
 
-**Changed:** runbook revision 3.1; first findings corrected and second review published; decision register (D-25 to D-28, moved resolution paths); master-plan decision log (D-25 to D-28 as Open); `Blocks` lines in decision records and the raw-data policy; `agent:status` reads `Depends on`; stale references fixed.
+**Changed:** runbook revision 3.2 (new WP00-T22, WP04-T22 to T24, WP08-T12/T13; fact corrections; founder questions inside tasks); proposed master-plan amendments (not applied); third review report; earlier: runbook revision 3.1; first findings corrected and second review published; decision register (D-25 to D-28, moved resolution paths); master-plan decision log (D-25 to D-28 as Open); `Blocks` lines in decision records and the raw-data policy; `agent:status` reads `Depends on`; stale references fixed.
 
 **Proof:** headings vs `main` → 0 lost, 20 added; status parser → 63 done unchanged, only intended state changes; dependency audit → no unknown or forward dependency; `pnpm agent:status` → next executable WP00-T05; other results in the PR body.
 
@@ -63,7 +64,7 @@
 
 **Approved commit:** NOT REQUIRED: no UI change.
 
-**Remaining:** Ahmed's review of the revised order and the new open decisions (urgent: D-28); PR and merge.
+**Remaining:** Ahmed's review of the revised order, the open decisions (urgent: D-28) and the master-plan amendments A1–A16; PR and merge.
 
 ## Next action
 

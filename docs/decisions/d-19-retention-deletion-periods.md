@@ -10,7 +10,7 @@
 
 **Last reviewed:** NOT RECORDED
 
-**Blocks:** WP04-T09 (real data), WP04-T11 (real takedown), WP04-T18, WP06-T07 (real data), WP11-T01 (resolution path: WP04-T15, approved together with D-18)
+**Blocks:** WP04-T09 (real data), WP04-T11 (real takedown), WP04-T18, WP06-T07 (real data), WP11-T01 (resolution path: WP04-T22, approved together with D-18)
 
 ## Context
 

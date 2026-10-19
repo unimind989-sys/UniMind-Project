@@ -36,7 +36,7 @@ The always-on rules for coding agents (Codex, Claude Code) are in [`AGENTS.md`](
 - [Canonical design contract](../DESIGN.md) — current visual and interaction rules. Dated approvals are in the [design approval history](../evidence/wp03-product-shell/design-approval-history.md).
 - [Frontend overhaul audit](reviews/wp03-frontend-overhaul.md) — role flows, preserved capabilities, concrete findings and design checkpoints.
 - [WP03 refinement](reviews/wp03-refinement/README.md) — October 2026 platform audit, plan, CI and testing report and final verification (WP03-T24 to T30).
-- [Runbook revision](reviews/runbook-revision-2026-10/second-review.md) — October 2026 first and second reviews of the execution runbook against the master plan, the code and the platform (WP00-T19).
+- [Runbook revision](reviews/runbook-revision-2026-10/third-review.md) — October 2026 first, second and third reviews of the execution runbook against the master plan, the code, the platforms and the product journeys, with [proposed master-plan amendments](reviews/runbook-revision-2026-10/master-plan-amendments.md) awaiting founder approval (WP00-T19).
 - [Planning workspace](../planning/README.md) — in-progress task records, the decision register, and controlled planning inputs. Approved direction moves to its owning document under `docs/`.
 
 ## Placement rules
